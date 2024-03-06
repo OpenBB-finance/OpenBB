@@ -80,7 +80,6 @@ class PortfolioController(BaseController):
         "summary",
     ]
     CHOICES_MENUS = [
-        "bro",
         "po",
     ]
     VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
@@ -171,7 +170,6 @@ class PortfolioController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("portfolio/")
-        mt.add_menu("bro")
         mt.add_menu("po")
         mt.add_raw("\n")
 
@@ -220,13 +218,6 @@ class PortfolioController(BaseController):
         if self.original_benchmark_ticker:
             objects_to_reload.append(f'bench "{self.original_benchmark_ticker}"')
         return objects_to_reload
-
-    @log_start_end(log=logger)
-    def call_bro(self, _):
-        """Process bro command"""
-        from openbb_terminal.portfolio.brokers.bro_controller import BrokersController
-
-        self.queue = self.load_class(BrokersController, self.queue)
 
     @log_start_end(log=logger)
     def call_po(self, _):

@@ -1,5 +1,6 @@
 """Benzinga provider module."""
 
+from openbb_benzinga.models.analyst_search import BenzingaAnalystSearchFetcher
 from openbb_benzinga.models.company_news import BenzingaCompanyNewsFetcher
 from openbb_benzinga.models.price_target import BenzingaPriceTargetFetcher
 from openbb_benzinga.models.world_news import BenzingaWorldNewsFetcher
@@ -12,6 +13,7 @@ benzinga_provider = Provider(
     focused on information that moves the market.""",
     credentials=["api_key"],
     fetcher_dict={
+        "AnalystSearch": BenzingaAnalystSearchFetcher,
         "CompanyNews": BenzingaCompanyNewsFetcher,
         "WorldNews": BenzingaWorldNewsFetcher,
         "PriceTarget": BenzingaPriceTargetFetcher,

@@ -10,11 +10,11 @@ env:
 on:
   pull_request:
     types: [opened, synchronize, edited]
-  push:
-    branches:
-      - "feature/*"
-      - "hotfix/*"
-      - "release/*"
+  # push:
+  #   branches:
+  #     - "feature/*"
+  #     - "hotfix/*"
+  #     - "release/*"
   merge_group:
     types: [checks_requested]
 
@@ -49,9 +49,9 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           # "Checking PR diff"
-          echo "terminal_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | xargs)" >> $GITHUB_ENV
+          echo "terminal_files=$(git diff --name-status origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | grep -v '^D' | cut -f 2- | xargs)" >> $GITHUB_ENV
           echo $terminal_files
-          echo "platform_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          echo "platform_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
           echo $platform_files
 
       - uses: actions/cache@v3

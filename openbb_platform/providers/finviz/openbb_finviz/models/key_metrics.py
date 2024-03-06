@@ -22,6 +22,8 @@ class FinvizKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://finviz.com/screener.ashx
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FinvizKeyMetricsData(KeyMetricsData):
     """Finviz Key Metrics Data."""

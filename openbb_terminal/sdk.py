@@ -91,10 +91,9 @@ class OpenBBSDK:
         """Alternative Submodule
 
         Submodules:
-            `covid`: Covid Module
+            `companieshouse`: Companieshouse Module
             `oss`: Oss Module
             `realestate`: Realestate Module
-            `companieshouse`: CompaniesHouse Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n
@@ -174,8 +173,6 @@ class OpenBBSDK:
             `available_indices`: Get available indices\n
             `balance`: General government deficit is defined as the balance of income and expenditure of government,\n
             `balance_chart`: General government balance is defined as the balance of income and expenditure of government,\n
-            `bigmac`: Display Big Mac Index for given countries\n
-            `bigmac_chart`: Display Big Mac Index for given countries\n
             `ccpi`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
             `ccpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
             `country_codes`: Get available country codes for Bigmac index\n
@@ -355,9 +352,6 @@ class OpenBBSDK:
     def forex(self):
         """Forex Submodule
 
-        Submodules:
-            `oanda`: Oanda Module
-
         Attributes:
             `candle`: Show candle plot for fx data.\n
             `fwd`: Gets forward rates from fxempire\n
@@ -366,7 +360,7 @@ class OpenBBSDK:
             `quote`: Get forex quote.\n
         """
 
-        return ctrl.ForexController()
+        return model.ForexRoot()
 
     @property
     def funds(self):
@@ -411,10 +405,8 @@ class OpenBBSDK:
             `biztoc`: Set BizToc key\n
             `cmc`: Set Coinmarketcap key\n
             `coinbase`: Set Coinbase key\n
-            `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
             `databento`: Set DataBento key\n
-            `degiro`: Set Degiro key\n
             `eodhd`: Set Eodhd key.\n
             `ethplorer`: Set Ethplorer key.\n
             `finnhub`: Set Finnhub key\n
@@ -422,22 +414,16 @@ class OpenBBSDK:
             `fred`: Set FRED key\n
             `get_keys_info`: Get info on available APIs to use in set_keys.\n
             `github`: Set GitHub key.\n
-            `glassnode`: Set Glassnode key.\n
             `messari`: Set Messari key.\n
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
-            `oanda`: Set Oanda key\n
             `polygon`: Set Polygon key\n
             `quandl`: Set Quandl key\n
             `reddit`: Set Reddit key\n
-            `rh`: Set Robinhood key\n
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
             `smartstake`: Set Smartstake key.\n
-            `stocksera`: Set Stocksera key.\n
-            `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
-            `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n
         """
 
@@ -553,7 +539,6 @@ class OpenBBSDK:
         Attributes:
             `candle`: Show candle plot of loaded ticker.\n
             `load`: Load a symbol to perform analysis using the string above as a template.\n
-            `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
             `process_candle`: Process DataFrame into candle style plot.\n
             `quote`: Gets ticker quote from FMP\n
             `quote_chart`: Financial Modeling Prep ticker(s) quote.\n

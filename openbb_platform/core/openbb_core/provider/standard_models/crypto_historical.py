@@ -45,7 +45,9 @@ class CryptoHistoricalQueryParams(QueryParams):
 class CryptoHistoricalData(Data):
     """Crypto Historical Price Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
@@ -59,4 +61,6 @@ class CryptoHistoricalData(Data):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        return parser.isoparse(str(v))
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

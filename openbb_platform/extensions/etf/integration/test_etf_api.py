@@ -23,6 +23,15 @@ def headers():
     "params",
     [
         ({"query": "", "provider": "fmp"}),
+        (
+            {
+                "query": "vanguard",
+                "provider": "tmx",
+                "div_freq": "quarterly",
+                "sort_by": "return_1y",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -72,7 +81,7 @@ def test_etf_historical(params, headers):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
     ],
 )
@@ -91,7 +100,7 @@ def test_etf_info(params, headers):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -157,6 +166,13 @@ def test_etf_holdings_date(params, headers):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "XIU",
+                "provider": "tmx",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -190,7 +206,10 @@ def test_etf_price_performance(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "IOO"})],
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "XIU", "use_cache": False, "provider": "tmx"}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_countries(params, headers):
@@ -261,6 +280,23 @@ def test_etf_holdings_performance(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/etf/holdings_performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_equity_exposure(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/equity_exposure?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

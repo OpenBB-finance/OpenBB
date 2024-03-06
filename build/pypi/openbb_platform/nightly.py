@@ -13,6 +13,7 @@ DEPENDENCIES: Dict[str, Any] = {}
 PLUGINS: Dict[str, Dict] = {
     "openbb_core_extension": {},
     "openbb_provider_extension": {},
+    "openbb_obbject_extension": {},
 }
 CMD = [sys.executable, "-m", "poetry", "build"]
 
@@ -47,7 +48,7 @@ def gather_metadata(sub_path: str):
 
 def build():
     """Build the Platform package."""
-    for sub_path in ["core", "providers", "extensions"]:
+    for sub_path in ["core", "providers", "extensions", "obbject_extensions"]:
         gather_metadata(sub_path)
 
     # need to pop these from the dependencies

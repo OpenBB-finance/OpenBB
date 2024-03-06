@@ -15,34 +15,69 @@ router = Router(prefix="/estimates")
 # pylint: disable=unused-argument
 
 
-@router.command(model="PriceTarget")
+@router.command(
+    model="PriceTarget",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()'  # noqa: E501 pylint: disable=line-too-long
+    ],
+)
 async def price_target(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Price Target. Price target data."""
+    """Get analyst price targets by company."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="AnalystEstimates")
+@router.command(
+    model="AnalystEstimates",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.equity.estimates.historical("AAPL", period="quarter", provider="fmp").to_df()',
+    ],
+)
 async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Analyst Estimates. Analyst stock recommendations."""
+    """Get historical analyst estimates for earnings and revenue."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="PriceTargetConsensus")
+@router.command(
+    model="PriceTargetConsensus",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.equity.estimates.consensus("AAPL,MSFT", provider="yfinance").to_df()'
+    ],
+)
 async def consensus(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Price Target Consensus. Price target consensus data."""
+    """Get consensus price target and recommendation."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="AnalystSearch",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.equity.estimates.analyst_search(firm_name="Wedbush", provider="benzinga").to_df()',
+    ],
+)
+async def analyst_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search for specific analysts and get their forecast track record."""
     return await OBBject.from_query(Query(**locals()))

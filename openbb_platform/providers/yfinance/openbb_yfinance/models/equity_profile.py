@@ -20,6 +20,8 @@ _warn = warnings.warn
 class YFinanceEquityProfileQueryParams(EquityInfoQueryParams):
     """YFinance Equity Profile Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class YFinanceEquityProfileData(EquityInfoData):
     """YFinance Equity Profile Data."""

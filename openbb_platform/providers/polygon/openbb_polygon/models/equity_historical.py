@@ -36,6 +36,8 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: str = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
@@ -154,9 +156,9 @@ class PolygonEquityHistoricalFetcher(
                     r["t"] / 1000, tz=timezone("America/New_York")
                 )
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
-                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S")
+                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
@@ -176,4 +178,7 @@ class PolygonEquityHistoricalFetcher(
         """Transform the data from the Polygon endpoint."""
         if not data:
             raise EmptyDataError()
-        return [PolygonEquityHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonEquityHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]

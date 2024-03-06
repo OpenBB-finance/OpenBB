@@ -4,7 +4,7 @@ import html
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from itertools import repeat
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,18 +22,18 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     Source: https://www.nasdaq.com/market-activity/economic-calendar
     """
 
-    country: Optional[Union[str, List[str]]] = Field(
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
+    country: Optional[str] = Field(
         default=None,
         description="Country of the event",
     )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def validate_country(cls, v: Union[str, List[str], Set[str]]):
-        """Validate the country input."""
-        if isinstance(v, str):
-            return v.lower().replace(" ", "_")
-        return ",".join([country.lower().replace(" ", "_") for country in list(v)])
+    def validate_country(cls, c: str):  # pylint: disable=E0213
+        """Validate country."""
+        return ",".join([v.lower() for v in c.replace(" ", "_").split(",")])
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):

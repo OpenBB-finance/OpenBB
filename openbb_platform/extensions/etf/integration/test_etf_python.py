@@ -22,6 +22,15 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     "params",
     [
         ({"query": None, "provider": "fmp"}),
+        (
+            {
+                "query": "vanguard",
+                "provider": "tmx",
+                "div_freq": "quarterly",
+                "sort_by": "return_1y",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -69,7 +78,7 @@ def test_etf_historical(params, obb):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
     ],
 )
@@ -87,7 +96,7 @@ def test_etf_info(params, obb):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -151,6 +160,13 @@ def test_etf_holdings_date(params, obb):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "XIU",
+                "provider": "tmx",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -182,7 +198,10 @@ def test_etf_price_performance(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "IOO"})],
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_countries(params, obb):
@@ -248,6 +267,22 @@ def test_etf_holdings_performance(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.holdings_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_equity_exposure(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.equity_exposure(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

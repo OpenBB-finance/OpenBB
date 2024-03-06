@@ -42,17 +42,24 @@ The sections below outline any specific installation considerations for the exte
 
 The OpenBB Charting Extension supplies charting infrastructure and services to the OpenBB Platform. Figure objects are served via REST API or Python Client.  It utilizes [PyWry](https://github.com/OpenBB-finance/pywry) for handling the display of interactive charts and tables in a separate window, with a Plotly library. The extension framework allows developers to easily insert other Python charting libraries into the router pipeline.
 
-Functions with charting enabled return figures to a field (`chart`) in the `OBBject` response object. They are displayed with the class method, `show()`. Additional Python libraries are installed with this extension:
+Functions with charting enabled return figures to a field (`chart`) in the `OBBject` response object. They are displayed with the class method, `show()`.
 
-- aiohttp
+> Additional Python libraries are installed with this extension: `aiohttp`, `nbformat`, `pandas-ta`, `plotly`, `pywry`, `reportlab`, `scipy`, `statsmodels`, and `svglib`.
+
+:::tip
+The `openbb-charting` is in fact an [`OBBject` extension](/website/content/platform/development/developer-guidelines/obbject_extensions.md) which means you'll have the functionality it exposes on every command result.
+:::
+
+The following packages are dependencies of the `openbb-charting` extension:
+
+- scipy
+- plotly
+- statsmodels
+- reportlab
+- pywry
+- svglib
 - nbformat
 - pandas-ta
-- plotly
-- pywry
-- reportlab
-- scipy
-- statsmodels
-- svglib
 
 ### Installation
 
@@ -61,6 +68,8 @@ To install the extension, run the following command in this folder:
 ```bash
 pip install openbb-charting
 ```
+
+> Find the latest version on [PyPI](https://pypi.org/project/openbb-charting/).
 
 To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/charting`, and enter:
 
@@ -89,6 +98,12 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 - Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+If Rust (Cargo) is required, install it:
+
+```console
+curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+```
 
 ## Devtools
 

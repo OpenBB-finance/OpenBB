@@ -22,8 +22,9 @@ def headers():
 @parametrize(
     "params",
     [
-        ({"index": "dowjones", "provider": "fmp"}),
-        ({"index": "BUKBUS", "provider": "cboe"}),
+        ({"symbol": "dowjones", "provider": "fmp"}),
+        ({"symbol": "^TX60", "provider": "tmx", "use_cache": False}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration
@@ -155,10 +156,10 @@ def test_index_price_historical(params, headers):
             {
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-03-03",
                 "provider": "fmp",
                 "sort": "desc",
-                "interval": None,
+                "interval": "1day",
                 "limit": None,
             }
         ),
@@ -284,6 +285,7 @@ def test_index_market(params, headers):
         ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
+        ({"provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -316,7 +318,10 @@ def test_index_search(params, headers):
 
 @parametrize(
     "params",
-    [({"provider": "cboe", "region": "us"})],
+    [
+        ({"provider": "cboe", "region": "us"}),
+        ({"provider": "tmx", "region": "ca", "use_cache": False}),
+    ],
 )
 @pytest.mark.integration
 def test_index_snapshots(params, headers):
@@ -334,7 +339,7 @@ def test_index_snapshots(params, headers):
     [
         (
             {
-                "series_name": "PE Ratio by Month",
+                "series_name": "pe_month",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "collapse": "monthly",
@@ -351,5 +356,22 @@ def test_index_sp500_multiples(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/index/sp500_multiples?{query_str}"
     result = requests.get(url, headers=headers, timeout=20)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "tmx", "symbol": "^TX60", "use_cache": False}),
+    ],
+)
+@pytest.mark.integration
+def test_index_sectors(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/index/sectors?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

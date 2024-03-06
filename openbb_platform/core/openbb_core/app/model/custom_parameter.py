@@ -1,12 +1,12 @@
 import sys
 from dataclasses import dataclass
-from typing import Optional
+from typing import Dict, Optional
 
 # `slots` is available on Python >= 3.10
 if sys.version_info >= (3, 10):
     slots_true = {"slots": True}
 else:
-    slots_true = {}
+    slots_true: Dict[str, bool] = {}
 
 
 class BaseMetadata:

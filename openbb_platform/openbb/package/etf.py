@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
+    equity_exposure
     historical
     holdings
     holdings_date
@@ -27,12 +28,15 @@ class ROUTER_etf(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def countries(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -41,8 +45,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -59,7 +63,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfCountries
@@ -70,28 +74,110 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.countries(symbol="SPY")
+        >>> obb.etf.countries("VT", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/countries",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/countries",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
+    @exception_handler
+    @validate
+    def equity_exposure(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
+            ),
+        ],
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the exposure to ETFs for a specific stock.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfEquityExposure]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        EtfEquityExposure
+        -----------------
+        equity_symbol : str
+            The symbol of the equity requested.
+        etf_symbol : str
+            The symbol of the ETF with exposure to the requested equity.
+        shares : Optional[int]
+            The number of shares held in the ETF.
+        weight : Optional[float]
+            The weight of the equity in the ETF, as a normalized percent.
+        market_value : Optional[Union[float, int]]
+            The market value of the equity position in the ETF.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.etf.equity_exposure("MSFT", provider="fmp")
+        >>> #### This function accepts multiple tickers. ####
+        >>> obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")
+        """  # noqa: E501
+
+        return self._run(
+            "/etf/equity_exposure",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/equity_exposure",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+            )
+        )
+
+    @exception_handler
     @validate
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -114,9 +200,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -134,12 +220,12 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHistorical
         -------------
-        date : date
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.
@@ -158,16 +244,23 @@ class ROUTER_etf(Container):
         -------
         >>> from openbb import obb
         >>> obb.etf.historical(symbol="SPY")
+        >>> obb.etf.historical("SPY", provider="yfinance")
+        >>> #### This function accepts multiple tickers. ####
+        >>> obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")
         """  # noqa: E501
 
         return self._run(
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/historical",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -175,12 +268,12 @@ class ROUTER_etf(Container):
             )
         )
 
+    @exception_handler
     @validate
     def holdings(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp", "sec"]] = None,
         **kwargs
@@ -196,8 +289,8 @@ class ROUTER_etf(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
-            A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-            A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
+            A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -214,7 +307,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldings
@@ -231,16 +324,19 @@ class ROUTER_etf(Container):
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
             The ISIN of the holding. (provider: fmp, sec)
-        balance : Optional[float]
-            The balance of the holding. (provider: fmp, sec)
+        balance : Optional[int]
+            The balance of the holding, in shares or units. (provider: fmp);
+            The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
-            The units of the holding. (provider: fmp, sec)
+            The type of units. (provider: fmp);
+            The units of the holding. (provider: sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding in USD. (provider: fmp, sec)
+            The value of the holding, in dollars. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding in ETF in %. (provider: fmp, sec)
+            The weight of the holding, as a normalized percent. (provider: fmp);
+            The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -263,6 +359,8 @@ class ROUTER_etf(Container):
             The CIK of the filing. (provider: fmp)
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
+        updated : Optional[Union[date, datetime]]
+            The date the data was updated. (provider: fmp)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -284,7 +382,7 @@ class ROUTER_etf(Container):
         in_arrears : Optional[str]
             If the debt security is in arrears. (provider: sec)
         is_paid_kind : Optional[str]
-            If the debt security payments are are paid in kind. (provider: sec)
+            If the debt security payments are paid in kind. (provider: sec)
         derivative_category : Optional[str]
             The derivative category of the holding. (provider: sec)
         counterparty : Optional[str]
@@ -317,11 +415,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[str, int]]
+        rate_tenor_unit_rec : Optional[Union[int, str]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[str, int]]
+        reset_date_unit_rec : Optional[Union[int, str]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -335,11 +433,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[str, int]]
+        rate_tenor_unit_pmnt : Optional[Union[int, str]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[str, int]]
+        reset_date_unit_pmnt : Optional[Union[int, str]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -379,33 +477,41 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings(symbol="SPY")
+        >>> obb.etf.holdings("XLK", provider="fmp").to_df()
+        >>> #### Including a date (FMP, SEC) will return the holdings as per NPORT-P filings. ####
+        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="fmp").to_df()
+        >>> #### The same data can be returned from the SEC directly. ####
+        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="sec").to_df()
         """  # noqa: E501
 
         return self._run(
             "/etf/holdings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings",
+                        ("fmp", "sec"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     def holdings_date(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the holdings filing date for an individual ETF.
+        """Use this function to get the holdings dates, if available.
 
         Parameters
         ----------
@@ -429,7 +535,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldingsDate
@@ -440,38 +546,45 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date(symbol="SPY")
+        >>> obb.etf.holdings_date("XLK", provider="fmp").results
         """  # noqa: E501
 
         return self._run(
             "/etf/holdings_date",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_date",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     def holdings_performance(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the ETF holdings performance.
+        """Get the recent price performance of each ticker held in the ETF.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -488,7 +601,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldingsPerformance
@@ -527,28 +640,36 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance(symbol="SPY")
+        >>> obb.etf.holdings_performance("XLK", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/holdings_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
+    @exception_handler
     @validate
     def info(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
+            ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -557,8 +678,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -575,7 +696,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfInfo
@@ -588,30 +709,30 @@ class ROUTER_etf(Container):
             Description of the fund.
         inception_date : Optional[str]
             Inception date of the ETF.
+        issuer : Optional[str]
+            Company of the ETF. (provider: fmp)
+        cusip : Optional[str]
+            CUSIP of the ETF. (provider: fmp)
+        isin : Optional[str]
+            ISIN of the ETF. (provider: fmp)
+        domicile : Optional[str]
+            Domicile of the ETF. (provider: fmp)
         asset_class : Optional[str]
             Asset class of the ETF. (provider: fmp)
         aum : Optional[float]
             Assets under management. (provider: fmp)
-        avg_volume : Optional[float]
-            Average trading volume of the ETF. (provider: fmp)
-        cusip : Optional[str]
-            CUSIP of the ETF. (provider: fmp)
-        domicile : Optional[str]
-            Domicile of the ETF. (provider: fmp)
-        etf_company : Optional[str]
-            Company of the ETF. (provider: fmp)
-        expense_ratio : Optional[float]
-            Expense ratio of the ETF. (provider: fmp)
-        isin : Optional[str]
-            ISIN of the ETF. (provider: fmp)
         nav : Optional[float]
             Net asset value of the ETF. (provider: fmp)
         nav_currency : Optional[str]
             Currency of the ETF's net asset value. (provider: fmp)
-        website : Optional[str]
-            Website link of the ETF. (provider: fmp)
+        expense_ratio : Optional[float]
+            The expense ratio, as a normalized percent. (provider: fmp)
         holdings_count : Optional[int]
-            Number of holdings in the ETF. (provider: fmp)
+            Number of holdings. (provider: fmp)
+        avg_volume : Optional[float]
+            Average daily trading volume. (provider: fmp)
+        website : Optional[str]
+            Website of the issuer. (provider: fmp)
         fund_type : Optional[str]
             The legal type of fund. (provider: yfinance)
         fund_family : Optional[str]
@@ -678,38 +799,48 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.info(symbol="SPY")
+        >>> obb.etf.info("SPY", provider="fmp")
+        >>> #### This function accepts multiple tickers. ####
+        >>> obb.etf.info("SPY,IWM,QQQ,DJIA", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/info",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/info",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
             )
         )
 
+    @exception_handler
     @validate
     def price_performance(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods.
+        """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -726,7 +857,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PricePerformance
@@ -765,22 +896,28 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.price_performance(symbol="SPY")
+        >>> obb.etf.price_performance("SPY,QQQ,IWM,DJIA", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/price_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/price_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
+    @exception_handler
     @validate
     def search(
         self,
@@ -795,73 +932,79 @@ class ROUTER_etf(Container):
         An empty query returns the full list of ETFs from the provider.
 
 
-            Parameters
-            ----------
-            query : Optional[str]
-                Search query.
+        Parameters
+        ----------
+        query : Optional[str]
+            Search query.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
+            The exchange code the ETF trades on. (provider: fmp)
+        is_active : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfSearch]
+                Serializable results.
             provider : Optional[Literal['fmp']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fmp' if there is
-                no default.
-            exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
-                The exchange code the ETF trades on. (provider: fmp)
-            is_active : Optional[Literal[True, False]]
-                Whether the ETF is actively trading. (provider: fmp)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[EtfSearch]
-                    Serializable results.
-                provider : Optional[Literal['fmp']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        EtfSearch
+        ---------
+        symbol : str
+            Symbol representing the entity requested in the data.(ETF)
+        name : Optional[str]
+            Name of the ETF.
+        market_cap : Optional[float]
+            The market cap of the ETF. (provider: fmp)
+        sector : Optional[str]
+            The sector of the ETF. (provider: fmp)
+        industry : Optional[str]
+            The industry of the ETF. (provider: fmp)
+        beta : Optional[float]
+            The beta of the ETF. (provider: fmp)
+        price : Optional[float]
+            The current price of the ETF. (provider: fmp)
+        last_annual_dividend : Optional[float]
+            The last annual dividend paid. (provider: fmp)
+        volume : Optional[float]
+            The current trading volume of the ETF. (provider: fmp)
+        exchange : Optional[str]
+            The exchange code the ETF trades on. (provider: fmp)
+        exchange_name : Optional[str]
+            The full name of the exchange the ETF trades on. (provider: fmp)
+        country : Optional[str]
+            The country the ETF is registered in. (provider: fmp)
+        actively_trading : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
 
-            EtfSearch
-            ---------
-            symbol : str
-                Symbol representing the entity requested in the data.(ETF)
-            name : Optional[str]
-                Name of the ETF.
-            market_cap : Optional[float]
-                The market cap of the ETF. (provider: fmp)
-            sector : Optional[str]
-                The sector of the ETF. (provider: fmp)
-            industry : Optional[str]
-                The industry of the ETF. (provider: fmp)
-            beta : Optional[float]
-                The beta of the ETF. (provider: fmp)
-            price : Optional[float]
-                The current price of the ETF. (provider: fmp)
-            last_annual_dividend : Optional[float]
-                The last annual dividend paid. (provider: fmp)
-            volume : Optional[float]
-                The current trading volume of the ETF. (provider: fmp)
-            exchange : Optional[str]
-                The exchange code the ETF trades on. (provider: fmp)
-            exchange_name : Optional[str]
-                The full name of the exchange the ETF trades on. (provider: fmp)
-            country : Optional[str]
-                The country the ETF is registered in. (provider: fmp)
-            actively_trading : Optional[Literal[True, False]]
-                Whether the ETF is actively trading. (provider: fmp)
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.etf.search(query="Vanguard")
+        Example
+        -------
+        >>> from openbb import obb
+        >>> ### An empty query returns the full list of ETFs from the provider. ###
+        >>> obb.etf.search("", provider="fmp")
+        >>> #### The query will return results from text-based fields containing the term. ####obb.etf.search("commercial real estate", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -870,12 +1013,12 @@ class ROUTER_etf(Container):
             )
         )
 
+    @exception_handler
     @validate
     def sectors(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -902,7 +1045,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfSectors
@@ -915,17 +1058,21 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.sectors(symbol="SPY")
+        >>> obb.etf.sectors("SPY", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/sectors",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/sectors",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

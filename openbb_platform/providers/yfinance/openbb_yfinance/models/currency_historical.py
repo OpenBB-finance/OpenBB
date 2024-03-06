@@ -1,7 +1,7 @@
 """Yahoo Finance Currency Price Model."""
 
 # ruff: noqa: SIM105
-
+# pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -25,6 +25,8 @@ class YFinanceCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
     Source: https://finance.yahoo.com/currencies/
     """
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
@@ -69,7 +71,7 @@ class YFinanceCurrencyHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceCurrencyHistoricalQueryParams,  # pylint: disable=unused-argument
+        query: YFinanceCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -104,6 +106,8 @@ class YFinanceCurrencyHistoricalFetcher(
 
         data.reset_index(inplace=True)
         data.rename(columns={"index": "date"}, inplace=True)
+        if query.interval in ["1d", "1W", "1M", "3M"]:
+            data["date"] = data["date"].dt.strftime("%Y-%m-%d")
 
         return data.to_dict("records")
 

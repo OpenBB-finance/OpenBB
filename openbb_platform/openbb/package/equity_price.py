@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -22,12 +22,15 @@ class ROUTER_equity_price(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def historical(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
         ],
         interval: Annotated[
             Optional[str],
@@ -50,17 +53,17 @@ class ROUTER_equity_price(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Historical price. Load stock data for a specific ticker.
+        """Get historical price data for a given stock. This includes open, high, low, close, and volume.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         interval : Optional[str]
             Time interval of the data to return.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
@@ -100,7 +103,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityHistorical
@@ -152,9 +155,9 @@ class ROUTER_equity_price(Container):
         factor : Optional[float]
             factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
         split_ratio : Optional[float]
-            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo)
+            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo, yfinance)
         dividend : Optional[float]
-            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo)
+            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
         percent_change : Optional[float]
             Percent change in the price of the symbol from the previous day. (provider: intrinio)
         fifty_two_week_high : Optional[float]
@@ -174,29 +177,43 @@ class ROUTER_equity_price(Container):
             "/equity/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/historical",
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "interval": interval,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 
+    @exception_handler
     @validate
     def nbbo(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity NBBO. Load National Best Bid and Offer for a specific equity.
+        """Get the National Best Bid and Offer for a given stock.
 
         Parameters
         ----------
@@ -244,7 +261,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityNBBO
@@ -269,7 +286,7 @@ class ROUTER_equity_price(Container):
             The exchange tape. (provider: polygon)
         conditions : Optional[Union[str, List[int], List[str]]]
             A list of condition codes. (provider: polygon)
-        indicators : Optional[List]
+        indicators : Optional[List[int]]
             A list of indicator codes. (provider: polygon)
         sequence_num : Optional[int]
 
@@ -303,31 +320,38 @@ class ROUTER_equity_price(Container):
             "/equity/price/nbbo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/nbbo",
+                        ("polygon",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     def performance(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods.
+        """Get price performance data for a given stock. This includes price changes for different time periods.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -344,7 +368,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PricePerformance
@@ -390,33 +414,39 @@ class ROUTER_equity_price(Container):
             "/equity/price/performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
+    @exception_handler
     @validate
     def quote(
         self,
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Quote. Load stock data for a specific ticker.
+        """Get the latest quote for a given stock. Quote includes price, volume, and other data.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -435,7 +465,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityQuote
@@ -497,7 +527,7 @@ class ROUTER_equity_price(Container):
         exchange_volume : Optional[Union[float, int]]
             Volume of shares exchanged during the trading day on the specific exchange.
         prev_close : Optional[float]
-
+            The previous close price.
         change : Optional[float]
             Change in price from previous close.
         change_percent : Optional[float]
@@ -551,11 +581,20 @@ class ROUTER_equity_price(Container):
             "/equity/price/quote",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/quote",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
             )
         )

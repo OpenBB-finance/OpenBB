@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 
 from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
@@ -41,8 +41,9 @@ def test_python_interface_wrong_integration_test_params() -> None:
 
 def test_charting_extension_function_coverage() -> None:
     """Test if all charting extension functions are covered by integration tests."""
-    functions = ChartingService.get_implemented_charting_functions()
-    test_names = [f"test_chart_{func}" for func in functions]
+    functions = Charting.functions()
+
+    test_names = [f"test_charting_{func}" for func in functions]
     integration_tests_modules = get_integration_tests(
         test_type="python", filter_charting_ext=False
     )
@@ -58,13 +59,13 @@ def test_charting_extension_function_coverage() -> None:
     assert missing_items == [], "\n".join(missing_items)
 
 
-def test_missing_api_integration_tests() -> None:
+def test_missing_python_integration_tests() -> None:
     """Check if there are missing tests."""
     missing = check_missing_integration_tests(test_type="python")
     assert not missing, "\n".join(missing)
 
 
-def test_outdated_api_integration_tests() -> None:
+def test_outdated_python_integration_tests() -> None:
     """Check if there are outdated tests."""
     outdated = check_outdated_integration_tests(test_type="python")
     assert not outdated, "\n".join(outdated)

@@ -37,7 +37,7 @@ def test_extension_map():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
     this_dir = Path(__file__).parent
     ext_map = load_ext_map(
-        Path(this_dir, "..", "openbb", "package", "extension_map.json")
+        Path(this_dir, "..", "openbb", "assets", "extension_map.json")
     )
     req_ext = load_req_ext(Path(this_dir, "..", "pyproject.toml"))
 

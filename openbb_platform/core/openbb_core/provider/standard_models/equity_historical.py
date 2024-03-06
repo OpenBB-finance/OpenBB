@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Optional, Set, Union
+from typing import Optional, Union
 
 from dateutil import parser
 from pydantic import Field, field_validator
@@ -36,11 +36,9 @@ class EquityHistoricalQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def upper_symbol(cls, v: str) -> str:
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return v.upper()
 
 
 class EquityHistoricalData(Data):
@@ -63,7 +61,6 @@ class EquityHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        v = parser.isoparse(str(v))
-        if v.hour == 0 and v.minute == 0:
-            return v.date()
-        return v
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

@@ -4,6 +4,7 @@ from re import sub
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     ClassVar,
     Dict,
     Generic,
@@ -17,17 +18,18 @@ from typing import (
 
 import pandas as pd
 from numpy import ndarray
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
+    from openbb_core.app.query import Query
+
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
@@ -38,6 +40,10 @@ T = TypeVar("T")
 
 class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
+
+    accessors: ClassVar[Set[str]] = set()
+    _user_settings: ClassVar[Optional[BaseModel]] = None
+    _system_settings: ClassVar[Optional[BaseModel]] = None
 
     results: Optional[T] = Field(
         default=None,
@@ -59,8 +65,12 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _credentials: ClassVar[Optional[BaseModel]] = None
-    _accessors: ClassVar[Set[str]] = set()
+    _route: str = PrivateAttr(
+        default=None,
+    )
+    _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
+        default_factory=dict,
+    )
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -73,20 +83,19 @@ class OBBject(Tagged, Generic[T]):
     @classmethod
     def results_type_repr(cls, params: Optional[Any] = None) -> str:
         """Return the results type name."""
-        type_ = params[0] if params else cls.model_fields["results"].annotation
+        results_field = cls.model_fields.get("results")
+        type_ = params[0] if params else results_field.annotation
         name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
 
-        if "Annotated" in str(type_):
-            annotated_inners = []
-            for inner in cls.model_fields["results"].annotation.__args__:
-                if hasattr(inner, "__args__") and inner.__args__[0] == type(None):
-                    continue
+        if (json_schema_extra := results_field.json_schema_extra) is not None:
+            model = json_schema_extra.get("model")
 
-                annotated_inners.append(
-                    inner.__args__[0] if hasattr(inner, "__args__") else inner
-                )
+            if json_schema_extra.get("is_union"):
+                return f"Union[List[{model}], {model}]"
+            if json_schema_extra.get("has_list"):
+                return f"List[{model}]"
 
-            type_ = Union[tuple(annotated_inners)] if len(annotated_inners) > 1 else annotated_inners[0]  # type: ignore
+            return model
 
         if "typing." in str(type_):
             unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
@@ -104,13 +113,13 @@ class OBBject(Tagged, Generic[T]):
         return f"OBBject[{cls.results_type_repr(params)}]"
 
     def to_df(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
@@ -164,7 +173,7 @@ class OBBject(Tagged, Generic[T]):
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
                     if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, index or "date")
+                        dict_of_df[k] = basemodel_to_df(v, index)
                         sort_columns = False
                     # Dict[str, Any]
                     else:
@@ -175,14 +184,14 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                df = basemodel_to_df(dt, index or "date")
+                df = basemodel_to_df(dt, index)
                 sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
                     df = pd.DataFrame(res)
                     # Set index, if any
-                    if index and index in df.columns:
+                    if index is not None and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
@@ -225,11 +234,11 @@ class OBBject(Tagged, Generic[T]):
                 "Please install polars: `pip install polars pyarrow`  to use this method."
             ) from exc
 
-        return from_pandas(self.to_dataframe().reset_index())
+        return from_pandas(self.to_dataframe(index=None))
 
     def to_numpy(self) -> ndarray:
         """Convert results field to numpy array."""
-        return self.to_dataframe().reset_index().to_numpy()
+        return self.to_dataframe(index=None).to_numpy()
 
     def to_dict(
         self,
@@ -250,7 +259,7 @@ class OBBject(Tagged, Generic[T]):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe()  # type: ignore
+        df = self.to_dataframe(index=None)  # type: ignore
         transpose = False
         if orient == "list":
             transpose = True
@@ -269,48 +278,16 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
-    def to_chart(self, **kwargs):
-        """
-        Create or update the `Chart`.
-
-        This function assumes that the provided data is a time series, if it's not, it will
-        most likely result in an Exception.
-
-        Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
-
-        Parameters
-        ----------
-        **kwargs
-            Keyword arguments to be passed to the charting extension.
-            This implies that the user has some knowledge on the charting extension API.
-            This is the case because the charting extension may vary on user preferences.
-
-        Returns
-        -------
-        chart.fig
-            The chart figure.
-        """
-        #  pylint: disable=import-outside-toplevel
-        # Avoids circular import
-        from openbb_core.app.charting_service import ChartingService
-
-        cs = ChartingService()
-        kwargs["data"] = self.to_dataframe()
-
-        self.chart = cs.to_chart(**kwargs)
-        return self.chart.fig
-
-    def show(self):
+    def show(self, **kwargs: Any) -> None:
         """Display chart."""
+        # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
-            raise OpenBBError(
-                "Chart not found. "
-                "Please compute the chart first by using the `chart=True` argument."
-            )
-        self.chart.fig.show()
+            raise OpenBBError("Chart not found.")
+        show_function: Callable = getattr(self.chart.fig, "show")
+        show_function(**kwargs)
 
     @classmethod
-    async def from_query(cls, query: Query) -> "OBBject":
+    async def from_query(cls, query: "Query") -> "OBBject":
         """Create OBBject from query.
 
         Parameters
@@ -323,15 +300,4 @@ class OBBject(Tagged, Generic[T]):
         OBBject[ResultsType]
             OBBject with results.
         """
-        data: List[BaseModel] = await query.execute()
-
-        if isinstance(data, list) and data:
-            if isinstance(data[0], BaseModel):
-                data[0] = data[0].model_copy(update={"provider": query.provider})
-            if isinstance(data[0], dict):
-                data[0] = data[0].update({"provider": query.provider})
-
-        if isinstance(data, BaseModel):
-            data = data.model_copy(update={"provider": query.provider})
-
-        return cls(results=data)
+        return cls(results=await query.execute())

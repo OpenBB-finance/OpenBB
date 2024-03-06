@@ -36,6 +36,8 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: str = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
@@ -147,7 +149,7 @@ class PolygonCurrencyHistoricalFetcher(
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
@@ -167,4 +169,7 @@ class PolygonCurrencyHistoricalFetcher(
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()
-        return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonCurrencyHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]

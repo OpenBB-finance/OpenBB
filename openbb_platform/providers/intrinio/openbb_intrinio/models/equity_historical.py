@@ -1,5 +1,7 @@
 """Intrinio Equity Historical Price Model."""
 
+# pylint: disable = unused-argument
+
 from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
@@ -221,7 +223,6 @@ class IntrinioEquityHistoricalFetcher(
 
         return await amake_requests([url], callback, **kwargs)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioEquityHistoricalQueryParams,
@@ -229,4 +230,10 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
-        return [IntrinioEquityHistoricalData.model_validate(d) for d in data]
+        try:
+            sorted_data = sorted(
+                data, key=lambda x: x.get("date") or x.get("time"), reverse=False
+            )
+        except Exception:
+            sorted_data = data
+        return [IntrinioEquityHistoricalData.model_validate(d) for d in sorted_data]

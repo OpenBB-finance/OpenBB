@@ -1,11 +1,11 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -19,12 +19,12 @@ class ROUTER_derivatives_options(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def chains(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -53,7 +53,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsChains
@@ -127,7 +127,7 @@ class ROUTER_derivatives_options(Container):
         close_ask_time : Optional[datetime]
             The time of the ask closing price for the option that day.
         prev_close : Optional[float]
-
+            The previous close price.
         change : Optional[float]
             The change in the price of the option.
         change_percent : Optional[float]
@@ -150,27 +150,34 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.chains(symbol="AAPL")
+        >>> chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()
+        >>> #### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####
+        >>> eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()
         """  # noqa: E501
 
         return self._run(
             "/derivatives/options/chains",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/chains",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     def unusual(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Optional[str],
             OpenBBCustomParameter(
                 description="Symbol to get data for. (the underlying symbol)"
             ),
@@ -202,7 +209,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsUnusual
@@ -233,17 +240,23 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual()
+        >>> options = obb.derivatives.options.unusual().to_df()
+        >>> #### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####
+        >>> options = obb.derivatives.options.unusual(symbol="TSLA").to_df()
         """  # noqa: E501
 
         return self._run(
             "/derivatives/options/unusual",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/unusual",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

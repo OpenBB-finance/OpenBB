@@ -21,7 +21,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative,
     check_positive,
     valid_date,
 )
@@ -30,7 +29,6 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_view,
-    news_sentiment_view,
 )
 
 # pylint:disable=R0904,C0302
@@ -45,8 +43,6 @@ class BehaviouralAnalysisController(StockBaseController):
     CHOICES_COMMANDS = [
         "load",
         "wsb",
-        "popular",
-        "getdd",
         "redditsent",
         "bullbear",
         "messages",
@@ -59,7 +55,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "headlines",
         "snews",
         "interest",
-        "ns",
     ]
 
     historical_sort = ["date", "value"]
@@ -92,8 +87,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        mt.add_cmd("popular")
-        mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
@@ -104,7 +97,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("interest", self.ticker)
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
-        mt.add_cmd("ns")
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
@@ -161,109 +153,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             reddit_view.display_wsb_community(
                 limit=ns_parser.n_limit, new=ns_parser.b_new
-            )
-
-    @log_start_end(log=logger)
-    def call_popular(self, other_args: List[str]):
-        """Process popular command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="popular",
-            description="""Print latest popular tickers. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=10,
-            help="limit of top tickers to retrieve",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="num",
-            type=check_positive,
-            default=10,
-            help="number of posts retrieved per sub reddit.",
-        )
-        parser.add_argument(
-            "-s",
-            "--sub",
-            action="store",
-            dest="s_subreddit",
-            type=str,
-            help="""
-                Subreddits to look for tickers, e.g. pennystocks,stocks.
-                Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing,
-                wallstreetbets
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            reddit_view.display_popular_tickers(
-                limit=ns_parser.limit,
-                post_limit=ns_parser.num,
-                subreddits=ns_parser.s_subreddit,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_getdd(self, other_args: List[str]):
-        """Process getdd command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="getdd",
-            description="""
-                Print top stock's due diligence from other users. [Source: Reddit]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts to retrieve.",
-        )
-        parser.add_argument(
-            "-d",
-            "--days",
-            action="store",
-            dest="days",
-            type=check_positive,
-            default=3,
-            help="number of prior days to look for.",
-        )
-        parser.add_argument(
-            "-a",
-            "--all",
-            action="store_true",
-            dest="all",
-            default=False,
-            help="""
-                search through all flairs (apart from Yolo and Meme), otherwise we focus on
-                specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_due_diligence(
-                limit=ns_parser.limit,
-                n_days=ns_parser.days,
-                show_all_flairs=ns_parser.all,
             )
 
     @log_start_end(log=logger)
@@ -694,83 +583,3 @@ class BehaviouralAnalysisController(StockBaseController):
                 )
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    def call_ns(self, other_args: List[str]):
-        """Process ns command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ns",
-            description="Shows the News Sentiment articles data",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            dest="ticker",
-            type=str,
-            default=None,
-            help="Ticker to search for.",
-        )
-        parser.add_argument(
-            "-s",
-            "--start_date",
-            dest="start_date",
-            type=str,
-            default=None,
-            help="The starting date (format YYYY-MM-DD) to search news articles from",
-        )
-        parser.add_argument(
-            "-e",
-            "--end_date",
-            dest="end_date",
-            type=str,
-            default=None,
-            help="The end date (format YYYY-MM-DD) to search news articles upto",
-        )
-        parser.add_argument(
-            "-d",
-            "--date",
-            dest="date",
-            type=str,
-            default=None,
-            help="""Shows the news articles data on this day (format YYYY-MM-DD).
-                    If you use this Argument start date and end date will be ignored
-                """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            dest="limit",
-            type=check_non_negative,
-            help="Number of news articles to be displayed.",
-        )
-        parser.add_argument(
-            "-o",
-            "--offset",
-            default=0,
-            dest="offset",
-            type=check_non_negative,
-            help="offset indicates the starting position of news articles.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if ns_parser.ticker:
-                self.ticker = ns_parser.ticker
-
-            news_sentiment_view.display_articles_data(
-                ticker=self.ticker,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end_date,
-                date=ns_parser.date,
-                limit=ns_parser.limit,
-                offset=ns_parser.offset,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )

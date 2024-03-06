@@ -41,7 +41,7 @@ async def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Search. Search for a company or stock ticker."""
+    """Search for stock symbol, CIK, LEI, or company name."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -52,7 +52,8 @@ async def screener(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Screen. Screen for companies meeting various criteria."""
+    """Screen for companies meeting various criteria. These criteria include
+    market cap, price, beta, volume, and dividend yield."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -63,7 +64,7 @@ async def profile(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Info. Get general price and performance metrics of a stock."""
+    """Get general information about a company. This includes company name, industry, sector and price data."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -74,5 +75,5 @@ async def market_snapshots(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get a current, complete, market snapshot."""
+    """Get an updated equity market snapshot. This includes price data for thousands of stocks."""
     return await OBBject.from_query(Query(**locals()))

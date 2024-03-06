@@ -8,7 +8,7 @@ from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated, deprecated
 
@@ -24,11 +24,12 @@ class ROUTER_index(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def available(
         self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
-        """Available Indices. Available indices for a given provider.
+        """All indices available from a given provider.
 
         Parameters
         ----------
@@ -48,7 +49,7 @@ class ROUTER_index(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AvailableIndices
@@ -69,36 +70,40 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.available()
+        >>> obb.index.available(provider="yfinance").to_df()
         """  # noqa: E501
 
         return self._run(
             "/index/available",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/available",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     def constituents(
         self,
-        index: Annotated[
-            str,
-            OpenBBCustomParameter(description="Index to fetch the constituents of."),
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents. Constituents of an index.
+        """Index Constituents.
 
         Parameters
         ----------
-        index : str
-            Index to fetch the constituents of.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -115,7 +120,7 @@ class ROUTER_index(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IndexConstituents
@@ -140,22 +145,29 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="^IBEX")
+        >>> obb.index.constituents("dowjones", provider="fmp").to_df()
+        >>> #### Providers other than FMP will use the ticker symbol. ####
+        >>> obb.index.constituents("BEP50P", provider="cboe").to_df()
         """  # noqa: E501
 
         return self._run(
             "/index/constituents",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/constituents",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "index": index,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
         )
 
+    @exception_handler
     @validate
     @deprecated(
         "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
@@ -165,7 +177,9 @@ class ROUTER_index(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -186,11 +200,11 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -234,7 +248,7 @@ class ROUTER_index(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         MarketIndices
@@ -283,14 +297,19 @@ class ROUTER_index(Container):
             "/index/market",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/market",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )
 

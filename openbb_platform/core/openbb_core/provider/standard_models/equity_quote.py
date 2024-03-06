@@ -1,7 +1,7 @@
 """Equity Quote Standard Model."""
 
 from datetime import datetime
-from typing import List, Optional, Set, Union
+from typing import List, Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -23,11 +23,9 @@ class EquityQuoteQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def upper_symbol(cls, v: str) -> str:
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return v.upper()
 
 
 class EquityQuoteData(Data):

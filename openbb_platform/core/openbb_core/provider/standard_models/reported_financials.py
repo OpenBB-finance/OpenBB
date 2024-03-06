@@ -1,6 +1,5 @@
 """Reported Financials."""
 
-import warnings
 from datetime import date as dateType
 from typing import Optional
 
@@ -11,8 +10,6 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
-
-_warn = warnings.warn
 
 
 class ReportedFinancialsQueryParams(QueryParams):
@@ -40,11 +37,7 @@ class ReportedFinancialsQueryParams(QueryParams):
     @classmethod
     def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
-        if "," in v:
-            _warn(
-                f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {v.split(',')[0].upper()}"
-            )
-        return v.split(",")[0].upper() if "," in v else v.upper()
+        return v.upper()
 
 
 class ReportedFinancialsData(Data):

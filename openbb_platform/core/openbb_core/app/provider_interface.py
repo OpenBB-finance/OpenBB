@@ -217,13 +217,24 @@ class ProviderInterface(metaclass=SingletonMeta):
         # field.outer_type_ don't work for Optional nested types
         type_ = field.annotation
 
+        additional_description = ""
+        if (extra := field.json_schema_extra) and (
+            multiple := extra.get("multiple_items_allowed")  # type: ignore
+        ):
+            if provider_name:
+                additional_description += " Multiple items allowed."
+            else:
+                additional_description += (
+                    " Multiple items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
+                )
+
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
         description = (
-            f"{field.description} {provider_field}"
+            f"{field.description}{additional_description} {provider_field}"
             if provider_name and field.description
-            else f"{field.description}"
+            else f"{field.description}{additional_description}"
         )
 
         if field.is_required():

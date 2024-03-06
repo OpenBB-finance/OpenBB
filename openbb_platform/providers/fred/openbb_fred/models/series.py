@@ -31,6 +31,8 @@ class FredSeriesQueryParams(SeriesQueryParams):
         "end_date": "observation_end",
         "transform": "units",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     frequency: Literal[
         None,
         "a",

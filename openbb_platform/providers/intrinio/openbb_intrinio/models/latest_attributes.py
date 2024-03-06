@@ -22,6 +22,11 @@ class IntrinioLatestAttributesQueryParams(LatestAttributesQueryParams):
             https://docs.intrinio.com/documentation/web_api/get_data_point_text_v2
     """
 
+    __json_schema_extra__ = {
+        "tag": ["multiple_items_allowed"],
+        "symbol": ["multiple_items_allowed"],
+    }
+
 
 class IntrinioLatestAttributesData(LatestAttributesData):
     """Intrinio Latest Attributes Data."""

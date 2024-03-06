@@ -25,6 +25,8 @@ class CboeEquityQuoteQueryParams(EquityQuoteQueryParams):
     Source: https://www.cboe.com/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     use_cache: bool = Field(
         default=True,
         description="When True, the company directories will be cached for"

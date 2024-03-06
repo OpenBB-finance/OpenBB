@@ -30,7 +30,7 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
         Field(default="1day", description="Data granularity.")
     )
 
-    @field_validator("interval")
+    @field_validator("interval", mode="before", check_fields=True)
     @classmethod
     def map_interval(cls, v):
         """Map the interval from standard to the FMP format."""
@@ -104,12 +104,15 @@ class FMPIndexHistoricalFetcher(
 
         return await get_data_many(url, "historical", **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: FMPIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPIndexHistoricalQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPIndexHistoricalData]:
         """Return the transformed data."""
-        if query.sort == "asc":
-            data = sorted(data, key=lambda x: x["date"], reverse=True)
-
-        return [FMPIndexHistoricalData.model_validate(d) for d in data]
+        return [
+            FMPIndexHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+        ]

@@ -17,6 +17,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
 from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
+from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
 from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
@@ -30,6 +31,7 @@ from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
@@ -85,6 +87,7 @@ fmp_provider = Provider(
         "CryptoSearch": FMPCryptoSearchFetcher,
         "CurrencyHistorical": FMPCurrencyHistoricalFetcher,
         "CurrencyPairs": FMPCurrencyPairsFetcher,
+        "CurrencySnapshots": FMPCurrencySnapshotsFetcher,
         "DiscoveryFilings": FMPDiscoveryFilingsFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
         "EconomicCalendar": FMPEconomicCalendarFetcher,
@@ -96,6 +99,7 @@ fmp_provider = Provider(
         "EquityScreener": FMPEquityScreenerFetcher,
         "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
+        "EtfEquityExposure": FMPEtfEquityExposureFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
         "EtfHoldingsPerformance": FMPEtfHoldingsPerformanceFetcher,

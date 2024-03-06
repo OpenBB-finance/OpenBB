@@ -24,7 +24,7 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     """
 
     __alias_dict__ = {
-        "symbols": "tickers",
+        "symbol": "tickers",
         "display": "displayOutput",
         "limit": "pageSize",
         "start_date": "dateFrom",
@@ -32,6 +32,8 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
         "updated_since": "updatedSince",
         "published_since": "publishedSince",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
@@ -54,12 +56,8 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(
-        default=None, description="The ISIN of the news to retrieve."
-    )
-    cusip: Optional[str] = Field(
-        default=None, description="The CUSIP of the news to retrieve."
-    )
+    isin: Optional[str] = Field(default=None, description="The company's ISIN.")
+    cusip: Optional[str] = Field(default=None, description="The company's CUSIP.")
     channels: Optional[str] = Field(
         default=None, description="Channels of the news to retrieve."
     )
@@ -155,12 +153,14 @@ class BenzingaCompanyNewsFetcher(
         base_url = "https://api.benzinga.com/api/v2/news"
 
         query.sort = f"{query.sort}:{query.order}" if query.sort and query.order else ""
-        querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
+        querystring = get_querystring(
+            query.model_dump(by_alias=True), ["order", "pageSize"]
+        )
 
         pages = math.ceil(query.limit / 100) if query.limit else 1
-
+        page_size = 100 if query.limit and query.limit > 100 else query.limit
         urls = [
-            f"{base_url}?{querystring}&page={page}&token={token}"
+            f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
             for page in range(pages)
         ]
 

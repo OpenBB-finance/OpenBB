@@ -8,6 +8,11 @@ categories:
   - title: 🐛 OpenBB Platform Bug Fixes
     labels:
       - 'bug'
+  - title: 📚 OpenBB Documentation Changes
+    labels:
+      - 'docs'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
 exclude-contributors:
   - 'jmaslek'
   - 'DidierRLopes'

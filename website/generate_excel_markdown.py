@@ -1,11 +1,13 @@
 import json
 import shutil
 import sys
+from functools import reduce
 from pathlib import Path
 from textwrap import shorten
 from typing import Any, Dict, List, Literal
 
 import requests
+from requests_cache import Optional
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -30,11 +32,18 @@ class CommandLib:
         "str": "Text",
         "string": "Text",
     }
+    API_PREFIX = "/api/v1"
 
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
+        "/get": {
+            "array": '{"a","b","c";"d","e","f"}',
+            "rows": '"d"',
+            "columns": '"c"',
+        },
         "/byod": {
             "widget": '"widget_name"',
+            "backend": '"backend_name"',
         },
         "crypto": {
             "symbol": '"BTCUSD"',
@@ -52,6 +61,9 @@ class CommandLib:
             "start_date": '"2023-01-01"',
             "end_date": '"2023-12-31"',
         },
+        "/derivatives/futures/curve": {
+            "symbol": '"NG"',
+        },
         "economy": {
             "countries": '"united_states"',
             "start_date": '"2023-01-01"',
@@ -65,6 +77,9 @@ class CommandLib:
             "period": '"quarter"',
             "type": '"real"',
             "adjusted": "TRUE",
+        },
+        "/economy/fred_regional": {
+            "symbol": '"NYICLAIMS"',
         },
         "equity": {
             "symbol": '"AAPL"',
@@ -116,6 +131,7 @@ class CommandLib:
             "index": '"sp500"',
         },
         "news": {
+            "symbol": '"AAPL"',
             "symbols": '"AAPL,MSFT"',
             "start_date": '"2023-01-01"',
             "end_date": '"2023-12-31"',
@@ -148,6 +164,17 @@ class CommandLib:
         with open(XL_PLATFORM_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
+    @staticmethod
+    def _traverse(
+        parts: List[str], map_: dict, exclude: Optional[List[str]] = None
+    ) -> dict:
+        """Traverse the map."""
+        parts = [p for p in parts if p not in (exclude or [])]
+        try:
+            return reduce(lambda x, y: x[y], parts, map_)
+        except KeyError:
+            return {}
+
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
         with open(SEO_METADATA_PATH) as f:
@@ -176,7 +203,7 @@ class CommandLib:
         """Get the func of the command."""
         return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
-    def _get_signature(self, cmd: str, parameters: dict) -> str:
+    def _get_signature(self, cmd: str, parameters: dict, sep: str = ",") -> str:
         """Get the signature of the command."""
         sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
         sig += "("
@@ -185,8 +212,8 @@ class CommandLib:
                 sig += f"{p_name}"
             else:
                 sig += f"[{p_name}]"
-            sig += ";"
-        sig = sig.strip("; ") + ")"
+            sig += sep
+        sig = sig.strip(f"{sep} ") + ")"
         return sig
 
     def _get_parameters(self, cmd: str) -> dict:
@@ -203,23 +230,41 @@ class CommandLib:
 
     def _get_data(self, cmd: str) -> dict:
         """Get the data of the command from the openapi."""
-        model = (
-            self.openapi.get("paths", {})
-            .get(f"/api/v1{cmd}", {})
-            .get("get", {})
-            .get("model")
+        schema = self._traverse(
+            [
+                "paths",
+                self.API_PREFIX + cmd,
+                "get",
+                "responses",
+                "200",
+                "content",
+                "application/json",
+                "schema",
+            ],
+            self.openapi,
         )
-        if model:
-            schema = self.openapi["components"]["schemas"][model]["properties"]
-            data = {}
-            for name, info in schema.items():
-                data[name] = {
-                    "description": info.get("description", "").replace("\n", " "),
+        if "$ref" in schema and (
+            inner_schema := self._traverse(
+                schema["$ref"].split("/"), self.openapi, ["#"]
+            )
+        ):
+            models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
+            if models.get("type") == "array":
+                models = models["items"]
+
+            d = {}
+            for k, v in self._traverse(["discriminator", "mapping"], models).items():
+                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
+                d[k] = {
+                    name: {"description": info.get("description", "").replace("\n", "")}
+                    for name, info in model_schema["properties"].items()
                 }
-            return data
+            return d
         return {}
 
-    def _get_examples(self, cmd: str, signature_: str, parameters: dict) -> dict:
+    def _get_examples(
+        self, cmd: str, signature_: str, parameters: dict, sep: str = ","
+    ) -> dict:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
@@ -233,22 +278,20 @@ class CommandLib:
         for p_name, p_info in parameters.items():
             if p_info["required"]:
                 p_value = get_p_value(cmd, p_name)
-                required_eg += f"{p_value};"
-        required_eg = required_eg.strip("; ") + ")"
+                required_eg += f"{p_value}{sep}"
+        required_eg = required_eg.strip(f"{sep} ") + ")"
 
         standard_eg = sig
         for p_name, p_info in parameters.items():
             if p_name == "provider":
                 break
             p_value = get_p_value(cmd, p_name)
-            standard_eg += f"{p_value};"
-        standard_eg = standard_eg.strip("; ") + ")"
+            standard_eg += f"{p_value}{sep}"
+        standard_eg = standard_eg.strip(f"{sep} ") + ")"
 
-        if required_eg == standard_eg:
-            return {"A. Required": required_eg}
-        # Uncomment to add standard examples
-        # return {"A. Required": required_eg, "B. Standard": standard_eg}
-        return {"A. Required": required_eg}
+        if cmd in ("/get", "/byod"):
+            return {"Required": required_eg, "Standard": standard_eg}
+        return {"Required": required_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -334,7 +377,7 @@ class Editor:
         def get_syntax() -> str:
             if sig := cmd_info["signature"]:
                 syntax = "## Syntax\n\n"
-                syntax += f"```{self.interface} wordwrap\n"
+                syntax += f"```{self.interface}\n"
                 syntax += f"{sig}\n"
                 syntax += "```\n\n"
                 return syntax
@@ -361,15 +404,21 @@ class Editor:
                 return parameters
             return ""
 
-        def get_return_data() -> str:
+        def get_data() -> str:
             if data_schema := cmd_info["data"]:
-                data = "## Return Data\n\n"
-                data += "| Name | Description |\n"
-                data += "| ---- | ----------- |\n"
-                for field_name, field_info in data_schema.items():
-                    name = field_name
-                    description = field_info["description"]
-                    data += f"| {name} | {description} |\n"
+                data = "import Tabs from '@theme/Tabs';\n"
+                data += "import TabItem from '@theme/TabItem';\n\n"
+                data += "## Data\n\n"
+                data += "<Tabs>\n"
+                for provider, fields in data_schema.items():
+                    data += f"<TabItem value='{provider}'>\n\n"
+                    data += "| Name | Description |\n"
+                    data += "| ---- | ----------- |\n"
+                    for name, info in fields.items():
+                        description = info["description"]
+                        data += f"| {name} | {description} |\n"
+                    data += "</TabItem>\n"
+                data += "</Tabs>\n"
                 return data
             return ""
 
@@ -378,7 +427,7 @@ class Editor:
                 examples = "### Example\n\n"
                 for _, v in cmd_examples.items():
                     # examples += f"### {k}\n\n"
-                    examples += f"```{self.interface} wordwrap\n"
+                    examples += f"```{self.interface}\n"
                     examples += f"{v}\n"
                     examples += "```\n\n"
 
@@ -393,7 +442,7 @@ class Editor:
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        content += get_return_data()
+        content += get_data()
         Editor.write(path, content)
 
     def generate_sidebar(self):
@@ -471,20 +520,16 @@ class Editor:
 
             ### Main folder
             if folder == self.main_folder:
-                files = list(path.glob("*"))
-                # Put the cmds_folder folder at the end
-                index = next(
-                    (
-                        i
-                        for i, path in enumerate(files)
-                        if path.stem == self.main_folder
-                    ),
-                    None,
+                # sort the folders first and then files to push byod,get to the bottom
+                files = sorted(
+                    list(path.glob("*")),
+                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
                 )
-                if index is not None:
-                    cmd_folder = files.pop(index)
-                    files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=False)
+                content += get_cards(
+                    folder=folder,
+                    files=files,
+                    command=False,
+                )
                 return content
 
             ### Menus
@@ -520,13 +565,13 @@ class Editor:
 
         def recursive(path: Path):
             position = 1
-            for p in path.iterdir():
+            for p in sorted(path.iterdir()):
                 if p.is_dir():
                     write_mdx_and_category(p, p.name, position)
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.main_folder, 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 6)
         recursive(self.target_dir)
 
     def dump(self, reference_map: Dict) -> None:

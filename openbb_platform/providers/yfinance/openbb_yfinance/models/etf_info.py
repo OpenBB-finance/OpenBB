@@ -20,6 +20,8 @@ _warn = warnings.warn
 class YFinanceEtfInfoQueryParams(EtfInfoQueryParams):
     """YFinance ETF Info Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class YFinanceEtfInfoData(EtfInfoData):
     """YFinance ETF Info Data."""

@@ -26,6 +26,8 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: Optional[
         Literal[
             "1m",
@@ -71,6 +73,20 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 class YFinanceEquityHistoricalData(EquityHistoricalData):
     """Yahoo Finance Equity Historical Price Data."""
 
+    __alias_dict__ = {
+        "split_ratio": "stock_splits",
+        "dividend": "dividends",
+    }
+
+    split_ratio: Optional[float] = Field(
+        default=None,
+        description="Ratio of the equity split, if a split occurred.",
+    )
+    dividend: Optional[float] = Field(
+        default=None,
+        description="Dividend amount (split-adjusted), if a dividend was paid.",
+    )
+
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
@@ -103,7 +119,7 @@ class YFinanceEquityHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceEquityHistoricalQueryParams,  # pylint: disable=unused-argument
+        query: YFinanceEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -159,6 +175,13 @@ class YFinanceEquityHistoricalFetcher(
 
         data.reset_index(inplace=True)
         data.rename(columns={"index": "date"}, inplace=True)
+        if query.interval in ["1d", "1W", "1M", "3M"]:
+            data["date"] = data["date"].dt.strftime("%Y-%m-%d")
+
+        if "dividends" in data.columns and data.dividends.sum() == 0:
+            data.drop(columns=["dividends"], inplace=True)
+        if "stock_splits" in data.columns and all(data.stock_splits) == 0:
+            data.drop(columns=["stock_splits"], inplace=True)
 
         return data.to_dict("records")
 
