@@ -347,12 +347,18 @@ def test_fixedincome_corporate_commercial_paper(params, headers):
         ),
         (
             {
+                "start_date": None,
+                "end_date": None,
                 "maturity": 5.5,
+                "category": ["spot_rate"],
             }
         ),
         (
             {
+                "start_date": None,
+                "end_date": None,
                 "maturity": "1,5.5,10",
+                "category": ["spot_rate"],
             }
         ),
     ],
