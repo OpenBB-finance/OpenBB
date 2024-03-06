@@ -312,7 +312,7 @@ def test_fixedincome_corporate_commercial_paper(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "maturity": [10.0],
-                "category": ["spot_rate"],
+                "category": "spot_rate",
                 "provider": "fred",
             }
         ),
@@ -329,7 +329,7 @@ def test_fixedincome_corporate_commercial_paper(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "maturity": "1,5.5,10",
-                "category": ["spot_rate"],
+                "category": "spot_rate,par_yield",
             }
         ),
     ],

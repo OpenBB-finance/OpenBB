@@ -15,7 +15,10 @@ from pydantic import field_validator
 class FREDSpotRateQueryParams(SpotRateQueryParams):
     """FRED Spot Rate Query."""
 
-    __json_schema_extra__ = {"maturity": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {
+        "maturity": ["multiple_items_allowed"],
+        "category": ["multiple_items_allowed"],
+    }
 
 
 class FREDSpotRateData(SpotRateData):
@@ -68,7 +71,7 @@ class FREDSpotRateFetcher(
 
         series = get_spot_series_id(
             maturity=maturity,
-            category=query.category,
+            category=query.category.split(","),
         )
 
         data = []

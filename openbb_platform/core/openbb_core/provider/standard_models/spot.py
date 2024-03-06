@@ -27,11 +27,12 @@ class SpotRateQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     maturity: Union[float, str] = Field(
-        default=10.0, description="The maturities in years."
+        default=10.0, description="Maturities in years."
     )
-    category: List[Literal["par_yield", "spot_rate"]] = Field(
-        default=["spot_rate"],
-        description="The category.",
+    category: str = Field(
+        default="spot_rate",
+        description="Rate category. Options: spot_rate, par_yield.",
+        choices=["par_yield", "spot_rate"],
     )
 
 
