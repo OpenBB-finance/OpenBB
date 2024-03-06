@@ -50,9 +50,6 @@ class APIEx(Example):
         for k, v in self.parameters.items():
             if k in func_params and (field := func_params.get(k)):
                 field_type_str = str(field.type)
-                # TODO: Handle types better, some edge cases
-                # like Union[str, List[str]] will be stringified
-                # even if the type is a list
                 if any(t in field_type_str for t in ["int", "float", "bool"]):
                     eg += f"{k}={v}, "
                 else:
