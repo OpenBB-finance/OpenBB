@@ -1,3 +1,5 @@
+"""Example class to represent endpoint examples."""
+
 from abc import abstractmethod
 from dataclasses import Field
 from typing import Dict, List, Literal, Optional, Union
@@ -39,12 +41,15 @@ class APIEx(Example):
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
         func_params: Dict[str, Field] = kwargs.get("func_params", {})
+        target: str = kwargs.get("target", "docstring")
+
+        prompt = ">>> " if target == "docstring" else ""
 
         eg = ""
         if self.description:
-            eg += f"{indentation}>>> # {self.description}\n"
+            eg += f"{indentation}{prompt}# {self.description}\n"
 
-        eg += f"{indentation}>>> obb{func_path}("
+        eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in func_params and (field := func_params.get(k)):
                 field_type_str = str(field.type)
@@ -56,6 +61,7 @@ class APIEx(Example):
                 eg += f"{k}='{v}', "
 
         eg = indentation + eg.strip(", ") + ")\n"
+
         return eg
 
 
@@ -69,13 +75,17 @@ class PythonEx(Example):
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
         indentation = kwargs.get("indentation", "")
+        target: str = kwargs.get("target", "docstring")
+
+        prompt = ">>> " if target == "docstring" else ""
 
         eg = ""
         if self.description:
-            eg += f"{indentation}>>> # {self.description}\n"
+            eg += f"{indentation}{prompt}# {self.description}\n"
 
         for line in self.code:
-            eg += f"{indentation}>>> {line}\n"
+            eg += f"{indentation}{prompt}{line}\n"
+
         return eg
 
 
