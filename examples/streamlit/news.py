@@ -1,5 +1,7 @@
 """Streamlit News Page"""
 
+# flake8: noqa: I001
+
 from datetime import datetime, timedelta
 
 from openbb import obb
