@@ -837,7 +837,7 @@ class DocstringGenerator:
         self.base_indentation = tab * indent
 
     def indent(self, n: int) -> str:
-        """Indent the string."""
+        """Create n indentation space."""
         return self.base_indentation + self.tab * n
 
     def get_OBBject_description(
