@@ -401,7 +401,7 @@ class ROUTER_equity_estimates(Container):
     def price_target(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
                 description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
             ),
@@ -417,7 +417,7 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[str]]
+        symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple items allowed for provider(s): benzinga.
         limit : int
             The number of data entries to return.

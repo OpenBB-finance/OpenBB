@@ -708,6 +708,10 @@ class ROUTER_equity_fundamental(Container):
             Link to the filing. (provider: fmp)
         final_link : Optional[str]
             Link to the filing document. (provider: fmp)
+        net_income_continuing_operations : Optional[float]
+            Net Income (Continuing Operations) (provider: intrinio)
+        net_income_discontinued_operations : Optional[float]
+            Net Income (Discontinued Operations) (provider: intrinio)
         provision_for_loan_losses : Optional[float]
             Provision for Loan Losses (provider: intrinio)
         provision_for_credit_losses : Optional[float]
@@ -726,10 +730,6 @@ class ROUTER_equity_fundamental(Container):
             Net Cash from Continuing Operating Activities (provider: intrinio)
         net_cash_from_discontinued_operating_activities : Optional[float]
             Net Cash from Discontinued Operating Activities (provider: intrinio)
-        net_income_continuing_operations : Optional[float]
-            Net Income (Continuing Operations) (provider: intrinio)
-        net_income_discontinued_operations : Optional[float]
-            Net Income (Discontinued Operations) (provider: intrinio)
         divestitures : Optional[float]
             Divestitures (provider: intrinio)
         sale_of_property_plant_and_equipment : Optional[float]
