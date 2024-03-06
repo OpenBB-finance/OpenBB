@@ -35,7 +35,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed: fmp."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -46,7 +46,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed: fmp.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -63,7 +63,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfCountries
@@ -102,7 +102,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (Stock) Multiple items allowed: fmp."
+                description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -113,7 +113,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (Stock) Multiple items allowed: fmp.
+            Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -130,7 +130,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfEquityExposure
@@ -220,7 +220,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHistorical
@@ -290,7 +290,7 @@ class ROUTER_etf(Container):
             no default.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-            A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
+            A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -307,7 +307,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldings
@@ -382,7 +382,7 @@ class ROUTER_etf(Container):
         in_arrears : Optional[str]
             If the debt security is in arrears. (provider: sec)
         is_paid_kind : Optional[str]
-            If the debt security payments are are paid in kind. (provider: sec)
+            If the debt security payments are paid in kind. (provider: sec)
         derivative_category : Optional[str]
             The derivative category of the holding. (provider: sec)
         counterparty : Optional[str]
@@ -415,11 +415,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[str, int]]
+        rate_tenor_unit_rec : Optional[Union[int, str]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[str, int]]
+        reset_date_unit_rec : Optional[Union[int, str]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -433,11 +433,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[str, int]]
+        rate_tenor_unit_pmnt : Optional[Union[int, str]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[str, int]]
+        reset_date_unit_pmnt : Optional[Union[int, str]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -535,7 +535,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldingsDate
@@ -573,7 +573,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -584,7 +584,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -601,7 +601,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfHoldingsPerformance
@@ -668,7 +668,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed: fmp, yfinance."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
@@ -679,7 +679,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed: fmp, yfinance.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -696,7 +696,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfInfo
@@ -829,7 +829,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -840,7 +840,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -857,7 +857,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PricePerformance
@@ -956,7 +956,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfSearch
@@ -1045,7 +1045,7 @@ class ROUTER_etf(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EtfSectors

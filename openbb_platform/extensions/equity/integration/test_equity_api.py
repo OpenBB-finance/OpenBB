@@ -503,13 +503,14 @@ def test_equity_ownership_insider_trading(params, headers):
                 "provider": "fmp",
             }
         ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "limit": 100,
-            }
-        ),
+        # Disabled due to unreliable Intrinio endpoint
+        # (
+        #     {
+        #         "provider": "intrinio",
+        #         "symbol": "AAPL",
+        #         "limit": 100,
+        #     }
+        # ),
     ],
 )
 @pytest.mark.integration
@@ -1673,7 +1674,7 @@ def test_equity_darkpool_otc(params, headers):
 @parametrize(
     "params",
     [
-        ({"provider": "fmp", "market": "EURONEXT"}),
+        ({"provider": "fmp", "market": "euronext"}),
         ({"provider": "polygon"}),  # premium endpoint
     ],
 )
@@ -1692,6 +1693,14 @@ def test_equity_market_snapshots(params, headers):
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "quarter",
+                "limit": 5,
+                "provider": "alpha_vantage",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1763,6 +1772,30 @@ def test_equity_fundamental_reported_financials(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/equity/fundamental/reported_financials?{query_str}"
     )
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 1,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_form_13f(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/ownership/form_13f?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -12,59 +12,11 @@ from openbb_core.provider.standard_models.short_term_interest_rate import (
     STIRQueryParams,
 )
 from openbb_oecd.utils import helpers
+from openbb_oecd.utils.constants import CODE_TO_COUNTRY_IR, COUNTRY_TO_CODE_IR
 from pydantic import Field, field_validator
 
-stir_mapping = {
-    "BEL": "belgium",
-    "IRL": "ireland",
-    "MEX": "mexico",
-    "IDN": "indonesia",
-    "NZL": "new_zealand",
-    "JPN": "japan",
-    "GBR": "united_kingdom",
-    "FRA": "france",
-    "CHL": "chile",
-    "CAN": "canada",
-    "NLD": "netherlands",
-    "USA": "united_states",
-    "KOR": "south_korea",
-    "NOR": "norway",
-    "AUT": "austria",
-    "ZAF": "south_africa",
-    "DNK": "denmark",
-    "CHE": "switzerland",
-    "HUN": "hungary",
-    "LUX": "luxembourg",
-    "AUS": "australia",
-    "DEU": "germany",
-    "SWE": "sweden",
-    "ISL": "iceland",
-    "TUR": "turkey",
-    "GRC": "greece",
-    "ISR": "israel",
-    "CZE": "czech_republic",
-    "LVA": "latvia",
-    "SVN": "slovenia",
-    "POL": "poland",
-    "EST": "estonia",
-    "LTU": "lithuania",
-    "PRT": "portugal",
-    "CRI": "costa_rica",
-    "SVK": "slovakia",
-    "FIN": "finland",
-    "ESP": "spain",
-    "RUS": "russia",
-    "EA19": "euro_area19",
-    "COL": "colombia",
-    "ITA": "italy",
-    "IND": "india",
-    "CHN": "china",
-    "HRV": "croatia",
-}
-
-countries = tuple(stir_mapping.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_IR.values()) + ("all",)
 CountriesLiteral = Literal[countries]  # type: ignore
-country_to_code = {v: k for k, v in stir_mapping.items()}
 
 
 class OECDSTIRQueryParams(STIRQueryParams):
@@ -101,10 +53,10 @@ class OECDSTIRData(STIRData):
                     return date(_year, 12, 31)
             # Now match if it is monthly, i.e 2022-01
             elif re.match(r"\d{4}-\d{2}$", in_date):
-                year, month = map(int, in_date.split("-"))
+                year, month = map(int, in_date.split("-"))  # type: ignore
                 if month == 12:
-                    return date(year, month, 31)
-                next_month = date(year, month + 1, 1)
+                    return date(year, month, 31)  # type: ignore
+                next_month = date(year, month + 1, 1)  # type: ignore
                 return date(next_month.year, next_month.month, 1) - timedelta(days=1)
             # Now match if it is yearly, i.e 2022
             elif re.match(r"\d{4}$", in_date):
@@ -135,31 +87,42 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         query: OECDSTIRQueryParams,  # pylint: disable=W0613
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         frequency = query.frequency[0].upper()
-        country = "" if query.country == "all" else country_to_code[query.country]
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..IR3TIB...."
+        country = "" if query.country == "all" else COUNTRY_TO_CODE_IR[query.country]
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
+
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.{frequency}.IR3TIB...."
         data = helpers.get_possibly_cached_data(
-            url, function="economy_short_term_interest_rate"
+            url, function="economy_short_term_interest_rate", query_dict=query_dict
         )
-        query = f"FREQ=='{frequency}'"
-        query = query + f" & REF_AREA=='{country}'" if country else query
+        url_query = f"FREQ=='{frequency}'"
+        url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
         # Filter down
         data = (
-            data.query(query)
+            data.query(url_query)
             .reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE"]]
             .rename(
                 columns={"REF_AREA": "country", "TIME_PERIOD": "date", "VALUE": "value"}
             )
         )
-        data["country"] = data["country"].map(stir_mapping)
+        data["country"] = data["country"].map(CODE_TO_COUNTRY_IR)
         data = data.fillna("N/A").replace("N/A", None)
+        data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
+        data = data[
+            (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
+        ]
+
         return data.to_dict(orient="records")
 
     @staticmethod
     def transform_data(
-        query: OECDSTIRQueryParams, data: Dict, **kwargs: Any
+        query: OECDSTIRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDSTIRData]:
         """Transform the data from the OECD endpoint."""
         return [OECDSTIRData.model_validate(d) for d in data]

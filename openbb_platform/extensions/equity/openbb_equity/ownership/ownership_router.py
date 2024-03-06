@@ -57,3 +57,34 @@ async def share_statistics(
 ) -> OBBject:
     """Get data about share float for a given company."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="Form13FHR",
+    exclude_auto_examples=True,
+    examples=[
+        "### Enter the symbol as either the stock ticker or the CIK number as a string. ###",
+        'obb.equity.ownership.form_13f(symbol="NVDA").to_df()',
+        "### Enter a date (calendar quarter ending) for a specific report. ###",
+        'obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")',
+        "### Use the `limit` parameter to return N number of reports from the most recent. ###",
+        "### Example finding Michael Burry's filings. ###",
+        'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
+        "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
+    ],
+)
+async def form_13f(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """
+    The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
+    that is required to be filed by all institutional investment managers with at least
+    $100 million in assets under management.
+    Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
+    Most funds wait until the end of this period in order to conceal
+    their investment strategy from competitors and the public.
+    """
+    return await OBBject.from_query(Query(**locals()))

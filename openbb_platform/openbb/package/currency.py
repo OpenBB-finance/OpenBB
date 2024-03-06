@@ -1,17 +1,20 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from typing_extensions import Annotated
 
 
 class ROUTER_currency(Container):
     """/currency
     /price
     search
+    snapshots
     """
 
     def __repr__(self) -> str:
@@ -72,7 +75,7 @@ class ROUTER_currency(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CurrencyPairs
@@ -134,5 +137,122 @@ class ROUTER_currency(Container):
                 },
                 standard_params={},
                 extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def snapshots(
+        self,
+        base: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The base currency symbol. Multiple items allowed for provider(s): fmp."
+            ),
+        ] = "usd",
+        quote_type: Annotated[
+            Literal["direct", "indirect"],
+            OpenBBCustomParameter(
+                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency."
+            ),
+        ] = "indirect",
+        counter_currencies: Annotated[
+            Union[str, List[str], None],
+            OpenBBCustomParameter(
+                description="An optional list of counter currency symbols to filter for. None returns all."
+            ),
+        ] = None,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.
+
+        Parameters
+        ----------
+        base : Union[str, List[str]]
+            The base currency symbol. Multiple items allowed for provider(s): fmp.
+        quote_type : Literal['direct', 'indirect']
+            Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
+        counter_currencies : Union[str, List[str], None]
+            An optional list of counter currency symbols to filter for. None returns all.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[CurrencySnapshots]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CurrencySnapshots
+        -----------------
+        base_currency : str
+            The base, or domestic, currency.
+        counter_currency : str
+            The counter, or foreign, currency.
+        last_rate : float
+            The exchange rate, relative to the base currency. Rates are expressed as the amount of foreign currency received from selling one unit of the base currency, or the quantity of foreign currency required to purchase one unit of the domestic currency. To inverse the perspective, set the 'quote_type' parameter as 'direct'.
+        open : Optional[float]
+            The open price.
+        high : Optional[float]
+            The high price.
+        low : Optional[float]
+            The low price.
+        close : Optional[float]
+            The close price.
+        volume : Optional[int]
+            The trading volume.
+        prev_close : Optional[float]
+            The previous close price.
+        change : Optional[float]
+            The change in the price from the previous close. (provider: fmp)
+        change_percent : Optional[float]
+            The change in the price from the previous close, as a normalized percent. (provider: fmp)
+        ma50 : Optional[float]
+            The 50-day moving average. (provider: fmp)
+        ma200 : Optional[float]
+            The 200-day moving average. (provider: fmp)
+        year_high : Optional[float]
+            The 52-week high. (provider: fmp)
+        year_low : Optional[float]
+            The 52-week low. (provider: fmp)
+        last_rate_timestamp : Optional[datetime]
+            The timestamp of the last rate. (provider: fmp)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.currency.snapshots(
+        >>> provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"
+        >>> )
+        """  # noqa: E501
+
+        return self._run(
+            "/currency/snapshots",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/currency/snapshots",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "base": base,
+                    "quote_type": quote_type,
+                    "counter_currencies": counter_currencies,
+                },
+                extra_params=kwargs,
+                extra_info={"base": {"multiple_items_allowed": ["fmp"]}},
             )
         )

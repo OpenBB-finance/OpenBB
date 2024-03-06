@@ -4,6 +4,7 @@ from multiprocessing import freeze_support
 
 # pylint:disable=wrong-import-position
 warnings.filterwarnings("ignore", category=FutureWarning, module="yfinance.*")
+warnings.filterwarnings("ignore", category=FutureWarning, module="pandas.*")
 import openbb_terminal.config_terminal as cfg  # noqa: E402
 
 # pylint:disable=unused-import,import-outside-toplevel

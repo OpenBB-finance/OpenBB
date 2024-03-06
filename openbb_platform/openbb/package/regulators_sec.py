@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -28,10 +28,7 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
@@ -40,8 +37,8 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -58,13 +55,13 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CikMap
         ------
-        cik : Optional[Union[str, int]]
-            Central Index Key (provider: sec)
+        cik : Optional[Union[int, str]]
+            Central Index Key (CIK) for the requested entity.
 
         Example
         -------
@@ -87,11 +84,6 @@ class ROUTER_regulators_sec(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
-                    }
-                },
             )
         )
 
@@ -133,14 +125,14 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         InstitutionsSearch
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[str, int]]
+        cik : Optional[Union[int, str]]
             Central Index Key (CIK) (provider: sec)
 
         Example
@@ -192,7 +184,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         RssLitigation
@@ -269,12 +261,12 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SchemaFiles
         -----------
-        files : Optional[List]
+        files : Optional[List[str]]
             Dictionary of URLs to SEC Schema Files (provider: sec)
 
         Example
@@ -355,7 +347,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SicSearch
@@ -429,7 +421,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SymbolMap

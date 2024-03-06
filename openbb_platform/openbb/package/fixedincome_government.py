@@ -63,7 +63,7 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         TreasuryRates
@@ -162,7 +162,7 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         USYieldCurve

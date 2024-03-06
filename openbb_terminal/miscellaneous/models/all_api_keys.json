@@ -1,11 +1,5 @@
 [
     {
-      "name": "API_ULTIMA_KEY",
-      "source": "Ultima Insights",
-      "link": "https://www.ultimainsights.ai/",
-      "markdown": "Go to: https://ultimainsights.ai/openbb\n\n![Ultima Insights](https://user-images.githubusercontent.com/1911913/229215125-e3419788-eef3-4389-a3bd-5c08f3333347.png)\n\nClick on, \"Get Started\", to start the sign-up process. After the account has been setup, navigate to [Generate API Key](https://beta.ultimainsights.ai/my-account/generate-api-key) and click \"Generate Key\"."
-    },
-    {
       "name": "API_KEY_ALPHAVANTAGE",
       "source": "Alpha Vantage",
       "link": "https://www.alphavantage.co/support/#api-key",
@@ -220,12 +214,6 @@
       "source": "ShroomDK",
       "link": "https://sdk.flipsidecrypto.xyz/shroomdk",
       "markdown": "Go to: https://sdk.flipsidecrypto.xyz/shroomdk\n\n![ShroomDK](https://user-images.githubusercontent.com/46355364/207850122-b8cd225e-0a65-4ea8-8069-0b40fff1600e.png)\n\nClick \"Mint Your ShroomDK API Key\", and sign up for an account.\n\n![ShroomDK](https://user-images.githubusercontent.com/46355364/207850176-f29cc73b-2b55-46e8-bce3-62c9342b6599.png)\n\nOnce created, connect a wallet to complete minting the NFT license. The API key will be displayed under the account.\n\n![ShroomDK](https://user-images.githubusercontent.com/46355364/207850380-b59554af-1e65-4616-921d-e02c9ecf1aad.png)"
-    },
-    {
-      "name": "API_STOCKSERA_KEY",
-      "source": "Stocksera",
-      "link": "https://stocksera.pythonanywhere.com/",
-      "markdown": "Go to: https://stocksera.pythonanywhere.com\n\n![Stocksera](https://user-images.githubusercontent.com/46355364/207853896-ee233569-26bb-4244-b115-43ac8885757a.png)\n\nClick on, \"Log in\", and create an account.\n\n![Stocksera](https://user-images.githubusercontent.com/46355364/207853985-46a7a17f-b6b2-442b-886d-f68b3ba2ad5a.png)\n\nOnce logged in, navigate to the \"Developers\" tab and copy the API key.\n\n![Stocksera](https://user-images.githubusercontent.com/46355364/207854224-e5ddace0-15d1-491c-b616-263cca0bef02.png)"
     },
     {
       "name": "API_TOKEN_TERMINAL_KEY",

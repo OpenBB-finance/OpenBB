@@ -53,7 +53,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsChains
@@ -127,7 +127,7 @@ class ROUTER_derivatives_options(Container):
         close_ask_time : Optional[datetime]
             The time of the ask closing price for the option that day.
         prev_close : Optional[float]
-
+            The previous close price.
         change : Optional[float]
             The change in the price of the option.
         change_percent : Optional[float]
@@ -209,7 +209,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsUnusual

@@ -28,7 +28,7 @@ class ROUTER_news(Container):
         symbol: Annotated[
             Union[str, None, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, fmp, intrinio, polygon, tiingo, yfinance."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
             ),
         ] = None,
         start_date: Annotated[
@@ -57,7 +57,7 @@ class ROUTER_news(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[str]]
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, fmp, intrinio, polygon, tiingo, yfinance.
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -111,7 +111,7 @@ class ROUTER_news(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CompanyNews
@@ -288,7 +288,7 @@ class ROUTER_news(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         WorldNews

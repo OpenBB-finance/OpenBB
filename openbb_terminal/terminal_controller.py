@@ -58,7 +58,6 @@ from openbb_terminal.terminal_helper import (
     print_goodbye,
     reset,
     suppress_stdout,
-    update_terminal,
     welcome_message,
 )
 
