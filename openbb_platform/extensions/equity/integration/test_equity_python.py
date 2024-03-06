@@ -1,5 +1,7 @@
 """Python interface integration tests for the equity extension."""
 
+from datetime import date, timedelta
+
 import pytest
 from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
@@ -765,8 +767,6 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
                 "symbol": "IBM:US",
                 "start_date": "2023-09-30",
                 "end_date": "2023-12-31",
-                "limit": 0,
-                "form_type": None,
             }
         ),
     ],
@@ -853,8 +853,8 @@ def test_equity_compare_groups(params, obb):
             {
                 "provider": "cboe",
                 "symbol": "AAPL",
-                "start_date": None,
-                "end_date": None,
+                "start_date": (date.today() - timedelta(days=1)).strftime("%Y-%m-%d"),
+                "end_date": date.today().strftime("%Y-%m-%d"),
                 "interval": "1m",
                 "use_cache": False,
             }
@@ -1533,7 +1533,7 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        ({"provider": "polygon"}),  # premium endpoint
+        # ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration

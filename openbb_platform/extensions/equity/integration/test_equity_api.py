@@ -1637,7 +1637,7 @@ def test_equity_darkpool_otc(params, headers):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        ({"provider": "polygon"}),  # premium endpoint
+        # ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration
