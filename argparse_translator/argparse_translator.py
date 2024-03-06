@@ -17,7 +17,10 @@ from typing import (
     get_type_hints,
 )
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.custom_parameter import (
+    OpenBBCustomChoices,
+    OpenBBCustomParameter,
+)
 from pydantic import BaseModel
 from typing_extensions import Annotated
 
@@ -122,12 +125,15 @@ class ArgparseTranslator:
                     choices = get_args(param_type)
                     param_type = type(choices[0])
 
+        # if there are custom choices, override
+        choices = self._get_argument_custom_choices(param) or choices
+
         return param_type, choices
 
     @staticmethod
     def _split_annotation(
-        base_annotation: Type[Any],
-    ) -> Tuple[Type[Any], List[OpenBBCustomParameter]]:
+        base_annotation: Type[Any], custom_annotation_type: Type
+    ) -> Tuple[Type[Any], List[Any]]:
         """Find the base annotation and the custom annotations, namely the OpenBBCustomParameter."""
         if get_origin(base_annotation) is not Annotated:
             return base_annotation, []
@@ -135,14 +141,16 @@ class ArgparseTranslator:
         return base_annotation, [
             annotation
             for annotation in maybe_custom_annotations
-            if isinstance(annotation, OpenBBCustomParameter)
+            if isinstance(annotation, custom_annotation_type)
         ]
 
     @classmethod
-    def _get_argument_help(cls, param: inspect.Parameter) -> Optional[str]:
+    def _get_argument_custom_help(cls, param: inspect.Parameter) -> Optional[str]:
         """Returns the help annotation for the given parameter."""
         base_annotation = param.annotation
-        _, custom_annotations = cls._split_annotation(base_annotation)
+        _, custom_annotations = cls._split_annotation(
+            base_annotation, OpenBBCustomParameter
+        )
         help_annotation = (
             custom_annotations[0].description if custom_annotations else None
         )
@@ -150,6 +158,21 @@ class ArgparseTranslator:
             # try to get it from the docstring
             pass
         return help_annotation
+
+    @classmethod
+    def _get_argument_custom_choices(cls, param: inspect.Parameter) -> Optional[str]:
+        """Returns the help annotation for the given parameter."""
+        base_annotation = param.annotation
+        _, custom_annotations = cls._split_annotation(
+            base_annotation, OpenBBCustomChoices
+        )
+        choices_annotation = (
+            custom_annotations[0].choices if custom_annotations else None
+        )
+        if not choices_annotation:
+            # try to get it from the docstring
+            pass
+        return choices_annotation
 
     def _get_nargs(self, param: inspect.Parameter) -> Optional[str]:
         """Returns the nargs annotation for the given parameter."""
@@ -218,7 +241,7 @@ class ArgparseTranslator:
                 "default": param.default,
                 "required": required,
                 "action": self._get_action_type(param),
-                "help": self._get_argument_help(param),
+                "help": self._get_argument_custom_help(param),
                 "nargs": self._get_nargs(param),
             }
 
