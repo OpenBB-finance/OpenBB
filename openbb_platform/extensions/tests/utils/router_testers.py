@@ -1,97 +1,21 @@
 """Router testers."""
 
-import importlib
+import ast
 import os
-from inspect import getmembers, isfunction
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_core.app.provider_interface import ProviderInterface
 
-
-def collect_routers(target_dir: str) -> List[str]:
-    """Collect all routers in the target directory."""
-    current_dir = os.path.dirname(__file__)
-    base_path = os.path.abspath(os.path.join(current_dir, "../../../"))
-
-    full_target_path = os.path.abspath(os.path.join(base_path, target_dir))
-    routers = []
-
-    for root, _, files in os.walk(full_target_path):
-        for name in files:
-            if name.endswith("_router.py"):
-                full_path = os.path.join(root, name)
-                # Convert the full path to a module path
-                relative_path = os.path.relpath(full_path, base_path)
-                module_path = relative_path.replace("/", ".").replace(".py", "")
-                routers.append(module_path)
-
-    return routers
-
-
-def import_routers(routers: List) -> List:
-    """Import all routers."""
-    loaded_routers: List = []
-    for router in routers:
-        module = importlib.import_module(router)
-        loaded_routers.append(module)
-
-    return loaded_routers
-
-
-def collect_router_functions(loaded_routers: List) -> Dict:
-    """Collect all router functions."""
-    router_functions = {}
-    for router in loaded_routers:
-        router_functions[router.__name__] = [
-            function[1]
-            for function in getmembers(router, isfunction)
-            if function[0] != "router"
-        ]
-
-    return router_functions
-
-
-def find_decorator(file_path: str, function_name: str) -> Optional[str]:
-    """Find the decorator of the function in the file."""
-    this_dir = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(
-        this_dir.split("openbb_platform/")[0], "openbb_platform", file_path
-    )
-    with open(file_path) as file:
-        lines = file.readlines()
-        for index, line in enumerate(lines):
-            if function_name in line:
-                decorator = lines[index - 1]
-                if "@" not in decorator:
-                    continue
-                decorator = decorator.split('"')[1]
-                return decorator
-
-    return None
-
-
-def find_missing_router_function_models(
-    router_functions: Dict, pi_map: Dict
-) -> List[str]:
-    """Find the missing models in the router functions."""
-    missing_models: List[str] = []
-    for router_name, functions in router_functions.items():
-        for function in functions:
-            decorator = find_decorator(
-                os.path.join(*router_name.split(".")) + ".py",
-                function.__name__,
-            )
-            if (
-                decorator not in pi_map
-                and decorator is not None
-                and "POST" not in decorator
-                and "GET" not in decorator
-            ):
-                missing_models.append(
-                    f"{function.__name__} in {router_name} model doesn't exist in the provider interface map."
-                )
-
-    return missing_models
+from extensions.tests.utils.helpers import (
+    collect_router_functions,
+    collect_routers,
+    find_decorator,
+    find_missing_router_function_models,
+    get_decorator_details,
+    get_required_fields,
+    import_routers,
+    parse_example_string,
+)
 
 
 def check_router_function_models() -> List[str]:
@@ -119,14 +43,15 @@ def check_router_model_functions_signature() -> List[str]:
 
     for router_name, functions in router_functions.items():
         for function in functions:
-            decorator_filer = ["POST", "GET", None]
             decorator = find_decorator(
                 os.path.join(*router_name.split(".")) + ".py",
                 function.__name__,
             )
             if decorator:
+                if "POST" in decorator or "GET" in decorator:
+                    continue
                 args = list(function.__code__.co_varnames)
-                if args != expected_args and decorator not in decorator_filer:
+                if args != expected_args and "model" in decorator:
                     missing_args.append(
                         f"{function.__name__} in {router_name} doesn't have the expected args: {expected_args}"
                     )
@@ -137,3 +62,187 @@ def check_router_model_functions_signature() -> List[str]:
                     )
 
     return missing_args + missing_return_type
+
+
+def check_general_example_violations(
+    keywords: Dict, examples: List, router_name: str, function: Any
+) -> List[str]:
+    """Check for general violations in the router command examples.
+
+    Criteria
+    --------
+    - All endpoints should have examples.
+    - If any endpoint is excluded from the schema it only needs to contain a Python example.
+    - POST method examples should have both API and Python examples,
+      unless they are excluded from the schema.
+    """
+    general_violation: List[str] = []
+
+    # Check if the endpoint has examples
+    if "examples" not in keywords or not examples:
+        general_violation.append(
+            f"{function.__name__} in {router_name} doesn't have examples."
+        )
+        return general_violation
+    # Check if a POST method has both API and Python examples
+    if (
+        "POST" in keywords.get("methods", "")
+        and keywords.get("include_in_schema", "") != "False"
+    ):
+        if "APIEx" not in examples:
+            general_violation.append(
+                f"{function.__name__} in {router_name} doesn't have an API example."
+            )
+        if "PythonEx" not in examples:
+            general_violation.append(
+                f"{function.__name__} in {router_name} doesn't have a Python example."
+            )
+    # Check if a POST endpoint excluded from the schema has a Python example
+    if (
+        (keywords.get("include_in_schema", "") == "False")
+        and ("POST" in keywords.get("methods", ""))
+        and ("PythonEx" not in examples)
+    ):
+        general_violation.append(
+            f"{function.__name__} in {router_name} is excluded from the"
+            f"schema but doesn't have a Python example."
+        )
+        if "APIEx" in examples:
+            general_violation.append(
+                f"{function.__name__} in {router_name} is excluded from the"
+                f"schema but has an API example."
+            )
+
+    return general_violation
+
+
+def check_python_example_violations(
+    examples: str, router_name: str, function: Any
+) -> List[str]:
+    """Check for Python violations in the router command examples.
+
+    Criteria
+    --------
+    - Description is mandatory for PythonEx examples.
+    """
+    python_example_violation: List[str] = []
+
+    parsed_examples = parse_example_string(examples)
+
+    # Check if there are PythonEx examples
+    if "PythonEx" in parsed_examples:
+        for python_example in parsed_examples["PythonEx"]:
+            # Check if the Python example has a description
+            if (
+                "description" not in python_example
+                or not python_example["description"].strip()
+            ):
+                python_example_violation.append(
+                    f"{function.__name__} in {router_name} Python example doesn't have a description."
+                )
+
+    return python_example_violation
+
+
+def check_api_example_violations(
+    examples: str, router_name: str, model: Optional[str], function: Any
+) -> List[str]:
+    """Check for API example violations in the router command examples.
+
+    Criteria
+    --------
+    - When using models, at least one example using all required standard parameters.
+      It cannot use any provider specific parameters here.
+      It should not specify the provider field.
+    - If there’s more than 3 parameters we ask to have a description in the example.
+    """
+    api_example_violation: List[str] = []
+
+    parsed_examples = parse_example_string(examples)
+
+    # Check if description is added
+    if "APIEx" in parsed_examples:
+        for api_example in parsed_examples["APIEx"]:
+            if len(api_example.get("params", {})) > 3 and not api_example.get(
+                "description"
+            ):
+                api_example_violation.append(
+                    f"{function.__name__} in {router_name} API example has more than 3 parameters "
+                    "but doesn't have a description."
+                )
+    # Check model endpoint example criteria
+    if model and "APIEx" in parsed_examples:
+        required_fields = get_required_fields(model.strip("'"))
+        for api_example in parsed_examples["APIEx"]:
+            params = ast.literal_eval(api_example.get("params", "{}"))
+            if set(params.keys()) == set(required_fields):
+                break
+        else:
+            api_example_violation.append(
+                f"{function.__name__} in {router_name} doesn't have an example using only"
+                f" the required standard parameters."
+            )
+
+    return api_example_violation
+
+
+def check_router_command_examples() -> List[str]:
+    """Check if the router command examples satisfy criteria.
+
+    Criteria
+    --------
+    General:
+    - All endpoints should have examples.
+    - If any endpoint is excluded from the schema it only needs to contain a Python example.
+    - POST method examples should have both API and Python examples,
+      unless they are excluded from the schema.
+
+    API examples:
+    - At least one example using all required parameters.
+      It cannot use any provider specific parameters here.
+      It should not specify the provider field.
+    - If there’s more than 3 parameters we ask to have a description in the example.
+
+    Python examples:
+    - Description is mandatory
+    """
+    general_violation: List[str] = []
+    api_example_violation: List[str] = []
+    python_example_violation: List[str] = []
+
+    routers = collect_routers("extensions")
+    loaded_routers = import_routers(routers)
+    router_functions = collect_router_functions(loaded_routers)
+
+    for router_name, functions in router_functions.items():
+        for function in functions:
+            if (
+                "basemodel_to_df" in function.__name__
+                or "router" not in function.__module__
+            ):
+                continue
+            decorator = find_decorator(
+                os.path.join(*router_name.split(".")) + ".py",
+                function.__name__,
+            )
+            if decorator:
+                decorator_details = get_decorator_details(function)
+                if decorator_details["decorator"] == "router.command":
+                    keywords = decorator_details["keywords"]
+                    examples = keywords.get("examples", [])
+                    ### General checks ###
+                    general_violation += check_general_example_violations(
+                        keywords, examples, router_name, function
+                    )
+                    if examples:
+                        ### API example checks ###
+                        model = keywords.get("model", None)
+                        api_example_violation += check_api_example_violations(
+                            examples, router_name, model, function
+                        )
+                        ### Python example checks ###
+                        python_example_violation += check_python_example_violations(
+                            examples, router_name, function
+                        )
+
+    return general_violation + api_example_violation + python_example_violation

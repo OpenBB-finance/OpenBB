@@ -1,6 +1,7 @@
 """Test the routers."""
 
 from extensions.tests.utils.router_testers import (
+    check_router_command_examples,
     check_router_function_models,
     check_router_model_functions_signature,
 )
@@ -16,3 +17,9 @@ def test_router_model_functions_signature() -> None:
     """Test if the router functions have the correct signature."""
     missing_args = check_router_model_functions_signature()
     assert not missing_args, "\n".join(missing_args)
+
+
+def test_router_examples() -> None:
+    """Test if the router examples are valid."""
+    invalid_examples = check_router_command_examples()
+    assert not invalid_examples, "\n".join(invalid_examples)
