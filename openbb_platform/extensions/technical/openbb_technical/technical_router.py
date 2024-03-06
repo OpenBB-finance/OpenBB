@@ -679,6 +679,8 @@ def vwap(
         The calculated data.
     """
     df = basemodel_to_df(data, index=index)
+    if index == "date":
+        df.index = pd.to_datetime(df.index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
 
