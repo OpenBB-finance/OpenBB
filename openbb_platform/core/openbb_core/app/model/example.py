@@ -4,7 +4,7 @@ from abc import abstractmethod
 from dataclasses import Field
 from typing import Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, computed_field, field_validator
+from pydantic import BaseModel, ConfigDict, computed_field, model_validator
 
 
 class Example(BaseModel):
@@ -36,14 +36,15 @@ class APIEx(Example):
             raise ValueError(f"Provider must be a string, not {type(provider)}")
         return None
 
-    @field_validator("description")
+    @model_validator(mode="before")
     @classmethod
-    def check_description(cls, v, values):
+    def check_model(cls, values: dict) -> dict:
         """Check if there are more than 3 parameters and a description is not added."""
-        if len(values.get("parameters", {})) > 3 and not v:
+        if len(values.get("parameters", {})) > 3:
             raise ValueError(
                 "API example has more than 3 parameters but doesn't have a description."
             )
+        return values
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
