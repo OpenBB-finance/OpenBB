@@ -230,7 +230,10 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
-        return [
-            IntrinioEquityHistoricalData.model_validate(d)
-            for d in sorted(data, key=lambda x: x["date"], reverse=False)
-        ]
+        try:
+            sorted_data = sorted(
+                data, key=lambda x: x.get("date") or x.get("time"), reverse=False
+            )
+        except Exception:
+            sorted_data = data
+        return [IntrinioEquityHistoricalData.model_validate(d) for d in sorted_data]
