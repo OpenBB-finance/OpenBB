@@ -61,6 +61,14 @@ DataProcessingSupportedTypes = TypeVar(
     Data,
 )
 
+TAB = "    "
+BASE_INDENTATION = TAB * 2
+
+
+def indent(n: int) -> str:
+    """Create n indentation space on top of the base indentation."""
+    return BASE_INDENTATION + TAB * n
+
 
 class PackageBuilder:
     """Build the extension package for the Platform."""
@@ -831,17 +839,8 @@ class DocstringGenerator:
 
     provider_interface = ProviderInterface()
 
-    def __init__(self, tab: str = "", indent: int = 0):
-        """Initialize the docstring generator."""
-        self.tab = tab
-        self.base_indentation = tab * indent
-
-    def indent(self, n: int) -> str:
-        """Create n indentation space on top of the base indentation."""
-        return self.base_indentation + self.tab * n
-
+    @staticmethod
     def get_OBBject_description(
-        self,
         results_type: str,
         providers: Optional[str],
     ) -> str:
@@ -849,45 +848,46 @@ class DocstringGenerator:
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            f"{self.indent(0)}OBBject\n"
-            f"{self.indent(1)}results : {results_type}\n"
-            f"{self.indent(2)}Serializable results.\n"
-            f"{self.indent(1)}provider : {available_providers}\n"
-            f"{self.indent(2)}Provider name.\n"
-            f"{self.indent(1)}warnings : Optional[List[Warning_]]\n"
-            f"{self.indent(2)}List of warnings.\n"
-            f"{self.indent(1)}chart : Optional[Chart]\n"
-            f"{self.indent(2)}Chart object.\n"
-            f"{self.indent(1)}extra : Dict[str, Any]\n"
-            f"{self.indent(2)}Extra info.\n"
+            f"{indent(0)}OBBject\n"
+            f"{indent(1)}results : {results_type}\n"
+            f"{indent(2)}Serializable results.\n"
+            f"{indent(1)}provider : {available_providers}\n"
+            f"{indent(2)}Provider name.\n"
+            f"{indent(1)}warnings : Optional[List[Warning_]]\n"
+            f"{indent(2)}List of warnings.\n"
+            f"{indent(1)}chart : Optional[Chart]\n"
+            f"{indent(2)}Chart object.\n"
+            f"{indent(1)}extra : Dict[str, Any]\n"
+            f"{indent(2)}Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
         return obbject_description
 
+    @staticmethod
     def append_examples(
-        self,
         func_path: str,
         func_params: Dict[str, Field],
         examples: Optional[List[Example]],
     ) -> str:
         """Get the example section from the examples."""
         if examples:
-            doc = f"\n{self.indent(0)}Examples\n"
-            doc += f"{self.indent(0)}--------\n"
-            doc += f"{self.indent(0)}>>> from openbb import obb\n"
+            doc = f"\n{indent(0)}Examples\n"
+            doc += f"{indent(0)}--------\n"
+            doc += f"{indent(0)}>>> from openbb import obb\n"
 
             for e in examples:
                 doc += e.to_python(
                     func_path=func_path,
                     func_params=func_params,
-                    indentation=self.indent(0),
+                    indentation=indent(0),
                 )
             return doc
         return ""
 
+    @classmethod
     def generate_model_docstring(
-        self,
+        cls,
         model_name: str,
         summary: str,
         explicit_params: dict,
@@ -909,13 +909,13 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", f"\n{self.indent(0)}")
+            description = description.replace("\n", f"\n{indent(0)}")
             return description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{self.indent(0)}")
+        docstring = summary.strip("\n").replace("\n    ", f"\n{indent(0)}")
         docstring += "\n\n"
-        docstring += f"{self.indent(0)}Parameters\n"
-        docstring += f"{self.indent(0)}----------\n"
+        docstring += f"{indent(0)}Parameters\n"
+        docstring += f"{indent(0)}----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -938,8 +938,8 @@ class DocstringGenerator:
                 )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"{self.indent(0)}{param_name} : {type_str}\n"
-            docstring += f"{self.indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(0)}{param_name} : {type_str}\n"
+            docstring += f"{indent(1)}{format_description(description)}\n"
 
         # Kwargs
         for param_name, param in kwarg_params.items():
@@ -951,22 +951,22 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"{self.indent(0)}{param_name} : {type_}\n"
-            docstring += f"{self.indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(0)}{param_name} : {type_}\n"
+            docstring += f"{indent(1)}{format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += f"{self.indent(0)}Returns\n"
-        docstring += f"{self.indent(0)}-------\n"
+        docstring += f"{indent(0)}Returns\n"
+        docstring += f"{indent(0)}-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
-        docstring += self.get_OBBject_description(results_type, available_providers)
+        docstring += cls.get_OBBject_description(results_type, available_providers)
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n{self.indent(0)}{model_name}\n"
-        docstring += f"{self.indent(0)}{underline}\n"
+        docstring += f"\n{indent(0)}{model_name}\n"
+        docstring += f"{indent(0)}{underline}\n"
 
         for name, field in returns.items():
             try:
@@ -997,12 +997,13 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"{self.indent(0)}{field.alias or name} : {field_type}\n"
-            docstring += f"{self.indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(0)}{field.alias or name} : {field_type}\n"
+            docstring += f"{indent(1)}{format_description(description)}\n"
         return docstring
 
+    @classmethod
     def generate(
-        self,
+        cls,
         path: str,
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
@@ -1013,8 +1014,8 @@ class DocstringGenerator:
         doc = func.__doc__ or ""
         func_params = {}
         if model_name:
-            params = self.provider_interface.params.get(model_name, {})
-            return_schema = self.provider_interface.return_schema.get(model_name, None)
+            params = cls.provider_interface.params.get(model_name, {})
+            return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
@@ -1028,7 +1029,7 @@ class DocstringGenerator:
                 if hasattr(results_type, "results_type_repr"):
                     results_type = results_type.results_type_repr()
 
-                doc = self.generate_model_docstring(
+                doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
@@ -1037,10 +1038,10 @@ class DocstringGenerator:
                     results_type=results_type,
                 )
         else:
-            doc = doc.replace("\n    ", f"\n{self.indent(0)}")
+            doc = doc.replace("\n    ", f"\n{indent(0)}")
 
         if doc and examples:
-            doc += self.append_examples(
+            doc += cls.append_examples(
                 path.replace("/", "."),
                 func_params,
                 examples,
