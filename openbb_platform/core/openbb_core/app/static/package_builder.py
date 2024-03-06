@@ -572,7 +572,7 @@ class MethodDefinition:
                     default = MethodDefinition.get_default(field)
                     extra = MethodDefinition.get_extra(field)
                     new_type = MethodDefinition.get_expanded_type(
-                        field_name, type_, extra
+                        field_name, extra, type_
                     )
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
 
@@ -785,11 +785,18 @@ class MethodDefinition:
 
     @classmethod
     def get_expanded_type(
-        cls, field_name: str, type_: type, extra: Optional[dict] = None
+        cls,
+        field_name: str,
+        extra: Optional[dict] = None,
+        original_type: Optional[type] = None,
     ) -> object:
         """Expand the original field type."""
         if extra and "multiple_items_allowed" in extra:
-            return List[type_]
+            if original_type is None:
+                raise ValueError(
+                    "multiple_items_allowed requires the original type to be specified."
+                )
+            return List[original_type]
         return cls.TYPE_EXPANSION.get(field_name, ...)
 
     @classmethod
