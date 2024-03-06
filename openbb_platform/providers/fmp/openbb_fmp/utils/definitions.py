@@ -22,6 +22,7 @@ SECTORS = Literal[
 
 EXCHANGES = Literal[
     "amex",
+    "ams",
     "ase",
     "asx",
     "ath",
@@ -50,6 +51,7 @@ EXCHANGES = Literal[
     "kuw",
     "lse",
     "mex",
+    "mutual_fund",
     "nasdaq",
     "neo",
     "nse",
@@ -110,6 +112,7 @@ MARKETS = Literal[
     "LSE",
     "MEX",
     "MIL",
+    "MUTUAL_FUND",
     "NASDAQ",
     "NEO",
     "NSE",
