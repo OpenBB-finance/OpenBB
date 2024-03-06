@@ -40,7 +40,7 @@ class APIEx(Example):
     @classmethod
     def check_model(cls, values: dict) -> dict:
         """Check if there are more than 3 parameters and a description is not added."""
-        if len(values.get("parameters", {})) > 3:
+        if len(values.get("parameters", {})) > 3 and not values.get("description"):
             raise ValueError(
                 "API example has more than 3 parameters but doesn't have a description."
             )
