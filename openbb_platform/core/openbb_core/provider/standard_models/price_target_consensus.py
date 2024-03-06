@@ -19,7 +19,7 @@ class PriceTargetConsensusQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
+    def to_upper(cls, v: str) -> str:
         """Convert symbol to uppercase."""
         return v.upper()
 
@@ -43,7 +43,7 @@ class PriceTargetConsensusData(Data):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def to_upper(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
             return v.upper()

@@ -26,7 +26,7 @@ class IncomeStatementQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str):
+    def to_upper(cls, v: str):
         """Convert symbol to uppercase."""
         return v.upper()
 

@@ -16,7 +16,7 @@ class EtfEquityExposureQueryParams(QueryParams):
 
     @field_validator("symbol")
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
+    def to_upper(cls, v: str) -> str:
         """Convert symbol to uppercase."""
         return v.upper()
 
