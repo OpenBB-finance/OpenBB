@@ -89,13 +89,13 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     obbject_extensions = set()
     entry_points_dict = entry_points()
 
-    for entry_point in entry_points_dict["openbb_core_extension"]:
+    for entry_point in entry_points_dict.get("openbb_core_extension", []):
         core_extensions.add(f"{entry_point.name}")
 
-    for entry_point in entry_points_dict["openbb_provider_extension"]:
+    for entry_point in entry_points_dict.get("openbb_provider_extension", []):
         provider_extensions.add(f"{entry_point.name}")
 
-    for entry_point in entry_points_dict["openbb_obbject_extension"]:
+    for entry_point in entry_points_dict.get("openbb_obbject_extension", []):
         obbject_extensions.add(f"{entry_point.name}")
 
     return core_extensions, provider_extensions, obbject_extensions
