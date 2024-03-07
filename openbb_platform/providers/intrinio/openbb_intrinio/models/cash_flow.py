@@ -1,6 +1,7 @@
 """Intrinio Cash Flow Statement Model."""
 
 # pylint: disable=unused-argument
+
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -89,6 +90,12 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         description="The currency in which the balance sheet is reported.",
         default=None,
     )
+    net_income_continuing_operations: Optional[float] = Field(
+        default=None, description="Net Income (Continuing Operations)"
+    )
+    net_income_discontinued_operations: Optional[float] = Field(
+        default=None, description="Net Income (Discontinued Operations)"
+    )
     net_income: Optional[float] = Field(
         default=None, description="Consolidated Net Income."
     )
@@ -118,12 +125,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     )
     net_cash_from_discontinued_operating_activities: Optional[float] = Field(
         default=None, description="Net Cash from Discontinued Operating Activities"
-    )
-    net_income_continuing_operations: Optional[float] = Field(
-        default=None, description="Net Income (Continuing Operations)"
-    )
-    net_income_discontinued_operations: Optional[float] = Field(
-        default=None, description="Net Income (Discontinued Operations)"
     )
     net_cash_from_operating_activities: Optional[float] = Field(
         default=None, description="Net Cash from Operating Activities"
@@ -220,7 +221,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
 
     @model_validator(mode="before")
     @classmethod
-    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+    def replace_zero(cls, values):
         """Check for zero values and replace with None."""
         return (
             {k: None if v == 0 else v for k, v in values.items()}
@@ -282,10 +283,10 @@ class IntrinioCashFlowStatementFetcher(
             """Return the response."""
             statement_data = await response.json()
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "financials": statement_data["standardized_financials"],
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "financials": statement_data["standardized_financials"],  # type: ignore
             }
 
         intrinio_id = f"{query.symbol}-{statement_code}"
@@ -308,7 +309,7 @@ class IntrinioCashFlowStatementFetcher(
 
             for sub_item in item["financials"]:
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit:
+                if unit and len(unit) == 3:
                     units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
