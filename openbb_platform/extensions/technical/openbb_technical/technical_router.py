@@ -32,7 +32,8 @@ router = Router(prefix="")
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "atr_data = obb.technical.atr(data=stock_data.results)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def atr(
@@ -94,7 +95,8 @@ def atr(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "fib_data = obb.technical.fib(data=stock_data.results, period=120)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def fib(
@@ -270,7 +272,8 @@ def fisher(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def adosc(
@@ -325,7 +328,8 @@ def adosc(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def bbands(
@@ -466,7 +470,8 @@ def zlma(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "aaron_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def aroon(
@@ -589,7 +594,8 @@ def sma(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "demark_data = obb.technical.demark(data=stock_data.results, offset=0)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def demark(
@@ -835,7 +841,8 @@ def hma(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def donchian(
@@ -965,6 +972,7 @@ def ichimoku(
                 "clenow_data = obb.technical.clenow(data=stock_data.results, period=90)",
             ],
         ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def clenow(
@@ -1076,7 +1084,8 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def adx(
@@ -1193,7 +1202,8 @@ def wma(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def cci(
@@ -1440,7 +1450,8 @@ def kc(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cg_data = obb.technical.cg(data=stock_data.results, length=14)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def cg(
@@ -1487,7 +1498,8 @@ def cg(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='STD')",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def cones(
@@ -1591,7 +1603,8 @@ def cones(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "ema_data = obb.technical.ema(data=stock_data.results, target='close', length=50, offset=0)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def ema(
