@@ -73,14 +73,14 @@ class APIEx(Example):
         return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
-    def mock_data(dataset: Literal["ts_ohlc", "panel_am"], size: int = 3) -> List[Dict]:
+    def mock_data(dataset: Literal["ts_ohlcv", "panel_am"], size: int = 3) -> List[Dict]:
         """Return mock data for the example.
 
         Parameters
         ----------
         dataset : str
             The type of data to return:
-            - 'ts_ohlc': Time series OHLC data
+            - 'ts_ohlcv': Time series OHLC data
             - 'panel_am': Panel data asset manager (multiindex)
 
         size : int
@@ -91,7 +91,7 @@ class APIEx(Example):
         List[Dict]
             A list of dictionaries with the mock data.
         """
-        if dataset == "ts_ohlc":
+        if dataset == "ts_ohlcv":
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
