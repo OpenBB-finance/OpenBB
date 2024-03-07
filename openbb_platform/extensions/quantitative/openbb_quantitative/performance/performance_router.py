@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from openbb_core.app.model.example import PythonEx, APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (

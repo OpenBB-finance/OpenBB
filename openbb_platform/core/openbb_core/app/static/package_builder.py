@@ -34,11 +34,11 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.example import Example
 from openbb_core.app.model.custom_parameter import (
     OpenBBCustomChoices,
     OpenBBCustomParameter,
 )
+from openbb_core.app.model.example import Example
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console

@@ -76,7 +76,9 @@ class APIEx(Example):
 
     @staticmethod
     def mock_data(
-        dataset: Literal["timeseries", "panel"], size: int = 5, field_list: List[str] = None
+        dataset: Literal["timeseries", "panel"],
+        size: int = 5,
+        field_list: List[str] = None,
     ) -> List[Dict]:
         """Return mock data for the example.
 
@@ -115,7 +117,11 @@ class APIEx(Example):
                 )
             return result
         elif dataset == "panel":
-            field_list = field_list or ["asset_manager", "portfolio_value", "risk_free_rate"]
+            field_list = field_list or [
+                "asset_manager",
+                "portfolio_value",
+                "risk_free_rate",
+            ]
             assert len(field_list) == 3, "field_list must have 3 elements"
             result = []
             for i in range(1, size + 1):
