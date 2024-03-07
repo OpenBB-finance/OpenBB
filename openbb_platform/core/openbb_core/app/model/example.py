@@ -69,7 +69,7 @@ class APIEx(Example):
 
     @staticmethod
     def _shift(i: int) -> float:
-        """Return a shifted value."""
+        """Return a transformation of the integer."""
         return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
