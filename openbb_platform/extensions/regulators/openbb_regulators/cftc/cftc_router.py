@@ -17,7 +17,7 @@ router = Router(prefix="/cftc")
 
 @router.command(
     model="COTSearch",
-    examples=[APIEx(parameters={"query": "gold"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"query": "gold"})],
 )
 async def cot_search(
     cc: CommandContext,
@@ -35,6 +35,7 @@ async def cot_search(
 @router.command(
     model="COT",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             description="Get the Commitment of Traders Report for Gold.",
             parameters={"series_id": "GC=F"},

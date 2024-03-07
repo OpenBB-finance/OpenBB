@@ -68,7 +68,7 @@ async def eu_yield_curve(
 
 @router.command(
     model="TreasuryRates",
-    examples=[APIEx(parameters={"provider": "federal_reserve"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"provider": "federal_reserve"})],
 )
 async def treasury_rates(
     cc: CommandContext,
@@ -83,13 +83,14 @@ async def treasury_rates(
 @router.command(
     model="TreasuryAuctions",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             parameters={
                 "security_type": "Bill",
                 "start_date": "2022-01-01",
                 "end_date": "2023-01-01",
             }
-        )
+        ),
     ],
 )
 async def treasury_auctions(
@@ -104,7 +105,7 @@ async def treasury_auctions(
 
 @router.command(
     model="TreasuryPrices",
-    examples=[APIEx(parameters={"date": "2019-02-05"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"date": "2019-02-05"})],
 )
 async def treasury_prices(
     cc: CommandContext,

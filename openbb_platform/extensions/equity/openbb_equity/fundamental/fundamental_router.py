@@ -32,7 +32,10 @@ async def multiples(
 
 @router.command(
     model="BalanceSheet",
-    examples=[APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+    ],
 )
 async def balance(
     cc: CommandContext,
@@ -46,7 +49,10 @@ async def balance(
 
 @router.command(
     model="BalanceSheetGrowth",
-    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 10})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10}),
+    ],
 )
 async def balance_growth(
     cc: CommandContext,
@@ -60,7 +66,10 @@ async def balance_growth(
 
 @router.command(
     model="CashFlowStatement",
-    examples=[APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+    ],
 )
 async def cash(
     cc: CommandContext,
@@ -75,6 +84,7 @@ async def cash(
 @router.command(
     model="ReportedFinancials",
     examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
         APIEx(
             description="Get AAPL balance sheet with a limit of 10 items.",
             parameters={
@@ -106,7 +116,10 @@ async def reported_financials(
 
 @router.command(
     model="CashFlowStatementGrowth",
-    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 10})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10}),
+    ],
 )
 async def cash_growth(
     cc: CommandContext,
@@ -171,7 +184,7 @@ async def search_attributes(
 
 @router.command(
     model="LatestAttributes",
-    examples=[APIEx(parameters={"tag": "ceo"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "tag": "ceo"})],
 )
 async def latest_attributes(
     cc: CommandContext,
@@ -185,7 +198,7 @@ async def latest_attributes(
 
 @router.command(
     model="HistoricalAttributes",
-    examples=[APIEx(parameters={"tag": "ebitda"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "tag": "ebitda"})],
 )
 async def historical_attributes(
     cc: CommandContext,
@@ -199,7 +212,10 @@ async def historical_attributes(
 
 @router.command(
     model="IncomeStatement",
-    examples=[APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+    ],
 )
 async def income(
     cc: CommandContext,
@@ -213,7 +229,10 @@ async def income(
 
 @router.command(
     model="IncomeStatementGrowth",
-    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 10, "period": "annual"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "period": "annual"}),
+    ],
 )
 async def income_growth(
     cc: CommandContext,
@@ -227,7 +246,10 @@ async def income_growth(
 
 @router.command(
     model="KeyMetrics",
-    examples=[APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 100})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 100}),
+    ],
 )
 async def metrics(
     cc: CommandContext,
@@ -285,7 +307,10 @@ async def overview(
 
 @router.command(
     model="FinancialRatios",
-    examples=[APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 12})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 12}),
+    ],
 )
 async def ratios(
     cc: CommandContext,
@@ -300,7 +325,8 @@ async def ratios(
 @router.command(
     model="RevenueGeographic",
     examples=[
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"})
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"}),
     ],
 )
 async def revenue_per_geography(
@@ -316,7 +342,8 @@ async def revenue_per_geography(
 @router.command(
     model="RevenueBusinessLine",
     examples=[
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"})
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"}),
     ],
 )
 async def revenue_per_segment(
@@ -329,7 +356,10 @@ async def revenue_per_segment(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CompanyFilings", examples=[APIEx(parameters={"limit": 100})])
+@router.command(
+    model="CompanyFilings",
+    examples=[APIEx(parameters={}), APIEx(parameters={"limit": 100})],
+)
 async def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -374,7 +404,10 @@ async def transcript(
 
 @router.command(
     model="TrailingDividendYield",
-    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 252})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 252}),
+    ],
 )
 async def trailing_dividend_yield(
     cc: CommandContext,

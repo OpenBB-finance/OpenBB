@@ -80,10 +80,7 @@ async def share_statistics(
 @router.command(
     model="Form13FHR",
     examples=[
-        APIEx(
-            description="Enter the symbol as either the stock ticker or the CIK number as a string.",
-            parameters={"symbol": "NVDA"},
-        ),
+        APIEx(parameters={"symbol": "NVDA"}),
         APIEx(
             description="Enter a date (calendar quarter ending) for a specific report.",
             parameters={"symbol": "BRK-A", "date": "2016-09-30"},

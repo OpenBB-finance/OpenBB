@@ -43,6 +43,7 @@ async def market(
 @router.command(
     model="IndexConstituents",
     examples=[
+        APIEx(parameters={"symbol": "dowjones"}),
         APIEx(parameters={"symbol": "dowjones", "provider": "fmp"}),
         APIEx(
             description="Providers other than FMP will use the ticker symbol.",
@@ -76,7 +77,7 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    examples=[APIEx(parameters={"provider": "yfinance"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"provider": "yfinance"})],
 )
 async def available(
     cc: CommandContext,
@@ -90,7 +91,10 @@ async def available(
 
 @router.command(
     model="IndexSearch",
-    examples=[APIEx(parameters={"query": "SPX", "provider": "cboe"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"query": "SPX", "provider": "cboe"}),
+    ],
 )
 async def search(
     cc: CommandContext,
@@ -105,7 +109,8 @@ async def search(
 @router.command(
     model="SP500Multiples",
     examples=[
-        APIEx(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"})
+        APIEx(parameters={}),
+        APIEx(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"}),
     ],
 )
 async def sp500_multiples(
@@ -120,7 +125,7 @@ async def sp500_multiples(
 
 @router.command(
     model="IndexSectors",
-    examples=[APIEx(parameters={"symbol": "^TX60", "provider": "tmx"})],
+    examples=[APIEx(parameters={"symbol": "^TX60"})],
 )
 async def sectors(
     cc: CommandContext,

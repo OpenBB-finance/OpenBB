@@ -31,7 +31,10 @@ async def cik_map(
 
 @router.command(
     model="InstitutionsSearch",
-    examples=[APIEx(parameters={"query": "blackstone real estate"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"query": "blackstone real estate"}),
+    ],
 )
 async def institutions_search(
     cc: CommandContext,
@@ -83,7 +86,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    examples=[APIEx(parameters={"cik": "0000789019"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"cik": "0000789019"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -111,7 +114,10 @@ async def rss_litigation(
 
 @router.command(
     model="SicSearch",
-    examples=[APIEx(parameters={"query": "real estate investment trusts"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"query": "real estate investment trusts"}),
+    ],
 )
 async def sic_search(
     cc: CommandContext,
