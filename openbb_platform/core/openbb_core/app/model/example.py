@@ -70,7 +70,7 @@ class APIEx(Example):
     @staticmethod
     def _shift(i: int) -> float:
         """Return a shifted value."""
-        return 2 * (i + 1) / (2 * i + 1) % 1 + 1
+        return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
     def mock_data(dataset: Literal["ts_ohlc", "panel_am"], size: int = 3) -> List[Dict]:
@@ -93,7 +93,7 @@ class APIEx(Example):
         """
         if dataset == "ts_ohlc":
             result = []
-            for i in range(size):
+            for i in range(1, size + 1):
                 s = APIEx._shift(i)
                 start_date = datetime.date(2023, 1, 1)
                 result.append(
@@ -109,7 +109,7 @@ class APIEx(Example):
             return result
         elif dataset == "panel_am":
             result = []
-            for i in range(size):
+            for i in range(1, size + 1):
                 s = APIEx._shift(i)
                 result.append(
                     {
