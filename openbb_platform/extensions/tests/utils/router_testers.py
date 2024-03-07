@@ -124,8 +124,8 @@ def check_api_example_violations(
     Criteria
     --------
     - When using models, at least one example using all required standard parameters.
-      It cannot use any provider specific parameters here.
-      It should not specify the provider field.
+    - It cannot use any provider specific parameters here.
+    - It should not specify the provider field.
     """
     api_example_violation: List[str] = []
 
@@ -140,7 +140,7 @@ def check_api_example_violations(
                 break
         else:
             api_example_violation.append(
-                f"'{router_name}' > '{function.__name__}': missing example with required fields only"
+                f"'{router_name}' > '{function.__name__}': missing example with required fields only > {required_fields}"
             )
 
     return api_example_violation
@@ -159,8 +159,8 @@ def check_router_command_examples() -> List[str]:
 
     API examples:
     - At least one example using all required parameters.
-      It cannot use any provider specific parameters here.
-      It should not specify the provider field.
+    - It cannot use any provider specific parameters here.
+    - It should not specify the provider field.
     """
     general_violation: List[str] = []
     api_example_violation: List[str] = []
