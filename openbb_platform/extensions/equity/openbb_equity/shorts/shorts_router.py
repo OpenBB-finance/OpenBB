@@ -46,7 +46,7 @@ async def short_volume(
 
 @router.command(
     model="EquityShortInterest",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"symbol": "AAPL"})],
 )
 async def short_interest(
     cc: CommandContext,

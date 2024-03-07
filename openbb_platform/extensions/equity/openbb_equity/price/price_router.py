@@ -40,7 +40,10 @@ async def nbbo(
 
 @router.command(
     model="EquityHistorical",
-    examples=[APIEx(parameters={"symbol": "AAPL"}), APIEx(parameters={"symbol": "AAPL", "interval": "1d"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "interval": "1d"}),
+    ],
 )
 async def historical(
     cc: CommandContext,

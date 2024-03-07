@@ -63,7 +63,10 @@ async def constituents(
 
 @router.command(
     model="IndexSnapshots",
-    examples=[APIEx(parameters={"region": "us", "provider": "cboe"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"region": "us", "provider": "cboe"}),
+    ],
 )
 async def snapshots(
     cc: CommandContext,
