@@ -902,7 +902,7 @@ class DocstringGenerator:
                     func_path=func_path,
                     param_types=param_types,
                     indentation=indent,
-                    target=target,
+                    prompt=">>> " if target == "docstring" else "",
                 )
             return doc if target == "docstring" else doc + "```\n\n"
         return ""

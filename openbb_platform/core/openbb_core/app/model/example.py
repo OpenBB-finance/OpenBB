@@ -69,9 +69,7 @@ class APIEx(Example):
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
         param_types: Dict[str, type] = kwargs.get("param_types", {})
-        target: Literal["doctring", "website"] = kwargs.get("target", "docstring")
-
-        prompt = ">>> " if target == "docstring" else ""
+        prompt = kwargs.get("prompt", "")
 
         eg = ""
         if self.description:
