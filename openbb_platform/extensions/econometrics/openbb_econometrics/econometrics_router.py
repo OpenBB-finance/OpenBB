@@ -553,7 +553,7 @@ def unit_root(
                 "x_columns": ["risk_free_rate"],
                 "data": APIEx.mock_data("panel"),
             }
-        )
+        ),
     ],
 )
 def panel_random_effects(

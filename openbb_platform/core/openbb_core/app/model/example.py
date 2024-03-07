@@ -3,8 +3,6 @@
 from abc import abstractmethod
 from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias
-from warnings import warn
-from openbb_core.app.model.abstract.warning import OpenBBWarning
 
 from pydantic import (
     BaseModel,
@@ -187,10 +185,6 @@ class APIEx(Example):
                 else:
                     eg += f"{k}={v}, "
             else:
-                warn(
-                    message=f"Parameter '{k}' not found in 'obb{func_path}'",
-                    category=OpenBBWarning,
-                )
                 eg += f"{k}={v}, "
 
         eg = indentation + eg.strip(", ") + ")\n"
