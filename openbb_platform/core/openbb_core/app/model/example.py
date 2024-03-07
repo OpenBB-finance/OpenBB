@@ -56,6 +56,13 @@ class APIEx(Example):
             )
         return values
 
+    @staticmethod
+    def unpack_type(type_: type):
+        """Unpack types from types, works with nested types, like Union[List[str], int]."""
+        if hasattr(type_, "__args__"):
+            return set().union(*map(APIEx.unpack_type, type_.__args__))
+        return {type_} if isinstance(type_, type) else {type(type_)}
+
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
 
@@ -73,7 +80,7 @@ class APIEx(Example):
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in param_types and (type_ := param_types.get(k)):
-                if QUOTE_TYPES.intersection(unpack_type(type_)):
+                if QUOTE_TYPES.intersection(self.unpack_type(type_)):
                     eg += f"{k}='{v}', "
                 else:
                     eg += f"{k}={v}, "
@@ -120,10 +127,3 @@ def filter_list(
         if (isinstance(e, APIEx) and (not e.provider or e.provider in providers))
         or e.scope != "api"
     ]
-
-
-def unpack_type(type_: type):
-    """Unpack types."""
-    if hasattr(type_, "__args__"):
-        return set().union(*map(unpack_type, type_.__args__))
-    return {type_} if isinstance(type_, type) else {type(type_)}
