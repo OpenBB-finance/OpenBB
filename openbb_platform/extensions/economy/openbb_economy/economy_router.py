@@ -148,7 +148,7 @@ async def fred_series(
 
 @router.command(
     model="MoneyMeasures",
-    examples=[APIEx(parameters={"adjusted": False})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"adjusted": False})],
 )
 async def money_measures(
     cc: CommandContext,
@@ -163,6 +163,7 @@ async def money_measures(
 @router.command(
     model="Unemployment",
     examples=[
+        APIEx(parameters={}),
         APIEx(parameters={"country": "all", "frequency": "quarterly"}),
         APIEx(
             description="Demographics for the statistics are selected with the `age` and `sex` parameters.",
@@ -199,7 +200,10 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
-    examples=[APIEx(parameters={"country": "all", "frequency": "quarterly"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"country": "all", "frequency": "quarterly"}),
+    ],
 )
 async def short_term_interest_rate(
     cc: CommandContext,
@@ -219,7 +223,10 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
-    examples=[APIEx(parameters={"country": "all", "frequency": "quarterly"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"country": "all", "frequency": "quarterly"}),
+    ],
 )
 async def long_term_interest_rate(
     cc: CommandContext,
@@ -243,6 +250,9 @@ async def long_term_interest_rate(
 @router.command(
     model="FredRegional",
     examples=[
+        APIEx(
+            parameters={"symbol": "NYICLAIMS"},
+        ),
         APIEx(
             description="With a date, time series data is returned.",
             parameters={
