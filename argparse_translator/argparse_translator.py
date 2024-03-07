@@ -53,7 +53,8 @@ class ArgparseTranslator:
         )
         self._required = self._parser.add_argument_group("required arguments")
 
-        self._generate_argparse_arguments(self.signature.parameters)
+        if any(param in self.type_hints for param in self.signature.parameters):
+            self._generate_argparse_arguments(self.signature.parameters)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
@@ -65,10 +66,11 @@ class ArgparseTranslator:
 
         patterns = ["openbb\n        ======", "Parameters\n        ----------"]
 
-        for pattern in patterns:
-            if pattern in func_doc:
-                func_doc = func_doc[: func_doc.index(pattern)].strip()
-                break
+        if func_doc:
+            for pattern in patterns:
+                if pattern in func_doc:
+                    func_doc = func_doc[: func_doc.index(pattern)].strip()
+                    break
 
         return func_doc
 
