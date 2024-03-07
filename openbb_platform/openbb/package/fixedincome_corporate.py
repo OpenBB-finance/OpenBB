@@ -419,12 +419,17 @@ class ROUTER_fixedincome_corporate(Container):
             ),
         ] = None,
         maturity: Annotated[
-            List[float], OpenBBCustomParameter(description="The maturities in years.")
-        ] = [10.0],
+            Union[float, str, List[Union[float, str]]],
+            OpenBBCustomParameter(
+                description="Maturities in years. Multiple items allowed for provider(s): fred."
+            ),
+        ] = 10.0,
         category: Annotated[
-            List[Literal["par_yield", "spot_rate"]],
-            OpenBBCustomParameter(description="The category."),
-        ] = ["spot_rate"],
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred."
+            ),
+        ] = "spot_rate",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
@@ -442,10 +447,10 @@ class ROUTER_fixedincome_corporate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : List[float]
-            The maturities in years.
-        category : List[Literal['par_yield', 'spot_rate']]
-            The category.
+        maturity : Union[float, str, List[Union[float, str]]]
+            Maturities in years. Multiple items allowed for provider(s): fred.
+        category : Union[str, List[str]]
+            Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
@@ -495,5 +500,12 @@ class ROUTER_fixedincome_corporate(Container):
                     "category": category,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "maturity": {"multiple_items_allowed": ["fred"]},
+                    "category": {
+                        "choices": ["par_yield", "spot_rate"],
+                        "multiple_items_allowed": ["fred"],
+                    },
+                },
             )
         )

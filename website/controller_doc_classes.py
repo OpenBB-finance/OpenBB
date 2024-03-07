@@ -294,8 +294,10 @@ class ControllerDoc:
 
         if self.name == "options" and hasattr(self.controller, "selected_date"):
             self.controller.selected_date = get_expiration_date()
+
         elif self.name == "ca" and hasattr(self.controller, "similar"):
             self.controller.similar = ["MSFT", "AAPL"]
+
         if hasattr(self.controller, "current_currency"):
             self.controller.current_currency = "usdt"
         if hasattr(self.controller, "source") and trailmap.split(".")[0] == "crypto":
