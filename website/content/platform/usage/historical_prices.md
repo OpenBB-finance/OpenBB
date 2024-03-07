@@ -219,7 +219,7 @@ obb.equity.price.historical("^RUT", provider="fmp").to_df().tail(1)
 | 2023-11-22  | 1792.51 | 1803.12 | 1789.88 | 1795.54 |        0 | 1796.18 | November 22, 23 |     1795.54 |                   0 |  3.02893 |          0.16898 |          0.0016898 |
 
 :::info
-**For an endpoint geared more specifically towards indices, try `obb.index.market()`**
+**For an endpoint geared more specifically towards indices, try `obb.index.price.historical()`**
 :::
 
 ### Currencies
