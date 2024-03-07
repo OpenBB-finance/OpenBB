@@ -73,7 +73,7 @@ class APIEx(Example):
         return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
-    def mock_data(dataset: Literal["ts_ohlcv", "panel_am"], size: int = 3) -> List[Dict]:
+    def mock_data(dataset: Literal["ts_ohlcv", "panel_am"], size: int = 5) -> List[Dict]:
         """Return mock data for the example.
 
         Parameters
@@ -84,7 +84,7 @@ class APIEx(Example):
             - 'panel_am': Panel data asset manager (multiindex)
 
         size : int
-            The size of the data to return.
+            The size of the data to return, default is 5.
 
         Returns
         -------
