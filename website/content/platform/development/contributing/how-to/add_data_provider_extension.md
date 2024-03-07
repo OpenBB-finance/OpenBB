@@ -37,7 +37,7 @@ If you've already been through some of the other data provider tasks - [How To A
 
 An easy way to get started is to copy and paste something existing. In the OpenBB GitHub repository, provider extensions are located [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/providers).
 
-For convenience's sake, download this template [zip file](placeholder.url). It contains the basic folder structure and everything required to get started creating new data models.
+For convenience's sake, download this template [zip file](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip). It contains the basic folder structure and everything required to get started creating new data models.
 
 For demonstration purposes, we'll assume this is from the perspective of somebody who will eventually open a pull request and contribute the code to the OpenBB repository. The process, however, also applies to publishing directly via PyPI. Anyone can make an OpenBB extension.
 
@@ -66,7 +66,7 @@ The `__init__.py` file where models are mapped to the router is under, `/openbb_
 
 To get started:
 
-- Unpack the downloaded zip file.
+- Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip) file.
   - If working with a cloned GitHub repo, the folder is:
   ```console
   ~/OpenBBTerminal/openbb_platform/providers
