@@ -92,10 +92,26 @@ class APIEx(Example):
 
         size : int
             The size of the data to return, default is 5.
-        field_list : List[str], optional
-            The list of fields to return, default:
-            - 'timeseries': ['close', 'volume']
-            - 'panel': ['asset_manager', 'portfolio_value', 'risk_free_rate']
+        sample : Dict[str, Any], optional
+            A sample of the data to return, by default None.
+        multiindex_names : List[str], optional
+            The names of the multiindex, by default None.
+
+        Timeseries default sample:
+        {
+            "date": "2023-01-01",
+            "close": 118.1,
+            "volume": 231402800,
+        }
+
+        Panel default sample:
+        {
+            "asset_manager": "BlackRock",
+            "time": 1,
+            "portfolio_value": 100000,
+            "risk_free_rate": 0.02,
+        }
+        multiindex_names: ["asset_manager", "time"]
 
         Returns
         -------
