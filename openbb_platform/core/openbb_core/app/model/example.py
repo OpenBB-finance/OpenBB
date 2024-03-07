@@ -4,7 +4,13 @@ from abc import abstractmethod
 from dataclasses import Field
 from typing import Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict, computed_field, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    computed_field,
+    model_validator,
+    Field as PydanticField,
+)
 
 
 class Example(BaseModel):
@@ -23,7 +29,9 @@ class APIEx(Example):
     """API Example model."""
 
     scope: Literal["api"] = "api"
-    description: Optional[str] = None
+    description: Optional[str] = PydanticField(
+        None, description="Optional description unless more than 3 parameters"
+    )
     parameters: Dict[str, Union[str, int, float, bool, None]]
 
     @computed_field  # type: ignore[misc]
