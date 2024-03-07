@@ -501,7 +501,8 @@ class MethodDefinition:
         """Get json schema extra."""
         field_default = getattr(field, "default", None)
         if field_default:
-            json_schema_extra = getattr(field_default, "json_schema_extra", {})
+            # Getting json_schema_extra without changing the original dict
+            json_schema_extra = getattr(field_default, "json_schema_extra", {}).copy()
             json_schema_extra.pop("choices", None)
             return json_schema_extra
         return {}
