@@ -950,7 +950,6 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
-                "extended_hours": False,
             }
         ),
         (
@@ -964,19 +963,20 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
-                "extended_hours": False,
             }
         ),
         (
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "unadjusted",
+                "adjusted": False,
+                "adjustment": "unadjusted",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-03",
                 "interval": "1m",
+                "extended_hours": False,
             }
         ),
         (
@@ -1001,6 +1001,8 @@ def test_equity_compare_groups(params, headers):
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
