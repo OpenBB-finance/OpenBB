@@ -1,6 +1,6 @@
 """Example class to represent endpoint examples."""
 
-import datetime
+from datetime import date, datetime, timedelta
 from abc import abstractmethod
 from typing import Any, Dict, List, Literal, Optional, Union, _UnionGenericAlias
 
@@ -12,7 +12,7 @@ from pydantic import (
     model_validator,
 )
 
-QUOTE_TYPES = {str, datetime.date}
+QUOTE_TYPES = {str, date}
 
 
 class Example(BaseModel):
@@ -78,7 +78,8 @@ class APIEx(Example):
     def mock_data(
         dataset: Literal["timeseries", "panel"],
         size: int = 5,
-        field_list: List[str] = None,
+        sample: Optional[Dict[str, Any]] = None,
+        multiindex_names: Optional[List[str]] = None,
     ) -> List[Dict]:
         """Return mock data for the example.
 
@@ -102,40 +103,45 @@ class APIEx(Example):
             A list of dictionaries with the mock data.
         """
         if dataset == "timeseries":
-            field_list = field_list or ["close", "volume"]
-            assert len(field_list) == 2, "field_list must have 2 elements"
+            sample = sample or {
+                "date": "2023-01-01",
+                "close": 118.1,
+                "volume": 231402800,
+            }
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
-                start_date = datetime.date(2023, 1, 1)
-                result.append(
-                    {
-                        "date": (start_date + datetime.timedelta(days=i)).isoformat(),
-                        field_list[0]: round(118.1 * s, 2),
-                        field_list[1]: 231402800 + i * 1000000,
-                    }
-                )
+                obs = {}
+                for k, v in sample.items():
+                    if k == "date":
+                        obs[k] = (
+                            datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
+                        ).strftime("%Y-%m-%d")
+                    else:
+                        obs[k] = round(v * s, 2)
+                result.append(obs)
             return result
         elif dataset == "panel":
-            field_list = field_list or [
-                "asset_manager",
-                "portfolio_value",
-                "risk_free_rate",
-            ]
-            assert len(field_list) == 3, "field_list must have 3 elements"
+            sample = sample or {
+                "asset_manager": "BlackRock",
+                "time": 1,
+                "portfolio_value": 100000,
+                "risk_free_rate": 0.02,
+            }
+            multiindex_names = multiindex_names or ["asset_manager", "time"]
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
-                result.append(
-                    {
-                        field_list[0]: "BlackRock",
-                        "time": i + 1,
-                        field_list[1]: 100000 + i * 1000,
-                        field_list[2]: round(0.02 * s, 2),
-                        "is_multiindex": True,
-                        "multiindex_names": "['asset_manager', 'time']",
-                    }
-                )
+                item: Dict[str, Any] = {
+                    "is_multiindex": True,
+                    "multiindex_names": str(multiindex_names),
+                }
+                for k, v in sample.items():
+                    if k == "asset_manager":
+                        item[k] = v
+                    else:
+                        item[k] = round(v + i * 1000, 2)
+                result.append(item)
             return result
         raise ValueError(f"Dataset '{dataset}' not found.")
 
