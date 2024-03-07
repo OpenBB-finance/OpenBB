@@ -38,7 +38,8 @@ router.include_router(shorts_router)
 @router.command(
     model="EquitySearch",
     examples=[
-        APIEx(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True})
+        APIEx(parameters={}),
+        APIEx(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True}),
     ],
 )
 async def search(

@@ -18,7 +18,10 @@ router = Router(prefix="/ownership")
 
 @router.command(
     model="EquityOwnership",
-    examples=[APIEx(parameters={"symbol": "AAPL", "page": 0})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "page": 0}),
+    ],
 )
 async def major_holders(
     cc: CommandContext,
@@ -46,7 +49,10 @@ async def institutional(
 
 @router.command(
     model="InsiderTrading",
-    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 500})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 500}),
+    ],
 )
 async def insider_trading(
     cc: CommandContext,

@@ -19,6 +19,7 @@ router = Router(prefix="/darkpool")
 @router.command(
     model="OTCAggregate",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             description="Get OTC data for a symbol",
             parameters={"symbol": "AAPL"},

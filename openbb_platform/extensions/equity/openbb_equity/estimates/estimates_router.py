@@ -19,6 +19,7 @@ router = Router(prefix="/estimates")
 @router.command(
     model="PriceTarget",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             description="Get price targets for Microsoft using 'benzinga' as provider.",
             parameters={
@@ -44,7 +45,10 @@ async def price_target(
 
 @router.command(
     model="AnalystEstimates",
-    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+    ],
 )
 async def historical(
     cc: CommandContext,
@@ -58,7 +62,10 @@ async def historical(
 
 @router.command(
     model="PriceTargetConsensus",
-    examples=[APIEx(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"}),
+    ],
 )
 async def consensus(
     cc: CommandContext,
@@ -72,7 +79,10 @@ async def consensus(
 
 @router.command(
     model="AnalystSearch",
-    examples=[APIEx(parameters={"firm_name": "Wedbush", "provider": "benzinga"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"firm_name": "Wedbush", "provider": "benzinga"}),
+    ],
 )
 async def analyst_search(
     cc: CommandContext,

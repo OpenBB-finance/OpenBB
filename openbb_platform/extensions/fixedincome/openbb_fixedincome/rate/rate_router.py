@@ -37,7 +37,10 @@ async def ameribor(
 
 @router.command(
     model="SONIA",
-    examples=[APIEx(parameters={}), APIEx(parameters={"parameter": "total_nominal_value"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"parameter": "total_nominal_value"}),
+    ],
 )
 async def sonia(
     cc: CommandContext,

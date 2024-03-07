@@ -32,7 +32,10 @@ async def us_yield_curve(
 
 @router.command(
     model="EUYieldCurve",
-    examples=[APIEx(parameters={}), APIEx(parameters={"yield_curve_type": "spot_rate"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"yield_curve_type": "spot_rate"}),
+    ],
 )
 async def eu_yield_curve(
     cc: CommandContext,

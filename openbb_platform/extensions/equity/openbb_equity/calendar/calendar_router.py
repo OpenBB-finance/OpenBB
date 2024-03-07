@@ -19,6 +19,7 @@ router = Router(prefix="/calendar")
 @router.command(
     model="CalendarIpo",
     examples=[
+        APIEx(parameters={}),
         APIEx(parameters={"limit": 100}),
         APIEx(description="Get all IPOs available.", parameters={}),
         APIEx(

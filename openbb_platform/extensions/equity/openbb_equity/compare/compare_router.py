@@ -35,6 +35,7 @@ async def peers(
 @router.command(
     model="CompareGroups",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             description="Group by sector and analyze valuation.",
             parameters={"group": "sector", "metric": "valuation"},
