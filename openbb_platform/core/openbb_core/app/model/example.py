@@ -30,7 +30,7 @@ class APIEx(Example):
 
     scope: Literal["api"] = "api"
     description: Optional[str] = PydanticField(
-        None, description="Optional description unless more than 3 parameters"
+        default=None, description="Optional description unless more than 3 parameters"
     )
     parameters: Dict[str, Union[str, int, float, bool, None]]
 
