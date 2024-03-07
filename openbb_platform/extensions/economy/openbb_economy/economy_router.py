@@ -23,6 +23,10 @@ router.include_router(gdp_router)
     model="EconomicCalendar",
     examples=[
         APIEx(
+            parameters={},
+            description="By default, the calendar will be forward-looking.",
+        ),
+        APIEx(
             parameters={
                 "provider": "fmp",
                 "start_date": "2020-03-01",
@@ -85,6 +89,7 @@ async def risk_premium(
 @router.command(
     model="BalanceOfPayments",
     examples=[
+        APIEx(parameters={}),
         APIEx(parameters={"report_type": "summary"}),
         APIEx(
             description="The `country` parameter will override the `report_type`.",
@@ -120,14 +125,14 @@ async def fred_search(
 @router.command(
     model="FredSeries",
     examples=[
-        APIEx(parameters={"series_id": "NFCI"}),
+        APIEx(parameters={"symbol": "NFCI"}),
         APIEx(
             description="Multiple series can be passed in as a list.",
-            parameters={"series_id": "NFCI,STLFSI4"},
+            parameters={"symbol": "NFCI,STLFSI4"},
         ),
         APIEx(
             description="Use the `transform` parameter to transform the data as change, log, or percent change.",
-            parameters={"series_id": "CBBTCUSD", "transform": "pc1"},
+            parameters={"symbol": "CBBTCUSD", "transform": "pc1"},
         ),
     ],
 )
@@ -177,7 +182,7 @@ async def unemployment(
 
 @router.command(
     model="CLI",
-    examples=[APIEx(parameters={"country": "all"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"country": "all"})],
 )
 async def composite_leading_indicator(
     cc: CommandContext,
@@ -239,12 +244,13 @@ async def long_term_interest_rate(
     model="FredRegional",
     examples=[
         APIEx(
-            description="With no date, the most recent report is returned.",
-            parameters={"series_id": "NYICLAIMS"},
-        ),
-        APIEx(
             description="With a date, time series data is returned.",
-            parameters={"series_id": "NYICLAIMS", "start_date": "2021-01-01"},
+            parameters={
+                "symbol": "NYICLAIMS",
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+                "limit": 10,
+            },
         ),
     ],
 )

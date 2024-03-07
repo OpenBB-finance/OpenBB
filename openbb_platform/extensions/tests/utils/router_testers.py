@@ -53,7 +53,7 @@ def check_router_model_functions_signature() -> List[str]:
                 args = list(function.__code__.co_varnames)
                 if args != expected_args and "model" in decorator:
                     missing_args.append(
-                        f"{function.__name__} in {router_name} doesn't have the expected args: {expected_args}"
+                        f"{function.__name__} in {router_name} missing expected args: {expected_args}"
                     )
                 if expected_return_type not in str(function.__annotations__["return"]):
                     missing_return_type.append(
@@ -81,7 +81,7 @@ def check_general_example_violations(
     # Check if the endpoint has examples
     if "examples" not in keywords or not examples:
         general_violation.append(
-            f"{function.__name__} in {router_name} doesn't have examples."
+            f"'{router_name}' > '{function.__name__}': missing examples"
         )
         return general_violation
     # Check if a POST method has both API and Python examples
@@ -91,11 +91,11 @@ def check_general_example_violations(
     ):
         if "APIEx" not in examples:
             general_violation.append(
-                f"{function.__name__} in {router_name} doesn't have an API example."
+                f"'{router_name}' > '{function.__name__}': missing API example"
             )
         if "PythonEx" not in examples:
             general_violation.append(
-                f"{function.__name__} in {router_name} doesn't have a Python example."
+                f"'{router_name}' > '{function.__name__}': missing Python example"
             )
     # Check if a POST endpoint excluded from the schema has a Python example
     if (
@@ -104,13 +104,13 @@ def check_general_example_violations(
         and ("PythonEx" not in examples)
     ):
         general_violation.append(
-            f"{function.__name__} in {router_name} is excluded from the"
-            f"schema but doesn't have a Python example."
+            f"'{router_name}' > '{function.__name__}': is excluded from the"
+            "api schema but doesn't have a Python example."
         )
         if "APIEx" in examples:
             general_violation.append(
-                f"{function.__name__} in {router_name} is excluded from the"
-                f"schema but has an API example."
+                f"'{router_name}' > '{function.__name__}': endpoint excluded from the"
+                "api schema but has an API example."
             )
 
     return general_violation
@@ -140,8 +140,7 @@ def check_api_example_violations(
                 break
         else:
             api_example_violation.append(
-                f"{function.__name__} in {router_name} doesn't have an example using only"
-                f" the required standard parameters."
+                f"'{router_name}' > '{function.__name__}': missing example with required fields only"
             )
 
     return api_example_violation
