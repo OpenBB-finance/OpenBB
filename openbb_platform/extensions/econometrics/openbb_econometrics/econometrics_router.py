@@ -278,7 +278,14 @@ def autocorrelation(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def residual_autocorrelation(
@@ -338,7 +345,13 @@ def residual_autocorrelation(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "columns": ["open", "close"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def cointegration(
@@ -402,7 +415,14 @@ def cointegration(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_column": "open",
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def causality(
@@ -465,7 +485,13 @@ def causality(
                 'obb.econometrics.unit_root(data=stock_data, column="close")',
                 'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "column": "close",
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def unit_root(
@@ -514,6 +540,13 @@ def unit_root(
 @router.command(
     methods=["POST"],
     examples=[
+        PythonEx(
+            description="Perform One-way Random Effects model for panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_random_effects(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -558,7 +591,25 @@ def panel_random_effects(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform a Between estimator regression on panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_between(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_between(
     data: List[Data],
     y_column: str,
@@ -592,7 +643,25 @@ def panel_between(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform a Pooled coefficient estimator regression on panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_pooled(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_pooled(
     data: List[Data],
     y_column: str,
@@ -627,7 +696,25 @@ def panel_pooled(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform One- and two-way fixed effects estimator for panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_fixed(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_fixed(
     data: List[Data],
     y_column: str,
@@ -661,7 +748,25 @@ def panel_fixed(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform a first-difference estimate for panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_first_difference(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_first_difference(
     data: List[Data],
     y_column: str,
@@ -695,7 +800,25 @@ def panel_first_difference(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Fama-MacBeth estimator for panel data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.panel_fmac(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_fmac(
     data: List[Data],
     y_column: str,
