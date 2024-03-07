@@ -80,7 +80,7 @@ def check_docstring_examples() -> List[str]:
     return errors
 
 
-def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
+def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     """List installed openbb extensions and providers.
 
     Returns
@@ -105,7 +105,7 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
     for entry_point in entry_points_dict.get("openbb_obbject_extension", []):
         obbject_extensions.add(f"{entry_point.name}")
 
-    return core_extensions, provider_extensions
+    return core_extensions, provider_extensions, obbject_extensions
 
 
 def collect_routers(target_dir: str) -> List[str]:
