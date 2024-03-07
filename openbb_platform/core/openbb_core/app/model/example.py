@@ -76,7 +76,7 @@ class APIEx(Example):
 
     @staticmethod
     def mock_data(
-        dataset: Literal["ts_close_vol", "panel_am"], size: int = 5
+        dataset: Literal["timeseries", "panel"], size: int = 5, field_list: List[str] = None
     ) -> List[Dict]:
         """Return mock data for the example.
 
@@ -84,18 +84,24 @@ class APIEx(Example):
         ----------
         dataset : str
             The type of data to return:
-            - 'ts_close_vol': Time series OHLC data
-            - 'panel_am': Panel data asset manager (multiindex)
+            - 'timeseries': Time series OHLC data
+            - 'panel': Panel data asset manager (multiindex)
 
         size : int
             The size of the data to return, default is 5.
+        field_list : List[str], optional
+            The list of fields to return, default:
+            - 'timeseries': ['close', 'volume']
+            - 'panel': ['asset_manager', 'portfolio_value', 'risk_free_rate']
 
         Returns
         -------
         List[Dict]
             A list of dictionaries with the mock data.
         """
-        if dataset == "ts_close_vol":
+        if dataset == "timeseries":
+            field_list = field_list or ["close", "volume"]
+            assert len(field_list) == 2, "field_list must have 2 elements"
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
@@ -103,24 +109,23 @@ class APIEx(Example):
                 result.append(
                     {
                         "date": (start_date + datetime.timedelta(days=i)).isoformat(),
-                        "close": round(118.1 * s, 2),
-                        "volume": 231402800 + i * 1000000,
+                        field_list[0]: round(118.1 * s, 2),
+                        field_list[1]: 231402800 + i * 1000000,
                     }
                 )
             return result
-        elif dataset == "panel_am":
+        elif dataset == "panel":
+            field_list = field_list or ["asset_manager", "portfolio_value", "risk_free_rate"]
+            assert len(field_list) == 3, "field_list must have 3 elements"
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
                 result.append(
                     {
-                        "asset_manager": "BlackRock",
+                        field_list[0]: "BlackRock",
                         "time": i + 1,
-                        "portfolio_value": 100000 + i * 1000,
-                        "stock_a_return": round(0.05 * s, 2),
-                        "stock_b_return": round(0.03 * s, 2),
-                        "market_volatility": round(0.1 * s, 2),
-                        "risk_free_rate": round(0.02 * s, 2),
+                        field_list[1]: 100000 + i * 1000,
+                        field_list[2]: round(0.02 * s, 2),
                         "is_multiindex": True,
                         "multiindex_names": "['asset_manager', 'time']",
                     }

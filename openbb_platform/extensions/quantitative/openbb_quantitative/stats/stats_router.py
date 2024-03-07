@@ -35,7 +35,7 @@ router = Router(prefix="/stats")
                 'obb.quantitative.stats.skew(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def skew(
@@ -82,7 +82,7 @@ def skew(
                 'obb.quantitative.stats.variance(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -123,7 +123,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.stdev(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -166,7 +166,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.kurtosis(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -210,7 +210,7 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def quantile(
@@ -261,7 +261,7 @@ def quantile(
                 'obb.quantitative.stats.mean(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def mean(

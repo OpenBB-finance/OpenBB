@@ -36,7 +36,7 @@ router = Router(prefix="/rolling")
                 'obb.quantitative.rolling.skew(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def skew(
@@ -91,7 +91,7 @@ def skew(
                 'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def variance(
@@ -139,7 +139,7 @@ def variance(
                 'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def stdev(
@@ -191,7 +191,7 @@ def stdev(
                 'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def kurtosis(
@@ -246,7 +246,7 @@ def kurtosis(
                 'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def quantile(
@@ -316,7 +316,7 @@ def quantile(
                 'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def mean(

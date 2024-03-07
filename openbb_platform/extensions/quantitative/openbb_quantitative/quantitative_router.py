@@ -47,7 +47,7 @@ router.include_router(performance_router)
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 8)}
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 8)}
         ),
     ],
 )
@@ -105,7 +105,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 31)}
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}
         ),
     ],
 )
@@ -170,7 +170,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 5)}
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}
         ),
     ],
 )
@@ -243,7 +243,7 @@ def unitroot_test(
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 5)}
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}
         ),
     ],
 )
