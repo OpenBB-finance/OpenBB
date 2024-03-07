@@ -490,7 +490,18 @@ def unit_root(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_multi_index_data(),
+            }
+        )
+    ],
+)
 def panel_random_effects(
     data: List[Data],
     y_column: str,
@@ -518,6 +529,8 @@ def panel_random_effects(
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
+    if len(X) < 3:
+        raise ValueError("This analysis requires at least 3 items in the dataset.")
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
     results = RandomEffects(y, exogenous).fit()

@@ -2,7 +2,7 @@
 
 import datetime
 from abc import abstractmethod
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union, _UnionGenericAlias
 
 from pydantic import (
     BaseModel,
@@ -25,6 +25,45 @@ class Example(BaseModel):
     @abstractmethod
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
+
+    @staticmethod
+    def mock_multi_index_data() -> list:
+        """Return mock data for the example."""
+        return [
+            {
+                "asset_manager": "BlackRock",
+                "time": 1,
+                "portfolio_value": 100000,
+                "stock_a_return": 0.05,
+                "stock_b_return": 0.03,
+                "market_volatility": 0.1,
+                "risk_free_rate": 0.02,
+                "is_multiindex": True,
+                "multiindex_names": "['asset_manager', 'time']",
+            },
+            {
+                "asset_manager": "BlackRock",
+                "time": 2,
+                "portfolio_value": 110000,
+                "stock_a_return": 0.03,
+                "stock_b_return": 0.04,
+                "market_volatility": 0.12,
+                "risk_free_rate": 0.025,
+                "is_multiindex": True,
+                "multiindex_names": "['asset_manager', 'time']",
+            },
+            {
+                "asset_manager": "BlackRock",
+                "time": 3,
+                "portfolio_value": 105000,
+                "stock_a_return": 0.04,
+                "stock_b_return": 0.02,
+                "market_volatility": 0.11,
+                "risk_free_rate": 0.03,
+                "is_multiindex": True,
+                "multiindex_names": "['asset_manager', 'time']",
+            },
+        ]
 
     @staticmethod
     def mock_ohlc_data() -> list:
@@ -105,7 +144,9 @@ class APIEx(Example):
     description: Optional[str] = Field(
         default=None, description="Optional description unless more than 3 parameters"
     )
-    parameters: Dict[str, Union[str, int, float, bool, List[Dict[str, Any]], None]]
+    parameters: Dict[
+        str, Union[str, int, float, bool, List[str], List[Dict[str, Any]], None]
+    ]
 
     @computed_field  # type: ignore[misc]
     @property
@@ -130,7 +171,7 @@ class APIEx(Example):
     @staticmethod
     def unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
-        if hasattr(type_, "__args__"):
+        if hasattr(type_, "__args__") and type(type_) is _UnionGenericAlias:  # type: ignore[misc]
             return set().union(*map(APIEx.unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
 
