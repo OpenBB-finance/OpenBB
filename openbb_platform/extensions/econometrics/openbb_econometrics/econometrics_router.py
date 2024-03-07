@@ -87,7 +87,14 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def ols_regression(
@@ -132,7 +139,14 @@ def ols_regression(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def ols_regression_summary(
@@ -210,7 +224,14 @@ def ols_regression_summary(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
-        )
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def autocorrelation(

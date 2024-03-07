@@ -61,7 +61,9 @@ class APIEx(Example):
     @staticmethod
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
-        if hasattr(type_, "__args__") and type(type_) is not _GenericAlias:  # pylint: disable=unidiomatic-typecheck
+        if (
+            hasattr(type_, "__args__") and type(type_) is not _GenericAlias
+        ):  # pylint: disable=unidiomatic-typecheck
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
 
@@ -96,8 +98,11 @@ class APIEx(Example):
         Timeseries default sample:
         {
             "date": "2023-01-01",
-            "close": 118.1,
-            "volume": 231402800,
+            "open": 110.0,
+            "high": 120.0,
+            "low": 100.0,
+            "close": 115.0,
+            "volume": 10000,
         }
 
         Panel default sample:
@@ -117,8 +122,11 @@ class APIEx(Example):
         if dataset == "timeseries":
             sample = sample or {
                 "date": "2023-01-01",
-                "close": 118.1,
-                "volume": 231402800,
+                "open": 110.0,
+                "high": 120.0,
+                "low": 100.0,
+                "close": 115.0,
+                "volume": 10000,
             }
             result = []
             for i in range(1, size + 1):
