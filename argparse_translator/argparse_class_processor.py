@@ -1,10 +1,10 @@
 import inspect
-from typing import Dict, Type
-
-from argparse_translator.argparse_translator import ArgparseTranslator
+from typing import Callable, Dict, Type
 
 # TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
+
+from argparse_translator.argparse_translator import ArgparseTranslator
 
 
 class ArgparseClassProcessor:
@@ -69,6 +69,11 @@ class ArgparseClassProcessor:
     ) -> Dict[str, ArgparseTranslator]:
         methods = {}
 
+        def make_prop_as_callable(name):
+            # This is necessary because lambda functions capture variables by reference,
+            # not by value, leading to all lambdas using the last value of name from the loop.
+            return lambda: getattr(target, name)
+
         for name, member in inspect.getmembers(target):
             if name.startswith("__") or name.startswith("_"):
                 continue
@@ -76,6 +81,13 @@ class ArgparseClassProcessor:
                 class_name = ArgparseClassProcessor._get_class_name(target)
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member, add_help=add_help
+                )
+            if isinstance(getattr(target.__class__, name, None), property):
+                prop_as_callable: Callable = make_prop_as_callable(name)
+                prop_as_callable.__doc__ = getattr(target.__class__, name).__doc__
+                prop_as_callable.__name__ = name
+                methods[name] = ArgparseTranslator(
+                    func=prop_as_callable, add_help=add_help
                 )
             elif isinstance(member, Container):
                 methods = {
