@@ -3,7 +3,10 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.custom_parameter import (
+    OpenBBCustomChoices,
+    OpenBBCustomParameter,
+)
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -433,6 +436,7 @@ class ROUTER_fixedincome_corporate(Container):
             OpenBBCustomParameter(
                 description="Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred."
             ),
+            OpenBBCustomChoices(choices=["par_yield", "spot_rate"]),
         ] = "spot_rate",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
@@ -507,10 +511,7 @@ class ROUTER_fixedincome_corporate(Container):
                 extra_params=kwargs,
                 extra_info={
                     "maturity": {"multiple_items_allowed": ["fred"]},
-                    "category": {
-                        "choices": ["par_yield", "spot_rate"],
-                        "multiple_items_allowed": ["fred"],
-                    },
+                    "category": {"multiple_items_allowed": ["fred"]},
                 },
             )
         )

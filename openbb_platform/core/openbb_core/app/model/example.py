@@ -2,7 +2,7 @@
 
 from datetime import date, datetime, timedelta
 from abc import abstractmethod
-from typing import Any, Dict, List, Literal, Optional, Union, _UnionGenericAlias
+from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias
 
 from pydantic import (
     BaseModel,
@@ -61,11 +61,7 @@ class APIEx(Example):
     @staticmethod
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
-        if (
-            hasattr(type_, "__args__")
-            and type(type_)  # pylint: disable=unidiomatic-typecheck
-            is _UnionGenericAlias
-        ):
+        if hasattr(type_, "__args__") and not (type(type_) is _GenericAlias):  # pylint: disable=unidiomatic-typecheck
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
 
@@ -157,7 +153,7 @@ class APIEx(Example):
                     if k == "asset_manager":
                         item[k] = v
                     else:
-                        item[k] = round(v + i * 1000, 2)
+                        item[k] = round(v * s, 2)
                 result.append(item)
             return result
         raise ValueError(f"Dataset '{dataset}' not found.")
