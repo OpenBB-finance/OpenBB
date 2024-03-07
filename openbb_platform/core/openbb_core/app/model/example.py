@@ -63,8 +63,8 @@ class APIEx(Example):
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
         if (
             hasattr(type_, "__args__")
-            and type(type_)
-            is _UnionGenericAlias  # pylint: disable=unidiomatic-typecheck
+            and type(type_)  # pylint: disable=unidiomatic-typecheck
+            is _UnionGenericAlias
         ):
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}

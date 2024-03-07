@@ -3,7 +3,7 @@
 from typing import List
 
 import pandas as pd
-from openbb_core.app.model.example import PythonEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -34,7 +34,8 @@ router = Router(prefix="/stats")
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.skew(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def skew(
@@ -80,7 +81,8 @@ def skew(
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.variance(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -120,7 +122,8 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.stdev(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -162,7 +165,8 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.kurtosis(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -205,7 +209,8 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def quantile(
@@ -255,7 +260,8 @@ def quantile(
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.mean(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def mean(

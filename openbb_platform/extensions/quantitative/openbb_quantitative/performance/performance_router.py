@@ -97,7 +97,10 @@ def omega_ratio(
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.sharpe_ratio(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")},
+        ),
     ],
 )
 def sharpe_ratio(
@@ -157,7 +160,10 @@ def sharpe_ratio(
                 'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
                 'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
             ],
-        )
+        ),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")},
+        ),
     ],
 )
 def sortino_ratio(
