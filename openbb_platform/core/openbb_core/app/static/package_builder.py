@@ -878,7 +878,7 @@ class DocstringGenerator:
         return obbject_description
 
     @staticmethod
-    def append_examples(
+    def build_examples(
         func_path: str,
         param_types: Dict[str, type],
         examples: Optional[List[Example]],
@@ -1063,7 +1063,7 @@ class DocstringGenerator:
             doc = doc.replace("\n    ", f"\n{create_indent(2)}")
 
         if doc and examples:
-            doc += cls.append_examples(
+            doc += cls.build_examples(
                 path.replace("/", "."),
                 param_types,
                 examples,
