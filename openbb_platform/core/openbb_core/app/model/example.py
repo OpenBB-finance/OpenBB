@@ -69,8 +69,8 @@ class APIEx(Example):
 
     @staticmethod
     def _shift(i: int) -> float:
-        """Return a shift value."""
-        return 2 * (i + 1) / (2 * i + 1) % 1
+        """Return a shifted value."""
+        return 2 * (i + 1) / (2 * i + 1) % 1 + 1
 
     @staticmethod
     def mock_data(dataset: Literal["ts_ohlc", "panel_am"], size: int = 3) -> List[Dict]:
