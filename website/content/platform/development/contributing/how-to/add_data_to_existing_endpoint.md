@@ -240,9 +240,9 @@ Every model will be different, but most items below will be typical of nearly ev
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_eps import (
@@ -257,8 +257,6 @@ from openbb_core.provider.utils.helpers import (
     amake_requests
 )
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 ```
 
 ### Define The QueryParams
@@ -421,7 +419,7 @@ class AVHistoricalEpsFetcher(
 
             # If no data is returned, raise a warning and move on to the next symbol.
             if not data:
-                _warn(f"Symbol Error: No data found for {symbol}")
+                warn(f"Symbol Error: No data found for {symbol}")
 
         await amake_requests(urls, response_callback, **kwargs)  # type: ignore
 
