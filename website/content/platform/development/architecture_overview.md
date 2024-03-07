@@ -29,7 +29,7 @@ The OpenBB Platform core relies on a set of carefully selected Python libraries.
 - Uvicorn as the ASGI server.
 - Pandas for data manipulation and analysis.
 - Pydantic for data validation and serialization using Python type annotations.
-- Requests for making HTTP requests.
+- Requests/AIOHTTP for making HTTP requests.
 - Websockets for handling WebSocket connections.
 
 These dependencies are specified in the `pyproject.toml` files.
