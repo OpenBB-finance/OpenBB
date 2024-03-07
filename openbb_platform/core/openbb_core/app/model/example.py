@@ -150,7 +150,7 @@ class APIEx(Example):
                     "multiindex_names": str(multiindex_names),
                 }
                 for k, v in sample.items():
-                    if k == "asset_manager":
+                    if isinstance(v, str):
                         item[k] = v
                     else:
                         item[k] = round(v * s, 2)
