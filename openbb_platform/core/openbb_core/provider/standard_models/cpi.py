@@ -74,7 +74,10 @@ CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 class ConsumerPriceIndexQueryParams(QueryParams):
     """CPI Query."""
 
-    country: str = Field(description=QUERY_DESCRIPTIONS.get("country"))
+    country: str = Field(
+        description=QUERY_DESCRIPTIONS.get("country"),
+        choices=CPI_COUNTRIES,  # type: ignore
+    )
     units: CPI_UNITS = Field(
         default="growth_same",
         description=QUERY_DESCRIPTIONS.get("units", "")
