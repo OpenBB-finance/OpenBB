@@ -34,7 +34,25 @@ router = Router(prefix="")
     methods=["POST"],
     examples=[
         APIEx(
-            parameters={"data": [{"x": 1, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 4}]}
+            parameters={
+                "data": [
+                    {
+                        "date": "2023-01-03",
+                        "open": 118.47,
+                        "close": 118.1,
+                    },
+                    {
+                        "date": "2023-01-04",
+                        "open": 109.11,
+                        "close": 113.64,
+                    },
+                    {
+                        "date": "2023-01-05",
+                        "open": 110.51,
+                        "close": 110.34,
+                    },
+                ]
+            }
         ),
         PythonEx(
             description="Get the correlation matrix of a dataset.",

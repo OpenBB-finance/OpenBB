@@ -1035,15 +1035,20 @@ class DocstringGenerator:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
         param_types = {}
+
+        # Parameters explicit in the function signature
+        explicit_params = dict(formatted_params)
+        explicit_params.pop("extra_params", None)
+        # Map of parameter names to types
+        param_types = {k: v.annotation for k, v in explicit_params.items()}
+
         if model_name:
             params = cls.provider_interface.params.get(model_name, {})
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
-                explicit_params = dict(formatted_params)
-                explicit_params.pop("extra_params", None)
-                kwarg_params = params["extra"].__dataclass_fields__
 
-                param_types = {k: v.annotation for k, v in explicit_params.items()}
+                # Parameters passed as **kwargs
+                kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
 
                 returns = return_schema.model_fields

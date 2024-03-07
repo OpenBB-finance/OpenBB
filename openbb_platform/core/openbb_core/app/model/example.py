@@ -2,7 +2,7 @@
 
 import datetime
 from abc import abstractmethod
-from typing import Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from pydantic import (
     BaseModel,
@@ -26,6 +26,36 @@ class Example(BaseModel):
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
 
+    @staticmethod
+    def mock_ohlc_data() -> list:
+        """Return mock data for the example."""
+        return [
+            {
+                "date": "2023-01-03",
+                "open": 118.47,
+                "high": 118.80,
+                "low": 104.64,
+                "close": 118.1,
+                "volume": 231402800,
+            },
+            {
+                "date": "2023-01-04",
+                "open": 109.11,
+                "high": 114.59,
+                "low": 107.52,
+                "close": 113.64,
+                "volume": 180389000,
+            },
+            {
+                "date": "2023-01-05",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+        ]
+
 
 class APIEx(Example):
     """API Example model."""
@@ -34,7 +64,7 @@ class APIEx(Example):
     description: Optional[str] = Field(
         default=None, description="Optional description unless more than 3 parameters"
     )
-    parameters: Dict[str, Union[str, int, float, bool, list, None]]
+    parameters: Dict[str, Union[str, int, float, bool, List[Dict[str, Any]], None]]
 
     @computed_field  # type: ignore[misc]
     @property
