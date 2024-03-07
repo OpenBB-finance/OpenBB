@@ -3,10 +3,10 @@
 # pylint: disable=unused-argument
 
 import asyncio
-import warnings
 from datetime import datetime
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_alpha_vantage.utils.helpers import (
@@ -33,9 +33,8 @@ from pydantic import (
     Field,
     NonNegativeFloat,
     PositiveFloat,
+    model_validator,
 )
-
-_warn = warnings.warn
 
 
 class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -58,6 +57,25 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         description="Include Pre and Post market data.",
         default=False,
     )
+    adjusted: bool = Field(
+        default=False,
+        exclude=True,
+        description="This field is deprecated (4.1.5) and will be removed in a future version."
+        + " Use 'adjustment' set as 'splits_and_dividends' instead.",
+        json_schema_extra={"deprecated": True},
+    )
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_deprecated_params(cls, values):
+        """Validate the deprecated parameters."""
+        for k, v in values.copy().items():
+            if k in ["adjusted"] and v is True:
+                warn(
+                    f"The '{k}' parameter is deprecated and will be removed in a future version."
+                )
+                values["adjustment"] = "splits_and_dividends"
+        return values
 
 
 class AVEquityHistoricalData(EquityHistoricalData):
@@ -159,7 +177,7 @@ class AVEquityHistoricalFetcher(
                     df.loc[:, "symbol"] = symbol
                 results.extend(df.to_dict("records"))
             if not data:
-                _warn(f"Symbol Error: No data found for {symbol}")
+                warn(f"Symbol Error: No data found for {symbol}")
             return results
 
         async def get_one(symbol, intraday: bool = False):
@@ -168,7 +186,7 @@ class AVEquityHistoricalFetcher(
             if intraday is True:
                 adjusted = query.adjustment != "unadjusted"
                 if query.adjustment == "splits_only":
-                    _warn(
+                    warn(
                         "Intraday does not support 'splits_only'. Using 'splits_and_dividends' instead."
                     )
                 url = (
@@ -191,7 +209,7 @@ class AVEquityHistoricalFetcher(
             )
             result = await amake_request(url, response_callback=callback)
             if not result:
-                _warn(f"Symbol Error: No data found for {symbol}")
+                warn(f"Symbol Error: No data found for {symbol}")
             if result:
                 data = read_csv(BytesIO(result))  # type: ignore
                 if len(data) > 0:

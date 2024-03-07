@@ -5,6 +5,7 @@
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -17,7 +18,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
 from pandas import DataFrame, Timestamp
-from pydantic import Field, PrivateAttr, field_validator
+from pydantic import Field, PrivateAttr, field_validator, model_validator
 
 
 class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -58,6 +59,21 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default="splits_only",
         description="The adjustment factor to apply. Default is splits only.",
     )
+    adjusted: bool = Field(
+        default=False,
+        exclude=True,
+        description="This field is deprecated (4.1.5) and will be removed in a future version."
+        + " Use 'adjustment' set as 'splits_and_dividends' instead.",
+        json_schema_extra={"deprecated": True},
+    )
+    prepost: bool = Field(
+        default=False,
+        exclude=True,
+        description="This field is deprecated (4.1.5) and will be removed in a future version."
+        + " Use 'extended_hours' as True instead.",
+        json_schema_extra={"deprecated": True},
+    )
+
     _ignore_tz: bool = PrivateAttr(default=True)
     _progress: bool = PrivateAttr(default=False)
     _keepna: bool = PrivateAttr(default=False)
@@ -65,6 +81,23 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _rounding: bool = PrivateAttr(default=False)
     _repair: bool = PrivateAttr(default=False)
     _group_by: Literal["ticker", "column"] = PrivateAttr(default="ticker")
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_deprecated_params(cls, values):
+        """Validate the deprecated parameters."""
+        for k, v in values.copy().items():
+            if k in ["adjusted"] and v is True:
+                warn(
+                    f"The '{k}' parameter is deprecated and will be removed in a future version."
+                )
+                values["adjustment"] = "splits_and_dividends"
+            if k in ["prepost"] and v is True:
+                warn(
+                    f"The '{k}' parameter is deprecated and will be removed in a future version."
+                )
+                values["extended_hours"] = True
+        return values
 
 
 class YFinanceEquityHistoricalData(EquityHistoricalData):
