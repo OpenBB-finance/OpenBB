@@ -3,7 +3,10 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.custom_parameter import (
+    OpenBBCustomChoices,
+    OpenBBCustomParameter,
+)
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -240,6 +243,59 @@ class ROUTER_economy(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(
                 description="The country to get data. Multiple items allowed for provider(s): fred."
+            ),
+            OpenBBCustomChoices(
+                choices=[
+                    "australia",
+                    "austria",
+                    "belgium",
+                    "brazil",
+                    "bulgaria",
+                    "canada",
+                    "chile",
+                    "china",
+                    "croatia",
+                    "cyprus",
+                    "czech_republic",
+                    "denmark",
+                    "estonia",
+                    "euro_area",
+                    "finland",
+                    "france",
+                    "germany",
+                    "greece",
+                    "hungary",
+                    "iceland",
+                    "india",
+                    "indonesia",
+                    "ireland",
+                    "israel",
+                    "italy",
+                    "japan",
+                    "korea",
+                    "latvia",
+                    "lithuania",
+                    "luxembourg",
+                    "malta",
+                    "mexico",
+                    "netherlands",
+                    "new_zealand",
+                    "norway",
+                    "poland",
+                    "portugal",
+                    "romania",
+                    "russian_federation",
+                    "slovak_republic",
+                    "slovakia",
+                    "slovenia",
+                    "south_africa",
+                    "spain",
+                    "sweden",
+                    "switzerland",
+                    "turkey",
+                    "united_kingdom",
+                    "united_states",
+                ]
             ),
         ],
         units: Annotated[

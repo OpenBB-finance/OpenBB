@@ -34,8 +34,11 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.custom_parameter import (
+    OpenBBCustomChoices,
+    OpenBBCustomParameter,
+)
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console
@@ -336,9 +339,7 @@ class ImportDefinition:
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
-        code += (
-            "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
-        )
+        code += "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter, OpenBBCustomChoices"
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -506,7 +507,10 @@ class MethodDefinition:
         """Get json schema extra."""
         field_default = getattr(field, "default", None)
         if field_default:
-            return getattr(field_default, "json_schema_extra", {})
+            # Getting json_schema_extra without changing the original dict
+            json_schema_extra = getattr(field_default, "json_schema_extra", {}).copy()
+            json_schema_extra.pop("choices", None)
+            return json_schema_extra
         return {}
 
     @staticmethod
@@ -610,10 +614,10 @@ class MethodDefinition:
         return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
-    def add_field_descriptions(
+    def add_field_custom_annotations(
         od: OrderedDict[str, Parameter], model_name: Optional[str] = None
     ):
-        """Add the field description to the param signature."""
+        """Add the field custom description and choices to the param signature as annotations."""
         if model_name:
             available_fields: Dict[str, Field] = (
                 ProviderInterface().params[model_name]["standard"].__dataclass_fields__
@@ -623,16 +627,28 @@ class MethodDefinition:
                 if param not in available_fields:
                     continue
 
-                field = available_fields[param]
+                field_default = available_fields[param].default
 
-                new_value = value.replace(
-                    annotation=Annotated[
-                        value.annotation,
-                        OpenBBCustomParameter(
-                            description=getattr(field.default, "description", "")
-                        ),
-                    ],
+                choices = getattr(field_default, "json_schema_extra", {}).get(
+                    "choices", []
                 )
+                description = getattr(field_default, "description", "")
+
+                if choices:
+                    new_value = value.replace(
+                        annotation=Annotated[
+                            value.annotation,
+                            OpenBBCustomParameter(description=description),
+                            OpenBBCustomChoices(choices=choices),
+                        ],
+                    )
+                else:
+                    new_value = value.replace(
+                        annotation=Annotated[
+                            value.annotation,
+                            OpenBBCustomParameter(description=description),
+                        ],
+                    )
 
                 od[param] = new_value
 
@@ -673,7 +689,7 @@ class MethodDefinition:
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
-        MethodDefinition.add_field_descriptions(
+        MethodDefinition.add_field_custom_annotations(
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
