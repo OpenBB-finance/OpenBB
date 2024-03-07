@@ -1,18 +1,19 @@
 """Example class to represent endpoint examples."""
 
-from abc import abstractmethod
 import datetime
+from abc import abstractmethod
 from typing import Dict, List, Literal, Optional, Union
 
 from pydantic import (
     BaseModel,
     ConfigDict,
+    Field,
     computed_field,
     model_validator,
-    Field,
 )
 
 QUOTE_TYPES = {str, datetime.date}
+
 
 class Example(BaseModel):
     """Example model."""

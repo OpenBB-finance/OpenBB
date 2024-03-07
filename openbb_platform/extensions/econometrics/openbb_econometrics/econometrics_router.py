@@ -33,14 +33,16 @@ router = Router(prefix="")
 @router.command(
     methods=["POST"],
     examples=[
-        APIEx(parameters={"data": [{"x": 1, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 4}]}),
+        APIEx(
+            parameters={"data": [{"x": 1, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 4}]}
+        ),
         PythonEx(
             description="Get the correlation matrix of a dataset.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 "obb.econometrics.correlation_matrix(data=stock_data)",
             ],
-        )
+        ),
     ],
 )
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
