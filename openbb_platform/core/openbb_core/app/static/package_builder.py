@@ -880,7 +880,7 @@ class DocstringGenerator:
     @staticmethod
     def append_examples(
         func_path: str,
-        func_params: Dict[str, Field],
+        param_types: Dict[str, type],
         examples: Optional[List[Example]],
         target: Literal["docstring", "website"] = "docstring",
     ) -> str:
@@ -900,7 +900,7 @@ class DocstringGenerator:
             for e in examples:
                 doc += e.to_python(
                     func_path=func_path,
-                    func_params=func_params,
+                    param_types=param_types,
                     indentation=indent,
                     target=target,
                 )
@@ -1034,7 +1034,7 @@ class DocstringGenerator:
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
-        func_params = {}
+        param_types = {}
         if model_name:
             params = cls.provider_interface.params.get(model_name, {})
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
@@ -1042,10 +1042,10 @@ class DocstringGenerator:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
                 kwarg_params = params["extra"].__dataclass_fields__
-                func_params = {
-                    **params["standard"].__dataclass_fields__,
-                    **params["extra"].__dataclass_fields__,
-                }
+
+                param_types = {k: v.annotation for k, v in explicit_dict.items()}
+                param_types.update({k: v.type for k, v in kwarg_params.items()})
+
                 returns = return_schema.model_fields
                 results_type = func.__annotations__.get("return", model_name)
                 if hasattr(results_type, "results_type_repr"):
@@ -1065,7 +1065,7 @@ class DocstringGenerator:
         if doc and examples:
             doc += cls.append_examples(
                 path.replace("/", "."),
-                func_params,
+                param_types,
                 examples,
             )
 

@@ -1,7 +1,7 @@
 """Example class to represent endpoint examples."""
 
 from abc import abstractmethod
-from dataclasses import Field
+import datetime
 from typing import Dict, List, Literal, Optional, Union
 
 from pydantic import (
@@ -9,9 +9,10 @@ from pydantic import (
     ConfigDict,
     computed_field,
     model_validator,
-    Field as PydanticField,
+    Field,
 )
 
+QUOTE_TYPES = {str, datetime.date}
 
 class Example(BaseModel):
     """Example model."""
@@ -29,10 +30,10 @@ class APIEx(Example):
     """API Example model."""
 
     scope: Literal["api"] = "api"
-    description: Optional[str] = PydanticField(
+    description: Optional[str] = Field(
         default=None, description="Optional description unless more than 3 parameters"
     )
-    parameters: Dict[str, Union[str, int, float, bool, None]]
+    parameters: Dict[str, Union[str, int, float, bool, list, None]]
 
     @computed_field  # type: ignore[misc]
     @property
@@ -56,11 +57,10 @@ class APIEx(Example):
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
-        BASIC_TYPES = {int, float, bool}
 
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
-        func_params: Dict[str, Field] = kwargs.get("func_params", {})
+        param_types: Dict[str, type] = kwargs.get("param_types", {})
         target: Literal["doctring", "website"] = kwargs.get("target", "docstring")
 
         prompt = ">>> " if target == "docstring" else ""
@@ -71,13 +71,13 @@ class APIEx(Example):
 
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
-            if k in func_params and (field := func_params.get(k)):
-                if BASIC_TYPES.intersection(unpack_types(field.type)):
-                    eg += f"{k}={v}, "
-                else:
+            if k in param_types and (type_ := param_types.get(k)):
+                if QUOTE_TYPES.intersection(unpack_type(type_)):
                     eg += f"{k}='{v}', "
+                else:
+                    eg += f"{k}={v}, "
             else:
-                eg += f"{k}='{v}', "
+                eg += f"{k}={v}, "
 
         eg = indentation + eg.strip(", ") + ")\n"
 
@@ -121,8 +121,8 @@ def filter_list(
     ]
 
 
-def unpack_types(type_: type):
+def unpack_type(type_: type):
     """Unpack types."""
     if hasattr(type_, "__args__"):
-        return set().union(*map(unpack_types, type_.__args__))
-    return {type_}
+        return set().union(*map(unpack_type, type_.__args__))
+    return {type_} if isinstance(type_, type) else {type(type_)}

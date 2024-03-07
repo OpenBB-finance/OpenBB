@@ -15,7 +15,7 @@ from linearmodels.panel import (
     PooledOLS,
     RandomEffects,
 )
-from openbb_core.app.model.example import PythonEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
@@ -33,6 +33,7 @@ router = Router(prefix="")
 @router.command(
     methods=["POST"],
     examples=[
+        APIEx(parameters={"data": [{"x": 1, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 4}]}),
         PythonEx(
             description="Get the correlation matrix of a dataset.",
             code=[
