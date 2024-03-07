@@ -88,9 +88,9 @@ class APIEx(Example):
 
         size : int
             The size of the data to return, default is 5.
-        sample : Dict[str, Any], optional
+        sample : Optional[Dict[str, Any]], optional
             A sample of the data to return, by default None.
-        multiindex_names : List[str], optional
+        multiindex_names : Optional[List[str]], optional
             The names of the multiindex, by default None.
 
         Timeseries default sample:
