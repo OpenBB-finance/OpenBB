@@ -5,7 +5,7 @@ from typing import List, Literal, Optional
 
 import pandas as pd
 import pandas_ta as ta
-from openbb_core.app.model.example import PythonEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -956,7 +956,7 @@ def ichimoku(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "clenow_data = obb.technical.clenow(data=stock_data.results, period=90)",
             ],
-        )
+        ),
     ],
 )
 def clenow(
@@ -1016,7 +1016,8 @@ def clenow(
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "ad_data = obb.technical.ad(data=stock_data.results, offset=0)",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_ohlc_data()}),
     ],
 )
 def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:

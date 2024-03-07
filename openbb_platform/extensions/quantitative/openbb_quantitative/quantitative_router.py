@@ -3,7 +3,7 @@
 from typing import List, Literal
 
 import pandas as pd
-from openbb_core.app.model.example import PythonEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -45,7 +45,8 @@ router.include_router(performance_router)
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
                 "obb.quantitative.normality(data=stock_data, target='close')",
             ],
-        )
+        ),
+        APIEx(parameters={"data": APIEx.mock_ohlc_data(), "target": "open"}),
     ],
 )
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:

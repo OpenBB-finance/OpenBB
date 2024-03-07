@@ -29,6 +29,7 @@ class Example(BaseModel):
     @staticmethod
     def mock_ohlc_data() -> list:
         """Return mock data for the example."""
+        # Pass number of observations as a parameter
         return [
             {
                 "date": "2023-01-03",
@@ -47,7 +48,47 @@ class Example(BaseModel):
                 "volume": 180389000,
             },
             {
-                "date": "2023-01-05",
+                "date": "2023-01-06",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+            {
+                "date": "2023-01-07",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+            {
+                "date": "2023-01-08",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+            {
+                "date": "2023-01-09",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+            {
+                "date": "2023-01-10",
+                "open": 110.51,
+                "high": 111.75,
+                "low": 107.16,
+                "close": 110.34,
+                "volume": 157986300,
+            },
+            {
+                "date": "2023-01-11",
                 "open": 110.51,
                 "high": 111.75,
                 "low": 107.16,

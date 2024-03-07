@@ -33,27 +33,6 @@ router = Router(prefix="")
 @router.command(
     methods=["POST"],
     examples=[
-        APIEx(
-            parameters={
-                "data": [
-                    {
-                        "date": "2023-01-03",
-                        "open": 118.47,
-                        "close": 118.1,
-                    },
-                    {
-                        "date": "2023-01-04",
-                        "open": 109.11,
-                        "close": 113.64,
-                    },
-                    {
-                        "date": "2023-01-05",
-                        "open": 110.51,
-                        "close": 110.34,
-                    },
-                ]
-            }
-        ),
         PythonEx(
             description="Get the correlation matrix of a dataset.",
             code=[
@@ -61,6 +40,7 @@ router = Router(prefix="")
                 "obb.econometrics.correlation_matrix(data=stock_data)",
             ],
         ),
+        APIEx(parameters={"data": APIEx.mock_ohlc_data()}),
     ],
 )
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
