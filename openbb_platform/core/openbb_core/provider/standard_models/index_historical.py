@@ -46,7 +46,7 @@ class IndexHistoricalQueryParams(QueryParams):
         """Convert field to uppercase."""
         return v.upper()
 
-    @field_validator("interval", "sort", mode="before", check_fields=False)
+    @field_validator("sort", mode="before", check_fields=False)
     @classmethod
     def to_lower(cls, v: Optional[str]) -> Optional[str]:
         """Convert field to lowercase."""

@@ -40,12 +40,6 @@ class EquityHistoricalQueryParams(QueryParams):
         """Convert field to uppercase."""
         return v.upper()
 
-    @field_validator("interval", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
-
 
 class EquityHistoricalData(Data):
     """Equity Historical Price Data."""
