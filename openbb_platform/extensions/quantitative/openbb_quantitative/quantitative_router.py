@@ -46,7 +46,7 @@ router.include_router(performance_router)
                 "obb.quantitative.normality(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_ohlc_data(), "target": "open"}),
+        APIEx(parameters={"data": APIEx.mock_data("ts_ohlc", 10), "target": "open"}),
     ],
 )
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:

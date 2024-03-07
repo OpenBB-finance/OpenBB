@@ -26,116 +26,6 @@ class Example(BaseModel):
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
 
-    @staticmethod
-    def mock_multi_index_data() -> list:
-        """Return mock data for the example."""
-        return [
-            {
-                "asset_manager": "BlackRock",
-                "time": 1,
-                "portfolio_value": 100000,
-                "stock_a_return": 0.05,
-                "stock_b_return": 0.03,
-                "market_volatility": 0.1,
-                "risk_free_rate": 0.02,
-                "is_multiindex": True,
-                "multiindex_names": "['asset_manager', 'time']",
-            },
-            {
-                "asset_manager": "BlackRock",
-                "time": 2,
-                "portfolio_value": 110000,
-                "stock_a_return": 0.03,
-                "stock_b_return": 0.04,
-                "market_volatility": 0.12,
-                "risk_free_rate": 0.025,
-                "is_multiindex": True,
-                "multiindex_names": "['asset_manager', 'time']",
-            },
-            {
-                "asset_manager": "BlackRock",
-                "time": 3,
-                "portfolio_value": 105000,
-                "stock_a_return": 0.04,
-                "stock_b_return": 0.02,
-                "market_volatility": 0.11,
-                "risk_free_rate": 0.03,
-                "is_multiindex": True,
-                "multiindex_names": "['asset_manager', 'time']",
-            },
-        ]
-
-    @staticmethod
-    def mock_ohlc_data() -> list:
-        """Return mock data for the example."""
-        # Pass number of observations as a parameter
-        return [
-            {
-                "date": "2023-01-03",
-                "open": 118.47,
-                "high": 118.80,
-                "low": 104.64,
-                "close": 118.1,
-                "volume": 231402800,
-            },
-            {
-                "date": "2023-01-04",
-                "open": 109.11,
-                "high": 114.59,
-                "low": 107.52,
-                "close": 113.64,
-                "volume": 180389000,
-            },
-            {
-                "date": "2023-01-06",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-            {
-                "date": "2023-01-07",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-            {
-                "date": "2023-01-08",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-            {
-                "date": "2023-01-09",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-            {
-                "date": "2023-01-10",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-            {
-                "date": "2023-01-11",
-                "open": 110.51,
-                "high": 111.75,
-                "low": 107.16,
-                "close": 110.34,
-                "volume": 157986300,
-            },
-        ]
-
 
 class APIEx(Example):
     """API Example model."""
@@ -169,11 +59,73 @@ class APIEx(Example):
         return values
 
     @staticmethod
-    def unpack_type(type_: type) -> set:
+    def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
-        if hasattr(type_, "__args__") and type(type_) is _UnionGenericAlias:  # type: ignore[misc]
-            return set().union(*map(APIEx.unpack_type, type_.__args__))
+        if (
+            hasattr(type_, "__args__") and type(type_) is _UnionGenericAlias
+        ):  # pylint: disable=unidiomatic-typecheck
+            return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
+
+    @staticmethod
+    def _shift(i: int) -> float:
+        """Return a shift value."""
+        return 2 * (i + 1) / (2 * i + 1) % 1
+
+    @staticmethod
+    def mock_data(dataset: Literal["ts_ohlc", "panel_am"], size: int = 3) -> List[Dict]:
+        """Return mock data for the example.
+
+        Parameters
+        ----------
+        dataset : str
+            The type of data to return:
+            - 'ts_ohlc': Time series OHLC data
+            - 'panel_am': Panel data asset manager (multiindex)
+
+        size : int
+            The size of the data to return.
+
+        Returns
+        -------
+        List[Dict]
+            A list of dictionaries with the mock data.
+        """
+        if dataset == "ts_ohlc":
+            result = []
+            for i in range(size):
+                s = APIEx._shift(i)
+                start_date = datetime.date(2023, 1, 1)
+                result.append(
+                    {
+                        "date": (start_date + datetime.timedelta(days=i)).isoformat(),
+                        "open": round(118.47 * s, 2),
+                        "high": round(118.80 * s, 2),
+                        "low": round(104.64 * s, 2),
+                        "close": round(118.1 * s, 2),
+                        "volume": 231402800 + i * 1000000,
+                    }
+                )
+            return result
+        elif dataset == "panel_am":
+            result = []
+            for i in range(size):
+                s = APIEx._shift(i)
+                result.append(
+                    {
+                        "asset_manager": "BlackRock",
+                        "time": i + 1,
+                        "portfolio_value": 100000 + i * 1000,
+                        "stock_a_return": round(0.05 * s, 2),
+                        "stock_b_return": round(0.03 * s, 2),
+                        "market_volatility": round(0.1 * s, 2),
+                        "risk_free_rate": round(0.02 * s, 2),
+                        "is_multiindex": True,
+                        "multiindex_names": "['asset_manager', 'time']",
+                    }
+                )
+            return result
+        raise ValueError(f"Dataset '{dataset}' not found.")
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
@@ -189,7 +141,7 @@ class APIEx(Example):
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in param_types and (type_ := param_types.get(k)):
-                if QUOTE_TYPES.intersection(self.unpack_type(type_)):
+                if QUOTE_TYPES.intersection(self._unpack_type(type_)):
                     eg += f"{k}='{v}', "
                 else:
                     eg += f"{k}={v}, "

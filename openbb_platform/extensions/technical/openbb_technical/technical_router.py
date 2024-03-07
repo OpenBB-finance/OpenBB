@@ -1017,7 +1017,7 @@ def clenow(
                 "ad_data = obb.technical.ad(data=stock_data.results, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_ohlc_data()}),
+        APIEx(parameters={"data": APIEx.mock_data("ts_ohlc")}),
     ],
 )
 def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
