@@ -1,6 +1,6 @@
 ---
-title: OpenBB OBBject
-sidebar_position: 7
+title: OBBject
+sidebar_position: 4
 description: This page provides information about the OBBject class in the OpenBB Platform.  This class provides the interface to interact with commands
 keywords:
 - OBBject
@@ -13,6 +13,7 @@ keywords:
 - DataFrame
 - Polars
 - Numpy
+- extensions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -121,18 +122,19 @@ obb.equity.price.historical("AAPL", provider="fmp").to_dict("records")[0]
 ```
 
 ```python
-{'open': 144.29,
-'high': 144.81,
-'low': 140.35,
-'close': 141.17,
-'volume': 83763800,
-'vwap': 142.11,
-'label': 'November 29, 22',
-'adj_close': 140.39,
-'unadjusted_volume': 83763800.0,
-'change': -3.12,
-'change_percent': -2.16,
-'change_over_time': -0.0216}
+{'date': datetime.date(2023, 3, 6),
+ 'open': 153.79,
+ 'high': 156.3,
+ 'low': 153.46,
+ 'close': 153.83,
+ 'volume': 87558000,
+ 'vwap': 154.53,
+ 'label': 'March 06, 23',
+ 'adj_close': 153.01,
+ 'unadjusted_volume': 87558000.0,
+ 'change': 0.04,
+ 'change_percent': 0.02600949,
+ 'change_over_time': 0.0002600949}
 ```
 
 ### Others
@@ -149,4 +151,10 @@ Growing in popularity, polars is a blazingly fast dataframe library. This method
 
 #### show()
 
-This method will display the chart if it was computed during the execution of the command, by setting the `chart` parameter to `True`.
+When a charting extension is installed, this method will display the chart if it was computed during the execution of the command, by setting the `chart` parameter to `True`.
+
+## OBBject Extensions
+
+OBBject extensions registers an accessor in each OBBject that is returned when a command is executed.
+
+This [page](contributing/how-to/add_obbject_extension) details the process for extending the OBBject class.

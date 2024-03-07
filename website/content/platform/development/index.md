@@ -130,8 +130,8 @@ class EquityHistoricalQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
         return v.upper()
 ```
 
@@ -164,12 +164,11 @@ class EquityHistoricalData(Data):
     )
 
     @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return formatted datetime."""
         if ":" in str(v):
             return parser.isoparse(str(v))
         return parser.parse(str(v)).date()
-
 ```
 
 The `Data` class is an abstract class that tells us the expected output data.
@@ -191,4 +190,4 @@ An extension is an installable component adding functionality to the OpenBB Plat
 - OBBject
   - Extending the OBBject class itself.
 
-The extensions within the OpenBB GitHub repository are maintained by the OpenBB Team. We welcome contributions, and anyone is also able to publish their own OpenBB extension to PyPI. If you do, please name the package beginning with, "openbb-". We love seeing what you build!
+The extensions within the OpenBB GitHub repository are maintained by the OpenBB Team. We welcome contributions, and anyone is also able to publish their own OpenBB extension to PyPI, or elsewhere. If you do, please name the package beginning with, "openbb-". We love seeing what you build!

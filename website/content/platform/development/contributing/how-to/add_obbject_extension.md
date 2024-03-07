@@ -1,5 +1,5 @@
 ---
-title: OBBject Extensions
+title: How To Add OBBject Extensions
 sidebar_position: 8
 description: This page provides information about how to write extensions for the OpenBB OBBject class.
 keywords:
@@ -7,18 +7,24 @@ keywords:
 - Python
 - Development
 - OpenBB Platform
+- extensions
+- obbject extension
+- accessor
+- decorator
+- how-to
+- contributing
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OBBject Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="How To Add OBBject Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-As mentioned, OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute.
-If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data.
-The OpenBB Platform provides a way to do this by extending the OBBject class.
-The architecture for extensions was designed similar to how extensions and accessors are done in pandas, and relies on plugins through the poetry dependency management package.
+OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](platform/development/obbject.md)
+If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data, and the OpenBB Platform provides a way to extend the OBBject class.
 
-This page will go through the steps of developing a simple, custom extension for the OBBject class.
+The architecture for extensions was designed to be similar to extensions and accessors for Pandas, and relies on plugins through the Poetry dependency management package.
+
+This page will go through the steps for developing a simple extension for the OBBject class.
 
 ### Folder structure
 
@@ -37,17 +43,18 @@ In this example the extension code all lives inside `__init__.py`.
 
 First we create an `Extension` class instance to tell `openbb-core` our extension name and any required credentials to be available at `obb.user.credentials`.
 
+> Credentials are required only if authorization is required for data or services used by this extension.
+> It could also be the connection to a database, or any other information that needs to be passed to the extension.
+
 ```python
 from openbb_core.app.model.extension import Extension
 
 ext = Extension(name="example", credentials=["some_api_key"])
 ```
 
-The credentials are required if the extension uses a key for data or a service, or it can alternatively be connection information for a database, or any other information that needs to be passed to the extension.
+Then we define the extension's functionality. The decorator, `@ext.obbject_accessor`, registers an accessor in each `OBBject` that is returned when a command is executed. This accessor is just a namespace that will contain the methods defined in the decorated class.
 
-Now we define the extension functionality. The decorator `@ext.obbject_accessor` registers an accessor in each `OBBject` that is returned when a command is executed. This accessor is just a namespace that will contain the methods defined in the decorated class.
-
-Here, we just add a method to say hi:
+For this example, we just add a method to say hi:
 
 ```python
 @ext.obbject_accessor
