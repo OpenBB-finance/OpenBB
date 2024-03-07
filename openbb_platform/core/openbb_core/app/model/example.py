@@ -1,7 +1,7 @@
 """Example class to represent endpoint examples."""
 
-from datetime import date, datetime, timedelta
 from abc import abstractmethod
+from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias
 
 from pydantic import (
@@ -61,7 +61,7 @@ class APIEx(Example):
     @staticmethod
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
-        if hasattr(type_, "__args__") and not (type(type_) is _GenericAlias):  # pylint: disable=unidiomatic-typecheck
+        if hasattr(type_, "__args__") and type(type_) is not _GenericAlias:  # pylint: disable=unidiomatic-typecheck
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
 
@@ -77,14 +77,14 @@ class APIEx(Example):
         sample: Optional[Dict[str, Any]] = None,
         multiindex_names: Optional[List[str]] = None,
     ) -> List[Dict]:
-        """Return mock data for the example.
+        """Generate mock data from a sample.
 
         Parameters
         ----------
         dataset : str
             The type of data to return:
-            - 'timeseries': Time series OHLC data
-            - 'panel': Panel data asset manager (multiindex)
+            - 'timeseries': Time series data
+            - 'panel': Panel data (multiindex)
 
         size : int
             The size of the data to return, default is 5.
