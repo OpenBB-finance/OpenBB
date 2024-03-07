@@ -96,7 +96,7 @@ however, there are differences between currency data and stocks.
 The normal parameter for most asset classes, "symbol", fits our requirement; but, it is not the correct description. Instead, we want to name it, "base".
 We need data providers to have an option to "allow" querying multiple base symbols.
 
-We want to view the universe relative to a base currency, but we also want the option for comparitive analysis between multiple bases.
+We want to view the universe relative to a base currency, but we also want the option for comparative analysis between multiple bases.
 
 In the data model, we'll need to split the typical "symbol" field into two: "base" and "currency".
 
@@ -110,7 +110,7 @@ Compared against the USD, EUR should be less than 1, AUD should be greater than 
 We can easily apply an inverse that allows users to decide for themselves which perspective they want to view
 the exchange rate from. This is something that will need to be applied at the provider level, and it should be a requirement.
 
-We will add a paramter, "quote_type", with choices ["indirect", "direct"].
+We will add a parameter, "quote_type", with choices ["indirect", "direct"].
 
 There is one major monkey wrench in all of this. Is it, EUR/USD or USD/EUR? Do all providers return the same conventions?
 It's a known-unknown, and we can't assume blindly that all follow the norm - or are even consistent with themselves.
@@ -189,7 +189,7 @@ class CurrencySnapshotsQueryParams(QueryParams):
         + " of the foreign currency."
         + " Selecting 'indirect' (default) will return the exchange rate"
         + " as the amount of foreign currency required to buy one unit"
-        + " of the domestic curency.",
+        + " of the domestic currency.",
         default="indirect",
     )
     counter_currencies: Optional[Union[str, List[str]]] = Field(
@@ -763,7 +763,7 @@ git push --set-upstream origin feature/currency-snapshots
 
 ### Open a Pull Request
 
-A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relavant information for reviewers and maintainers to consider.
+A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
 
 1. **Why**?:
 

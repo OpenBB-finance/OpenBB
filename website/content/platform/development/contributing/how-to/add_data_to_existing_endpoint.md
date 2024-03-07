@@ -831,7 +831,7 @@ git push --set-upstream origin feature/av-historical-eps
 
 ### Open a Pull Request
 
-A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relavant information for reviewers and maintainers to consider.
+A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
 
 1. **Why**? (1-3 sentences or a bullet point list):
 
