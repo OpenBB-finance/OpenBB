@@ -130,6 +130,7 @@ class APIEx(Example):
                 obs = {}
                 for k, v in sample.items():
                     if k == "date":
+                        assert isinstance(v, str)
                         obs[k] = (
                             datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
                         ).strftime("%Y-%m-%d")
