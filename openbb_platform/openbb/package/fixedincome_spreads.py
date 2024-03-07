@@ -89,6 +89,7 @@ class ROUTER_fixedincome_spreads(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.spreads.tcm()
         >>> obb.fixedincome.spreads.tcm(maturity='2y')
         """  # noqa: E501
 
@@ -179,6 +180,7 @@ class ROUTER_fixedincome_spreads(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.spreads.tcm_effr()
         >>> obb.fixedincome.spreads.tcm_effr(maturity='10y')
         """  # noqa: E501
 
@@ -270,6 +272,7 @@ class ROUTER_fixedincome_spreads(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.spreads.treasury_effr()
         >>> obb.fixedincome.spreads.treasury_effr(maturity='6m')
         """  # noqa: E501
 

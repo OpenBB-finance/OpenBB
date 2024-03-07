@@ -86,7 +86,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    examples=[APIEx(parameters={}), APIEx(parameters={"cik": "0000789019"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"query": "0000789019"})],
 )
 async def symbol_map(
     cc: CommandContext,

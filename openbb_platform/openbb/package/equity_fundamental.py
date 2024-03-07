@@ -380,6 +380,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.balance(symbol='AAPL')
         >>> obb.equity.fundamental.balance(symbol='AAPL', period='annual', limit=5)
         """  # noqa: E501
 
@@ -533,6 +534,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.balance_growth(symbol='AAPL')
         >>> obb.equity.fundamental.balance_growth(symbol='AAPL', limit=10)
         """  # noqa: E501
 
@@ -796,6 +798,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.cash(symbol='AAPL')
         >>> obb.equity.fundamental.cash(symbol='AAPL', period='annual', limit=5)
         """  # noqa: E501
 
@@ -931,6 +934,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.cash_growth(symbol='AAPL')
         >>> obb.equity.fundamental.cash_growth(symbol='AAPL', limit=10)
         """  # noqa: E501
 
@@ -1256,6 +1260,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.filings()
         >>> obb.equity.fundamental.filings(limit=100)
         """  # noqa: E501
 
@@ -1378,7 +1383,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.historical_attributes(tag='ebitda')
+        >>> obb.equity.fundamental.historical_attributes(symbol='AAPL', tag='ebitda')
         """  # noqa: E501
 
         return self._run(
@@ -1897,6 +1902,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.income(symbol='AAPL')
         >>> obb.equity.fundamental.income(symbol='AAPL', period='annual', limit=5)
         """  # noqa: E501
 
@@ -2030,6 +2036,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.income_growth(symbol='AAPL')
         >>> obb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period='annual')
         """  # noqa: E501
 
@@ -2110,7 +2117,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.latest_attributes(tag='ceo')
+        >>> obb.equity.fundamental.latest_attributes(symbol='AAPL', tag='ceo')
         """  # noqa: E501
 
         return self._run(
@@ -2566,6 +2573,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.metrics(symbol='AAPL')
         >>> obb.equity.fundamental.metrics(symbol='AAPL', period='annual', limit=100)
         """  # noqa: E501
 
@@ -3092,6 +3100,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.ratios(symbol='AAPL')
         >>> obb.equity.fundamental.ratios(symbol='AAPL', period='annual', limit=12)
         """  # noqa: E501
 
@@ -3184,6 +3193,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.reported_financials(symbol='AAPL')
         >>> # Get AAPL balance sheet with a limit of 10 items.
         >>> obb.equity.fundamental.reported_financials(symbol='AAPL', period='annual', statement_type='balance', limit=10)
         >>> # Get reported income statement
@@ -3275,6 +3285,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.revenue_per_geography(symbol='AAPL')
         >>> obb.equity.fundamental.revenue_per_geography(symbol='AAPL', period='annual', structure='flat')
         """  # noqa: E501
 
@@ -3360,6 +3371,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.revenue_per_segment(symbol='AAPL')
         >>> obb.equity.fundamental.revenue_per_segment(symbol='AAPL', period='annual', structure='flat')
         """  # noqa: E501
 
@@ -3477,8 +3489,8 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
-        ] = None,
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(
@@ -3492,7 +3504,7 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : Optional[str]
+        symbol : str
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
@@ -3525,6 +3537,7 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.fundamental.trailing_dividend_yield(symbol='AAPL')
         >>> obb.equity.fundamental.trailing_dividend_yield(symbol='AAPL', limit=252)
         """  # noqa: E501
 

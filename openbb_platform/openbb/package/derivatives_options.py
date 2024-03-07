@@ -150,7 +150,7 @@ class ROUTER_derivatives_options(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.derivatives.options.chains(symbol='AAPL', provider='intrinio')
+        >>> obb.derivatives.options.chains(symbol='AAPL')
         >>> # Use the "date" parameter to get the end-of-day-data for a specific date, where supported.
         >>> obb.derivatives.options.chains(symbol='AAPL', date='2023-01-25', provider='intrinio')
         """  # noqa: E501

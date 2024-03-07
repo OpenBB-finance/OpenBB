@@ -113,7 +113,6 @@ class ROUTER_equity_ownership(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> # Enter the symbol as either the stock ticker or the CIK number as a string.
         >>> obb.equity.ownership.form_13f(symbol='NVDA')
         >>> # Enter a date (calendar quarter ending) for a specific report.
         >>> obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30')
@@ -257,6 +256,7 @@ class ROUTER_equity_ownership(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.ownership.insider_trading(symbol='AAPL')
         >>> obb.equity.ownership.insider_trading(symbol='AAPL', limit=500)
         """  # noqa: E501
 
@@ -546,6 +546,7 @@ class ROUTER_equity_ownership(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.ownership.major_holders(symbol='AAPL')
         >>> obb.equity.ownership.major_holders(symbol='AAPL', page=0)
         """  # noqa: E501
 

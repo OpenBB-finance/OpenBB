@@ -360,6 +360,7 @@ class ROUTER_equity_calendar(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.calendar.ipo()
         >>> obb.equity.calendar.ipo(limit=100)
         >>> # Get all IPOs available.
         >>> obb.equity.calendar.ipo()

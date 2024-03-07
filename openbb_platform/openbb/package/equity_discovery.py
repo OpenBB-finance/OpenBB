@@ -88,6 +88,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.active()
         >>> obb.equity.discovery.active(sort='desc')
         """  # noqa: E501
 
@@ -170,6 +171,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.aggressive_small_caps()
         >>> obb.equity.discovery.aggressive_small_caps(sort='desc')
         """  # noqa: E501
 
@@ -275,7 +277,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.filings(limit=100)
+        >>> obb.equity.discovery.filings()
         >>> # Get filings for the year 2023, limited to 100 results
         >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100)
         """  # noqa: E501
@@ -362,6 +364,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.gainers()
         >>> obb.equity.discovery.gainers(sort='desc')
         """  # noqa: E501
 
@@ -444,6 +447,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.growth_tech()
         >>> obb.equity.discovery.growth_tech(sort='desc')
         """  # noqa: E501
 
@@ -526,6 +530,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.losers()
         >>> obb.equity.discovery.losers(sort='desc')
         """  # noqa: E501
 
@@ -608,6 +613,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.undervalued_growth()
         >>> obb.equity.discovery.undervalued_growth(sort='desc')
         """  # noqa: E501
 
@@ -690,6 +696,7 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.discovery.undervalued_large_caps()
         >>> obb.equity.discovery.undervalued_large_caps(sort='desc')
         """  # noqa: E501
 

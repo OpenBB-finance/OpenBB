@@ -232,6 +232,7 @@ class ROUTER_currency(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.currency.snapshots()
         >>> # Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.
         >>> obb.currency.snapshots(provider='fmp', base='USD,XAU', counter_currencies='EUR,JPY,GBP', quote_type='indirect')
         """  # noqa: E501

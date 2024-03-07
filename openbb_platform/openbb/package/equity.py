@@ -593,6 +593,7 @@ class ROUTER_equity(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.search()
         >>> obb.equity.search(query='AAPL', is_symbol=False, use_cache=True)
         """  # noqa: E501
 

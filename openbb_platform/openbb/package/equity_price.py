@@ -170,6 +170,7 @@ class ROUTER_equity_price(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.equity.price.historical(symbol='AAPL')
         >>> obb.equity.price.historical(symbol='AAPL', interval='1d')
         """  # noqa: E501
 

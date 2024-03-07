@@ -137,6 +137,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.regulators.sec.institutions_search()
         >>> obb.regulators.sec.institutions_search(query='blackstone real estate')
         """  # noqa: E501
 
@@ -363,6 +364,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.regulators.sec.sic_search()
         >>> obb.regulators.sec.sic_search(query='real estate investment trusts')
         """  # noqa: E501
 
@@ -433,7 +435,8 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map(cik='0000789019')
+        >>> obb.regulators.sec.symbol_map()
+        >>> obb.regulators.sec.symbol_map(query='0000789019')
         """  # noqa: E501
 
         return self._run(

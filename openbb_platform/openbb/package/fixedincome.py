@@ -112,6 +112,7 @@ class ROUTER_fixedincome(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.sofr()
         >>> obb.fixedincome.sofr(period='overnight')
         """  # noqa: E501
 

@@ -74,7 +74,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.countries(symbol='VT', provider='fmp')
+        >>> obb.etf.countries(symbol='VT')
         """  # noqa: E501
 
         return self._run(
@@ -149,7 +149,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.equity_exposure(symbol='MSFT', provider='fmp')
+        >>> obb.etf.equity_exposure(symbol='MSFT')
         >>> # This function accepts multiple tickers.
         >>> obb.etf.equity_exposure(symbol='MSFT,AAPL', provider='fmp')
         """  # noqa: E501
@@ -477,7 +477,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.holdings(symbol='XLK', provider='fmp')
+        >>> obb.etf.holdings(symbol='XLK')
         >>> # Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.
         >>> obb.etf.holdings(symbol='XLK', date='2022-03-31', provider='fmp')
         >>> # The same data can be returned from the SEC directly.
@@ -546,7 +546,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date(symbol='XLK', provider='fmp')
+        >>> obb.etf.holdings_date(symbol='XLK')
         """  # noqa: E501
 
         return self._run(
@@ -640,7 +640,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance(symbol='XLK', provider='fmp')
+        >>> obb.etf.holdings_performance(symbol='XLK')
         """  # noqa: E501
 
         return self._run(
@@ -799,7 +799,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.info(symbol='SPY', provider='fmp')
+        >>> obb.etf.info(symbol='SPY')
         >>> # This function accepts multiple tickers.
         >>> obb.etf.info(symbol='SPY,IWM,QQQ,DJIA', provider='fmp')
         """  # noqa: E501
@@ -896,6 +896,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.etf.price_performance(symbol='QQQ')
         >>> obb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')
         """  # noqa: E501
 
@@ -991,6 +992,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.etf.search()
         >>> # An empty query returns the full list of ETFs from the provider.
         >>> obb.etf.search()
         >>> # The query will return results from text-based fields containing the term.
@@ -1059,7 +1061,7 @@ class ROUTER_etf(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.etf.sectors(symbol='SPY', provider='fmp')
+        >>> obb.etf.sectors(symbol='SPY')
         """  # noqa: E501
 
         return self._run(

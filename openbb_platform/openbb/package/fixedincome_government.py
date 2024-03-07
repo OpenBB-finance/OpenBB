@@ -100,6 +100,7 @@ class ROUTER_fixedincome_government(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.government.treasury_rates()
         >>> obb.fixedincome.government.treasury_rates(provider='federal_reserve')
         """  # noqa: E501
 
@@ -175,6 +176,7 @@ class ROUTER_fixedincome_government(Container):
         Examples
         --------
         >>> from openbb import obb
+        >>> obb.fixedincome.government.us_yield_curve()
         >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
         """  # noqa: E501
 
