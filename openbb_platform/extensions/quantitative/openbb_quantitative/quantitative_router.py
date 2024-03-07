@@ -46,7 +46,9 @@ router.include_router(performance_router)
                 "obb.quantitative.normality(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"target": "open", "data": APIEx.mock_data("ts_ohlcv", 8)}),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 8)}
+        ),
     ],
 )
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
@@ -102,7 +104,9 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
                 "obb.quantitative.capm(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"target": "open", "data": APIEx.mock_data("ts_ohlcv", 31)}),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 31)}
+        ),
     ],
 )
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
@@ -165,9 +169,11 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
                 "obb.quantitative.unitroot_test(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"target": "open", "data": APIEx.mock_data("ts_ohlcv", 5)}),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 5)}
+        ),
     ],
-    )
+)
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -236,7 +242,9 @@ def unitroot_test(
                 "obb.quantitative.summary(data=stock_data, target='close')",
             ],
         ),
-        APIEx(parameters={"target": "open", "data": APIEx.mock_data("ts_ohlcv", 5)}),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol", 5)}
+        ),
     ],
 )
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:

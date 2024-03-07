@@ -62,7 +62,9 @@ class APIEx(Example):
     def _unpack_type(type_: type) -> set:
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
         if (
-            hasattr(type_, "__args__") and type(type_) is _UnionGenericAlias  # pylint: disable=unidiomatic-typecheck
+            hasattr(type_, "__args__")
+            and type(type_)
+            is _UnionGenericAlias  # pylint: disable=unidiomatic-typecheck
         ):
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
@@ -73,14 +75,16 @@ class APIEx(Example):
         return 2 * (i + 1) / (2 * i) % 1 + 1
 
     @staticmethod
-    def mock_data(dataset: Literal["ts_ohlcv", "panel_am"], size: int = 5) -> List[Dict]:
+    def mock_data(
+        dataset: Literal["ts_close_vol", "panel_am"], size: int = 5
+    ) -> List[Dict]:
         """Return mock data for the example.
 
         Parameters
         ----------
         dataset : str
             The type of data to return:
-            - 'ts_ohlcv': Time series OHLC data
+            - 'ts_close_vol': Time series OHLC data
             - 'panel_am': Panel data asset manager (multiindex)
 
         size : int
@@ -91,7 +95,7 @@ class APIEx(Example):
         List[Dict]
             A list of dictionaries with the mock data.
         """
-        if dataset == "ts_ohlcv":
+        if dataset == "ts_close_vol":
             result = []
             for i in range(1, size + 1):
                 s = APIEx._shift(i)
@@ -99,9 +103,6 @@ class APIEx(Example):
                 result.append(
                     {
                         "date": (start_date + datetime.timedelta(days=i)).isoformat(),
-                        "open": round(118.47 * s, 2),
-                        "high": round(118.80 * s, 2),
-                        "low": round(104.64 * s, 2),
                         "close": round(118.1 * s, 2),
                         "volume": 231402800 + i * 1000000,
                     }

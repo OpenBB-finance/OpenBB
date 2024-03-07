@@ -40,7 +40,7 @@ router = Router(prefix="")
                 "obb.econometrics.correlation_matrix(data=stock_data)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("ts_ohlcv")}),
+        APIEx(parameters={"data": APIEx.mock_data("ts_close_vol")}),
     ],
 )
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:

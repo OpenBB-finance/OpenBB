@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from openbb_core.app.model.example import PythonEx
+from openbb_core.app.model.example import PythonEx, APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -30,7 +30,10 @@ router = Router(prefix="/performance")
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.omega_ratio(data=returns, target="close")',
             ],
-        )
+        ),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("ts_close_vol")},
+        ),
     ],
 )
 def omega_ratio(
