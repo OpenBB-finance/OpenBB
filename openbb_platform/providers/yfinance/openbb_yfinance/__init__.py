@@ -71,7 +71,7 @@ yfinance_provider = Provider(
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
         "KeyMetrics": YFinanceKeyMetricsFetcher,
-        "MarketIndices": YFinanceMarketIndicesFetcher,
+        "MarketIndices": YFinanceIndexHistoricalFetcher,
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },
