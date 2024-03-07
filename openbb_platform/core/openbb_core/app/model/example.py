@@ -57,8 +57,8 @@ class APIEx(Example):
         return values
 
     @staticmethod
-    def unpack_type(type_: type):
-        """Unpack types from types, works with nested types, like Union[List[str], int]."""
+    def unpack_type(type_: type) -> set:
+        """Unpack types from types, example Union[List[str], int] -> {str, int}."""
         if hasattr(type_, "__args__"):
             return set().union(*map(APIEx.unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
