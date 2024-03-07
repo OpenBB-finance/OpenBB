@@ -808,7 +808,7 @@ class MethodDefinition:
                 raise ValueError(
                     "multiple_items_allowed requires the original type to be specified."
                 )
-            return List[original_type]
+            return List[original_type]  # type: ignore
         return cls.TYPE_EXPANSION.get(field_name, ...)
 
     @classmethod
@@ -851,6 +851,51 @@ class DocstringGenerator:
     """Dynamically generate docstrings for the commands."""
 
     provider_interface = ProviderInterface()
+
+    @staticmethod
+    def get_field_type(
+        field: FieldInfo, target: Literal["docstring", "website"] = "docstring"
+    ) -> str:
+        """Get the implicit data type of a defined Pydantic field.
+
+        Args
+        ----
+            field (FieldInfo): Pydantic field object containing field information.
+            target (Literal["docstring", "website"], optional): Target to return type for. Defaults to "docstring".
+
+        Returns
+        -------
+            str: String representation of the field type.
+        """
+        is_optional = not field.is_required() if target == "docstring" else False
+
+        try:
+            _type = field.annotation
+
+            if "BeforeValidator" in str(_type):
+                _type = "Optional[int]" if is_optional else "int"  # type: ignore
+
+            field_type = (
+                str(_type)
+                .replace("<class '", "")
+                .replace("'>", "")
+                .replace("typing.", "")
+                .replace("pydantic.types.", "")
+                .replace("datetime.datetime", "datetime")
+                .replace("datetime.date", "date")
+                .replace("NoneType", "None")
+                .replace(", None", "")
+            )
+            field_type = (
+                f"Optional[{field_type}]"
+                if is_optional and "Optional" not in str(_type)
+                else field_type
+            )
+        except TypeError:
+            # Fallback to the annotation if the repr fails
+            field_type = field.annotation  # type: ignore
+
+        return field_type
 
     @staticmethod
     def get_OBBject_description(
@@ -991,34 +1036,8 @@ class DocstringGenerator:
         docstring += f"{create_indent(2)}{underline}\n"
 
         for name, field in returns.items():
-            try:
-                _type = field.annotation
-                is_optional = not field.is_required()
-                if "BeforeValidator" in str(_type):
-                    _type = "Optional[int]" if is_optional else "int"  # type: ignore
-
-                field_type = (
-                    str(_type)
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                    .replace("typing.", "")
-                    .replace("pydantic.types.", "")
-                    .replace("datetime.datetime", "datetime")
-                    .replace("datetime.date", "date")
-                    .replace("NoneType", "None")
-                    .replace(", None", "")
-                )
-                field_type = (
-                    f"Optional[{field_type}]"
-                    if is_optional and "Optional" not in str(_type)
-                    else field_type
-                )
-            except TypeError:
-                # Fallback to the annotation if the repr fails
-                field_type = field.annotation  # type: ignore
-
+            field_type = cls.get_field_type(field)
             description = getattr(field, "description", "")
-
             docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
             docstring += f"{create_indent(3)}{format_description(description)}\n"
         return docstring
@@ -1046,7 +1065,6 @@ class DocstringGenerator:
             params = cls.provider_interface.params.get(model_name, {})
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
-
                 # Parameters passed as **kwargs
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
