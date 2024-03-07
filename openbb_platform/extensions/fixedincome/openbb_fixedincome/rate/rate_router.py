@@ -18,7 +18,7 @@ router = Router(prefix="/rate")
 
 @router.command(
     model="AMERIBOR",
-    examples=[APIEx(parameters={"parameter": "30_day_ma"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"parameter": "30_day_ma"})],
 )
 async def ameribor(
     cc: CommandContext,
@@ -37,7 +37,7 @@ async def ameribor(
 
 @router.command(
     model="SONIA",
-    examples=[APIEx(parameters={"parameter": "total_nominal_value"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"parameter": "total_nominal_value"})],
 )
 async def sonia(
     cc: CommandContext,
@@ -75,7 +75,10 @@ async def iorb(
 
 @router.command(
     model="FEDFUNDS",
-    examples=[APIEx(parameters={"parameter": "daily", "provider": "fred"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"parameter": "daily", "provider": "fred"}),
+    ],
 )
 async def effr(
     cc: CommandContext,
@@ -94,7 +97,7 @@ async def effr(
 
 @router.command(
     model="PROJECTIONS",
-    examples=[APIEx(parameters={"long_run": True})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"long_run": True})],
 )
 async def effr_forecast(
     cc: CommandContext,
@@ -114,7 +117,10 @@ async def effr_forecast(
 
 @router.command(
     model="ESTR",
-    examples=[APIEx(parameters={"parameter": "number_of_active_banks"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"parameter": "number_of_active_banks"}),
+    ],
 )
 async def estr(
     cc: CommandContext,
@@ -134,7 +140,10 @@ async def estr(
 
 @router.command(
     model="EuropeanCentralBankInterestRates",
-    examples=[APIEx(parameters={"interest_rate_type": "refinancing"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"interest_rate_type": "refinancing"}),
+    ],
 )
 async def ecb(
     cc: CommandContext,
@@ -156,7 +165,10 @@ async def ecb(
 
 @router.command(
     model="DiscountWindowPrimaryCreditRate",
-    examples=[APIEx(parameters={"start_date": "2023-02-01", "end_date": "2023-05-01"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"start_date": "2023-02-01", "end_date": "2023-05-01"}),
+    ],
 )
 async def dpcredit(
     cc: CommandContext,

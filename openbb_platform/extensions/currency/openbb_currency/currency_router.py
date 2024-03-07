@@ -81,6 +81,7 @@ async def reference_rates(
 @router.command(
     model="CurrencySnapshots",
     examples=[
+        APIEx(parameters={}),
         APIEx(
             description="Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.",
             parameters={

@@ -18,7 +18,10 @@ router = Router(prefix="/gdp")
 
 @router.command(
     model="GdpForecast",
-    examples=[APIEx(parameters={"period": "annual", "type": "real"})],
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"period": "annual", "type": "real"}),
+    ],
 )
 async def forecast(
     cc: CommandContext,
@@ -32,7 +35,7 @@ async def forecast(
 
 @router.command(
     model="GdpNominal",
-    examples=[APIEx(parameters={"units": "usd"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"units": "usd"})],
 )
 async def nominal(
     cc: CommandContext,
@@ -46,7 +49,7 @@ async def nominal(
 
 @router.command(
     model="GdpReal",
-    examples=[APIEx(parameters={"units": "yoy"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"units": "yoy"})],
 )
 async def real(
     cc: CommandContext,

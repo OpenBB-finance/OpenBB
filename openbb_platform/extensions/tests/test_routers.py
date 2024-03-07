@@ -22,4 +22,4 @@ def test_router_model_functions_signature() -> None:
 def test_router_examples() -> None:
     """Test if the router examples are valid."""
     invalid_examples = check_router_command_examples()
-    assert not invalid_examples, "\n".join(invalid_examples)
+    assert not invalid_examples, "\n".join(sorted(invalid_examples))

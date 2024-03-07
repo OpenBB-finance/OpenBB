@@ -19,7 +19,7 @@ router = Router(prefix="")
 @router.command(
     model="LbmaFixing",
     examples=[
-        APIEx(parameters={"asset": "gold"}),
+        APIEx(parameters={}),
         APIEx(
             description="Get the daily LBMA fixing prices for silver in 2023.",
             parameters={

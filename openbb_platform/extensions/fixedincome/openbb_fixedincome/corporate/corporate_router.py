@@ -18,7 +18,7 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    examples=[APIEx(parameters={"index_type": "yield_to_worst"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"index_type": "yield_to_worst"})],
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -39,7 +39,7 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    examples=[APIEx(parameters={"index_type": "baa"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"index_type": "baa"})],
 )
 async def moody(
     cc: CommandContext,
@@ -59,7 +59,7 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    examples=[APIEx(parameters={"yield_curve": "par"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"yield_curve": "par"})],
 )
 async def hqm(
     cc: CommandContext,
@@ -79,7 +79,7 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    examples=[APIEx(parameters={"maturity": "10,20,30,50"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"maturity": "10,20,30,50"})],
 )
 async def spot_rates(
     cc: CommandContext,
@@ -99,7 +99,7 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    examples=[APIEx(parameters={"maturity": "15d"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"maturity": "15d"})],
 )
 async def commercial_paper(
     cc: CommandContext,

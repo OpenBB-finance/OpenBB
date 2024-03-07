@@ -18,7 +18,8 @@ router = Router(prefix="")
 @router.command(
     model="WorldNews",
     examples=[
-        APIEx(parameters={"limit": 2500}),
+        APIEx(parameters={}),
+        APIEx(parameters={"limit": 100}),
         APIEx(
             description="Get news on the specified dates.",
             parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
@@ -54,7 +55,8 @@ async def world(
 @router.command(
     model="CompanyNews",
     examples=[
-        APIEx(parameters={"limit": 2500}),
+        APIEx(parameters={}),
+        APIEx(parameters={"limit": 100}),
         APIEx(
             description="Get news on the specified dates.",
             parameters={

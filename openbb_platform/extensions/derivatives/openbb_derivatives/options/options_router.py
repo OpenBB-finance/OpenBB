@@ -19,7 +19,7 @@ router = Router(prefix="/options")
 @router.command(
     model="OptionsChains",
     examples=[
-        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(parameters={"symbol": "AAPL"}),
         APIEx(
             description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
             parameters={"symbol": "AAPL", "date": "2023-01-25", "provider": "intrinio"},

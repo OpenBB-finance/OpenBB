@@ -18,7 +18,7 @@ router = Router(prefix="/government")
 
 @router.command(
     model="USYieldCurve",
-    examples=[APIEx(parameters={"inflation_adjusted": True})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"inflation_adjusted": True})],
 )
 async def us_yield_curve(
     cc: CommandContext,
@@ -32,7 +32,7 @@ async def us_yield_curve(
 
 @router.command(
     model="EUYieldCurve",
-    examples=[APIEx(parameters={"yield_curve_type": "spot_rate"})],
+    examples=[APIEx(parameters={}), APIEx(parameters={"yield_curve_type": "spot_rate"})],
 )
 async def eu_yield_curve(
     cc: CommandContext,
