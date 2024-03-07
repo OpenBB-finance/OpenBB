@@ -1039,11 +1039,11 @@ class DocstringGenerator:
             params = cls.provider_interface.params.get(model_name, {})
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
-                explicit_dict = dict(formatted_params)
-                explicit_dict.pop("extra_params", None)
+                explicit_params = dict(formatted_params)
+                explicit_params.pop("extra_params", None)
                 kwarg_params = params["extra"].__dataclass_fields__
 
-                param_types = {k: v.annotation for k, v in explicit_dict.items()}
+                param_types = {k: v.annotation for k, v in explicit_params.items()}
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
 
                 returns = return_schema.model_fields
@@ -1054,7 +1054,7 @@ class DocstringGenerator:
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
-                    explicit_params=explicit_dict,
+                    explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
                     returns=returns,
                     results_type=results_type,
