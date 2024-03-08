@@ -146,7 +146,6 @@ class ROUTER_index(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.index.constituents(symbol='dowjones')
         >>> obb.index.constituents(symbol='dowjones', provider='fmp')
         """  # noqa: E501
 

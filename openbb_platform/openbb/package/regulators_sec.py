@@ -274,23 +274,23 @@ class ROUTER_regulators_sec(Container):
         >>> from openbb import obb
         >>> obb.regulators.sec.schema_files()
         >>> # Get a list of schema files.
-        >>> data = obb.regulators.sec.schema_files()
+        >>> data = obb.regulators.sec.schema_files().results
         >>> data.files[0]
-        >>>     https://xbrl.fasb.org/us-gaap/
-        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
+        >>> 'https://xbrl.fasb.org/us-gaap/'
+        >>> # The directory structure can be navigated by constructing a URL from the 'results' list.
         >>> url = data.files[0]+data.files[-1]
-        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
+        >>> # The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
-        >>>     'USGAAP2024FileList.xml'
-        >>>     'dis/'
-        >>>     'dqcrules/'
-        >>>     'ebp/'
-        >>>     'elts/'
-        >>>     'entire/'
-        >>>     'meta/'
-        >>>     'stm/'
-        >>>     'us-gaap-2024.zip']
+        >>> ['https://xbrl.fasb.org/us-gaap/2024/'
+        >>> 'USGAAP2024FileList.xml'
+        >>> 'dis/'
+        >>> 'dqcrules/'
+        >>> 'ebp/'
+        >>> 'elts/'
+        >>> 'entire/'
+        >>> 'meta/'
+        >>> 'stm/'
+        >>> 'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
@@ -390,7 +390,7 @@ class ROUTER_regulators_sec(Container):
     @validate
     def symbol_map(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
         use_cache: Annotated[
             Optional[bool],
             OpenBBCustomParameter(
@@ -435,7 +435,6 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map()
         >>> obb.regulators.sec.symbol_map(query='0000789019')
         """  # noqa: E501
 
