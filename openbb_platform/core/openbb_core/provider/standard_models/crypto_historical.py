@@ -36,7 +36,7 @@ class CryptoHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase and remove '-'."""
+        """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
         return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
