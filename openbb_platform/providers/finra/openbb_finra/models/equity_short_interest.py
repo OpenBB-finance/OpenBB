@@ -54,12 +54,11 @@ class FinraShortInterestFetcher(
         # Get the data from the cache
         cnx = sqlite3.connect(DB_PATH)
         cursor = cnx.cursor()
-        if query.symbol:
-            cursor.execute(
-                "SELECT * FROM short_interest where symbolCode = ?", (query.symbol,)
-            )
-        else:
-            cursor.execute("SELECT * FROM short_interest")
+        cursor.execute(
+            "SELECT * FROM short_interest where symbolCode = ?", (query.symbol,)
+        )
+        # TODO: Check if we should allow general queries, it's more than 500k rows
+        # cursor.execute("SELECT * FROM short_interest")
         result = cursor.fetchall()
 
         titles = [

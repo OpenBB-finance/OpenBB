@@ -1,7 +1,6 @@
 """Equity Short Interest Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
 
 from pydantic import Field
 
@@ -16,10 +15,7 @@ from openbb_core.provider.utils.descriptions import (
 class ShortInterestQueryParams(QueryParams):
     """Equity Short Interest Query."""
 
-    symbol: Optional[str] = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", ""),
-        default=None,
-    )
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
 
 class ShortInterestData(Data):
