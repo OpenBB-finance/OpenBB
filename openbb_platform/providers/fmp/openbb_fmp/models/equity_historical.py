@@ -22,7 +22,7 @@ from openbb_core.provider.utils.helpers import (
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):

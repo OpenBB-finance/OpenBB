@@ -110,12 +110,6 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
             return v
         return parser.parse(str(v)).date() if v else None
 
-    @field_validator("change_percent", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):
-        """Normalize the percent."""
-        return float(v) / 100 if v else None
-
     @field_validator(
         "shares_outstanding",
         "volume",
@@ -144,7 +138,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
 
     @field_validator("change_percent", mode="before", check_fields=False)
     @classmethod
-    def normalize_percent(cls, v):  # pylint: disable=E0213
+    def normalize_percent(cls, v):
         """Return the percent value as a normalized value."""
         return float(v) / 100 if v else None
 
