@@ -84,7 +84,7 @@ technical = "openbb_technical.technical_router:router"
 On [this page](add_data_provider_extension), we created a data provider extension using a template ZIP file.
 The structure is familiar, but let's take a look at some subtle differences.
 
-For convenience, a template router extension ZIP file can be downloaded [here](https://placeholder.url) to follow along with.
+For convenience, a template router extension ZIP file can be downloaded [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/14542427/dashboards.zip) to follow along with.
 
 ## Folder Structure
 
@@ -105,7 +105,7 @@ Let's create an extension which defines a new router entry point at the base of 
 It's going to be called, `openbb-dashboards`, and will serve as an empty router for various dashboard packages to populate **future** endpoints with.
 By itself, it might not have any functions. Some other extension will name it as a dependency, using it as an entry point.
 
-We'll use the [ZIP file](https://placeholder.url) template as a starting point, renaming everything as the first step.
+We'll use the [ZIP file](https://github.com/OpenBB-finance/OpenBBTerminal/files/14542427/dashboards.zip) template as a starting point, renaming everything as the first step.
 
 ### Create Folder
 
