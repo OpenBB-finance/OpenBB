@@ -19,13 +19,14 @@ router = Router(prefix="/price")
 @router.command(
     model="CurrencyHistorical",
     examples=[
-        APIEx(parameters={"symbol": "EURUSD"}),
+        APIEx(parameters={"symbol": "EURUSD", "provider": "fmp"}),
         APIEx(
             description="Filter historical data with specific start and end date.",
             parameters={
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
+                "provider": "fmp",
             },
         ),
         APIEx(

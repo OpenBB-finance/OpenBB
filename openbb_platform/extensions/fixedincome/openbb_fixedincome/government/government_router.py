@@ -18,7 +18,10 @@ router = Router(prefix="/government")
 
 @router.command(
     model="USYieldCurve",
-    examples=[APIEx(parameters={}), APIEx(parameters={"inflation_adjusted": True})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"inflation_adjusted": True, "provider": "fred"}),
+    ],
 )
 async def us_yield_curve(
     cc: CommandContext,

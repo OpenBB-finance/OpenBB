@@ -172,7 +172,7 @@ async def holdings_date(
 
 @router.command(
     model="EtfHoldingsPerformance",
-    examples=[APIEx(parameters={"symbol": "XLK"})],
+    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_performance(
     cc: CommandContext,
@@ -187,7 +187,7 @@ async def holdings_performance(
 @router.command(
     model="EtfEquityExposure",
     examples=[
-        APIEx(parameters={"symbol": "MSFT"}),
+        APIEx(parameters={"symbol": "MSFT", "provider": "fmp"}),
         APIEx(
             description="This function accepts multiple tickers.",
             parameters={"symbol": "MSFT,AAPL", "provider": "fmp"},

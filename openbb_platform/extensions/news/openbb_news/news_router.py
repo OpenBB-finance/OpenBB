@@ -60,7 +60,7 @@ async def world(
     model="CompanyNews",
     examples=[
         APIEx(parameters={"provider": "fmp"}),
-        APIEx(parameters={"limit": 100}),
+        APIEx(parameters={"limit": 100, "provider": "fmp"}),
         APIEx(
             description="Get news on the specified dates.",
             parameters={

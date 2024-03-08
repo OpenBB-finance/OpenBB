@@ -19,7 +19,7 @@ router = Router(prefix="/options")
 @router.command(
     model="OptionsChains",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
         APIEx(
             description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
             parameters={"symbol": "AAPL", "date": "2023-01-25", "provider": "intrinio"},
@@ -39,7 +39,7 @@ async def chains(
 @router.command(
     model="OptionsUnusual",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "intrinio"}),
         APIEx(
             description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
             parameters={"symbol": "TSLA", "provider": "intrinio"},

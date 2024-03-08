@@ -34,28 +34,26 @@ class APIEx(Example):
     description: Optional[str] = Field(
         default=None, description="Optional description unless more than 3 parameters"
     )
-    parameters: Dict[
-        str, Union[str, int, float, bool, List[str], List[Dict[str, Any]], None]
-    ]
+    parameters: Dict[str, Union[str, int, float, bool, List[str], List[Dict[str, Any]]]]
 
     @computed_field  # type: ignore[misc]
     @property
     def provider(self) -> Optional[str]:
         """Return the provider from the parameters."""
-        if provider := self.parameters.get("provider"):
-            if isinstance(provider, str):
-                return provider
-            raise ValueError(f"Provider must be a string, not {type(provider)}")
-        return None
+        return self.parameters.get("provider")  # type: ignore
 
     @model_validator(mode="before")
     @classmethod
-    def check_model(cls, values: dict) -> dict:
-        """Check if there are more than 3 parameters and a description is not added."""
-        if len(values.get("parameters", {})) > 3 and not values.get("description"):
-            raise ValueError(
-                "API example with more than 3 parameters must have a description."
-            )
+    def validate_model(cls, values: dict) -> dict:
+        """Validate model."""
+        parameters = values.get("parameters", {})
+        if "provider" not in parameters and "data" not in parameters:
+            raise ValueError("API example must specify a provider.")
+
+        if provider := parameters.get("provider"):
+            if not isinstance(provider, str):
+                raise ValueError("Provider must be a string.")
+
         return values
 
     @staticmethod
@@ -63,8 +61,8 @@ class APIEx(Example):
         """Unpack types from types, example Union[List[str], int] -> {str, int}."""
         if (
             hasattr(type_, "__args__")
-            and type(type_)
-            is not _GenericAlias  # pylint: disable=unidiomatic-typecheck
+            and type(type_)  # pylint: disable=unidiomatic-typecheck
+            is not _GenericAlias
         ):
             return set().union(*map(APIEx._unpack_type, type_.__args__))
         return {type_} if isinstance(type_, type) else {type(type_)}
