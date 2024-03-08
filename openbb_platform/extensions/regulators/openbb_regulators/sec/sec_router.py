@@ -17,7 +17,7 @@ router = Router(prefix="/sec")
 
 @router.command(
     model="CikMap",
-    examples=[APIEx(parameters={"symbol": "MSFT"})],
+    examples=[APIEx(parameters={"symbol": "MSFT", "provider": "sec"})],
 )
 async def cik_map(
     cc: CommandContext,
@@ -32,8 +32,8 @@ async def cik_map(
 @router.command(
     model="InstitutionsSearch",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"query": "blackstone real estate"}),
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(parameters={"query": "blackstone real estate", "provider": "sec"}),
     ],
 )
 async def institutions_search(
@@ -49,7 +49,7 @@ async def institutions_search(
 @router.command(
     model="SchemaFiles",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "sec"}),
         PythonEx(
             description="Get a list of schema files.",
             code=[
@@ -86,7 +86,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    examples=[APIEx(parameters={"query": "0000789019"})],
+    examples=[APIEx(parameters={"query": "0000789019", "provider": "sec"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -100,7 +100,7 @@ async def symbol_map(
 
 @router.command(
     model="RssLitigation",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "sec"})],
 )
 async def rss_litigation(
     cc: CommandContext,
@@ -115,8 +115,8 @@ async def rss_litigation(
 @router.command(
     model="SicSearch",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"query": "real estate investment trusts"}),
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(parameters={"query": "real estate investment trusts", "provider": "sec"}),
     ],
 )
 async def sic_search(

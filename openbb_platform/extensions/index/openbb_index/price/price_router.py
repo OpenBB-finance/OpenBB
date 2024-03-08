@@ -19,7 +19,6 @@ router = Router(prefix="/price")
 @router.command(
     model="IndexHistorical",
     examples=[
-        APIEx(parameters={"symbol": "SPX"}),
         APIEx(parameters={"symbol": "^GSPC", "provider": "fmp"}),
         APIEx(
             description="Not all providers have the same symbols.",

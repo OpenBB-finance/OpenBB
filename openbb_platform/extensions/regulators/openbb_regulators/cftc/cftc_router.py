@@ -17,7 +17,10 @@ router = Router(prefix="/cftc")
 
 @router.command(
     model="COTSearch",
-    examples=[APIEx(parameters={}), APIEx(parameters={"query": "gold"})],
+    examples=[
+        APIEx(parameters={"provider": "nasdaq"}),
+        APIEx(parameters={"query": "gold", "provider": "nasdaq"}),
+    ],
 )
 async def cot_search(
     cc: CommandContext,
@@ -35,18 +38,18 @@ async def cot_search(
 @router.command(
     model="COT",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "nasdaq"}),
         APIEx(
             description="Get the Commitment of Traders Report for Gold.",
-            parameters={"id": "GC=F"},
+            parameters={"id": "GC=F", "provider": "nasdaq"},
         ),
         APIEx(
             description="Enter the report ID by the Nasdaq Data Link Code.",
-            parameters={"id": "088691"},
+            parameters={"id": "088691", "provider": "nasdaq"},
         ),
         APIEx(
             description="Get the report for futures only.",
-            parameters={"id": "088691", "data_type": "F"},
+            parameters={"id": "088691", "data_type": "F", "provider": "nasdaq"},
         ),
     ],
 )

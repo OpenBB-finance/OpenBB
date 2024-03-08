@@ -18,11 +18,15 @@ router = Router(prefix="")
 @router.command(
     model="WorldNews",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"limit": 100}),
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(parameters={"limit": 100, "provider": "intrinio"}),
         APIEx(
             description="Get news on the specified dates.",
-            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+                "provider": "intrinio",
+            },
         ),
         APIEx(
             description="Display the headlines of the news.",
@@ -55,7 +59,7 @@ async def world(
 @router.command(
     model="CompanyNews",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(parameters={"limit": 100}),
         APIEx(
             description="Get news on the specified dates.",
@@ -63,6 +67,7 @@ async def world(
                 "symbol": "AAPL",
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
+                "provider": "intrinio",
             },
         ),
         APIEx(
@@ -75,11 +80,15 @@ async def world(
         ),
         APIEx(
             description="Get news for multiple symbols.",
-            parameters={"symbol": "aapl,tsla"},
+            parameters={"symbol": "aapl,tsla", "provider": "fmp"},
         ),
         APIEx(
             description="Get news company's ISIN.",
-            parameters={"symbol": "NVDA", "isin": "US0378331005"},
+            parameters={
+                "symbol": "NVDA",
+                "isin": "US0378331005",
+                "provider": "benzinga",
+            },
         ),
     ],
 )
