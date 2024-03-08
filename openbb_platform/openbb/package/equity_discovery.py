@@ -19,10 +19,8 @@ class ROUTER_equity_discovery(Container):
     gainers
     growth_tech
     losers
-    top_retail
     undervalued_growth
     undervalued_large_caps
-    upcoming_release_days
     """
 
     def __repr__(self) -> str:
@@ -90,8 +88,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.active()
-        >>> obb.equity.discovery.active(sort='desc')
+        >>> obb.equity.discovery.active(provider='yfinance')
+        >>> obb.equity.discovery.active(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -173,8 +171,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.aggressive_small_caps()
-        >>> obb.equity.discovery.aggressive_small_caps(sort='desc')
+        >>> obb.equity.discovery.aggressive_small_caps(provider='yfinance')
+        >>> obb.equity.discovery.aggressive_small_caps(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -279,9 +277,9 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.filings()
+        >>> obb.equity.discovery.filings(provider='fmp')
         >>> # Get filings for the year 2023, limited to 100 results
-        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100)
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -314,7 +312,7 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["tmx", "yfinance"]] = None,
+        provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price gainers in the stock market.
@@ -323,19 +321,17 @@ class ROUTER_equity_discovery(Container):
         ----------
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
-        provider : Optional[Literal['tmx', 'yfinance']]
+        provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tmx' if there is
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        category : Literal['dividend', 'energy', 'healthcare', 'industrials', 'price_performer', 'rising_stars', 'real_estate', 'tech', 'utilities', '52w_high', 'volume']
-            The category of list to retrieve. Defaults to `price_performer`. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[EquityGainers]
                 Serializable results.
-            provider : Optional[Literal['tmx', 'yfinance']]
+            provider : Optional[Literal['yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -358,8 +354,6 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        rank : Optional[int]
-            The rank of the stock in the list. (provider: tmx)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -370,8 +364,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.gainers()
-        >>> obb.equity.discovery.gainers(sort='desc')
+        >>> obb.equity.discovery.gainers(provider='yfinance')
+        >>> obb.equity.discovery.gainers(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -381,7 +375,7 @@ class ROUTER_equity_discovery(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/discovery/gainers",
-                        ("tmx", "yfinance"),
+                        ("yfinance",),
                     )
                 },
                 standard_params={
@@ -453,8 +447,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.growth_tech()
-        >>> obb.equity.discovery.growth_tech(sort='desc')
+        >>> obb.equity.discovery.growth_tech(provider='yfinance')
+        >>> obb.equity.discovery.growth_tech(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -536,8 +530,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.losers()
-        >>> obb.equity.discovery.losers(sort='desc')
+        >>> obb.equity.discovery.losers(provider='yfinance')
+        >>> obb.equity.discovery.losers(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -552,79 +546,6 @@ class ROUTER_equity_discovery(Container):
                 },
                 standard_params={
                     "sort": sort,
-                },
-                extra_params=kwargs,
-            )
-        )
-
-    @exception_handler
-    @validate
-    def top_retail(
-        self,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 5,
-        provider: Optional[Literal["nasdaq"]] = None,
-        **kwargs
-    ) -> OBBject:
-        """Tracks over $30B USD/day of individual investors trades.
-
-        It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
-        ADRs, and ETPs.
-
-        Parameters
-        ----------
-        limit : int
-            The number of data entries to return.
-        provider : Optional[Literal['nasdaq']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'nasdaq' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[TopRetail]
-                Serializable results.
-            provider : Optional[Literal['nasdaq']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        TopRetail
-        ---------
-        date : date
-            The date of the data.
-        symbol : str
-            Symbol representing the entity requested in the data.
-        activity : float
-            Activity of the symbol.
-        sentiment : float
-            Sentiment of the symbol. 1 is bullish, -1 is bearish.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.equity.discovery.top_retail()
-        """  # noqa: E501
-
-        return self._run(
-            "/equity/discovery/top_retail",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "/equity/discovery/top_retail",
-                        ("nasdaq",),
-                    )
-                },
-                standard_params={
-                    "limit": limit,
                 },
                 extra_params=kwargs,
             )
@@ -692,8 +613,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.undervalued_growth()
-        >>> obb.equity.discovery.undervalued_growth(sort='desc')
+        >>> obb.equity.discovery.undervalued_growth(provider='yfinance')
+        >>> obb.equity.discovery.undervalued_growth(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -775,8 +696,8 @@ class ROUTER_equity_discovery(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.undervalued_large_caps()
-        >>> obb.equity.discovery.undervalued_large_caps(sort='desc')
+        >>> obb.equity.discovery.undervalued_large_caps(provider='yfinance')
+        >>> obb.equity.discovery.undervalued_large_caps(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -792,72 +713,6 @@ class ROUTER_equity_discovery(Container):
                 standard_params={
                     "sort": sort,
                 },
-                extra_params=kwargs,
-            )
-        )
-
-    @exception_handler
-    @validate
-    def upcoming_release_days(
-        self, provider: Optional[Literal["seeking_alpha"]] = None, **kwargs
-    ) -> OBBject:
-        """Get upcoming earnings release dates.
-
-        Parameters
-        ----------
-        provider : Optional[Literal['seeking_alpha']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'seeking_alpha' if there is
-            no default.
-        limit : int
-            The number of data entries to return.In this case, the number of lookahead days. (provider: seeking_alpha)
-
-        Returns
-        -------
-        OBBject
-            results : List[UpcomingReleaseDays]
-                Serializable results.
-            provider : Optional[Literal['seeking_alpha']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        UpcomingReleaseDays
-        -------------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        name : str
-            The full name of the asset.
-        exchange : str
-            The exchange the asset is traded on.
-        release_time_type : str
-            The type of release time.
-        release_date : date
-            The date of the release.
-        sector_id : Optional[int]
-            The sector ID of the asset. (provider: seeking_alpha)
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.equity.discovery.upcoming_release_days()
-        """  # noqa: E501
-
-        return self._run(
-            "/equity/discovery/upcoming_release_days",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "/equity/discovery/upcoming_release_days",
-                        ("seeking_alpha",),
-                    )
-                },
-                standard_params={},
                 extra_params=kwargs,
             )
         )

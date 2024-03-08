@@ -89,8 +89,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ameribor()
-        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma')
+        >>> obb.fixedincome.rate.ameribor(provider='fred')
+        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -175,8 +175,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.dpcredit()
-        >>> obb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01')
+        >>> obb.fixedincome.rate.dpcredit(provider='fred')
+        >>> obb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -267,8 +267,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ecb()
-        >>> obb.fixedincome.rate.ecb(interest_rate_type='refinancing')
+        >>> obb.fixedincome.rate.ecb(provider='fred')
+        >>> obb.fixedincome.rate.ecb(interest_rate_type='refinancing', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -353,7 +353,7 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.effr()
+        >>> obb.fixedincome.rate.effr(provider='fred')
         >>> obb.fixedincome.rate.effr(parameter='daily', provider='fred')
         """  # noqa: E501
 
@@ -433,8 +433,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.effr_forecast()
-        >>> obb.fixedincome.rate.effr_forecast(long_run=True)
+        >>> obb.fixedincome.rate.effr_forecast(provider='fred')
+        >>> obb.fixedincome.rate.effr_forecast(long_run=True, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -516,8 +516,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.estr()
-        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks')
+        >>> obb.fixedincome.rate.estr(provider='fred')
+        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -599,7 +599,7 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.iorb()
+        >>> obb.fixedincome.rate.iorb(provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -683,8 +683,8 @@ class ROUTER_fixedincome_rate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.sonia()
-        >>> obb.fixedincome.rate.sonia(parameter='total_nominal_value')
+        >>> obb.fixedincome.rate.sonia(provider='fred')
+        >>> obb.fixedincome.rate.sonia(parameter='total_nominal_value', provider='fred')
         """  # noqa: E501
 
         return self._run(

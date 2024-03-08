@@ -66,7 +66,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.cik_map(symbol='MSFT')
+        >>> obb.regulators.sec.cik_map(symbol='MSFT', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -137,8 +137,8 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search()
-        >>> obb.regulators.sec.institutions_search(query='blackstone real estate')
+        >>> obb.regulators.sec.institutions_search(provider='sec')
+        >>> obb.regulators.sec.institutions_search(query='blackstone real estate', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -203,7 +203,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.rss_litigation()
+        >>> obb.regulators.sec.rss_litigation(provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -272,7 +272,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.schema_files()
+        >>> obb.regulators.sec.schema_files(provider='sec')
         >>> # Get a list of schema files.
         >>> data = obb.regulators.sec.schema_files().results
         >>> data.files[0]
@@ -364,8 +364,8 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search()
-        >>> obb.regulators.sec.sic_search(query='real estate investment trusts')
+        >>> obb.regulators.sec.sic_search(provider='sec')
+        >>> obb.regulators.sec.sic_search(query='real estate investment trusts', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -435,7 +435,7 @@ class ROUTER_regulators_sec(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map(query='0000789019')
+        >>> obb.regulators.sec.symbol_map(query='0000789019', provider='sec')
         """  # noqa: E501
 
         return self._run(
