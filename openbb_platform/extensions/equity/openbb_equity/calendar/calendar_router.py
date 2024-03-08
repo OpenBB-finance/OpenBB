@@ -19,12 +19,18 @@ router = Router(prefix="/calendar")
 @router.command(
     model="CalendarIpo",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"limit": 100}),
-        APIEx(description="Get all IPOs available.", parameters={}),
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(parameters={"limit": 100, "provider": "nasdaq"}),
+        APIEx(
+            description="Get all IPOs available.", parameters={"provider": "intrinio"}
+        ),
         APIEx(
             description="Get IPOs for specific dates.",
-            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+                "provider": "nasdaq",
+            },
         ),
     ],
 )
@@ -41,12 +47,13 @@ async def ipo(
 @router.command(
     model="CalendarDividend",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
             description="Get dividend calendar for specific dates.",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
+                "provider": "nasdaq",
             },
         ),
     ],
@@ -64,12 +71,13 @@ async def dividend(
 @router.command(
     model="CalendarSplits",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
             description="Get stock splits calendar for specific dates.",
             parameters={
                 "start_date": "2024-02-01",
                 "end_date": "2024-02-07",
+                "provider": "fmp",
             },
         ),
     ],
@@ -87,10 +95,14 @@ async def splits(
 @router.command(
     model="CalendarEarnings",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
             description="Get earnings calendar for specific dates.",
-            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+                "provider": "fmp",
+            },
         ),
     ],
 )

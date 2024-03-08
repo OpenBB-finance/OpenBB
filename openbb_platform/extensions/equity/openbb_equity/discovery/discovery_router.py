@@ -17,7 +17,10 @@ router = Router(prefix="/discovery")
 
 @router.command(
     model="EquityGainers",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def gainers(
     cc: CommandContext,
@@ -31,7 +34,10 @@ async def gainers(
 
 @router.command(
     model="EquityLosers",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def losers(
     cc: CommandContext,
@@ -45,7 +51,10 @@ async def losers(
 
 @router.command(
     model="EquityActive",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def active(
     cc: CommandContext,
@@ -59,7 +68,10 @@ async def active(
 
 @router.command(
     model="EquityUndervaluedLargeCaps",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def undervalued_large_caps(
     cc: CommandContext,
@@ -73,7 +85,10 @@ async def undervalued_large_caps(
 
 @router.command(
     model="EquityUndervaluedGrowth",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def undervalued_growth(
     cc: CommandContext,
@@ -87,7 +102,10 @@ async def undervalued_growth(
 
 @router.command(
     model="EquityAggressiveSmallCaps",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def aggressive_small_caps(
     cc: CommandContext,
@@ -101,7 +119,10 @@ async def aggressive_small_caps(
 
 @router.command(
     model="GrowthTechEquities",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[
+        APIEx(parameters={"provider": "yfinance"}),
+        APIEx(parameters={"sort": "desc", "provider": "yfinance"}),
+    ],
 )
 async def growth_tech(
     cc: CommandContext,
@@ -115,7 +136,7 @@ async def growth_tech(
 
 @router.command(
     model="TopRetail",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "nasdaq"})],
 )
 async def top_retail(
     cc: CommandContext,
@@ -132,7 +153,7 @@ async def top_retail(
 
 @router.command(
     model="UpcomingReleaseDays",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "seeking_alpha"})],
 )
 async def upcoming_release_days(
     cc: CommandContext,
@@ -147,13 +168,14 @@ async def upcoming_release_days(
 @router.command(
     model="DiscoveryFilings",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
             description="Get filings for the year 2023, limited to 100 results",
             parameters={
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
                 "limit": 100,
+                "provider": "fmp",
             },
         ),
     ],

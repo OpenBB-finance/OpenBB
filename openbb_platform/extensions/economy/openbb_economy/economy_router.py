@@ -23,7 +23,7 @@ router.include_router(gdp_router)
     model="EconomicCalendar",
     examples=[
         APIEx(
-            parameters={},
+            parameters={"provider": "fmp"},
             description="By default, the calendar will be forward-looking.",
         ),
         APIEx(
@@ -52,12 +52,13 @@ async def calendar(
 @router.command(
     model="ConsumerPriceIndex",
     examples=[
-        APIEx(parameters={"country": "japan,china,turkey"}),
+        APIEx(parameters={"country": "japan,china,turkey", "provider": "fred"}),
         APIEx(
             description="Use the `units` parameter to define the reference period for the change in values.",
             parameters={
                 "country": "united_states,united_kingdom",
                 "units": "growth_previous",
+                "provider": "fred",
             },
         ),
     ],
@@ -74,7 +75,7 @@ async def cpi(
 
 @router.command(
     model="RiskPremium",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "fmp"})],
 )
 async def risk_premium(
     cc: CommandContext,
@@ -89,8 +90,8 @@ async def risk_premium(
 @router.command(
     model="BalanceOfPayments",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"report_type": "summary"}),
+        APIEx(parameters={"provider": "ecb"}),
+        APIEx(parameters={"report_type": "summary", "provider": "ecb"}),
         APIEx(
             description="The `country` parameter will override the `report_type`.",
             parameters={"country": "united_states", "provider": "ecb"},
@@ -107,7 +108,7 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSearch", examples=[APIEx(parameters={})])
+@router.command(model="FredSearch", examples=[APIEx(parameters={"provider": "fred"})])
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -125,14 +126,14 @@ async def fred_search(
 @router.command(
     model="FredSeries",
     examples=[
-        APIEx(parameters={"symbol": "NFCI"}),
+        APIEx(parameters={"symbol": "NFCI", "provider": "fred"}),
         APIEx(
             description="Multiple series can be passed in as a list.",
-            parameters={"symbol": "NFCI,STLFSI4"},
+            parameters={"symbol": "NFCI,STLFSI4", "provider": "fred"},
         ),
         APIEx(
             description="Use the `transform` parameter to transform the data as change, log, or percent change.",
-            parameters={"symbol": "CBBTCUSD", "transform": "pc1"},
+            parameters={"symbol": "CBBTCUSD", "transform": "pc1", "provider": "fred"},
         ),
     ],
 )
@@ -148,7 +149,10 @@ async def fred_series(
 
 @router.command(
     model="MoneyMeasures",
-    examples=[APIEx(parameters={}), APIEx(parameters={"adjusted": False})],
+    examples=[
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(parameters={"adjusted": False, "provider": "federal_reserve"}),
+    ],
 )
 async def money_measures(
     cc: CommandContext,
@@ -163,11 +167,18 @@ async def money_measures(
 @router.command(
     model="Unemployment",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"country": "all", "frequency": "quarterly"}),
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
         APIEx(
             description="Demographics for the statistics are selected with the `age` and `sex` parameters.",
-            parameters={"country": "all", "frequency": "quarterly", "age": "25-54"},
+            parameters={
+                "country": "all",
+                "frequency": "quarterly",
+                "age": "25-54",
+                "provider": "oecd",
+            },
         ),
     ],
 )
@@ -183,7 +194,10 @@ async def unemployment(
 
 @router.command(
     model="CLI",
-    examples=[APIEx(parameters={}), APIEx(parameters={"country": "all"})],
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd"}),
+    ],
 )
 async def composite_leading_indicator(
     cc: CommandContext,
@@ -201,8 +215,10 @@ async def composite_leading_indicator(
 @router.command(
     model="STIR",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"country": "all", "frequency": "quarterly"}),
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def short_term_interest_rate(
@@ -224,8 +240,10 @@ async def short_term_interest_rate(
 @router.command(
     model="LTIR",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"country": "all", "frequency": "quarterly"}),
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def long_term_interest_rate(
@@ -251,7 +269,7 @@ async def long_term_interest_rate(
     model="FredRegional",
     examples=[
         APIEx(
-            parameters={"symbol": "NYICLAIMS"},
+            parameters={"symbol": "NYICLAIMS", "provider": "fred"},
         ),
         APIEx(
             description="With a date, time series data is returned.",
@@ -260,6 +278,7 @@ async def long_term_interest_rate(
                 "start_date": "2021-01-01",
                 "end_date": "2021-12-31",
                 "limit": 10,
+                "provider": "fred",
             },
         ),
     ],

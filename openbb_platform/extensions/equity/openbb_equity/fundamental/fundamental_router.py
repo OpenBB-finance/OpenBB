@@ -18,7 +18,7 @@ router = Router(prefix="/fundamental")
 
 @router.command(
     model="EquityValuationMultiples",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def multiples(
     cc: CommandContext,
@@ -33,8 +33,15 @@ async def multiples(
 @router.command(
     model="BalanceSheet",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def balance(
@@ -50,8 +57,8 @@ async def balance(
 @router.command(
     model="BalanceSheetGrowth",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 10}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "intrinio"}),
     ],
 )
 async def balance_growth(
@@ -67,8 +74,15 @@ async def balance_growth(
 @router.command(
     model="CashFlowStatement",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def cash(
@@ -84,7 +98,7 @@ async def cash(
 @router.command(
     model="ReportedFinancials",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
         APIEx(
             description="Get AAPL balance sheet with a limit of 10 items.",
             parameters={
@@ -92,15 +106,24 @@ async def cash(
                 "period": "annual",
                 "statement_type": "balance",
                 "limit": 10,
+                "provider": "intrinio",
             },
         ),
         APIEx(
             description="Get reported income statement",
-            parameters={"symbol": "AAPL", "statement_type": "income"},
+            parameters={
+                "symbol": "AAPL",
+                "statement_type": "income",
+                "provider": "intrinio",
+            },
         ),
         APIEx(
             description="Get reported cash flow statement",
-            parameters={"symbol": "AAPL", "statement_type": "cash"},
+            parameters={
+                "symbol": "AAPL",
+                "statement_type": "cash",
+                "provider": "intrinio",
+            },
         ),
     ],
 )
@@ -117,8 +140,8 @@ async def reported_financials(
 @router.command(
     model="CashFlowStatementGrowth",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 10}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "intrinio"}),
     ],
 )
 async def cash_growth(
@@ -132,7 +155,8 @@ async def cash_growth(
 
 
 @router.command(
-    model="HistoricalDividends", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="HistoricalDividends",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"})],
 )
 async def dividends(
     cc: CommandContext,
@@ -144,7 +168,10 @@ async def dividends(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalEps", examples=[APIEx(parameters={"symbol": "AAPL"})])
+@router.command(
+    model="HistoricalEps",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def historical_eps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -156,7 +183,8 @@ async def historical_eps(
 
 
 @router.command(
-    model="HistoricalEmployees", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="HistoricalEmployees",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def employee_count(
     cc: CommandContext,
@@ -170,7 +198,7 @@ async def employee_count(
 
 @router.command(
     model="SearchAttributes",
-    examples=[APIEx(parameters={"query": "ebitda"})],
+    examples=[APIEx(parameters={"query": "ebitda", "provider": "intrinio"})],
 )
 async def search_attributes(
     cc: CommandContext,
@@ -184,7 +212,9 @@ async def search_attributes(
 
 @router.command(
     model="LatestAttributes",
-    examples=[APIEx(parameters={"symbol": "AAPL", "tag": "ceo"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "tag": "ceo", "provider": "intrinio"})
+    ],
 )
 async def latest_attributes(
     cc: CommandContext,
@@ -198,7 +228,9 @@ async def latest_attributes(
 
 @router.command(
     model="HistoricalAttributes",
-    examples=[APIEx(parameters={"symbol": "AAPL", "tag": "ebitda"})],
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "tag": "ebitda", "provider": "intrinio"})
+    ],
 )
 async def historical_attributes(
     cc: CommandContext,
@@ -213,8 +245,15 @@ async def historical_attributes(
 @router.command(
     model="IncomeStatement",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 5}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def income(
@@ -230,8 +269,15 @@ async def income(
 @router.command(
     model="IncomeStatementGrowth",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 10, "period": "annual"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "limit": 10,
+                "period": "annual",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def income_growth(
@@ -247,8 +293,15 @@ async def income_growth(
 @router.command(
     model="KeyMetrics",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 100}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def metrics(
@@ -261,7 +314,10 @@ async def metrics(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="KeyExecutives", examples=[APIEx(parameters={"symbol": "AAPL"})])
+@router.command(
+    model="KeyExecutives",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def management(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -273,7 +329,8 @@ async def management(
 
 
 @router.command(
-    model="ExecutiveCompensation", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="ExecutiveCompensation",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def management_compensation(
     cc: CommandContext,
@@ -293,7 +350,7 @@ async def management_compensation(
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def overview(
     cc: CommandContext,
@@ -308,8 +365,15 @@ async def overview(
 @router.command(
     model="FinancialRatios",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "limit": 12}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 async def ratios(
@@ -325,8 +389,15 @@ async def ratios(
 @router.command(
     model="RevenueGeographic",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "structure": "flat",
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 async def revenue_per_geography(
@@ -342,8 +413,15 @@ async def revenue_per_geography(
 @router.command(
     model="RevenueBusinessLine",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "structure": "flat",
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 async def revenue_per_segment(
@@ -358,7 +436,10 @@ async def revenue_per_segment(
 
 @router.command(
     model="CompanyFilings",
-    examples=[APIEx(parameters={}), APIEx(parameters={"limit": 100})],
+    examples=[
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(parameters={"limit": 100, "provider": "intrinio"}),
+    ],
 )
 async def filings(
     cc: CommandContext,
@@ -376,7 +457,7 @@ async def filings(
 
 
 @router.command(
-    model="HistoricalSplits", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="HistoricalSplits", examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})]
 )
 async def historical_splits(
     cc: CommandContext,
@@ -390,7 +471,7 @@ async def historical_splits(
 
 @router.command(
     model="EarningsCallTranscript",
-    examples=[APIEx(parameters={"symbol": "AAPL", "year": 2020})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "year": 2020, "provider": "fmp"})],
 )
 async def transcript(
     cc: CommandContext,
@@ -405,8 +486,8 @@ async def transcript(
 @router.command(
     model="TrailingDividendYield",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 252}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "tiingo"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 252, "provider": "tiingo"}),
     ],
 )
 async def trailing_dividend_yield(

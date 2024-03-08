@@ -42,7 +42,7 @@ async def chains(
         APIEx(parameters={}),
         APIEx(
             description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
-            parameters={"symbol": "TSLA"},
+            parameters={"symbol": "TSLA", "provider": "intrinio"},
         ),
     ],
 )

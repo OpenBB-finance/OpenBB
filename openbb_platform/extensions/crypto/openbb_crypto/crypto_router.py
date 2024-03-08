@@ -21,8 +21,8 @@ router.include_router(price_router)
 @router.command(
     model="CryptoSearch",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"query": "BTCUSD"}),
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(parameters={"query": "BTCUSD", "provider": "fmp"}),
     ],
 )
 async def search(

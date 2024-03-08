@@ -21,10 +21,10 @@ router.include_router(price_router)
 @router.command(
     model="CurrencyPairs",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "intrinio"}),
         APIEx(
-            description="Search for 'EURUSD' currency pair using 'polygon' as provider.",
-            parameters={"provider": "polygon", "symbol": "EURUSD"},
+            description="Search for 'EURUSD' currency pair using 'intrinio' as provider.",
+            parameters={"provider": "intrinio", "symbol": "EURUSD"},
         ),
         APIEx(
             description="Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
@@ -57,7 +57,7 @@ async def search(
 
 @router.command(
     model="CurrencyReferenceRates",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "ecb"})],
 )
 async def reference_rates(
     cc: CommandContext,
@@ -81,7 +81,7 @@ async def reference_rates(
 @router.command(
     model="CurrencySnapshots",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
             description="Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.",
             parameters={

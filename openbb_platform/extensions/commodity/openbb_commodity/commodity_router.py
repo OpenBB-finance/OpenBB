@@ -19,7 +19,7 @@ router = Router(prefix="")
 @router.command(
     model="LbmaFixing",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "nasdaq"}),
         APIEx(
             description="Get the daily LBMA fixing prices for silver in 2023.",
             parameters={
@@ -28,6 +28,7 @@ router = Router(prefix="")
                 "end_date": "2023-12-31",
                 "transform": "rdiff",
                 "collapse": "monthly",
+                "provider": "nasdaq",
             },
         ),
     ],

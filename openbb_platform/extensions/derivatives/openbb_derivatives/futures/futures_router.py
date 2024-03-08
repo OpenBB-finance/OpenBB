@@ -18,7 +18,7 @@ router = Router(prefix="/futures")
 @router.command(
     model="FuturesHistorical",
     examples=[
-        APIEx(parameters={"symbol": "ES"}),
+        APIEx(parameters={"symbol": "ES", "provider": "yfinance"}),
         APIEx(
             description="Enter multiple symbols.",
             parameters={"symbol": "ES,NQ", "provider": "yfinance"},

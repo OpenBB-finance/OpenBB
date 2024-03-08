@@ -19,12 +19,13 @@ router = Router(prefix="/price")
 @router.command(
     model="CryptoHistorical",
     examples=[
-        APIEx(parameters={"symbol": "BTCUSD"}),
+        APIEx(parameters={"symbol": "BTCUSD", "provider": "fmp"}),
         APIEx(
             parameters={
                 "symbol": "BTCUSD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
+                "provider": "fmp",
             },
         ),
         APIEx(
@@ -32,16 +33,17 @@ router = Router(prefix="/price")
                 "symbol": "BTCUSD,ETHUSD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
+                "provider": "polygon",
             },
         ),
         APIEx(
             description="Get monthly historical prices from Yahoo Finance for Ethereum.",
             parameters={
                 "symbol": "ETH-USD",
-                "provider": "yfinance",
                 "interval": "1mo",
                 "start_date": "2024-01-01",
                 "end_date": "2024-12-31",
+                "provider": "yfinance",
             },
         ),
     ],

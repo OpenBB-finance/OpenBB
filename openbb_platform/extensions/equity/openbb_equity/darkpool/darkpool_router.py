@@ -19,10 +19,10 @@ router = Router(prefix="/darkpool")
 @router.command(
     model="OTCAggregate",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "finra"}),
         APIEx(
             description="Get OTC data for a symbol",
-            parameters={"symbol": "AAPL"},
+            parameters={"symbol": "AAPL", "provider": "finra"},
         ),
     ],
 )

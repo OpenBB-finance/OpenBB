@@ -17,7 +17,7 @@ router = Router(prefix="/compare")
 
 @router.command(
     model="EquityPeers",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def peers(
     cc: CommandContext,
@@ -35,18 +35,26 @@ async def peers(
 @router.command(
     model="CompareGroups",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "finviz"}),
         APIEx(
             description="Group by sector and analyze valuation.",
-            parameters={"group": "sector", "metric": "valuation"},
+            parameters={"group": "sector", "metric": "valuation", "provider": "finviz"},
         ),
         APIEx(
             description="Group by industry and analyze performance.",
-            parameters={"group": "industry", "metric": "performance"},
+            parameters={
+                "group": "industry",
+                "metric": "performance",
+                "provider": "finviz",
+            },
         ),
         APIEx(
             description="Group by country and analyze valuation.",
-            parameters={"group": "country", "metric": "valuation"},
+            parameters={
+                "group": "country",
+                "metric": "valuation",
+                "provider": "finviz",
+            },
         ),
     ],
 )

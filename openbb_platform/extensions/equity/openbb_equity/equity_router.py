@@ -38,8 +38,15 @@ router.include_router(shorts_router)
 @router.command(
     model="EquitySearch",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True}),
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "query": "AAPL",
+                "is_symbol": False,
+                "use_cache": True,
+                "provider": "nasdaq",
+            }
+        ),
     ],
 )
 async def search(
@@ -52,7 +59,9 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityScreener", examples=[APIEx(parameters={})])
+@router.command(
+    model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})]
+)
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -64,7 +73,10 @@ async def screener(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityInfo", examples=[APIEx(parameters={"symbol": "AAPL"})])
+@router.command(
+    model="EquityInfo",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def profile(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -75,7 +87,9 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MarketSnapshots", examples=[APIEx(parameters={})])
+@router.command(
+    model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})]
+)
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,
