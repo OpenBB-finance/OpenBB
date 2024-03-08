@@ -59,8 +59,8 @@ async def world(
 @router.command(
     model="CompanyNews",
     examples=[
-        APIEx(parameters={"provider": "fmp"}),
-        APIEx(parameters={"limit": 100, "provider": "fmp"}),
+        APIEx(parameters={"provider": "benzinga"}),
+        APIEx(parameters={"limit": 100, "provider": "benzinga"}),
         APIEx(
             description="Get news on the specified dates.",
             parameters={

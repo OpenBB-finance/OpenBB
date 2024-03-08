@@ -159,8 +159,8 @@ class ROUTER_news(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.news.company(provider='fmp')
-        >>> obb.news.company(limit=100, provider='fmp')
+        >>> obb.news.company(provider='benzinga')
+        >>> obb.news.company(limit=100, provider='benzinga')
         >>> # Get news on the specified dates.
         >>> obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07', provider='intrinio')
         >>> # Display the headlines of the news.

@@ -28,7 +28,7 @@ router.include_router(price_router)
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    examples=[APIEx(parameters={"symbol": "SPX", "provider": "fmp"})],
+    examples=[APIEx(parameters={"symbol": "^IBEX", "provider": "fmp"})],
 )
 async def market(
     cc: CommandContext,

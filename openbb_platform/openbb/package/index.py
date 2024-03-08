@@ -260,7 +260,7 @@ class ROUTER_index(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.index.market(symbol='SPX', provider='fmp')
+        >>> obb.index.market(symbol='^IBEX', provider='fmp')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)

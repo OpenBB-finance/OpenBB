@@ -58,7 +58,7 @@ async def balance(
     model="BalanceSheetGrowth",
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "intrinio"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
     ],
 )
 async def balance_growth(
@@ -141,7 +141,7 @@ async def reported_financials(
     model="CashFlowStatementGrowth",
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "intrinio"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
     ],
 )
 async def cash_growth(
@@ -275,7 +275,7 @@ async def income(
                 "symbol": "AAPL",
                 "limit": 10,
                 "period": "annual",
-                "provider": "intrinio",
+                "provider": "fmp",
             }
         ),
     ],
@@ -438,7 +438,7 @@ async def revenue_per_segment(
     model="CompanyFilings",
     examples=[
         APIEx(parameters={"provider": "fmp"}),
-        APIEx(parameters={"limit": 100, "provider": "intrinio"}),
+        APIEx(parameters={"limit": 100, "provider": "fmp"}),
     ],
 )
 async def filings(

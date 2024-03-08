@@ -535,7 +535,7 @@ class ROUTER_equity_fundamental(Container):
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.balance_growth(symbol='AAPL', provider='fmp')
-        >>> obb.equity.fundamental.balance_growth(symbol='AAPL', limit=10, provider='intrinio')
+        >>> obb.equity.fundamental.balance_growth(symbol='AAPL', limit=10, provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -935,7 +935,7 @@ class ROUTER_equity_fundamental(Container):
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.cash_growth(symbol='AAPL', provider='fmp')
-        >>> obb.equity.fundamental.cash_growth(symbol='AAPL', limit=10, provider='intrinio')
+        >>> obb.equity.fundamental.cash_growth(symbol='AAPL', limit=10, provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -1261,7 +1261,7 @@ class ROUTER_equity_fundamental(Container):
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.filings(provider='fmp')
-        >>> obb.equity.fundamental.filings(limit=100, provider='intrinio')
+        >>> obb.equity.fundamental.filings(limit=100, provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -2037,7 +2037,7 @@ class ROUTER_equity_fundamental(Container):
         --------
         >>> from openbb import obb
         >>> obb.equity.fundamental.income_growth(symbol='AAPL', provider='fmp')
-        >>> obb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period='annual', provider='intrinio')
+        >>> obb.equity.fundamental.income_growth(symbol='AAPL', limit=10, period='annual', provider='fmp')
         """  # noqa: E501
 
         return self._run(
