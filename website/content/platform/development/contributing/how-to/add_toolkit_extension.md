@@ -156,7 +156,7 @@ pip install -e .
 
 ## Add Router Commands
 
-To demonstrate this extension, we'll create a simple function for creating and returning a line chart. This adds one endpoint to the new namespace, `obb.dashboards.line_chart()`.
+To demonstrate this extension, we'll make a simple function for creating and returning a line chart. This adds one endpoint to the new namespace, `obb.dashboards.line_chart()`.
 
 :::tip
 After creating a new function, remember to rebuild the Python interface and static assets.
