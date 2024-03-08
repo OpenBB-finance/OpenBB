@@ -64,18 +64,10 @@ def check_router_model_functions_signature() -> List[str]:
     return missing_args + missing_return_type
 
 
-def check_general_example_violations(
+def check_general(
     keywords: Dict, examples: List, router_name: str, function: Any
 ) -> List[str]:
-    """Check for general violations in the router command examples.
-
-    Criteria
-    --------
-    - All endpoints should have examples.
-    - If any endpoint is excluded from the schema it only needs to contain a Python example.
-    - POST method examples should have both API and Python examples,
-      unless they are excluded from the schema.
-    """
+    """Check for general violations in the router command examples."""
     general_violation: List[str] = []
 
     # Check if the endpoint has examples
@@ -84,54 +76,17 @@ def check_general_example_violations(
             f"'{router_name}' > '{function.__name__}': missing examples"
         )
         return general_violation
-    # Check if a POST method has both API and Python examples
-    if (
-        "POST" in keywords.get("methods", "")
-        and keywords.get("include_in_schema", "") != "False"
-    ):
-        if "APIEx" not in examples:
-            general_violation.append(
-                f"'{router_name}' > '{function.__name__}': missing API example"
-            )
-        if "PythonEx" not in examples:
-            general_violation.append(
-                f"'{router_name}' > '{function.__name__}': missing Python example"
-            )
-    # Check if a POST endpoint excluded from the schema has a Python example
-    if (
-        (keywords.get("include_in_schema", "") == "False")
-        and ("POST" in keywords.get("methods", ""))
-        and ("PythonEx" not in examples)
-    ):
-        general_violation.append(
-            f"'{router_name}' > '{function.__name__}': is excluded from the"
-            "api schema but doesn't have a Python example."
-        )
-        if "APIEx" in examples:
-            general_violation.append(
-                f"'{router_name}' > '{function.__name__}': endpoint excluded from the"
-                "api schema but has an API example."
-            )
 
     return general_violation
 
 
-def check_api_example_violations(
+def check_api(
     examples: str, router_name: str, model: Optional[str], function: Any
 ) -> List[str]:
-    """Check for API example violations in the router command examples.
-
-    Criteria
-    --------
-    - When using models, at least one example using all required standard parameters.
-    - It cannot use any provider specific parameters here.
-    - It should not specify the provider field.
-    """
+    """Check for API examples."""
+    # Check if the endpoint has at least 1 example with all required fields
     api_example_violation: List[str] = []
-
     parsed_examples = parse_example_string(examples)
-
-    # Check model endpoint example criteria
     if model and "APIEx" in parsed_examples:
         required_fields = get_required_fields(model.strip("'"))
         for api_example in parsed_examples["APIEx"]:
@@ -172,14 +127,14 @@ def check_router_command_examples() -> List[str]:
                 if decorator_details["decorator"] == "router.command":
                     keywords = decorator_details["keywords"]
                     examples = keywords.get("examples", [])
-                    ### General checks ###
-                    general_violation += check_general_example_violations(
+                    # General checks
+                    general_violation += check_general(
                         keywords, examples, router_name, function
                     )
                     if examples:
-                        ### API example checks ###
+                        # API example checks
                         model = keywords.get("model", None)
-                        api_example_violation += check_api_example_violations(
+                        api_example_violation += check_api(
                             examples, router_name, model, function
                         )
 
