@@ -235,8 +235,11 @@ def check_integration_tests(
                 command_params: Dict[str, Dict[str, dict]] = provider_interface_map[
                     model
                 ]
-                function_params = functions[function].pytestmark[1].args[1]
-
+                try:
+                    function_params = functions[function].pytestmark[1].args[1]
+                except IndexError:
+                    # Another decorator is below the parametrize decorator
+                    function_params = functions[function].pytestmark[2].args[1]
                 missing_items = check_function(
                     command_params, function_params, function, False
                 )
@@ -255,7 +258,11 @@ def check_integration_tests(
                 processing_command_params = [
                     {k: "" for k in get_test_params_data_processing(hints)}
                 ]
-                function_params = functions[function].pytestmark[1].args[1]
+                try:
+                    function_params = functions[function].pytestmark[1].args[1]
+                except IndexError:
+                    # Another decorator is below the parametrize decorator
+                    function_params = functions[function].pytestmark[2].args[1]
 
                 missing_items = check_function(
                     processing_command_params, function_params, function, True  # type: ignore

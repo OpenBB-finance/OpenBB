@@ -23,7 +23,7 @@ class OptionsChainsQueryParams(QueryParams):
 
     @classmethod
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: str) -> str:
+    def to_upper(cls, v: str) -> str:
         return v.upper()
 
 

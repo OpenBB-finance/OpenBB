@@ -9,8 +9,10 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
     IndexHistoricalQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from pydantic import Field
 
 
 class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -22,6 +24,11 @@ class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
 
     __alias_dict__ = {"limit": "page_size", "sort": "sort_order"}
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+    limit: Optional[int] = Field(
+        default=10000,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
+    )
 
 
 class IntrinioIndexHistoricalData(IndexHistoricalData):
