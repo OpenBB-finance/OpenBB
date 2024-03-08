@@ -40,7 +40,10 @@ router = Router(prefix="/rolling")
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],
@@ -101,7 +104,10 @@ def skew(
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],
@@ -156,7 +162,10 @@ def variance(
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],
@@ -215,7 +224,10 @@ def stdev(
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],
@@ -277,7 +289,10 @@ def kurtosis(
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],
@@ -354,7 +369,10 @@ def quantile(
             parameters={
                 "target": "close",
                 "window": 5,
-                "data": APIEx.mock_data("timeseries"),
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
             }
         ),
     ],

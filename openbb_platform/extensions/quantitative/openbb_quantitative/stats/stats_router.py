@@ -35,7 +35,15 @@ router = Router(prefix="/stats")
                 'obb.quantitative.stats.skew(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def skew(
@@ -82,7 +90,15 @@ def skew(
                 'obb.quantitative.stats.variance(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -123,7 +139,15 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.stdev(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -131,8 +155,8 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     Calculate the rolling standard deviation of a target column.
 
     Standard deviation is a measure of the amount of variation or dispersion of a set of values.
-     It is widely used to assess the risk and volatility of financial returns or other time series data
-     It is the square root of the variance.
+    It is widely used to assess the risk and volatility of financial returns or other time series data
+    It is the square root of the variance.
 
     Parameters
     ----------
@@ -166,7 +190,15 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.kurtosis(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -210,7 +242,15 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
                 'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def quantile(
@@ -261,7 +301,15 @@ def quantile(
                 'obb.quantitative.stats.mean(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def mean(

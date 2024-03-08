@@ -32,7 +32,13 @@ router = Router(prefix="/performance")
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("timeseries")},
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
         ),
     ],
 )
@@ -99,7 +105,14 @@ def omega_ratio(
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("timeseries")},
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
         ),
     ],
 )
@@ -162,7 +175,13 @@ def sharpe_ratio(
             ],
         ),
         APIEx(
-            parameters={"target": "close", "data": APIEx.mock_data("timeseries")},
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
         ),
     ],
 )
