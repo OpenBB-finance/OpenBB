@@ -36,6 +36,12 @@ class LbmaFixingQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
+    @field_validator("asset", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
+
 
 class LbmaFixingData(Data):
     """LBMA Fixing Data.  Historical fixing prices in USD, GBP and EUR."""

@@ -69,28 +69,24 @@ class ROUTER_equity_price(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
-            Number of days to look back (Only for interval 1d). (provider: fmp);
-            The number of data entries to return. (provider: polygon)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
             Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)
-        timezone : str
+        timezone : Optional[str]
             Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
         source : Literal['realtime', 'delayed', 'nasdaq_basic']
             The source of the data. (provider: intrinio)
+        adjustment : Union[Literal['splits_only', 'unadjusted'], Literal['splits_only', 'splits_and_dividends']]
+            The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+        extended_hours : bool
+            Include Pre and Post market data. (provider: polygon, yfinance)
         sort : Literal['asc', 'desc']
-            Sort order of the data. (provider: polygon)
-        adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon);
-            Adjust all OHLC data automatically. (provider: yfinance)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        include : bool
-            Include Dividends and Stock Splits in results. (provider: yfinance)
-        ignore_tz : bool
-            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+            Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
+        limit : int
+            The number of data entries to return. (provider: polygon)
+        include_actions : bool
+            Include dividends and stock splits in results. (provider: yfinance)
 
         Returns
         -------
@@ -122,48 +118,42 @@ class ROUTER_equity_price(Container):
             The trading volume.
         vwap : Optional[float]
             Volume Weighted Average Price over the period.
-        label : Optional[str]
-            Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
-            The adjusted close price. (provider: fmp);
-            Adjusted closing price during the period. (provider: intrinio);
-            Adjusted closing price during the period. (provider: tiingo)
+            The adjusted close price. (provider: fmp, intrinio, tiingo)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
+            Change in the price from the previous close. (provider: fmp);
+            Change in the price of the symbol from the previous day. (provider: intrinio)
         change_percent : Optional[float]
-            Change % in the price of the symbol. (provider: fmp)
-        change_over_time : Optional[float]
-            Change % in the price of the symbol over a period of time. (provider: fmp)
-        close_time : Optional[datetime]
-            The timestamp that represents the end of the interval span. (provider: intrinio)
-        interval : Optional[str]
-            The data time frequency. (provider: intrinio)
+            Change in the price from the previous close, as a normalized percent. (provider: fmp);
+            Percent change in the price of the symbol from the previous day. (provider: intrinio)
         average : Optional[float]
             Average trade price of an individual equity during the interval. (provider: intrinio)
-        intra_period : Optional[bool]
-            If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
         adj_open : Optional[float]
-            Adjusted open price during the period. (provider: intrinio, tiingo)
+            The adjusted open price. (provider: intrinio, tiingo)
         adj_high : Optional[float]
-            Adjusted high price during the period. (provider: intrinio, tiingo)
+            The adjusted high price. (provider: intrinio, tiingo)
         adj_low : Optional[float]
-            Adjusted low price during the period. (provider: intrinio, tiingo)
+            The adjusted low price. (provider: intrinio, tiingo)
         adj_volume : Optional[float]
-            Adjusted volume during the period. (provider: intrinio, tiingo)
-        factor : Optional[float]
-            factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
-        split_ratio : Optional[float]
-            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo, yfinance)
-        dividend : Optional[float]
-            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
-        percent_change : Optional[float]
-            Percent change in the price of the symbol from the previous day. (provider: intrinio)
+            The adjusted volume. (provider: intrinio, tiingo)
         fifty_two_week_high : Optional[float]
             52 week high price for the symbol. (provider: intrinio)
         fifty_two_week_low : Optional[float]
             52 week low price for the symbol. (provider: intrinio)
+        factor : Optional[float]
+            factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
+        split_ratio : Optional[float]
+            Ratio of the equity split, if a split occurred. (provider: intrinio, tiingo, yfinance)
+        dividend : Optional[float]
+            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
+        close_time : Optional[datetime]
+            The timestamp that represents the end of the interval span. (provider: intrinio)
+        interval : Optional[str]
+            The data time frequency. (provider: intrinio)
+        intra_period : Optional[bool]
+            If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 

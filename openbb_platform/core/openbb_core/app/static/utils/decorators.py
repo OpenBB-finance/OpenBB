@@ -62,7 +62,8 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
 
                 validation_error = f"{e.error_count()} validations errors in {e.title}"
                 for error in e.errors():
-                    arg_error = f"Arg '{error['loc'][0]}' -> "
+                    arg = ".".join(map(str, error["loc"]))
+                    arg_error = f"Arg {arg} ->\n"
                     error_details = (
                         f"{error['msg']} "
                         f"[validation_error_type={error['type']}, "

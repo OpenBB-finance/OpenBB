@@ -1,7 +1,6 @@
 """API integration tests for equity extension."""
 
 import base64
-from datetime import time
 
 import pytest
 import requests
@@ -457,7 +456,7 @@ def test_equity_fundamental_income_growth(params, headers):
             {
                 "symbol": "RY",
                 "provider": "tmx",
-                "limit": None,
+                "limit": 0,
             }
         ),
         (
@@ -902,153 +901,122 @@ def test_equity_compare_groups(params, headers):
     [
         (
             {
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-                "provider": "yfinance",
-            }
-        ),
-        (
-            {
-                "adjusted": True,
+                "adjustment": "unadjusted",
                 "extended_hours": True,
-                "month": "2023-01",
-                "output_size": "full",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
+                "end_date": "2023-06-06",
+                "interval": "15m",
             }
         ),
         (
             {
-                "adjusted": True,
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": None,
+                "end_date": None,
+                "interval": "1m",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "timezone": "UTC",
+                "source": "realtime",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+            }
+        ),
+        (
+            {
+                "timezone": None,
+                "source": "delayed",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "unadjusted",
+                "provider": "polygon",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-03",
+                "interval": "1m",
                 "extended_hours": False,
-                "output_size": "full",
-                "month": "2023-01",
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-            }
-        ),
-        (
-            {
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2024-02-19",
-                "end_date": "2024-02-20",
-                "interval": "1m",
-                "use_cache": False,
-            }
-        ),
-        (
-            {
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-                "use_cache": False,
-            }
-        ),
-        (
-            {
-                "limit": "30",
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "limit": "30",
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-            }
-        ),
-        (
-            {
-                "timezone": "UTC",
-                "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-03",
-                "interval": "1h",
-            }
-        ),
-        (
-            {
-                "timezone": "UTC",
-                "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
             }
         ),
         (
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "True",
-                "provider": "polygon",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-04",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "sort": "desc",
-                "limit": "49999",
-                "adjusted": "True",
+                "adjustment": "splits_only",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "extended_hours": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": False,
+                "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": True,
+                "adjustment": "splits_only",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
@@ -1083,8 +1051,6 @@ def test_equity_compare_groups(params, headers):
 )
 @pytest.mark.integration
 def test_equity_price_historical(params, headers):
-    if params.get("provider") == "alpha_vantage":
-        pytest.skip("Alpha Vantage is premium.")
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
