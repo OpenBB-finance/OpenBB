@@ -38,15 +38,15 @@ async def cot_search(
         APIEx(parameters={}),
         APIEx(
             description="Get the Commitment of Traders Report for Gold.",
-            parameters={"series_id": "GC=F"},
+            parameters={"id": "GC=F"},
         ),
         APIEx(
             description="Enter the report ID by the Nasdaq Data Link Code.",
-            parameters={"series_id": "088691"},
+            parameters={"id": "088691"},
         ),
         APIEx(
             description="Get the report for futures only.",
-            parameters={"series_id": "088691", "data_type": "F"},
+            parameters={"id": "088691", "data_type": "F"},
         ),
     ],
 )

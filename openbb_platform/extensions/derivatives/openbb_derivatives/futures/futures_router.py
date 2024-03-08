@@ -46,7 +46,7 @@ async def historical(
 @router.command(
     model="FuturesCurve",
     examples=[
-        APIEx(parameters={"symbol": "NG"}),
+        APIEx(parameters={"symbol": "VX"}),
         APIEx(
             description="Enter a date to get the term structure from a historical date.",
             parameters={"symbol": "NG", "provider": "yfinance", "date": "2023-01-01"},
