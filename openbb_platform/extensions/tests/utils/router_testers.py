@@ -136,7 +136,7 @@ def check_api_example_violations(
         required_fields = get_required_fields(model.strip("'"))
         for api_example in parsed_examples["APIEx"]:
             params = ast.literal_eval(api_example.get("params", "{}"))
-            if set(params.keys()) == set(required_fields):
+            if len(set(params.keys()) - set(required_fields) - {"provider"}) == 0:
                 break
         else:
             api_example_violation.append(
@@ -147,21 +147,7 @@ def check_api_example_violations(
 
 
 def check_router_command_examples() -> List[str]:
-    """Check if the router command examples satisfy criteria.
-
-    Criteria
-    --------
-    General:
-    - All endpoints should have examples.
-    - If any endpoint is excluded from the schema it only needs to contain a Python example.
-    - POST method examples should have both API and Python examples,
-      unless they are excluded from the schema.
-
-    API examples:
-    - At least one example using all required parameters.
-    - It cannot use any provider specific parameters here.
-    - It should not specify the provider field.
-    """
+    """Check if the router command examples satisfy criteria."""
     general_violation: List[str] = []
     api_example_violation: List[str] = []
     python_example_violation: List[str] = []

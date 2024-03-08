@@ -43,7 +43,6 @@ async def market(
 @router.command(
     model="IndexConstituents",
     examples=[
-        APIEx(parameters={"symbol": "dowjones"}),
         APIEx(parameters={"symbol": "dowjones", "provider": "fmp"}),
         APIEx(
             description="Providers other than FMP will use the ticker symbol.",

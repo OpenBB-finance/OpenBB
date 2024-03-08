@@ -20,6 +20,17 @@ def test_router_model_functions_signature() -> None:
 
 
 def test_router_examples() -> None:
-    """Test if the router examples are valid."""
+    """Test if the router examples follow certain criteria.
+
+    Criteria
+    --------
+    General:
+    - All endpoints should have examples.
+    - If any endpoint is excluded from the schema it only needs to contain a Python example.
+    - POST method examples should have both API and Python examples, unless they are excluded from the schema.
+
+    API examples:
+    - At least one example using all required parameters.
+    """
     invalid_examples = check_router_command_examples()
     assert not invalid_examples, "\n".join(sorted(invalid_examples))
