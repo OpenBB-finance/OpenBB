@@ -177,8 +177,15 @@ class ROUTER_etf(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
         ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -191,30 +198,52 @@ class ROUTER_etf(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Optional[
+            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Historical Market Price.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+        interval : Optional[str]
+            Time interval of the data to return.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        start_time : Optional[datetime.time]
+            Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        end_time : Optional[datetime.time]
+            Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        timezone : Optional[str]
+            Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
+        source : Literal['realtime', 'delayed', 'nasdaq_basic']
+            The source of the data. (provider: intrinio)
+        adjustment : Union[Literal['splits_only', 'unadjusted'], Literal['splits_only', 'splits_and_dividends']]
+            The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+        extended_hours : bool
+            Include Pre and Post market data. (provider: polygon, yfinance)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
+        limit : int
+            The number of data entries to return. (provider: polygon)
+        include_actions : bool
+            Include dividends and stock splits in results. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EtfHistorical]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -235,15 +264,53 @@ class ROUTER_etf(Container):
             The low price.
         close : float
             The close price.
-        volume : Optional[Annotated[int, Ge(ge=0)]]
+        volume : Optional[Union[float, int]]
             The trading volume.
+        vwap : Optional[float]
+            Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            The adjusted closing price of the ETF. (provider: yfinance)
+            The adjusted close price. (provider: fmp, intrinio, tiingo)
+        unadjusted_volume : Optional[float]
+            Unadjusted volume of the symbol. (provider: fmp)
+        change : Optional[float]
+            Change in the price from the previous close. (provider: fmp);
+            Change in the price of the symbol from the previous day. (provider: intrinio)
+        change_percent : Optional[float]
+            Change in the price from the previous close, as a normalized percent. (provider: fmp);
+            Percent change in the price of the symbol from the previous day. (provider: intrinio)
+        average : Optional[float]
+            Average trade price of an individual equity during the interval. (provider: intrinio)
+        adj_open : Optional[float]
+            The adjusted open price. (provider: intrinio, tiingo)
+        adj_high : Optional[float]
+            The adjusted high price. (provider: intrinio, tiingo)
+        adj_low : Optional[float]
+            The adjusted low price. (provider: intrinio, tiingo)
+        adj_volume : Optional[float]
+            The adjusted volume. (provider: intrinio, tiingo)
+        fifty_two_week_high : Optional[float]
+            52 week high price for the symbol. (provider: intrinio)
+        fifty_two_week_low : Optional[float]
+            52 week low price for the symbol. (provider: intrinio)
+        factor : Optional[float]
+            factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
+        split_ratio : Optional[float]
+            Ratio of the equity split, if a split occurred. (provider: intrinio, tiingo, yfinance)
+        dividend : Optional[float]
+            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
+        close_time : Optional[datetime]
+            The timestamp that represents the end of the interval span. (provider: intrinio)
+        interval : Optional[str]
+            The data time frequency. (provider: intrinio)
+        intra_period : Optional[bool]
+            If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
+            Number of transactions for the symbol in the time period. (provider: polygon)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.historical(symbol="SPY")
+        >>> obb.etf.historical(symbol="SPY", interval="1d")
         >>> obb.etf.historical("SPY", provider="yfinance")
         >>> #### This function accepts multiple tickers. ####
         >>> obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")
@@ -256,15 +323,26 @@ class ROUTER_etf(Container):
                     "provider": self._get_provider(
                         provider,
                         "/etf/historical",
-                        ("yfinance",),
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
+                    "interval": interval,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 

@@ -1,5 +1,8 @@
 """Tiingo Equity Historical Price Model."""
 
+# pylint: disable=unused-argument
+
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -9,9 +12,18 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import amake_request, get_querystring
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+    get_querystring,
+)
 from pydantic import Field, PrivateAttr, model_validator
+
+_warn = warnings.warn
 
 
 class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -29,8 +41,8 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
-    _frequency: Literal["daily", "weekly", "monthly", "quarterly", "yearly"] = (
-        PrivateAttr(default=None)
+    _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
+        default=None
     )
 
     # pylint: disable=protected-access
@@ -42,8 +54,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
             "1d": "daily",
             "1W": "weekly",
             "1M": "monthly",
-            "1Q": "quarterly",
-            "1Y": "yearly",
+            "1Y": "annually",
         }
 
         values._frequency = frequency_dict[values.interval]  # type: ignore[assignment]
@@ -56,32 +67,32 @@ class TiingoEquityHistoricalData(EquityHistoricalData):
 
     adj_open: Optional[float] = Field(
         default=None,
-        description="Adjusted open price during the period.",
+        description="The adjusted open price.",
         alias="adjOpen",
     )
     adj_high: Optional[float] = Field(
         default=None,
-        description="Adjusted high price during the period.",
+        description="The adjusted high price.",
         alias="adjHigh",
     )
     adj_low: Optional[float] = Field(
         default=None,
-        description="Adjusted low price during the period.",
+        description="The adjusted low price.",
         alias="adjLow",
     )
     adj_close: Optional[float] = Field(
         default=None,
-        description="Adjusted closing price during the period.",
+        description=DATA_DESCRIPTIONS.get("adj_close", ""),
         alias="adjClose",
     )
     adj_volume: Optional[float] = Field(
         default=None,
-        description="Adjusted volume during the period.",
+        description="The adjusted volume.",
         alias="adjVolume",
     )
     split_ratio: Optional[float] = Field(
         default=None,
-        description="Ratio of the equity split, if a equity split occurred.",
+        description="Ratio of the equity split, if a split occurred.",
         alias="splitFactor",
     )
     dividend: Optional[float] = Field(
@@ -127,20 +138,30 @@ class TiingoEquityHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["symbol", "interval"]
         )
-        data: List[Dict] = []
-        for symbol in query.symbol.split(","):
-            url = f"{base_url}/{symbol}/prices?{query_str}&resampleFreq={query._frequency}&token={api_key}"
-            d = await amake_request(url, **kwargs)
+
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
+            data = await response.json()
+            symbol = response.url.parts[-2]
+            results = []
+            if not data:
+                _warn(f"No data found the the symbol: {symbol}")
+                return results
+
+            if isinstance(data, List):
+                results = data
 
             if "," in query.symbol:
-                for item in d:
-                    item["symbol"] = symbol
+                for d in results:
+                    d["symbol"] = symbol
+            return results
 
-            data += d
+        urls = [
+            f"{base_url}/{symbol}/prices?{query_str}&resampleFreq={query._frequency}&token={api_key}"
+            for symbol in query.symbol.split(",")
+        ]
 
-        return data
+        return await amake_requests(urls, callback, **kwargs)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: TiingoEquityHistoricalQueryParams,

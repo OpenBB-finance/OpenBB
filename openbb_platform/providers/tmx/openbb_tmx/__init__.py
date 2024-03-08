@@ -55,6 +55,7 @@ tmx_provider = Provider(
         "EtfHoldings": TmxEtfHoldingsFetcher,
         "EtfSectors": TmxEtfSectorsFetcher,
         "EtfCountries": TmxEtfCountriesFetcher,
+        "EtfHistorical": TmxEquityHistoricalFetcher,
         "EtfInfo": TmxEtfInfoFetcher,
         "EquityGainers": TmxGainersFetcher,
         "HistoricalDividends": TmxHistoricalDividendsFetcher,

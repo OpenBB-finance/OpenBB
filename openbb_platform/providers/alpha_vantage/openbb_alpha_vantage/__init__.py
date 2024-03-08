@@ -18,5 +18,6 @@ alpha_vantage_provider = Provider(
     fetcher_dict={
         "EquityHistorical": AVEquityHistoricalFetcher,
         "HistoricalEps": AVHistoricalEpsFetcher,
+        "EtfHistorical": AVEquityHistoricalFetcher,
     },
 )

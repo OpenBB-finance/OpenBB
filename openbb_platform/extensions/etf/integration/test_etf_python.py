@@ -48,27 +48,157 @@ def test_etf_search(params, obb):
     [
         (
             {
-                "symbol": "IOO",
+                "adjustment": "unadjusted",
+                "extended_hours": True,
+                "provider": "alpha_vantage",
+                "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "provider": "yfinance",
+                "interval": "15m",
             }
         ),
         (
             {
-                "symbol": "MISL",
+                "provider": "cboe",
+                "symbol": "SPY",
+                "start_date": None,
+                "end_date": None,
+                "interval": "1m",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "timezone": "UTC",
+                "source": "realtime",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "SPY",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+            }
+        ),
+        (
+            {
+                "timezone": None,
+                "source": "delayed",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "unadjusted",
+                "provider": "polygon",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-03",
+                "interval": "1m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "splits_only",
+                "provider": "polygon",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "extended_hours": False,
+                "include_actions": False,
+                "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
+                "symbol": "SPY",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+                "adjusted": True,
+                "prepost": False,
+            }
+        ),
+        (
+            {
+                "extended_hours": False,
+                "include_actions": True,
+                "adjustment": "splits_only",
+                "provider": "yfinance",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "adjusted": False,
+                "prepost": False,
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+            }
+        ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SPY:US",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "interval": "1d",
+                "adjustment": "splits_only",
             }
         ),
     ],
 )
 @pytest.mark.integration
 def test_etf_historical(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.historical(**params)
+    result = obb.equity.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

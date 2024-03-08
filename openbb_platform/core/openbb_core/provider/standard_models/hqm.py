@@ -5,7 +5,7 @@ from datetime import (
 )
 from typing import Literal, Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -26,6 +26,12 @@ class HighQualityMarketCorporateBondQueryParams(QueryParams):
         default="spot",
         description="The yield curve type.",
     )
+
+    @field_validator("yield_curve", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
 
 
 class HighQualityMarketCorporateBondData(Data):

@@ -5,7 +5,7 @@ from datetime import (
 )
 from typing import Optional, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -34,6 +34,12 @@ class SpotRateQueryParams(QueryParams):
         description="Rate category. Options: spot_rate, par_yield.",
         choices=["par_yield", "spot_rate"],
     )
+
+    @field_validator("category", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
 
 
 class SpotRateData(Data):

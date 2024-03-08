@@ -11,7 +11,10 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -41,8 +44,8 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default=None,
         description="Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'.",
     )
-    timezone: str = Field(
-        default="UTC",
+    timezone: Optional[str] = Field(
+        default="America/New_York",
         description="Timezone of the data, in the IANA format (Continent/City).",
     )
     source: Literal["realtime", "delayed", "nasdaq_basic"] = Field(
@@ -81,15 +84,6 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
 
     __alias_dict__ = {"date": "time"}
 
-    close_time: Optional[datetime] = Field(
-        default=None,
-        description="The timestamp that represents the end of the interval span.",
-    )
-    interval: Optional[str] = Field(
-        default=None,
-        description="The data time frequency.",
-        alias="frequency",
-    )
     average: Optional[float] = Field(
         default=None,
         description="Average trade price of an individual equity during the interval.",
@@ -101,48 +95,28 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     change_percent: Optional[float] = Field(
         default=None,
         description="Percent change in the price of the symbol from the previous day.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    intra_period: Optional[bool] = Field(
-        default=None,
-        description="If true, the equity price represents an unfinished period "
-        "(be it day, week, quarter, month, or year), meaning that the close "
-        "price is the latest price available, not the official close price "
-        "for the period",
-        alias="intraperiod",
+        alias="percent_change",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     adj_open: Optional[float] = Field(
         default=None,
-        description="Adjusted open price during the period.",
+        description="The adjusted open price.",
     )
     adj_high: Optional[float] = Field(
         default=None,
-        description="Adjusted high price during the period.",
+        description="The adjusted high price.",
     )
     adj_low: Optional[float] = Field(
         default=None,
-        description="Adjusted low price during the period.",
+        description="The adjusted low price.",
     )
     adj_close: Optional[float] = Field(
         default=None,
-        description="Adjusted closing price during the period.",
+        description=DATA_DESCRIPTIONS.get("adj_close", ""),
     )
     adj_volume: Optional[float] = Field(
         default=None,
-        description="Adjusted volume during the period.",
-    )
-    factor: Optional[float] = Field(
-        default=None,
-        description="factor by which to multiply equity prices before this "
-        "date, in order to calculate historically-adjusted equity prices.",
-    )
-    split_ratio: Optional[float] = Field(
-        default=None,
-        description="Ratio of the equity split, if a equity split occurred.",
-    )
-    dividend: Optional[float] = Field(
-        default=None,
-        description="Dividend amount, if a dividend was paid.",
+        description="The adjusted volume.",
     )
     fifty_two_week_high: Optional[float] = Field(
         default=None,
@@ -151,6 +125,36 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     fifty_two_week_low: Optional[float] = Field(
         default=None,
         description="52 week low price for the symbol.",
+    )
+    factor: Optional[float] = Field(
+        default=None,
+        description="factor by which to multiply equity prices before this "
+        "date, in order to calculate historically-adjusted equity prices.",
+    )
+    split_ratio: Optional[float] = Field(
+        default=None,
+        description="Ratio of the equity split, if a split occurred.",
+    )
+    dividend: Optional[float] = Field(
+        default=None,
+        description="Dividend amount, if a dividend was paid.",
+    )
+    close_time: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp that represents the end of the interval span.",
+    )
+    interval: Optional[str] = Field(
+        default=None,
+        description="The data time frequency.",
+        alias="frequency",
+    )
+    intra_period: Optional[bool] = Field(
+        default=None,
+        description="If true, the equity price represents an unfinished period "
+        "(be it day, week, quarter, month, or year), meaning that the close "
+        "price is the latest price available, not the official close price "
+        "for the period",
+        alias="intraperiod",
     )
 
 
@@ -231,10 +235,12 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
-        try:
-            sorted_data = sorted(
-                data, key=lambda x: x.get("date") or x.get("time"), reverse=False
-            )
-        except Exception:
-            sorted_data = data
-        return [IntrinioEquityHistoricalData.model_validate(d) for d in sorted_data]
+        date_col = (
+            "time"
+            if query.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]
+            else "date"
+        )
+        return [
+            IntrinioEquityHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x[date_col], reverse=False)
+        ]

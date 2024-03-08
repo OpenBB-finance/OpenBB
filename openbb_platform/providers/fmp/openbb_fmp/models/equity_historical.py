@@ -1,7 +1,10 @@
 """FMP Equity Historical Price Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,14 +12,17 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
-from pydantic import Field, NonNegativeInt, field_validator
+from pydantic import Field, field_validator
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -28,13 +34,8 @@ class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
-    limit: Optional[NonNegativeInt] = Field(
-        default=None,
-        description="Number of days to look back (Only for interval 1d).",
-        alias="timeseries",
-    )
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description="Time granularity to fetch data for."
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
 
 
@@ -49,22 +50,14 @@ class FMPEquityHistoricalData(EquityHistoricalData):
     )
     change: Optional[float] = Field(
         default=None,
-        description="Change in the price of the symbol from the previous day.",
+        description="Change in the price from the previous close.",
     )
     change_percent: Optional[float] = Field(
         default=None,
-        description="Change in price as a normalized percent.",
+        description="Change in the price from the previous close, as a normalized percent.",
+        alias="changeOverTime",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
-    )
-
-    @field_validator("change_percent", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):  # pylint: disable=E0213
-        """Return the percent value as a normalized value."""
-        return float(v) / 100 if v else None
 
 
 class FMPEquityHistoricalFetcher(
@@ -115,19 +108,20 @@ class FMPEquityHistoricalFetcher(
             kwargs.update({"preferences": {"request_timeout": 30}})
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            """Callback function."""
-            result = []
-            data: Dict = await response.json()
+            data = await response.json()
             symbol = response.url.parts[-1]
+            results = []
+            if not data:
+                warn(f"No data found the the symbol: {symbol}")
+                return results
 
-            if isinstance(data, Dict):
-                result = data.get("historical", [])
+            if isinstance(data, dict):
+                results = data.get("historical", [])
 
             if "," in query.symbol:
-                for d in result:
+                for d in results:
                     d["symbol"] = symbol
-
-            return result
+            return results
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
@@ -138,9 +132,15 @@ class FMPEquityHistoricalFetcher(
         query: FMPEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
-        # remove a duplicated fields.
+
+        # Get rid of duplicate fields.
+        to_pop = ["label", "changePercent"]
         results: List[FMPEquityHistoricalData] = []
+
         for d in sorted(data, key=lambda x: x["date"], reverse=False):
-            _ = d.pop("changeOverTime")
+            _ = [d.pop(pop) for pop in to_pop if pop in d]
+            if d.get("unadjusted_volume") == d.get("volume"):
+                _ = d.pop("unadjusted_volume")
             results.append(FMPEquityHistoricalData.model_validate(d))
+
         return results
