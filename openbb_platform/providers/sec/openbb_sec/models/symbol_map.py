@@ -48,6 +48,8 @@ class SecSymbolMapFetcher(
         return {"symbol": cik_map(int(query.query))}
 
     @staticmethod
-    def transform_data(query: SecSymbolMapQueryParams, data: Dict, **kwargs: Any) -> SecSymbolMapData:
+    def transform_data(
+        query: SecSymbolMapQueryParams, data: Dict, **kwargs: Any
+    ) -> SecSymbolMapData:
         """Transform the data to the standard format."""
         return SecSymbolMapData.model_validate(data)
