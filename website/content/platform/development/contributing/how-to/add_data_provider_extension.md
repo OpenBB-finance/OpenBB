@@ -222,7 +222,7 @@ obb.derivatives.options.chains(
 
 Following either path, [How To Add Data To An Existing Endpoint](add_data_to_existing_endpoint) & [How To Add A New Data Endpoint With An Existing Provider](add_endpoint_to_existing_provider), will take this from an empty provider extension to a finished product.
 
-The new extension can be self-published on PyPI and hosted in an independent GitHub repo. You will then be able to maintain the code, and the release schedule, yourself.
+The new extension can be self-published on PyPI and hosted in an independent GitHub repo. You will then be able to maintain the code, and the release schedule.
 
 If not contributing directly to the OpenBB GitHub, we still want to know about your creation. Share it with us on social media, and add `openbb` as a topic tag in your GitHub repo.
 

@@ -72,7 +72,7 @@ This example would be used within a provider's `Data` model.
 
 ### Dynamic Default Date
 
-It might be desirable to have a default date parameter that is not static.  To allow this, we must set the default parameter value as `None`, and use the `model_validator`. This example is for the `QueryParams`.
+It might be desirable to have a default date parameter that is not static. To allow this, we must set the default parameter value as `None`, and use the `model_validator`. This example is for the `QueryParams`.
 
 ```python
     @model_validator(mode="before")
