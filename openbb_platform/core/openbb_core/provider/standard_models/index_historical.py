@@ -4,10 +4,10 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal, Optional, Union
+from typing import Optional, Union
 
 from dateutil import parser
-from pydantic import Field, PositiveInt, StrictFloat, field_validator
+from pydantic import Field, StrictFloat, field_validator
 
 from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -30,14 +30,6 @@ class IndexHistoricalQueryParams(QueryParams):
     interval: Optional[str] = Field(
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", ""),
-    )
-    limit: Optional[PositiveInt] = Field(
-        default=10000,
-        description=QUERY_DESCRIPTIONS.get("limit", ""),
-    )
-    sort: Optional[Literal["asc", "desc"]] = Field(
-        default="asc",
-        description="Sort the data in ascending or descending order.",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
