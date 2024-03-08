@@ -33,36 +33,20 @@ def get_packages_info() -> Dict[str, str]:
     return paths_and_names
 
 
-def execute_docstring_examples(
-    module_name: str, file_path: str, verbose: bool = False
-) -> List[str]:
+def execute_docstring_examples(module_name: str, path: str) -> List[str]:
     """Execute the docstring examples of a module."""
     errors = []
-    module_name = f"openbb.package.{module_name}"
-    module = importlib.import_module(module_name)
-    examples = doctest.DocTestFinder().find(module)
+    module = importlib.import_module(f"openbb.package.{module_name}")
+    doc_tests = doctest.DocTestFinder().find(module)
 
-    def execute_script(script, source_info):
+    for dt in doc_tests:
+        code = "".join([ex.source for ex in dt.examples])
         try:
-            local_namespace = {}
-            exec(  # noqa: S102 pylint: disable=exec-used
-                script, local_namespace, local_namespace
-            )
-            if verbose:
-                logging.info("Executed a test from %s", source_info)
+            exec(code)  # pylint: disable=exec-used
         except Exception as e:
             errors.append(
-                f"An exception occurred while executing script from {source_info} - {str(e)}"
+                f"\n\n{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}"
             )
-
-    for example in examples:
-        script_lines = []
-
-        for test in example.examples:
-            script_lines.append(test.source)
-
-        script_content = "".join(script_lines)
-        execute_script(script_content, file_path)
 
     return errors
 
@@ -73,7 +57,7 @@ def check_docstring_examples() -> List[str]:
     paths_and_names = get_packages_info()
 
     for path, name in paths_and_names.items():
-        result = execute_docstring_examples(name, path, verbose=True)
+        result = execute_docstring_examples(name, path)
         if result:
             errors.extend(result)
 

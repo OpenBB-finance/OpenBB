@@ -36,7 +36,13 @@ router = Router(prefix="/rolling")
                 'obb.quantitative.rolling.skew(data=returns, target="close")',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def skew(
@@ -91,7 +97,13 @@ def skew(
                 'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def variance(
@@ -103,15 +115,16 @@ def variance(
     Variance measures the dispersion of a set of data points around their mean. It is a key metric for
     assessing the volatility and stability of financial returns or other time series data over a specified rolling window.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate variance.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate variance.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -139,7 +152,13 @@ def variance(
                 'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def stdev(
@@ -152,15 +171,16 @@ def stdev(
      It is widely used to assess the risk and volatility of financial returns or other time series data
      over a specified rolling window.  It is the square root of the variance.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate standard deviation.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate standard deviation.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -191,7 +211,13 @@ def stdev(
                 'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def kurtosis(
@@ -206,15 +232,16 @@ def kurtosis(
     This function helps in assessing the risk of outliers in financial returns or other time series data over a specified
     rolling window.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate kurtosis.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate kurtosis.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -246,7 +273,13 @@ def kurtosis(
                 'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def quantile(
@@ -263,17 +296,18 @@ def quantile(
     or dividing the  sample in the same way. This function is useful for understanding the distribution of data
     within a specified window, allowing for analysis of trends, identification of outliers, and assessment of risk.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the quantile.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        quantile_pct: NonNegativeFloat, optional
-            The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the quantile.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    quantile_pct: NonNegativeFloat, optional
+        The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -316,7 +350,13 @@ def quantile(
                 'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
             ],
         ),
-        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 5,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def mean(
@@ -329,15 +369,16 @@ def mean(
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends
     or cycles in time series data.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the mean.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the mean.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
         OBBject[List[Data]]

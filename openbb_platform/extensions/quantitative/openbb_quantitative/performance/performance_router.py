@@ -28,7 +28,7 @@ router = Router(prefix="/performance")
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
-                'obb.quantitative.omega_ratio(data=returns, target="close")',
+                'obb.quantitative.performance.omega_ratio(data=returns, target="close")',
             ],
         ),
         APIEx(
@@ -95,7 +95,7 @@ def omega_ratio(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
-                'obb.quantitative.sharpe_ratio(data=returns, target="close")',
+                'obb.quantitative.performance.sharpe_ratio(data=returns, target="close")',
             ],
         ),
         APIEx(
@@ -157,8 +157,8 @@ def sharpe_ratio(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
-                'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
-                'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close")',
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
             ],
         ),
         APIEx(
