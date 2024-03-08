@@ -25,7 +25,6 @@ def test_router_examples_rules() -> None:
     Rules:
     - All endpoints should have examples.
     - At least one example using all required parameters.
-    - If any endpoint is excluded from the schema it only needs a Python example.
     """
     invalid_examples = check_router_command_examples()
     assert not invalid_examples, "\n".join(sorted(invalid_examples))
