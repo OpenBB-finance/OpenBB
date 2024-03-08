@@ -33,7 +33,7 @@ Toolkits are a generalized category of functionality for performing operations b
 The possibilities are virtually unlimited, and each component (`equity`, `etf`, `index`, etc.) can be installed or removed independently.
 A toolkit might even be extending another extension, which itself is an extension of an extension.
 
-An easy example to undertand is, `openbb-technical`.
+An easy example to understand is, `openbb-technical`.
 It has its own router where all functions are configured as a `POST` request, with data being sent by the user as a serialized JSON in the body.
 Calculations are performed using the supplied data and parameters, returning a new instance of the OBBject class.
 
