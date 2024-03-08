@@ -42,12 +42,12 @@ class Metadata(BaseModel):
             if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.dict().keys()),
+                    "columns": list(arg_val.model_dump().keys()),
                 }
 
             # List[Data]
             if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
-                columns = [list(d.dict().keys()) for d in arg_val]
+                columns = [list(d.model_dump().keys()) for d in arg_val]
                 columns = (item for sublist in columns for item in sublist)  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
