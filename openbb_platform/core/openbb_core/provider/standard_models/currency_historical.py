@@ -37,7 +37,7 @@ class CurrencyHistoricalQueryParams(QueryParams):
     def validate_symbol(
         cls, v: Union[str, List[str], Set[str]]
     ):  # pylint: disable=E0213
-        """Convert symbol to uppercase and remove '-'."""
+        """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
         return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])

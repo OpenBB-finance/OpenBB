@@ -212,7 +212,7 @@ class ROUTER_index(Container):
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]]
             Data granularity. (provider: fmp, yfinance)
         sort : Literal['asc', 'desc']
             Sort the data in ascending or descending order. (provider: fmp);

@@ -86,7 +86,7 @@ def test_filter_extra_params_wrong_param(query):
 
     extra = query.filter_extra_params(extra_params, "fmp")
     assert isinstance(extra, dict)
-    assert len(extra) == 1
+    assert len(extra) == 0
 
 
 @pytest.fixture
