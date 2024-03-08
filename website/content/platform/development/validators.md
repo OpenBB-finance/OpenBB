@@ -44,8 +44,8 @@ from pydantic import field_validator, model_validator
 
 ### Parsing Dates
 
-Providers will format dates in a number of ways.  OpenBB uses YYYY-MM-DD as the standard convention, for both inputs and outputs.
-Outputs are a `datetime` object or JSON serlialized string.  Validators are used to parse the date from the specific format.
+Providers will format dates in a number of ways. OpenBB uses YYYY-MM-DD as the standard convention, for both inputs and outputs.
+Outputs are a `datetime` object or JSON serlialized string. Validators are used to parse the date from the specific format.
 This example is used within a provider's `Data` model.
 
 ```python

@@ -1,6 +1,6 @@
 ---
 title: How To Add A Data Provider To An Existing Endpoint
-sidebar_position: 2
+sidebar_position: 1
 description: This guide outlines the process for adding an endpoint to an existing data provider and router endpoint.
 keywords:
 - OpenBB Platform
@@ -28,7 +28,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 
-- Catalogue the parameters and returned fields from the chosen data provider.
+- Document the parameters and returned fields from the chosen data provider.
 - Find the existing standard model that is mapped to the router endpoint.
 - Identify any common parameters and fields to map.
 - Build the provider models and Fetcher class by inheriting from the standard models.

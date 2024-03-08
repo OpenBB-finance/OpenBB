@@ -1,6 +1,6 @@
 ---
 title: How To Add Data Provider Extensions
-sidebar_position: 4
+sidebar_position: 3
 description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
 keywords:
 - OpenBB Platform
@@ -39,7 +39,7 @@ An easy way to get started is to copy and paste something existing. In the OpenB
 
 For convenience's sake, download this template [zip file](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip). It contains the basic folder structure and everything required to get started creating new data models.
 
-For demonstration purposes, we'll assume this is from the perspective of somebody who will eventually open a pull request and contribute the code to the OpenBB repository. The process, however, also applies to publishing directly via PyPI. Anyone can make an OpenBB extension.
+For demonstration purposes, we'll assume this is from the perspective of somebody who will open a pull request and contribute the code to the OpenBB repository. The process, however, also applies to publishing directly via PyPI. Anyone can make an OpenBB extension.
 
 The structure of the folder will look something like this:
 
@@ -85,10 +85,14 @@ To get started:
   ```
 - Start creating data models using the steps outlined [here](add_data_to_existing_endpoint)
 
-### Cookie Cutter
+### Cookiecutter
 
 In order to speed up the process of building an extension, we have created a [**Cookiecutter**](https://github.com/OpenBB-finance/openbb-cookiecutter) template.
 It serves as a jumpstart for your extension development, and can be used instead of the template ZIP referenced earlier. Instructions are located on the [GitHub page](https://github.com/OpenBB-finance/openbb-cookiecutter).
+
+:::note
+The cookiecutter tool will get you most of the way there, but it still requires some tweaks to the file names and initializations.
+:::
 
 ## Dependencies
 
