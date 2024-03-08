@@ -115,7 +115,7 @@ async def growth_tech(
 
 @router.command(
     model="TopRetail",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[APIEx(parameters={})],
 )
 async def top_retail(
     cc: CommandContext,
@@ -132,7 +132,7 @@ async def top_retail(
 
 @router.command(
     model="UpcomingReleaseDays",
-    examples=[APIEx(parameters={}), APIEx(parameters={"sort": "desc"})],
+    examples=[APIEx(parameters={})],
 )
 async def upcoming_release_days(
     cc: CommandContext,
