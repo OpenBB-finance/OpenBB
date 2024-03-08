@@ -15,8 +15,6 @@ from openbb_core.provider.utils.descriptions import (
 class Form13FHRQueryParams(QueryParams):
     """Form 13F-HR Query."""
 
-    __validator_dict__ = {"check_single": ("symbol")}
-
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " A CIK or Symbol can be used."
@@ -39,8 +37,8 @@ class Form13FHRQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str):
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str):
+        """Convert field to uppercase."""
         return str(v).upper()
 
 

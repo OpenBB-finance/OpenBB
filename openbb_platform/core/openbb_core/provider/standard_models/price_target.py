@@ -29,8 +29,8 @@ class PriceTargetQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str):
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str):
+        """Convert field to uppercase."""
         return v.upper() if v else None
 
 
