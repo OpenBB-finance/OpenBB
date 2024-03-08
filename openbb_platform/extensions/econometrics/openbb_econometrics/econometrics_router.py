@@ -417,11 +417,13 @@ def cointegration(
             ],
         ),
         APIEx(
+            description="Example with mock data.",
             parameters={
                 "y_column": "close",
                 "x_column": "open",
+                "lag": 1,
                 "data": APIEx.mock_data("timeseries"),
-            }
+            },
         ),
     ],
 )

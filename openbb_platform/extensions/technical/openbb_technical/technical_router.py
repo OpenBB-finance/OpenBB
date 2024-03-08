@@ -17,7 +17,12 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
-from . import helpers
+from .helpers import (
+    calculate_cones,
+    calculate_fib_levels,
+    clenow_momentum,
+    validate_data,
+)
 
 # TODO: Split this into multiple files
 router = Router(prefix="")
@@ -33,7 +38,7 @@ router = Router(prefix="")
                 "atr_data = obb.technical.atr(data=stock_data.results)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def atr(
@@ -74,6 +79,7 @@ def atr(
     OBBject[List[Data]]
         List of data with the indicator applied.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_atr = pd.DataFrame(
@@ -138,7 +144,7 @@ def fib(
         min_pr,
         max_pr,
         lvl_text,
-    ) = helpers.calculate_fib_levels(
+    ) = calculate_fib_levels(
         data=df,
         close_col=close_column,
         limit=period,
@@ -220,7 +226,7 @@ def obv(
                 "fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def fisher(
@@ -253,6 +259,7 @@ def fisher(
     OBBject[List[Data]]
         List of data with the indicator applied.
     """
+    validate_data(data, [length, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
@@ -273,7 +280,7 @@ def fisher(
                 "adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"fast": 2, "slow": 4, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def adosc(
@@ -309,8 +316,9 @@ def adosc(
     -------
     OBBject[List[Data]]
     """
+    validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
-    df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
+    df_target = get_target_columns(df, ["open", "high", "low", "close", "volume"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
 
     output = pd.concat([df, df_adosc], axis=1)
@@ -329,7 +337,7 @@ def adosc(
                 "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def bbands(
@@ -378,6 +386,7 @@ def bbands(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
@@ -407,7 +416,7 @@ def bbands(
                 "zlma_data = obb.technical.zlma(data=stock_data.results, target='close', length=50, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def zlma(
@@ -444,6 +453,7 @@ def zlma(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     zlma_df = pd.DataFrame(
@@ -471,7 +481,7 @@ def zlma(
                 "aaron_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def aroon(
@@ -510,11 +520,12 @@ def aroon(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
-    aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
+    df_aroon = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
 
-    output = pd.concat([df, aroon_df], axis=1)
+    output = pd.concat([df, df_aroon], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
@@ -530,7 +541,7 @@ def aroon(
                 "sma_data = obb.technical.sma(data=stock_data.results, target='close', length=50, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def sma(
@@ -568,6 +579,7 @@ def sma(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     sma_df = pd.DataFrame(
@@ -711,7 +723,15 @@ def vwap(
                 "macd_data = obb.technical.macd(data=stock_data.results, target='close', fast=12, slow=26, signal=9)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            description="Example with mock data.",
+            parameters={
+                "fast": 2,
+                "slow": 3,
+                "signal": 1,
+                "data": APIEx.mock_data("timeseries"),
+            },
+        ),
     ],
 )
 def macd(
@@ -753,6 +773,7 @@ def macd(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, [fast, slow, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
@@ -774,13 +795,12 @@ def macd(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the Relative Strength Index (RSI).",
+            description="Calculate HMA with historical stock data.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "hma_data = obb.technical.hma(data=stock_data.results, target='close', length=50, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def hma(
@@ -815,6 +835,7 @@ def hma(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     hma_df = pd.DataFrame(
@@ -842,7 +863,13 @@ def hma(
                 "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(
+            parameters={
+                "lower_length": 1,
+                "upper_length": 3,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def donchian(
@@ -878,6 +905,7 @@ def donchian(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, [lower_length, upper_length])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     donchian_df = pd.DataFrame(
@@ -972,7 +1000,7 @@ def ichimoku(
                 "clenow_data = obb.technical.clenow(data=stock_data.results, period=90)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"period": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def clenow(
@@ -1003,10 +1031,11 @@ def clenow(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, period)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
 
-    r2, coef, _ = helpers.clenow_momentum(df_target, period)
+    r2, coef, _ = clenow_momentum(df_target, period)
 
     df_clenow = pd.DataFrame.from_dict(
         {
@@ -1085,7 +1114,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
                 "adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def adx(
@@ -1119,13 +1148,14 @@ def adx(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
-    adx_df = pd.DataFrame(
+    df_adx = pd.DataFrame(
         df_target.ta.adx(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    output = pd.concat([df, adx_df], axis=1)
+    output = pd.concat([df, df_adx], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
@@ -1141,7 +1171,7 @@ def adx(
                 "wma_data = obb.technical.wma(data=stock_data.results, target='close', length=50, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def wma(
@@ -1176,9 +1206,10 @@ def wma(
     OBBject[List[Data]]
         The WMA data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    wma_df = pd.DataFrame(
+    df_wma = pd.DataFrame(
         df_target.ta.wma(
             length=length,
             offset=offset,
@@ -1187,7 +1218,7 @@ def wma(
         ).dropna()
     )
 
-    output = pd.concat([df, wma_df], axis=1)
+    output = pd.concat([df, df_wma], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
@@ -1203,7 +1234,7 @@ def wma(
                 "cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def cci(
@@ -1236,6 +1267,7 @@ def cci(
     OBBject[List[Data]]
         The CCI data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
@@ -1256,7 +1288,7 @@ def cci(
                 "rsi_data = obb.technical.rsi(data=stock_data.results, target='close', length=14, scalar=100.0, drift=1)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def rsi(
@@ -1295,6 +1327,7 @@ def rsi(
     OBBject[List[Data]]
         The RSI data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
@@ -1323,7 +1356,6 @@ def rsi(
                 "stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def stoch(
@@ -1360,6 +1392,7 @@ def stoch(
     OBBject[List[Data]]
         The Stochastic Oscillator data.
     """
+    validate_data(data, [fast_k_period, slow_d_period, slow_k_period])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     stoch_df = pd.DataFrame(
@@ -1386,7 +1419,7 @@ def stoch(
                 "kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode='ema', offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def kc(
@@ -1425,6 +1458,7 @@ def kc(
     OBBject[List[Data]]
         The Keltner Channels data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     kc_df = pd.DataFrame(
@@ -1451,7 +1485,7 @@ def kc(
                 "cg_data = obb.technical.cg(data=stock_data.results, length=14)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def cg(
@@ -1479,6 +1513,7 @@ def cg(
     OBBject[List[Data]]
         The COG data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
@@ -1580,7 +1615,7 @@ def cones(
         lower_q, upper_q = upper_q, lower_q
 
     df = basemodel_to_df(data, index=index)
-    df_cones = helpers.calculate_cones(
+    df_cones = calculate_cones(
         data=df,
         lower_q=lower_q,
         upper_q=upper_q,
@@ -1604,7 +1639,7 @@ def cones(
                 "ema_data = obb.technical.ema(data=stock_data.results, target='close', length=50, offset=0)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
     ],
 )
 def ema(
@@ -1639,6 +1674,7 @@ def ema(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     ema_df = pd.DataFrame(

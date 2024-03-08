@@ -107,7 +107,7 @@ def omega_ratio(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -177,6 +177,7 @@ def sharpe_ratio(
         APIEx(
             parameters={
                 "target": "close",
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -229,7 +230,7 @@ def sortino_ratio(
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
-    returns = series_target.pct_change().dropna().rolling(window).sum()
+    returns = series_target.pct_change().dropna().rolling(window).sum().dropna()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
@@ -240,8 +241,9 @@ def sortino_ratio(
     )
 
     if adjusted:
-        results = results / np.sqrt(2)
-
+        results = results.applymap(
+            lambda x: x / np.sqrt(2) if isinstance(x, float) else x
+        )
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)

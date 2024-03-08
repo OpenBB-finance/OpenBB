@@ -5,7 +5,6 @@ import asyncio
 from datetime import datetime, timedelta
 from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
-from openbb_core.provider.utils.errors import EmptyDataError
 
 import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,6 +12,7 @@ from openbb_core.provider.standard_models.treasury_prices import (
     TreasuryPricesData,
     TreasuryPricesQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_government_us.utils.helpers import get_random_agent
 from pandas import Index, read_csv, to_datetime
 from pydantic import Field

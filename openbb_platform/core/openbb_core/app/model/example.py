@@ -109,12 +109,10 @@ class APIEx(Example):
 
         Panel default sample:
         {
-            "asset_manager": "BlackRock",
-            "time": 1,
             "portfolio_value": 100000,
             "risk_free_rate": 0.02,
         }
-        multiindex_names: ["asset_manager", "time"]
+        multiindex: {"asset_manager": "AM", "time": 0}
 
         Returns
         -------
@@ -139,7 +137,7 @@ class APIEx(Example):
                         assert isinstance(v, str)
                         obs[k] = (
                             datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
-                        ).isoformat()
+                        ).strftime("%Y-%m-%d")
                     else:
                         obs[k] = round(v * s, 2)
                 result.append(obs)
@@ -158,7 +156,7 @@ class APIEx(Example):
                 "is_multiindex": True,
                 "multiindex_names": str(multiindex_names),
             }
-            # Iterate over the number of items to create and add items to the result
+            # Iterate over the number of items to create and add them to the result
             result = []
             for i in range(1, size + 1):
                 item[idx_1] = f"{idx_1}_{i}"

@@ -39,7 +39,7 @@ router = Router(prefix="/rolling")
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -103,7 +103,7 @@ def skew(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -161,7 +161,7 @@ def variance(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -223,7 +223,7 @@ def stdev(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -288,7 +288,7 @@ def kurtosis(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
@@ -368,7 +368,7 @@ def quantile(
         APIEx(
             parameters={
                 "target": "close",
-                "window": 5,
+                "window": 2,
                 "data": APIEx.mock_data(
                     "timeseries",
                     sample={"date": "2023-01-01", "close": 0.05},
