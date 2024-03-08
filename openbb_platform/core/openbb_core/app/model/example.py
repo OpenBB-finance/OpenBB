@@ -79,7 +79,7 @@ class APIEx(Example):
         dataset: Literal["timeseries", "panel"],
         size: int = 5,
         sample: Optional[Dict[str, Any]] = None,
-        multiindex_names: Optional[List[str]] = None,
+        multiindex: Optional[Dict[str, Any]] = None,
     ) -> List[Dict]:
         """Generate mock data from a sample.
 
@@ -146,25 +146,30 @@ class APIEx(Example):
             return result
         elif dataset == "panel":
             sample = sample or {
-                "asset_manager": "BlackRock",
-                "time": 1,
-                "portfolio_value": 100000,
+                "portfolio_value": 100000.0,
                 "risk_free_rate": 0.02,
             }
-            multiindex_names = multiindex_names or ["asset_manager", "time"]
+            multiindex = multiindex or {"asset_manager": "AM", "time": 0}
+            multiindex_names = list(multiindex.keys())
+            idx_1 = multiindex_names[0]
+            idx_2 = multiindex_names[1]
+            items_per_idx = 2
+            item: Dict[str, Any] = {
+                "is_multiindex": True,
+                "multiindex_names": str(multiindex_names),
+            }
+            # Iterate over the number of items to create and add items to the result
             result = []
             for i in range(1, size + 1):
-                s = APIEx._shift(i)
-                item: Dict[str, Any] = {
-                    "is_multiindex": True,
-                    "multiindex_names": str(multiindex_names),
-                }
-                for k, v in sample.items():
-                    if isinstance(v, str):
-                        item[k] = v
-                    else:
-                        item[k] = round(v * s, 2)
-                result.append(item)
+                item[idx_1] = f"{idx_1}_{i}"
+                for j in range(items_per_idx):
+                    item[idx_2] = j
+                    for k, v in sample.items():
+                        if isinstance(v, str):
+                            item[k] = f"{v}_{j}"
+                        else:
+                            item[k] = round(v * APIEx._shift(i + j), 2)
+                    result.append(item.copy())
             return result
         raise ValueError(f"Dataset '{dataset}' not found.")
 

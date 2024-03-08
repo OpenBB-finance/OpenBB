@@ -540,13 +540,6 @@ def unit_root(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Perform One-way Random Effects model for panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_random_effects(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -594,13 +587,6 @@ def panel_random_effects(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Perform a Between estimator regression on panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_between(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -646,13 +632,6 @@ def panel_between(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Perform a Pooled coefficient estimator regression on panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_pooled(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -699,13 +678,6 @@ def panel_pooled(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Perform One- and two-way fixed effects estimator for panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_fixed(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -751,13 +723,6 @@ def panel_fixed(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Perform a first-difference estimate for panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_first_difference(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
@@ -803,13 +768,6 @@ def panel_first_difference(
 @router.command(
     methods=["POST"],
     examples=[
-        PythonEx(
-            description="Fama-MacBeth estimator for panel data.",
-            code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.panel_fmac(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
-            ],
-        ),
         APIEx(
             parameters={
                 "y_column": "portfolio_value",
