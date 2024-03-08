@@ -139,7 +139,7 @@ class APIEx(Example):
                         assert isinstance(v, str)
                         obs[k] = (
                             datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
-                        ).strftime("%Y-%m-%d")
+                        ).isoformat()
                     else:
                         obs[k] = round(v * s, 2)
                 result.append(obs)
