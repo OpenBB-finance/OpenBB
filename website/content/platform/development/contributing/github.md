@@ -8,11 +8,13 @@ keywords:
 - Branch naming conventions
 - Commit guidelines
 - GitHub
+- contributing
+- submission
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Write Code and Commit - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="GitHub - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
 ## Branch Naming Conventions
 
