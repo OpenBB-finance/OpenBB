@@ -27,7 +27,10 @@ router.include_router(corporate_router)
 
 @router.command(
     model="SOFR",
-    examples=[APIEx(parameters={}), APIEx(parameters={"period": "overnight"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"period": "overnight", "provider": "fred"}),
+    ],
 )
 async def sofr(
     cc: CommandContext,

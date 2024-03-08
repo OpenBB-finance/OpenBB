@@ -26,7 +26,7 @@ class ROUTER_derivatives_options(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Optional[Literal["cboe", "intrinio", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -35,19 +35,23 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
+        provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        use_cache : bool
+            When True, the company directories will be cached for24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe);
+            Caching is used to validate the supplied ticker symbol, or if a historical EOD chain is requested. To bypass, set to False. (provider: tmx)
         date : Optional[datetime.date]
-            The end-of-day date for options chains data. (provider: intrinio)
+            The end-of-day date for options chains data. (provider: intrinio);
+            A specific date to get data for. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -144,8 +148,20 @@ class ROUTER_derivatives_options(Container):
             Vega of the option.
         rho : Optional[float]
             Rho of the option.
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp of the option. (provider: cboe)
+        dte : Optional[int]
+            Days to expiration for the option. (provider: cboe, tmx)
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
+        transactions : Optional[int]
+            Number of transactions for the contract. (provider: tmx)
+        total_value : Optional[float]
+            Total value of the transactions. (provider: tmx)
+        settlement_price : Optional[float]
+            Settlement price on that date. (provider: tmx)
+        underlying_price : Optional[float]
+            Price of the underlying stock on that date. (provider: tmx)
 
         Examples
         --------
@@ -162,7 +178,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": self._get_provider(
                         provider,
                         "/derivatives/options/chains",
-                        ("intrinio",),
+                        ("cboe", "intrinio", "tmx"),
                     )
                 },
                 standard_params={

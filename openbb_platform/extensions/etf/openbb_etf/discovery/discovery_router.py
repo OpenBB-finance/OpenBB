@@ -20,7 +20,6 @@ router = Router(prefix="/discovery")
     model="ETFGainers",
     operation_id="etf_gainers",
     examples=[
-        APIEx(parameters={}),
         APIEx(description="Get the top ETF gainers.", parameters={"provider": "wsj"}),
     ],
 )
@@ -38,7 +37,6 @@ async def gainers(
     model="ETFLosers",
     operation_id="etf_losers",
     examples=[
-        APIEx(parameters={}),
         APIEx(description="Get the top ETF losers.", parameters={"provider": "wsj"}),
     ],
 )
@@ -56,7 +54,6 @@ async def losers(
     model="ETFActive",
     operation_id="etf_active",
     examples=[
-        APIEx(parameters={}),
         APIEx(description="Get the most active ETFs.", parameters={"provider": "wsj"}),
     ],
 )

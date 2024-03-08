@@ -18,7 +18,10 @@ router = Router(prefix="/rate")
 
 @router.command(
     model="AMERIBOR",
-    examples=[APIEx(parameters={}), APIEx(parameters={"parameter": "30_day_ma"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "30_day_ma", "provider": "fred"}),
+    ],
 )
 async def ameribor(
     cc: CommandContext,
@@ -38,8 +41,8 @@ async def ameribor(
 @router.command(
     model="SONIA",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"parameter": "total_nominal_value"}),
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "total_nominal_value", "provider": "fred"}),
     ],
 )
 async def sonia(
@@ -59,7 +62,7 @@ async def sonia(
 
 @router.command(
     model="IORB",
-    examples=[APIEx(parameters={})],
+    examples=[APIEx(parameters={"provider": "fred"})],
 )
 async def iorb(
     cc: CommandContext,
@@ -79,7 +82,7 @@ async def iorb(
 @router.command(
     model="FEDFUNDS",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "fred"}),
         APIEx(parameters={"parameter": "daily", "provider": "fred"}),
     ],
 )
@@ -100,7 +103,10 @@ async def effr(
 
 @router.command(
     model="PROJECTIONS",
-    examples=[APIEx(parameters={}), APIEx(parameters={"long_run": True})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"long_run": True, "provider": "fred"}),
+    ],
 )
 async def effr_forecast(
     cc: CommandContext,
@@ -121,8 +127,8 @@ async def effr_forecast(
 @router.command(
     model="ESTR",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"parameter": "number_of_active_banks"}),
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "number_of_active_banks", "provider": "fred"}),
     ],
 )
 async def estr(
@@ -144,8 +150,8 @@ async def estr(
 @router.command(
     model="EuropeanCentralBankInterestRates",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"interest_rate_type": "refinancing"}),
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"interest_rate_type": "refinancing", "provider": "fred"}),
     ],
 )
 async def ecb(
@@ -169,8 +175,14 @@ async def ecb(
 @router.command(
     model="DiscountWindowPrimaryCreditRate",
     examples=[
-        APIEx(parameters={}),
-        APIEx(parameters={"start_date": "2023-02-01", "end_date": "2023-05-01"}),
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "start_date": "2023-02-01",
+                "end_date": "2023-05-01",
+                "provider": "fred",
+            }
+        ),
     ],
 )
 async def dpcredit(

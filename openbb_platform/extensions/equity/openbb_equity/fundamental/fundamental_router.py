@@ -457,7 +457,8 @@ async def filings(
 
 
 @router.command(
-    model="HistoricalSplits", examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})]
+    model="HistoricalSplits",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def historical_splits(
     cc: CommandContext,

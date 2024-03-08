@@ -16,7 +16,10 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 
 
-@router.command(model="EquityQuote", examples=[APIEx(parameters={"symbol": "AAPL"})])
+@router.command(
+    model="EquityQuote",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def quote(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -27,7 +30,10 @@ async def quote(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityNBBO", examples=[APIEx(parameters={"symbol": "AAPL"})])
+@router.command(
+    model="EquityNBBO",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "polygon"})],
+)
 async def nbbo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -41,8 +47,8 @@ async def nbbo(
 @router.command(
     model="EquityHistorical",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "interval": "1d"}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "interval": "1d", "provider": "intrinio"}),
     ],
 )
 async def historical(
@@ -56,7 +62,8 @@ async def historical(
 
 
 @router.command(
-    model="PricePerformance", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="PricePerformance",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def performance(
     cc: CommandContext,

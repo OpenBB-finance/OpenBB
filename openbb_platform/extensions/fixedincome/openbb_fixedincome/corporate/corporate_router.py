@@ -18,7 +18,10 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    examples=[APIEx(parameters={}), APIEx(parameters={"index_type": "yield_to_worst"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "yield_to_worst", "provider": "fred"}),
+    ],
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -39,7 +42,10 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    examples=[APIEx(parameters={}), APIEx(parameters={"index_type": "baa"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "baa", "provider": "fred"}),
+    ],
 )
 async def moody(
     cc: CommandContext,
@@ -59,7 +65,10 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    examples=[APIEx(parameters={}), APIEx(parameters={"yield_curve": "par"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"yield_curve": "par", "provider": "fred"}),
+    ],
 )
 async def hqm(
     cc: CommandContext,
@@ -79,7 +88,10 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    examples=[APIEx(parameters={}), APIEx(parameters={"maturity": "10,20,30,50"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": "10,20,30,50", "provider": "fred"}),
+    ],
 )
 async def spot_rates(
     cc: CommandContext,
@@ -99,7 +111,10 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    examples=[APIEx(parameters={}), APIEx(parameters={"maturity": "15d"})],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": "15d", "provider": "fred"}),
+    ],
 )
 async def commercial_paper(
     cc: CommandContext,
@@ -117,7 +132,7 @@ async def commercial_paper(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BondPrices", examples=[APIEx(parameters={})])
+@router.command(model="BondPrices", examples=[APIEx(parameters={"provider": "tmx"})])
 async def bond_prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,

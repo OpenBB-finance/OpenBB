@@ -28,7 +28,7 @@ router.include_router(price_router)
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    examples=[APIEx(parameters={"symbol": "SPX"})],
+    examples=[APIEx(parameters={"symbol": "SPX", "provider": "fmp"})],
 )
 async def market(
     cc: CommandContext,
@@ -63,7 +63,7 @@ async def constituents(
 @router.command(
     model="IndexSnapshots",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "tmx"}),
         APIEx(parameters={"region": "us", "provider": "cboe"}),
     ],
 )
@@ -79,7 +79,10 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    examples=[APIEx(parameters={}), APIEx(parameters={"provider": "yfinance"})],
+    examples=[
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(parameters={"provider": "yfinance"}),
+    ],
 )
 async def available(
     cc: CommandContext,
@@ -94,7 +97,7 @@ async def available(
 @router.command(
     model="IndexSearch",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "cboe"}),
         APIEx(parameters={"query": "SPX", "provider": "cboe"}),
     ],
 )
@@ -111,7 +114,7 @@ async def search(
 @router.command(
     model="SP500Multiples",
     examples=[
-        APIEx(parameters={}),
+        APIEx(parameters={"provider": "nasdaq"}),
         APIEx(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"}),
     ],
 )
@@ -127,7 +130,7 @@ async def sp500_multiples(
 
 @router.command(
     model="IndexSectors",
-    examples=[APIEx(parameters={"symbol": "^TX60"})],
+    examples=[APIEx(parameters={"symbol": "^TX60", "provider": "tmx"})],
 )
 async def sectors(
     cc: CommandContext,

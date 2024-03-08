@@ -961,7 +961,10 @@ class ROUTER_equity_fundamental(Container):
     def dividends(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): nasdaq."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -975,20 +978,22 @@ class ROUTER_equity_fundamental(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Optional[
+            Literal["fmp", "intrinio", "nasdaq", "tmx", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical dividend data for a given company.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): nasdaq.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'nasdaq', 'tmx', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1000,7 +1005,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'nasdaq', 'tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1020,17 +1025,25 @@ class ROUTER_equity_fundamental(Container):
         adj_dividend : Optional[float]
             Adjusted dividend of the historical dividends. (provider: fmp)
         record_date : Optional[date]
-            Record date of the historical dividends. (provider: fmp)
+            Record date of the historical dividends. (provider: fmp);
+            The record date of ownership for eligibility. (provider: nasdaq);
+            The record date of ownership for rights to the dividend. (provider: tmx)
         payment_date : Optional[date]
-            Payment date of the historical dividends. (provider: fmp)
+            Payment date of the historical dividends. (provider: fmp);
+            The payment date of the dividend. (provider: nasdaq);
+            The date the dividend is paid. (provider: tmx)
         declaration_date : Optional[date]
-            Declaration date of the historical dividends. (provider: fmp)
+            Declaration date of the historical dividends. (provider: fmp, nasdaq)
         factor : Optional[float]
             factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
         currency : Optional[str]
-            The currency in which the dividend is paid. (provider: intrinio)
+            The currency in which the dividend is paid. (provider: intrinio, nasdaq, tmx)
         split_ratio : Optional[float]
             The ratio of the stock split, if a stock split occurred. (provider: intrinio)
+        dividend_type : Optional[str]
+            The type of dividend - i.e., cash, stock. (provider: nasdaq)
+        decalaration_date : Optional[date]
+            The date of the announcement. (provider: tmx)
 
         Examples
         --------
@@ -1045,7 +1058,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/fundamental/dividends",
-                        ("fmp", "intrinio", "yfinance"),
+                        ("fmp", "intrinio", "nasdaq", "tmx", "yfinance"),
                     )
                 },
                 standard_params={
@@ -1054,6 +1067,7 @@ class ROUTER_equity_fundamental(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["nasdaq"]}},
             )
         )
 
@@ -1153,7 +1167,7 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "sec", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
@@ -1171,14 +1185,16 @@ class ROUTER_equity_fundamental(Container):
             Filter by form type. Check the data provider for available types.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+        provider : Optional[Literal['fmp', 'intrinio', 'sec', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            Start date of the data, in YYYY-MM-DD format. (provider: intrinio);
+            The start date to fetch. (provider: tmx)
         end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            End date of the data, in YYYY-MM-DD format. (provider: intrinio);
+            The end date to fetch. (provider: tmx)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
         cik : Optional[Union[int, str]]
@@ -1193,7 +1209,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[CompanyFilings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            provider : Optional[Literal['fmp', 'intrinio', 'sec', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1251,11 +1267,14 @@ class ROUTER_equity_fundamental(Container):
         is_xbrl : Optional[Union[int, str]]
             Whether the filing is an XBRL filing. (provider: sec)
         size : Optional[Union[int, str]]
-            The size of the filing. (provider: sec)
+            The size of the filing. (provider: sec);
+            The file size of the PDF document. (provider: tmx)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
         filing_detail_url : Optional[str]
             The URL to the filing details. (provider: sec)
+        description : Optional[str]
+            The description of the filing. (provider: tmx)
 
         Examples
         --------
@@ -1271,7 +1290,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/fundamental/filings",
-                        ("fmp", "intrinio", "sec"),
+                        ("fmp", "intrinio", "sec", "tmx"),
                     )
                 },
                 standard_params={
@@ -1419,30 +1438,35 @@ class ROUTER_equity_fundamental(Container):
     def historical_eps(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): alpha_vantage."
+            ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["alpha_vantage", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Get historical earnings per share data for a given company.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): alpha_vantage.
+        provider : Optional[Literal['alpha_vantage', 'fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
+        period : Literal['annual', 'quarter']
+            Time period of the data to return. (provider: alpha_vantage)
         limit : Optional[int]
-            The number of data entries to return. (provider: fmp)
+            The number of data entries to return. (provider: alpha_vantage, fmp)
 
         Returns
         -------
         OBBject
             results : List[HistoricalEps]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['alpha_vantage', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1463,6 +1487,12 @@ class ROUTER_equity_fundamental(Container):
             Actual EPS from the earnings date.
         eps_estimated : Optional[float]
             Estimated EPS for the earnings date.
+        surprise : Optional[float]
+            Surprise in EPS (Actual - Estimated). (provider: alpha_vantage)
+        surprise_percent : Optional[Union[float, str]]
+            EPS surprise as a normalized percent. (provider: alpha_vantage)
+        reported_date : Optional[date]
+            Date of the earnings report. (provider: alpha_vantage)
         revenue_estimated : Optional[float]
             Estimated consensus revenue for the reporting period. (provider: fmp)
         revenue_actual : Optional[float]
@@ -1487,13 +1517,14 @@ class ROUTER_equity_fundamental(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/fundamental/historical_eps",
-                        ("fmp",),
+                        ("alpha_vantage", "fmp"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["alpha_vantage"]}},
             )
         )
 
@@ -2337,7 +2368,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp, yfinance."
             ),
         ],
         period: Annotated[
@@ -2348,7 +2379,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Optional[Literal["finviz", "fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Get fundamental metrics for a given company.
@@ -2356,14 +2387,14 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.
+            Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp, yfinance.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+        provider : Optional[Literal['finviz', 'fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'finviz' if there is
             no default.
         with_ttm : Optional[bool]
             Include trailing twelve months (TTM) data. (provider: fmp)
@@ -2373,7 +2404,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : Union[List[KeyMetrics], KeyMetrics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[Literal['finviz', 'fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2390,6 +2421,53 @@ class ROUTER_equity_fundamental(Container):
             Market capitalization
         pe_ratio : Optional[float]
             Price-to-earnings ratio (P/E ratio)
+        foward_pe : Optional[float]
+            Forward price-to-earnings ratio (forward P/E) (provider: finviz)
+        eps : Optional[float]
+            Earnings per share (EPS) (provider: finviz)
+        price_to_sales : Optional[float]
+            Price-to-sales ratio (P/S) (provider: finviz)
+        price_to_book : Optional[float]
+            Price-to-book ratio (P/B) (provider: finviz, yfinance)
+        book_value_per_share : Optional[float]
+            Book value per share (Book/sh) (provider: finviz);
+            Book value per share (provider: fmp)
+        price_to_cash : Optional[float]
+            Price-to-cash ratio (P/C) (provider: finviz)
+        cash_per_share : Optional[float]
+            Cash per share (Cash/sh) (provider: finviz);
+            Cash per share (provider: fmp);
+            Cash per share. (provider: yfinance)
+        price_to_free_cash_flow : Optional[float]
+            Price-to-free cash flow ratio (P/FCF) (provider: finviz)
+        debt_to_equity : Optional[float]
+            Debt-to-equity ratio (Debt/Eq) (provider: finviz);
+            Debt-to-equity ratio (provider: fmp);
+            Debt-to-equity ratio. (provider: yfinance)
+        long_term_debt_to_equity : Optional[float]
+            Long-term debt-to-equity ratio (LT Debt/Eq) (provider: finviz)
+        quick_ratio : Optional[float]
+            Quick ratio (provider: finviz, yfinance)
+        current_ratio : Optional[float]
+            Current ratio (provider: finviz, fmp, yfinance)
+        gross_margin : Optional[float]
+            Gross margin, as a normalized percent. (provider: finviz, yfinance)
+        profit_margin : Optional[float]
+            Profit margin, as a normalized percent. (provider: finviz, yfinance)
+        operating_margin : Optional[float]
+            Operating margin, as a normalized percent. (provider: finviz, yfinance)
+        return_on_assets : Optional[float]
+            Return on assets (ROA), as a normalized percent. (provider: finviz, yfinance)
+        return_on_investment : Optional[float]
+            Return on investment (ROI), as a normalized percent. (provider: finviz)
+        return_on_equity : Optional[float]
+            Return on equity (ROE), as a normalized percent. (provider: finviz, yfinance)
+        payout_ratio : Optional[float]
+            Payout ratio, as a normalized percent. (provider: finviz);
+            Payout ratio (provider: fmp);
+            Payout ratio. (provider: yfinance)
+        dividend_yield : Optional[float]
+            Dividend yield, as a normalized percent. (provider: finviz, fmp, intrinio, yfinance)
         date : Optional[date]
             The date of the data. (provider: fmp)
         period : Optional[str]
@@ -2404,10 +2482,6 @@ class ROUTER_equity_fundamental(Container):
             Operating cash flow per share (provider: fmp)
         free_cash_flow_per_share : Optional[float]
             Free cash flow per share (provider: fmp)
-        cash_per_share : Optional[float]
-            Cash per share (provider: fmp, yfinance)
-        book_value_per_share : Optional[float]
-            Book value per share (provider: fmp)
         tangible_book_value_per_share : Optional[float]
             Tangible book value per share (provider: fmp)
         shareholders_equity_per_share : Optional[float]
@@ -2438,22 +2512,14 @@ class ROUTER_equity_fundamental(Container):
             Earnings yield (provider: fmp)
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
-        debt_to_equity : Optional[float]
-            Debt-to-equity ratio (provider: fmp, yfinance)
         debt_to_assets : Optional[float]
             Debt-to-assets ratio (provider: fmp)
         net_debt_to_ebitda : Optional[float]
             Net debt-to-EBITDA ratio (provider: fmp)
-        current_ratio : Optional[float]
-            Current ratio (provider: fmp, yfinance)
         interest_coverage : Optional[float]
             Interest coverage (provider: fmp)
         income_quality : Optional[float]
             Income quality (provider: fmp)
-        dividend_yield : Optional[float]
-            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
-        payout_ratio : Optional[float]
-            Payout ratio (provider: fmp, yfinance)
         sales_general_and_administrative_to_revenue : Optional[float]
             Sales general and administrative expenses-to-revenue ratio (provider: fmp)
         research_and_development_to_revenue : Optional[float]
@@ -2535,26 +2601,12 @@ class ROUTER_equity_fundamental(Container):
             Revenue growth (Year Over Year), as a normalized percent. (provider: yfinance)
         enterprise_to_revenue : Optional[float]
             Enterprise value to revenue ratio. (provider: yfinance)
-        quick_ratio : Optional[float]
-            Quick ratio. (provider: yfinance)
-        gross_margin : Optional[float]
-            Gross margin, as a normalized percent. (provider: yfinance)
-        operating_margin : Optional[float]
-            Operating margin, as a normalized percent. (provider: yfinance)
         ebitda_margin : Optional[float]
             EBITDA margin, as a normalized percent. (provider: yfinance)
-        profit_margin : Optional[float]
-            Profit margin, as a normalized percent. (provider: yfinance)
-        return_on_assets : Optional[float]
-            Return on assets, as a normalized percent. (provider: yfinance)
-        return_on_equity : Optional[float]
-            Return on equity, as a normalized percent. (provider: yfinance)
         dividend_yield_5y_avg : Optional[float]
             5-year average dividend yield, as a normalized percent. (provider: yfinance)
         book_value : Optional[float]
             Book value per share. (provider: yfinance)
-        price_to_book : Optional[float]
-            Price-to-book ratio. (provider: yfinance)
         overall_risk : Optional[float]
             Overall risk score. (provider: yfinance)
         audit_risk : Optional[float]
@@ -2584,7 +2636,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/fundamental/metrics",
-                        ("fmp", "intrinio", "yfinance"),
+                        ("finviz", "fmp", "intrinio", "yfinance"),
                     )
                 },
                 standard_params={
@@ -2593,7 +2645,9 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["finviz", "fmp", "yfinance"]}
+                },
             )
         )
 

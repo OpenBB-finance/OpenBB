@@ -18,7 +18,7 @@ router = Router(prefix="/shorts")
 
 @router.command(
     model="EquityFTD",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "sec"})],
 )
 async def fails_to_deliver(
     cc: CommandContext,
@@ -32,7 +32,7 @@ async def fails_to_deliver(
 
 @router.command(
     model="ShortVolume",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "stockgrid"})],
 )
 async def short_volume(
     cc: CommandContext,
@@ -46,7 +46,7 @@ async def short_volume(
 
 @router.command(
     model="EquityShortInterest",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "finra"})],
 )
 async def short_interest(
     cc: CommandContext,

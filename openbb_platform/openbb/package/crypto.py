@@ -77,8 +77,8 @@ class ROUTER_crypto(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.crypto.search()
-        >>> obb.crypto.search(query='BTCUSD')
+        >>> obb.crypto.search(provider='fmp')
+        >>> obb.crypto.search(query='BTCUSD', provider='fmp')
         """  # noqa: E501
 
         return self._run(

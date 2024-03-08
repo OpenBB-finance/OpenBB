@@ -22,10 +22,9 @@ router.include_router(discovery_router)
 @router.command(
     model="EtfSearch",
     examples=[
-        APIEx(parameters={}),
         APIEx(
             description="An empty query returns the full list of ETFs from the provider.",
-            parameters={},
+            parameters={"provider": "fmp"},
         ),
         APIEx(
             description="The query will return results from text-based fields containing the term.",
@@ -50,7 +49,7 @@ async def search(
     model="EtfHistorical",
     operation_id="etf_historical",
     examples=[
-        APIEx(parameters={"symbol": "SPY"}),
+        APIEx(parameters={"symbol": "SPY", "provider": "fmp"}),
         APIEx(parameters={"symbol": "SPY", "provider": "yfinance"}),
         APIEx(
             description="This function accepts multiple tickers.",
@@ -71,7 +70,7 @@ async def historical(
 @router.command(
     model="EtfInfo",
     examples=[
-        APIEx(parameters={"symbol": "SPY"}),
+        APIEx(parameters={"symbol": "SPY", "provider": "fmp"}),
         APIEx(
             description="This function accepts multiple tickers.",
             parameters={"symbol": "SPY,IWM,QQQ,DJIA", "provider": "fmp"},
@@ -90,7 +89,7 @@ async def info(
 
 @router.command(
     model="EtfSectors",
-    examples=[APIEx(parameters={"symbol": "SPY"})],
+    examples=[APIEx(parameters={"symbol": "SPY", "provider": "fmp"})],
 )
 async def sectors(
     cc: CommandContext,
@@ -104,7 +103,7 @@ async def sectors(
 
 @router.command(
     model="EtfCountries",
-    examples=[APIEx(parameters={"symbol": "VT"})],
+    examples=[APIEx(parameters={"symbol": "VT", "provider": "fmp"})],
 )
 async def countries(
     cc: CommandContext,
@@ -119,7 +118,7 @@ async def countries(
 @router.command(
     model="PricePerformance",
     examples=[
-        APIEx(parameters={"symbol": "QQQ"}),
+        APIEx(parameters={"symbol": "QQQ", "provider": "fmp"}),
         APIEx(parameters={"symbol": "SPY,QQQ,IWM,DJIA", "provider": "fmp"}),
     ],
 )
@@ -136,7 +135,7 @@ async def price_performance(
 @router.command(
     model="EtfHoldings",
     examples=[
-        APIEx(parameters={"symbol": "XLK"}),
+        APIEx(parameters={"symbol": "XLK", "provider": "fmp"}),
         APIEx(
             description="Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.",
             parameters={"symbol": "XLK", "date": "2022-03-31", "provider": "fmp"},
@@ -159,7 +158,7 @@ async def holdings(
 
 @router.command(
     model="EtfHoldingsDate",
-    examples=[APIEx(parameters={"symbol": "XLK"})],
+    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_date(
     cc: CommandContext,

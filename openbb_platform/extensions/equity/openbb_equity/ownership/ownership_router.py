@@ -19,8 +19,8 @@ router = Router(prefix="/ownership")
 @router.command(
     model="EquityOwnership",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "page": 0}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "page": 0, "provider": "fmp"}),
     ],
 )
 async def major_holders(
@@ -35,7 +35,7 @@ async def major_holders(
 
 @router.command(
     model="InstitutionalOwnership",
-    examples=[APIEx(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def institutional(
     cc: CommandContext,
@@ -50,8 +50,8 @@ async def institutional(
 @router.command(
     model="InsiderTrading",
     examples=[
-        APIEx(parameters={"symbol": "AAPL"}),
-        APIEx(parameters={"symbol": "AAPL", "limit": 500}),
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 500, "provider": "intrinio"}),
     ],
 )
 async def insider_trading(
@@ -65,7 +65,8 @@ async def insider_trading(
 
 
 @router.command(
-    model="ShareStatistics", examples=[APIEx(parameters={"symbol": "AAPL"})]
+    model="ShareStatistics",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def share_statistics(
     cc: CommandContext,
@@ -80,10 +81,10 @@ async def share_statistics(
 @router.command(
     model="Form13FHR",
     examples=[
-        APIEx(parameters={"symbol": "NVDA"}),
+        APIEx(parameters={"symbol": "NVDA", "provider": "sec"}),
         APIEx(
             description="Enter a date (calendar quarter ending) for a specific report.",
-            parameters={"symbol": "BRK-A", "date": "2016-09-30"},
+            parameters={"symbol": "BRK-A", "date": "2016-09-30", "provider": "sec"},
         ),
         PythonEx(
             description="Example finding Michael Burry's filings.",
