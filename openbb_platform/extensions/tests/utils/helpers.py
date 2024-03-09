@@ -243,25 +243,18 @@ def parse_example_string(example_string: str) -> Dict[str, Any]:
     # Initialize the result dictionary
     result = {}
 
-    # Regular expression patterns to find PythonEx and APIEx examples, including optional descriptions
-    pythonex_pattern = r"PythonEx\(code=\[(.*?)\](?:, description=['\"](.*?)['\"])?\)"
-    apiex_pattern = r"APIEx\(parameters=(\{.*?\})(?:, description=['\"](.*?)['\"])?\)"
+    # Regular expression patterns to find PythonEx and APIEx examples
+    pythonex_pattern = r"PythonEx\(.*?code=(\[.*?\]).*?\)"
+    apiex_pattern = r"APIEx\(.*?parameters=(\{.*?\}).*?\)"
 
     # Function to parse individual examples
     def parse_examples(matches, example_type):
         examples = []
         for match in matches:
             if example_type == "PythonEx":
-                code, description = match
-                # Treat code as a raw string without evaluating it
-                example = {"code": [code]}
+                example = {"code": [match]}
             else:  # APIEx
-                parameters, description = match
-                # Directly use parameters without evaluating
-                example = {"params": parameters}
-
-            if description:
-                example["description"] = description
+                example = {"params": match}
             examples.append(example)
         return examples
 
@@ -274,7 +267,6 @@ def parse_example_string(example_string: str) -> Dict[str, Any]:
     result["APIEx"] = parse_examples(apiex_matches, "APIEx")
 
     return result
-
 
 def get_required_fields(model: str) -> List[str]:
     """Get the required fields of a model."""
