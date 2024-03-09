@@ -27,7 +27,14 @@ class ROUTER_index(Container):
     @exception_handler
     @validate
     def available(
-        self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """All indices available from a given provider.
 
@@ -96,7 +103,12 @@ class ROUTER_index(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Index Constituents.
@@ -196,7 +208,12 @@ class ROUTER_index(Container):
             Optional[str],
             OpenBBCustomParameter(description="Time interval of the data to return."),
         ] = "1d",
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Historical Market Indices.

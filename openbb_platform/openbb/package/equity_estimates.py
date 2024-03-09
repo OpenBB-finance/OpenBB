@@ -37,7 +37,12 @@ class ROUTER_equity_estimates(Container):
                 description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
             ),
         ] = None,
-        provider: Optional[Literal["benzinga"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for specific analysts and get their forecast track record.
@@ -203,7 +208,12 @@ class ROUTER_equity_estimates(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get consensus price target and recommendation.
@@ -294,7 +304,12 @@ class ROUTER_equity_estimates(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical analyst estimates for earnings and revenue.
@@ -412,7 +427,12 @@ class ROUTER_equity_estimates(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get analyst price targets by company.

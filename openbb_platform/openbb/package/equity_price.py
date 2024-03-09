@@ -48,8 +48,11 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[
-            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -205,7 +208,12 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["polygon"]] = None,
+        provider: Annotated[
+            Optional[Literal["polygon"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'polygon' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the National Best Bid and Offer for a given stock.
@@ -338,7 +346,12 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get price performance data for a given stock. This includes price changes for different time periods.
@@ -433,7 +446,12 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the latest quote for a given stock. Quote includes price, volume, and other data.

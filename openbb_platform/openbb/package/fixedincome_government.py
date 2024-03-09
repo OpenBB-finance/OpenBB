@@ -36,7 +36,12 @@ class ROUTER_fixedincome_government(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["federal_reserve", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Government Treasury Rates.
@@ -135,7 +140,12 @@ class ROUTER_fixedincome_government(Container):
             Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """US Yield Curve. Get United States yield curve.

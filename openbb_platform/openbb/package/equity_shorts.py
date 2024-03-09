@@ -25,7 +25,12 @@ class ROUTER_equity_shorts(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get reported Fail-to-deliver (FTD) data.

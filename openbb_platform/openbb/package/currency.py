@@ -30,7 +30,14 @@ class ROUTER_currency(Container):
     @exception_handler
     @validate
     def search(
-        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Currency Search.
 
@@ -162,7 +169,12 @@ class ROUTER_currency(Container):
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.

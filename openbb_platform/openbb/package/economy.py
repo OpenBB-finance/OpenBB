@@ -49,7 +49,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "tradingeconomics"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the upcoming, or historical, economic calendar of global events.
@@ -166,7 +171,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """The composite leading indicator (CLI) is designed to provide early signals of turning points
@@ -328,7 +338,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
@@ -435,7 +450,12 @@ class ROUTER_economy(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100000,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Query the Geo Fred API for regional economic data by series group.
@@ -570,7 +590,12 @@ class ROUTER_economy(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="The search word(s).")
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for FRED series or economic releases by ID or string.
@@ -711,7 +736,12 @@ class ROUTER_economy(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100000,
-        provider: Optional[Literal["fred", "intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred", "intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get data by series ID from FRED.
@@ -850,7 +880,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Long-term interest rates refer to government bonds maturing in ten years.
@@ -948,7 +983,12 @@ class ROUTER_economy(Container):
                 description="Whether to return seasonally adjusted data."
             ),
         ] = True,
-        provider: Optional[Literal["federal_reserve"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.
@@ -1028,7 +1068,14 @@ class ROUTER_economy(Container):
     @exception_handler
     @validate
     def risk_premium(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Market Risk Premium by country.
 
@@ -1101,7 +1148,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Short-term interest rates are the rates at which short-term borrowings are effected between
@@ -1190,7 +1242,12 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Global unemployment data.

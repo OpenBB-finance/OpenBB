@@ -33,7 +33,12 @@ class ROUTER_crypto(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search available cryptocurrency pairs within a provider.

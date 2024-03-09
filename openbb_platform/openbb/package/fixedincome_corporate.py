@@ -53,7 +53,12 @@ class ROUTER_fixedincome_corporate(Container):
         grade: Annotated[
             Literal["aa", "a2_p2"], OpenBBCustomParameter(description="The grade.")
         ] = "aa",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Commercial Paper.
@@ -142,7 +147,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["spot", "par"],
             OpenBBCustomParameter(description="The yield curve type."),
         ] = "spot",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """High Quality Market Corporate Bond.
@@ -236,7 +246,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["yield", "yield_to_worst", "total_return", "spread"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "yield",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ICE BofA US Corporate Bond Indices.
@@ -336,7 +351,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["aaa", "baa"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "aaa",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Moody Corporate Bond Index.
@@ -438,7 +458,12 @@ class ROUTER_fixedincome_corporate(Container):
             ),
             OpenBBCustomChoices(choices=["par_yield", "spot_rate"]),
         ] = "spot_rate",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Spot Rates.

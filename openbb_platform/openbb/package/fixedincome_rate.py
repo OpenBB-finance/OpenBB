@@ -42,7 +42,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Ameribor.
@@ -127,7 +132,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Discount Window Primary Credit Rate.
@@ -217,7 +227,12 @@ class ROUTER_fixedincome_rate(Container):
             Literal["deposit", "lending", "refinancing"],
             OpenBBCustomParameter(description="The type of interest rate."),
         ] = "lending",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """European Central Bank Interest Rates.
@@ -306,7 +321,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["federal_reserve", "fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Fed Funds Rate.
@@ -378,7 +398,14 @@ class ROUTER_fixedincome_rate(Container):
     @exception_handler
     @validate
     def effr_forecast(
-        self, provider: Optional[Literal["fred"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Fed Funds Rate Projections.
 
@@ -468,7 +495,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Euro Short-Term Rate.
@@ -554,7 +586,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Interest on Reserve Balances.
@@ -636,7 +673,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Sterling Overnight Index Average.

@@ -26,7 +26,12 @@ class ROUTER_derivatives_options(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -182,7 +187,12 @@ class ROUTER_derivatives_options(Container):
                 description="Symbol to get data for. (the underlying symbol)"
             ),
         ] = None,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.

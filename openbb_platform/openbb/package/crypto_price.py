@@ -41,7 +41,12 @@ class ROUTER_crypto_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical price data for cryptocurrency pair(s) within a provider.

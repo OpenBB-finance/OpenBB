@@ -66,7 +66,12 @@ class ROUTER_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Secured Overnight Financing Rate.

@@ -25,7 +25,12 @@ class ROUTER_equity_compare(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the closest peers for a given company.

@@ -30,7 +30,12 @@ class ROUTER_regulators_sec(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Map a ticker symbol to a CIK number.
@@ -97,7 +102,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search SEC-regulated institutions by name and return a list of results with CIK numbers.
@@ -162,7 +172,14 @@ class ROUTER_regulators_sec(Container):
     @exception_handler
     @validate
     def rss_litigation(
-        self, provider: Optional[Literal["sec"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
@@ -232,7 +249,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """A tool for navigating the directory of SEC XML schema files by year.
@@ -322,7 +344,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.
@@ -397,7 +424,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Map a CIK number to a ticker symbol, leading 0s can be omitted or included.

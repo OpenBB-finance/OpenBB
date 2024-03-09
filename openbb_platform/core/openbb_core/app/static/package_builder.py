@@ -556,9 +556,6 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
-        DEFAULT_REPLACEMENT = {
-            "provider": None,
-        }
 
         parameter_map.pop("cc", None)
         # we need to add the chart parameter here bc of the docstring generation
@@ -566,7 +563,12 @@ class MethodDefinition:
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=bool,
+                annotation=Annotated[
+                    bool,
+                    OpenBBCustomParameter(
+                        description="Whether to create a chart or not, by default False."
+                    ),
+                ],
                 default=False,
             )
 
@@ -575,6 +577,28 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
+            elif name == "provider_choices":
+                fields = param.annotation.__args__[0].__dataclass_fields__
+                field = fields["provider"]
+                type_ = getattr(field, "type")
+                args = getattr(type_, "__args__")
+                first = args[0] if args else None
+                formatted["provider"] = Parameter(
+                    name="provider",
+                    kind=Parameter.POSITIONAL_OR_KEYWORD,
+                    annotation=Annotated[
+                        Union[MethodDefinition.get_type(field), None],
+                        OpenBBCustomParameter(
+                            description=(
+                                "The provider to use for the query, by default None.\n"
+                                f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
+                                "    no default."
+                                ""
+                            )
+                        ),
+                    ],
+                    default=None,
+                )
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 for field_name, field in fields.items():
@@ -590,7 +614,7 @@ class MethodDefinition:
                         name=field_name,
                         kind=Parameter.POSITIONAL_OR_KEYWORD,
                         annotation=updated_type,
-                        default=DEFAULT_REPLACEMENT.get(field_name, default),
+                        default=default,
                     )
             else:
                 new_type = MethodDefinition.get_expanded_type(name)
@@ -608,7 +632,7 @@ class MethodDefinition:
                     name=name,
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=updated_type,
-                    default=DEFAULT_REPLACEMENT.get(name, param.default),
+                    default=param.default,
                 )
 
         return MethodDefinition.reorder_params(params=formatted)
@@ -995,6 +1019,21 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{create_indent(2)}")
             return description
 
+        def get_param_info(parameter: Parameter) -> Tuple[str, str]:
+            """Get the parameter info."""
+            annotation = getattr(parameter, "_annotation", None)
+            if isinstance(annotation, _AnnotatedAlias):
+                args = getattr(annotation, "__args__", []) if annotation else []
+                p_type = args[0] if args else None
+            else:
+                p_type = annotation
+            type_ = (
+                getattr(p_type, "__name__", "") if inspect.isclass(p_type) else p_type
+            )
+            metadata = getattr(annotation, "__metadata__", [])
+            description = getattr(metadata[0], "description", "") if metadata else ""
+            return type_, description
+
         docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
         docstring += "\n\n"
         docstring += f"{create_indent(2)}Parameters\n"
@@ -1002,40 +1041,23 @@ class DocstringGenerator:
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
-            if param_name == "provider":
-                # pylint: disable=W0212
-                type_ = param._annotation
-                default = param._annotation.__args__[0].__args__[0]
-                description = f"""The provider to use for the query, by default None.
-    If None, the provider specified in defaults is selected or '{default}' if there is
-    no default."""
-            elif param_name == "chart":
-                type_ = "bool"
-                description = "Whether to create a chart or not, by default False."
-            else:
-                p_type = param._annotation.__args__[0]  # pylint: disable=W0212
-                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                description = getattr(
-                    # pylint: disable=protected-access
-                    param._annotation.__metadata__[0],
-                    "description",
-                    "",
-                )
-
-            type_str = format_type(type_, char_limit=79)  # type: ignore
+            type_, description = get_param_info(param)
+            type_str = format_type(str(type_), char_limit=79)
             docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
             docstring += f"{create_indent(3)}{format_description(description)}\n"
 
         # Kwargs
         for param_name, param in kwarg_params.items():
-            p_type = param.type
-            type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+            p_type = getattr(param, "type", "")
+            type_ = (
+                getattr(p_type, "__name__", "") if inspect.isclass(p_type) else p_type
+            )
 
             if "NoneType" in str(type_):
                 type_ = f"Optional[{type_}]".replace(", NoneType", "")
 
-            description = getattr(param.default, "description", "")
-
+            default = getattr(param, "default", "")
+            description = getattr(default, "description", "")
             docstring += f"{create_indent(2)}{param_name} : {type_}\n"
             docstring += f"{create_indent(3)}{format_description(description)}\n"
 
@@ -1043,10 +1065,8 @@ class DocstringGenerator:
         docstring += "\n"
         docstring += f"{create_indent(2)}Returns\n"
         docstring += f"{create_indent(2)}-------\n"
-        provider_param = explicit_params.get("provider", None)
-        available_providers = getattr(provider_param, "_annotation", None)
-
-        docstring += cls.get_OBBject_description(results_type, available_providers)
+        providers, _ = get_param_info(explicit_params.get("provider", None))
+        docstring += cls.get_OBBject_description(results_type, providers)
 
         # Schema
         underline = "-" * len(model_name)

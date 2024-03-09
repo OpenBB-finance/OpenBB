@@ -60,7 +60,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the balance sheet for a given company.
@@ -414,7 +419,12 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the growth of a company's balance sheet items over time.
@@ -570,7 +580,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the cash flow statement for a given company.
@@ -832,7 +847,12 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the growth of a company's cash flow statement items over time.
@@ -975,7 +995,12 @@ class ROUTER_equity_fundamental(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical dividend data for a given company.
@@ -1064,7 +1089,12 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical employee count data for a given company.
@@ -1153,7 +1183,12 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
@@ -1327,7 +1362,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["asc", "desc"]],
             OpenBBCustomParameter(description="Sort order."),
         ] = "desc",
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the historical values of a data tag from Intrinio.
@@ -1421,7 +1461,12 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical earnings per share data for a given company.
@@ -1504,7 +1549,12 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical stock splits for a given company.
@@ -1580,7 +1630,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the income statement for a given company.
@@ -1940,7 +1995,12 @@ class ROUTER_equity_fundamental(Container):
             Literal["quarter", "annual"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the growth of a company's income statement items over time.
@@ -2075,7 +2135,12 @@ class ROUTER_equity_fundamental(Container):
                 description="Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio."
             ),
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the latest value of a data tag from Intrinio.
@@ -2149,7 +2214,12 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get executive management team data for a given company.
@@ -2243,7 +2313,12 @@ class ROUTER_equity_fundamental(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get executive management team compensation for a given company over time.
@@ -2348,7 +2423,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get fundamental metrics for a given company.
@@ -2607,7 +2687,12 @@ class ROUTER_equity_fundamental(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get equity valuation multiples for a given company.
@@ -2795,7 +2880,12 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get company general business and stock data for a given company.
@@ -2942,7 +3032,12 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 12,
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get an extensive set of financial and accounting ratios for a given company over time.
@@ -3145,7 +3240,12 @@ class ROUTER_equity_fundamental(Container):
                 description="The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks."
             ),
         ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get financial statements as reported by the company.
@@ -3237,7 +3337,12 @@ class ROUTER_equity_fundamental(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the revenue geographic breakdown for a given company over time.
@@ -3323,7 +3428,12 @@ class ROUTER_equity_fundamental(Container):
             Literal["hierarchical", "flat"],
             OpenBBCustomParameter(description="Structure of the returned data."),
         ] = "flat",
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the revenue breakdown by business segment for a given company over time.
@@ -3405,7 +3515,12 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 1000,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search Intrinio data tags to search in latest or historical attributes.
@@ -3497,7 +3612,12 @@ class ROUTER_equity_fundamental(Container):
                 description="The number of data entries to return. Default is 252, the number of trading days in a year."
             ),
         ] = 252,
-        provider: Optional[Literal["tiingo"]] = None,
+        provider: Annotated[
+            Optional[Literal["tiingo"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the 1 year trailing dividend yield for a given company over time.
@@ -3570,7 +3690,12 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="Year of the earnings call transcript."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get earnings call transcripts for a given company.

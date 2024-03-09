@@ -38,7 +38,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
@@ -129,7 +134,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
@@ -233,7 +243,12 @@ class ROUTER_equity_calendar(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming initial public offerings (IPOs).
@@ -399,7 +414,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming stock split operations.

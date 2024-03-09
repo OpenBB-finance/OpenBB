@@ -38,7 +38,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Country weighting.
@@ -105,7 +110,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the exposure to ETFs for a specific stock.
@@ -198,8 +208,11 @@ class ROUTER_etf(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[
-            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -357,7 +370,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp", "sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the holdings for an individual ETF.
@@ -590,7 +608,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Use this function to get the holdings dates, if available.
@@ -658,7 +681,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the recent price performance of each ticker held in the ETF.
@@ -753,7 +781,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Information Overview.
@@ -914,7 +947,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
@@ -1007,7 +1045,12 @@ class ROUTER_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for ETFs.
@@ -1104,7 +1147,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Sector weighting.

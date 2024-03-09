@@ -75,7 +75,14 @@ class ROUTER_equity(Container):
     @exception_handler
     @validate
     def market_snapshots(
-        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp", "polygon"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Get an updated equity market snapshot. This includes price data for thousands of stocks.
 
@@ -232,7 +239,12 @@ class ROUTER_equity(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get general information about a company. This includes company name, industry, sector and price data.
@@ -414,7 +426,16 @@ class ROUTER_equity(Container):
 
     @exception_handler
     @validate
-    def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
+    def screener(
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
         """Screen for companies meeting various criteria. These criteria include
         market cap, price, beta, volume, and dividend yield.
 
@@ -538,7 +559,12 @@ class ROUTER_equity(Container):
             Optional[bool],
             OpenBBCustomParameter(description="Whether to use the cache or not."),
         ] = True,
-        provider: Optional[Literal["intrinio", "sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio", "sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for stock symbol, CIK, LEI, or company name.

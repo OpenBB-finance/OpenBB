@@ -45,7 +45,12 @@ class ROUTER_equity_ownership(Container):
                 description="The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter."
             ),
         ] = 1,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
@@ -152,7 +157,12 @@ class ROUTER_equity_ownership(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 500,
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get data about trading by a company's management team and board of directors.
@@ -285,7 +295,12 @@ class ROUTER_equity_ownership(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get data about institutional ownership for a given company over time.
@@ -430,7 +445,12 @@ class ROUTER_equity_ownership(Container):
             Optional[int],
             OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get data about major holders for a given company over time.
@@ -579,7 +599,12 @@ class ROUTER_equity_ownership(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get data about share float for a given company.

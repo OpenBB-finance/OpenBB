@@ -36,7 +36,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the most actively traded stocks based on volume.
@@ -119,7 +124,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top small cap stocks based on earnings growth.
@@ -218,7 +228,12 @@ class ROUTER_equity_discovery(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
@@ -312,7 +327,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price gainers in the stock market.
@@ -395,7 +415,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top tech stocks based on revenue and earnings growth.
@@ -478,7 +503,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price losers in the stock market.
@@ -561,7 +591,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued growth stocks.
@@ -644,7 +679,12 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued large cap stocks.

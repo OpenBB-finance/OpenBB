@@ -47,8 +47,13 @@ class ROUTER_news(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 2500,
-        provider: Optional[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        provider: Annotated[
+            Optional[
+                Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+            ],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -232,7 +237,12 @@ class ROUTER_news(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """World News. Global news data.
