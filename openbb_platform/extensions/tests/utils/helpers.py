@@ -251,11 +251,9 @@ def parse_example_string(example_string: str) -> Dict[str, Any]:
     def parse_examples(matches, example_type):
         examples = []
         for match in matches:
-            if example_type == "PythonEx":
-                example = {"code": [match]}
-            else:  # APIEx
-                example = {"params": match}
-            examples.append(example)
+            examples.append(
+                {"code": [match]} if example_type == "PythonEx" else {"params": match}
+            )
         return examples
 
     # Find and parse all PythonEx examples
