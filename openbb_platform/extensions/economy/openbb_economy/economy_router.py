@@ -172,7 +172,7 @@ async def money_measures(
             parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
         ),
         APIEx(
-            description="Demographics for the statistics are selected with the `age` and `sex` parameters.",
+            description="Demographics for the statistics are selected with the `age` parameter.",
             parameters={
                 "country": "all",
                 "frequency": "quarterly",
