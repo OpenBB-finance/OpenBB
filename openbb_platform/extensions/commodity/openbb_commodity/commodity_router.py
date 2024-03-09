@@ -1,6 +1,7 @@
 """The Commodity router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,23 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(model="LbmaFixing")
+@router.command(
+    model="LbmaFixing",
+    examples=[
+        APIEx(parameters={"provider": "nasdaq"}),
+        APIEx(
+            description="Get the daily LBMA fixing prices for silver in 2023.",
+            parameters={
+                "asset": "silver",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "transform": "rdiff",
+                "collapse": "monthly",
+                "provider": "nasdaq",
+            },
+        ),
+    ],
+)
 async def lbma_fixing(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -48,8 +48,11 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[
-            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -87,6 +90,10 @@ class ROUTER_equity_price(Container):
             The number of data entries to return. (provider: polygon)
         include_actions : bool
             Include dividends and stock splits in results. (provider: yfinance)
+        adjusted : bool
+            This field is deprecated (4.1.5) and will be removed in a future version. Use 'adjustment' set as 'splits_and_dividends' instead. (provider: yfinance)
+        prepost : bool
+            This field is deprecated (4.1.5) and will be removed in a future version. Use 'extended_hours' as True instead. (provider: yfinance)
 
         Returns
         -------
@@ -157,10 +164,11 @@ class ROUTER_equity_price(Container):
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.price.historical(symbol="AAPL", interval="1d")
+        >>> obb.equity.price.historical(symbol='AAPL', provider='fmp')
+        >>> obb.equity.price.historical(symbol='AAPL', interval='1d', provider='intrinio')
         """  # noqa: E501
 
         return self._run(
@@ -200,7 +208,12 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["polygon"]] = None,
+        provider: Annotated[
+            Optional[Literal["polygon"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'polygon' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the National Best Bid and Offer for a given stock.
@@ -300,10 +313,10 @@ class ROUTER_equity_price(Container):
                     This is the timestamp of when the trade reporting facility received this quote.
                  (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.price.nbbo(symbol="AAPL")
+        >>> obb.equity.price.nbbo(symbol='AAPL', provider='polygon')
         """  # noqa: E501
 
         return self._run(
@@ -333,7 +346,12 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get price performance data for a given stock. This includes price changes for different time periods.
@@ -394,10 +412,10 @@ class ROUTER_equity_price(Container):
         symbol : Optional[str]
             The ticker symbol. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.price.performance(symbol="AAPL")
+        >>> obb.equity.price.performance(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -428,7 +446,12 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the latest quote for a given stock. Quote includes price, volume, and other data.
@@ -561,10 +584,10 @@ class ROUTER_equity_price(Container):
         currency : Optional[str]
             Currency of the price. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.price.quote(symbol="AAPL")
+        >>> obb.equity.price.quote(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(

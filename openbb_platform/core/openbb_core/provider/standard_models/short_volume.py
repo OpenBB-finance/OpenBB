@@ -16,7 +16,7 @@ from openbb_core.provider.utils.descriptions import (
 class ShortVolumeQueryParams(QueryParams):
     """Short Volume Query."""
 
-    symbol: str = Field(default=None, description=QUERY_DESCRIPTIONS.get("symbol"))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
 
 
 class ShortVolumeData(Data):
