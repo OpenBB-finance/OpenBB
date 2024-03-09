@@ -1013,15 +1013,13 @@ class DocstringGenerator:
                 type_ = "bool"
                 description = "Whether to create a chart or not, by default False."
             else:
-                # pylint: disable=W0212
-                p_type = param._annotation.__args__[
-                    0
-                ]  # pylint: disable=protected-access
+                p_type = param._annotation.__args__[0]  # pylint: disable=W0212
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
                 description = getattr(
+                    # pylint: disable=protected-access
                     param._annotation.__metadata__[0],
                     "description",
-                    "",  # pylint: disable=protected-access
+                    "",
                 )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore

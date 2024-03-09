@@ -171,7 +171,7 @@ def sharpe_ratio(
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close")',
-                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',  # noqa: E501
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',  # noqa: E501  pylint: disable=line-too-long
             ],
         ),
         APIEx(
