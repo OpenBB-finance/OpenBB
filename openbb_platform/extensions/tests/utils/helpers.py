@@ -268,6 +268,7 @@ def parse_example_string(example_string: str) -> Dict[str, Any]:
 
     return result
 
+
 def get_required_fields(model: str) -> List[str]:
     """Get the required fields of a model."""
     fields = pi.map[model]["openbb"]["QueryParams"]["fields"]
