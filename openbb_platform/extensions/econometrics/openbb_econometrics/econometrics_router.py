@@ -136,8 +136,8 @@ def ols_regression(
         PythonEx(
             description="Perform Ordinary Least Squares (OLS) regression and return the summary.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
-                'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501  pylint: disable=line-too-long
+                'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501  pylint: disable=line-too-long
             ],
         ),
         APIEx(

@@ -10,6 +10,8 @@ from openbb_core.provider.standard_models.equity_short_interest import (
 )
 from openbb_finra.utils.data_storage import DB_PATH, prepare_data
 
+# pylint: disable=unused-argument
+
 
 class FinraShortInterestQueryParams(ShortInterestQueryParams):
     """FINRA Equity Short Interest Query."""
@@ -73,10 +75,7 @@ class FinraShortInterestFetcher(
             "changePreviousNumber",
             "settlementDate",
         ]
-        return [
-            {title: value for title, value in zip(titles, list(row)[1:])}
-            for row in result
-        ]
+        return [dict(zip(titles, list(row)[1:])) for row in result]
 
     @staticmethod
     def transform_data(

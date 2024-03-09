@@ -139,7 +139,7 @@ class APIEx(Example):
                         obs[k] = round(v * s, 2)
                 result.append(obs)
             return result
-        elif dataset == "panel":
+        if dataset == "panel":
             sample = sample or {
                 "portfolio_value": 100000.0,
                 "risk_free_rate": 0.02,

@@ -9,6 +9,8 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_sec.utils.helpers import cik_map
 from pydantic import Field
 
+# pylint: disable=unused-argument
+
 
 class SecSymbolMapQueryParams(SymbolMapQueryParams):
     """SEC Symbol Mapping Query.

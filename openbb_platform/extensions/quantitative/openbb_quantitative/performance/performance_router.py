@@ -99,7 +99,7 @@ def omega_ratio(
         PythonEx(
             description="Get Rolling Sharpe Ratio.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501  # pylint: disable=line-too-long
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.performance.sharpe_ratio(data=returns, target="close")',
             ],
