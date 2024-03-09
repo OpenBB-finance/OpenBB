@@ -334,7 +334,7 @@ def adosc(
             description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
-                "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",
+                "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",  # noqa: E501
             ],
         ),
         APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
@@ -860,7 +860,7 @@ def hma(
             description="Get the Donchian Channels.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
-                "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",
+                "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",  # noqa: E501
             ],
         ),
         APIEx(
@@ -1353,7 +1353,7 @@ def rsi(
             description="Get the Stochastic Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
-                "stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)",
+                "stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)",  # noqa: E501
             ],
         ),
     ],

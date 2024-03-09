@@ -31,7 +31,7 @@ router = Router(prefix="/rolling")
         PythonEx(
             description="Get Rolling Mean.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.skew(data=returns, target="close")',
             ],
@@ -95,7 +95,7 @@ def skew(
         PythonEx(
             description="Get Rolling Variance.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
             ],
@@ -153,7 +153,7 @@ def variance(
         PythonEx(
             description="Get Rolling Standard Deviation.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
             ],
@@ -215,7 +215,7 @@ def stdev(
         PythonEx(
             description="Get Rolling Kurtosis.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
             ],
@@ -279,7 +279,7 @@ def kurtosis(
         PythonEx(
             description="Get Rolling Quantile.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)',
                 'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
@@ -360,7 +360,7 @@ def quantile(
         PythonEx(
             description="Get Rolling Mean.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
             ],

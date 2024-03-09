@@ -26,7 +26,7 @@ router = Router(prefix="/performance")
         PythonEx(
             description="Get Omega Ratio.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.performance.omega_ratio(data=returns, target="close")',
             ],
@@ -99,7 +99,7 @@ def omega_ratio(
         PythonEx(
             description="Get Rolling Sharpe Ratio.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.performance.sharpe_ratio(data=returns, target="close")',
             ],
@@ -168,10 +168,10 @@ def sharpe_ratio(
         PythonEx(
             description="Get Rolling Sortino Ratio.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close")',
-                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',  # noqa: E501
             ],
         ),
         APIEx(

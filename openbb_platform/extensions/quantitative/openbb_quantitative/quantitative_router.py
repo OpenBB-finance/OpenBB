@@ -42,7 +42,7 @@ router.include_router(performance_router)
         PythonEx(
             description="Get Normality Statistics.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.normality(data=stock_data, target='close')",
             ],
         ),
@@ -98,7 +98,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
         PythonEx(
             description="Get Capital Asset Pricing Model (CAPM).",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.capm(data=stock_data, target='close')",
             ],
         ),
@@ -163,7 +163,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
         PythonEx(
             description="Get Unit Root Test.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.unitroot_test(data=stock_data, target='close')",
             ],
         ),
@@ -234,7 +234,7 @@ def unitroot_test(
         PythonEx(
             description="Get Summary Statistics.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.quantitative.summary(data=stock_data, target='close')",
             ],
         ),

@@ -13,8 +13,8 @@ def validate_data(data: list, length: Union[int, List[int]]) -> None:
     """Validate data."""
     if isinstance(length, int):
         length = [length]
-    for l in length:
-        if l > len(data):
+    for item in length:
+        if item > len(data):
             raise ValueError(
                 f"Data length is less than required by parameters: {max(length)}"
             )

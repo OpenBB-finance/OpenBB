@@ -50,9 +50,9 @@ class APIEx(Example):
         if "provider" not in parameters and "data" not in parameters:
             raise ValueError("API example must specify a provider.")
 
-        if provider := parameters.get("provider"):
-            if not isinstance(provider, str):
-                raise ValueError("Provider must be a string.")
+        provider = parameters.get("provider")
+        if provider and not isinstance(provider, str):
+            raise ValueError("Provider must be a string.")
 
         return values
 
@@ -132,7 +132,6 @@ class APIEx(Example):
                 obs = {}
                 for k, v in sample.items():
                     if k == "date":
-                        assert isinstance(v, str)
                         obs[k] = (
                             datetime.strptime(v, "%Y-%m-%d") + timedelta(days=i)
                         ).strftime("%Y-%m-%d")

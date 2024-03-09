@@ -42,7 +42,7 @@ def execute_docstring_examples(module_name: str, path: str) -> List[str]:
     for dt in doc_tests:
         code = "".join([ex.source for ex in dt.examples])
         try:
-            exec(code)  # pylint: disable=exec-used
+            exec(code)  # pylint: disable=exec-used  # noqa: S102
         except Exception as e:
             errors.append(
                 f"\n\n{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}"

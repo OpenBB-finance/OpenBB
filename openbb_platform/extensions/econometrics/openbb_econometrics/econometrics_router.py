@@ -36,7 +36,7 @@ router = Router(prefix="")
         PythonEx(
             description="Get the correlation matrix of a dataset.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 "obb.econometrics.correlation_matrix(data=stock_data)",
             ],
         ),
@@ -84,7 +84,7 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
         PythonEx(
             description="Perform Ordinary Least Squares (OLS) regression.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
         ),
@@ -136,8 +136,8 @@ def ols_regression(
         PythonEx(
             description="Perform Ordinary Least Squares (OLS) regression and return the summary.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501
             ],
         ),
         APIEx(
@@ -221,7 +221,7 @@ def ols_regression_summary(
         PythonEx(
             description="Perform Durbin-Watson test for autocorrelation.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
             ],
         ),
@@ -275,8 +275,8 @@ def autocorrelation(
         PythonEx(
             description="Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501
             ],
         ),
         APIEx(
@@ -342,7 +342,7 @@ def residual_autocorrelation(
         PythonEx(
             description="Perform co-integration test between two timeseries.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
             ],
         ),
@@ -412,7 +412,7 @@ def cointegration(
         PythonEx(
             description="Perform Granger causality test to determine if X 'causes' y.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
             ],
         ),
@@ -483,7 +483,7 @@ def causality(
         PythonEx(
             description="Perform Augmented Dickey-Fuller (ADF) unit root test.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
                 'obb.econometrics.unit_root(data=stock_data, column="close")',
                 'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',
             ],

@@ -30,7 +30,7 @@ router = Router(prefix="/stats")
         PythonEx(
             description="Get Skewness.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.skew(data=returns, target="close")',
             ],
@@ -85,7 +85,7 @@ def skew(
         PythonEx(
             description="Get Variance.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.variance(data=returns, target="close")',
             ],
@@ -134,7 +134,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
         PythonEx(
             description="Get Standard Deviation.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.stdev(data=returns, target="close")',
             ],
@@ -185,7 +185,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
         PythonEx(
             description="Get Kurtosis.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.kurtosis(data=returns, target="close")',
             ],
@@ -237,7 +237,7 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
         PythonEx(
             description="Get Quantile.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
             ],
@@ -296,7 +296,7 @@ def quantile(
         PythonEx(
             description="Get Mean.",
             code=[
-                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
                 'returns = stock_data["close"].pct_change().dropna()',
                 'obb.quantitative.stats.mean(data=returns, target="close")',
             ],
