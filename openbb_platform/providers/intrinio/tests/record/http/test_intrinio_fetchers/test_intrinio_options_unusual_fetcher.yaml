@@ -13,7 +13,7 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAJkv7WUAA8zU3U7CMBQA4Hfp9Wj6s7PT7tYXMNFEozFLGQ1ZKN2yHwIS3t0OMVHYAI0X7K5n
+        H4sIABPh7WUAA8zU3U7CMBQA4Hfp9Wj6s7PT7tYXMNFEozFLGQ1ZKN2yHwIS3t0OMVHYAI0X7K5n
         p6dnX9ttSVubmW1I+rolzWY5LR1JycP98xOJSFssbdOaZRVCggk54Xwi2COHNIaUAVUSX/q0TWVD
         xtSV+aIflq1x2cq4LkR5whBRq69wU7z3UcYiYla2NnObVXWRHzIphsS89KGnvD30kWUiZoInd0xo
         YOEJS5hmkZk2s2ubd21R+v1sTTEi02J2+gZoEpHG+v57fF/X2y4s4UKlzs9s7TaFn3/2cTSZUbaL
@@ -28,7 +28,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 10 Mar 2024 03:57:13 GMT
+      - Sun, 10 Mar 2024 16:34:27 GMT
       Transfer-Encoding:
       - chunked
       Vary:
@@ -36,37 +36,4 @@ interactions:
     status:
       code: 200
       message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://api-v2.intrinio.com/options/unusual_activity/intraday?activity_type=block&api_key=MOCK_API_KEY&end_date=2023-11-21&minimum_total_value=10000000&next_page=None&page_size=1000&sentiment=neutral&source=delayed&start_date=2023-11-20
-  response:
-    body:
-      string: !!binary |
-        H4sIAJkv7WUAAxzKMQ7CUAgA0KsQZvMP4KSjm1cgQCzxFwzQOhjvbuOb3wc1MxLPePOdpgl0PNXh
-        lbGbqOAJV62ihx7l6vDfEMxbpsqA+1QqBQ5v4obamI9+Me80txgcK7ytF+hFQbTJZg38/gAAAP//
-        AwC3l9kadwAAAA==
-    headers:
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Sun, 10 Mar 2024 03:57:13 GMT
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin,Accept-Encoding
-    status:
-      code: 400
-      message: Bad Request
 version: 1

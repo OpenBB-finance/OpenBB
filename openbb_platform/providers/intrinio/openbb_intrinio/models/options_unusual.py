@@ -258,7 +258,11 @@ class IntrinioOptionsUnusualFetcher(
                     )
                 )
                 records = len(data)
-                while "next_page" in results and records < query.limit:
+                while (
+                    "next_page" in results
+                    and results.get("next_page") is not None  # type: ignore
+                    and records < query.limit
+                ):
                     next_page = results["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     results = await amake_request(next_url, session=session, **kwargs)
