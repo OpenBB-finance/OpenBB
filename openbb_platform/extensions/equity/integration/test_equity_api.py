@@ -575,7 +575,6 @@ def test_equity_calendar_ipo(params, headers):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 100,
-                "fiscal_year": None,
             }
         ),
         ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
