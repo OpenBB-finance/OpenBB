@@ -211,6 +211,7 @@ class PackageBuilder:
         data = ReferenceGenerator.get_reference_data()
         file_path = self.directory / "assets" / "reference.json"
         # Dumping the reference dictionary as a JSON file
+        self.console.log(str(file_path))
         with open(file_path, "w", encoding="utf-8") as f:
             dump(data, f, indent=4)
 
@@ -905,7 +906,8 @@ class DocstringGenerator:
 
     @staticmethod
     def get_field_type(
-        field: FieldInfo, target: Literal["docstring", "website"] = "docstring"
+        field: FieldInfo,
+        target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the implicit data type of a defined Pydantic field.
 
@@ -937,6 +939,7 @@ class DocstringGenerator:
                 .replace("NoneType", "None")
                 .replace(", None", "")
             )
+
             field_type = (
                 f"Optional[{field_type}]"
                 if is_optional and "Optional" not in str(_type)
@@ -1247,7 +1250,7 @@ class ReferenceGenerator:
     def get_endpoint_examples(
         cls,
         path: str,
-        model: Optional[str],
+        func: Callable,
         examples: Optional[List[Example]],
     ) -> str:
         """Get the examples for the given standard model or function.
@@ -1257,8 +1260,8 @@ class ReferenceGenerator:
 
         Args
         -----
-            path (str): Path of the endpoint.
-            model (Optional[str]): Standard model of the endpoint.
+            path (str): Path of the router.
+            func (Callable): Router endpoint function.
             examples (Optional[List[Example]]): List of Examples (APIEx or PythonEx type)
             for the endpoint.
 
@@ -1266,21 +1269,18 @@ class ReferenceGenerator:
         -------
             str: Formatted string containing the examples for the endpoint.
         """
-        func_params = {}
-        func_path = path.replace("/", ".")
-
-        if examples:
-            params = cls.pi_map.params.get(model, {})
-
-            if params:
-                func_params = {
-                    **params["standard"].__dataclass_fields__,
-                    **params["extra"].__dataclass_fields__,
-                }
+        sig = signature(func)
+        parameter_map = dict(sig.parameters)
+        formatted_params = MethodDefinition.format_params(
+            path=path, parameter_map=parameter_map
+        )
+        explicit_params = dict(formatted_params)
+        explicit_params.pop("extra_params", None)
+        param_types = {k: v.annotation for k, v in explicit_params.items()}
 
         return DocstringGenerator.build_examples(
-            func_path,
-            func_params,
+            path,
+            param_types,
             examples,
             "website",
         )
@@ -1350,7 +1350,7 @@ class ReferenceGenerator:
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
-            field_type = DocstringGenerator.get_field_type(field_info)
+            field_type = DocstringGenerator.get_field_type(field_info, "website")
 
             if params_type == "QueryParams" and field in expanded_types:
                 field_type = f"Union[{field_type}, {expanded_types[field]}]"
@@ -1525,7 +1525,7 @@ class ReferenceGenerator:
             # TODO: Add endpoint examples
             examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls.get_endpoint_examples(
-                path, standard_model, examples
+                path, route_func, examples
             )
 
             # Add endpoint parameters fields for standard provider
