@@ -315,6 +315,7 @@ def adosc(
     Returns
     -------
     OBBject[List[Data]]
+        The calculated data.
     """
     validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
@@ -1093,6 +1094,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     Returns
     -------
     OBBject[List[Data]]
+        The calculated data.
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
