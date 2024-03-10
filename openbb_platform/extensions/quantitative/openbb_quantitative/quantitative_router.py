@@ -3,6 +3,7 @@
 from typing import List, Literal
 
 import pandas as pd
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -38,8 +39,14 @@ router.include_router(performance_router)
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        "obb.quantitative.normality(data=stock_data, target='close')",
+        PythonEx(
+            description="Get Normality Statistics.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.normality(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 8)}),
     ],
 )
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
@@ -88,8 +95,16 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        "obb.quantitative.capm(data=stock_data, target='close')",
+        PythonEx(
+            description="Get Capital Asset Pricing Model (CAPM).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.capm(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(
+            parameters={"target": "close", "data": APIEx.mock_data("timeseries", 31)}
+        ),
     ],
 )
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
@@ -142,7 +157,19 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Unit Root Test.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.unitroot_test(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
+    ],
+)
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -201,7 +228,19 @@ def unitroot_test(
     return OBBject(results=unitroot_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get Summary Statistics.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.quantitative.summary(data=stock_data, target='close')",
+            ],
+        ),
+        APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
+    ],
+)
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
 

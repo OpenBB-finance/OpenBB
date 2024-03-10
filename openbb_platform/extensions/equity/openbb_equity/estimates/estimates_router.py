@@ -1,6 +1,7 @@
 """Estimates Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,9 +18,19 @@ router = Router(prefix="/estimates")
 
 @router.command(
     model="PriceTarget",
-    exclude_auto_examples=True,
     examples=[
-        'obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()'  # noqa: E501 pylint: disable=line-too-long
+        APIEx(parameters={"provider": "benzinga"}),
+        APIEx(
+            description="Get price targets for Microsoft using 'benzinga' as provider.",
+            parameters={
+                "start_date": "2020-01-01",
+                "end_date": "2024-02-16",
+                "limit": 10,
+                "symbol": "msft",
+                "provider": "benzinga",
+                "action": "downgrades",
+            },
+        ),
     ],
 )
 async def price_target(
@@ -34,9 +45,8 @@ async def price_target(
 
 @router.command(
     model="AnalystEstimates",
-    exclude_auto_examples=True,
     examples=[
-        'obb.equity.estimates.historical("AAPL", period="quarter", provider="fmp").to_df()',
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
     ],
 )
 async def historical(
@@ -51,9 +61,9 @@ async def historical(
 
 @router.command(
     model="PriceTargetConsensus",
-    exclude_auto_examples=True,
     examples=[
-        'obb.equity.estimates.consensus("AAPL,MSFT", provider="yfinance").to_df()'
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"}),
     ],
 )
 async def consensus(
@@ -68,9 +78,9 @@ async def consensus(
 
 @router.command(
     model="AnalystSearch",
-    exclude_auto_examples=True,
     examples=[
-        'obb.equity.estimates.analyst_search(firm_name="Wedbush", provider="benzinga").to_df()',
+        APIEx(parameters={"provider": "benzinga"}),
+        APIEx(parameters={"firm_name": "Wedbush", "provider": "benzinga"}),
     ],
 )
 async def analyst_search(

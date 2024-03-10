@@ -41,7 +41,12 @@ class ROUTER_fixedincome_spreads(Container):
             Optional[Literal["3m", "2y"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "3m",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Treasury Constant Maturity.
@@ -86,10 +91,11 @@ class ROUTER_fixedincome_spreads(Container):
         rate : Optional[float]
             TreasuryConstantMaturity Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.fixedincome.spreads.tcm(maturity="2y")
+        >>> obb.fixedincome.spreads.tcm(provider='fred')
+        >>> obb.fixedincome.spreads.tcm(maturity='2y', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -131,7 +137,12 @@ class ROUTER_fixedincome_spreads(Container):
             Optional[Literal["10y", "5y", "1y", "6m", "3m"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "10y",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Select Treasury Constant Maturity.
@@ -176,10 +187,11 @@ class ROUTER_fixedincome_spreads(Container):
         rate : Optional[float]
             Selected Treasury Constant Maturity Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.fixedincome.spreads.tcm_effr(maturity="10y")
+        >>> obb.fixedincome.spreads.tcm_effr(provider='fred')
+        >>> obb.fixedincome.spreads.tcm_effr(maturity='10y', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -221,7 +233,12 @@ class ROUTER_fixedincome_spreads(Container):
             Optional[Literal["3m", "6m"]],
             OpenBBCustomParameter(description="The maturity"),
         ] = "3m",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Select Treasury Bill.
@@ -267,10 +284,11 @@ class ROUTER_fixedincome_spreads(Container):
         rate : Optional[float]
             SelectedTreasuryBill Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.fixedincome.spreads.treasury_effr(maturity="6m")
+        >>> obb.fixedincome.spreads.treasury_effr(provider='fred')
+        >>> obb.fixedincome.spreads.treasury_effr(maturity='6m', provider='fred')
         """  # noqa: E501
 
         return self._run(

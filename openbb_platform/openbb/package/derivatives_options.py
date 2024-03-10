@@ -26,7 +26,12 @@ class ROUTER_derivatives_options(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -147,12 +152,12 @@ class ROUTER_derivatives_options(Container):
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()
-        >>> #### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####
-        >>> eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()
+        >>> obb.derivatives.options.chains(symbol='AAPL', provider='intrinio')
+        >>> # Use the "date" parameter to get the end-of-day-data for a specific date, where supported.
+        >>> obb.derivatives.options.chains(symbol='AAPL', date='2023-01-25', provider='intrinio')
         """  # noqa: E501
 
         return self._run(
@@ -182,7 +187,12 @@ class ROUTER_derivatives_options(Container):
                 description="Symbol to get data for. (the underlying symbol)"
             ),
         ] = None,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -237,12 +247,12 @@ class ROUTER_derivatives_options(Container):
         timestamp : Optional[datetime]
             The UTC timestamp of order placement. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> options = obb.derivatives.options.unusual().to_df()
-        >>> #### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####
-        >>> options = obb.derivatives.options.unusual(symbol="TSLA").to_df()
+        >>> obb.derivatives.options.unusual(provider='intrinio')
+        >>> # Use the 'symbol' parameter to get the most recent activity for a specific symbol.
+        >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         """  # noqa: E501
 
         return self._run(
