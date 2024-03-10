@@ -2,6 +2,7 @@
 """SEC Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -16,11 +17,7 @@ router = Router(prefix="/sec")
 
 @router.command(
     model="CikMap",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.sec.cik_map(symbol="MSFT").results.cik',
-        "    0000789019",
-    ],
+    examples=[APIEx(parameters={"symbol": "MSFT", "provider": "sec"})],
 )
 async def cik_map(
     cc: CommandContext,
@@ -34,9 +31,9 @@ async def cik_map(
 
 @router.command(
     model="InstitutionsSearch",
-    exclude_auto_examples=True,
     examples=[
-        'obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()'
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(parameters={"query": "blackstone real estate", "provider": "sec"}),
     ],
 )
 async def institutions_search(
@@ -51,25 +48,30 @@ async def institutions_search(
 
 @router.command(
     model="SchemaFiles",
-    exclude_auto_examples=True,
     examples=[
-        "data = obb.regulators.sec.schema_files()",
-        "data.files[0]",
-        "    https://xbrl.fasb.org/us-gaap/",
-        "#### The directory structure can be navigated by constructing a URL from the 'results' list. ####",
-        "url = data.files[0]+data.files[-1]",
-        "#### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####",
-        "obb.regulators.sec.schema_files(url=url).results.files",
-        "    ['https://xbrl.fasb.org/us-gaap/2024/'",
-        "    'USGAAP2024FileList.xml'",
-        "    'dis/'",
-        "    'dqcrules/'",
-        "    'ebp/'",
-        "    'elts/'",
-        "    'entire/'",
-        "    'meta/'",
-        "    'stm/'",
-        "    'us-gaap-2024.zip']",
+        APIEx(parameters={"provider": "sec"}),
+        PythonEx(
+            description="Get a list of schema files.",
+            code=[
+                "data = obb.regulators.sec.schema_files().results",
+                "data.files[0]",
+                "'https://xbrl.fasb.org/us-gaap/'",
+                "# The directory structure can be navigated by constructing a URL from the 'results' list.",
+                "url = data.files[0]+data.files[-1]",
+                "# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.",
+                "obb.regulators.sec.schema_files(url=url).results.files",
+                "['https://xbrl.fasb.org/us-gaap/2024/'",
+                "'USGAAP2024FileList.xml'",
+                "'dis/'",
+                "'dqcrules/'",
+                "'ebp/'",
+                "'elts/'",
+                "'entire/'",
+                "'meta/'",
+                "'stm/'",
+                "'us-gaap-2024.zip']",
+            ],
+        ),
     ],
 )
 async def schema_files(
@@ -84,8 +86,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    exclude_auto_examples=True,
-    examples=['obb.regulators.sec.symbol_map("0000789019").results.symbol', "    MSFT"],
+    examples=[APIEx(parameters={"query": "0000789019", "provider": "sec"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -99,8 +100,7 @@ async def symbol_map(
 
 @router.command(
     model="RssLitigation",
-    exclude_auto_examples=True,
-    examples=['obb.regulators.sec.rss_litigation().to_dict("records")[0]'],
+    examples=[APIEx(parameters={"provider": "sec"})],
 )
 async def rss_litigation(
     cc: CommandContext,
@@ -114,9 +114,9 @@ async def rss_litigation(
 
 @router.command(
     model="SicSearch",
-    exclude_auto_examples=True,
     examples=[
-        'obb.regulators.sec.sic_search("real estate investment trusts").results',
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(parameters={"query": "real estate investment trusts", "provider": "sec"}),
     ],
 )
 async def sic_search(

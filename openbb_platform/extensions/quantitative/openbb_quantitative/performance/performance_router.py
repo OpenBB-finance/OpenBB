@@ -2,6 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -22,9 +23,23 @@ router = Router(prefix="/performance")
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.omega_ratio(data=returns, target="close")',
+        PythonEx(
+            description="Get Omega Ratio.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.performance.omega_ratio(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
+        ),
     ],
 )
 def omega_ratio(
@@ -81,9 +96,24 @@ def omega_ratio(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.sharpe_ratio(data=returns, target="close")',
+        PythonEx(
+            description="Get Rolling Sharpe Ratio.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501  # pylint: disable=line-too-long
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.performance.sharpe_ratio(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
+        ),
     ],
 )
 def sharpe_ratio(
@@ -135,10 +165,25 @@ def sharpe_ratio(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
-        'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+        PythonEx(
+            description="Get Rolling Sortino Ratio.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close")',
+                'obb.quantitative.performance.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',  # noqa: E501  pylint: disable=line-too-long
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            },
+        ),
     ],
 )
 def sortino_ratio(
@@ -185,7 +230,7 @@ def sortino_ratio(
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
-    returns = series_target.pct_change().dropna().rolling(window).sum()
+    returns = series_target.pct_change().dropna().rolling(window).sum().dropna()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
@@ -196,8 +241,9 @@ def sortino_ratio(
     )
 
     if adjusted:
-        results = results / np.sqrt(2)
-
+        results = results.applymap(
+            lambda x: x / np.sqrt(2) if isinstance(x, float) else x
+        )
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)

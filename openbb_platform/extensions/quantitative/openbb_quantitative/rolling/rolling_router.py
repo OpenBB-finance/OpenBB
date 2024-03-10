@@ -3,6 +3,7 @@
 from typing import List
 
 import pandas as pd
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -27,9 +28,24 @@ router = Router(prefix="/rolling")
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.skew(data=returns, target="close")',
+        PythonEx(
+            description="Get Rolling Mean.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.skew(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def skew(
@@ -76,9 +92,24 @@ def skew(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
+        PythonEx(
+            description="Get Rolling Variance.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def variance(
@@ -90,15 +121,16 @@ def variance(
     Variance measures the dispersion of a set of data points around their mean. It is a key metric for
     assessing the volatility and stability of financial returns or other time series data over a specified rolling window.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate variance.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate variance.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -118,9 +150,24 @@ def variance(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
+        PythonEx(
+            description="Get Rolling Standard Deviation.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def stdev(
@@ -133,15 +180,16 @@ def stdev(
      It is widely used to assess the risk and volatility of financial returns or other time series data
      over a specified rolling window.  It is the square root of the variance.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate standard deviation.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate standard deviation.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -164,9 +212,24 @@ def stdev(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
+        PythonEx(
+            description="Get Rolling Kurtosis.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def kurtosis(
@@ -181,15 +244,16 @@ def kurtosis(
     This function helps in assessing the risk of outliers in financial returns or other time series data over a specified
     rolling window.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate kurtosis.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate kurtosis.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -212,10 +276,25 @@ def kurtosis(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)',
-        'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
+        PythonEx(
+            description="Get Rolling Quantile.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)',
+                'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def quantile(
@@ -232,17 +311,18 @@ def quantile(
     or dividing the  sample in the same way. This function is useful for understanding the distribution of data
     within a specified window, allowing for analysis of trends, identification of outliers, and assessment of risk.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the quantile.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        quantile_pct: NonNegativeFloat, optional
-            The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the quantile.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    quantile_pct: NonNegativeFloat, optional
+        The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
     -------
@@ -277,9 +357,24 @@ def quantile(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
+        PythonEx(
+            description="Get Rolling Mean.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "window": 2,
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def mean(
@@ -292,15 +387,16 @@ def mean(
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends
     or cycles in time series data.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the mean.
-        window: PositiveInt
-            The number of observations used for calculating the rolling measure.
-        index: str, optional
-            The name of the index column, default is "date".
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the mean.
+    window: PositiveInt
+        The number of observations used for calculating the rolling measure.
+    index: str, optional
+        The name of the index column, default is "date".
 
     Returns:
         OBBject[List[Data]]

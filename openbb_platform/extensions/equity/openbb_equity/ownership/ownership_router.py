@@ -1,6 +1,7 @@
 """Ownership Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,13 @@ router = Router(prefix="/ownership")
 # pylint: disable=unused-argument
 
 
-@router.command(model="EquityOwnership")
+@router.command(
+    model="EquityOwnership",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "page": 0, "provider": "fmp"}),
+    ],
+)
 async def major_holders(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +33,10 @@ async def major_holders(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="InstitutionalOwnership")
+@router.command(
+    model="InstitutionalOwnership",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def institutional(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +47,13 @@ async def institutional(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="InsiderTrading")
+@router.command(
+    model="InsiderTrading",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 500, "provider": "intrinio"}),
+    ],
+)
 async def insider_trading(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -48,7 +64,10 @@ async def insider_trading(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ShareStatistics")
+@router.command(
+    model="ShareStatistics",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def share_statistics(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -61,16 +80,20 @@ async def share_statistics(
 
 @router.command(
     model="Form13FHR",
-    exclude_auto_examples=True,
     examples=[
-        "### Enter the symbol as either the stock ticker or the CIK number as a string. ###",
-        'obb.equity.ownership.form_13f(symbol="NVDA").to_df()',
-        "### Enter a date (calendar quarter ending) for a specific report. ###",
-        'obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")',
-        "### Use the `limit` parameter to return N number of reports from the most recent. ###",
-        "### Example finding Michael Burry's filings. ###",
-        'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
-        "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
+        APIEx(parameters={"symbol": "NVDA", "provider": "sec"}),
+        APIEx(
+            description="Enter a date (calendar quarter ending) for a specific report.",
+            parameters={"symbol": "BRK-A", "date": "2016-09-30", "provider": "sec"},
+        ),
+        PythonEx(
+            description="Example finding Michael Burry's filings.",
+            code=[
+                'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
+                "# Use the `limit` parameter to return N number of reports from the most recent.",
+                "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
+            ],
+        ),
     ],
 )
 async def form_13f(

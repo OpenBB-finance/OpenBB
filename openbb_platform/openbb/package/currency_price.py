@@ -41,7 +41,12 @@ class ROUTER_currency_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Currency Historical Price. Currency historical data.
@@ -111,14 +116,14 @@ class ROUTER_currency_price(Container):
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.currency.price.historical(symbol="EURUSD")
+        >>> obb.currency.price.historical(symbol='EURUSD', provider='fmp')
         >>> # Filter historical data with specific start and end date.
-        >>> obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='20213-12-31')
+        >>> obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='2023-12-31', provider='fmp')
         >>> # Get data with different granularity.
-        >>> obb.currency.price.historical(symbol='EURUSD', interval='15m', provider='polygon')
+        >>> obb.currency.price.historical(symbol='EURUSD', provider='polygon', interval='15m')
         """  # noqa: E501
 
         return self._run(
