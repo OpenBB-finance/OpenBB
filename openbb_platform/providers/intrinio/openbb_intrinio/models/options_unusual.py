@@ -9,6 +9,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from dateutil.parser import parse
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_unusual import (
     OptionsUnusualData,
@@ -182,7 +183,7 @@ class IntrinioOptionsUnusualData(OptionsUnusualData):
     def validate_timestamp(cls, v):
         """Convert the timestamp string to a datetime object."""
         if v:
-            v = datetime.fromisoformat(v)
+            v = parse(v)
             v = v.replace(microsecond=0)
             v = v.astimezone(timezone("America/New_York"))
             return v
