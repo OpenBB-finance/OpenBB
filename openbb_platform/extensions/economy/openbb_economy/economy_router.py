@@ -1,6 +1,7 @@
 """Economy Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,11 +21,22 @@ router.include_router(gdp_router)
 
 @router.command(
     model="EconomicCalendar",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.calendar(provider="fmp", start_date="2020-03-01", end_date="2020-03-31")',
-        "#### By default, the calendar will be forward-looking. ####",
-        'obb.economy.calendar(provider="nasdaq")',
+        APIEx(
+            parameters={"provider": "fmp"},
+            description="By default, the calendar will be forward-looking.",
+        ),
+        APIEx(
+            parameters={
+                "provider": "fmp",
+                "start_date": "2020-03-01",
+                "end_date": "2020-03-31",
+            }
+        ),
+        APIEx(
+            description="By default, the calendar will be forward-looking.",
+            parameters={"provider": "nasdaq"},
+        ),
     ],
 )
 async def calendar(
@@ -39,11 +51,16 @@ async def calendar(
 
 @router.command(
     model="ConsumerPriceIndex",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.cpi(countries=["japan", "china", "turkey"]).to_df()',
-        "#### Use the `units` parameter to define the reference period for the change in values. ####",
-        'obb.economy.cpi(countries=["united_states", "united_kingdom"], units="growth_previous").to_df()',
+        APIEx(parameters={"country": "japan,china,turkey", "provider": "fred"}),
+        APIEx(
+            description="Use the `units` parameter to define the reference period for the change in values.",
+            parameters={
+                "country": "united_states,united_kingdom",
+                "units": "growth_previous",
+                "provider": "fred",
+            },
+        ),
     ],
 )
 async def cpi(
@@ -58,8 +75,7 @@ async def cpi(
 
 @router.command(
     model="RiskPremium",
-    exclude_auto_examples=True,
-    examples=["obb.economy.risk_premium().to_df()"],
+    examples=[APIEx(parameters={"provider": "fmp"})],
 )
 async def risk_premium(
     cc: CommandContext,
@@ -73,11 +89,13 @@ async def risk_premium(
 
 @router.command(
     model="BalanceOfPayments",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.balance_of_payments(report_type="summary").to_df().set_index("period").T',
-        "#### The `country` parameter will override the `report_type`. ####",
-        'obb.economy.balance_of_payments(country="united_states", provider="ecb").to_df().set_index("period").T',
+        APIEx(parameters={"provider": "ecb"}),
+        APIEx(parameters={"report_type": "summary", "provider": "ecb"}),
+        APIEx(
+            description="The `country` parameter will override the `report_type`.",
+            parameters={"country": "united_states", "provider": "ecb"},
+        ),
     ],
 )
 async def balance_of_payments(
@@ -90,7 +108,7 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSearch")
+@router.command(model="FredSearch", examples=[APIEx(parameters={"provider": "fred"})])
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -107,13 +125,16 @@ async def fred_search(
 
 @router.command(
     model="FredSeries",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.fred_series("NFCI").to_df()',
-        "#### Multiple series can be passed in as a list. ####",
-        'obb.economy.fred_series(["NFCI","STLFSI4"]).to_df()',
-        "#### Use the `transform` parameter to transform the data as change, log, or percent change. ####",
-        'obb.economy.fred_series("CBBTCUSD", transform="pc1").to_df()',
+        APIEx(parameters={"symbol": "NFCI", "provider": "fred"}),
+        APIEx(
+            description="Multiple series can be passed in as a list.",
+            parameters={"symbol": "NFCI,STLFSI4", "provider": "fred"},
+        ),
+        APIEx(
+            description="Use the `transform` parameter to transform the data as change, log, or percent change.",
+            parameters={"symbol": "CBBTCUSD", "transform": "pc1", "provider": "fred"},
+        ),
     ],
 )
 async def fred_series(
@@ -128,9 +149,9 @@ async def fred_series(
 
 @router.command(
     model="MoneyMeasures",
-    exclude_auto_examples=True,
     examples=[
-        "obb.economy.money_measures(adjusted=False).to_df()",
+        APIEx(parameters={"provider": "federal_reserve"}),
+        APIEx(parameters={"adjusted": False, "provider": "federal_reserve"}),
     ],
 )
 async def money_measures(
@@ -145,13 +166,20 @@ async def money_measures(
 
 @router.command(
     model="Unemployment",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.unemployment(country="all", frequency="quarterly")',
-        "#### Demographics for the statistics are selected with the `age` and `sex` parameters. ####",
-        "obb.economy.unemployment(",
-        'country="all", frequency="quarterly", age="25-54"',
-        ').to_df().pivot(columns="country", values="value")',
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
+        APIEx(
+            description="Demographics for the statistics are selected with the `age` parameter.",
+            parameters={
+                "country": "all",
+                "frequency": "quarterly",
+                "age": "25-54",
+                "provider": "oecd",
+            },
+        ),
     ],
 )
 async def unemployment(
@@ -166,9 +194,9 @@ async def unemployment(
 
 @router.command(
     model="CLI",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.composite_leading_indicator(country="all").to_df()',
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(parameters={"country": "all", "provider": "oecd"}),
     ],
 )
 async def composite_leading_indicator(
@@ -186,9 +214,11 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()',
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def short_term_interest_rate(
@@ -209,9 +239,11 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
-    exclude_auto_examples=True,
     examples=[
-        'obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()',
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+        ),
     ],
 )
 async def long_term_interest_rate(
@@ -235,12 +267,20 @@ async def long_term_interest_rate(
 
 @router.command(
     model="FredRegional",
-    exclude_auto_examples=True,
     examples=[
-        "#### With no date, the most recent report is returned. ####",
-        'obb.economy.fred_regional("NYICLAIMS")',
-        "#### With a date, time series data is returned. ####",
-        'obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")',
+        APIEx(
+            parameters={"symbol": "NYICLAIMS", "provider": "fred"},
+        ),
+        APIEx(
+            description="With a date, time series data is returned.",
+            parameters={
+                "symbol": "NYICLAIMS",
+                "start_date": "2021-01-01",
+                "end_date": "2021-12-31",
+                "limit": 10,
+                "provider": "fred",
+            },
+        ),
     ],
 )
 async def fred_regional(

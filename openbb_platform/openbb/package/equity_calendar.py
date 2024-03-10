@@ -38,7 +38,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
@@ -89,12 +94,10 @@ class ROUTER_equity_calendar(Container):
         label : Optional[str]
             Ex-dividend date formatted for display. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.dividend()
-        >>> # Get dividend calendar for specific dates.
-        >>> obb.equity.calendar.dividend(start_date='2024-02-01', end_date='2024-02-07')
+        >>> obb.equity.calendar.dividend(provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -131,7 +134,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
@@ -186,12 +194,12 @@ class ROUTER_equity_calendar(Container):
         updated_date : Optional[date]
             The date the data was updated last. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.earnings()
+        >>> obb.equity.calendar.earnings(provider='fmp')
         >>> # Get earnings calendar for specific dates.
-        >>> obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07')
+        >>> obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -235,7 +243,12 @@ class ROUTER_equity_calendar(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming initial public offerings (IPOs).
@@ -357,14 +370,12 @@ class ROUTER_equity_calendar(Container):
         security : Optional[openbb_intrinio.utils.references.IntrinioSecurity]
             The primary Security for the Company that is going public via the IPO (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.ipo(limit=100)
+        >>> obb.equity.calendar.ipo(provider='intrinio')
         >>> # Get all IPOs available.
-        >>> obb.equity.calendar.ipo()
-        >>> # Get IPOs for specific dates.
-        >>> obb.equity.calendar.ipo(start_date='2024-02-01', end_date='2024-02-07')
+        >>> obb.equity.calendar.ipo(provider='intrinio')
         """  # noqa: E501
 
         return self._run(
@@ -403,7 +414,12 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical and upcoming stock split operations.
@@ -446,12 +462,12 @@ class ROUTER_equity_calendar(Container):
         denominator : float
             Denominator of the stock splits.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.calendar.splits()
+        >>> obb.equity.calendar.splits(provider='fmp')
         >>> # Get stock splits calendar for specific dates.
-        >>> obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07')
+        >>> obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07', provider='fmp')
         """  # noqa: E501
 
         return self._run(

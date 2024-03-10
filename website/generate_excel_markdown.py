@@ -4,10 +4,9 @@ import sys
 from functools import reduce
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from requests_cache import Optional
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()

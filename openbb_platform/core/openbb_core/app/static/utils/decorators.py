@@ -65,7 +65,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     arg = ".".join(map(str, error["loc"]))
                     arg_error = f"Arg {arg} ->\n"
                     error_details = (
-                        f"  {error['msg']} "
+                        f"{error['msg']} "
                         f"[validation_error_type={error['type']}, "
                         f"input_type={type(error['input']).__name__}, "
                         f"input_value={error['input']}]\n"
