@@ -204,17 +204,19 @@ class TradierEquityQuoteFetcher(
         """Return the raw data from the Tradier endpoint."""
 
         api_key = credentials.get("tradier_api_key") if credentials else ""
+        sandbox = True
 
-        if credentials.get("tradier_account_type") not in ["sandbox", "live"]:  # type: ignore
+        if api_key and credentials.get("tradier_account_type") not in ["sandbox", "live"]:  # type: ignore
             raise ValueError(
                 "Invalid account type for Tradier. Must be either 'sandbox' or 'live'."
             )
 
-        sandbox = (
-            credentials.get("tradier_account_type") == "sandbox"
-            if credentials
-            else False
-        )
+        if api_key:
+            sandbox = (
+                credentials.get("tradier_account_type") == "sandbox"
+                if credentials
+                else False
+            )
 
         BASE_URL = (
             "https://api.tradier.com/"
