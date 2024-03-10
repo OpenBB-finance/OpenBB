@@ -179,6 +179,6 @@ class TradierEquityHistoricalFetcher(
         interval = "timestamp" if query.interval in ["1m", "5m", "15m"] else "date"
         return [
             TradierEquityHistoricalData.model_validate(d)
-            for d in data
+            for d in sorted(data, key=lambda x: x[interval])
             if query.start_date <= to_datetime(d[interval]).date() <= query.end_date
         ]
