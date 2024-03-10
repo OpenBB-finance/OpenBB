@@ -906,7 +906,8 @@ class DocstringGenerator:
 
     @staticmethod
     def get_field_type(
-        field: FieldInfo,
+        field_type: Any,
+        is_required: bool,
         target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the implicit data type of a defined Pydantic field.
@@ -920,10 +921,10 @@ class DocstringGenerator:
         -------
             str: String representation of the field type.
         """
-        is_optional = not field.is_required() if target == "docstring" else False
+        is_optional = not is_required
 
         try:
-            _type = field.annotation
+            _type = field_type
 
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
@@ -945,11 +946,16 @@ class DocstringGenerator:
                 if is_optional and "Optional" not in str(_type)
                 else field_type
             )
+
+            if target == "website":
+                field_type = re.sub(r"Optional\[(.*)\]", r"\1", field_type)
+                field_type = re.sub(r"Annotated\[(.*)\]", r"\1", field_type)
+
+            return field_type
+
         except TypeError:
             # Fallback to the annotation if the repr fails
-            field_type = field.annotation  # type: ignore
-
-        return field_type
+            return field_type  # type: ignore
 
     @staticmethod
     def get_OBBject_description(
@@ -1105,7 +1111,7 @@ class DocstringGenerator:
         docstring += f"{create_indent(2)}{underline}\n"
 
         for name, field in returns.items():
-            field_type = cls.get_field_type(field)
+            field_type = cls.get_field_type(field.annotation, field.is_required())
             description = getattr(field, "description", "")
             docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
             docstring += f"{create_indent(3)}{format_description(description)}\n"
@@ -1350,10 +1356,17 @@ class ReferenceGenerator:
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
-            field_type = DocstringGenerator.get_field_type(field_info, "website")
+            field_type = field_info.annotation
+            is_required = field_info.is_required()
+            field_type = DocstringGenerator.get_field_type(
+                field_type, is_required, "website"
+            )
 
             if params_type == "QueryParams" and field in expanded_types:
-                field_type = f"Union[{field_type}, {expanded_types[field]}]"
+                expanded_type = DocstringGenerator.get_field_type(
+                    expanded_types[field], is_required, "website"
+                )
+                field_type = f"Union[{field_type}, {expanded_type}]"
 
             cleaned_description = (
                 str(field_info.description)
@@ -1382,7 +1395,7 @@ class ReferenceGenerator:
                     "type": field_type,
                     "description": cleaned_description,
                     "default": default_value,
-                    "optional": not field_info.is_required(),
+                    "optional": not is_required,
                     "standard": provider == "openbb",
                 }
             )
