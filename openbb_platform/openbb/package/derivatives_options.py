@@ -205,6 +205,20 @@ class ROUTER_derivatives_options(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format. If no symbol is supplied, requests are only allowed for a single date. Use the start_date for the target date. Intrinio appears to have data beginning Feb/2022, but is unclear when it actually began. (provider: intrinio)
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format. If a symbol is not supplied, do not include an end date. (provider: intrinio)
+        trade_type : Optional[Literal['block', 'sweep', 'large']]
+            The type of unusual activity to query for. (provider: intrinio)
+        sentiment : Optional[Literal['bullish', 'bearish', 'neutral']]
+            The sentiment type to query for. (provider: intrinio)
+        min_value : Optional[Union[float, int]]
+            The inclusive minimum total value for the unusual activity. (provider: intrinio)
+        max_value : Optional[Union[float, int]]
+            The inclusive maximum total value for the unusual activity. (provider: intrinio)
+        limit : int
+            The number of data entries to return. A typical day for all symbols will yield 50-80K records. The API will paginate at 1000 records. The high default limit (100K) is to be able to reliably capture the most days. The high absolute limit (1.25M) is to allow for outlier days. Queries at the absolute limit will take a long time, and might be unreliable. Apply filters to improve performance. (provider: intrinio)
         source : Literal['delayed', 'realtime']
             The source of the data. Either realtime or delayed. (provider: intrinio)
 
@@ -228,24 +242,24 @@ class ROUTER_derivatives_options(Container):
             Symbol representing the entity requested in the data. (the underlying symbol)
         contract_symbol : str
             Contract symbol for the option.
-        trade_type : Optional[str]
+        trade_timestamp : Optional[datetime]
+            The datetime of order placement. (provider: intrinio)
+        trade_type : Optional[Literal['block', 'sweep', 'large']]
             The type of unusual trade. (provider: intrinio)
-        sentiment : Optional[str]
+        sentiment : Optional[Literal['bullish', 'bearish', 'neutral']]
             Bullish, Bearish, or Neutral Sentiment is estimated based on whether the trade was executed at the bid, ask, or mark price. (provider: intrinio)
-        total_value : Optional[Union[int, float]]
-            The aggregated value of all option contract premiums included in the trade. (provider: intrinio)
-        total_size : Optional[int]
-            The total number of contracts involved in a single transaction. (provider: intrinio)
-        average_price : Optional[float]
-            The average premium paid per option contract. (provider: intrinio)
-        ask_at_execution : Optional[float]
-            Ask price at execution. (provider: intrinio)
         bid_at_execution : Optional[float]
             Bid price at execution. (provider: intrinio)
+        ask_at_execution : Optional[float]
+            Ask price at execution. (provider: intrinio)
+        average_price : Optional[float]
+            The average premium paid per option contract. (provider: intrinio)
         underlying_price_at_execution : Optional[float]
             Price of the underlying security at execution of trade. (provider: intrinio)
-        timestamp : Optional[datetime]
-            The UTC timestamp of order placement. (provider: intrinio)
+        total_size : Optional[int]
+            The total number of contracts involved in a single transaction. (provider: intrinio)
+        total_value : Optional[Union[int, float]]
+            The aggregated value of all option contract premiums included in the trade. (provider: intrinio)
 
         Examples
         --------
