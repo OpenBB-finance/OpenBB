@@ -1,6 +1,6 @@
 """Tradier Equity Search Model"""
 
-# pylint: unused-argument
+# pylint: disable = unused-argument
 
 from typing import Any, Dict, List, Literal, Optional
 

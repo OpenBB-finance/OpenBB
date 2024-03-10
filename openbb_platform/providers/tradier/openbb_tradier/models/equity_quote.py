@@ -1,6 +1,6 @@
 """Tradier Equity Quote Model"""
 
-# pylint: unused-argument
+# pylint: disable = unused-argument
 
 from datetime import (
     date as dateType,

@@ -1,6 +1,6 @@
 """Tradier Options Chains Model"""
 
-# pylint: unused-argument
+# pylint: disable = unused-argument
 
 import asyncio
 from datetime import datetime
