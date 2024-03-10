@@ -8,6 +8,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
+from dateutil.parser import parse
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
@@ -161,7 +162,7 @@ class TradierEquityQuoteData(EquityQuoteData):
             v = v.astimezone(timezone("America/New_York"))
             return v
         if v is not None and isinstance(v, str):
-            v = datetime.fromisoformat(v)
+            v = parse(v)
             v = v.replace(microsecond=0, tzinfo=timezone("UTC"))
             v = v.astimezone(timezone("America/New_York"))
             return v

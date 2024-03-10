@@ -6,6 +6,7 @@ import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+from dateutil.parser import parse
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
@@ -131,7 +132,7 @@ class TradierOptionsChainsData(OptionsChainsData):
             v = v.astimezone(timezone("America/New_York"))
             return v
         if v is not None and isinstance(v, str):
-            v = datetime.fromisoformat(v)
+            v = parse(v)
             v = v.replace(microsecond=0, tzinfo=timezone("UTC"))
             v = v.astimezone(timezone("America/New_York"))
             return v
