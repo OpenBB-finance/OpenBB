@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-tradier"
-version = "1.0.0"
+version = "1.0.0b"
 description = "Tradier Provider Extension for the OpenBB Platform"
 authors = ["OpenBB <hello@openbb.co>"]
 readme = "README.md"
