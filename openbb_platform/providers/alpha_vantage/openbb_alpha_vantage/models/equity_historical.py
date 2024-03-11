@@ -23,6 +23,7 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     amake_request,
     amake_requests,
@@ -290,6 +291,8 @@ class AVEquityHistoricalFetcher(
         query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
+        if "{" in data[0]:
+            raise EmptyDataError(data[0]["{"].strip())
         return [
             AVEquityHistoricalData.model_validate(d)
             for d in sorted(
