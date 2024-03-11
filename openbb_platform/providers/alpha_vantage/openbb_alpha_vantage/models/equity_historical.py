@@ -3,9 +3,9 @@
 # pylint: disable=unused-argument
 
 import asyncio
+import json
 from datetime import datetime
 from io import BytesIO
-import json
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
@@ -215,14 +215,12 @@ class AVEquityHistoricalFetcher(
                 data = read_csv(BytesIO(result))  # type: ignore
                 if len(data) > 0:
                     if all(
-                        [
-                            col in data.columns
-                            for col in [
-                                "timestamp",
-                                "dividend_amount",
-                                "adjusted close",
-                                "split_coefficient",
-                            ]
+                        col in data.columns
+                        for col in [
+                            "timestamp",
+                            "dividend_amount",
+                            "adjusted close",
+                            "split_coefficient",
                         ]
                     ):
                         data.rename(
