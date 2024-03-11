@@ -159,6 +159,12 @@ class AVEquityHistoricalFetcher(
 
         async def callback(response, _):
             """Callback function to process the response."""
+            try:
+                result = await response.json()
+                if "Information" in result:
+                    warn(str(result.get("Information")))
+            except ValueError:
+                return await response.read()
             return await response.read()
 
         async def intraday_callback(response, _):
@@ -225,59 +231,60 @@ class AVEquityHistoricalFetcher(
                         },
                         inplace=True,
                     )
-                    data["date"] = data["date"].apply(to_datetime)
-                    data.set_index("date", inplace=True)
-                    # The returned data when 'adjusted=true' from the API does not return a usable OHLCV data set.
-                    # We need to calculate the adjusted prices manually.
-                    if query.adjustment != "unadjusted":
-                        temp = data.copy()
-                        temp["dividend_factor"] = (
-                            temp["close"] - temp["dividend"]
-                        ) / temp["close"]
-                        temp["volume_factor"] = temp["split_factor"]
-                        temp["split_factor"] = 1 / temp["split_factor"]
-                        adj_cols = ["open", "high", "low", "close", "volume"]
-                        divs = query.adjustment == "splits_and_dividends"
-                        for col in adj_cols:
-                            divs = False if col == "volume" else divs
-                            if col in temp.columns:
-                                temp = calculate_adjusted_prices(temp, col, divs)
-                        temp["adj_dividend"] = (
-                            temp["adj_close"] * (1 - temp["dividend_factor"])
-                            if query.adjustment == "splits_only"
-                            else temp["close"] * (1 - temp["dividend_factor"])
-                        )
-                        data["open"] = round(temp["adj_open"], 4)
-                        data["high"] = round(temp["adj_high"], 4)
-                        data["low"] = round(temp["adj_low"], 4)
-                        data["close"] = round(temp["adj_close"], 4)
-                        data["volume"] = round(temp["adj_volume"]).astype(int)
-                        data["dividend"] = round(temp["adj_dividend"], 4)
-                        data.drop(columns=["adj_close"], inplace=True)
-                    # Resample the daily data for the interval requested.
-                    freq = ""
-                    agg_dict = {
-                        "open": "first",
-                        "high": "max",
-                        "low": "min",
-                        "close": "last",
-                        "volume": "sum",
-                        "dividend": "sum",
-                        "split_factor": "prod",
-                    }
-                    if query.adjustment == "unadjusted":
-                        agg_dict.pop("dividend")
-                        agg_dict.pop("split_factor")
-                    if query.interval == "1M":
-                        freq = "M"
-                    if query.interval == "1W":
-                        freq = "W-FRI"
-                    if freq in ["M", "W-FRI"]:
-                        data = data.resample(freq).agg({**agg_dict})
-                    if len(query.symbol.split(",")) > 1:
-                        data.loc[:, "symbol"] = symbol
+                    if "date" in data.columns:
+                        data["date"] = data["date"].apply(to_datetime)
+                        data.set_index("date", inplace=True)
+                        # The returned data when 'adjusted=true' from the API does not return a usable OHLCV data set.
+                        # We need to calculate the adjusted prices manually.
+                        if query.adjustment != "unadjusted":
+                            temp = data.copy()
+                            temp["dividend_factor"] = (
+                                temp["close"] - temp["dividend"]
+                            ) / temp["close"]
+                            temp["volume_factor"] = temp["split_factor"]
+                            temp["split_factor"] = 1 / temp["split_factor"]
+                            adj_cols = ["open", "high", "low", "close", "volume"]
+                            divs = query.adjustment == "splits_and_dividends"
+                            for col in adj_cols:
+                                divs = False if col == "volume" else divs
+                                if col in temp.columns:
+                                    temp = calculate_adjusted_prices(temp, col, divs)
+                            temp["adj_dividend"] = (
+                                temp["adj_close"] * (1 - temp["dividend_factor"])
+                                if query.adjustment == "splits_only"
+                                else temp["close"] * (1 - temp["dividend_factor"])
+                            )
+                            data["open"] = round(temp["adj_open"], 4)
+                            data["high"] = round(temp["adj_high"], 4)
+                            data["low"] = round(temp["adj_low"], 4)
+                            data["close"] = round(temp["adj_close"], 4)
+                            data["volume"] = round(temp["adj_volume"]).astype(int)
+                            data["dividend"] = round(temp["adj_dividend"], 4)
+                            data.drop(columns=["adj_close"], inplace=True)
+                        # Resample the daily data for the interval requested.
+                        freq = ""
+                        agg_dict = {
+                            "open": "first",
+                            "high": "max",
+                            "low": "min",
+                            "close": "last",
+                            "volume": "sum",
+                            "dividend": "sum",
+                            "split_factor": "prod",
+                        }
+                        if query.adjustment == "unadjusted":
+                            agg_dict.pop("dividend")
+                            agg_dict.pop("split_factor")
+                        if query.interval == "1M":
+                            freq = "M"
+                        if query.interval == "1W":
+                            freq = "W-FRI"
+                        if freq in ["M", "W-FRI"]:
+                            data = data.resample(freq).agg({**agg_dict})
+                        if len(query.symbol.split(",")) > 1:
+                            data.loc[:, "symbol"] = symbol
 
-                    results.extend(data.reset_index().to_dict("records"))
+                        results.extend(data.reset_index().to_dict("records"))
 
             return results
 
@@ -291,8 +298,12 @@ class AVEquityHistoricalFetcher(
         query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
+
+        if data == []:
+            return []
         if "{" in data[0]:
-            raise EmptyDataError(data[0]["{"].strip())
+            warn(str(data[0]["{"].strip()))
+            return []
         return [
             AVEquityHistoricalData.model_validate(d)
             for d in sorted(
