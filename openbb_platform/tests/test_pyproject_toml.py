@@ -1,8 +1,9 @@
 """Test the pyproject.toml file for consistency and its dependencies."""
 
-import toml
 import glob
 import os
+
+import toml
 
 
 def test_optional_packages():
