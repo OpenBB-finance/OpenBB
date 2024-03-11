@@ -125,7 +125,13 @@ def test_intrinio_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
-    params = {"source": "delayed"}
+    params = {
+        "source": "delayed",
+        "trade_type": "block",
+        "sentiment": "neutral",
+        "start_date": date(2023, 11, 20),
+        "min_value": 10000000,
+    }
 
     fetcher = IntrinioOptionsUnusualFetcher()
     result = fetcher.test(params, credentials)

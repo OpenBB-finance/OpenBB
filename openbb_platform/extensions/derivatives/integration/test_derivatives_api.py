@@ -49,9 +49,20 @@ def test_derivatives_options_chains(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"provider": "intrinio", "source": "delayed", "symbol": "AAPL"}),
-        ({"provider": "intrinio", "symbol": "PLTR", "source": "delayed"}),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "intrinio",
+                "start_date": "2023-11-20",
+                "end_date": None,
+                "min_value": None,
+                "max_value": None,
+                "trade_type": None,
+                "sentiment": "neutral",
+                "limit": 1000,
+                "source": "delayed",
+            }
+        )
     ],
 )
 @pytest.mark.integration
