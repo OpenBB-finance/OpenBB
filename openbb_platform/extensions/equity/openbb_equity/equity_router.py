@@ -1,6 +1,7 @@
 """Equity Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -34,7 +35,20 @@ router.include_router(shorts_router)
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 
 
-@router.command(model="EquitySearch")
+@router.command(
+    model="EquitySearch",
+    examples=[
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "query": "AAPL",
+                "is_symbol": False,
+                "use_cache": True,
+                "provider": "nasdaq",
+            }
+        ),
+    ],
+)
 async def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -45,7 +59,9 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityScreener")
+@router.command(
+    model="EquityScreener", examples=[APIEx(parameters={"provider": "fmp"})]
+)
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -57,7 +73,10 @@ async def screener(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityInfo")
+@router.command(
+    model="EquityInfo",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def profile(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -68,7 +87,9 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MarketSnapshots")
+@router.command(
+    model="MarketSnapshots", examples=[APIEx(parameters={"provider": "fmp"})]
+)
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,

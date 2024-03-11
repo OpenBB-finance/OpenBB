@@ -38,7 +38,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Country weighting.
@@ -71,10 +76,10 @@ class ROUTER_etf(Container):
         country : str
             The country of the exposure.  Corresponding values are normalized percentage points.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.countries("VT", provider="fmp")
+        >>> obb.etf.countries(symbol='VT', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -105,7 +110,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the exposure to ETFs for a specific stock.
@@ -146,12 +156,12 @@ class ROUTER_etf(Container):
         market_value : Optional[Union[float, int]]
             The market value of the equity position in the ETF.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.equity_exposure("MSFT", provider="fmp")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")
+        >>> obb.etf.equity_exposure(symbol='MSFT', provider='fmp')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.equity_exposure(symbol='MSFT,AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -177,8 +187,15 @@ class ROUTER_etf(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
         ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -191,30 +208,59 @@ class ROUTER_etf(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Historical Market Price.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+        interval : Optional[str]
+            Time interval of the data to return.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['yfinance']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        start_time : Optional[datetime.time]
+            Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        end_time : Optional[datetime.time]
+            Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)
+        timezone : Optional[str]
+            Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)
+        source : Literal['realtime', 'delayed', 'nasdaq_basic']
+            The source of the data. (provider: intrinio)
+        adjustment : Union[Literal['splits_only', 'unadjusted'], Literal['splits_only', 'splits_and_dividends']]
+            The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
+        extended_hours : bool
+            Include Pre and Post market data. (provider: polygon, yfinance)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
+        limit : int
+            The number of data entries to return. (provider: polygon)
+        include_actions : bool
+            Include dividends and stock splits in results. (provider: yfinance)
+        adjusted : bool
+            This field is deprecated (4.1.5) and will be removed in a future version. Use 'adjustment' set as 'splits_and_dividends' instead. (provider: yfinance)
+        prepost : bool
+            This field is deprecated (4.1.5) and will be removed in a future version. Use 'extended_hours' as True instead. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EtfHistorical]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -235,18 +281,56 @@ class ROUTER_etf(Container):
             The low price.
         close : float
             The close price.
-        volume : Optional[Annotated[int, Ge(ge=0)]]
+        volume : Optional[Union[float, int]]
             The trading volume.
+        vwap : Optional[float]
+            Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            The adjusted closing price of the ETF. (provider: yfinance)
+            The adjusted close price. (provider: fmp, intrinio, tiingo)
+        unadjusted_volume : Optional[float]
+            Unadjusted volume of the symbol. (provider: fmp)
+        change : Optional[float]
+            Change in the price from the previous close. (provider: fmp);
+            Change in the price of the symbol from the previous day. (provider: intrinio)
+        change_percent : Optional[float]
+            Change in the price from the previous close, as a normalized percent. (provider: fmp);
+            Percent change in the price of the symbol from the previous day. (provider: intrinio)
+        average : Optional[float]
+            Average trade price of an individual equity during the interval. (provider: intrinio)
+        adj_open : Optional[float]
+            The adjusted open price. (provider: intrinio, tiingo)
+        adj_high : Optional[float]
+            The adjusted high price. (provider: intrinio, tiingo)
+        adj_low : Optional[float]
+            The adjusted low price. (provider: intrinio, tiingo)
+        adj_volume : Optional[float]
+            The adjusted volume. (provider: intrinio, tiingo)
+        fifty_two_week_high : Optional[float]
+            52 week high price for the symbol. (provider: intrinio)
+        fifty_two_week_low : Optional[float]
+            52 week low price for the symbol. (provider: intrinio)
+        factor : Optional[float]
+            factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
+        split_ratio : Optional[float]
+            Ratio of the equity split, if a split occurred. (provider: intrinio, tiingo, yfinance)
+        dividend : Optional[float]
+            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
+        close_time : Optional[datetime]
+            The timestamp that represents the end of the interval span. (provider: intrinio)
+        interval : Optional[str]
+            The data time frequency. (provider: intrinio)
+        intra_period : Optional[bool]
+            If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
+            Number of transactions for the symbol in the time period. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.historical(symbol="SPY")
-        >>> obb.etf.historical("SPY", provider="yfinance")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")
+        >>> obb.etf.historical(symbol='SPY', provider='fmp')
+        >>> obb.etf.historical(symbol='SPY', provider='yfinance')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.historical(symbol='SPY,IWM,QQQ,DJIA', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -256,15 +340,26 @@ class ROUTER_etf(Container):
                     "provider": self._get_provider(
                         provider,
                         "/etf/historical",
-                        ("yfinance",),
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
+                    "interval": interval,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 
@@ -275,7 +370,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp", "sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the holdings for an individual ETF.
@@ -474,14 +574,14 @@ class ROUTER_etf(Container):
         unrealized_gain : Optional[float]
             The unrealized gain or loss on the derivative. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.holdings("XLK", provider="fmp").to_df()
-        >>> #### Including a date (FMP, SEC) will return the holdings as per NPORT-P filings. ####
-        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="fmp").to_df()
-        >>> #### The same data can be returned from the SEC directly. ####
-        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="sec").to_df()
+        >>> obb.etf.holdings(symbol='XLK', provider='fmp')
+        >>> # Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.
+        >>> obb.etf.holdings(symbol='XLK', date='2022-03-31', provider='fmp')
+        >>> # The same data can be returned from the SEC directly.
+        >>> obb.etf.holdings(symbol='XLK', date='2022-03-31', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -508,7 +608,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Use this function to get the holdings dates, if available.
@@ -543,10 +648,10 @@ class ROUTER_etf(Container):
         date : date
             The date of the data.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date("XLK", provider="fmp").results
+        >>> obb.etf.holdings_date(symbol='XLK', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -576,7 +681,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the recent price performance of each ticker held in the ETF.
@@ -637,10 +747,10 @@ class ROUTER_etf(Container):
         symbol : Optional[str]
             The ticker symbol. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance("XLK", provider="fmp")
+        >>> obb.etf.holdings_performance(symbol='XLK', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -671,7 +781,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Information Overview.
@@ -796,12 +911,12 @@ class ROUTER_etf(Container):
         prev_close : Optional[float]
             The previous closing price. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.info("SPY", provider="fmp")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.info("SPY,IWM,QQQ,DJIA", provider="fmp")
+        >>> obb.etf.info(symbol='SPY', provider='fmp')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.info(symbol='SPY,IWM,QQQ,DJIA', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -832,7 +947,12 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
@@ -893,10 +1013,11 @@ class ROUTER_etf(Container):
         symbol : Optional[str]
             The ticker symbol. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.price_performance("SPY,QQQ,IWM,DJIA", provider="fmp")
+        >>> obb.etf.price_performance(symbol='QQQ', provider='fmp')
+        >>> obb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -924,7 +1045,12 @@ class ROUTER_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for ETFs.
@@ -988,12 +1114,13 @@ class ROUTER_etf(Container):
         actively_trading : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> ### An empty query returns the full list of ETFs from the provider. ###
-        >>> obb.etf.search("", provider="fmp")
-        >>> #### The query will return results from text-based fields containing the term. ####obb.etf.search("commercial real estate", provider="fmp")
+        >>> # An empty query returns the full list of ETFs from the provider.
+        >>> obb.etf.search(provider='fmp')
+        >>> # The query will return results from text-based fields containing the term.
+        >>> obb.etf.search(query='commercial real estate', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -1020,7 +1147,12 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ETF Sector weighting.
@@ -1055,10 +1187,10 @@ class ROUTER_etf(Container):
         weight : Optional[float]
             Exposure of the ETF to the sector in normalized percentage points.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.etf.sectors("SPY", provider="fmp")
+        >>> obb.etf.sectors(symbol='SPY', provider='fmp')
         """  # noqa: E501
 
         return self._run(

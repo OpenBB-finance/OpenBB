@@ -9,19 +9,19 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&interval=1d&page_size=10000&sort_order=asc&start_date=2024-01-01
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&interval=1d&page_size=10000&start_date=2024-01-01
   response:
     body:
       string: !!binary |
-        H4sIAB/ZwGUAA4SUTW/bMAyG/4oh7JgRor4s5xagl/bQy7bLhsFQY3U14MidLWdNg/z3ye2ASQuB
-        ATpY4gOK7yvSZ/bUz3Gc+r0b2s5Fx7bfzix9eLZlggv1kWNabMOObljSYViG4bK5RsRfRNY1auCK
-        wmSOKckBGwpTBaY4SDKbLjBjAJHCbI4ZK4GTWJNjWmhAQ2DIi2yNhlpSGJaGIHBBYYVvuhHQWArT
-        /30BNHkmaRCQvLDOMZE8MzWF2dJaC4byDAvPrJFAVS9ykZZzBEslE0VzNFyD0hRWNIflBiTVQ0IX
-        l6oGkHonkdtmkTegSCwXaqWUdG0ybw6rTA2SUiqxuFSn/r6iRDF20mpswF5PgShHzxqtQInL9w3r
-        Q+df2PbM+i7RadeK1+P96y7R8+nwMA7p9MPN3W3aB3dYM96Mv6q7Mfi5ug3dMsepd0O1O/rJ/fCJ
-        2o8h9sGHmND7cYpP1e7g1z/HW2wJcTqlyJfQR99Vn2Kqcq7GxwxantfS28fJ/1x82K905/rhlEKD
-        m2P7Hu9ybfIzx+26BHDOvyZyfJj9dHSxH0M7RzfFNxz/4P8APnSlU5ck1r/E9nmV9D5KvwEAAP//
-        AwCCQKM2AwUAAA==
+        H4sIAKrP4GUAA3TUPW/bMBAG4L8iEB3tw/FTojYDWZIhS9ulRSEwFtMIkKlUotw4Rv576Xghm8sm
+        iQ9I3sujzuxpWOI0D3s3dr2LjrU/zyw9eNYygUJtUWxRsw07unFNH2UjGwQu3jYfmciZ0QoUyXjO
+        NLfQqA+Mb2XBuEaQlMJcKVOD5AQTtqhASlCaYqZYEy0oalFR5IHKAieZyljdoAFpKSZzZlF/srci
+        XUQODVUpt8WiRkJDqSZXyjRgyMnqnAljwNQUy2OrpeFUfySWxRbWcaRIXmStrQBLbj/vjbrmHJBc
+        MG+O2lgNNXVOWESmhQZuKFZkZhoJSGVWXJYUrQFOsqI5lErtTd0CLJpDyXT1qB4qrl4KRAOSs/H/
+        TuDXhg2h9y+sPbOhTzK9deL1eP+6S3I5HR6mMX39cnN3m96DO1xmu5n+VndT8Et1G/p1ifPgxmp3
+        9LP77ZPaTyEOwYeY6P00x6dqd/CXH8z72BrifEoj38MQfV99jWmHSzU9Zmh9vmy7e5z9n9WH/UX3
+        bhhPaWh0S+yu4332SxH2G/KW81YpQMQfSU4Pi5+PLg5T6Jbo5vjOeeLyGmoOfChma9hbKta/xO75
+        UtI1qn8AAAD//wMA0dGnzyoFAAA=
     headers:
       Connection:
       - keep-alive
@@ -30,7 +30,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 05 Feb 2024 12:48:31 GMT
+      - Thu, 29 Feb 2024 18:40:42 GMT
       Transfer-Encoding:
       - chunked
       Vary:
