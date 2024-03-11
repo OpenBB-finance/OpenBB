@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 import asyncio
-import json
 from datetime import datetime
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
@@ -159,6 +158,13 @@ class AVEquityHistoricalFetcher(
 
         async def callback(response, _):
             """Callback function to process the response."""
+            try:
+                result = await response.json()
+                if "Information" in result:
+                    warn(str(result.get("Information")))
+            except Exception as _:
+                # TODO: This is hacky, find a better solution.
+                return await response.read()
             return await response.read()
 
         async def intraday_callback(response, _):
@@ -214,24 +220,18 @@ class AVEquityHistoricalFetcher(
             if result:
                 data = read_csv(BytesIO(result))  # type: ignore
                 if len(data) > 0:
-                    if all(
-                        col in data.columns
-                        for col in [
-                            "timestamp",
-                            "dividend_amount",
-                            "adjusted close",
-                            "split_coefficient",
-                        ]
-                    ):
-                        data.rename(
-                            columns={
-                                "timestamp": "date",
-                                "dividend_amount": "dividend",
-                                "adjusted close": "adj_close",
-                                "split_coefficient": "split_factor",
-                            },
-                            inplace=True,
-                        )
+                    data.rename(
+                        columns={
+                            "timestamp": "date",
+                            "dividend_amount": "dividend",
+                            "adjusted close": "adj_close",
+                            "dividend amount": "dividend",
+                            "adjusted_close": "adj_close",
+                            "split_coefficient": "split_factor",
+                        },
+                        inplace=True,
+                    )
+                    if "date" in data.columns:
                         data["date"] = data["date"].apply(to_datetime)
                         data.set_index("date", inplace=True)
                         # The returned data when 'adjusted=true' from the API does not return a usable OHLCV data set.
@@ -285,13 +285,6 @@ class AVEquityHistoricalFetcher(
                             data.loc[:, "symbol"] = symbol
 
                         results.extend(data.reset_index().to_dict("records"))
-                    else:
-                        try:
-                            data = json.loads(result.decode())
-                            if "Information" in data:
-                                warn(f"{data['Information']}")
-                        except json.JSONDecodeError:
-                            warn(f"Failed to parse data for {symbol}.")
 
             return results
 
@@ -305,6 +298,12 @@ class AVEquityHistoricalFetcher(
         query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
+
+        if data == []:
+            return []
+        if "{" in data[0]:
+            warn(str(data[0]["{"].strip()))
+            return []
         return [
             AVEquityHistoricalData.model_validate(d)
             for d in sorted(
