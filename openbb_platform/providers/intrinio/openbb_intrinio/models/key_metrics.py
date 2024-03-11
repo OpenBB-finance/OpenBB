@@ -229,7 +229,7 @@ class IntrinioKeyMetricsData(KeyMetricsData):
 class IntrinioKeyMetricsFetcher(
     Fetcher[
         IntrinioKeyMetricsQueryParams,
-        IntrinioKeyMetricsData,
+        List[IntrinioKeyMetricsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -323,17 +323,7 @@ class IntrinioKeyMetricsFetcher(
         if not results:
             raise EmptyDataError()
 
-        # Sort the results by the order of the symbols in the query.
-        return sorted(
-            results,
-            key=(
-                lambda item: (
-                    symbols.index(item["symbol"])
-                    if item["symbol"] in symbols
-                    else len(symbols)
-                )
-            ),
-        )
+        return results
 
     @staticmethod
     def transform_data(
@@ -342,6 +332,19 @@ class IntrinioKeyMetricsFetcher(
         **kwargs: Any,
     ) -> List[IntrinioKeyMetricsData]:
         """Validate and transform the data."""
+
+        # Sort the results by the order of the symbols in the query.
+        symbols = query.symbol.split(",")
+        data = sorted(
+            data,
+            key=(
+                lambda item: (
+                    symbols.index(item["symbol"])
+                    if item["symbol"] in symbols
+                    else len(symbols)
+                )
+            ),
+        )
 
         results: List[IntrinioKeyMetricsData] = []
         for item in data:
