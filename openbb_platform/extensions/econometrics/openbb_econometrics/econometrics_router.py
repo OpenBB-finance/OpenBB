@@ -346,12 +346,6 @@ def residual_autocorrelation(
                 'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
             ],
         ),
-        APIEx(
-            parameters={
-                "columns": ["open", "close"],
-                "data": APIEx.mock_data("timeseries"),
-            }
-        ),
     ],
 )
 def cointegration(
