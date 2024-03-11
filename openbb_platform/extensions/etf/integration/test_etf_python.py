@@ -186,6 +186,26 @@ def test_etf_search(params, obb):
         ),
         (
             {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
                 "provider": "tmx",
                 "symbol": "SPY:US",
                 "start_date": "2023-01-01",
