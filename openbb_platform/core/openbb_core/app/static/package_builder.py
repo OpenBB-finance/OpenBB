@@ -1285,7 +1285,7 @@ class ReferenceGenerator:
         param_types = {k: v.annotation for k, v in explicit_params.items()}
 
         return DocstringGenerator.build_examples(
-            path,
+            path.replace("/", "."),
             param_types,
             examples,
             "website",
