@@ -1535,7 +1535,7 @@ class ReferenceGenerator:
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
 
-            # TODO: Add endpoint examples
+            # Add endpoint examples
             examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls.get_endpoint_examples(
                 path, route_func, examples
