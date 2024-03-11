@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-tmx"
-version = "1.0.0"
+version = "1.0.0b"
 description = "Unofficial TMX data provider extension for the OpenBB Platform - Public Canadian markets data for Python and Fast API."
 authors = ["OpenBB <hello@openbb.co>"]
 readme = "README.md"
