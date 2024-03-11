@@ -1,6 +1,6 @@
 """Custom pytest configuration for the extensions."""
 
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple
 
 import pytest
 from openbb_core.app.router import CommandMap
@@ -13,7 +13,7 @@ commands = list(cm.map.keys())
 # ruff: noqa: SIM114
 
 
-def parametrize(argnames: str, argvalues: List[Dict], **kwargs):
+def parametrize(argnames: str, argvalues: List[Tuple[Any, ...]], **kwargs):
     """Custom parametrize decorator that filters test cases based on the environment."""
 
     routers, providers, obbject_ext = list_openbb_extensions()
