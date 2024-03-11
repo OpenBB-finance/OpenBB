@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 
 import asyncio
+import json
 from datetime import datetime
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
@@ -213,70 +214,84 @@ class AVEquityHistoricalFetcher(
             if result:
                 data = read_csv(BytesIO(result))  # type: ignore
                 if len(data) > 0:
-                    data.rename(
-                        columns={
-                            "timestamp": "date",
-                            "dividend_amount": "dividend",
-                            "adjusted close": "adj_close",
-                            "dividend amount": "dividend",
-                            "adjusted_close": "adj_close",
-                            "split_coefficient": "split_factor",
-                        },
-                        inplace=True,
-                    )
-                    data["date"] = data["date"].apply(to_datetime)
-                    data.set_index("date", inplace=True)
-                    # The returned data when 'adjusted=true' from the API does not return a usable OHLCV data set.
-                    # We need to calculate the adjusted prices manually.
-                    if query.adjustment != "unadjusted":
-                        temp = data.copy()
-                        temp["dividend_factor"] = (
-                            temp["close"] - temp["dividend"]
-                        ) / temp["close"]
-                        temp["volume_factor"] = temp["split_factor"]
-                        temp["split_factor"] = 1 / temp["split_factor"]
-                        adj_cols = ["open", "high", "low", "close", "volume"]
-                        divs = query.adjustment == "splits_and_dividends"
-                        for col in adj_cols:
-                            divs = False if col == "volume" else divs
-                            if col in temp.columns:
-                                temp = calculate_adjusted_prices(temp, col, divs)
-                        temp["adj_dividend"] = (
-                            temp["adj_close"] * (1 - temp["dividend_factor"])
-                            if query.adjustment == "splits_only"
-                            else temp["close"] * (1 - temp["dividend_factor"])
+                    if all(
+                        col in data.columns
+                        for col in [
+                            "timestamp",
+                            "dividend_amount",
+                            "adjusted close",
+                            "split_coefficient",
+                        ]
+                    ):
+                        data.rename(
+                            columns={
+                                "timestamp": "date",
+                                "dividend_amount": "dividend",
+                                "adjusted close": "adj_close",
+                                "split_coefficient": "split_factor",
+                            },
+                            inplace=True,
                         )
-                        data["open"] = round(temp["adj_open"], 4)
-                        data["high"] = round(temp["adj_high"], 4)
-                        data["low"] = round(temp["adj_low"], 4)
-                        data["close"] = round(temp["adj_close"], 4)
-                        data["volume"] = round(temp["adj_volume"]).astype(int)
-                        data["dividend"] = round(temp["adj_dividend"], 4)
-                        data.drop(columns=["adj_close"], inplace=True)
-                    # Resample the daily data for the interval requested.
-                    freq = ""
-                    agg_dict = {
-                        "open": "first",
-                        "high": "max",
-                        "low": "min",
-                        "close": "last",
-                        "volume": "sum",
-                        "dividend": "sum",
-                        "split_factor": "prod",
-                    }
-                    if query.adjustment == "unadjusted":
-                        agg_dict.pop("dividend")
-                        agg_dict.pop("split_factor")
-                    if query.interval == "1M":
-                        freq = "M"
-                    if query.interval == "1W":
-                        freq = "W-FRI"
-                    if freq in ["M", "W-FRI"]:
-                        data = data.resample(freq).agg({**agg_dict})
-                    if len(query.symbol.split(",")) > 1:
-                        data.loc[:, "symbol"] = symbol
+                        data["date"] = data["date"].apply(to_datetime)
+                        data.set_index("date", inplace=True)
+                        # The returned data when 'adjusted=true' from the API does not return a usable OHLCV data set.
+                        # We need to calculate the adjusted prices manually.
+                        if query.adjustment != "unadjusted":
+                            temp = data.copy()
+                            temp["dividend_factor"] = (
+                                temp["close"] - temp["dividend"]
+                            ) / temp["close"]
+                            temp["volume_factor"] = temp["split_factor"]
+                            temp["split_factor"] = 1 / temp["split_factor"]
+                            adj_cols = ["open", "high", "low", "close", "volume"]
+                            divs = query.adjustment == "splits_and_dividends"
+                            for col in adj_cols:
+                                divs = False if col == "volume" else divs
+                                if col in temp.columns:
+                                    temp = calculate_adjusted_prices(temp, col, divs)
+                            temp["adj_dividend"] = (
+                                temp["adj_close"] * (1 - temp["dividend_factor"])
+                                if query.adjustment == "splits_only"
+                                else temp["close"] * (1 - temp["dividend_factor"])
+                            )
+                            data["open"] = round(temp["adj_open"], 4)
+                            data["high"] = round(temp["adj_high"], 4)
+                            data["low"] = round(temp["adj_low"], 4)
+                            data["close"] = round(temp["adj_close"], 4)
+                            data["volume"] = round(temp["adj_volume"]).astype(int)
+                            data["dividend"] = round(temp["adj_dividend"], 4)
+                            data.drop(columns=["adj_close"], inplace=True)
+                        # Resample the daily data for the interval requested.
+                        freq = ""
+                        agg_dict = {
+                            "open": "first",
+                            "high": "max",
+                            "low": "min",
+                            "close": "last",
+                            "volume": "sum",
+                            "dividend": "sum",
+                            "split_factor": "prod",
+                        }
+                        if query.adjustment == "unadjusted":
+                            agg_dict.pop("dividend")
+                            agg_dict.pop("split_factor")
+                        if query.interval == "1M":
+                            freq = "M"
+                        if query.interval == "1W":
+                            freq = "W-FRI"
+                        if freq in ["M", "W-FRI"]:
+                            data = data.resample(freq).agg({**agg_dict})
+                        if len(query.symbol.split(",")) > 1:
+                            data.loc[:, "symbol"] = symbol
 
-                    results.extend(data.reset_index().to_dict("records"))
+                        results.extend(data.reset_index().to_dict("records"))
+                    else:
+                        try:
+                            data = json.loads(result.decode())
+                            if "Information" in data:
+                                warn(f"{data['Information']}")
+                        except json.JSONDecodeError:
+                            warn(f"Failed to parse data for {symbol}.")
 
             return results
 
