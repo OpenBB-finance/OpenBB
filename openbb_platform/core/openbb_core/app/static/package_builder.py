@@ -1252,7 +1252,7 @@ class ReferenceGenerator:
     ]
 
     # pylint: disable=protected-access
-    pi_map = DocstringGenerator.provider_interface
+    pi = DocstringGenerator.provider_interface
 
     @classmethod
     def get_endpoint_examples(
@@ -1293,27 +1293,25 @@ class ReferenceGenerator:
             "website",
         )
 
-    @staticmethod
-    def get_provider_parameter_info(func: Callable) -> Dict[str, str]:
+    @classmethod
+    def get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
-
-        Function signature is insepcted to get the parameters of the router
-        endpoint function. The provider parameter is then extracted from the
-        function type annotations then the information is extracted from it.
 
         Args
         ----
-            func (Callable): Router endpoint function
+            model (str): Standard model to access the model providers.
 
         Returns
         -------
             Dict[str, str]: Dictionary of the provider parameter information
         """
-        params_dict = func.__annotations__
-        model_type = params_dict["provider_choices"].__args__[0]
-        provider_params_field = model_type.__dataclass_fields__["provider"]
+        pi_model_provider = cls.pi.model_providers[model]
+        provider_params_field = pi_model_provider.__dataclass_fields__["provider"]
 
-        # Type is Union[Literal[<provider_name>], None]
+        name = provider_params_field.name
+        field_type = DocstringGenerator.get_field_type(
+            provider_params_field.type, False, "website"
+        )
         default = provider_params_field.type.__args__[0]
         description = (
             "The provider to use for the query, by default None. "
@@ -1322,8 +1320,8 @@ class ReferenceGenerator:
         )
 
         provider_parameter_info = {
-            "name": provider_params_field.name,
-            "type": str(provider_params_field.type).replace("typing.", ""),
+            "name": name,
+            "type": field_type,
             "description": description,
             "default": default,
             "optional": True,
@@ -1354,7 +1352,7 @@ class ReferenceGenerator:
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
-        model_map = cls.pi_map._map[model]  # pylint: disable=protected-access
+        model_map = cls.pi._map[model]  # pylint: disable=protected-access
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
@@ -1545,16 +1543,18 @@ class ReferenceGenerator:
 
             # Add endpoint parameters fields for standard provider
             if route_method == {"GET"}:
-                model_map = cls.pi_map._map[
+                model_map = cls.pi._map[
                     standard_model
                 ]  # pylint: disable=protected-access
                 # openbb provider is always present hence its the standard field
-                reference[path]["parameters"]["standard"] = (
-                    cls.get_provider_field_params(standard_model, "QueryParams")
-                )
+                reference[path]["parameters"][
+                    "standard"
+                ] = cls.get_provider_field_params(standard_model, "QueryParams")
 
                 # Add `provider` parameter fields to the openbb provider
-                provider_parameter_fields = cls.get_provider_parameter_info(route_func)
+                provider_parameter_fields = cls.get_provider_parameter_info(
+                    standard_model
+                )
                 reference[path]["parameters"]["standard"].append(
                     provider_parameter_fields
                 )
@@ -1596,24 +1596,24 @@ class ReferenceGenerator:
             elif route_method == {"POST"}:
                 # Add endpoint parameters fields for POST methods
                 docstring = route_func.__doc__
-                reference[path]["parameters"]["standard"] = (
-                    ReferenceGenerator.get_post_method_parameters_info(docstring)
-                )
+                reference[path]["parameters"][
+                    "standard"
+                ] = ReferenceGenerator.get_post_method_parameters_info(docstring)
 
             # Add endpoint returns data
             # Currently only OBBject object is returned
             if route_method == {"GET"}:
                 providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = (
-                    DocstringGenerator.get_OBBject_description(
-                        standard_model, providers, "website"
-                    )
+                reference[path]["returns"][
+                    "OBBject"
+                ] = DocstringGenerator.get_OBBject_description(
+                    standard_model, providers, "website"
                 )
 
             elif route_method == {"POST"}:
                 docstring = route_func.__doc__
-                reference[path]["returns"]["OBBject"] = (
-                    cls.get_post_method_returns_info(docstring)
-                )
+                reference[path]["returns"][
+                    "OBBject"
+                ] = cls.get_post_method_returns_info(docstring)
 
         return reference
