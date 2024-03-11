@@ -189,7 +189,7 @@ def test_etf_search(params, headers):
         (
             {
                 "provider": "tradier",
-                "symbol": "AAPL,MSFT",
+                "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1M",
@@ -199,7 +199,7 @@ def test_etf_search(params, headers):
         (
             {
                 "provider": "tradier",
-                "symbol": "AAPL,MSFT",
+                "symbol": "SPY,DJIA",
                 "start_date": None,
                 "end_date": None,
                 "interval": "15m",
