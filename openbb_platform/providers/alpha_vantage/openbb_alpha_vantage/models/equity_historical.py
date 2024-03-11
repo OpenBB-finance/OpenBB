@@ -162,7 +162,8 @@ class AVEquityHistoricalFetcher(
                 result = await response.json()
                 if "Information" in result:
                     warn(str(result.get("Information")))
-            except ValueError:
+            except Exception as _:
+                # TODO: This is hacky, find a better solution.
                 return await response.read()
             return await response.read()
 
