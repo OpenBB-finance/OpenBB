@@ -38,6 +38,9 @@ from openbb_intrinio.models.search_attributes import (
 )
 from openbb_intrinio.models.share_statistics import IntrinioShareStatisticsFetcher
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
+from openbb_intrinio.models.zacks_sales_estimates import (
+    IntrinioZackSalesEstimatesFetcher,
+)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -352,5 +355,24 @@ def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
     }
 
     fetcher = IntrinioReportedFinancialsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_zack_sales_estimates_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+        "fiscal_year": 2023,
+        "fiscal_period": "Q1",
+        "calendar_year": 2023,
+        "calendar_period": "Q1",
+        "next_page": 1,
+        "page_size": 10,
+    }
+
+    fetcher = IntrinioZackSalesEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

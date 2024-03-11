@@ -11,7 +11,24 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 
-from openbb_intrinio.utils.references import IntrinioCompany
+#from openbb_intrinio.utils.references import IntrinioCompany
+
+# doing this to avoid recursion lol
+class IntrinioCompany(Data):
+    """Intrinio Company Data."""
+
+    id: str = Field(description="The Intrinio ID of the Company.")
+    ticker: Optional[str] = Field(
+        description="The stock market ticker symbol associated with the company's common stock securities",
+        default=None,
+    )
+    name: Optional[str] = Field(description="The company's common name.", default=None)
+    lei: Optional[str] = Field(
+        description="The Legal Entity Identifier (LEI) of the company.", default=None
+    )
+    cik: Optional[str] = Field(
+        description="The Central Index Key (CIK) of the company.",
+    )
 
 
 class SalesEstimatesQueryParams(QueryParams):
