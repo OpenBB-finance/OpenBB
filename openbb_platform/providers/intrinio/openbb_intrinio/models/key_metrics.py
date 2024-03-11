@@ -65,9 +65,9 @@ class IntrinioKeyMetricsData(KeyMetricsData):
         "year_low": "52_week_low",
         "volume_avg": "average_daily_volume",
         "shares_outstanding": "adjweightedavebasicsharesos",
-        "eps_basic": "basiceps",
-        "eps_diluted": "basicdilutedeps",
+        "eps": "basiceps",
     }
+
     price_to_book: Optional[float] = Field(
         default=None,
         description="Price to book ratio.",
@@ -256,6 +256,7 @@ class IntrinioKeyMetricsFetcher(
             "beta",
             "average_daily_volume",
             "basiceps",
+            "basicdilutedeps",
             "marketcap",
             "last_price",
             "52_week_high",
