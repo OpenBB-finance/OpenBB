@@ -50,7 +50,7 @@ def skew(
     data: List[Data],
     target: str,
 ) -> OBBject[List[Data]]:
-    """Get the  skew of the data set.
+    """Get the skew of the data set.
 
     Skew is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
     Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
