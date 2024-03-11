@@ -8,6 +8,9 @@ categories:
   - title: 🐛 OpenBB Platform Bug Fixes
     labels:
       - 'bug'
+  - title: 🚨 OpenBB Platform Breaking Changes
+    labels:
+      - 'breaking_change'
   - title: 📚 OpenBB Documentation Changes
     labels:
       - 'docs'
