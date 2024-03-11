@@ -48,11 +48,3 @@ class KeyMetricsData(Data):
     pe_ratio: Optional[float] = Field(
         default=None, description="Price-to-earnings ratio (P/E ratio)"
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert field to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

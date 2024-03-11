@@ -2412,7 +2412,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         period: Annotated[
@@ -2436,7 +2436,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
@@ -2494,8 +2494,8 @@ class ROUTER_equity_fundamental(Container):
             Shareholders equity per share (provider: fmp)
         interest_debt_per_share : Optional[float]
             Interest debt per share (provider: fmp)
-        enterprise_value : Optional[Union[float, int]]
-            Enterprise value (provider: fmp, yfinance)
+        enterprise_value : Optional[int]
+            Enterprise value (provider: fmp, intrinio, yfinance)
         price_to_sales_ratio : Optional[float]
             Price-to-sales ratio (provider: fmp)
         pocf_ratio : Optional[float]
@@ -2515,7 +2515,8 @@ class ROUTER_equity_fundamental(Container):
         ev_to_free_cash_flow : Optional[float]
             Enterprise value-to-free cash flow ratio (provider: fmp)
         earnings_yield : Optional[float]
-            Earnings yield (provider: fmp)
+            Earnings yield (provider: fmp);
+            Earnings yield, as a normalized percent. (provider: intrinio)
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
         debt_to_equity : Optional[float]
@@ -2586,15 +2587,73 @@ class ROUTER_equity_fundamental(Container):
             Return on equity (provider: fmp)
         capex_per_share : Optional[float]
             Capital expenditures per share (provider: fmp)
+        price_to_book : Optional[float]
+            Price to book ratio. (provider: intrinio, yfinance)
+        price_to_tangible_book : Optional[float]
+            Price to tangible book ratio. (provider: intrinio)
+        price_to_revenue : Optional[float]
+            Price to revenue ratio. (provider: intrinio)
+        quick_ratio : Optional[float]
+            Quick ratio. (provider: intrinio, yfinance)
+        gross_margin : Optional[float]
+            Gross margin, as a normalized percent. (provider: intrinio, yfinance)
+        ebit_margin : Optional[float]
+            EBIT margin, as a normalized percent. (provider: intrinio)
+        profit_margin : Optional[float]
+            Profit margin, as a normalized percent. (provider: intrinio, yfinance)
+        eps : Optional[float]
+            Basic earnings per share. (provider: intrinio)
+        eps_growth : Optional[float]
+            EPS growth, as a normalized percent. (provider: intrinio)
+        revenue_growth : Optional[float]
+            Revenue growth, as a normalized percent. (provider: intrinio, yfinance)
+        ebitda_growth : Optional[float]
+            EBITDA growth, as a normalized percent. (provider: intrinio)
+        ebit_growth : Optional[float]
+            EBIT growth, as a normalized percent. (provider: intrinio)
+        net_income_growth : Optional[float]
+            Net income growth, as a normalized percent. (provider: intrinio)
+        free_cash_flow_to_firm_growth : Optional[float]
+            Free cash flow to firm growth, as a normalized percent. (provider: intrinio)
+        invested_capital_growth : Optional[float]
+            Invested capital growth, as a normalized percent. (provider: intrinio)
+        return_on_assets : Optional[float]
+            Return on assets, as a normalized percent. (provider: intrinio, yfinance)
+        return_on_equity : Optional[float]
+            Return on equity, as a normalized percent. (provider: intrinio, yfinance)
+        return_on_invested_capital : Optional[float]
+            Return on invested capital, as a normalized percent. (provider: intrinio)
+        ebitda : Optional[int]
+            Earnings before interest, taxes, depreciation, and amortization. (provider: intrinio)
+        ebit : Optional[int]
+            Earnings before interest and taxes. (provider: intrinio)
+        long_term_debt : Optional[int]
+            Long-term debt. (provider: intrinio)
+        total_debt : Optional[int]
+            Total debt. (provider: intrinio)
+        total_capital : Optional[int]
+            The sum of long-term debt and total shareholder equity. (provider: intrinio)
+        free_cash_flow_to_firm : Optional[int]
+            Free cash flow to firm. (provider: intrinio)
+        altman_z_score : Optional[float]
+            Altman Z-score. (provider: intrinio)
         beta : Optional[float]
-            Beta relative to the broad market calculated on a rolling three-year basis. (provider: intrinio);
+            Beta relative to the broad market (rolling three-year). (provider: intrinio);
             Beta relative to the broad market (5-year monthly). (provider: yfinance)
-        volume : Optional[float]
-            Volume (provider: intrinio)
-        fifty_two_week_high : Optional[float]
+        last_price : Optional[float]
+            Last price of the stock. (provider: intrinio)
+        year_high : Optional[float]
             52 week high (provider: intrinio)
-        fifty_two_week_low : Optional[float]
+        year_low : Optional[float]
             52 week low (provider: intrinio)
+        volume_avg : Optional[int]
+            Average daily volume. (provider: intrinio)
+        short_interest : Optional[int]
+            Number of shares reported as sold short. (provider: intrinio)
+        shares_outstanding : Optional[int]
+            Weighted average shares outstanding (TTM). (provider: intrinio)
+        days_to_cover : Optional[float]
+            Days to cover short interest, based on average daily volume. (provider: intrinio)
         forward_pe : Optional[float]
             Forward price-to-earnings ratio. (provider: yfinance)
         peg_ratio : Optional[float]
@@ -2611,30 +2670,16 @@ class ROUTER_equity_fundamental(Container):
             Earnings growth (Year Over Year), as a normalized percent. (provider: yfinance)
         earnings_growth_quarterly : Optional[float]
             Quarterly earnings growth (Year Over Year), as a normalized percent. (provider: yfinance)
-        revenue_growth : Optional[float]
-            Revenue growth (Year Over Year), as a normalized percent. (provider: yfinance)
         enterprise_to_revenue : Optional[float]
             Enterprise value to revenue ratio. (provider: yfinance)
-        quick_ratio : Optional[float]
-            Quick ratio. (provider: yfinance)
-        gross_margin : Optional[float]
-            Gross margin, as a normalized percent. (provider: yfinance)
         operating_margin : Optional[float]
             Operating margin, as a normalized percent. (provider: yfinance)
         ebitda_margin : Optional[float]
             EBITDA margin, as a normalized percent. (provider: yfinance)
-        profit_margin : Optional[float]
-            Profit margin, as a normalized percent. (provider: yfinance)
-        return_on_assets : Optional[float]
-            Return on assets, as a normalized percent. (provider: yfinance)
-        return_on_equity : Optional[float]
-            Return on equity, as a normalized percent. (provider: yfinance)
         dividend_yield_5y_avg : Optional[float]
             5-year average dividend yield, as a normalized percent. (provider: yfinance)
         book_value : Optional[float]
             Book value per share. (provider: yfinance)
-        price_to_book : Optional[float]
-            Price-to-book ratio. (provider: yfinance)
         overall_risk : Optional[float]
             Overall risk score. (provider: yfinance)
         audit_risk : Optional[float]
@@ -2673,7 +2718,11 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
             )
         )
 
