@@ -1265,7 +1265,7 @@ class ReferenceGenerator:
         list of Example objects and formatted into a string.
 
         Args
-        -----
+        ----
             path (str): Path of the router.
             func (Callable): Router endpoint function.
             examples (Optional[List[Example]]): List of Examples (APIEx or PythonEx type)
@@ -1300,7 +1300,7 @@ class ReferenceGenerator:
         function type annotations then the information is extracted from it.
 
         Args
-        -----
+        ----
             func (Callable): Router endpoint function
 
         Returns
@@ -1340,7 +1340,7 @@ class ReferenceGenerator:
         """Get the fields of the given parameter type for the given provider of the standard_model.
 
         Args
-        -----
+        ----
             model (str): Model name to access the provider interface
             params_type (str): Parameters to fetch data for (QueryParams or Data)
             provider (str, optional): Provider name. Defaults to "openbb".
@@ -1407,7 +1407,7 @@ class ReferenceGenerator:
         """Get the parameters for the POST method endpoints.
 
         Args
-        -----
+        ----
             docstring (str): Router endpoint function's docstring
 
         Returns
@@ -1459,7 +1459,7 @@ class ReferenceGenerator:
         """Get the returns information for the POST method endpoints.
 
         Args
-        -----
+        ----
             docstring (str): Router endpoint function's docstring
 
         Returns
