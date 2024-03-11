@@ -978,6 +978,26 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
                 "provider": "tmx",
                 "symbol": "AAPL:US",
                 "start_date": "2023-01-01",
@@ -1167,6 +1187,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
+        ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
             {
                 "query": "gold",
@@ -1230,6 +1251,7 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
         ({"symbol": "AAPL", "provider": "yfinance"}),
         ({"symbol": "AAPL:US", "provider": "tmx"}),
+        ({"symbol": "AAPL,MSFT", "provider": "tradier"}),
     ],
 )
 @pytest.mark.integration
