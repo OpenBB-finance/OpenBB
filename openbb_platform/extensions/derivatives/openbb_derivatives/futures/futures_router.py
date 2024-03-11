@@ -1,6 +1,7 @@
 """Futures Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -16,13 +17,20 @@ router = Router(prefix="/futures")
 # pylint: disable=unused-argument
 @router.command(
     model="FuturesHistorical",
-    exclude_auto_examples=True,
     examples=[
-        'obb.derivatives.futures.historical("ES", provider="yfinance")',
-        '#### Enter expiration dates as "YYYY-MM" ####',
-        'obb.derivatives.futures.historical("ES", provider="yfinance", expiration="2025-12")',
-        "#### Enter multiple symbols as a list. ####",
-        'obb.derivatives.futures.historical(["ES", "NQ", "ESZ24.CME", "NQZ24.CME"], provider="yfinance")',
+        APIEx(parameters={"symbol": "ES", "provider": "yfinance"}),
+        APIEx(
+            description="Enter multiple symbols.",
+            parameters={"symbol": "ES,NQ", "provider": "yfinance"},
+        ),
+        APIEx(
+            description='Enter expiration dates as "YYYY-MM".',
+            parameters={
+                "symbol": "ES",
+                "provider": "yfinance",
+                "expiration": "2025-12",
+            },
+        ),
     ],
 )
 async def historical(
@@ -37,11 +45,12 @@ async def historical(
 
 @router.command(
     model="FuturesCurve",
-    exclude_auto_examples=True,
     examples=[
-        'obb.derivatives.futures.curve("NG", provider="yfinance")',
-        "#### Enter a date to get the term structure from a historical date. ####",
-        'obb.derivatives.futures.curve("NG", provider="yfinance", date="2023-01-01")',
+        APIEx(parameters={"symbol": "VX", "provider": "cboe"}),
+        APIEx(
+            description="Enter a date to get the term structure from a historical date.",
+            parameters={"symbol": "NG", "provider": "yfinance", "date": "2023-01-01"},
+        ),
     ],
 )
 async def curve(

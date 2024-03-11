@@ -3,6 +3,7 @@
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,10 @@ from openbb_core.app.router import Router
 router = Router(prefix="/fundamental")
 
 
-@router.command(model="EquityValuationMultiples")
+@router.command(
+    model="EquityValuationMultiples",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def multiples(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +30,20 @@ async def multiples(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BalanceSheet")
+@router.command(
+    model="BalanceSheet",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
 async def balance(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +54,13 @@ async def balance(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BalanceSheetGrowth")
+@router.command(
+    model="BalanceSheetGrowth",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+    ],
+)
 async def balance_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -48,7 +71,20 @@ async def balance_growth(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CashFlowStatement")
+@router.command(
+    model="CashFlowStatement",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
 async def cash(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -62,10 +98,33 @@ async def cash(
 @router.command(
     model="ReportedFinancials",
     examples=[
-        "# Get reported income statement",
-        "obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income)",
-        "# Get reported cash flow statement",
-        "obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='cash')",
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
+            description="Get AAPL balance sheet with a limit of 10 items.",
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "statement_type": "balance",
+                "limit": 10,
+                "provider": "intrinio",
+            },
+        ),
+        APIEx(
+            description="Get reported income statement",
+            parameters={
+                "symbol": "AAPL",
+                "statement_type": "income",
+                "provider": "intrinio",
+            },
+        ),
+        APIEx(
+            description="Get reported cash flow statement",
+            parameters={
+                "symbol": "AAPL",
+                "statement_type": "cash",
+                "provider": "intrinio",
+            },
+        ),
     ],
 )
 async def reported_financials(
@@ -78,7 +137,13 @@ async def reported_financials(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CashFlowStatementGrowth")
+@router.command(
+    model="CashFlowStatementGrowth",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+    ],
+)
 async def cash_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -89,7 +154,10 @@ async def cash_growth(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalDividends")
+@router.command(
+    model="HistoricalDividends",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"})],
+)
 async def dividends(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -100,7 +168,10 @@ async def dividends(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalEps")
+@router.command(
+    model="HistoricalEps",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def historical_eps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -111,7 +182,10 @@ async def historical_eps(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalEmployees")
+@router.command(
+    model="HistoricalEmployees",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def employee_count(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -124,10 +198,7 @@ async def employee_count(
 
 @router.command(
     model="SearchAttributes",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.equity.fundamental.search_attributes(query='ebitda')",
-    ],
+    examples=[APIEx(parameters={"query": "ebitda", "provider": "intrinio"})],
 )
 async def search_attributes(
     cc: CommandContext,
@@ -141,9 +212,8 @@ async def search_attributes(
 
 @router.command(
     model="LatestAttributes",
-    exclude_auto_examples=True,
     examples=[
-        "obb.equity.fundamental.latest_attributes(tag='ceo')",
+        APIEx(parameters={"symbol": "AAPL", "tag": "ceo", "provider": "intrinio"})
     ],
 )
 async def latest_attributes(
@@ -158,9 +228,8 @@ async def latest_attributes(
 
 @router.command(
     model="HistoricalAttributes",
-    exclude_auto_examples=True,
     examples=[
-        "obb.equity.fundamental.historical_attributes(tag='ebitda')",
+        APIEx(parameters={"symbol": "AAPL", "tag": "ebitda", "provider": "intrinio"})
     ],
 )
 async def historical_attributes(
@@ -173,7 +242,20 @@ async def historical_attributes(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="IncomeStatement")
+@router.command(
+    model="IncomeStatement",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 5,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
 async def income(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -184,7 +266,20 @@ async def income(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="IncomeStatementGrowth")
+@router.command(
+    model="IncomeStatementGrowth",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "limit": 10,
+                "period": "annual",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
 async def income_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -195,7 +290,20 @@ async def income_growth(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="KeyMetrics")
+@router.command(
+    model="KeyMetrics",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
 async def metrics(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -206,7 +314,10 @@ async def metrics(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="KeyExecutives")
+@router.command(
+    model="KeyExecutives",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def management(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -217,7 +328,10 @@ async def management(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ExecutiveCompensation")
+@router.command(
+    model="ExecutiveCompensation",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def management_compensation(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -236,6 +350,7 @@ async def management_compensation(
         since=(4, 1),
         expected_removal=(4, 3),
     ),
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def overview(
     cc: CommandContext,
@@ -247,7 +362,20 @@ async def overview(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FinancialRatios")
+@router.command(
+    model="FinancialRatios",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
 async def ratios(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -258,7 +386,20 @@ async def ratios(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="RevenueGeographic")
+@router.command(
+    model="RevenueGeographic",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "structure": "flat",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
 async def revenue_per_geography(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -269,7 +410,20 @@ async def revenue_per_geography(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="RevenueBusinessLine")
+@router.command(
+    model="RevenueBusinessLine",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "fmp"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "period": "annual",
+                "structure": "flat",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
 async def revenue_per_segment(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -280,7 +434,13 @@ async def revenue_per_segment(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CompanyFilings")
+@router.command(
+    model="CompanyFilings",
+    examples=[
+        APIEx(parameters={"provider": "fmp"}),
+        APIEx(parameters={"limit": 100, "provider": "fmp"}),
+    ],
+)
 async def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -296,7 +456,10 @@ async def filings(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalSplits")
+@router.command(
+    model="HistoricalSplits",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def historical_splits(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -309,10 +472,7 @@ async def historical_splits(
 
 @router.command(
     model="EarningsCallTranscript",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.equity.fundamental.transcript(symbol='AAPL', year=2020)",
-    ],
+    examples=[APIEx(parameters={"symbol": "AAPL", "year": 2020, "provider": "fmp"})],
 )
 async def transcript(
     cc: CommandContext,
@@ -324,7 +484,13 @@ async def transcript(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="TrailingDividendYield")
+@router.command(
+    model="TrailingDividendYield",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "tiingo"}),
+        APIEx(parameters={"symbol": "AAPL", "limit": 252, "provider": "tiingo"}),
+    ],
+)
 async def trailing_dividend_yield(
     cc: CommandContext,
     provider_choices: ProviderChoices,

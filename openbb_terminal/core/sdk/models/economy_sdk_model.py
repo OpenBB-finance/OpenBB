@@ -12,8 +12,6 @@ class EconomyRoot(Category):
         `available_indices`: Get available indices\n
         `balance`: General government deficit is defined as the balance of income and expenditure of government,\n
         `balance_chart`: General government balance is defined as the balance of income and expenditure of government,\n
-        `bigmac`: Display Big Mac Index for given countries\n
-        `bigmac_chart`: Display Big Mac Index for given countries\n
         `ccpi`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
         `ccpi_chart`: Inflation measured by consumer price index (CPI) is defined as the change in the prices\n
         `country_codes`: Get available country codes for Bigmac index\n
@@ -68,8 +66,6 @@ class EconomyRoot(Category):
         self.available_indices = lib.economy_yfinance_model.get_available_indices
         self.balance = lib.economy_oecd_model.get_balance
         self.balance_chart = lib.economy_oecd_view.plot_balance
-        self.bigmac = lib.economy_nasdaq_model.get_big_mac_indices
-        self.bigmac_chart = lib.economy_nasdaq_view.display_big_mac_index
         self.ccpi = lib.economy_oecd_model.get_cpi
         self.ccpi_chart = lib.economy_oecd_view.plot_cpi
         self.country_codes = lib.economy_nasdaq_model.get_country_codes

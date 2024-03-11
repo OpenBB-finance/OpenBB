@@ -15,6 +15,8 @@ from pydantic import Field, field_validator
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
+# pylint: disable=unused-argument
+
 
 class OECDGdpForecastQueryParams(GdpForecastQueryParams):
     """OECD GDP Forecast Query."""
@@ -67,7 +69,7 @@ class OECDGdpForecastFetcher(
         query: OECDGdpForecastQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         units = query.period[0].upper()
         _type = "REAL" if query.type == "real" else "NOM"
@@ -94,11 +96,18 @@ class OECDGdpForecastFetcher(
         )
         data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
+        data_df["date"] = data_df["date"].apply(helpers.oecd_date_to_python_date)
+        data_df = data_df[
+            (data_df["date"] <= query.end_date) & (data_df["date"] >= query.start_date)
+        ]
+        data_df["date"] = data_df["date"].apply(
+            lambda x: x.year
+        )  # Validator won't accept datetime.date?
         return data_df.to_dict(orient="records")
 
     @staticmethod
     def transform_data(
-        query: OECDGdpForecastQueryParams, data: Dict, **kwargs: Any
+        query: OECDGdpForecastQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDGdpForecastData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpForecastData.model_validate(d) for d in data]

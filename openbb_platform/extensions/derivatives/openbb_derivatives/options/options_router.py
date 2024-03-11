@@ -1,6 +1,7 @@
 """Options Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,11 +18,12 @@ router = Router(prefix="/options")
 
 @router.command(
     model="OptionsChains",
-    exclude_auto_examples=True,
     examples=[
-        'chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()',
-        '#### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####',
-        'eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()',
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
+            description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
+            parameters={"symbol": "AAPL", "date": "2023-01-25", "provider": "intrinio"},
+        ),
     ],
 )
 async def chains(
@@ -36,11 +38,12 @@ async def chains(
 
 @router.command(
     model="OptionsUnusual",
-    exclude_auto_examples=True,
     examples=[
-        "options = obb.derivatives.options.unusual().to_df()",
-        '#### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####',
-        'options = obb.derivatives.options.unusual(symbol="TSLA").to_df()',
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
+            parameters={"symbol": "TSLA", "provider": "intrinio"},
+        ),
     ],
 )
 async def unusual(

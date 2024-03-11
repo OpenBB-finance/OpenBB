@@ -1,6 +1,7 @@
 """Fixed Income Rate Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,9 +18,9 @@ router = Router(prefix="/rate")
 
 @router.command(
     model="AMERIBOR",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "30_day_ma", "provider": "fred"}),
     ],
 )
 async def ameribor(
@@ -39,9 +40,9 @@ async def ameribor(
 
 @router.command(
     model="SONIA",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.sonia(parameter="total_nominal_value")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "total_nominal_value", "provider": "fred"}),
     ],
 )
 async def sonia(
@@ -61,10 +62,7 @@ async def sonia(
 
 @router.command(
     model="IORB",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.fixedincome.rate.iorb()",
-    ],
+    examples=[APIEx(parameters={"provider": "fred"})],
 )
 async def iorb(
     cc: CommandContext,
@@ -83,9 +81,9 @@ async def iorb(
 
 @router.command(
     model="FEDFUNDS",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "daily", "provider": "fred"}),
     ],
 )
 async def effr(
@@ -105,9 +103,9 @@ async def effr(
 
 @router.command(
     model="PROJECTIONS",
-    exclude_auto_examples=True,
     examples=[
-        "obb.fixedincome.rate.effr_forecast(long_run=True)",
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"long_run": True, "provider": "fred"}),
     ],
 )
 async def effr_forecast(
@@ -128,9 +126,9 @@ async def effr_forecast(
 
 @router.command(
     model="ESTR",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.estr(parameter="number_of_active_banks")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "number_of_active_banks", "provider": "fred"}),
     ],
 )
 async def estr(
@@ -151,9 +149,9 @@ async def estr(
 
 @router.command(
     model="EuropeanCentralBankInterestRates",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.ecb(interest_rate_type="refinancing")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"interest_rate_type": "refinancing", "provider": "fred"}),
     ],
 )
 async def ecb(
@@ -176,9 +174,15 @@ async def ecb(
 
 @router.command(
     model="DiscountWindowPrimaryCreditRate",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "start_date": "2023-02-01",
+                "end_date": "2023-05-01",
+                "provider": "fred",
+            }
+        ),
     ],
 )
 async def dpcredit(

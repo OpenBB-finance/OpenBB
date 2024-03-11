@@ -29,7 +29,9 @@ def filter_inputs(
                     if field in kwargs.get(p, {}):
                         current = kwargs[p][field]
                         new = (
-                            ",".join(current) if isinstance(current, list) else current
+                            ",".join(map(str, current))
+                            if isinstance(current, list)
+                            else current
                         )
 
                         if provider and provider not in props[PROPERTY]:

@@ -48,16 +48,24 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
         try:
             return func(*f_args, **f_kwargs)
         except (ValidationError, Exception) as e:
+            # If the DEBUG_MODE is enabled, raise the exception with complete traceback
             if Env().DEBUG_MODE:
                 raise
+
+            # Get the last traceback object from the exception
+            tb = e.__traceback__
+            while tb.tb_next is not None:
+                tb = tb.tb_next
+
             if isinstance(e, ValidationError):
                 error_list = []
 
                 validation_error = f"{e.error_count()} validations errors in {e.title}"
                 for error in e.errors():
-                    arg_error = f"Arg {error['loc'][0]} ->\n"
+                    arg = ".".join(map(str, error["loc"]))
+                    arg_error = f"Arg {arg} ->\n"
                     error_details = (
-                        f"  {error['msg']} "
+                        f"{error['msg']} "
                         f"[validation_error_type={error['type']}, "
                         f"input_type={type(error['input']).__name__}, "
                         f"input_value={error['input']}]\n"
@@ -67,13 +75,15 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
 
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
+
                 raise OpenBBError(
                     f"\nType -> ValidationError \n\nDetails -> {error_str}"
-                ) from None
+                ).with_traceback(tb) from None
 
             # If the error is not a ValidationError, then it is a generic exception
+            error_type = getattr(e, "original", e).__class__.__name__
             raise OpenBBError(
-                f"\nType -> {e.original.original.__class__.__name__}\n\nDetail -> {str(e)}"
-            ) from None
+                f"\nType -> {error_type}\n\nDetail -> {str(e)}"
+            ).with_traceback(tb) from None
 
     return wrapper

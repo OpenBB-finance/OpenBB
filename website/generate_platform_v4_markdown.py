@@ -7,11 +7,12 @@ import json
 import re
 import shutil
 from pathlib import Path
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
+from openbb_core.app.model.example import Example
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
-from openbb_core.app.static.package_builder import MethodDefinition
+from openbb_core.app.static.package_builder import DocstringGenerator, MethodDefinition
 from openbb_core.provider import standard_models
 from pydantic_core import PydanticUndefined
 
@@ -75,6 +76,42 @@ def get_field_data_type(field_type: Any) -> str:
         field_type = str(field_type)
 
     return field_type
+
+
+def get_endpoint_examples(
+    path: str,
+    func: Callable,
+    examples: Optional[List[Example]],
+) -> str:
+    """Get the examples for the given standard model or function.
+
+    For a given standard model or function, the examples are fetched from the
+    list of Example objects and formatted into a string.
+
+    Args:
+        path (str): Path of the router.
+        func (Callable): Router endpoint function.
+        examples (Optional[List[Example]]): List of Examples (APIEx or PythonEx type)
+        for the endpoint.
+
+    Returns:
+        str: Formatted string containing the examples for the endpoint.
+    """
+    sig = inspect.signature(func)
+    parameter_map = dict(sig.parameters)
+    formatted_params = MethodDefinition.format_params(
+        path=path, parameter_map=parameter_map
+    )
+    explicit_params = dict(formatted_params)
+    explicit_params.pop("extra_params", None)
+    param_types = {k: v.annotation for k, v in explicit_params.items()}
+
+    return DocstringGenerator.build_examples(
+        path.replace("/", "."),
+        param_types,
+        examples,
+        "website",
+    )
 
 
 def get_provider_parameter_info(endpoint: Callable) -> Dict[str, str]:
@@ -151,16 +188,18 @@ def get_provider_field_params(
         )  # fmt: skip
 
         # Add information for the providers supporting multiple symbols
-        if params_type == "QueryParams" and field_info.json_schema_extra:
-            multiple_items = ", ".join(
-                field_info.json_schema_extra["multiple_items_allowed"]
-            )
-            cleaned_description += (
-                f" Multiple items allowed for provider(s): {multiple_items}."
-            )
-            # Manually setting to List[<field_type>] for multiple items
-            # Should be removed if TYPE_EXPANSION is updated to include this
-            field_type = f"Union[{field_type}, List[{field_type}]]"
+        if params_type == "QueryParams" and (
+            field_extra := field_info.json_schema_extra
+        ):
+            multiple_items_list = field_extra.get("multiple_items_allowed", None)
+            if multiple_items_list:
+                multiple_items = ", ".join(multiple_items_list)
+                cleaned_description += (
+                    f" Multiple items allowed for provider(s): {multiple_items}."
+                )
+                # Manually setting to List[<field_type>] for multiple items
+                # Should be removed if TYPE_EXPANSION is updated to include this
+                field_type = f"Union[{field_type}, List[{field_type}]]"
 
         default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
 
@@ -339,7 +378,8 @@ def generate_reference_file() -> None:
             reference[path]["description"] = re.sub(" +", " ", description)
 
         # Add endpoint examples
-        reference[path]["examples"] = route.openapi_extra.get("examples", [])
+        examples = route.openapi_extra["examples"]
+        reference[path]["examples"] = get_endpoint_examples(path, route_func, examples)
 
         # Add endpoint parameters fields for standard provider
         if route_method == {"GET"}:
@@ -504,21 +544,6 @@ def create_reference_markdown_intro(
         f"{description}\n\n"
     )
 
-    return markdown
-
-
-def create_reference_markdown_examples(examples: List[str]) -> str:
-    """Create the example section for the markdown file.
-
-    Args:
-        examples (List[str]): List of examples
-
-    Returns:
-        str: Example section for the markdown file
-    """
-
-    examples_str = "from openbb import obb\n" + "\n".join(examples)
-    markdown = f"Example\n-------\n\n```python\n{examples_str}\n```\n\n"
     return markdown
 
 
@@ -965,9 +990,7 @@ def generate_platform_markdown() -> None:
         reference_markdown_content += create_reference_markdown_intro(
             path[1:], description, path_data["deprecated"]
         )
-        reference_markdown_content += create_reference_markdown_examples(
-            path_data["examples"]
-        )
+        reference_markdown_content += path_data["examples"]
 
         if path_parameters_fields := path_data["parameters"]:
             reference_markdown_content += create_reference_markdown_tabular_section(

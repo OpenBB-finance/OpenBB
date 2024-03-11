@@ -5,6 +5,5 @@
 from .alt_sdk_controller import AltController
 from .crypto_sdk_controller import CryptoController
 from .etf_sdk_controller import EtfController
-from .forex_sdk_controller import ForexController
 from .portfolio_sdk_controller import PortfolioController
 from .stocks_sdk_controller import StocksController

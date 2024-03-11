@@ -3,6 +3,7 @@
 from typing import List
 
 import pandas as pd
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -26,9 +27,23 @@ router = Router(prefix="/stats")
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.skew(data=returns, target="close")',
+        PythonEx(
+            description="Get Skewness.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.skew(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def skew(
@@ -67,9 +82,23 @@ def skew(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.variance(data=returns, target="close")',
+        PythonEx(
+            description="Get Variance.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.variance(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -102,9 +131,23 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.stdev(data=returns, target="close")',
+        PythonEx(
+            description="Get Standard Deviation.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.stdev(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
@@ -112,8 +155,8 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     Calculate the rolling standard deviation of a target column.
 
     Standard deviation is a measure of the amount of variation or dispersion of a set of values.
-     It is widely used to assess the risk and volatility of financial returns or other time series data
-     It is the square root of the variance.
+    It is widely used to assess the risk and volatility of financial returns or other time series data
+    It is the square root of the variance.
 
     Parameters
     ----------
@@ -139,12 +182,26 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.kurtosis(data=returns, target="close")',
+        PythonEx(
+            description="Get Kurtosis.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.kurtosis(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
-def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
+def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
     """
     Calculate the rolling kurtosis of a target column.
 
@@ -154,10 +211,11 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     This function helps in assessing the risk of outliers in financial returns or other time series data.
 
     Parameters
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate kurtosis.
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate kurtosis.
 
     Returns
     ------
@@ -176,9 +234,23 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
+        PythonEx(
+            description="Get Quantile.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def quantile(
@@ -221,9 +293,23 @@ def quantile(
 @router.command(
     methods=["POST"],
     examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.stats.mean(data=returns, target="close")',
+        PythonEx(
+            description="Get Mean.",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',  # noqa: E501
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.stats.mean(data=returns, target="close")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "target": "close",
+                "data": APIEx.mock_data(
+                    "timeseries",
+                    sample={"date": "2023-01-01", "close": 0.05},
+                ),
+            }
+        ),
     ],
 )
 def mean(

@@ -4,10 +4,9 @@ import sys
 from functools import reduce
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from requests_cache import Optional
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -571,7 +570,7 @@ class Editor:
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.main_folder, 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 6)
         recursive(self.target_dir)
 
     def dump(self, reference_map: Dict) -> None:
