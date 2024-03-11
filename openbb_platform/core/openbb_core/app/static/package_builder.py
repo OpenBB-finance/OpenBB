@@ -140,10 +140,12 @@ class PackageBuilder:
         groups = [
             OpenBBGroups.core.value,
             OpenBBGroups.provider.value,
+            OpenBBGroups.obbject.value,
         ]
         entry_points_ = [
             el.core_entry_points,
             el.provider_entry_points,
+            el.obbject_entry_points,
         ]
 
         for group, entry_point in zip(groups, entry_points_):
