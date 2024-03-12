@@ -114,7 +114,6 @@ class PackageBuilder:
         self._clean(modules)
         ext_map = self._get_extension_map()
         self._save_extension_map(ext_map)
-        self._save_module_map()
         self._save_modules(modules, ext_map)
         self._save_package()
         self._save_reference_file()
@@ -159,17 +158,6 @@ class PackageBuilder:
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
         self._write(code=code, name="extension_map", extension="json", folder="assets")
-
-    def _save_module_map(self):
-        """Save the module map."""
-        route_map = PathHandler.build_route_map()
-        path_list = PathHandler.build_path_list(route_map=route_map)
-        module_map = {
-            PathHandler.build_module_name(path=path): path for path in path_list
-        }
-        code = dumps(obj=dict(sorted(module_map.items())), indent=4)
-        self.console.log("\nWriting module map...")
-        self._write(code=code, name="module_map", extension="json", folder="assets")
 
     def _save_modules(
         self,
@@ -914,8 +902,8 @@ class DocstringGenerator:
     ) -> str:
         """Get the implicit data type of a defined Pydantic field.
 
-        Args
-        ----
+        Parameters
+        ----------
             field (FieldInfo): Pydantic field object containing field information.
             target (Literal["docstring", "website"], optional): Target to return type for. Defaults to "docstring".
 
@@ -967,35 +955,21 @@ class DocstringGenerator:
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
+        indent = 2 if target == "docstring" else 0
 
-        if target == "docstring":
-            obbject_description = (
-                f"{create_indent(2)}OBBject\n"
-                f"{create_indent(3)}results : {results_type}\n"
-                f"{create_indent(4)}Serializable results.\n"
-                f"{create_indent(3)}provider : {available_providers}\n"
-                f"{create_indent(4)}Provider name.\n"
-                f"{create_indent(3)}warnings : Optional[List[Warning_]]\n"
-                f"{create_indent(4)}List of warnings.\n"
-                f"{create_indent(3)}chart : Optional[Chart]\n"
-                f"{create_indent(4)}Chart object.\n"
-                f"{create_indent(3)}extra : Dict[str, Any]\n"
-                f"{create_indent(4)}Extra info.\n"
-            )
-        elif target == "website":
-            obbject_description = (
-                f"OBBject\n"
-                f"{create_indent(1)}results : {results_type}\n"
-                f"{create_indent(2)}Serializable results.\n\n"
-                f"{create_indent(1)}provider : {available_providers}\n"
-                f"{create_indent(2)}Provider name.\n\n"
-                f"{create_indent(1)}warnings : Optional[List[Warning_]]\n"
-                f"{create_indent(2)}List of warnings.\n\n"
-                f"{create_indent(1)}chart : Optional[Chart]\n"
-                f"{create_indent(2)}Chart object.\n\n"
-                f"{create_indent(1)}extra : Dict[str, Any]\n"
-                f"{create_indent(2)}Extra info."
-            )
+        obbject_description = (
+            f"{create_indent(indent)}OBBject\n"
+            f"{create_indent(indent+1)}results : {results_type}\n"
+            f"{create_indent(indent+2)}Serializable results.\n"
+            f"{create_indent(indent+1)}provider : {available_providers}\n"
+            f"{create_indent(indent+2)}Provider name.\n"
+            f"{create_indent(indent+1)}warnings : Optional[List[Warning_]]\n"
+            f"{create_indent(indent+2)}List of warnings.\n"
+            f"{create_indent(indent+1)}chart : Optional[Chart]\n"
+            f"{create_indent(indent+2)}Chart object.\n"
+            f"{create_indent(indent+1)}extra : Dict[str, Any]\n"
+            f"{create_indent(indent+2)}Extra info.\n"
+        )
 
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -1266,16 +1240,20 @@ class ReferenceGenerator:
         For a given standard model or function, the examples are fetched from the
         list of Example objects and formatted into a string.
 
-        Args
-        ----
-            path (str): Path of the router.
-            func (Callable): Router endpoint function.
-            examples (Optional[List[Example]]): List of Examples (APIEx or PythonEx type)
+        Parameters
+        ----------
+            path (str):
+                Path of the router.
+            func (Callable):
+                Router endpoint function.
+            examples (Optional[List[Example]]):
+                List of Examples (APIEx or PythonEx type)
             for the endpoint.
 
         Returns
         -------
-            str: Formatted string containing the examples for the endpoint.
+            str:
+                Formatted string containing the examples for the endpoint.
         """
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -1297,13 +1275,15 @@ class ReferenceGenerator:
     def get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
 
-        Args
-        ----
-            model (str): Standard model to access the model providers.
+        Parameters
+        ----------
+            model (str):
+                Standard model to access the model providers.
 
         Returns
         -------
-            Dict[str, str]: Dictionary of the provider parameter information
+            Dict[str, str]:
+                Dictionary of the provider parameter information
         """
         pi_model_provider = cls.pi.model_providers[model]
         provider_params_field = pi_model_provider.__dataclass_fields__["provider"]
@@ -1339,16 +1319,20 @@ class ReferenceGenerator:
     ) -> List[Dict[str, Any]]:
         """Get the fields of the given parameter type for the given provider of the standard_model.
 
-        Args
-        ----
-            model (str): Model name to access the provider interface
-            params_type (str): Parameters to fetch data for (QueryParams or Data)
-            provider (str, optional): Provider name. Defaults to "openbb".
+        Parameters
+        ----------
+            model (str):
+                Model name to access the provider interface
+            params_type (str):
+                Parameters to fetch data for (QueryParams or Data)
+            provider (str, optional):
+                Provider name. Defaults to "openbb".
 
         Returns
         -------
-            List[Dict[str, str]]: List of dictionaries containing the field name,
-            type, description, default, optional flag and standard flag for each provider.
+            List[Dict[str, str]]:
+                List of dictionaries containing the field name, type, description, default,
+                optional flag and standard flag for each provider.
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
@@ -1403,17 +1387,21 @@ class ReferenceGenerator:
         return provider_field_params
 
     @staticmethod
-    def get_post_method_parameters_info(docstring: str) -> List[Dict[str, str]]:
+    def get_post_method_parameters_info(
+        docstring: str,
+    ) -> List[Dict[str, Union[bool, str]]]:
         """Get the parameters for the POST method endpoints.
 
-        Args
-        ----
-            docstring (str): Router endpoint function's docstring
+        Parameters
+        ----------
+            docstring (str):
+                Router endpoint function's docstring
 
         Returns
         -------
-            List[Dict[str, str]]: List of dictionaries containing the name,
-            type, description, default and optionality of each parameter.
+            List[Dict[str, str]]:
+                List of dictionaries containing the name,type, description, default
+                and optionality of each parameter.
         """
         # Define a regex pattern to match parameter blocks
         # This pattern looks for a parameter name followed by " : ", then captures the type and description
@@ -1458,26 +1446,27 @@ class ReferenceGenerator:
     def get_post_method_returns_info(docstring: str) -> str:
         """Get the returns information for the POST method endpoints.
 
-        Args
-        ----
-            docstring (str): Router endpoint function's docstring
+        Parameters
+        ----------
+            docstring (str):
+                Router endpoint function's docstring
 
         Returns
         -------
-            Dict[str, str]: Dictionary containing the name, type, description of the return value
+            Dict[str, str]:
+                Dictionary containing the name, type, description of the return value
         """
         # Define a regex pattern to match the Returns section
         # This pattern captures the model name inside "OBBject[]" and its description
         match = re.search(r"Returns\n\s*-------\n\s*([^\n]+)\n\s*([^\n]+)", docstring)
-        return_type = match.group(1).strip()
-        description = (
-            match.group(2).strip().replace("\n", "").replace("    ", "")
-        )  # Remove newlines and indentation
+        return_type = match.group(1).strip()  # type: ignore
+        # Remove newlines and indentation from the description
+        description = match.group(2).strip().replace("\n", "").replace("    ", "")  # type: ignore
         # Adjust regex to correctly capture content inside brackets, including nested brackets
         content_inside_brackets = re.search(
             r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
         )
-        return_type_content = content_inside_brackets.group(1)
+        return_type_content = content_inside_brackets.group(1)  # type: ignore
 
         return_info = (
             f"OBBject\n"
@@ -1497,8 +1486,9 @@ class ReferenceGenerator:
 
         Returns
         -------
-            Dict[str, Dict[str, Any]]: Dictionary containing the description, parameters,
-        returns and examples for each endpoint.
+            Dict[str, Dict[str, Any]]:
+                Dictionary containing the description, parameters, returns and
+                examples for each endpoint.
         """
         reference: Dict[str, Dict] = {}
         route_map = PathHandler.build_route_map()
@@ -1537,9 +1527,7 @@ class ReferenceGenerator:
 
             # Add endpoint examples
             examples = openapi_extra.get("examples", [])
-            reference[path]["examples"] = cls.get_endpoint_examples(
-                path, route_func, examples
-            )
+            reference[path]["examples"] = cls.get_endpoint_examples(path, route_func, examples)  # type: ignore
 
             # Add endpoint parameters fields for standard provider
             if route_method == {"GET"}:
@@ -1547,9 +1535,9 @@ class ReferenceGenerator:
                     standard_model
                 ]  # pylint: disable=protected-access
                 # openbb provider is always present hence its the standard field
-                reference[path]["parameters"]["standard"] = (
-                    cls.get_provider_field_params(standard_model, "QueryParams")
-                )
+                reference[path]["parameters"][
+                    "standard"
+                ] = cls.get_provider_field_params(standard_model, "QueryParams")
 
                 # Add `provider` parameter fields to the openbb provider
                 provider_parameter_fields = cls.get_provider_parameter_info(
@@ -1572,15 +1560,14 @@ class ReferenceGenerator:
                     # inherited by the model.
                     # A copy is used to prevent the standard parameters fields from being
                     # modified.
+                    # type: ignore
                     reference[path]["parameters"][provider] = reference[path][
                         "parameters"
                     ]["standard"].copy()
                     provider_query_params = cls.get_provider_field_params(
                         standard_model, "QueryParams", provider
                     )
-                    reference[path]["parameters"][provider].extend(
-                        provider_query_params
-                    )
+                    reference[path]["parameters"][provider].extend(provider_query_params)  # type: ignore
 
                     # Adds standard data fields to the provider data fields since they are
                     # inherited by the model.
@@ -1588,32 +1575,32 @@ class ReferenceGenerator:
                     reference[path]["data"][provider] = reference[path]["data"][
                         "standard"
                     ].copy()
-                    provider_data = cls.get_provider_field_params(
-                        standard_model, "Data", provider
-                    )
+                    provider_data = cls.get_provider_field_params(standard_model, "Data", provider)  # type: ignore
                     reference[path]["data"][provider].extend(provider_data)
 
             elif route_method == {"POST"}:
                 # Add endpoint parameters fields for POST methods
-                docstring = route_func.__doc__
-                reference[path]["parameters"]["standard"] = (
-                    ReferenceGenerator.get_post_method_parameters_info(docstring)
+                reference[path]["parameters"][
+                    "standard"
+                ] = ReferenceGenerator.get_post_method_parameters_info(
+                    route_func.__doc__  # type: ignore
                 )
 
             # Add endpoint returns data
             # Currently only OBBject object is returned
             if route_method == {"GET"}:
                 providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = (
-                    DocstringGenerator.get_OBBject_description(
-                        standard_model, providers, "website"
-                    )
+                reference[path]["returns"][
+                    "OBBject"
+                ] = DocstringGenerator.get_OBBject_description(
+                    standard_model, providers, "website"
                 )
 
             elif route_method == {"POST"}:
-                docstring = route_func.__doc__
-                reference[path]["returns"]["OBBject"] = (
-                    cls.get_post_method_returns_info(docstring)
+                reference[path]["returns"][
+                    "OBBject"
+                ] = cls.get_post_method_returns_info(
+                    route_func.__doc__  # type: ignore
                 )
 
         return reference

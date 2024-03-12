@@ -40,6 +40,19 @@ def check_installed_packages(
     console: Console,
     debug: bool,
 ) -> None:
+    """Checks if the installed packages are the same as those on the platform pyproject.toml file.
+
+    Compares the versions of the installed packages with the versions specified in the pyproject.toml file.
+    The source of truth for the package versions is the pyproject.toml file, and the installed packages are
+    checked against the specified versions. If the installed packages do not satisfy the version requirements,
+    an error is raised.
+
+    Parameters
+    ----------
+        console (Console): Console object to display messages and save logs
+        debug (bool): Flag to enable debug mode
+    """
+
     def convert_poetry_version_specifier(
         poetry_version: Union[str, Dict[str, str]]
     ) -> str:
@@ -47,13 +60,15 @@ def check_installed_packages(
         Convert a Poetry version specifier to a format compatible with the packaging library.
         Handles both simple string specifiers and dictionary specifiers, extracting only the version value if it's a dict.
 
-        Args
-        ----
-            poetry_version (Union[str, Dict[str, str]]): Poetry version specifier
+        Parameters
+        ----------
+            poetry_version (Union[str, Dict[str, str]]):
+                Poetry version specifier
 
         Returns
         -------
-            str: Version specifier compatible with the packaging library
+            str:
+                Version specifier compatible with the packaging library
         """
         if isinstance(poetry_version, dict):
             poetry_version = poetry_version.get("version", "")
@@ -94,11 +109,14 @@ def check_installed_packages(
         Check if the installed package version satisfies the required version specifier.
         Raises DependencyCheckError if the package is not installed or does not satisfy the version requirements.
 
-        Args
-        ----
-            package_name (str): Name of the package to check
-            version_spec (str): Version specifier to check against
-            installed_packages_dict (Dict[str, str]): Dictionary of installed packages and their versions
+        Parameters
+        ----------
+            package_name (str):
+                Name of the package to check
+            version_spec (str):
+                Version specifier to check against
+            installed_packages_dict (Dict[str, str]):
+                Dictionary of installed packages and their versions
         """
         installed_version = installed_packages_dict.get(package_name.lower())
         if not installed_version:
@@ -157,14 +175,17 @@ def check_installed_packages(
 def create_reference_markdown_seo(path: str, description: str) -> str:
     """Create the SEO section for the markdown file.
 
-    Args
-    ----
-        path (str): Command path relative to the obb class
-        description (str): Description of the command
+    Parameters
+    ----------
+        path (str):
+            Command path relative to the obb class
+        description (str):
+            Description of the command
 
     Returns
     -------
-        str: SEO section for the markdown file
+        str:
+            SEO section for the markdown file
     """
 
     with open(SEO_METADATA_PATH) as f:
@@ -205,15 +226,19 @@ def create_reference_markdown_intro(
 ) -> str:
     """Create the introduction section for the markdown file.
 
-    Args
-    ----
-        path (str): Command path relative to the obb class
-        description (str): Description of the command
-        deprecated (Dict[str, str]): Deprecated flag and message
+    Parameters
+    ----------
+        path (str):
+            Command path relative to the obb class
+        description (str):
+            Description of the command
+        deprecated (Dict[str, str]):
+            Deprecated flag and message
 
     Returns
     -------
-        str: Introduction section for the markdown file
+        str:
+            Introduction section for the markdown file
     """
 
     deprecation_message = (
@@ -241,15 +266,17 @@ def create_reference_markdown_tabular_section(
 ) -> str:
     """Create the tabular section for the markdown file.
 
-    Args
-    ----
-        parameters (Dict[str, List[Dict[str, str]]]): Dictionary of
-        providers and their corresponding parameters
-        heading (str): Section heading for the tabular section
+    Parameters
+    ----------
+        parameters (Dict[str, List[Dict[str, str]]]):
+            Dictionary of providers and their corresponding parameters
+        heading (str):
+            Section heading for the tabular section
 
     Returns
     -------
-        str: Tabular section for the markdown file
+        str:
+            Tabular section for the markdown file
     """
 
     tables_list = []
@@ -307,13 +334,15 @@ def create_reference_markdown_tabular_section(
 def create_reference_markdown_returns_section(returns_content: str) -> str:
     """Create the returns section for the markdown file.
 
-    Args
-    ----
-        returns_content (str): Returns section formatted as a string
+    Parameters
+    ----------
+        returns_content (str):
+            Returns section formatted as a string
 
     Returns
     -------
-        str: Returns section for the markdown file
+        str:
+            Returns section for the markdown file
     """
 
     return f"---\n\n## Returns\n\n```python wordwrap\n{returns_content}\n```\n\n"
@@ -322,15 +351,19 @@ def create_reference_markdown_returns_section(returns_content: str) -> str:
 def create_data_model_markdown(title: str, description: str, model: str) -> str:
     """Create the basic markdown file content for the data model.
 
-    Args
-    ----
-        title (str): Title of the data model
-        description (str): Description of the data model
-        model (str): Model name
+    Parameters
+    ----------
+        title (str):
+            Title of the data model
+        description (str):
+            Description of the data model
+        model (str):
+            Model name
 
     Returns
     -------
-        str: Basic markdown file content for the data model
+        str:
+            Basic markdown file content for the data model
     """
 
     # File name is used in the import statement
@@ -378,13 +411,15 @@ def create_data_model_markdown(title: str, description: str, model: str) -> str:
 def find_data_model_implementation_file(data_model: str) -> str:
     """Find the file name containing the data model class.
 
-    Args
-    ----
-        data_model (str): Data model name
+    Parameters
+    ----------
+        data_model (str):
+            Data model name
 
     Returns
     -------
-        str: File name containing the data model class
+        str:
+            File name containing the data model class
     """
 
     # Function to search for the data model class in the file
@@ -410,9 +445,10 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
     """Generate index.mdx and _category_.json files for directories and sub-directories
     in the reference directory.
 
-    Args
-    ----
-        reference_content (Dict[str, str]): Endpoints and their corresponding descriptions.
+    Parameters
+    ----------
+        reference_content (Dict[str, str]):
+            Endpoints and their corresponding descriptions.
     """
 
     def generate_index_and_category(
@@ -543,15 +579,19 @@ def generate_reference_top_level_index() -> None:
 def create_data_models_index(title: str, description: str, model: str) -> str:
     """Create the index content for the data models.
 
-    Args
-    ----
-        title (str): Title of the data model
-        description (str): Description of the data model
-        model (str): Model name
+    Parameters
+    ----------
+        title (str):
+            Title of the data model
+        description (str):
+            Description of the data model
+        model (str):
+            Model name
 
     Returns
     -------
-        str: Index content for the data models
+        str:
+            Index content for the data models
     """
 
     # Get the first sentence of the description
@@ -572,9 +612,10 @@ def create_data_models_index(title: str, description: str, model: str) -> str:
 def generate_data_models_index_files(content: str) -> None:
     """Generate index.mdx and _category_.json files for the data_models directory.
 
-    Args
-    ----
-        content (str): Content for the data models index file
+    Parameters
+    ----------
+        content (str):
+            Content for the data models index file
     """
 
     index_content = (
@@ -600,15 +641,19 @@ def generate_data_models_index_files(content: str) -> None:
 def generate_markdown_file(path: str, markdown_content: str, directory: str) -> None:
     """Generate markdown file using the content of the specified path and directory.
 
-    Args
-    ----
-        path (str): Path to the markdown file
-        markdown_content (str): Content for the markdown file
-        directory (str): Directory to save the markdown file
+    Parameters
+    ----------
+        path (str):
+            Path to the markdown file
+        markdown_content (str):
+            Content for the markdown file
+        directory (str):
+            Directory to save the markdown file
 
     Raises
     ------
-        ValueError: If the content type is invalid
+        ValueError:
+            If the content type is invalid
     """
 
     # For reference, split the path to separate the
