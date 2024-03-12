@@ -67,6 +67,7 @@ jobs:
       - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: ruff .
+      # TODO: Enable linters for openbb_terminal once we're ready
       # - run: |
       #     # Run linters for openbb_terminal
       #     if [ -n "${{ env.terminal_files }}" ]; then
