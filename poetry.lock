@@ -7906,7 +7906,7 @@ files = [
 [package.dependencies]
 packaging = ">=20.0"
 setuptools = [
-    {version = "*", optional = true, markers = "extra != \"toml\""},
+    {version = "*"},
     {version = ">=42", optional = true, markers = "extra == \"toml\""},
 ]
 tomli = {version = ">=1.0.0", markers = "python_version < \"3.11\""}

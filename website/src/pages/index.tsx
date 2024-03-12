@@ -25,7 +25,7 @@ export default function Home(): JSX.Element {
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 sm:flex-col">
             <Link
               style={{
-                backgroundSize: "100% 130%",
+                backgroundSize: "100% 110%",
               }}
               to="/pro"
               className="!bg-grey-900 bg-[url('/img/pro.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
@@ -45,8 +45,6 @@ export default function Home(): JSX.Element {
                 <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
               </p>
             </Link>
-          </div>
-          <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 my-8 lg:!my-10">
             <Link
               style={{
                 backgroundSize: "100% 130%",
