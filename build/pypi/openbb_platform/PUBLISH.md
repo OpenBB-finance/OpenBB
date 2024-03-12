@@ -4,7 +4,7 @@
 
 > Note: Ensure you have the appropriate credentials and permissions to publish to PyPI.
 
-1. Open a PR with the changes to be published in the format `release/<version>` (e.g. `release/4.0.0`).
+1. Open a PR with the changes to be published in the format `release/<package>-<version>` (e.g. `release/openbb-4.0.0`).
 2. Ensure all the CI workflows pass.
 3. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
 4. Ensure all integration tests pass: `pytest openbb_platform -m integration`
@@ -40,13 +40,13 @@
     > Also, sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes before publishing the next package.
 
 2. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
-3. Merge the `release/<version>` branch to the `main` branch.
+3. Merge the `release/<package>-<version>` branch to the `main` branch.
 4. Check the `Deploy to GitHub Pages` GitHub action is completed successfully. Go to the [docs](https://docs.openbb.co) website to see the changes.
 
 ## Post-release procedure
 
 1. Install the packages on Google Colaboratory via PyPi and test to check if everything is working as expected.
 2. Install the packages in a new environment locally via PyPi and test to check if everything is working as expected.
-3. Open a new PR with the `release/<version>` branch pointing to the `develop` branch.
-4. Merge the `release/<version>` branch to the `develop` branch.
+3. Open a new PR with the `release/<package>-<version>` branch pointing to the `develop` branch.
+4. Merge the `release/<package>-<version>` branch to the `develop` branch.
 5. If any bugs are encountered, create a new branch - `hotfix` for `main` and `bugfix` for `develop` and merge them accordingly.
