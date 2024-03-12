@@ -14,56 +14,48 @@ from openbb_core.provider.utils.descriptions import (
 )
 from openbb_core.provider.utils.helpers import check_item
 
-CPI_COUNTRIES = [
-    "australia",
-    "austria",
-    "belgium",
-    "brazil",
-    "bulgaria",
-    "canada",
+CPI_STANDARD_COUNTRIES = [
+    "israel",
+    "portugal",
     "chile",
-    "china",
-    "croatia",
-    "cyprus",
+    "finland",
+    "japan",
     "czech_republic",
     "denmark",
+    "poland",
+    "indonesia",
+    "italy",
+    "spain",
+    "korea",
+    "iceland",
+    "slovak_republic",
+    "latvia",
+    "turkey",
+    "hungary",
+    "united_kingdom",
+    "india",
+    "norway",
+    "australia",
     "estonia",
-    "euro_area",
-    "finland",
-    "france",
+    "netherlands",
     "germany",
     "greece",
-    "hungary",
-    "iceland",
-    "india",
-    "indonesia",
-    "ireland",
-    "israel",
-    "italy",
-    "japan",
-    "korea",
-    "latvia",
+    "china",
     "lithuania",
+    "united_states",
     "luxembourg",
-    "malta",
-    "mexico",
-    "netherlands",
-    "new_zealand",
-    "norway",
-    "poland",
-    "portugal",
-    "romania",
-    "russian_federation",
-    "slovak_republic",
-    "slovakia",
-    "slovenia",
-    "south_africa",
-    "spain",
+    "france",
     "sweden",
     "switzerland",
-    "turkey",
-    "united_kingdom",
-    "united_states",
+    "slovenia",
+    "mexico",
+    "new_zealand",
+    "canada",
+    "austria",
+    "belgium",
+    "ireland",
+    "brazil",
+    "south_africa",
 ]
 
 
@@ -76,7 +68,7 @@ class ConsumerPriceIndexQueryParams(QueryParams):
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
-        choices=CPI_COUNTRIES,  # type: ignore
+        choices=CPI_STANDARD_COUNTRIES,  # type: ignore
     )
     units: Literal["index", "yoy", "mom"] = Field(
         description="Units to get CPI for. Either index, month over month or year over year. Defaults to year over year.",
@@ -104,7 +96,7 @@ class ConsumerPriceIndexQueryParams(QueryParams):
         result = []
         values = c.replace(" ", "_").split(",")
         for v in values:
-            check_item(v.lower(), CPI_COUNTRIES)
+            check_item(v.lower(), CPI_STANDARD_COUNTRIES)
             result.append(v.lower())
         return ",".join(result)
 

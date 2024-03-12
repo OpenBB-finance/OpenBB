@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
+from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import (
     CODE_TO_COUNTRY_CPI,
@@ -81,6 +82,18 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
         description="Expenditure component of CPI.",
         default="total",
     )
+
+    @field_validator("country", mode="before", check_fields=False)
+    def validate_country(cls, c: str):  # pylint: disable=E0213
+        """Validate country."""
+        result = []
+        values = c.replace(" ", "_").split(",")
+        for v in values:
+            check_item(v.lower(), CountriesList)
+            result.append(v.lower())
+        return ",".join(result)
+
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
 
 
 class OECDCPIData(ConsumerPriceIndexData):
@@ -157,7 +170,14 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
             "" if query.expenditure == "all" else expenditure_dict[query.expenditure]
         )
         seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
-        country = "" if query.country == "all" else COUNTRY_TO_CODE_CPI[query.country]
+
+        def country_string(input_str: str):
+            if input_str == "all":
+                return ""
+            countries = input_str.split(",")
+            return "+".join([COUNTRY_TO_CODE_CPI[country] for country in countries])
+
+        country = country_string(query.country)
         # For caching, include this in the key
         query_dict = {
             k: v
@@ -176,7 +196,16 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
             f"METHODOLOGY=='{methodology}' & UNIT_MEASURE=='{units}' & FREQ=='{frequency}' & "
             f"ADJUSTMENT=='{seasonal_adjustment}' "
         )
-        url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
+
+        if country != "all":
+            if "+" in country:
+                countries = country.split("+")
+                country_conditions = " or ".join(
+                    [f"REF_AREA=='{c}'" for c in countries]
+                )
+                url_query += f" & ({country_conditions})"
+            else:
+                url_query = url_query + f" & REF_AREA=='{country}'"
         url_query = (
             url_query + f" & EXPENDITURE=='{expenditure}'"
             if query.expenditure != "all"

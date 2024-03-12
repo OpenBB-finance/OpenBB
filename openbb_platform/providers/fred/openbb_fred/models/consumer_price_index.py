@@ -7,14 +7,86 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
+from openbb_core.provider.utils.descriptions import (
+    QUERY_DESCRIPTIONS,
+)
+from openbb_core.provider.utils.helpers import check_item
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import all_cpi_options
+from pydantic import Field, field_validator
+
+CPI_COUNTRIES = [
+    "australia",
+    "austria",
+    "belgium",
+    "brazil",
+    "bulgaria",
+    "canada",
+    "chile",
+    "china",
+    "croatia",
+    "cyprus",
+    "czech_republic",
+    "denmark",
+    "estonia",
+    "euro_area",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "iceland",
+    "india",
+    "indonesia",
+    "ireland",
+    "israel",
+    "italy",
+    "japan",
+    "korea",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "malta",
+    "mexico",
+    "netherlands",
+    "new_zealand",
+    "norway",
+    "poland",
+    "portugal",
+    "romania",
+    "russian_federation",
+    "slovak_republic",
+    "slovakia",
+    "slovenia",
+    "south_africa",
+    "spain",
+    "sweden",
+    "switzerland",
+    "turkey",
+    "united_kingdom",
+    "united_states",
+]
 
 
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     """FRED Consumer Price Index Query."""
 
+    country: str = Field(
+        description=QUERY_DESCRIPTIONS.get("country"),
+        default="united_states",
+        choices=CPI_COUNTRIES,  # type: ignore
+    )
     __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
+    @field_validator("country", mode="before", check_fields=False)
+    def validate_country(cls, c: str):  # pylint: disable=E0213
+        """Validate country."""
+        result = []
+        values = c.replace(" ", "_").split(",")
+        for v in values:
+            check_item(v.lower(), CPI_COUNTRIES)
+            result.append(v.lower())
+        return ",".join(result)
 
 
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
