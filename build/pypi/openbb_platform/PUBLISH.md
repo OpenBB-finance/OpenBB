@@ -41,9 +41,9 @@
 
 2. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
 3. Merge the `release/<version>` branch to the `main` branch.
+4. Check the `Deploy to GitHub Pages` GitHub action is completed successfully. Go to the [docs](https://docs.openbb.co) website to see the changes.
 
-
-# Post-release procedure
+## Post-release procedure
 
 1. Install the packages on Google Colaboratory via PyPi and test to check if everything is working as expected.
 2. Install the packages in a new environment locally via PyPi and test to check if everything is working as expected.
