@@ -1,14 +1,17 @@
 """Platform V4 Markdown Generator Script."""
 
-# pylint: disable=too-many-lines
-
+import argparse
 import json
 import re
 import shutil
+import subprocess
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Union
 
+import toml
+from openbb_core.app.static.utils.console import Console
 from openbb_core.provider import standard_models
+from packaging import specifiers
 
 # Number of spaces to substitute tabs for indentation
 TAB_WIDTH = 4
@@ -17,10 +20,8 @@ TAB_WIDTH = 4
 MAX_COMMANDS = 8
 
 # Path to the reference.json file
-OPENBB_PLATFORM_PATH = Path(__file__).parent.parent
-REFERENCE_FILE_PATH = Path(
-    OPENBB_PLATFORM_PATH / "openbb_platform/openbb/assets/reference.json"
-)
+PLATFORM_PATH = Path(__file__).parent.parent / "openbb_platform"
+REFERENCE_FILE_PATH = Path(PLATFORM_PATH / "openbb/assets/reference.json")
 
 # Paths to use for generating and storing the markdown files
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -32,6 +33,125 @@ PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 # Imports used in the generated markdown files
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
 PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # noqa: E501
+
+
+# pylint: disable=redefined-outer-name
+def check_installed_packages(
+    console: Console,
+    debug: bool,
+) -> None:
+    def convert_poetry_version_specifier(
+        poetry_version: Union[str, Dict[str, str]]
+    ) -> str:
+        """
+        Convert a Poetry version specifier to a format compatible with the packaging library.
+        Handles both simple string specifiers and dictionary specifiers, extracting only the version value if it's a dict.
+
+        Args
+        ----
+            poetry_version (Union[str, Dict[str, str]]): Poetry version specifier
+
+        Returns
+        -------
+            str: Version specifier compatible with the packaging library
+        """
+        if isinstance(poetry_version, dict):
+            poetry_version = poetry_version.get("version", "")
+
+        if isinstance(poetry_version, str):
+            if poetry_version.startswith("^"):
+                base_version = poetry_version[1:]
+                # Use regex to split the version and convert to integers only if they are purely numeric
+                parts = re.split(r"\.|\-", base_version)
+                try:
+                    major, minor = (int(x) for x in parts[:2])
+                except ValueError:
+                    # If conversion fails, return the original version specifier
+                    return poetry_version
+                next_major_version = major + 1
+                # Construct a version specifier that represents the range.
+                return f">={base_version},<{next_major_version}.0.0"
+
+            if poetry_version.startswith("~"):
+                base_version = poetry_version[1:]
+                parts = re.split(r"\.|\-", base_version)
+                try:
+                    major, minor = (int(x) for x in parts[:2])
+                except ValueError:
+                    # If conversion fails, return the original version specifier
+                    return poetry_version
+                next_minor_version = minor + 1
+                # Construct a version specifier that represents the range.
+                return f">={base_version},<{major}.{next_minor_version}.0"
+
+            # No need to modify other specifiers, as they are compatible with packaging library
+        return poetry_version
+
+    def check_dependency(
+        package_name: str, version_spec: str, installed_packages_dict: Dict[str, str]
+    ) -> None:
+        """
+        Check if the installed package version satisfies the required version specifier.
+        Raises DependencyCheckError if the package is not installed or does not satisfy the version requirements.
+
+        Args
+        ----
+            package_name (str): Name of the package to check
+            version_spec (str): Version specifier to check against
+            installed_packages_dict (Dict[str, str]): Dictionary of installed packages and their versions
+        """
+        installed_version = installed_packages_dict.get(package_name.lower())
+        if not installed_version:
+            raise Exception(f"{package_name} is not installed.")
+
+        converted_version_spec = convert_poetry_version_specifier(version_spec)
+        specifier_set = specifiers.SpecifierSet(converted_version_spec)
+
+        if not specifier_set.contains(installed_version, prereleases=True):
+            message = f"{package_name} version {installed_version} does not satisfy the specified version {converted_version_spec}."  # noqa: E501, pylint: disable=line-too-long
+            raise Exception(message)
+
+    console.log("\n[CRITICAL] Ensuring all the extensions are installed before the script runs...")  # fmt: skip
+
+    # Execute the pip list command once and store the output
+    pip_list_output = subprocess.run(
+        "pip list | grep openbb",  # noqa: S607
+        shell=True,  # noqa: S602
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    installed_packages = pip_list_output.stdout.splitlines()
+    installed_packages_dict = {
+        line.split()[0].lower(): line.split()[1] for line in installed_packages
+    }
+
+    # Load the pyproject.toml file once
+    with open(PLATFORM_PATH / "pyproject.toml") as f:
+        toml_dict = toml.load(f)
+
+    # Extract the openbb dependencies, excluding the python dependency
+    dependencies = toml_dict["tool"]["poetry"]["dependencies"]
+    dependencies.pop("python", None)
+
+    # Compare versions and check dependencies
+    for package, version_spec in dependencies.items():
+        normalized_package_name = package.replace("_", "-").lower()
+        try:
+            # Convert the version specifier before checking
+            converted_version_spec = convert_poetry_version_specifier(version_spec)
+            check_dependency(
+                normalized_package_name, converted_version_spec, installed_packages_dict
+            )
+
+            # Ensure debug_mode output shows the processed version specifier
+            if debug:
+                installed_version = installed_packages_dict.get(normalized_package_name)
+                console.log(
+                    f"{normalized_package_name}: Specified version {converted_version_spec}, Installed version {installed_version}"  # noqa: E501, pylint: disable=line-too-long
+                )
+        except Exception as e:
+            raise e
 
 
 def create_reference_markdown_seo(path: str, description: str) -> str:
@@ -513,32 +633,37 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
         md_file.write(markdown_content)
 
 
-def generate_platform_markdown() -> None:
+# pylint: disable=redefined-outer-name
+def generate_platform_markdown(
+    console: Console,
+) -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
 
     data_models_index_content = []
     reference_index_content_dict = {}
 
-    print("[CRITICAL] Ensure all the extensions are installed before running this script!")  # fmt: skip
+    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
     # Load the reference.json file
     try:
         with open(REFERENCE_FILE_PATH) as f:
             reference = json.load(f)
     except FileNotFoundError as exc:
         raise FileNotFoundError(
-            f"{REFERENCE_FILE_PATH} not found! Please ensure the file exists."
+            "File not found! Please ensure the file exists."
         ) from exc
 
     # Clear the platform/reference folder
-    print("[INFO] Clearing the platform/reference folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_REFERENCE_PATH} folder...")
     shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
 
     # Clear the platform/data_models folder
-    print("[INFO] Clearing the platform/data_models folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_DATA_MODELS_PATH} folder...")
     shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
 
-    print(f"[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
-    print(f"[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(
+        f"\n[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories..."
+    )  # noqa: E501
+    console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in reference.items():
         reference_markdown_content = ""
@@ -603,10 +728,10 @@ def generate_platform_markdown() -> None:
             generate_markdown_file(model, data_markdown_content, "data_models")
 
     # Generate the index.mdx and _category_.json files for the reference directory
-    print(f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
     generate_reference_index_files(reference_index_content_dict)
-    print(
-        f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
+    console.log(
+        f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
     )
     generate_reference_top_level_index()
 
@@ -615,10 +740,33 @@ def generate_platform_markdown() -> None:
     data_models_index_content_str = "".join(data_models_index_content)
 
     # Generate the index.mdx and _category_.json files for the data_models directory
-    print(f"[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
     generate_data_models_index_files(data_models_index_content_str)
-    print("[INFO] Markdown files generated successfully!")
+    console.log("\n[INFO] Markdown files generated successfully!")
 
 
 if __name__ == "__main__":
-    generate_platform_markdown()
+    parser = argparse.ArgumentParser(
+        prog="Platform Markdown Generator V2",
+        description="Generate markdown files for the Platform website docs.",
+    )
+
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output for debugging.",
+    )
+
+    args = parser.parse_args()
+    console = Console(True)
+    verbose = False
+
+    if args.verbose:
+        verbose = True
+
+    check_installed_packages(
+        console=console,
+        debug=verbose,
+    )
+    generate_platform_markdown(console=console)
