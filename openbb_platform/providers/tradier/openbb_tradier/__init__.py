@@ -20,6 +20,7 @@ tradier_provider = Provider(
     ],  # account_type is either "sandbox" or "live"
     fetcher_dict={
         "EquityHistorical": TradierEquityHistoricalFetcher,
+        "EtfHistorical": TradierEquityHistoricalFetcher,
         "EquityQuote": TradierEquityQuoteFetcher,
         "EquitySearch": TradierEquitySearchFetcher,
         "OptionsChains": TradierOptionsChainsFetcher,

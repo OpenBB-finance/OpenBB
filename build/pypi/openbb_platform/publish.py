@@ -51,6 +51,7 @@ def update_extension_dependencies(path: Path):
 
 def bump_version(path: Path):
     """Bump the version of the package"""
+    print(f"\n> {path.parent.stem}")  # noqa: T201
     subprocess.run(CMD + VERSION_BUMP_CMD, cwd=path.parent, check=True)  # noqa: S603
 
 
@@ -77,7 +78,9 @@ def publish(dry_run: bool = False, core: bool = False, extensions: bool = False)
                 # Publish (if not dry run)
                 if not dry_run:
                     subprocess.run(
-                        CMD + PUBLISH_CMD, cwd=path.parent, check=True  # noqa: S603
+                        CMD + PUBLISH_CMD,  # noqa: S603
+                        cwd=path.parent,
+                        check=True,  # noqa: S603
                     )
             except Exception as e:
                 print(f"Error publishing {path.parent}:\n{e}")  # noqa: T201
