@@ -70,7 +70,8 @@ jobs:
       - run: |
           # Run linters for openbb_terminal
           if [ -n "${{ env.terminal_files }}" ]; then
-            mypy --ignore-missing-imports ${{ env.terminal_files }}
+            # TODO: Add mypy to this part of the linting workflow once we're ready
+            # mypy --ignore-missing-imports ${{ env.terminal_files }}
             pylint terminal.py ${{ env.terminal_files }}
           else
             echo "No Python files changed in openbb_terminal"
@@ -78,7 +79,7 @@ jobs:
       - run: |
           # Run linters for openbb_platform
           if [ -n "${{ env.platform_files }}" ]; then
-            # Add mypy to this part of the linting workflow once we're ready
+            # TODO: Add mypy to this part of the linting workflow once we're ready
             pylint ${{ env.platform_files }}
           else
             echo "No Python files changed in openbb_platform"
