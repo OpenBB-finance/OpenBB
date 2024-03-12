@@ -37,7 +37,7 @@ The list below is intended to provide some guidance on what the general expectat
    - New router functions must have usage [examples](contributing/function_examples) defined.
 
 3. Code Quality:
-   - Your code should adhere strictly to the OpenBB Platform's coding standards and conventions.
+   - Your code should adhere strictly to the OpenBB Platform's coding standards and [conventions](architecture_overview).
    - Ensure clarity, maintainability, and proper organization in your code.
 
 4. [Testing](tests):
