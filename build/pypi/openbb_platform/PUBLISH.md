@@ -4,7 +4,7 @@
 
 > Note: Ensure you have the appropriate credentials and permissions to publish to PyPI.
 
-1. Open a PR with the changes to be published in the format `release/<package>-<version>` (e.g. `release/openbb-4.0.0`).
+1. Open a PR with the changes to be published in the format `release/<package>-<version>` (e.g. `release/openbb-4.0.0` or `release/openbb-core-1.0.1`).
 2. Ensure all the CI workflows pass.
 3. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
 4. Ensure all integration tests pass: `pytest openbb_platform -m integration`
