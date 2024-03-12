@@ -137,12 +137,10 @@ class PackageBuilder:
         groups = [
             OpenBBGroups.core.value,
             OpenBBGroups.provider.value,
-            OpenBBGroups.obbject.value,
         ]
         entry_points_ = [
             el.core_entry_points,
             el.provider_entry_points,
-            el.obbject_entry_points,
         ]
 
         for group, entry_point in zip(groups, entry_points_):
@@ -254,11 +252,7 @@ class PackageBuilder:
 
         add: Set[str] = set()
         remove: Set[str] = set()
-        groups = (
-            "openbb_core_extension",
-            "openbb_provider_extension",
-            "openbb_obbject_extension",
-        )
+        groups = ("openbb_core_extension", "openbb_provider_extension")
         for g in groups:
             built = set(ext_map.get(g, {}))
             installed = set(
@@ -562,6 +556,7 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
+
         parameter_map.pop("cc", None)
         # we need to add the chart parameter here bc of the docstring generation
         if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
