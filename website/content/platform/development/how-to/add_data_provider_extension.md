@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add Data Provider Extensions - Contributing - Development | OpenBB Platform Docs" />
+<HeadTitle title="How To Add Data Provider Extensions - How-To - Development | OpenBB Platform Docs" />
 
 This page will walk through adding a new data provider extension to the OpenBB Platform.
 By the end, you will have an extension that is ready to be published, or submitted as a pull request.

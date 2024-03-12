@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add A New Data Endpoint With An Existing Provider - Contributing - Development | OpenBB Platform Docs" />
+<HeadTitle title="How To Add A New Data Endpoint With An Existing Provider - How-To - Development | OpenBB Platform Docs" />
 
 This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
 

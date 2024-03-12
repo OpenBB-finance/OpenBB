@@ -41,7 +41,7 @@ help(obb.equity.price.historical)
 
 - This endpoint has the most number of providers out of any function. At the time of writing, choices are:
 
-['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']
+['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'tradier', 'yfinance']
 
 - Common parameters have been standardized across all sources, `start_date`, `end_date`, `interval`.
 
@@ -194,6 +194,8 @@ While some providers handle the different formats on their end, others do not. T
 ### Regional Identifiers
 
 With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`). Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions. [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
+
+`openbb-tmx` follows the composite convention, "SPY:US". When the symbol is for its domestic Canadian market, "CNQ", no identifier is required.
 
 ### Indices
 

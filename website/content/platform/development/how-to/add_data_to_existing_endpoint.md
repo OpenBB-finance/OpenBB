@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add A Data Provider To An Existing Endpoint - Contributing - Development | OpenBB Platform Docs" />
+<HeadTitle title="How To Add A Data Provider To An Existing Endpoint - How-To - Development | OpenBB Platform Docs" />
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 

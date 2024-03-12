@@ -1,6 +1,6 @@
 ---
 title: HTTP Requests
-sidebar_position: 6
+sidebar_position: 1
 description: This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 keywords:
 - OpenBB Platform

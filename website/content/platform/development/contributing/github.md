@@ -1,6 +1,6 @@
 ---
 title: GitHub
-sidebar_position: 4
+sidebar_position: 5
 description: This page outlines the GitHub branch naming conventions and information related to creating a pull request.
 keywords:
 - Commit changes

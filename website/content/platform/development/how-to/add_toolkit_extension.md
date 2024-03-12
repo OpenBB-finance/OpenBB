@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add Toolkit Extensions - Contributing - Development | OpenBB Platform Docs" />
+<HeadTitle title="How To Add Toolkit Extensions - How-To - Development | OpenBB Platform Docs" />
 
 This page will summarize some of the differences between toolkit and provider extensions,
 and then walk through adding a new toolkit extension and router path to the OpenBB Platform using a supplied template.

@@ -1,6 +1,6 @@
 ---
 title: Tests
-sidebar_position: 4
+sidebar_position: 6
 description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
 keywords:
 - OpenBB QA process

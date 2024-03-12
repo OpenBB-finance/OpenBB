@@ -1,6 +1,6 @@
 ---
 title: Dependency Management
-sidebar_position: 2
+sidebar_position: 9
 description: Dealing with dependencies when developing with the OpenBB Platform. Learn
   how to add new dependencies to the OpenBB Platform and how to add new dependencies
   to your custom extension.

@@ -1,6 +1,6 @@
 ---
 title: Architecture Overview
-sidebar_position: 3
+sidebar_position: 2
 description: This guide provides insights into the architecture and components of the OpenBB Platform. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
 keywords:
 - OpenBB Platform Architecture
