@@ -1,11 +1,15 @@
+"""Utility functions for the OpenBB Core app."""
+
 import ast
 import json
+from datetime import time
 from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
@@ -13,7 +17,7 @@ from openbb_core.provider.abstract.data import Data
 
 def basemodel_to_df(
     data: Union[List[Data], Data],
-    index: Optional[Union[str, Iterable]] = None,
+    index: Optional[Union[None, str, Iterable]] = None,
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     if isinstance(data, list):
@@ -29,12 +33,20 @@ def basemodel_to_df(
         df = df.set_index(col_names)
         df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
 
+    # If the date column contains dates only, convert them to a date to avoid encoding time data.
+    if "date" in df.columns:
+        df["date"] = df["date"].apply(pd.to_datetime)
+        if all(t.time() == time(0, 0) for t in df["date"]):
+            df["date"] = df["date"].apply(lambda x: x.date())
+
     if index and index in df.columns:
-        df = df.set_index(index)
-        # TODO: This should probably check if the index can be converted to a datetime instead of just assuming
-        if df.index.name == "date":
-            df.index = pd.to_datetime(df.index)
+        if index == "date":
+            df.set_index("date", inplace=True)
             df.sort_index(axis=0, inplace=True)
+        else:
+            df = (
+                df.set_index(index) if index is not None and index in df.columns else df
+            )
 
     return df
 
@@ -43,8 +55,10 @@ def df_to_basemodel(
     df: Union[pd.DataFrame, pd.Series], index: bool = False
 ) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
-    if index and not isinstance(df.index, pd.MultiIndex):
-        df = df.reset_index(drop=True)
+    is_multiindex = isinstance(df.index, pd.MultiIndex)
+
+    if not is_multiindex and (index or df.index.name):
+        df = df.reset_index()
     if isinstance(df, pd.Series):
         df = df.to_frame()
 
@@ -53,6 +67,12 @@ def df_to_basemodel(
         df["is_multiindex"] = True
         df["multiindex_names"] = str(df.index.names)
         df = df.reset_index()
+
+    # Converting to JSON will add T00:00:00.000 to all dates with no time element unless we format it as a string first.
+    if "date" in df.columns:
+        df["date"] = df["date"].apply(pd.to_datetime)
+        if all(t.time() == time(0, 0) for t in df["date"]):
+            df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
 
     return [
         Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
@@ -120,6 +140,7 @@ def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
 
 
 def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFrame:
+    """Get target columns from time series data."""
     df_result = pd.DataFrame()
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()
@@ -127,6 +148,7 @@ def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFr
 
 
 def get_user_cache_directory() -> str:
+    """Get user cache directory."""
     file = SystemSettings().model_dump()["user_settings_path"]
     with open(file) as settings_file:
         contents = settings_file.read()
@@ -140,3 +162,12 @@ def get_user_cache_directory() -> str:
         else Preferences().cache_directory
     )
     return cache_dir
+
+
+def check_single_item(
+    value: Optional[str], message: Optional[str] = None
+) -> Optional[str]:
+    """Check that string contains a single item."""
+    if value and ("," in value or ";" in value):
+        raise OpenBBError(message if message else "multiple items not allowed")
+    return value

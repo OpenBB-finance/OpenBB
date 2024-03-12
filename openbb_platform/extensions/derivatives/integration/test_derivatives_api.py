@@ -4,6 +4,7 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -19,11 +20,20 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
+        ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
+        ({"provider": "tradier", "symbol": "AAPL"}),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SHOP",
+                "date": "2022-12-28",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -37,12 +47,23 @@ def test_derivatives_options_chains(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"provider": "intrinio", "source": "delayed", "symbol": "AAPL"}),
-        ({"provider": "intrinio", "symbol": "PLTR", "source": "delayed"}),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "intrinio",
+                "start_date": "2023-11-20",
+                "end_date": None,
+                "min_value": None,
+                "max_value": None,
+                "trade_type": None,
+                "sentiment": "neutral",
+                "limit": 1000,
+                "source": "delayed",
+            }
+        )
     ],
 )
 @pytest.mark.integration
@@ -56,30 +77,17 @@ def test_derivatives_options_unusual(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
             {
                 "provider": "yfinance",
-                "symbol": "ES",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "expiration": "2024-06",
-            }
-        ),
-        (
-            {
-                "provider": "yfinance",
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "adjust": True,
-                "back_adjust": True,
-                "symbol": "ES",
+                "symbol": "CL,BZ",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "2024-06",
+                "expiration": "2025-12",
             }
         ),
     ],
@@ -95,10 +103,10 @@ def test_derivatives_futures_historical(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"provider": "cboe", "symbol": "VX", "date": "2023-01-25"}),
+        ({"provider": "cboe", "symbol": "VX", "date": None}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
@@ -108,6 +116,6 @@ def test_derivatives_futures_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

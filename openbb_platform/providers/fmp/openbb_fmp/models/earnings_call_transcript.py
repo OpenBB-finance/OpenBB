@@ -1,6 +1,5 @@
 """FMP Earnings Call Transcript Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -51,7 +50,7 @@ class FMPEarningsCallTranscriptFetcher(
         return FMPEarningsCallTranscriptQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -67,7 +66,7 @@ class FMPEarningsCallTranscriptFetcher(
             ["symbol"],
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

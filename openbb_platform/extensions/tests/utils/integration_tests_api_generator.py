@@ -1,10 +1,12 @@
 """Generate API integration tests."""
+
 import argparse
 import os
+from pathlib import Path
 from typing import Dict, List, Literal, Type, get_type_hints
 
 import requests
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
@@ -34,6 +36,7 @@ import pytest
 import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
+from extensions.tests.conftest import parametrize
 
 
 @pytest.fixture(scope="session")
@@ -78,7 +81,7 @@ def write_test_w_template(
     """
 
     template = f"""
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [{params_str}],
 )
@@ -140,7 +143,7 @@ def write_commands_integration_tests(
                 [{k: "" for k in get_post_flat_params(hints)}]
                 if http_method == "post"
                 else get_test_params(
-                    model_name=cm_models[route],
+                    model_name=cm_models[route],  # type: ignore
                     provider_interface_map=provider_interface_map,
                 )
             )
@@ -158,25 +161,21 @@ def write_commands_integration_tests(
 
 def write_charting_extension_integration_tests():
     """Write the charting extension integration tests."""
-    functions = ChartingService.get_implemented_charting_functions()
+    import openbb_charting  # pylint: disable=import-outside-toplevel
 
-    # we assume test file exists
-    path = os.path.join(
-        "openbb_platform",
-        "extensions",
-        "charting",
-        "integration",
-        "test_charting_api.py",
-    )
+    functions = Charting.functions()
+
+    charting_ext_path = Path(openbb_charting.__file__).parent.parent
+    test_file = charting_ext_path / "integration" / "test_charting_api.py"
 
     for function in functions:
         route = "/" + function.replace("_", "/")
-        if not test_exists(route=function, path=path):
+        if not test_exists(route=function, path=test_file):
             write_test_w_template(
                 http_method="post",
                 params_list=[{"chart": True}],
                 route=route,
-                path=path,
+                path=test_file,
                 chart=True,
             )
 

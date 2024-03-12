@@ -1,4 +1,5 @@
 """Stock Context Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -13,7 +14,6 @@ from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
     newsapi_view,
-    ultima_newsmonitor_view,
 )
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
@@ -27,7 +27,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -121,7 +121,6 @@ class StocksController(StockBaseController):
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
         mt.add_raw("\n")
-        mt.add_menu("th")
         mt.add_menu("options")
         mt.add_menu("disc")
         mt.add_menu("dps")
@@ -131,6 +130,7 @@ class StocksController(StockBaseController):
         mt.add_menu("ba")
         mt.add_menu("ca")
         mt.add_menu("fa")
+        mt.add_menu("th")
         mt.add_menu("bt")
         mt.add_menu("ta")
         mt.add_menu("qa")
@@ -340,6 +340,15 @@ class StocksController(StockBaseController):
             default=self.ticker,
             help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
+        parser.add_argument(
+            "--load_source",
+            action="store",
+            dest="load_source",
+            required=False,
+            default=None,
+            choices=get_ordered_list_sources(f"{self.PATH}load"),
+            help=argparse.SUPPRESS,
+        )
 
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
@@ -351,7 +360,8 @@ class StocksController(StockBaseController):
             tickers = ns_parser.s_ticker.split(",")
             if ns_parser.s_ticker and len(tickers) == 1:
                 self.ticker = ns_parser.s_ticker
-                self.custom_load_wrapper([self.ticker])
+                load_other_args = [self.ticker, "--source", ns_parser.load_source]
+                self.custom_load_wrapper(load_other_args)
 
             stocks_view.display_quote(
                 tickers,
@@ -597,36 +607,17 @@ class StocksController(StockBaseController):
                         show_newest=ns_parser.n_oldest,
                         sources=ns_parser.sources,
                     )
-                elif str(ns_parser.source).lower() == "ultima":
-                    query = str(self.ticker).upper()
-                    if query not in ultima_newsmonitor_view.supported_terms():
-                        console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
-                        )
-                        feedparser_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                    else:
-                        ultima_newsmonitor_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
                         term=self.ticker,
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")

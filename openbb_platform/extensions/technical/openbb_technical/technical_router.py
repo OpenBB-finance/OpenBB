@@ -1,8 +1,11 @@
 """Technical Analysis Router."""
+
+# pylint: disable=too-many-lines
 from typing import List, Literal, Optional
 
 import pandas as pd
 import pandas_ta as ta
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
@@ -14,17 +17,30 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
-from . import helpers
+from .helpers import (
+    calculate_cones,
+    calculate_fib_levels,
+    clenow_momentum,
+    validate_data,
+)
 
 # TODO: Split this into multiple files
-
-# pylint: disable=too-many-lines
-
-
 router = Router(prefix="")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Average True Range.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "atr_data = obb.technical.atr(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def atr(
     data: List[Data],
     index: str = "date",
@@ -33,9 +49,15 @@ def atr(
     drift: NonNegativeInt = 1,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Average True Range.
+    """Calculate the Average True Range.
 
     Used to measure volatility, especially volatility caused by gaps or limit moves.
+    The ATR metric helps understand how much the values in your data change on average,
+    giving insights into the stability or unpredictability during a certain period.
+    It's particularly useful for spotting trends of increase or decrease in variations,
+    without getting into technical trading details.
+    The method considers not just the day-to-day changes but also accounts for any
+    sudden jumps or drops, ensuring you get a comprehensive view of movement.
 
     Parameters
     ----------
@@ -56,13 +78,8 @@ def atr(
     -------
     OBBject[List[Data]]
         List of data with the indicator applied.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> atr_data = obb.technical.atr(data=stock_data.results)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_atr = pd.DataFrame(
@@ -75,7 +92,19 @@ def atr(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Bollinger Band Width.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "fib_data = obb.technical.fib(data=stock_data.results, period=120)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def fib(
     data: List[Data],
     index: str = "date",
@@ -85,6 +114,12 @@ def fib(
     end_date: Optional[str] = None,
 ) -> OBBject[List[Data]]:
     """Create Fibonacci Retracement Levels.
+
+    This method draws from a classic technique to pinpoint significant price levels
+    that often indicate where the market might find support or resistance.
+    It's a tool used to gauge potential turning points in the data by applying a
+    mathematical approach rooted in nature's patterns. Is used to get insights into
+    where prices could head next, based on historical movements.
 
     Parameters
     ----------
@@ -99,12 +134,6 @@ def fib(
     -------
     OBBject[List[Data]]
         List of data with the indicator applied.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> fib_data = obb.technical.fib(data=stock_data.results, period=120)
     """
     df = basemodel_to_df(data, index=index)
 
@@ -115,7 +144,7 @@ def fib(
         min_pr,
         max_pr,
         lvl_text,
-    ) = helpers.calculate_fib_levels(
+    ) = calculate_fib_levels(
         data=df,
         close_col=close_column,
         limit=period,
@@ -134,13 +163,25 @@ def fib(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the On Balance Volume (OBV).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "obv_data = obb.technical.obv(data=stock_data.results, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def obv(
     data: List[Data],
     index: str = "date",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """On Balance Volume (OBV).
+    """Calculate the On Balance Volume (OBV).
 
     Is a cumulative total of the up and down volume. When the close is higher than the
     previous close, the volume is added to the running total, and when the close is
@@ -164,12 +205,6 @@ def obv(
     -------
     OBBject[List[Data]]
         List of data with the indicator applied.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obv_data = obb.technical.obv(data=stock_data.results, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
@@ -181,14 +216,26 @@ def obv(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform the Fisher Transform.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def fisher(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
 ) -> OBBject[List[Data]]:
-    """Fisher Transform.
+    """Perform the Fisher Transform.
 
     A technical indicator created by John F. Ehlers that converts prices into a Gaussian
     normal distribution. The indicator highlights when prices have moved to an extreme,
@@ -211,13 +258,8 @@ def fisher(
     -------
     OBBject[List[Data]]
         List of data with the indicator applied.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)
     """
+    validate_data(data, [length, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     df_fisher = pd.DataFrame(df_target.ta.fisher(length=length, signal=signal))
@@ -228,7 +270,19 @@ def fisher(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Accumulation/Distribution Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"fast": 2, "slow": 4, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def adosc(
     data: List[Data],
     index: str = "date",
@@ -236,7 +290,7 @@ def adosc(
     slow: PositiveInt = 10,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Accumulation/Distribution Oscillator.
+    """Calculate the Accumulation/Distribution Oscillator.
 
     Also known as the Chaikin Oscillator.
 
@@ -261,15 +315,10 @@ def adosc(
     Returns
     -------
     OBBject[List[Data]]
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)
     """
+    validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
-    df_target = get_target_columns(df, ["high", "low", "close", "volume", "open"])
+    df_target = get_target_columns(df, ["open", "high", "low", "close", "volume"])
     df_adosc = pd.DataFrame(df_target.ta.adosc(fast=fast, slow=slow, offset=offset))
 
     output = pd.concat([df, df_adosc], axis=1)
@@ -278,7 +327,19 @@ def adosc(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Chande Momentum Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",  # noqa: E501
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def bbands(
     data: List[Data],
     target: str = "close",
@@ -288,7 +349,7 @@ def bbands(
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Bollinger Bands.
+    """Calculate the Bollinger Bands.
 
     Consist of three lines. The middle band is a simple moving average (generally 20
     periods) of the typical price (TP). The upper and lower bands are F standard
@@ -324,15 +385,8 @@ def bbands(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> bbands = obb.technical.bbands(
-    >>>     data=stock_data.results, target="close", length=50, std=2, mamode="sma", offset=0
-    >>> )
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     bbands_df = pd.DataFrame(
@@ -352,7 +406,19 @@ def bbands(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Chande Momentum Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "zlma_data = obb.technical.zlma(data=stock_data.results, target='close', length=50, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def zlma(
     data: List[Data],
     target: str = "close",
@@ -360,7 +426,7 @@ def zlma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The zero lag exponential moving average (ZLEMA).
+    """Calculate the zero lag exponential moving average (ZLEMA).
 
     Created by John Ehlers and Ric Way. The idea is do a
     regular exponential moving average (EMA) calculation but
@@ -386,13 +452,8 @@ def zlma(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> zlma_data = obb.technical.zlma(data=stock_data.results, target="close", length=50, offset=0)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     zlma_df = pd.DataFrame(
@@ -410,14 +471,26 @@ def zlma(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Chande Momentum Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "aaron_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def aroon(
     data: List[Data],
     index: str = "date",
     length: int = 25,
     scalar: int = 100,
 ) -> OBBject[List[Data]]:
-    """Aroon Indicator.
+    """Calculate the Aroon Indicator.
 
     The word aroon is Sanskrit for "dawn's early light." The Aroon
     indicator attempts to show when a new trend is dawning. The indicator consists
@@ -446,24 +519,31 @@ def aroon(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> aroon_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
-    aroon_df = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
+    df_aroon = pd.DataFrame(df_target.ta.aroon(length=length, scalar=scalar)).dropna()
 
-    output = pd.concat([df, aroon_df], axis=1)
+    output = pd.concat([df, df_aroon], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Chande Momentum Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "sma_data = obb.technical.sma(data=stock_data.results, target='close', length=50, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def sma(
     data: List[Data],
     target: str = "close",
@@ -471,7 +551,7 @@ def sma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Simple Moving Average.
+    """Calculate the Simple Moving Average (SMA).
 
     Moving Averages are used to smooth the data in an array to
     help eliminate noise and identify trends. The Simple Moving Average is literally
@@ -498,13 +578,8 @@ def sma(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> sma_data = obb.technical.sma(data=stock_data.results,target="close",length=50,offset=0)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     sma_df = pd.DataFrame(
@@ -522,7 +597,19 @@ def sma(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Demark Sequential Indicator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "demark_data = obb.technical.demark(data=stock_data.results, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def demark(
     data: List[Data],
     index: str = "date",
@@ -531,7 +618,13 @@ def demark(
     asint: bool = True,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Demark sequential indicator.
+    """Calculate the Demark sequential indicator.
+
+    This indicator offers a strategic way to spot potential reversals in market trends.
+    It's designed to highlight moments when the current trend may be running out of steam,
+    suggesting a possible shift in direction. By focusing on specific patterns in price movements, it provides
+    valuable insights for making informed decisions on future changes and identifies trend exhaustion points
+    with precision.
 
     Parameters
     ----------
@@ -552,12 +645,6 @@ def demark(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> demark_data = obb.technical.demark(data=stock_data.results,offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -570,17 +657,31 @@ def demark(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Volume Weighted Average Price (VWAP).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "vwap_data = obb.technical.vwap(data=stock_data.results, anchor='D', offset=0)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def vwap(
     data: List[Data],
     index: str = "date",
     anchor: str = "D",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The Volume Weighted Average Price.
+    """Calculate the Volume Weighted Average Price (VWAP).
 
     Measures the average typical price by volume.
     It is typically used with intraday charts to identify general direction.
+    It helps to understand the true average price factoring in the volume of transactions,
+    and serves as a benchmark for assessing the market's direction over short periods, such as a single trading day.
 
     Parameters
     ----------
@@ -599,14 +700,10 @@ def vwap(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> vwap_data = obb.technical.vwap(data=stock_data.results,anchor="D",offset=0)
     """
     df = basemodel_to_df(data, index=index)
+    if index == "date":
+        df.index = pd.to_datetime(df.index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
     df_vwap = pd.DataFrame(df_target.ta.vwap(anchor=anchor, offset=offset).dropna())
 
@@ -616,7 +713,27 @@ def vwap(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Moving Average Convergence Divergence (MACD).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "macd_data = obb.technical.macd(data=stock_data.results, target='close', fast=12, slow=26, signal=9)",
+            ],
+        ),
+        APIEx(
+            description="Example with mock data.",
+            parameters={
+                "fast": 2,
+                "slow": 3,
+                "signal": 1,
+                "data": APIEx.mock_data("timeseries"),
+            },
+        ),
+    ],
+)
 def macd(
     data: List[Data],
     target: str = "close",
@@ -625,7 +742,7 @@ def macd(
     slow: int = 26,
     signal: int = 9,
 ) -> OBBject[List[Data]]:
-    """The Moving Average Convergence Divergence (MACD).
+    """Calculate the Moving Average Convergence Divergence (MACD).
 
     Difference between two Exponential Moving Averages. The Signal line is an
     Exponential Moving Average of the MACD.
@@ -655,13 +772,8 @@ def macd(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> macd_data = obb.technical.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
     """
+    validate_data(data, [fast, slow, signal])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     macd_df = pd.DataFrame(
@@ -679,7 +791,18 @@ def macd(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Calculate HMA with historical stock data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "hma_data = obb.technical.hma(data=stock_data.results, target='close', length=50, offset=0)",
+            ],
+        ),
+    ],
+)
 def hma(
     data: List[Data],
     target: str = "close",
@@ -687,7 +810,7 @@ def hma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The Hull Moving Average.
+    """Calculate the Hull Moving Average (HMA).
 
     Solves the age old dilemma of making a moving average more responsive to current
     price activity whilst maintaining curve smoothness.
@@ -711,13 +834,8 @@ def hma(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> hma_data = obb.technical.hma(data=stock_data.results,target="close",length=50,offset=0)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     hma_df = pd.DataFrame(
@@ -735,7 +853,25 @@ def hma(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Donchian Channels.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",  # noqa: E501
+            ],
+        ),
+        APIEx(
+            parameters={
+                "lower_length": 1,
+                "upper_length": 3,
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
+    ],
+)
 def donchian(
     data: List[Data],
     index: str = "date",
@@ -743,7 +879,7 @@ def donchian(
     upper_length: PositiveInt = 20,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Donchian Channels.
+    """Calculate the Donchian Channels.
 
     Three lines generated by moving average calculations that comprise an indicator
     formed by upper and lower bands around a midrange or median band. The upper band
@@ -768,13 +904,8 @@ def donchian(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> donchian_data = obb.technical.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
     """
+    validate_data(data, [lower_length, upper_length])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
     donchian_df = pd.DataFrame(
@@ -789,7 +920,18 @@ def donchian(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Ichimoku Cloud.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "ichimoku_data = obb.technical.ichimoku(data=stock_data.results, conversion=9, base=26, lookahead=False)",
+            ],
+        ),
+    ],
+)
 def ichimoku(
     data: List[Data],
     index: str = "date",
@@ -799,7 +941,7 @@ def ichimoku(
     offset: PositiveInt = 26,
     lookahead: bool = False,
 ) -> OBBject[List[Data]]:
-    """The Ichimoku Cloud.
+    """Calculate the Ichimoku Cloud.
 
     Also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and
     resistance, identifies trend direction, gauges momentum and provides trading
@@ -823,7 +965,13 @@ def ichimoku(
         Number of periods for the offset, by default 26.
     lookahead : bool, optional
         drops the Chikou Span Column to prevent potential data leak
+
+    Returns
+    -------
+    OBBject[List[Data]]
+        The calculated data.
     """
+    validate_data(data, [conversion, base, lagging])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_ichimoku, df_span = df_target.ta.ichimoku(
@@ -842,14 +990,30 @@ def ichimoku(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Clenow Volatility Adjusted Momentum.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "clenow_data = obb.technical.clenow(data=stock_data.results, period=90)",
+            ],
+        ),
+        APIEx(parameters={"period": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def clenow(
     data: List[Data],
     index: str = "date",
     target: str = "close",
     period: PositiveInt = 90,
 ) -> OBBject[List[Data]]:
-    """Clenow Volatility Adjusted Momentum.
+    """Calculate the Clenow Volatility Adjusted Momentum.
+
+    The Clenow Volatility Adjusted Momentum is a sophisticated approach to understanding market momentum with a twist.
+    It adjusts for volatility, offering a clearer picture of true momentum by considering how price movements are
+    influenced by their volatility over a set period. It helps in identifying stronger, more reliable trends.
 
     Parameters
     ----------
@@ -866,17 +1030,12 @@ def clenow(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> clenow_data = obb.technical.clenow(data=stock_data.results,period=90)
     """
+    validate_data(data, period)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
 
-    r2, coef, _ = helpers.clenow_momentum(df_target, period)
+    r2, coef, _ = clenow_momentum(df_target, period)
 
     df_clenow = pd.DataFrame.from_dict(
         {
@@ -893,9 +1052,21 @@ def clenow(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Accumulation/Distribution Line.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "ad_data = obb.technical.ad(data=stock_data.results, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
-    """The Accumulation/Distribution Line.
+    """Calculate the Accumulation/Distribution Line.
 
     Similar to the On Balance Volume (OBV).
     Sums the volume times +1/-1 based on whether the close is higher than the previous
@@ -922,12 +1093,6 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     Returns
     -------
     OBBject[List[Data]]
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> ad_data = obb.technical.ad(data=stock_data.results,offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
@@ -939,7 +1104,19 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Average Directional Index (ADX).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def adx(
     data: List[Data],
     index: str = "date",
@@ -947,7 +1124,7 @@ def adx(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """ADX.
+    """Calculate the Average Directional Index (ADX).
 
     The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
     The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
@@ -970,26 +1147,33 @@ def adx(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> adx_data = obb.technical.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
-    adx_df = pd.DataFrame(
+    df_adx = pd.DataFrame(
         df_target.ta.adx(length=length, scalar=scalar, drift=drift).dropna()
     )
 
-    output = pd.concat([df, adx_df], axis=1)
+    output = pd.concat([df, df_adx], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Average True Range (ATR).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "wma_data = obb.technical.wma(data=stock_data.results, target='close', length=50, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def wma(
     data: List[Data],
     target: str = "close",
@@ -997,7 +1181,7 @@ def wma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Weighted Moving Average.
+    """Calculate the Weighted Moving Average (WMA).
 
     A Weighted Moving Average puts more weight on recent data and less on past data.
     This is done by multiplying each bar's price by a weighting factor. Because of its
@@ -1021,16 +1205,11 @@ def wma(
     -------
     OBBject[List[Data]]
         The WMA data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> wma_data = obb.technical.wma(data=stock_data.results, target="close", length=50, offset=0)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
-    wma_df = pd.DataFrame(
+    df_wma = pd.DataFrame(
         df_target.ta.wma(
             length=length,
             offset=offset,
@@ -1039,20 +1218,32 @@ def wma(
         ).dropna()
     )
 
-    output = pd.concat([df, wma_df], axis=1)
+    output = pd.concat([df, df_wma], axis=1)
     results = df_to_basemodel(output.reset_index())
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Commodity Channel Index (CCI).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def cci(
     data: List[Data],
     index: str = "date",
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
 ) -> OBBject[List[Data]]:
-    """Commodity Channel Index (CCI).
+    """Calculate the Commodity Channel Index (CCI).
 
     The CCI is designed to detect beginning and ending market trends.
     The range of 100 to -100 is the normal trading range. CCI values outside of this
@@ -1076,6 +1267,7 @@ def cci(
     OBBject[List[Data]]
         The CCI data.
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     cci_df = pd.DataFrame(df_target.ta.cci(length=length, scalar=scalar).dropna())
@@ -1086,7 +1278,19 @@ def cci(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Relative Strength Index (RSI).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "rsi_data = obb.technical.rsi(data=stock_data.results, target='close', length=14, scalar=100.0, drift=1)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def rsi(
     data: List[Data],
     target: str = "close",
@@ -1095,7 +1299,7 @@ def rsi(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """Relative Strength Index (RSI).
+    """Calculate the Relative Strength Index (RSI).
 
     RSI calculates a ratio of the recent upward price movements to the absolute price
     movement. The RSI ranges from 0 to 100.
@@ -1122,13 +1326,8 @@ def rsi(
     -------
     OBBject[List[Data]]
         The RSI data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> rsi_data = obb.technical.rsi(data=stock_data.results, target="close", length=14, scalar=100.0, drift=1)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     rsi_df = pd.DataFrame(
@@ -1147,7 +1346,18 @@ def rsi(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Stochastic Oscillator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)",  # noqa: E501  # pylint: disable=line-too-long
+            ],
+        ),
+    ],
+)
 def stoch(
     data: List[Data],
     index: str = "date",
@@ -1155,7 +1365,7 @@ def stoch(
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
 ) -> OBBject[List[Data]]:
-    """Stochastic Oscillator.
+    """Calculate the Stochastic Oscillator.
 
     The Stochastic Oscillator measures where the close is in relation
     to the recent trading range. The values range from zero to 100. %D values over 75
@@ -1181,13 +1391,8 @@ def stoch(
     -------
     OBBject[List[Data]]
         The Stochastic Oscillator data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)
     """
+    validate_data(data, [fast_k_period, slow_d_period, slow_k_period])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
     stoch_df = pd.DataFrame(
@@ -1204,7 +1409,19 @@ def stoch(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Keltner Channels.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode='ema', offset=0)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def kc(
     data: List[Data],
     index: str = "date",
@@ -1213,7 +1430,7 @@ def kc(
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
 ) -> OBBject[List[Data]]:
-    """Keltner Channels.
+    """Calculate the Keltner Channels.
 
     Keltner Channels are volatility-based bands that are placed
     on either side of an asset's price and can aid in determining
@@ -1240,13 +1457,8 @@ def kc(
     -------
     OBBject[List[Data]]
         The Keltner Channels data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode="ema", offset=0)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     kc_df = pd.DataFrame(
@@ -1263,11 +1475,23 @@ def kc(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Center of Gravity (CG).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "cg_data = obb.technical.cg(data=stock_data.results, length=14)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def cg(
     data: List[Data], index: str = "date", length: PositiveInt = 14
 ) -> OBBject[List[Data]]:
-    """Center of Gravity.
+    """Calculate the Center of Gravity.
 
     The Center of Gravity indicator, in short, is used to anticipate future price movements
     and to trade on price reversals as soon as they happen. However, just like other oscillators,
@@ -1288,13 +1512,8 @@ def cg(
     -------
     OBBject[List[Data]]
         The COG data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> cg_data = obb.technical.cg(data=stock_data.results, length=14)
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     cg_df = pd.DataFrame(df_target.ta.cg(length=length).dropna())
@@ -1305,7 +1524,19 @@ def cg(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the cones indicator.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='STD')",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def cones(
     data: List[Data],
     index: str = "date",
@@ -1324,7 +1555,19 @@ def cones(
 ) -> OBBject[List[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 
-    The model for calculating volatility is selectable.
+    The cones indicator is designed to map out the ebb and flow of price movements through a detailed analysis of
+    volatility quantiles. By examining the range of volatility within specific time frames, it offers a nuanced view of
+    market behavior, highlighting periods of stability and turbulence.
+
+    The model for calculating volatility is selectable and can be one of the following:
+    - Standard deviation
+    - Parkinson
+    - Garman-Klass
+    - Hodges-Tompkins
+    - Rogers-Satchell
+    - Yang-Zhang
+
+    Read more about it in the model parameter description.
 
     Parameters
     ----------
@@ -1362,22 +1605,17 @@ def cones(
         Whether the data is crypto or not. If True, volatility is calculated for 365 days instead of 252
     trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
+
     Returns
     -------
     OBBject[List[Data]]
         The cones data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model="STD")
     """
     if lower_q > upper_q:
         lower_q, upper_q = upper_q, lower_q
 
     df = basemodel_to_df(data, index=index)
-    df_cones = helpers.calculate_cones(
+    df_cones = calculate_cones(
         data=df,
         lower_q=lower_q,
         upper_q=upper_q,
@@ -1391,7 +1629,19 @@ def cones(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Get the Exponential Moving Average (EMA).",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "ema_data = obb.technical.ema(data=stock_data.results, target='close', length=50, offset=0)",
+            ],
+        ),
+        APIEx(parameters={"length": 2, "data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def ema(
     data: List[Data],
     target: str = "close",
@@ -1399,7 +1649,7 @@ def ema(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Exponential Moving Average.
+    """Calculate the Exponential Moving Average (EMA).
 
     EMA is a cumulative calculation, including all data. Past values have
     a diminishing contribution to the average, while more recent values have a greater
@@ -1423,14 +1673,8 @@ def ema(
     -------
     OBBject[List[Data]]
         The calculated data.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> ema_data = obb.technical.ema(data=stock_data.results,target="close",length=50,offset=0)
-
     """
+    validate_data(data, length)
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
     ema_df = pd.DataFrame(

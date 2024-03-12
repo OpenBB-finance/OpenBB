@@ -92,7 +92,7 @@ class PolygonEquityNBBOData(EquityNBBOData):
     conditions: Optional[Union[str, List[int], List[str]]] = Field(
         default=None, description="A list of condition codes.", alias="conditions"
     )
-    indicators: Optional[List] = Field(
+    indicators: Optional[List[int]] = Field(
         default=None, description="A list of indicator codes.", alias="indicators"
     )
     sequence_num: Optional[int] = Field(
@@ -154,7 +154,7 @@ class PolygonEquityNBBOFetcher(
         return PolygonEquityNBBOQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: PolygonEquityNBBOQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -175,20 +175,20 @@ class PolygonEquityNBBOFetcher(
         query_str = query_str.replace("_", ".")
 
         url = f"{base_url}/quotes/{query.symbol}?{query_str}&apiKey={api_key}"
-        response = get_data_one(url, **kwargs)
+        response = await get_data_one(url, **kwargs)
         next_url = response.get("next_url", None)
         data.extend(response["results"])
         records = len(data)
 
         while records < query.limit and next_url:
             url = f"{next_url}&apiKey={api_key}"
-            response = get_data_one(url, **kwargs)
+            response = await get_data_one(url, **kwargs)
             next_url = response.get("next_url", None)
             data.extend(response["results"])
             records += len(data)
 
         exchanges_url = f"{base_url}/reference/exchanges?asset_class=stocks&locale=us&apiKey={api_key}"
-        exchanges = get_data_one(exchanges_url, **kwargs)
+        exchanges = await get_data_one(exchanges_url, **kwargs)
         exchanges = exchanges["results"]
         exchange_id_map = {e["id"]: e for e in exchanges}
 
@@ -208,6 +208,7 @@ class PolygonEquityNBBOFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonEquityNBBOQueryParams,

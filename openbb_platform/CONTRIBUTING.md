@@ -80,7 +80,7 @@ The OpenBB Platform is built by the Open-Source community and is characterized b
 The REST API is built on top of FastAPI and can be started by running the following command from the root:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 The Python interfaces we provide to users is the `openbb` python package.
@@ -488,7 +488,7 @@ async def model_example(    # create an async endpoint
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Example Data."""
     return await OBBject.from_query(Query(**locals()))
 ```
@@ -742,7 +742,7 @@ python openbb_platform/extensions/tests/utils/integration_tests_api_generator.py
 When testing the API interface, you'll need to run the OpenBB Platform locally before running the tests. To do so, you can run the following command:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 These automated tests are a great way to reduce the amount of code you need to write, but they are not a replacement for manual testing and might require tweaking. That's why we have unit tests that test the generated integration tests to ensure they cover all providers and parameters.
@@ -870,7 +870,7 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
    `git add openbb_platform/platform/core/openbb_core/app/constants.py`.
    Note: **DON'T** add any files with personal information.
 4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR
-   solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that
+   solves an issue raised by a user, you may specify such an issue by adding #ISSUE_NUMBER to the commit message, so that
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
 

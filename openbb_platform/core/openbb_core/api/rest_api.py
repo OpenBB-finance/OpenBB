@@ -1,5 +1,7 @@
 """REST API for the OpenBB Platform."""
+
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +18,31 @@ from openbb_core.env import Env
 logger = logging.getLogger("uvicorn.error")
 
 system = SystemService().system_settings
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Startup event."""
+    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
+    banner = rf"""
+
+                   ███╗
+  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
+  ███╔══════════███║  ███╔══════════███║
+  █████████████████║  █████████████████║       Authentication: {auth}
+  ╚═════════════███║  ███╔═════════════╝
+     ██████████████║  ██████████████╗
+     ███╔═══════███║  ███╔═══════███║
+     ██████████████║  ██████████████║
+     ╚═════════════╝  ╚═════════════╝
+Investment research for everyone, anywhere.
+
+    https://my.openbb.co/app/platform
+
+"""
+    logger.info(banner)
+    yield
+
 
 app = FastAPI(
     title=system.api_settings.title,
@@ -38,7 +65,9 @@ app = FastAPI(
         }
         for s in system.api_settings.servers
     ],
+    lifespan=lifespan,
 )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=system.api_settings.cors.allow_origins,
@@ -47,39 +76,19 @@ app.add_middleware(
 )
 AppLoader.from_routers(
     app=app,
-    routers=[AuthService().router, router_system, router_coverage, router_commands]
-    if Env().DEV_MODE
-    else [router_commands],
+    routers=(
+        [AuthService().router, router_system, router_coverage, router_commands]
+        if Env().DEV_MODE
+        else [router_commands]
+    ),
     prefix=system.api_settings.prefix,
 )
-
-
-@app.on_event("startup")
-async def startup():
-    """Startup event."""
-    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
-    banner = rf"""
-
-                   ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {system.version}
-  ███╔══════════███║  ███╔══════════███║
-  █████████████████║  █████████████████║       Authentication: {auth}
-  ╚═════════════███║  ███╔═════════════╝
-     ██████████████║  ██████████████╗
-     ███╔═══════███║  ███╔═══════███║
-     ██████████████║  ██████████████║
-     ╚═════════════╝  ╚═════════════╝
-Investment research for everyone, anywhere.
-
-    https://my.openbb.co/app/platform
-
-"""
-    logger.info(banner)
 
 
 @app.exception_handler(Exception)
 async def api_exception_handler(_: Request, exc: Exception):
     """Exception handler for all other exceptions."""
+    logger.error(exc)
     return JSONResponse(
         status_code=404,
         content={
@@ -92,6 +101,7 @@ async def api_exception_handler(_: Request, exc: Exception):
 @app.exception_handler(OpenBBError)
 async def openbb_exception_handler(_: Request, exc: OpenBBError):
     """Exception handler for OpenBB errors."""
+    logger.error(exc.original)
     openbb_error = exc.original
     status_code = 400 if "No results" in str(openbb_error) else 500
     return JSONResponse(

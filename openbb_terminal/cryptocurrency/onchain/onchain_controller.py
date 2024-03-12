@@ -1,4 +1,5 @@
 """Onchain Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0302
@@ -6,20 +7,14 @@ __docformat__ = "numpy"
 import argparse
 import difflib
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
-    GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
-    INTERVALS_HASHRATE,
-)
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import display_hashrate
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
     blockchain_view,
-    ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
     topledger_model,
@@ -61,8 +56,6 @@ class OnchainController(BaseController):
     }
 
     CHOICES_COMMANDS = [
-        "hr",
-        "gwei",
         "whales",
         "balance",
         "top",
@@ -98,18 +91,14 @@ class OnchainController(BaseController):
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
 
-            choices["hr"].update({c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS})
-
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/onchain/")
-        mt.add_cmd("hr")
         mt.add_cmd("btccp")
         mt.add_cmd("btcct")
         mt.add_cmd("btcblockdata")
-        mt.add_cmd("gwei")
         mt.add_cmd("whales")
         mt.add_cmd("topledger")
         mt.add_cmd("lt")
@@ -173,9 +162,9 @@ class OnchainController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -217,104 +206,9 @@ class OnchainController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_hr(self, other_args: List[str]):
-        """Process hr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hr",
-            description="""
-                Display mean hashrate for a certain blockchain (ETH or BTC)
-                [Source: https://glassnode.org]
-            """,
-        )
-
-        parser.add_argument(
-            "-c",
-            "--coin",
-            dest="coin",
-            type=str,
-            help="Coin to check hashrate (BTC or ETH)",
-            default="BTC",
-            choices=GLASSNODE_SUPPORTED_HASHRATE_ASSETS,
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=str,
-            help="Frequency interval. Default: 24h",
-            default="24h",
-            choices=INTERVALS_HASHRATE,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--since",
-            dest="since",
-            type=valid_date,
-            help=f"Initial date. Default: {(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')}",
-            default=(datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
-        )
-
-        parser.add_argument(
-            "-u",
-            "--until",
-            dest="until",
-            type=valid_date,
-            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
-            default=(datetime.now()).strftime("%Y-%m-%d"),
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-c")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            display_hashrate(
-                symbol=ns_parser.coin,
-                interval=ns_parser.interval,
-                start_date=ns_parser.since.strftime("%Y-%m-%d"),
-                end_date=ns_parser.until.strftime("%Y-%m-%d"),
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
-            )
-
-    @log_start_end(log=logger)
-    def call_gwei(self, other_args: List[str]):
-        """Process gwei command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="onchain",
-            description="""
-                Display ETH gas fees
-                [Source: https://ethgasstation.info]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            ethgasstation_view.display_gwei_fees(
-                export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -386,9 +280,9 @@ class OnchainController(BaseController):
                 ascend=ns_parser.reverse,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -435,9 +329,9 @@ class OnchainController(BaseController):
                 org_slug=ns_parser.org_slug,
                 query_slug=ns_parser.query_slug,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -568,9 +462,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -628,9 +522,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -687,9 +581,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -745,9 +639,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -781,9 +675,9 @@ class OnchainController(BaseController):
                     social=ns_parser.social,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -850,9 +744,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -880,9 +774,9 @@ class OnchainController(BaseController):
                 ethplorer_view.display_tx_info(
                     tx_hash=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -939,9 +833,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -1027,9 +921,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1107,9 +1001,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1185,9 +1079,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1259,9 +1153,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1372,9 +1266,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1453,9 +1347,11 @@ class OnchainController(BaseController):
                         sortby=ns_parser.sortby,
                         ascend=ns_parser.reverse,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
 
                 else:
@@ -1480,9 +1376,11 @@ class OnchainController(BaseController):
                                     sortby=ns_parser.sortby,
                                     ascend=ns_parser.reverse,
                                     export=ns_parser.export,
-                                    sheet_name=" ".join(ns_parser.sheet_name)
-                                    if ns_parser.sheet_name
-                                    else None,
+                                    sheet_name=(
+                                        " ".join(ns_parser.sheet_name)
+                                        if ns_parser.sheet_name
+                                        else None
+                                    ),
                                 )
                         except Exception:
                             similar_cmd = difflib.get_close_matches(
@@ -1529,7 +1427,7 @@ class OnchainController(BaseController):
             blockchain_view.display_btc_single_block(
                 blockhash=ns_parser.blockhash,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )

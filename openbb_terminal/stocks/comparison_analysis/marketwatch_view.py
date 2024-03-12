@@ -1,4 +1,5 @@
 """ Comparison Analysis Marketwatch View """
+
 __docformat__ = "numpy"
 
 import logging

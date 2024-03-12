@@ -31,8 +31,6 @@ class CryptoDueDiligence(Category):
     """Due Diligence Module.
 
     Attributes:
-        `active`: Returns active addresses of a certain symbol\n
-        `active_chart`: Plots active addresses of a certain symbol over time\n
         `all_binance_trading_pairs`: Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset\n
         `ath`: Get all time high for a coin in a given currency\n
         `atl`: Get all time low for a coin in a given currency\n
@@ -42,15 +40,10 @@ class CryptoDueDiligence(Category):
         `basic_chart`: Prints table showing basic information for coin. Like:\n
         `binance_available_quotes_for_each_coin`: Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]\n
         `candle`: Get candles for chosen trading pair and time interval. [Source: Coinbase]\n
-        `change`: Returns 30d change of the supply held in exchange wallets of a certain symbol.\n
-        `change_chart`: Plots 30d change of the supply held in exchange wallets.\n
         `check_valid_binance_str`: Check if symbol is in defined binance. [Source: Binance]\n
-        `close`: Returns the price of a cryptocurrency\n
         `coin`: Get coin by id [Source: CoinPaprika]\n
         `coin_market_chart`: Get prices for given coin. [Source: CoinGecko]\n
         `dev`: Get developer stats for a coin\n
-        `eb`: Returns the total amount of coins held on exchange addresses in units and percentage.\n
-        `eb_chart`: Plots total amount of coins held on exchange addresses in units and percentage.\n
         `events`: Get all events related to given coin like conferences, start date of futures trading etc.\n
         `events_chart`: Prints table showing all events for given coin id. [Source: CoinPaprika]\n
         `ex`: Get all exchanges for given coin id. [Source: CoinPaprika]\n
@@ -60,8 +53,6 @@ class CryptoDueDiligence(Category):
         `fr_chart`: Display coin fundraising\n
         `get_mt`: Returns available messari timeseries\n
         `get_mt_chart`: Prints table showing messari timeseries list\n
-        `gh`: Returns  a list of developer activity for a given coin and time interval.\n
-        `gh_chart`: Returns a list of github activity for a given coin and time interval.\n
         `gov`: Returns coin governance\n
         `gov_chart`: Prints table showing coin governance\n
         `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
@@ -78,12 +69,8 @@ class CryptoDueDiligence(Category):
         `mt_chart`: Plots messari timeseries\n
         `news`: Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]\n
         `news_chart`: Prints table showing recent posts from CryptoPanic news aggregator platform.\n
-        `nonzero`: Returns addresses with non-zero balance of a certain symbol\n
-        `nonzero_chart`: Plots addresses with non-zero balance of a certain symbol\n
         `ob`: Returns orderbook for a coin in a given exchange\n
         `ob_chart`: Plots order book for a coin in a given exchange\n
-        `oi`: Returns open interest by exchange for a certain symbol\n
-        `oi_chart`: Plots open interest by exchange for a certain cryptocurrency\n
         `pi`: Returns coin product info\n
         `pi_chart`: Prints table showing project info\n
         `pr`: Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]\n
@@ -114,8 +101,6 @@ class CryptoDueDiligence(Category):
 
     def __init__(self):
         super().__init__()
-        self.active = lib.crypto_dd_glassnode_model.get_active_addresses
-        self.active_chart = lib.crypto_dd_glassnode_view.display_active_addresses
         self.all_binance_trading_pairs = (
             lib.crypto_dd_binance_model.get_all_binance_trading_pairs
         )
@@ -129,19 +114,12 @@ class CryptoDueDiligence(Category):
             lib.crypto_dd_binance_model.get_binance_available_quotes_for_each_coin
         )
         self.candle = lib.crypto_dd_coinbase_model.get_candles
-        self.change = lib.crypto_dd_glassnode_model.get_exchange_net_position_change
-        self.change_chart = (
-            lib.crypto_dd_glassnode_view.display_exchange_net_position_change
-        )
         self.check_valid_binance_str = (
             lib.crypto_dd_binance_model.check_valid_binance_str
         )
-        self.close = lib.crypto_dd_glassnode_model.get_close_price
         self.coin = lib.crypto_dd_coinpaprika_model.get_coin
         self.coin_market_chart = lib.crypto_dd_pycoingecko_model.get_coin_market_chart
         self.dev = lib.crypto_dd_sdk_helper.dev_stats
-        self.eb = lib.crypto_dd_glassnode_model.get_exchange_balances
-        self.eb_chart = lib.crypto_dd_glassnode_view.display_exchange_balances
         self.events = lib.crypto_dd_coinpaprika_model.get_coin_events_by_id
         self.events_chart = lib.crypto_dd_coinpaprika_view.display_events
         self.ex = lib.crypto_dd_coinpaprika_model.get_coin_exchanges_by_id
@@ -151,8 +129,6 @@ class CryptoDueDiligence(Category):
         self.fr_chart = lib.crypto_dd_messari_view.display_fundraising
         self.get_mt = lib.crypto_dd_messari_model.get_available_timeseries
         self.get_mt_chart = lib.crypto_dd_messari_view.display_messari_timeseries_list
-        self.gh = lib.crypto_dd_santiment_model.get_github_activity
-        self.gh_chart = lib.crypto_dd_santiment_view.display_github_activity
         self.gov = lib.crypto_dd_messari_model.get_governance
         self.gov_chart = lib.crypto_dd_messari_view.display_governance
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
@@ -171,12 +147,8 @@ class CryptoDueDiligence(Category):
         self.mt_chart = lib.crypto_dd_messari_view.display_messari_timeseries
         self.news = lib.crypto_ov_cryptopanic_model.get_news
         self.news_chart = lib.crypto_dd_cryptopanic_view.display_news
-        self.nonzero = lib.crypto_dd_glassnode_model.get_non_zero_addresses
-        self.nonzero_chart = lib.crypto_dd_glassnode_view.display_non_zero_addresses
         self.ob = lib.crypto_dd_ccxt_model.get_orderbook
         self.ob_chart = lib.crypto_dd_ccxt_view.display_order_book
-        self.oi = lib.crypto_dd_coinglass_model.get_open_interest_per_exchange
-        self.oi_chart = lib.crypto_dd_coinglass_view.display_open_interest
         self.pi = lib.crypto_dd_messari_model.get_project_product_info
         self.pi_chart = lib.crypto_dd_messari_view.display_project_info
         self.pr = lib.crypto_dd_pycoingecko_model.get_coin_potential_returns
@@ -209,36 +181,18 @@ class CryptoDeFi(Category):
     """DeFi Module.
 
     Attributes:
-        `anchor_data`: Returns anchor protocol earnings data of a certain terra address\n
-        `anchor_data_chart`: Plots anchor protocol earnings data of a certain terra address\n
-        `aterra`: Returns historical data of an asset in a certain terra address\n
-        `aterra_chart`: Plots the 30-day history of specified asset in terra address\n
-        `ayr`: Displays the 30-day history of the Anchor Yield Reserve.\n
-        `ayr_chart`: Plots the 30-day history of the Anchor Yield Reserve.\n
         `dtvl`: Returns information about historical tvl of a defi protocol.\n
         `dtvl_chart`: Plots historical TVL of different dApps\n
-        `gacc`: Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]\n
-        `gacc_chart`: Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]\n
         `gdapps`: Display top dApps (in terms of TVL) grouped by chain.\n
         `gdapps_chart`: Plots top dApps (in terms of TVL) grouped by chain.\n
-        `gov_proposals`: Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]\n
-        `gov_proposals_chart`: Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]\n
         `ldapps`: Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.\n
         `ldapps_chart`: Prints table showing information about listed DeFi protocols, their current TVL and changes to it in\n
         `luna_supply`: Get supply history of the Terra ecosystem\n
         `luna_supply_chart`: Plots and prints table showing Luna circulating supply stats\n
         `newsletters`: Scrape all substack newsletters from url list.\n
         `newsletters_chart`: Prints table showing DeFi related substack newsletters.\n
-        `sinfo`: Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]\n
-        `sinfo_chart`: Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]\n
-        `sratio`: Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]\n
-        `sratio_chart`: Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]\n
-        `sreturn`: Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]\n
-        `sreturn_chart`: Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]\n
         `stvl`: Returns historical values of the total sum of TVLs from all listed protocols.\n
         `stvl_chart`: Plots historical values of the total sum of TVLs from all listed protocols.\n
-        `validators`: Get information about terra validators [Source: https://fcd.terra.dev/swagger]\n
-        `validators_chart`: Prints table showing information about terra validators [Source: https://fcd.terra.dev/swagger]\n
         `vaults`: Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to\n
         `vaults_chart`: Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to\n
     """
@@ -247,26 +201,10 @@ class CryptoDeFi(Category):
 
     def __init__(self):
         super().__init__()
-        self.anchor_data = lib.crypto_defi_cryptosaurio_model.get_anchor_data
-        self.anchor_data_chart = lib.crypto_defi_cryptosaurio_view.display_anchor_data
-        self.aterra = (
-            lib.crypto_defi_terraengineer_model.get_history_asset_from_terra_address
-        )
-        self.aterra_chart = (
-            lib.crypto_defi_terraengineer_view.display_terra_asset_history
-        )
-        self.ayr = lib.crypto_defi_terraengineer_model.get_anchor_yield_reserve
-        self.ayr_chart = lib.crypto_defi_terraengineer_view.display_anchor_yield_reserve
         self.dtvl = lib.crypto_defi_llama_model.get_defi_protocol
         self.dtvl_chart = lib.crypto_defi_llama_view.display_historical_tvl
-        self.gacc = lib.crypto_defi_terramoney_fcd_model.get_account_growth
-        self.gacc_chart = lib.crypto_defi_terramoney_fcd_view.display_account_growth
         self.gdapps = lib.crypto_defi_llama_model.get_grouped_defi_protocols
         self.gdapps_chart = lib.crypto_defi_llama_view.display_grouped_defi_protocols
-        self.gov_proposals = lib.crypto_defi_terramoney_fcd_model.get_proposals
-        self.gov_proposals_chart = (
-            lib.crypto_defi_terramoney_fcd_view.display_gov_proposals
-        )
         self.ldapps = lib.crypto_defi_llama_model.get_defi_protocols
         self.ldapps_chart = lib.crypto_defi_llama_view.display_defi_protocols
         self.luna_supply = lib.crypto_defi_smartstake_model.get_luna_supply_stats
@@ -275,22 +213,8 @@ class CryptoDeFi(Category):
         )
         self.newsletters = lib.crypto_defi_substack_model.get_newsletters
         self.newsletters_chart = lib.crypto_defi_substack_view.display_newsletters
-        self.sinfo = lib.crypto_defi_terramoney_fcd_model.get_staking_account_info
-        self.sinfo_chart = (
-            lib.crypto_defi_terramoney_fcd_view.display_account_staking_info
-        )
-        self.sratio = lib.crypto_defi_terramoney_fcd_model.get_staking_ratio_history
-        self.sratio_chart = (
-            lib.crypto_defi_terramoney_fcd_view.display_staking_ratio_history
-        )
-        self.sreturn = lib.crypto_defi_terramoney_fcd_model.get_staking_returns_history
-        self.sreturn_chart = (
-            lib.crypto_defi_terramoney_fcd_view.display_staking_returns_history
-        )
         self.stvl = lib.crypto_defi_llama_model.get_defi_tvl
         self.stvl_chart = lib.crypto_defi_llama_view.display_defi_tvl
-        self.validators = lib.crypto_defi_terramoney_fcd_model.get_validators
-        self.validators_chart = lib.crypto_defi_terramoney_fcd_view.display_validators
         self.vaults = lib.crypto_defi_coindix_model.get_defi_vaults
         self.vaults_chart = lib.crypto_defi_coindix_view.display_defi_vaults
 
@@ -421,14 +345,10 @@ class CryptoOnChain(Category):
         `dvcp`: Get daily volume for given pair [Source: https://graphql.bitquery.io/]\n
         `dvcp_chart`: Prints table showing daily volume for given pair\n
         `erc20_tokens`: Helper method that loads ~1500 most traded erc20 token.\n
-        `gwei`: Returns the most recent Ethereum gas fees in gwei\n
-        `gwei_chart`: Current gwei fees\n
         `hist`: Get information about balance historical transactions. [Source: Ethplorer]\n
         `hist_chart`: Display information about balance historical transactions. [Source: Ethplorer]\n
         `holders`: Get info about top token holders. [Source: Ethplorer]\n
         `holders_chart`: Display info about top ERC20 token holders. [Source: Ethplorer]\n
-        `hr`: Returns dataframe with mean hashrate of btc or eth blockchain and symbol price\n
-        `hr_chart`: Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.\n
         `info`: Get info about ERC20 token. [Source: Ethplorer]\n
         `info_chart`: Display info about ERC20 token. [Source: Ethplorer]\n
         `lt`: Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]\n
@@ -489,14 +409,10 @@ class CryptoOnChain(Category):
             lib.crypto_onchain_bitquery_view.display_daily_volume_for_given_pair
         )
         self.erc20_tokens = lib.crypto_onchain_bitquery_model.get_erc20_tokens
-        self.gwei = lib.crypto_onchain_ethgasstation_model.get_gwei_fees
-        self.gwei_chart = lib.crypto_onchain_ethgasstation_view.display_gwei_fees
         self.hist = lib.crypto_onchain_ethplorer_model.get_address_history
         self.hist_chart = lib.crypto_onchain_ethplorer_view.display_address_history
         self.holders = lib.crypto_onchain_ethplorer_model.get_top_token_holders
         self.holders_chart = lib.crypto_onchain_ethplorer_view.display_top_token_holders
-        self.hr = lib.crypto_dd_glassnode_model.get_hashrate
-        self.hr_chart = lib.crypto_dd_glassnode_view.display_hashrate
         self.info = lib.crypto_onchain_ethplorer_model.get_token_info
         self.info_chart = lib.crypto_onchain_ethplorer_view.display_token_info
         self.lt = lib.crypto_onchain_bitquery_model.get_dex_trades_by_exchange
@@ -535,8 +451,6 @@ class CryptoOverview(Category):
     Attributes:
         `altindex`: Get altcoin index overtime\n
         `altindex_chart`: Displays altcoin index overtime\n
-        `btcrb`: Get bitcoin price data\n
-        `btcrb_chart`: Displays bitcoin rainbow chart\n
         `categories`: Returns top crypto categories [Source: CoinGecko]\n
         `categories_chart`: Shows top cryptocurrency categories by market capitalization\n
         `cbpairs`: Get a list of available currency pairs for trading. [Source: Coinbase]\n
@@ -592,8 +506,6 @@ class CryptoOverview(Category):
         super().__init__()
         self.altindex = lib.crypto_ov_blockchaincenter_model.get_altcoin_index
         self.altindex_chart = lib.crypto_ov_blockchaincenter_view.display_altcoin_index
-        self.btcrb = lib.crypto_ov_glassnode_model.get_btc_rainbow
-        self.btcrb_chart = lib.crypto_ov_glassnode_view.display_btc_rainbow
         self.categories = lib.crypto_ov_pycoingecko_model.get_top_crypto_categories
         self.categories_chart = lib.crypto_ov_pycoingecko_view.display_categories
         self.cbpairs = lib.crypto_ov_coinbase_model.get_trading_pairs

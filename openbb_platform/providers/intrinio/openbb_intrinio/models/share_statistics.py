@@ -8,7 +8,10 @@ from openbb_core.provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+)
 from pydantic import Field
 
 
@@ -53,26 +56,33 @@ class IntrinioShareStatisticsFetcher(
         return IntrinioShareStatisticsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioShareStatisticsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        data: Dict = {}
+        data = {"symbol": query.symbol, "date": datetime.now().date()}
 
         tags = [
             "public_float",
             "weightedavebasicdilutedsharesos",
             "adjweightedavebasicdilutedsharesos",
         ]
-        for tag in tags:
-            url = f"https://api-v2.intrinio.com/companies/{query.symbol}/data_point/{tag}/number?api_key={api_key}"
-            data[tag] = get_data_one(url, **kwargs).get("value")
 
-        data["symbol"] = query.symbol
-        data["date"] = datetime.now().date()
+        urls = [
+            f"https://api-v2.intrinio.com/companies/{query.symbol}/data_point/{tag}/number?api_key={api_key}"
+            for tag in tags
+        ]
+
+        async def callback(response: ClientResponse, _: Any) -> Dict:
+            """Return the response."""
+            return {response.url.parts[-2]: await response.json()}
+
+        for result in await amake_requests(urls, callback, **kwargs):
+            data.update(result)
+
         return [data]
 
     @staticmethod

@@ -1,6 +1,5 @@
 """FMP Currency Available Pairs Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -47,7 +46,7 @@ class FMPCurrencyPairsFetcher(
         return FMPCurrencyPairsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -58,7 +57,7 @@ class FMPCurrencyPairsFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

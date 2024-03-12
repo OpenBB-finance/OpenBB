@@ -67,7 +67,7 @@ class IntrinioMarketIndicesFetcher(
         return IntrinioMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -79,7 +79,7 @@ class IntrinioMarketIndicesFetcher(
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
         url = f"{base_url}/{query.symbol}/historical_data/{query.tag}?{query_str}&api_key={api_key}"
 
-        return get_data_many(url, "historical_data", **kwargs)
+        return await get_data_many(url, "historical_data", **kwargs)
 
     @staticmethod
     def transform_data(

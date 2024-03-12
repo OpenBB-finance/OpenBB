@@ -3,38 +3,38 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-price-full/crypto/BTCUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1day&to=2023-01-10
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/crypto/BTCUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -48,9 +48,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:21:47 GMT
-      ETag:
-      - W/"eec-rA4PG5qrZArsSp6t/v+2L1hjzQk"
+      - Thu, 29 Feb 2024 04:42:50 GMT
+      Etag:
+      - W/"ee3-iGBRI0WlQUT/ED3Q3GcS73lQbMw"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

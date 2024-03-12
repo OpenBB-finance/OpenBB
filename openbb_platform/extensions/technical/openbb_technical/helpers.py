@@ -1,11 +1,23 @@
 """Technical Analysis Helpers."""
+
 import warnings
-from typing import Any, Literal, Optional, Tuple
+from typing import Any, List, Literal, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 
 _warn = warnings.warn
+
+
+def validate_data(data: list, length: Union[int, List[int]]) -> None:
+    """Validate data."""
+    if isinstance(length, int):
+        length = [length]
+    for item in length:
+        if item > len(data):
+            raise ValueError(
+                f"Data length is less than required by parameters: {max(length)}"
+            )
 
 
 def parkinson(

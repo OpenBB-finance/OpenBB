@@ -1,6 +1,5 @@
 """FMP Available Indices Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -45,7 +44,7 @@ class FMPAvailableIndicesFetcher(
         return FMPAvailableIndicesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPAvailableIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -56,7 +55,7 @@ class FMPAvailableIndicesFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-indexes?apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

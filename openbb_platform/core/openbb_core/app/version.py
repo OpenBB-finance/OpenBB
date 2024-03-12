@@ -1,4 +1,5 @@
 """Version script for the OpenBB Platform."""
+
 import shutil
 import subprocess
 from pathlib import Path
@@ -16,7 +17,12 @@ def get_package_version(package: str):
     except pkg_resources.DistributionNotFound:
         package += "-nightly"
         is_nightly = True
-        version = pkg_resources.get_distribution(package).version
+        try:
+            version = pkg_resources.get_distribution(package).version
+        except pkg_resources.DistributionNotFound:
+            package = "openbb-core"
+            version = pkg_resources.get_distribution(package).version
+            version += "core"
 
     if is_git_repo(Path(__file__).parent.resolve()) and not is_nightly:
         version += "dev"
@@ -42,4 +48,13 @@ def is_git_repo(path: Path):
         return False
 
 
-VERSION = get_package_version(PACKAGE)
+def get_major_minor(version: str) -> tuple[int, int]:
+    """Retrieve the major and minor version from a version string."""
+    parts = version.split(".")
+    return (int(parts[0]), int(parts[1]))
+
+
+try:
+    VERSION = get_package_version(PACKAGE)
+except pkg_resources.DistributionNotFound:
+    VERSION = "unknown"

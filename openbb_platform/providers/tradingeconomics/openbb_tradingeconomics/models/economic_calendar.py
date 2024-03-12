@@ -1,17 +1,16 @@
 """Trading Economics Economic Calendar Model."""
 
-
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Set, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import ClientResponse, amake_request, check_item
 from openbb_tradingeconomics.utils import url_generator
-from openbb_tradingeconomics.utils.countries import country_list
+from openbb_tradingeconomics.utils.countries import COUNTRIES
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
@@ -40,10 +39,10 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
 
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
     # TODO: Probably want to figure out the list we can use.
-    country: Optional[Union[str, List[str]]] = Field(
-        default=None, description="Country of the event"
-    )
+    country: Optional[str] = Field(default=None, description="Country of the event.")
     importance: Optional[IMPORTANCE] = Field(
         default=None, description="Importance of the event."
     )
@@ -51,11 +50,14 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def validate_country(cls, v: Union[str, List[str], Set[str]]):
-        """Validate the country input."""
-        if isinstance(v, str):
-            return v.lower().replace(" ", "_")
-        return ",".join([country.lower().replace(" ", "_") for country in list(v)])
+    def validate_country(cls, c: str):  # pylint: disable=E0213
+        """Validate country."""
+        result = []
+        values = c.replace(" ", "_").split(",")
+        for v in values:
+            check_item(v.lower(), COUNTRIES)
+            result.append(v.lower())
+        return ",".join(result)
 
     @field_validator("importance")
     @classmethod
@@ -108,24 +110,13 @@ class TEEconomicCalendarFetcher(
         return TEEconomicCalendarQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: TEEconomicCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> Union[dict, List[dict]]:
         """Return the raw data from the TE endpoint."""
         api_key = credentials.get("tradingeconomics_api_key") if credentials else ""
-
-        if query.country is not None:
-            country = (
-                query.country.split(",") if "," in query.country else query.country
-            )
-            country = [country] if isinstance(country, str) else country
-
-            for c in country:
-                if c.replace("_", " ").lower() not in country_list:
-                    raise ValueError(f"{c} is not a valid country")
-            query.country = country
 
         url = url_generator.generate_url(query)
         if not url:
@@ -133,10 +124,14 @@ class TEEconomicCalendarFetcher(
                 "No url generated. Check combination of input parameters."
             )
         url = f"{url}{api_key}"
-        response = make_request(url, **kwargs)
-        if response.status_code != 200:
-            raise RuntimeError(f"Error in TE request -> {response.text}")
-        return response.json()
+
+        async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
+            """Return the response."""
+            if response.status != 200:
+                raise RuntimeError(f"Error in TE request -> {await response.text()}")
+            return await response.json()
+
+        return await amake_request(url, response_callback=callback, **kwargs)
 
     @staticmethod
     def transform_data(

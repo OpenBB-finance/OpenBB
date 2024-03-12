@@ -1,4 +1,5 @@
-"""Account service."""
+"""Account."""
+
 # pylint: disable=W0212:protected-access
 import json
 from functools import wraps
@@ -18,13 +19,11 @@ if TYPE_CHECKING:
 
 
 class Account:
-    """The account service handles the following commands.
-
-    /account
-        login
-        logout
-        save
-        refresh
+    """/account
+    login
+    logout
+    save
+    refresh
     """
 
     SESSION_FILE = ".hub_session.json"
@@ -116,7 +115,7 @@ class Account:
 
         Returns
         -------
-        UserSettings
+        Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
         hs = self._create_hub_service(email, password, pat)
@@ -147,7 +146,7 @@ class Account:
 
         Returns
         -------
-        UserSettings
+        Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session
@@ -174,7 +173,7 @@ class Account:
 
         Returns
         -------
-        UserSettings
+        Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session
@@ -204,7 +203,7 @@ class Account:
 
         Returns
         -------
-        UserSettings
+        Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
         hub_session = self._base_app._command_runner.user_settings.profile.hub_session

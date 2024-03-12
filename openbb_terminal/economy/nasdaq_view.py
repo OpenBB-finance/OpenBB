@@ -1,4 +1,5 @@
 """NASDAQ Data Link View"""
+
 __docformat__ = "numpy"
 
 import logging

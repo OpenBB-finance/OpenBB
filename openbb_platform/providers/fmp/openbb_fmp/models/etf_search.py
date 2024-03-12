@@ -15,11 +15,11 @@ from pydantic import Field
 class FMPEtfSearchQueryParams(EtfSearchQueryParams):
     """FMP ETF Search Query."""
 
-    exchange: Optional[
-        Literal["AMEX", "NYSE", "NASDAQ", "ETF", "TSX", "EURONEXT"]
-    ] = Field(
-        description="The exchange code the ETF trades on.",
-        default=None,
+    exchange: Optional[Literal["AMEX", "NYSE", "NASDAQ", "ETF", "TSX", "EURONEXT"]] = (
+        Field(
+            description="The exchange code the ETF trades on.",
+            default=None,
+        )
     )
     is_active: Optional[Literal[True, False]] = Field(
         description="Whether the ETF is actively trading.",
@@ -87,7 +87,7 @@ class FMPEtfSearchFetcher(
         return FMPEtfSearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEtfSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -103,7 +103,7 @@ class FMPEtfSearchFetcher(
             exclude=["symbol"],
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
@@ -128,7 +128,7 @@ class FMPEtfSearchFetcher(
                 | etfs["industry"].str.contains(query.query, case=False)
                 | etfs["country"].str.contains(query.query, case=False)
             ]
-        for col in etfs:
-            if etfs[col].dtype in ("int", "float"):
-                etfs[col] = etfs[col].fillna(0)
+        etfs = (
+            etfs.fillna("N/A").replace("N/A", None).replace("", None).replace(0, None)
+        )
         return [FMPEtfSearchData.model_validate(d) for d in etfs.to_dict("records")]

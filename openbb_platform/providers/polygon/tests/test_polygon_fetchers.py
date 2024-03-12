@@ -11,6 +11,9 @@ from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
 from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
 from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
+from openbb_polygon.models.index_historical import (
+    PolygonIndexHistoricalFetcher,
+)
 from openbb_polygon.models.market_indices import (
     PolygonMarketIndicesFetcher,
 )
@@ -59,8 +62,21 @@ def test_polygon_market_indices_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
+def test_polygon_index_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "NDX",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 5, 10),
+    }
+
+    fetcher = PolygonIndexHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_polygon_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL"}
+    params = {"symbol": "AAPL"}
 
     fetcher = PolygonCompanyNewsFetcher()
     result = fetcher.test(params, credentials)

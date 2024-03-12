@@ -1,8 +1,10 @@
 """Test ta extension."""
+
 import random
 from typing import Literal
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -43,7 +45,7 @@ def get_crypto_data():
         return data["crypto_data"]
 
     # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTC"])  # noqa: S311
+    symbol = random.choice(["BTCUSD"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
     data["crypto_data"] = openbb.obb.crypto.price.historical(
@@ -57,7 +59,7 @@ def get_data(menu: Literal["stocks", "crypto"]):
     return funcs[menu]()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -95,7 +97,7 @@ def test_technical_atr(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -133,7 +135,7 @@ def test_technical_fib(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "offset": ""}, "stocks"),
@@ -151,7 +153,7 @@ def test_technical_obv(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "signal": ""}, "stocks"),
@@ -169,7 +171,7 @@ def test_technical_fisher(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -205,7 +207,7 @@ def test_technical_adosc(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -245,7 +247,7 @@ def test_technical_bbands(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -281,7 +283,7 @@ def test_technical_zlma(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
@@ -307,7 +309,7 @@ def test_technical_aroon(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -343,7 +345,7 @@ def test_technical_sma(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -381,7 +383,7 @@ def test_technical_demark(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "anchor": "", "offset": ""}, "stocks"),
@@ -399,7 +401,7 @@ def test_technical_vwap(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -437,7 +439,7 @@ def test_technical_macd(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -473,7 +475,7 @@ def test_technical_hma(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -509,7 +511,7 @@ def test_technical_donchian(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -549,7 +551,7 @@ def test_technical_ichimoku(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "target": "", "period": ""}, "stocks"),
@@ -575,7 +577,7 @@ def test_technical_clenow(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -611,7 +613,7 @@ def test_technical_adx(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "offset": ""}, "stocks"),
@@ -629,7 +631,7 @@ def test_technical_ad(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -665,7 +667,7 @@ def test_technical_wma(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
@@ -691,7 +693,7 @@ def test_technical_cci(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -729,7 +731,7 @@ def test_technical_rsi(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -765,7 +767,7 @@ def test_technical_stoch(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -803,7 +805,7 @@ def test_technical_kc(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "index": "", "length": ""}, "stocks"),
@@ -821,7 +823,7 @@ def test_technical_cg(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -861,7 +863,7 @@ def test_technical_cones(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (

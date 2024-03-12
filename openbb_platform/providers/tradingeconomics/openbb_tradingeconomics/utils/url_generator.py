@@ -1,4 +1,5 @@
 """Helper to generate urls for Trading Economics API."""
+
 from datetime import date
 from typing import Dict, List
 from urllib.parse import quote, urlencode
@@ -34,7 +35,7 @@ def generate_url(in_query):
 
     # Handle the formatting for the api
     if "country" in query:
-        country = quote(",".join(query["country"]).replace("_", " "))
+        country = quote(query["country"].replace("_", " "))
     if "group" in query:
         group = quote(query["group"])
 

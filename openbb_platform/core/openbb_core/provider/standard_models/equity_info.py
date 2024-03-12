@@ -20,11 +20,9 @@ class EquityInfoQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EquityInfoData(Data):
@@ -35,6 +33,12 @@ class EquityInfoData(Data):
     cik: Optional[str] = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
+    )
+    cusip: Optional[str] = Field(
+        default=None, description="CUSIP identifier for the company."
+    )
+    isin: Optional[str] = Field(
+        default=None, description="International Securities Identification Number."
     )
     lei: Optional[str] = Field(
         default=None, description="Legal Entity Identifier assigned to the company."
@@ -140,8 +144,8 @@ class EquityInfoData(Data):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+        """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)])

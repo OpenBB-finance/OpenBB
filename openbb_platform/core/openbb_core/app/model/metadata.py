@@ -42,12 +42,12 @@ class Metadata(BaseModel):
             if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.dict().keys()),
+                    "columns": list(arg_val.model_dump().keys()),
                 }
 
             # List[Data]
             if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
-                columns = [list(d.dict().keys()) for d in arg_val]
+                columns = [list(d.model_dump().keys()) for d in arg_val]
                 columns = (item for sublist in columns for item in sublist)  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
@@ -71,9 +71,11 @@ class Metadata(BaseModel):
                 type(arg_val[0]), pd.DataFrame
             ):
                 columns = [
-                    list(df.index.names) + df.columns.tolist()
-                    if any(index is not None for index in list(df.index.names))
-                    else df.columns.tolist()
+                    (
+                        list(df.index.names) + df.columns.tolist()
+                        if any(index is not None for index in list(df.index.names))
+                        else df.columns.tolist()
+                    )
                     for df in arg_val
                 ]
                 new_arg_val = {
@@ -91,9 +93,11 @@ class Metadata(BaseModel):
             # List[Series]
             elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
                 columns = [
-                    list(series.index.names) + [series.name]
-                    if any(index is not None for index in list(series.index.names))
-                    else series.name
+                    (
+                        list(series.index.names) + [series.name]
+                        if any(index is not None for index in list(series.index.names))
+                        else series.name
+                    )
                     for series in arg_val
                 ]
                 new_arg_val = {

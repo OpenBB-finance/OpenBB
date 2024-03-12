@@ -1,4 +1,5 @@
 """ Fundamental Analysis Market Watch Model """
+
 __docformat__ = "numpy"
 
 import logging

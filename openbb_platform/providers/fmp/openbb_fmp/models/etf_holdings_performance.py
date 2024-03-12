@@ -1,16 +1,17 @@
 """FMP ETF Holdings Performance Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-
-from .etf_holdings import FMPEtfHoldingsFetcher
-from .etf_holdings_date import FMPEtfHoldingsDateFetcher
-from .price_performance import (
+from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
+from openbb_fmp.models.price_performance import (
     FMPPricePerformanceData,
     FMPPricePerformanceFetcher,
     FMPPricePerformanceQueryParams,
 )
+from pandas import DataFrame
 
 
 class FMPEtfHoldingsPerformanceQueryParams(FMPPricePerformanceQueryParams):
@@ -35,33 +36,21 @@ class FMPEtfHoldingsPerformanceFetcher(
         return FMPEtfHoldingsPerformanceQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEtfHoldingsPerformanceQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
-        # Get latest available holdings filing date
-        dates = FMPEtfHoldingsDateFetcher().extract_data(
-            FMPEtfHoldingsDateFetcher.transform_query(query.model_dump()),
-            credentials,
-            **kwargs,
-        )
-        if dates is None:
-            return []
-        # Get holdings for that date
-        holdings = FMPEtfHoldingsFetcher().extract_data(
-            FMPEtfHoldingsFetcher.transform_query(
-                {"symbol": query.symbol, "date": max([d["date"] for d in dates])}
-            ),
+        # Get the holdings data
+        holdings = await FMPEtfHoldingsFetcher().aextract_data(
+            FMPEtfHoldingsFetcher.transform_query({"symbol": query.symbol}),
             credentials,
             **kwargs,
         )
         if holdings is None:
-            return []
-        holdings_list = [
-            holding["symbol"] for holding in holdings if holding["symbol"] is not None
-        ]
+            raise RuntimeError(f"No holdings data found for {query.symbol}.")
+        holdings_list = DataFrame(holdings).asset.unique().tolist()
         # Split into chunks of 500
         chunks = [holdings_list[i : i + 500] for i in range(0, len(holdings_list), 500)]
         # Get price performance for the holdings
@@ -70,7 +59,7 @@ class FMPEtfHoldingsPerformanceFetcher(
             holdings_str = (
                 ",".join(holding_chunk) if len(holding_chunk) > 1 else holding_chunk[0]
             )
-            _performance = FMPPricePerformanceFetcher().extract_data(
+            _performance = await FMPPricePerformanceFetcher().aextract_data(
                 FMPPricePerformanceFetcher.transform_query({"symbol": holdings_str}),
                 credentials,
                 **kwargs,

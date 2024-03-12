@@ -26,7 +26,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
         default=None, description="Symbol of the pair to search."
     )
     date: Optional[dateType] = Field(
-        default=datetime.now().date(), description=QUERY_DESCRIPTIONS.get("date", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     search: Optional[str] = Field(
         default="",
@@ -105,17 +105,17 @@ class PolygonCurrencyPairsFetcher(
     def transform_query(params: Dict[str, Any]) -> PolygonCurrencyPairsQueryParams:
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
-        now = datetime.now().date()
+        now = datetime.now().date().isoformat()
         transform_params["symbol"] = (
             f"ticker=C:{params.get('symbol').upper()}" if params.get("symbol") else ""
         )
         if params.get("date") is None:
-            transform_params["start_date"] = now
+            transform_params["date"] = now
 
         return PolygonCurrencyPairsQueryParams(**transform_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: PolygonCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -134,7 +134,7 @@ class PolygonCurrencyPairsFetcher(
         all_data: List[Dict] = []
 
         while "next_url" in data:
-            data = get_data(request_url, **kwargs)
+            data = await get_data(request_url, **kwargs)
 
             if isinstance(data, list):
                 raise ValueError("Expected a dict, got a list")
@@ -159,6 +159,7 @@ class PolygonCurrencyPairsFetcher(
 
         return all_data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCurrencyPairsQueryParams,

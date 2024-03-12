@@ -1,6 +1,5 @@
 """FMP Balance Sheet Growth Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -44,7 +43,7 @@ class FMPBalanceSheetGrowthFetcher(
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -60,7 +59,7 @@ class FMPBalanceSheetGrowthFetcher(
             ["symbol"],
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -1,4 +1,5 @@
 """Test if providers and fetchers are covered by tests."""
+
 import os
 import unittest
 from importlib import import_module
@@ -11,15 +12,6 @@ from providers.tests.utils.unit_tests_generator import (
     check_pattern_in_file,
     get_provider_fetchers,
 )
-
-
-def get_providers() -> Dict[str, Provider]:
-    """Get the providers from the provider registry."""
-    providers: Dict[str, Provider] = {}
-    registry = RegistryLoader.from_extensions()
-    for provider_name, provider_cls in registry.providers.items():
-        providers[provider_name] = provider_cls
-    return providers
 
 
 def get_provider_test_files(provider: Provider):
@@ -39,11 +31,12 @@ def get_provider_test_files(provider: Provider):
 class ProviderFetcherTest(unittest.TestCase):
     """Tests for providers and fetchers."""
 
+    providers: Dict[str, Provider] = RegistryLoader.from_extensions().providers
+
     def test_provider_w_tests(self):
         """Test the provider fetchers and ensure all providers have tests."""
-        providers = get_providers()
 
-        for provider_name, provider_cls in providers.items():
+        for provider_name, provider_cls in self.providers.items():
             with self.subTest(i=provider_name):
                 path = get_provider_test_files(provider_cls)
 
@@ -51,13 +44,12 @@ class ProviderFetcherTest(unittest.TestCase):
 
     def test_provider_fetchers_w_tests(self):
         """Ensure all the fetchers in each provider have tests."""
-        providers = get_providers()
 
         provider_fetchers = get_provider_fetchers()
 
         for provider_name, fetcher_dict in provider_fetchers.items():
             for _, fetcher_cls in fetcher_dict.items():
-                path = get_provider_test_files(providers[provider_name])
+                path = get_provider_test_files(self.providers[provider_name])
 
                 # check that fetcher_cls is being instantiated in path
                 with self.subTest(i=fetcher_cls):

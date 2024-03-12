@@ -1,8 +1,10 @@
 """Test crypto API endpoints."""
+
 import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -18,7 +20,7 @@ def headers():
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "asd"}),
@@ -36,44 +38,23 @@ def test_crypto_search(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
             {
-                "symbol": "BTC-USD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-06",
-                "provider": "polygon",
-            }
-        ),
-        (
-            {
-                "interval": "1min",
+                "interval": "1d",
                 "provider": "fmp",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
-                "timeseries": 1,
             }
         ),
         (
             {
-                "interval": "15min",
-                "provider": "fmp",
-                "symbol": "BTCUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-03",
-                "timeseries": 1,
-            }
-        ),
-        (
-            {
-                "multiplier": 1,
-                "timespan": "minute",
+                "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
                 "provider": "polygon",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
@@ -82,11 +63,9 @@ def test_crypto_search(params, headers):
         ),
         (
             {
-                "multiplier": 1,
-                "timespan": "day",
+                "interval": "1d",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
                 "provider": "polygon",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
@@ -96,18 +75,17 @@ def test_crypto_search(params, headers):
         (
             {
                 "interval": "1d",
-                "period": "max",
                 "provider": "yfinance",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-04",
             }
         ),
         (
             {
                 "provider": "tiingo",
-                "interval": "1day",
-                "exchanges": ["POLONIEX", "GDAX"],
+                "interval": "1d",
+                "exchanges": None,
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -116,7 +94,7 @@ def test_crypto_search(params, headers):
         (
             {
                 "provider": "tiingo",
-                "interval": "1hour",
+                "interval": "1h",
                 "exchanges": ["POLONIEX", "GDAX"],
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",

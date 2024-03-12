@@ -19,6 +19,7 @@ from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
@@ -47,10 +48,9 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredcpi_fetcher(credentials=test_credentials):
     """Test FREDConsumerPriceIndexFetcher."""
-    params = {"countries": ["portugal", "spain"]}
+    params = {"country": "portugal,spain"}
 
     fetcher = FREDConsumerPriceIndexFetcher()
     result = fetcher.test(params, credentials)
@@ -58,10 +58,9 @@ def test_fredcpi_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fred_yield_curve_fetcher(credentials=test_credentials):
     """Test FREDYieldCurveFetcher."""
-    params = {}
+    params = {"date": datetime.date(2023, 12, 1)}
 
     fetcher = FREDYieldCurveFetcher()
     result = fetcher.test(params, credentials)
@@ -69,7 +68,6 @@ def test_fred_yield_curve_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredsofr_fetcher(credentials=test_credentials):
     """Test FREDSOFRFetcher."""
     params = {}
@@ -80,7 +78,6 @@ def test_fredsofr_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredestr_fetcher(credentials=test_credentials):
     """Test FREDESTRFetcher."""
     params = {}
@@ -91,7 +88,6 @@ def test_fredestr_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredsonia_fetcher(credentials=test_credentials):
     """Test FREDSONIAFetcher."""
     params = {}
@@ -102,7 +98,6 @@ def test_fredsonia_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredameribor_fetcher(credentials=test_credentials):
     """Test FREDAMERIBORFetcher."""
     params = {}
@@ -113,7 +108,6 @@ def test_fredameribor_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredfed_fetcher(credentials=test_credentials):
     """Test FREDFEDFetcher."""
     params = {}
@@ -124,7 +118,6 @@ def test_fredfed_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_fredprojection_fetcher(credentials=test_credentials):
     """Test FREDPROJECTIONFetcher."""
     params = {}
@@ -135,7 +128,6 @@ def test_fredprojection_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="FRED has deeply nested return types which are not supported.")
 def test_frediorb_fetcher(credentials=test_credentials):
     """Test FREDIORBFetcher."""
     params = {}
@@ -290,5 +282,23 @@ def test_fred_series_fetcher(credentials=test_credentials):
     params = {"symbol": "SP500", "filter_variable": "frequency", "filter_value": "w"}
 
     fetcher = FredSeriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_regional_fetcher(credentials=test_credentials):
+    """Test FredRegionalFetcher."""
+    params = {
+        "symbol": "942",
+        "is_series_group": True,
+        "start_date": datetime.date(1975, 1, 1),
+        "frequency": "q",
+        "units": "Index 1980:Q1=100",
+        "region_type": "state",
+        "season": "NSA",
+    }
+
+    fetcher = FredRegionalDataFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

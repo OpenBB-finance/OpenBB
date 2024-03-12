@@ -2,14 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
-from typing_extensions import Annotated
+from openbb_core.app.static.utils.decorators import exception_handler, validate
+from openbb_core.app.static.utils.filters import filter_inputs
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_index(Container):
@@ -17,20 +18,29 @@ class ROUTER_index(Container):
     available
     constituents
     market
+    /price
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def available(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
-        """Available Indices. Available indices for a given provider.
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """All indices available from a given provider.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -40,13 +50,13 @@ class ROUTER_index(Container):
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AvailableIndices
@@ -59,44 +69,54 @@ class ROUTER_index(Container):
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
+        code : Optional[str]
+            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)
+        symbol : Optional[str]
+            Symbol for the index. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.index.available()
+        >>> obb.index.available(provider='fmp')
+        >>> obb.index.available(provider='yfinance')
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={},
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/index/available",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/available",
+                        ("fmp", "yfinance"),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
         )
 
+    @exception_handler
     @validate
     def constituents(
         self,
-        index: Annotated[
-            Literal["nasdaq", "sp500", "dowjones"],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        provider: Annotated[
+            Optional[Literal["fmp"]],
             OpenBBCustomParameter(
-                description="Index for which we want to fetch the constituents."
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
-        ] = "dowjones",
-        provider: Optional[Literal["fmp"]] = None,
+        ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
-        """Index Constituents. Constituents of an index.
+    ) -> OBBject:
+        """Index Constituents.
 
         Parameters
         ----------
-        index : Literal['nasdaq', 'sp500', 'dowjones']
-            Index for which we want to fetch the constituents.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -113,55 +133,64 @@ class ROUTER_index(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IndexConstituents
         -----------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the constituent company in the index.
-        sector : str
-            Sector the constituent company in the index belongs to.
+        sector : Optional[str]
+            Sector the constituent company in the index belongs to. (provider: fmp)
         sub_sector : Optional[str]
-            Sub-sector the constituent company in the index belongs to.
+            Sub-sector the constituent company in the index belongs to. (provider: fmp)
         headquarter : Optional[str]
-            Location of the headquarter of the constituent company in the index.
+            Location of the headquarter of the constituent company in the index. (provider: fmp)
         date_first_added : Optional[Union[str, date]]
-            Date the constituent company was added to the index.
-        cik : int
-            Central Index Key (CIK) for the requested entity.
+            Date the constituent company was added to the index. (provider: fmp)
+        cik : Optional[int]
+            Central Index Key (CIK) for the requested entity. (provider: fmp)
         founded : Optional[Union[str, date]]
-            Founding year of the constituent company in the index.
+            Founding year of the constituent company in the index. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="dowjones")
+        >>> obb.index.constituents(symbol='dowjones', provider='fmp')
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "index": index,
-            },
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/index/constituents",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/constituents",
+                        ("fmp",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
+    @exception_handler
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
+    )
     def market(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -175,60 +204,56 @@ class ROUTER_index(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Market Indices.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        interval : Optional[str]
+            Time interval of the data to return.
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        timeseries : Optional[Annotated[int, Ge(ge=0)]]
-            Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
-        tag : Optional[str]
-            Index tag. (provider: intrinio)
-        type : Optional[str]
-            Index type. (provider: intrinio)
-        sort : Literal['asc', 'desc']
-            Sort order. (provider: intrinio);
-            Sort order of the data. (provider: polygon)
-        limit : int
+        limit : Optional[int]
             The number of data entries to return. (provider: intrinio, polygon)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
-        adjusted : bool
-            Whether the data is adjusted. (provider: polygon)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
+        sort : Literal['asc', 'desc']
+            Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)
 
         Returns
         -------
         OBBject
             results : List[MarketIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         MarketIndices
         -------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : Optional[Annotated[float, Strict(strict=True)]]
             The open price.
@@ -240,40 +265,61 @@ class ROUTER_index(Container):
             The close price.
         volume : Optional[int]
             The trading volume.
-        adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
-        unadjusted_volume : Optional[float]
-            Unadjusted volume of the symbol. (provider: fmp)
+        vwap : Optional[float]
+            Volume Weighted Average Price over the period. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp)
+            Change in the price from the previous close. (provider: fmp)
         change_percent : Optional[float]
-            Change % in the price of the symbol. (provider: fmp)
-        label : Optional[str]
-            Human readable format of the date. (provider: fmp)
-        change_over_time : Optional[float]
-            Change % in the price of the symbol over a period of time. (provider: fmp)
+            Change in the price from the previous close, as a normalized percent. (provider: fmp)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.index.market(symbol="SPX")
+        >>> obb.index.market(symbol='^IBEX', provider='fmp')
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+            category=DeprecationWarning,
+            stacklevel=2,
         )
 
         return self._run(
             "/index/market",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/market",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "interval": interval,
+                },
+                extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "yfinance",
+                        ]
+                    }
+                },
+            )
         )
+
+    @property
+    def price(self):
+        # pylint: disable=import-outside-toplevel
+        from . import index_price
+
+        return index_price.ROUTER_index_price(command_runner=self._command_runner)

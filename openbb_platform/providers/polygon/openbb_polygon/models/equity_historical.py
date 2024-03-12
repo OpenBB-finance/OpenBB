@@ -1,8 +1,9 @@
 """Polygon Equity Historical Price Model."""
 
-from concurrent.futures import ThreadPoolExecutor
+# pylint: disable=unused-argument,protected-access
+
+import warnings
 from datetime import datetime
-from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
@@ -12,13 +13,22 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_polygon.utils.helpers import get_data
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+)
+from pandas import to_datetime
 from pydantic import (
     Field,
     PositiveInt,
     PrivateAttr,
     model_validator,
 )
+from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -27,23 +37,34 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: str = Field(
-        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", "")
+        + " The numeric portion of the interval can be any positive integer."
+        + " The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+    )
+    adjustment: Literal["splits_only", "unadjusted"] = Field(
+        default="splits_only",
+        description="The adjustment factor to apply. Default is splits only.",
+    )
+    extended_hours: bool = Field(
+        default=False,
+        description="Include Pre and Post market data.",
     )
     sort: Literal["asc", "desc"] = Field(
-        default="desc", description="Sort order of the data."
+        default="asc",
+        description="Sort order of the data."
+        + " This impacts the results in combination with the 'limit' parameter."
+        + " The results are always returned in ascending order by date.",
     )
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    adjusted: bool = Field(
-        default=True,
-        description="Output time series is adjusted by historical split and dividend events.",
-    )
     _multiplier: PositiveInt = PrivateAttr(default=None)
     _timespan: str = PrivateAttr(default=None)
 
-    # pylint: disable=protected-access
     @model_validator(mode="after")
     @classmethod
     def get_api_interval_params(cls, values: "PolygonEquityHistoricalQueryParams"):
@@ -107,57 +128,56 @@ class PolygonEquityHistoricalFetcher(
         return PolygonEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(  # pylint: disable=protected-access
         query: PolygonEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
-
-        data: List = []
-
-        # if there are more than 20 symbols, we need to increase the timeout
-        if len(query.symbol.split(",")) > 20:
-            kwargs.update({"preferences": {"request_timeout": 30}})
-
-        def multiple_symbols(
-            symbol: str, data: List[PolygonEquityHistoricalData]
-        ) -> None:
-            results: List = []
-
-            # pylint: disable=protected-access
-            url = (
+        adjustment = query.adjustment == "splits_only"
+        urls = [
+            (
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
-                f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+                f"{query.start_date}/{query.end_date}?adjusted={adjustment}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
+            for symbol in query.symbol.split(",")
+        ]
 
-            response = get_data(url, **kwargs)
+        async def callback(
+            response: ClientResponse, session: ClientSession
+        ) -> List[Dict]:
+            data = await response.json()
 
-            next_url = response.get("next_url", None)
-            results = response.get("results", [])
+            symbol = response.url.parts[4]
+            next_url = data.get("next_url", None)
+            results: list = data.get("results", [])
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
-                response = get_data(url, **kwargs)
-                results.extend(response.get("results", []))
-                next_url = response.get("next_url", None)
+                data = await session.get_json(url)
+                results.extend(data.get("results", []))
+                next_url = data.get("next_url", None)
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(r["t"] / 1000)
+                r["t"] = datetime.fromtimestamp(
+                    r["t"] / 1000, tz=timezone("America/New_York")
+                )
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
+                else:
+                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
-            data.extend(results)
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol}")
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+            return results
 
-        return data
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
@@ -166,4 +186,23 @@ class PolygonEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[PolygonEquityHistoricalData]:
         """Transform the data from the Polygon endpoint."""
-        return [PolygonEquityHistoricalData.model_validate(d) for d in data]
+        if not data:
+            raise EmptyDataError()
+        if query.extended_hours is True or query._timespan not in [
+            "second",
+            "minute",
+            "hour",
+        ]:
+            return [
+                PolygonEquityHistoricalData.model_validate(d)
+                for d in sorted(data, key=lambda x: x["t"], reverse=False)
+            ]
+
+        return [
+            PolygonEquityHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+            if to_datetime(d["t"]).time()
+            >= datetime.strptime("09:30:00", "%H:%M:%S").time()
+            and to_datetime(d["t"]).time()
+            <= datetime.strptime("16:00:00", "%H:%M:%S").time()
+        ]

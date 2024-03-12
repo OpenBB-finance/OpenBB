@@ -1,4 +1,5 @@
 """Binance model"""
+
 __docformat__ = "numpy"
 
 import argparse

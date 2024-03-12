@@ -1,5 +1,6 @@
 """FMP Insider Trading Model."""
 
+import math
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,10 +8,9 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingData,
     InsiderTradingQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
-from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field
+from pydantic import Field, model_validator
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -24,6 +24,14 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
         description="Type of the transaction.",
         alias="transactionType",
     )
+
+    @model_validator(mode="after")
+    @classmethod
+    def validate_transaction_type(cls, values: "FMPInsiderTradingQueryParams"):
+        """Validate the transaction type."""
+        if isinstance(values.transaction_type, list):
+            values.transaction_type = ",".join(values.transaction_type)
+        return values
 
 
 class FMPInsiderTradingData(InsiderTradingData):
@@ -56,33 +64,27 @@ class FMPInsiderTradingFetcher(
         return FMPInsiderTradingQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        query.transaction_type = (
-            TRANSACTION_TYPES_DICT[query.transaction_type]
-            if query.transaction_type
-            else None
-        )
+
+        transaction_type = TRANSACTION_TYPES_DICT.get(query.transaction_type, None)
+        query = query.model_copy(update={"transaction_type": transaction_type})
+
         base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
         query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
 
-        data: List[Dict] = []
+        pages = math.ceil(query.limit / 100)
+        urls = [
+            f"{base_url}?{query_str}&page={page}&apikey={api_key}"
+            for page in range(pages)
+        ]
 
-        limit_reached = 0
-        page = 0
-
-        while limit_reached <= query.limit:
-            url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
-            data.extend(get_data_many(url, **kwargs))
-            limit_reached += len(data)
-            page += 1
-
-        return data[: query.limit]
+        return await amake_requests(urls, raise_for_status=True, **kwargs)
 
     @staticmethod
     def transform_data(

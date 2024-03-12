@@ -1,6 +1,8 @@
 """FMP Currency Historical Price Model."""
 
+# pylint: disable=unused-argument
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -10,8 +12,19 @@ from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
     CurrencyHistoricalQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+    get_querystring,
+)
+from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field
+
+_warn = warnings.warn
 
 
 class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
@@ -20,33 +33,29 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+    interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
+    )
 
 
 class FMPCurrencyHistoricalData(CurrencyHistoricalData):
     """FMP Currency Historical Price Data."""
 
     adj_close: Optional[float] = Field(
-        default=None, description="Adjusted Close Price of the symbol."
-    )
-    unadjusted_volume: Optional[float] = Field(
-        default=None, description="Unadjusted volume of the symbol."
+        default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
     change: Optional[float] = Field(
         default=None,
-        description="Change in the price of the symbol from the previous day.",
+        description="Change in the price from the previous close.",
     )
     change_percent: Optional[float] = Field(
-        default=None, description="Change % in the price of the symbol."
-    )
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
-    )
-    change_over_time: Optional[float] = Field(
         default=None,
-        description="Change % in the price of the symbol over a period of time.",
+        description="Change in the price from the previous close, as a normalized percent.",
+        alias="changeOverTime",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 
@@ -73,7 +82,7 @@ class FMPCurrencyHistoricalFetcher(
         return FMPCurrencyHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -81,24 +90,56 @@ class FMPCurrencyHistoricalFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
+        interval = get_interval(query.interval)
+
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = (
-            get_querystring(query.model_dump(), ["symbol"])
-            .replace("start_date", "from")
-            .replace("end_date", "to")
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol"])
 
-        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
+        def get_url_params(symbol: str) -> str:
+            url_params = f"{symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-chart/{interval}/{url_params}"
+            if interval == "1day":
+                url = f"{base_url}/historical-price-full/forex/{url_params}"
+            return url
 
-        if query.interval == "1day":
-            url = f"{base_url}/historical-price-full/forex/{url_params}"
+        # if there are more than 20 symbols, we need to increase the timeout
+        if len(query.symbol.split(",")) > 20:
+            kwargs.update({"preferences": {"request_timeout": 30}})
 
-        return get_data_many(url, "historical", **kwargs)
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
+            data = await response.json()
+            symbol = response.url.parts[-1]
+            results = []
+            if not data:
+                _warn(f"No data found the the symbol: {symbol}")
+                return results
+
+            if isinstance(data, dict):
+                results = data.get("historical", [])
+
+            if "," in query.symbol:
+                for d in results:
+                    d["symbol"] = symbol
+            return results
+
+        urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
         query: FMPCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCurrencyHistoricalData]:
         """Return the transformed data."""
-        return [FMPCurrencyHistoricalData.model_validate(d) for d in data]
+
+        # Get rid of duplicate fields.
+        to_pop = ["label", "changePercent", "unadjustedVolume"]
+        results: List[FMPCurrencyHistoricalData] = []
+
+        for d in sorted(data, key=lambda x: x["date"], reverse=False):
+            _ = [d.pop(pop) for pop in to_pop if pop in d]
+            if d.get("unadjusted_volume") == d.get("volume"):
+                _ = d.pop("unadjusted_volume")
+            results.append(FMPCurrencyHistoricalData.model_validate(d))
+
+        return results

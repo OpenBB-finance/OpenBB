@@ -1,4 +1,5 @@
 """Integration test generator."""
+
 import argparse
 from pathlib import Path, PosixPath
 from typing import (
@@ -13,13 +14,13 @@ from typing import (
     get_type_hints,
 )
 
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
-TEST_TEMPLATE = """\n\n@pytest.mark.parametrize(
+TEST_TEMPLATE = """\n\n@parametrize(
     "params",
     [
         {params}
@@ -43,6 +44,9 @@ def find_extensions(filter_chart: Optional[bool] = True):
     if filter_chart:
         filter_ext.append("charting")
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
+    extensions.extend(
+        [x for x in Path("openbb_platform/obbject_extensions").iterdir() if x.is_dir()]
+    )
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
 
@@ -61,6 +65,7 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
                     f'''"""Test {extension_name} extension."""
 import pytest
 from openbb_core.app.model.obbject import OBBject
+from extensions.tests.conftest import parametrize
 
 
 @pytest.fixture(scope="session")
@@ -254,13 +259,13 @@ def add_test_commands_to_file(  # pylint: disable=W0102
         if extension_name in extensions_data_processing:
             write_test_data_processing(
                 test_file=test_file,
-                commands_map=commands_map,
+                commands_map=commands_map,  # type: ignore
                 extension_name=extension_name,
             )
         else:
             write_test(
                 test_file=test_file,
-                commands_model=commands_model,
+                commands_model=commands_model,  # type: ignore
                 extension_name=extension_name,
                 provider_interface_map=provider_interface_map,
             )
@@ -277,7 +282,7 @@ def write_charting_extension_integration_tests():
     """Write charting extension integration tests."""
     import openbb_charting  # pylint: disable=import-outside-toplevel
 
-    functions = ChartingService.get_implemented_charting_functions()
+    functions = Charting.functions()
 
     charting_ext_path = Path(openbb_charting.__file__).parent.parent
     test_file = charting_ext_path / "integration" / "test_charting_python.py"
@@ -290,7 +295,7 @@ def write_charting_extension_integration_tests():
             test_file=test_file,
             params_list=[{"chart": "True"}],
             full_command=func.replace("_", "."),
-            test_name=f"chart_{func}",
+            test_name=f"chart_{func}",  # TODO: fix the name of the charting library
             extra=extra,
         )
 
@@ -304,15 +309,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--charting",
         dest="charting",
-        default=True,
-        action="store_false",
+        default=False,
+        action="store_true",
         help="Generate charting extension integration tests",
     )
     parser.add_argument(
         "--commands",
         dest="commands",
-        default=True,
-        action="store_false",
+        default=False,
+        action="store_true",
         help="Generate commands integration tests",
     )
 

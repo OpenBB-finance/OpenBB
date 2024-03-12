@@ -1,4 +1,5 @@
 """Cryptocurrency Context Controller"""
+
 __docformat__ = "numpy"
 # pylint: disable=R0904, C0302, R1710, W0622, C0201, C0301
 
@@ -515,9 +516,9 @@ class CryptoController(CryptoBaseController):
                     skip=ns_parser.skip,
                     show_all=True,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 find(
@@ -526,9 +527,9 @@ class CryptoController(CryptoBaseController):
                     key=ns_parser.key,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)

@@ -1,6 +1,5 @@
 """Earnings Call Transcript Standard Model."""
 
-
 from datetime import datetime
 from typing import List, Set, Union
 
@@ -22,11 +21,9 @@ class EarningsCallTranscriptQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EarningsCallTranscriptData(Data):
@@ -40,8 +37,8 @@ class EarningsCallTranscriptData(Data):
 
     @field_validator("symbol", mode="before")
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+        """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)])

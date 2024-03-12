@@ -1,6 +1,6 @@
 """Key Executives Standard Model."""
 
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -15,11 +15,10 @@ class KeyExecutivesQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    @classmethod
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class KeyExecutivesData(Data):
@@ -30,7 +29,9 @@ class KeyExecutivesData(Data):
     pay: Optional[ForceInt] = Field(
         default=None, description="Pay of the key executive."
     )
-    currency_pay: str = Field(description="Currency of the pay.")
+    currency_pay: Optional[str] = Field(
+        default=None, description="Currency of the pay."
+    )
     gender: Optional[str] = Field(
         default=None, description="Gender of the key executive."
     )

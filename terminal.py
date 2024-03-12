@@ -1,11 +1,15 @@
 import sys
+import warnings
 from multiprocessing import freeze_support
 
-import openbb_terminal.config_terminal as cfg
+# pylint:disable=wrong-import-position
+warnings.filterwarnings("ignore", category=FutureWarning, module="yfinance.*")
+warnings.filterwarnings("ignore", category=FutureWarning, module="pandas.*")
+import openbb_terminal.config_terminal as cfg  # noqa: E402
 
 # pylint:disable=unused-import,import-outside-toplevel
-import openbb_terminal.core.session.current_system as syst  # noqa: F401
-from openbb_terminal.terminal_helper import (
+import openbb_terminal.core.session.current_system as syst  # noqa: F401,E402
+from openbb_terminal.terminal_helper import (  # noqa: E402
     hide_splashscreen,
     is_auth_enabled,
     is_installer,

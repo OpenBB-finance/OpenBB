@@ -1,4 +1,5 @@
 """Test provider interface."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest

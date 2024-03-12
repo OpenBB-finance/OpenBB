@@ -54,7 +54,7 @@ def test_to_numpy(obb):
     """Test obbject to numpy array."""
 
     cpi_np = obb.economy.cpi(
-        countries=["portugal", "spain", "switzerland"], frequency="annual"
+        country=["portugal", "spain", "switzerland"], frequency="annual"
     ).to_numpy()
     assert isinstance(cpi_np, np.ndarray)
 
@@ -63,7 +63,7 @@ def test_to_numpy(obb):
 def test_to_dict(obb):
     """Test obbject to dict."""
 
-    fed_dict = obb.fixedincome.rate.effr(start_date="2010-01-01").to_dict()
+    fed_dict = obb.fixedincome.rate.ameribor(start_date="2020-01-01").to_dict()
     assert isinstance(fed_dict, dict)
 
 
@@ -74,8 +74,9 @@ def test_to_dict(obb):
 def test_to_chart(obb):
     """Test obbject to chart."""
 
-    stocks_chart = obb.equity.price.historical("AAPL", provider="fmp").to_chart()
-    assert isinstance(stocks_chart, OpenBBFigure)
+    res = obb.equity.price.historical("AAPL", provider="fmp")
+    res.charting.to_chart(render=False)
+    assert isinstance(res.chart.fig, OpenBBFigure)
 
 
 @pytest.mark.skipif(

@@ -1,19 +1,53 @@
 """Provider helpers."""
+
 import asyncio
-import random
 import re
-import zlib
+from datetime import datetime
+from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
 
-import aiohttp
 import requests
 from anyio import start_blocking_portal
 from typing_extensions import ParamSpec
 
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.utils.client import (
+    ClientResponse,
+    ClientSession,
+    get_user_agent,
+)
+
 T = TypeVar("T")
 P = ParamSpec("P")
+
+
+def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
+    """Check if an item is in a list of allowed items and raise an error if not.
+
+    Parameters
+    ----------
+    item : str
+        The item to check.
+    allowed : List[str]
+        The list of allowed items.
+    threshold : float, optional
+        The similarity threshold for the error message, by default 0.75
+
+    Raises
+    ------
+    ValueError
+        If the item is not in the allowed list.
+    """
+    if item not in allowed:
+        similarities = map(
+            lambda c: (c, SequenceMatcher(None, item, c).ratio()), allowed
+        )
+        similar, score = max(similarities, key=lambda x: x[1])
+        if score > threshold:
+            raise ValueError(f"'{item}' is not available. Did you mean '{similar}'?")
+        raise ValueError(f"'{item}' is not available.")
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
@@ -50,32 +84,17 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return f"{querystring}" if querystring else ""
 
 
-def get_user_agent() -> str:
-    """Get a not very random user agent."""
-    user_agent_strings = [
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
-    ]
-
-    return random.choice(user_agent_strings)  # nosec # noqa: S311
-
-
-async def async_make_request(
+async def amake_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
     response_callback: Optional[
-        Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]]
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
     ] = None,
     **kwargs,
 ) -> Union[dict, List[dict]]:
-    """Abstract helper to make requests from a url with potential headers and params.
-
+    """
+    Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
     ----------
@@ -85,8 +104,10 @@ async def async_make_request(
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
-    response_callback : Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]], optional
-        Callback to run on the response, by default None
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
 
 
     Returns
@@ -94,44 +115,81 @@ async def async_make_request(
     Union[dict, List[dict]]
         Response json
     """
+    if method.upper() not in ["GET", "POST"]:
+        raise ValueError("Method must be GET or POST")
 
     kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-    kwargs["headers"] = kwargs.get(
-        "headers",
-        # Default headers, makes sure we accept gzip
-        {
-            "Accept": "*/*",
-            "Accept-Encoding": "gzip, deflate",
-            "Connection": "keep-alive",
-        },
+
+    response_callback = response_callback or (
+        lambda r, _: asyncio.ensure_future(r.json())
     )
 
-    raise_for_status = kwargs.pop("raise_for_status", False)
-    response_callback = response_callback or (lambda r: asyncio.ensure_future(r.json()))
+    with_session = kwargs.pop("with_session", "session" in kwargs)
+    session: ClientSession = kwargs.pop("session", ClientSession())
 
-    if kwargs["headers"].get("User-Agent", None) is None:
-        kwargs["headers"]["User-Agent"] = get_user_agent()
+    try:
+        response = await session.request(method, url, **kwargs)
+        return await response_callback(response, session)
+    finally:
+        if not with_session:
+            await session.close()
 
-    if _session := kwargs.pop("session", None):
-        r = getattr(_session, method)(url, **kwargs)
 
-        return await response_callback(r)
+async def amake_requests(
+    urls: Union[str, List[str]],
+    response_callback: Optional[
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
+    ] = None,
+    **kwargs,
+):
+    """Make multiple requests asynchronously.
 
-    async with aiohttp.ClientSession(
-        auto_decompress=False,
-        connector=aiohttp.TCPConnector(),
-        raise_for_status=raise_for_status,
-    ) as session, session.request(method, url, **kwargs) as response:
-        # we need to decompress the response manually, so pytest-vcr records as bytes
-        encoding = response.headers.get("Content-Encoding", "")
-        if encoding in ("gzip", "deflate"):
-            response_body = await response.read()
-            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            response._body = zlib.decompress(
-                response_body, wbits
-            )  # pylint: disable=protected-access
+    Parameters
+    ----------
+    urls : Union[str, List[str]]
+        List of urls to make requests to
+    method : Literal["GET", "POST"], optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
 
-        return await response_callback(response)
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+    """
+    session: ClientSession = kwargs.pop("session", ClientSession())
+    kwargs["response_callback"] = response_callback
+
+    urls = urls if isinstance(urls, list) else [urls]
+
+    try:
+        results = []
+
+        for result in await asyncio.gather(
+            *[amake_request(url, session=session, **kwargs) for url in urls],
+            return_exceptions=True,
+        ):
+            is_exception = isinstance(result, Exception)
+
+            if is_exception and kwargs.get("raise_for_status", False):
+                raise result
+
+            if is_exception or not result:
+                continue
+
+            results.extend(  # type: ignore
+                result if isinstance(result, list) else [result]
+            )
+
+        return results
+
+    finally:
+        await session.close()
 
 
 def make_request(
@@ -204,7 +262,6 @@ async def maybe_coroutine(
     func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -215,9 +272,28 @@ def run_async(
     func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Run a coroutine function in a blocking context."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
     with start_blocking_portal() as portal:
-        return portal.call(partial(func, *args, **kwargs))
+        try:
+            return portal.call(partial(func, *args, **kwargs))
+        finally:
+            portal.call(portal.stop)
+
+
+def filter_by_dates(
+    data: List[Data],
+    start_date: datetime,
+    end_date: datetime,
+) -> List[Data]:
+    """Filter data by dates."""
+    if not any([start_date, end_date]):
+        return data
+
+    return list(
+        filter(
+            lambda d: start_date <= d.date.date() <= end_date,
+            data,
+        )
+    )

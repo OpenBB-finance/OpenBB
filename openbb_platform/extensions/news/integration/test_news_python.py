@@ -1,6 +1,7 @@
 """Test news extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -17,7 +18,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -44,12 +45,16 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
             {
                 "provider": "fmp",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -59,6 +64,8 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -66,6 +73,9 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
+                "start_date": None,
+                "end_date": None,
+                "offset": 0,
             }
         ),
     ],
@@ -77,15 +87,15 @@ def test_news_world(params, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
             {
                 "display": "full",
                 "date": None,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": None,
+                "end_date": None,
                 "updated_since": None,
                 "published_since": None,
                 "sort": "created",
@@ -97,47 +107,65 @@ def test_news_world(params, obb):
                 "authors": None,
                 "content_types": "headline",
                 "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
             }
         ),
         (
             {
-                "published_utc": "2023-01-10",
                 "order": "desc",
                 "provider": "polygon",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": "2024-01-10",
+                "end_date": "2024-01-10",
             }
         ),
         (
             {
                 "provider": "fmp",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "page": 1,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "yfinance",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "tiingo",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL",
                 "limit": 20,
                 "source": "bloomberg.com",
+                "start_date": None,
+                "end_date": None,
+                "offset": None,
+            }
+        ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "RBC",
+                "limit": 20,
+                "page": 1,
             }
         ),
     ],

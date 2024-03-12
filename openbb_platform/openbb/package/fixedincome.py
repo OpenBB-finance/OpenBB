@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import exception_handler, validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -25,7 +24,8 @@ class ROUTER_fixedincome(Container):
         return self.__doc__ or ""
 
     @property
-    def corporate(self):  # route = "/fixedincome/corporate"
+    def corporate(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_corporate
 
         return fixedincome_corporate.ROUTER_fixedincome_corporate(
@@ -33,7 +33,8 @@ class ROUTER_fixedincome(Container):
         )
 
     @property
-    def government(self):  # route = "/fixedincome/government"
+    def government(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_government
 
         return fixedincome_government.ROUTER_fixedincome_government(
@@ -41,13 +42,15 @@ class ROUTER_fixedincome(Container):
         )
 
     @property
-    def rate(self):  # route = "/fixedincome/rate"
+    def rate(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_rate
 
         return fixedincome_rate.ROUTER_fixedincome_rate(
             command_runner=self._command_runner
         )
 
+    @exception_handler
     @validate
     def sofr(
         self,
@@ -63,20 +66,25 @@ class ROUTER_fixedincome(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Secured Overnight Financing Rate.
 
-            The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-            borrowing cash overnight collateralizing by Treasury securities.
+        The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+        borrowing cash overnight collateralizing by Treasury securities.
 
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
@@ -96,7 +104,7 @@ class ROUTER_fixedincome(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SOFR
@@ -106,30 +114,34 @@ class ROUTER_fixedincome(Container):
         rate : Optional[float]
             SOFR rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.sofr()
+        >>> obb.fixedincome.sofr(provider='fred')
+        >>> obb.fixedincome.sofr(period='overnight', provider='fred')
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/fixedincome/sofr",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/sofr",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @property
-    def spreads(self):  # route = "/fixedincome/spreads"
+    def spreads(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_spreads
 
         return fixedincome_spreads.ROUTER_fixedincome_spreads(

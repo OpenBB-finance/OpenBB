@@ -1,15 +1,20 @@
-"""FRED Releases Search Model."""
+"""FRED Search Model."""
 
+# pylint: disable=unused-argument
+
+import asyncio
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_search import (
     SearchData,
     SearchQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import (
+    amake_request,
+    get_querystring,
+)
 from pydantic import Field, NonNegativeInt
 
 
@@ -19,7 +24,6 @@ class FredSearchQueryParams(SearchQueryParams):
     __alias_dict__ = {
         "query": "search_text",
     }
-
     is_release: Optional[bool] = Field(
         default=False,
         description="Is release?  If True, other search filter variables are ignored."
@@ -53,13 +57,25 @@ class FredSearchQueryParams(SearchQueryParams):
         description="A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'."
         + " Requires that variable tag_names also be set to limit the number of matching series.",
     )
+    series_id: Optional[str] = Field(
+        default=None,
+        description="A FRED Series ID to return series group information for."
+        + " This returns the required information to query for regional data."
+        + " Not all series that are in FRED have geographical data."
+        + " Entering a value for series_id will override all other parameters."
+        + " Multiple series_ids can be separated by commas.",
+    )
 
 
 class FredSearchData(SearchData):
     """FRED Search Data."""
 
-    __alias_dict__ = {"url": "link"}
-
+    __alias_dict__ = {
+        "url": "link",
+        "observation_start": "min_date",
+        "observation_end": "max_date",
+        "seasonal_adjustment": "season",
+    }
     popularity: Optional[int] = Field(
         default=None,
         description="Popularity of the series",
@@ -67,6 +83,14 @@ class FredSearchData(SearchData):
     group_popularity: Optional[int] = Field(
         default=None,
         description="Group popularity of the release",
+    )
+    region_type: Optional[str] = Field(
+        default=None,
+        description="The region type of the series.",
+    )
+    series_group: Optional[Union[str, int]] = Field(
+        default=None,
+        description="The series group ID of the series. This value is used to query for regional data.",
     )
 
 
@@ -88,19 +112,36 @@ class FredSearchFetcher(
         return transformed_params
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: FredSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
+
+        if query.series_id is not None:
+            results = []
+
+            async def get_one(_id: str):
+                data = {}
+                url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
+                response = await amake_request(url)
+                data = response.get("series_group")  # type: ignore
+                if data:
+                    data.update({"series_id": _id})
+                    results.append(data)
+
+            tasks = [get_one(_id) for _id in query.series_id.split(",")]
+            await asyncio.gather(*tasks)
+
+            if results:
+                return results
 
         if query.is_release is True:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
 
-            response = await async_make_request(url, timeout=5, **kwargs)
+            response = await amake_request(url, timeout=5, **kwargs)
 
             return response.get("releases")  #  type: ignore[return-value, union-attr]
 
@@ -119,7 +160,7 @@ class FredSearchFetcher(
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "+")
 
         url = url + querystring + f"&file_type=json&api_key={api_key}"
-        response = await async_make_request(url, timeout=5, **kwargs)
+        response = await amake_request(url, timeout=5, **kwargs)
 
         return response.get("seriess")  #  type: ignore[return-value, union-attr]
 
@@ -128,26 +169,12 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FredSearchData]:
         """Transform data."""
-
-        df = pd.DataFrame()
-        if data is not None:
-            [d.pop("realtime_start") for d in data]
-            [d.pop("realtime_end") for d in data]
-            df = (
-                pd.DataFrame.from_records(data)
-                .fillna("N/A")
-                .replace("N/A", None)
-                .rename(
-                    columns={"id": "release_id"}
-                    if query.is_release is True
-                    else {"id": "series_id"}
+        if query.series_id is None:
+            for observation in data:
+                id_column_name = (
+                    "release_id" if query.is_release is True else "series_id"
                 )
-            )
-            target = "name" if query.is_release is True else "title"
-            if query.query is not None:
-                df = df[
-                    df[target].str.contains(query.query, case=False)
-                    | df["notes"].str.contains(query.query, case=False)
-                ]
-
-        return [FredSearchData.model_validate(d) for d in df.to_dict("records")]
+                observation[id_column_name] = observation.pop("id")
+                observation.pop("realtime_start", None)
+                observation.pop("realtime_end", None)
+        return [FredSearchData.model_validate(d) for d in data]

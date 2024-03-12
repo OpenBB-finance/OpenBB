@@ -14,6 +14,8 @@ from openbb_fmp.utils.helpers import create_url, get_data_many
 class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
     """FMP ETF Countries Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPEtfCountriesData(EtfCountriesData):
     """FMP ETF Countries Data."""
@@ -33,7 +35,7 @@ class FMPEtfCountriesFetcher(
         return FMPEtfCountriesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEtfCountriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -52,7 +54,7 @@ class FMPEtfCountriesFetcher(
                 endpoint=f"etf-country-weightings/{symbol}",
                 api_key=api_key,
             )
-            result = get_data_many(url, **kwargs)
+            result = await get_data_many(url, **kwargs)
             df = pd.DataFrame(result).set_index("country")
             if len(df) > 0:
                 for i in df.index:

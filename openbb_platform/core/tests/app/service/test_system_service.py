@@ -1,4 +1,5 @@
 """Test the system_service.py module."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest

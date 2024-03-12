@@ -1,17 +1,19 @@
 """Benzinga Company News Model."""
 
-
 import math
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_benzinga.utils.helpers import get_data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, field_validator
 
 
@@ -22,7 +24,7 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     """
 
     __alias_dict__ = {
-        "symbols": "tickers",
+        "symbol": "tickers",
         "display": "displayOutput",
         "limit": "pageSize",
         "start_date": "dateFrom",
@@ -30,19 +32,14 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
         "updated_since": "updatedSince",
         "published_since": "publishedSince",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
     display: Literal["headline", "abstract", "full"] = Field(
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
-    )
-    date: Optional[str] = Field(
-        default=None, description="Date of the news to retrieve."
-    )
-    start_date: Optional[str] = Field(
-        default=None, description="Start date of the news to retrieve."
-    )
-    end_date: Optional[str] = Field(
-        default=None, description="End date of the news to retrieve."
     )
     updated_since: Optional[int] = Field(
         default=None,
@@ -59,12 +56,8 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(
-        default=None, description="The ISIN of the news to retrieve."
-    )
-    cusip: Optional[str] = Field(
-        default=None, description="The CUSIP of the news to retrieve."
-    )
+    isin: Optional[str] = Field(default=None, description="The company's ISIN.")
+    cusip: Optional[str] = Field(default=None, description="The company's CUSIP.")
     channels: Optional[str] = Field(
         default=None, description="Channels of the news to retrieve."
     )
@@ -89,11 +82,11 @@ class BenzingaCompanyNewsData(CompanyNewsData):
         "images": "image",
     }
 
-    id: str = Field(description="ID of the news.")
-    author: Optional[str] = Field(default=None, description="Author of the news.")
+    id: str = Field(description="Article ID.")
+    author: Optional[str] = Field(default=None, description="Author of the article.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
     images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="Images associated with the news."
+        default=None, description="URL to the images of the news."
     )
     channels: Optional[str] = Field(
         default=None,
@@ -149,7 +142,7 @@ class BenzingaCompanyNewsFetcher(
         return BenzingaCompanyNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: BenzingaCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -160,20 +153,22 @@ class BenzingaCompanyNewsFetcher(
         base_url = "https://api.benzinga.com/api/v2/news"
 
         query.sort = f"{query.sort}:{query.order}" if query.sort and query.order else ""
-        querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
+        querystring = get_querystring(
+            query.model_dump(by_alias=True), ["order", "pageSize"]
+        )
 
         pages = math.ceil(query.limit / 100) if query.limit else 1
-        data = []
+        page_size = 100 if query.limit and query.limit > 100 else query.limit
+        urls = [
+            f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
+            for page in range(pages)
+        ]
 
-        for page in range(pages):
-            url = f"{base_url}?{querystring}&page={page}&token={token}"
-            response = get_data(url, **kwargs)
-            data.extend(response)
+        data = await amake_requests(urls, **kwargs)
 
-        data = data[: query.limit]
+        return data[: query.limit]
 
-        return data
-
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: BenzingaCompanyNewsQueryParams,

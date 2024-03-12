@@ -1,5 +1,7 @@
 """Test Regulators extension."""
+
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -17,7 +19,7 @@ def obb(pytestconfig):
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "TSLA", "provider": "sec"}),
@@ -33,10 +35,10 @@ def test_regulators_sec_cik_map(params, obb):
     assert isinstance(result.results.cik, str)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"query": "berkshire hathaway", "provider": "sec"}),
+        ({"query": "berkshire hathaway", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -47,15 +49,23 @@ def test_regulators_sec_institutions_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"query": "2022", "provider": "sec", "url": None}),
+        (
+            {
+                "query": "2022",
+                "provider": "sec",
+                "url": None,
+                "use_cache": None,
+            }
+        ),
         (
             {
                 "query": "",
                 "provider": "sec",
                 "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
+                "use_cache": None,
             }
         ),
     ],
@@ -68,11 +78,11 @@ def test_regulators_sec_schema_files(params, obb):
     assert len(result.results.files) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"query": "0000909832", "provider": "sec"}),
-        ({"query": "0001067983", "provider": "sec"}),
+        ({"query": "0000909832", "provider": "sec", "use_cache": None}),
+        ({"query": "0001067983", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -84,7 +94,7 @@ def test_regulators_sec_symbol_map(params, obb):
     assert isinstance(result.results.symbol, str)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "sec"})],
 )
@@ -96,7 +106,7 @@ def test_regulators_sec_rss_litigation(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"query": "oil", "use_cache": False, "provider": "sec"})],
 )
@@ -108,10 +118,10 @@ def test_regulators_sec_sic_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "nasdaq"}),
+        ({"query": "grain", "provider": "nasdaq", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -122,7 +132,7 @@ def test_regulators_cftc_cot_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -135,6 +145,7 @@ def test_regulators_cftc_cot_search(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "transform": "diff",
+                "collapse": "weekly",
                 "provider": "nasdaq",
             }
         ),

@@ -5,7 +5,7 @@
     "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
-    "news": ["Feedparser", "NewsApi", "Ultima"],
+    "news": ["Feedparser", "NewsApi"],
     "load": [
       "YahooFinance",
       "AlphaVantage",
@@ -117,7 +117,6 @@
     "dps": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "shorted": ["YahooFinance"],
-      "ctb": ["InteractiveBrokers", "Stocksera"],
       "hsi": ["Shortinterest"],
       "prom": ["FINRA"],
       "pos": ["Stockgrid"],
@@ -186,8 +185,7 @@
         "YahooFinance",
         "AlphaVantage",
         "Polygon",
-        "EODHD",
-        "AlthubPlatform"
+        "EODHD"
       ],
       "headlines": [
         "FinBrain"
@@ -250,7 +248,7 @@
     "ca": {
       "load": ["YahooFinance", "AlphaVantage", "Polygon", "EODHD"],
       "tsne": ["YahooFinance"],
-      "get": ["Finviz", "Polygon", "Finnhub"],
+      "get": ["Polygon", "Finnhub"],
       "set": [],
       "add": [],
       "rmv": [],
@@ -527,6 +525,7 @@
     "revenue": ["OECD"],
     "spending": ["OECD"],
     "trust": ["OECD"],
+    "macro": ["EconDB"],
     "treasury": ["FED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]

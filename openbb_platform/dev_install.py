@@ -1,4 +1,5 @@
 """Install for development script."""
+
 import subprocess
 import sys
 from pathlib import Path
@@ -17,16 +18,18 @@ openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
+openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
-openbb-government-us = { path = "./providers/government_us", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
 openbb-sec = { path = "./providers/sec", develop = true }
 openbb-tiingo = { path = "./providers/tiingo", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
+openbb-yfinance = { path = "./providers/yfinance", develop = true }
 
+openbb-commodity = { path = "./extensions/commodity", develop = true }
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-derivatives = { path = "./extensions/derivatives", develop = true }
@@ -43,14 +46,17 @@ openbb-alpha-vantage = { path = "./providers/alpha_vantage", optional = true, de
 openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
-openbb-finra = { path = "./providers/finra", develop = true }
+openbb-finra = { path = "./providers/finra", optional = true, develop = true }
+openbb-finviz = { path = "./providers/finviz", optional = true, develop = true }
+openbb-government-us = { path = "./providers/government_us", optional = true, develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
-openbb-stockgrid = { path = "./providers/stockgrid" ,optional = true,  develop = true }
-openbb-wsj = { path = "./providers/wsj", develop = true }
-openbb-yfinance = { path = "./providers/yfinance", optional = true, develop = true }
+openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
+openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
+openbb_tradier = { path = "./providers/tradier", optional = true, develop = true }
+openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
-openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
+openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }

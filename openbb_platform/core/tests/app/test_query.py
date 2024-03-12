@@ -1,4 +1,5 @@
 """Test the Query class."""
+
 # pylint: disable=redefined-outer-name
 
 from dataclasses import dataclass
@@ -85,7 +86,7 @@ def test_filter_extra_params_wrong_param(query):
 
     extra = query.filter_extra_params(extra_params, "fmp")
     assert isinstance(extra, dict)
-    assert len(extra) == 1
+    assert len(extra) == 0
 
 
 @pytest.fixture
@@ -120,6 +121,7 @@ def query_instance():
     )
 
 
+@pytest.mark.asyncio
 async def test_execute_method_fake_credentials(query_instance: Query, mock_registry):
     """Test execute method without setting credentials."""
     mock_fetch_result = MockBaseModel()
