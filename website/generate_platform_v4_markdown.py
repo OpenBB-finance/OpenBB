@@ -19,7 +19,7 @@ TAB_WIDTH = 4
 # Maximum number of commands to display on the cards
 MAX_COMMANDS = 8
 
-# Path to the reference.json file
+# Path to the Platform directory and the reference.json file
 PLATFORM_PATH = Path(__file__).parent.parent / "openbb_platform"
 REFERENCE_FILE_PATH = Path(PLATFORM_PATH / "openbb/assets/reference.json")
 
