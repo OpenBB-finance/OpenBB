@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_nasdaq.utils.helpers import HEADERS, date_range, remove_html_tags
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range, remove_html_tags
 from pydantic import Field, field_validator
 
 
@@ -107,7 +107,7 @@ class NasdaqEconomicCalendarFetcher(
 
         def get_calendar_data(date: str, data: List[Dict]) -> None:
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r = requests.get(url, headers=HEADERS, timeout=5)
+            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
             r_json = r.json()
             if "data" in r_json and "rows" in r_json["data"]:
                 response = r_json["data"]["rows"]
