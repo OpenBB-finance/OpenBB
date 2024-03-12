@@ -25,7 +25,12 @@ class ROUTER_equity_shorts(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get reported Fail-to-deliver (FTD) data.
@@ -77,10 +82,10 @@ class ROUTER_equity_shorts(Container):
         description : Optional[str]
             The description of the Security.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.shorts.fails_to_deliver(symbol='AAPL')
+        >>> obb.equity.shorts.fails_to_deliver(symbol='AAPL', provider='sec')
         """  # noqa: E501
 
         return self._run(

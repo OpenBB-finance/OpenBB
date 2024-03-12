@@ -64,19 +64,10 @@ def test_currency_search(params, headers):
         (
             {
                 "symbol": "EURUSD",
+                "interval": "1d",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "interval": "1day",
                 "provider": "fmp",
-            }
-        ),
-        (
-            {
-                "interval": "1min",
-                "provider": "fmp",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
             }
         ),
         (
@@ -87,7 +78,7 @@ def test_currency_search(params, headers):
                 "provider": "polygon",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-10",
             }
         ),
         (
@@ -103,27 +94,25 @@ def test_currency_search(params, headers):
         ),
         (
             {
-                "interval": "5m",
-                "period": "max",
-                "provider": "yfinance",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
-                "period": "max",
                 "provider": "yfinance",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-10",
             }
         ),
         (
             {
-                "interval": "1hour",
+                "interval": "1m",
+                "provider": "yfinance",
+                "symbol": "EURUSD",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
+                "interval": "1h",
                 "provider": "tiingo",
                 "symbol": "EURUSD",
                 "start_date": "2023-05-21",
@@ -132,7 +121,7 @@ def test_currency_search(params, headers):
         ),
         (
             {
-                "interval": "1day",
+                "interval": "1d",
                 "provider": "tiingo",
                 "symbol": "EURUSD",
                 "start_date": "2023-05-21",
@@ -162,6 +151,30 @@ def test_currency_reference_rates(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/currency/reference_rates?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_currency_snapshots(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/currency/snapshots?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

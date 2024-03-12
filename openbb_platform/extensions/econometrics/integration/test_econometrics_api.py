@@ -48,7 +48,7 @@ def get_crypto_data():
         return data["crypto_data"]
 
     # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTC"])  # noqa: S311
+    symbol = random.choice(["BTCUSD"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
     data["crypto_data"] = request_data(

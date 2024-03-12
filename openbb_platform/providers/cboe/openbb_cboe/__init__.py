@@ -28,6 +28,7 @@ cboe_provider = Provider(
         "EquityHistorical": CboeEquityHistoricalFetcher,
         "EquityQuote": CboeEquityQuoteFetcher,
         "EquitySearch": CboeEquitySearchFetcher,
+        "EtfHistorical": CboeEquityHistoricalFetcher,
         "IndexConstituents": CboeIndexConstituentsFetcher,
         "FuturesCurve": CboeFuturesCurveFetcher,
         "IndexHistorical": CboeIndexHistoricalFetcher,

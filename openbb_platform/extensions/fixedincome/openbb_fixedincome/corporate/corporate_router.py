@@ -1,6 +1,7 @@
 """Fixed Income Corporate Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,9 +18,9 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "yield_to_worst", "provider": "fred"}),
     ],
 )
 async def ice_bofa(
@@ -41,9 +42,9 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.corporate.moody(index_type="baa")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"index_type": "baa", "provider": "fred"}),
     ],
 )
 async def moody(
@@ -64,8 +65,10 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    exclude_auto_examples=True,
-    examples=['obb.fixedincome.corporate.hqm(yield_curve="par")'],
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"yield_curve": "par", "provider": "fred"}),
+    ],
 )
 async def hqm(
     cc: CommandContext,
@@ -85,9 +88,9 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    exclude_auto_examples=True,
     examples=[
-        "obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])",
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": "10,20,30,50", "provider": "fred"}),
     ],
 )
 async def spot_rates(
@@ -108,9 +111,9 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.corporate.commercial_paper(maturity="15d")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"maturity": "15d", "provider": "fred"}),
     ],
 )
 async def commercial_paper(
@@ -129,7 +132,7 @@ async def commercial_paper(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BondPrices")
+@router.command(model="BondPrices", examples=[APIEx(parameters={"provider": "tmx"})])
 async def bond_prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,

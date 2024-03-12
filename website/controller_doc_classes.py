@@ -30,7 +30,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.sdk import openbb
-from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
 set_system_variable("TEST_MODE", True)
 set_system_variable("LOG_COLLECT", False)
@@ -295,10 +294,6 @@ class ControllerDoc:
 
         if self.name == "options" and hasattr(self.controller, "selected_date"):
             self.controller.selected_date = get_expiration_date()
-        elif self.name == "ca" and hasattr(self.controller, "similar"):
-            self.controller.similar = finviz_compare_model.get_similar_companies(
-                self.symbol, ["Sector", "Industry"]
-            )
         if hasattr(self.controller, "current_currency"):
             self.controller.current_currency = "usdt"
         if hasattr(self.controller, "source") and trailmap.split(".")[0] == "crypto":

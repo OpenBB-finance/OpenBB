@@ -37,7 +37,12 @@ class ROUTER_equity_estimates(Container):
                 description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
             ),
         ] = None,
-        provider: Optional[Literal["benzinga"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for specific analysts and get their forecast track record.
@@ -168,10 +173,11 @@ class ROUTER_equity_estimates(Container):
         std_dev_3y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years (provider: benzinga)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.analyst_search(firm_name="Wedbush", provider="benzinga").to_df()
+        >>> obb.equity.estimates.analyst_search(provider='benzinga')
+        >>> obb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')
         """  # noqa: E501
 
         return self._run(
@@ -202,7 +208,12 @@ class ROUTER_equity_estimates(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get consensus price target and recommendation.
@@ -253,10 +264,11 @@ class ROUTER_equity_estimates(Container):
         currency : Optional[str]
             Currency the stock is priced in. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.consensus("AAPL,MSFT", provider="yfinance").to_df()
+        >>> obb.equity.estimates.consensus(symbol='AAPL', provider='fmp')
+        >>> obb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -292,7 +304,12 @@ class ROUTER_equity_estimates(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 30,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical analyst estimates for earnings and revenue.
@@ -371,10 +388,10 @@ class ROUTER_equity_estimates(Container):
         number_analysts_estimated_eps : int
             Number of analysts who estimated EPS.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.historical("AAPL", period="quarter", provider="fmp").to_df()
+        >>> obb.equity.estimates.historical(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -401,7 +418,7 @@ class ROUTER_equity_estimates(Container):
     def price_target(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
                 description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
             ),
@@ -410,14 +427,19 @@ class ROUTER_equity_estimates(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get analyst price targets by company.
 
         Parameters
         ----------
-        symbol : Union[str, None, List[str]]
+        symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple items allowed for provider(s): benzinga.
         limit : int
             The number of data entries to return.
@@ -521,10 +543,12 @@ class ROUTER_equity_estimates(Container):
         news_base_url : Optional[str]
             News base URL of the price target. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()
+        >>> obb.equity.estimates.price_target(provider='benzinga')
+        >>> # Get price targets for Microsoft using 'benzinga' as provider.
+        >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action='downgrades')
         """  # noqa: E501
 
         return self._run(

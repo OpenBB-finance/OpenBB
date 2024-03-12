@@ -4,9 +4,9 @@
 [![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBBTerminal)
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
-|:--:|
-| ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png) |
-| Check our website at [openbb.co](www.openbb.co) |
+| :---------------------------------------------------------------------------------------------------------------------------------------------: |
+|              ![OpenBBLogo](https://user-images.githubusercontent.com/25267873/218899768-1f0964b8-326c-4f35-af6f-ea0946ac970b.png)               |
+|                                                 Check our website at [openbb.co](www.openbb.co)                                                 |
 
 ## Overview
 
@@ -22,21 +22,19 @@ pip install openbb
 
 This will install the following data providers:
 
-| Extension Name | Description | Installation Command | Minimum Subscription Type Required |
-|----------------|-------------|----------------------|------------------------------------|
-| openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid |
-| openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
-| openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | Free |
-| openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | Free |
-| openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finra | Free |
-| openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free |
-| openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free |
-| openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid |
-| openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free |
-| openbb-polygon | [Polygon](https://polygon.io/) data connector | pip install openbb-polygon | Free |
-| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | Free |
-| openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
-| openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
+| Extension Name          | Description                                                               | Installation Command                | Minimum Subscription Type Required |
+| ----------------------- | ------------------------------------------------------------------------- | ----------------------------------- | ---------------------------------- |
+| openbb-benzinga         | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector           | pip install openbb-benzinga         | Paid                               |
+| openbb-federal-reserve  | [FederalReserve](https://www.federalreserve.gov/data.html) data connector | pip install openbb-federal-reserve  | Free                               |
+| openbb-fmp              | [FMP](https://site.financialmodelingprep.com/developer/) data connector   | pip install openbb-fmp              | Free                               |
+| openbb-fred             | [FRED](https://fred.stlouisfed.org/) data connector                       | pip install openbb-fred             | Free                               |
+| openbb-intrinio         | [Intrinio](https://intrinio.com/pricing) data connector                   | pip install openbb-intrinio         | Paid                               |
+| openbb-oecd             | [OECD](https://data.oecd.org/) data connector                             | pip install openbb-oecd             | Free                               |
+| openbb-polygon          | [Polygon](https://polygon.io/) data connector                             | pip install openbb-polygon          | Free                               |
+| openbb-sec              | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector     | pip install openbb-sec              | Free                               |
+| openbb-tiingo           | [Tiingo](https://www.tiingo.com/about/pricing) data connector             | pip install openbb-tiingo           | Free                               |
+| openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector       | pip install openbb-tradingeconomics | Paid                               |
+| openbb-yahoo-finance    | [Yahoo Finance](https://finance.yahoo.com/) data connector                | pip install openbb-yfinance         | Free                               |
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 

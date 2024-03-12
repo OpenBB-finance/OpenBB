@@ -45,7 +45,7 @@ def get_crypto_data():
         return data["crypto_data"]
 
     # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTC"])  # noqa: S311
+    symbol = random.choice(["BTCUSD"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
     data["crypto_data"] = openbb.obb.crypto.price.historical(
@@ -327,7 +327,6 @@ def test_quantitative_summary(params, data_type, obb):
                 "data": "",
                 "target": "close",
                 "window": "10",
-                "quantile_pct": "",
                 "index": "date",
             },
             "equity",
@@ -337,7 +336,6 @@ def test_quantitative_summary(params, data_type, obb):
                 "data": "",
                 "target": "high",
                 "window": "50",
-                "quantile_pct": "0.6",
                 "index": "date",
             },
             "crypto",
@@ -363,7 +361,6 @@ def test_quantitative_rolling_stdev(params, data_type, obb):
                 "data": "",
                 "target": "close",
                 "window": "10",
-                "quantile_pct": "",
                 "index": "date",
             },
             "equity",
@@ -373,7 +370,6 @@ def test_quantitative_rolling_stdev(params, data_type, obb):
                 "data": "",
                 "target": "high",
                 "window": "50",
-                "quantile_pct": "0.6",
                 "index": "date",
             },
             "crypto",
@@ -399,7 +395,6 @@ def test_quantitative_rolling_mean(params, data_type, obb):
                 "data": "",
                 "target": "close",
                 "window": "10",
-                "quantile_pct": "",
                 "index": "date",
             },
             "equity",
@@ -409,7 +404,6 @@ def test_quantitative_rolling_mean(params, data_type, obb):
                 "data": "",
                 "target": "high",
                 "window": "50",
-                "quantile_pct": "0.6",
                 "index": "date",
             },
             "crypto",

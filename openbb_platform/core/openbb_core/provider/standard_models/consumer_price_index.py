@@ -74,7 +74,9 @@ class ConsumerPriceIndexQueryParams(QueryParams):
     """CPI Query."""
 
     country: str = Field(
-        description=QUERY_DESCRIPTIONS.get("country"), default="united_states"
+        description=QUERY_DESCRIPTIONS.get("country"),
+        default="united_states",
+        choices=CPI_COUNTRIES,  # type: ignore
     )
     units: Literal["index", "yoy", "mom"] = Field(
         description="Units to get CPI for. Either index, month over month or year over year. Defaults to year over year.",
