@@ -1535,9 +1535,9 @@ class ReferenceGenerator:
                     standard_model
                 ]  # pylint: disable=protected-access
                 # openbb provider is always present hence its the standard field
-                reference[path]["parameters"][
-                    "standard"
-                ] = cls.get_provider_field_params(standard_model, "QueryParams")
+                reference[path]["parameters"]["standard"] = (
+                    cls.get_provider_field_params(standard_model, "QueryParams")
+                )
 
                 # Add `provider` parameter fields to the openbb provider
                 provider_parameter_fields = cls.get_provider_parameter_info(
@@ -1590,10 +1590,10 @@ class ReferenceGenerator:
             # Currently only OBBject object is returned
             if route_method == {"GET"}:
                 providers = provider_parameter_fields["type"]
-                reference[path]["returns"][
-                    "OBBject"
-                ] = DocstringGenerator.get_OBBject_description(
-                    standard_model, providers, "website"
+                reference[path]["returns"]["OBBject"] = (
+                    DocstringGenerator.get_OBBject_description(
+                        standard_model, providers, "website"
+                    )
                 )
 
             elif route_method == {"POST"}:
