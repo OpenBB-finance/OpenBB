@@ -10,10 +10,6 @@ from openbb_oecd.models.long_term_interest_rate import OECDLTIRFetcher
 from openbb_oecd.models.short_term_interest_rate import OECDSTIRFetcher
 from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
-from openbb_platform.providers.oecd.openbb_oecd.models.share_price import (
-    OECDSharePriceFetcher,
-)
-
 oecd_provider = Provider(
     name="oecd",
     website="https://stats.oecd.org/",
@@ -27,6 +23,5 @@ oecd_provider = Provider(
         "STIR": OECDSTIRFetcher,
         "LTIR": OECDLTIRFetcher,
         "ConsumerPriceIndex": OECDCPIFetcher,
-        "SharePrice": OECDSharePriceFetcher,
     },
 )
