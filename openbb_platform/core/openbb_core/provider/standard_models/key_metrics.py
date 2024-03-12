@@ -5,7 +5,7 @@ from typing import Optional
 
 from pydantic import Field, field_validator
 
-from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -52,7 +52,7 @@ class KeyMetricsData(Data):
     fiscal_period: Optional[str] = Field(
         default=None, description="Fiscal period of the fiscal year."
     )
-    market_cap: Optional[float] = Field(
+    market_cap: Optional[ForceInt] = Field(
         default=None, description="Market capitalization"
     )
     pe_ratio: Optional[float] = Field(
