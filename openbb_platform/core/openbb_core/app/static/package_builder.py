@@ -92,11 +92,11 @@ class PackageBuilder:
                 self.directory / "assets" / "extension_map.json"
             )
             if add:
-                a = ", ".join(add)
+                a = ", ".join(sorted(add))
                 print(f"Extensions to add: {a}")  # noqa: T201
 
             if remove:
-                r = ", ".join(remove)
+                r = ", ".join(sorted(remove))
                 print(f"Extensions to remove: {r}")  # noqa: T201
 
             if add or remove:
