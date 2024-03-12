@@ -214,10 +214,7 @@ async def composite_leading_indicator(
 
 @router.command(
     model="SharePrice",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.share_price(country="all").to_df()',
-    ],
+    examples=[],
 )
 async def share_price(
     cc: CommandContext,
