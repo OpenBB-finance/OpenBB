@@ -16,7 +16,7 @@ echo "                                  |___/       "
 BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 
-OpenBB Terminal v4 will be the last version of this Terminal.
+OpenBB Terminal v3.2.5 will be the last version of this Terminal.
 
 To continue our mission of democratizing investment research, we are working on a new open-source CLI tool built on top of the OpenBB Platform that will soon be available to everyone for free on my.openbb.co.
 
