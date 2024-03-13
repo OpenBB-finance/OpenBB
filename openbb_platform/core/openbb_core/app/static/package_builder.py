@@ -8,7 +8,7 @@ import shutil
 import sys
 from dataclasses import Field
 from inspect import Parameter, _empty, isclass, signature
-from json import dump, dumps, load
+from json import dumps, load
 from pathlib import Path
 from typing import (
     Any,
@@ -189,11 +189,8 @@ class PackageBuilder:
         """Save the reference.json file."""
         self.console.log("\nWriting reference file...")
         data = ReferenceGenerator.get_reference_data()
-        file_path = self.directory / "assets" / "reference.json"
-        # Dumping the reference dictionary as a JSON file
-        self.console.log(str(file_path))
-        with open(file_path, "w", encoding="utf-8") as f:
-            dump(data, f, indent=4)
+        code = dumps(obj=data, indent=4)
+        self._write(code=code, name="reference", extension="json", folder="assets")
 
     def _run_linters(self):
         """Run the linters."""
@@ -1392,6 +1389,8 @@ class ReferenceGenerator:
                 List of dictionaries containing the name,type, description, default
                 and optionality of each parameter.
         """
+        parameters_list = []
+
         # Define a regex pattern to match parameter blocks
         # This pattern looks for a parameter name followed by " : ", then captures the type and description
         pattern = re.compile(
@@ -1401,33 +1400,31 @@ class ReferenceGenerator:
         # Find all matches in the docstring
         matches = pattern.finditer(docstring)
 
-        # Initialize an empty list to store parameter dictionaries
-        parameters_list = []
+        if matches:
+            # Iterate over the matches to extract details
+            for match in matches:
+                # Extract named groups as a dictionary
+                param_info = match.groupdict()
 
-        # Iterate over the matches to extract details
-        for match in matches:
-            # Extract named groups as a dictionary
-            param_info = match.groupdict()
+                # Determine if the parameter is optional
+                is_optional = "Optional" in param_info["type"]
 
-            # Determine if the parameter is optional
-            is_optional = "Optional" in param_info["type"]
+                # If no default value is captured, set it to an empty string
+                default_value = (
+                    param_info["default"] if param_info["default"] is not None else ""
+                )
 
-            # If no default value is captured, set it to an empty string
-            default_value = (
-                param_info["default"] if param_info["default"] is not None else ""
-            )
+                # Create a new dictionary with fields in the desired order
+                param_dict = {
+                    "name": param_info["name"],
+                    "type": param_info["type"],
+                    "description": param_info["description"],
+                    "default": default_value,
+                    "optional": is_optional,
+                }
 
-            # Create a new dictionary with fields in the desired order
-            param_dict = {
-                "name": param_info["name"],
-                "type": param_info["type"],
-                "description": param_info["description"],
-                "default": default_value,
-                "optional": is_optional,
-            }
-
-            # Append the dictionary to the list
-            parameters_list.append(param_dict)
+                # Append the dictionary to the list
+                parameters_list.append(param_dict)
 
         return parameters_list
 
@@ -1445,23 +1442,27 @@ class ReferenceGenerator:
             Dict[str, str]:
                 Dictionary containing the name, type, description of the return value
         """
+        return_info = ""
+
         # Define a regex pattern to match the Returns section
         # This pattern captures the model name inside "OBBject[]" and its description
         match = re.search(r"Returns\n\s*-------\n\s*([^\n]+)\n\s*([^\n]+)", docstring)
-        return_type = match.group(1).strip()  # type: ignore
-        # Remove newlines and indentation from the description
-        description = match.group(2).strip().replace("\n", "").replace("    ", "")  # type: ignore
-        # Adjust regex to correctly capture content inside brackets, including nested brackets
-        content_inside_brackets = re.search(
-            r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
-        )
-        return_type_content = content_inside_brackets.group(1)  # type: ignore
 
-        return_info = (
-            f"OBBject\n"
-            f"{create_indent(1)}results : {return_type_content}\n"
-            f"{create_indent(2)}{description}"
-        )
+        if match:
+            return_type = match.group(1).strip()  # type: ignore
+            # Remove newlines and indentation from the description
+            description = match.group(2).strip().replace("\n", "").replace("    ", "")  # type: ignore
+            # Adjust regex to correctly capture content inside brackets, including nested brackets
+            content_inside_brackets = re.search(
+                r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
+            )
+            return_type_content = content_inside_brackets.group(1)  # type: ignore
+
+            return_info = (
+                f"OBBject\n"
+                f"{create_indent(1)}results : {return_type_content}\n"
+                f"{create_indent(2)}{description}"
+            )
 
         return return_info
 
@@ -1557,21 +1558,18 @@ class ReferenceGenerator:
                 # POST method router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
-                description = route_func.__doc__.split("Parameters")[0].strip()  # type: ignore
+                docstring = getattr(route_func, "__doc__", "")
+                description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
                 # Add endpoint parameters fields for POST methods
-                reference[path]["parameters"][
-                    "standard"
-                ] = ReferenceGenerator.get_post_method_parameters_info(
-                    route_func.__doc__  # type: ignore
+                reference[path]["parameters"]["standard"] = (
+                    ReferenceGenerator.get_post_method_parameters_info(docstring)
                 )
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
-                reference[path]["returns"][
-                    "OBBject"
-                ] = cls.get_post_method_returns_info(
-                    route_func.__doc__  # type: ignore
+                reference[path]["returns"]["OBBject"] = (
+                    cls.get_post_method_returns_info(docstring)
                 )
 
         return reference
