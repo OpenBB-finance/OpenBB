@@ -271,3 +271,15 @@ def get_required_fields(model: str) -> List[str]:
     """Get the required fields of a model."""
     fields = pi.map[model]["openbb"]["QueryParams"]["fields"]
     return [field for field, info in fields.items() if info.is_required()]
+
+
+def get_all_fields(model: str) -> List[str]:
+    """Get all the fields of a model."""
+    all_fields: List[str] = []
+    info = pi.map[model]
+    # for every key, grab the fields
+    for _, provider_info in info.items():
+        for field, _ in provider_info["QueryParams"]["fields"].items():
+            all_fields.append(field)
+
+    return all_fields

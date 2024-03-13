@@ -1,7 +1,7 @@
 """Abstract class for the fetcher."""
 
-# ruff: noqa: S101
-# pylint: disable=E1101
+# ruff: noqa: S101, E501
+# pylint: disable=E1101, C0301
 
 from typing import (
     Any,
@@ -142,39 +142,49 @@ class Fetcher(Generic[Q, R]):
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions
-        assert isinstance(cls.require_credentials, bool)
+        assert isinstance(
+            cls.require_credentials, bool
+        ), "require_credentials must be a boolean."
 
         # Query Assertions
-        assert query
-        assert issubclass(type(query), cls.query_params_type)
-        assert all(getattr(query, key) == value for key, value in params.items())
+        assert query, "Query must not be None."
+        assert issubclass(
+            type(query), cls.query_params_type
+        ), f"Query type mismatch. Expected: {cls.query_params_type} Got: {type(query)}"
+        assert all(
+            getattr(query, key) == value for key, value in params.items()
+        ), f"Query must have the correct values. Expected: {params} Got: {query.__dict__}"
 
         # Data Assertions
         if not isinstance(data, DataFrame):
-            assert data
+            assert data, "Data must not be None."
         else:
-            assert not data.empty
+            assert not data.empty, "Data must not be empty."
         is_list = isinstance(data, list)
         if is_list:
             assert all(
                 field in data[0]
                 for field in cls.data_type.__fields__
                 if field in data[0]
-            )
+            ), f"Data must have the correct fields. Expected: {cls.data_type.__fields__} Got: {data[0].__dict__}"
             # This makes sure that the data is not transformed yet so that the
             # pipeline is implemented correctly. We can remove this assertion if we
             # want to be less strict.
-            assert issubclass(type(data[0]), cls.data_type) is False
+            assert (
+                issubclass(type(data[0]), cls.data_type) is False
+            ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data[0])}"
         else:
             assert all(
                 field in data for field in cls.data_type.__fields__ if field in data
-            )
-            assert issubclass(type(data), cls.data_type) is False
+            ), f"Data must have the correct fields. Expected: {cls.data_type.__fields__} Got: {data.__dict__}"
+            assert (
+                issubclass(type(data), cls.data_type) is False
+            ), f"Data must not be transformed yet. Expected: {cls.data_type} Got: {type(data)}"
 
-        assert len(data) > 0
+        assert len(data) > 0, "Data must not be empty."
 
         # Transformed Data Assertions
-        assert transformed_data
+        assert transformed_data, "Transformed data must not be None."
 
         is_list = isinstance(transformed_data, list)
         if is_list:
@@ -190,20 +200,25 @@ class Fetcher(Generic[Q, R]):
                 return_type_fields = return_type_args.__fields__
                 return_type = return_type_args
 
-            assert len(transformed_data) > 0  # type: ignore
+            assert len(transformed_data) > 0, "Transformed data must not be empty."  # type: ignore
             assert all(
-                field in transformed_data[0].__dict__  # type: ignore
-                for field in return_type_fields
-            )
-            assert issubclass(type(transformed_data[0]), cls.data_type)  # type: ignore
+                field in transformed_data[0].__dict__ for field in return_type_fields  # type: ignore
+            ), f"Transformed data must have the correct fields. Expected: {return_type_fields} Got: {transformed_data[0].__dict__}"  # type: ignore
             assert issubclass(
+                type(transformed_data[0]), cls.data_type  # type: ignore
+            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data[0])}"  # type: ignore
+            assert issubclass(  # type: ignore
                 type(transformed_data[0]),  # type: ignore
                 return_type,
-            )
+            ), f"Transformed data must be of the correct type. Expected: {return_type} Got: {type(transformed_data[0])}"  # type: ignore
         else:
             assert all(
                 field in transformed_data.__dict__
                 for field in cls.return_type.__fields__
-            )
-            assert issubclass(type(transformed_data), cls.data_type)
-            assert issubclass(type(transformed_data), cls.return_type)
+            ), f"Transformed data must have the correct fields. Expected: {cls.return_type.__fields__} Got: {transformed_data.__dict__}"
+            assert issubclass(
+                type(transformed_data), cls.data_type
+            ), f"Transformed data must be of the correct type. Expected: {cls.data_type} Got: {type(transformed_data)}"
+            assert issubclass(
+                type(transformed_data), cls.return_type
+            ), f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"

@@ -11,6 +11,7 @@ from extensions.tests.utils.helpers import (
     collect_routers,
     find_decorator,
     find_missing_router_function_models,
+    get_all_fields,
     get_decorator_details,
     get_required_fields,
     import_routers,
@@ -84,16 +85,28 @@ def check_api(
     examples: str, router_name: str, model: Optional[str], function: Any
 ) -> List[str]:
     """Check for API examples."""
-    # Check if the endpoint has at least 1 example with all required fields
     api_example_violation: List[str] = []
     parsed_examples = parse_example_string(examples)
     if model and "APIEx" in parsed_examples:
-        required_fields = get_required_fields(model.strip("'"))
+        required_fields = set(get_required_fields(model.strip("'")))
+        all_fields = get_all_fields(model.strip("'"))
+        all_fields.append("provider")
+        required_fields_met = False
+
         for api_example in parsed_examples["APIEx"]:
             params = ast.literal_eval(api_example.get("params", "{}"))
-            if len(set(params.keys()) - set(required_fields) - {"provider"}) == 0:
-                break
-        else:
+            if not required_fields_met and required_fields.issubset(params.keys()):
+                required_fields_met = True
+
+            # Check for unsupported parameters
+            for param in params:
+                if param not in all_fields:
+                    api_example_violation.append(
+                        f"'{router_name}' > '{function.__name__}': param '{param}' is not supported by the command."
+                    )
+
+        # If after checking all examples, required fields are still not met
+        if not required_fields_met:
             api_example_violation.append(
                 f"'{router_name}' > '{function.__name__}': missing example with required fields only > {required_fields}"
             )
