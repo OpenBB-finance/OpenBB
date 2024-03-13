@@ -148,6 +148,11 @@ class IntrinioEtfInfoData(EtfInfoData):
         description="This field is populated if the ETF holds either"
         + " listed or over-the-counter derivatives in its portfolio.",
     )
+    income_category: Optional[str] = Field(
+        default=None,
+        description="Identifies if an Exchange Traded Fund (ETF) falls into a category"
+        + " that is specifically designed to provide a high yield or income",
+    )
     asset_class: Optional[str] = Field(
         default=None,
         description="Captures the underlying nature of the securities in the Exchanged Traded Product (ETP).",
@@ -571,11 +576,6 @@ class IntrinioEtfInfoData(EtfInfoData):
         default=None,
         description="Listing currency of the Exchange Traded Product (ETP) in which it is traded."
         + " Reported using the 3-digit ISO currency code.",
-    )
-    income_category: Optional[str] = Field(
-        default=None,
-        description="Identifies if an Exchange Traded Fund (ETF) falls into a category"
-        + " that is specifically designed to provide a high yield or income",
     )
     number_of_holdings: Optional[int] = Field(
         default=None,
