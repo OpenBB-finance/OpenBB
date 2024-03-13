@@ -279,6 +279,7 @@ def create_reference_markdown_tabular_section(
             Tabular section for the markdown file
     """
 
+    standard_params_list = []
     tables_list = []
 
     # params_list is a list of dictionaries containing the
@@ -290,13 +291,17 @@ def create_reference_markdown_tabular_section(
             for params in params_list
         ]
 
-        # Do not add default and optional columns in the Data section
-        # because James and Andrew don't like it
+        # Exclude default and optional columns in the Data section
         if heading == "Data":
             filtered_params = [
                 {k: v for k, v in params.items() if k not in ["default", "optional"]}
                 for params in filtered_params
             ]
+
+        if provider == "standard":
+            standard_params_list = filtered_params
+        else:
+            filtered_params = standard_params_list + filtered_params
 
         # Parameter information for every provider is extracted from the dictionary
         # and joined to form a row of the table.

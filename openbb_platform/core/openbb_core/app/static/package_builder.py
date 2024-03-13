@@ -1305,7 +1305,6 @@ class ReferenceGenerator:
             "description": description,
             "default": default,
             "optional": True,
-            "standard": True,
         }
 
         return provider_parameter_info
@@ -1380,7 +1379,6 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
-                    "standard": provider == "openbb",
                 }
             )
 
@@ -1511,12 +1509,59 @@ class ReferenceGenerator:
                 "flag": MethodDefinition.is_deprecated_function(path),
                 "message": MethodDefinition.get_deprecation_message(path),
             }
-            # Add endpoint description
+            # Add endpoint examples
+            examples = openapi_extra.get("examples", [])
+            reference[path]["examples"] = cls.get_endpoint_examples(
+                path, route_func, examples  # type: ignore
+            )
+            # Add data for the endpoints having a standard model
             if route_method == {"GET"}:
-                # reference[path]["description"] = route.description
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
+                # Access model map from the ProviderInterface
+                model_map = cls.pi._map[
+                    standard_model
+                ]  # pylint: disable=protected-access
+
+                for provider in model_map:
+                    if provider == "openbb":
+                        # openbb provider is always present hence its the standard field
+                        reference[path]["parameters"]["standard"] = (
+                            cls.get_provider_field_params(standard_model, "QueryParams")
+                        )
+                        # Add `provider` parameter fields to the openbb provider
+                        provider_parameter_fields = cls.get_provider_parameter_info(
+                            standard_model
+                        )
+                        reference[path]["parameters"]["standard"].append(
+                            provider_parameter_fields
+                        )
+
+                        # Add endpoint data fields for standard provider
+                        reference[path]["data"]["standard"] = (
+                            cls.get_provider_field_params(standard_model, "Data")
+                        )
+                        continue
+                    # Adds provider specific parameter fields to the reference
+                    reference[path]["parameters"][provider] = (
+                        cls.get_provider_field_params(
+                            standard_model, "QueryParams", provider
+                        )
+                    )
+                    # Adds provider specific data fields to the reference
+                    reference[path]["data"][provider] = cls.get_provider_field_params(
+                        standard_model, "Data", provider
+                    )
+                # Add endpoint returns data
+                # Currently only OBBject object is returned
+                providers = provider_parameter_fields["type"]
+                reference[path]["returns"]["OBBject"] = (
+                    DocstringGenerator.get_OBBject_description(
+                        standard_model, providers, "website"
+                    )
+                )
+            # Add data for the endpoints without a standard model (data processing endpoints)
             elif route_method == {"POST"}:
                 # POST method router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
@@ -1524,79 +1569,14 @@ class ReferenceGenerator:
                 description = route_func.__doc__.split("Parameters")[0].strip()  # type: ignore
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
-
-            # Add endpoint examples
-            examples = openapi_extra.get("examples", [])
-            reference[path]["examples"] = cls.get_endpoint_examples(path, route_func, examples)  # type: ignore
-
-            # Add endpoint parameters fields for standard provider
-            if route_method == {"GET"}:
-                model_map = cls.pi._map[
-                    standard_model
-                ]  # pylint: disable=protected-access
-                # openbb provider is always present hence its the standard field
-                reference[path]["parameters"]["standard"] = (
-                    cls.get_provider_field_params(standard_model, "QueryParams")
-                )
-
-                # Add `provider` parameter fields to the openbb provider
-                provider_parameter_fields = cls.get_provider_parameter_info(
-                    standard_model
-                )
-                reference[path]["parameters"]["standard"].append(
-                    provider_parameter_fields
-                )
-
-                # Add endpoint data fields for standard provider
-                reference[path]["data"]["standard"] = cls.get_provider_field_params(
-                    standard_model, "Data"
-                )
-
-                for provider in model_map:
-                    if provider == "openbb":
-                        continue
-
-                    # Adds standard parameters to the provider parameters since they are
-                    # inherited by the model.
-                    # A copy is used to prevent the standard parameters fields from being
-                    # modified.
-                    # type: ignore
-                    reference[path]["parameters"][provider] = reference[path][
-                        "parameters"
-                    ]["standard"].copy()
-                    provider_query_params = cls.get_provider_field_params(
-                        standard_model, "QueryParams", provider
-                    )
-                    reference[path]["parameters"][provider].extend(provider_query_params)  # type: ignore
-
-                    # Adds standard data fields to the provider data fields since they are
-                    # inherited by the model.
-                    # A copy is used to prevent the standard data fields from being modified.
-                    reference[path]["data"][provider] = reference[path]["data"][
-                        "standard"
-                    ].copy()
-                    provider_data = cls.get_provider_field_params(standard_model, "Data", provider)  # type: ignore
-                    reference[path]["data"][provider].extend(provider_data)
-
-            elif route_method == {"POST"}:
                 # Add endpoint parameters fields for POST methods
                 reference[path]["parameters"][
                     "standard"
                 ] = ReferenceGenerator.get_post_method_parameters_info(
                     route_func.__doc__  # type: ignore
                 )
-
-            # Add endpoint returns data
-            # Currently only OBBject object is returned
-            if route_method == {"GET"}:
-                providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = (
-                    DocstringGenerator.get_OBBject_description(
-                        standard_model, providers, "website"
-                    )
-                )
-
-            elif route_method == {"POST"}:
+                # Add endpoint returns data
+                # Currently only OBBject object is returned
                 reference[path]["returns"][
                     "OBBject"
                 ] = cls.get_post_method_returns_info(
