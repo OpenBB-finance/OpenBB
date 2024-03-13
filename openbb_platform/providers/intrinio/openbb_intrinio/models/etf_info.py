@@ -588,12 +588,12 @@ class IntrinioEtfInfoData(EtfInfoData):
         default=None,
         description="Gross expense net of Fee Waivers, as a percentage of net assets"
         + " as published by the ETF issuer.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     etf_portfolio_turnover: Optional[float] = Field(
         default=None,
         description="The percentage of positions turned over in the last 12 months.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 
