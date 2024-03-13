@@ -16,25 +16,15 @@ echo "                                  |___/       "
 BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 
-We will be deprecating the OpenBBTerminal in the future and this will be the final release.
+033[1mAnnouncement\033[0m
+OpenBB Terminal v3.2.5 will be the last version made available.
 
- We have been working hard to build the OpenBB platform and we will be releasing a CLI version of the platform in the coming
- months where you can customize your experience and explore all of the data available on the OpenBB platform.
+As we transition our focus to the OpenBB Platform, this repository will soon be rebranded as OpenBB-finance/OpenBBPlatform.
 
+However, we are committed to continuing our mission to democratize investment research by helping users and contributors with financial data integration and standardization.
+
+To achieve that, we are working on a new CLI tool built on top of the OpenBB Platform that will soon be available to everyone for free.
 "
 echo "$BOOTUP_MESSAGE"
-
-# Add some messages we can print out
-messages=("" "" "" "" \
-"Did you know that you can search for stocks from a given country by running stocks/search --exchangecountry COUNTRY" \
-"" "" "" \
-"You can jump between menus by starting your command with a backslash.  To go from funds to stocks/fa, you can run /stocks/fa" \
-"" "" "" \
-"Every command has a help flag.  To access this use the -h flag after your command.")
-
-
-# Pick a random one
-index=$((RANDOM % ${#messages[@]}))
-echo ${messages[$index]}
 
 "$SCRIPTDIR"/.OpenBB/OpenBBTerminal
