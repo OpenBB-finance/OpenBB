@@ -58,32 +58,18 @@ def print_goodbye():
     # "We like the terminal."
     # "...when offered a flight to the moon, nobody asks about what seat."
 
-    console.print(
-        "[param]The OpenBB Terminal is the result of a strong community building an "
-        "investment research platform for everyone, anywhere.[/param]\n"
-    )
+    text = """
+[param]Thank you for using the OpenBB Terminal and being part of this journey.[/param]
 
-    console.print(
-        "We are always eager to welcome new contributors and you can find our open jobs here:\n"
-        "[cmds]https://www.openbb.co/company/careers#open-roles[/cmds]\n"
-    )
+We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
 
-    console.print(
-        "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
-        "Follow us         : [cmds]https://openbb.co/twitter[/cmds]\n"
-        "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
-        "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
-    )
+In the meantime, check out our other products:
 
-    console.print(
-        "[bold]Fill in our 2-minute survey so we better understand how we can improve the OpenBB Terminal "
-        "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
-    )
-
-    console.print(
-        "[param]In the meantime access investment research from your chatting platform using the OpenBB Bot[/param]\n"
-        "Try it today, for FREE: [cmds]https://openbb.co/products/bot[/cmds]\n"
-    )
+[bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
+[bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
+[bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
+    """
+    console.print(text)
     logger.info("END")
 
 
