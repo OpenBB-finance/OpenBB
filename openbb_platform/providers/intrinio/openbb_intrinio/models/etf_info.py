@@ -597,7 +597,9 @@ class IntrinioEtfInfoData(EtfInfoData):
     )
 
 
-class IntrinioEtfInfoFetcher(Fetcher[IntrinioEtfInfoQueryParams, List[IntrinioEtfInfoData]]):
+class IntrinioEtfInfoFetcher(
+    Fetcher[IntrinioEtfInfoQueryParams, List[IntrinioEtfInfoData]]
+):
     """Intrinio ETF Info Fetcher."""
 
     @staticmethod
