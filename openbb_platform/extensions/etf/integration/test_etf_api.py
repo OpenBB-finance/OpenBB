@@ -32,6 +32,13 @@ def headers():
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "query": "vanguard",
+                "provider": "intrinio",
+                "exchange": "arcx",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -235,6 +242,7 @@ def test_etf_historical(params, headers):
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
+        ({"symbol": "IOO,QQQ", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration

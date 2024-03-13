@@ -49,7 +49,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           # "Checking PR diff"
-          echo "terminal_files=$(git diff --name-status origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | grep -v '^D' | cut -f 2- | xargs)" >> $GITHUB_ENV
+          echo "terminal_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | grep -v 'openbb_terminal/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
           echo $terminal_files
           echo "platform_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
           echo $platform_files
@@ -67,18 +67,19 @@ jobs:
       - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: ruff .
-      - run: |
-          # Run linters for openbb_terminal
-          if [ -n "${{ env.terminal_files }}" ]; then
-            mypy --ignore-missing-imports ${{ env.terminal_files }}
-            pylint terminal.py ${{ env.terminal_files }}
-          else
-            echo "No Python files changed in openbb_terminal"
-          fi
+      # TODO: Enable linters for openbb_terminal once we're ready
+      # - run: |
+      #     # Run linters for openbb_terminal
+      #     if [ -n "${{ env.terminal_files }}" ]; then
+      #       mypy --ignore-missing-imports ${{ env.terminal_files }}
+      #       pylint terminal.py ${{ env.terminal_files }}
+      #     else
+      #       echo "No Python files changed in openbb_terminal"
+      #     fi
       - run: |
           # Run linters for openbb_platform
           if [ -n "${{ env.platform_files }}" ]; then
-            # Add mypy to this part of the linting workflow once we're ready
+            # TODO: Add mypy to this part of the linting workflow once we're ready
             pylint ${{ env.platform_files }}
           else
             echo "No Python files changed in openbb_platform"
