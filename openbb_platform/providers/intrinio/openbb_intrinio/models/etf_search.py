@@ -90,10 +90,10 @@ class IntrinioEtfSearchFetcher(
         BASE = "https://api-v2.intrinio.com/etfs"
         if query.exchange is not None:
             url = f"{BASE}?exchange={query.exchange.upper()}&page_size=10000&api_key={api_key}"
-        if not query.query and query.exchange is None:
-            url = f"{BASE}?page_size=10000&api_key={api_key}"
-        if query.query and query.exchange is None:
+        elif query.query:
             url = f"{BASE}/search?query={query.query}&page_size=10000&api_key={api_key}"
+        else:
+            url = f"{BASE}?page_size=10000&api_key={api_key}"
 
         data = []
 
@@ -104,6 +104,7 @@ class IntrinioEtfSearchFetcher(
             if results.get("messages"):  # type: ignore
                 messages = results.get("messages")  # type: ignore
                 raise RuntimeError(str(messages))
+
             if results.get("etfs") and len(results.get("etfs")) > 0:  # type: ignore
                 data.extend(results.get("etfs"))  # type: ignore
                 while results.get("next_page"):  # type: ignore
@@ -126,14 +127,17 @@ class IntrinioEtfSearchFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEtfSearchData]:
         """Transform data."""
+
         if not data:
             raise EmptyDataError("No data found.")
+
         results = DataFrame(data)
         if query.query:
             pattern = f".*{re.escape(query.query)}.*"
             results = results[
                 results["name"].str.contains(pattern, case=False, regex=True)
             ]
+
         return [
             IntrinioEtfSearchData.model_validate(d)
             for d in results.to_dict(orient="records")

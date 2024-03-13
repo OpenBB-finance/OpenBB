@@ -632,8 +632,7 @@ class IntrinioEtfInfoFetcher(
             if "error" in result:
                 warn(f"Symbol Error: {result['error']} for {response.url.parts[-1]}")
                 return
-            if "messages" in result:
-                _ = result.pop("messages")
+            _ = result.pop("messages", None)
             results.append(result)
 
         await amake_requests(urls, response_callback, **kwargs)  # type: ignore
@@ -643,13 +642,7 @@ class IntrinioEtfInfoFetcher(
 
         return sorted(
             results,
-            key=(
-                lambda item: (
-                    symbols.index(item["figi_ticker"])
-                    if item["figi_ticker"] in symbols
-                    else len(symbols)
-                )
-            ),
+            key=(lambda item: (symbols.index(item.get("figi_ticker", len(symbols))))),
         )
 
     @staticmethod
