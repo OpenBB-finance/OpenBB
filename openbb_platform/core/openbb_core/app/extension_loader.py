@@ -2,7 +2,7 @@
 
 from enum import Enum
 from functools import lru_cache
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from importlib_metadata import EntryPoint, EntryPoints, entry_points
 
@@ -20,6 +20,15 @@ class OpenBBGroups(Enum):
     core = "openbb_core_extension"
     provider = "openbb_provider_extension"
     obbject = "openbb_obbject_extension"
+
+    @staticmethod
+    def groups() -> List[str]:
+        """Return the OpenBBGroups."""
+        return [
+            OpenBBGroups.core.value,
+            OpenBBGroups.provider.value,
+            OpenBBGroups.obbject.value,
+        ]
 
 
 class ExtensionLoader(metaclass=SingletonMeta):
@@ -56,6 +65,15 @@ class ExtensionLoader(metaclass=SingletonMeta):
     def provider_entry_points(self) -> EntryPoints:
         """Return the provider entry points."""
         return self._provider_entry_points
+
+    @property
+    def entry_points(self) -> List[EntryPoints]:
+        """Return the entry points."""
+        return [
+            self._core_entry_points,
+            self._provider_entry_points,
+            self._obbject_entry_points,
+        ]
 
     @staticmethod
     def _get_entry_point(

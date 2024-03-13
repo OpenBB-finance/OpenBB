@@ -1,26 +1,27 @@
 """Platform V4 Markdown Generator Script."""
 
-# pylint: disable=too-many-lines
-
-import inspect
+import argparse
 import json
 import re
 import shutil
+import subprocess
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Dict, List, Union
 
-from openbb_core.app.model.example import Example
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import RouterLoader
-from openbb_core.app.static.package_builder import DocstringGenerator, MethodDefinition
+import toml
+from openbb_core.app.static.utils.console import Console
 from openbb_core.provider import standard_models
-from pydantic_core import PydanticUndefined
+from packaging import specifiers
 
 # Number of spaces to substitute tabs for indentation
 TAB_WIDTH = 4
 
 # Maximum number of commands to display on the cards
 MAX_COMMANDS = 8
+
+# Path to the Platform directory and the reference.json file
+PLATFORM_PATH = Path(__file__).parent.parent / "openbb_platform"
+REFERENCE_FILE_PATH = Path(PLATFORM_PATH / "openbb/assets/reference.json")
 
 # Paths to use for generating and storing the markdown files
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -34,450 +35,157 @@ PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/Gen
 PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # noqa: E501
 
 
-def get_field_data_type(field_type: Any) -> str:
-    """Get the implicit data type from the field type.
+# pylint: disable=redefined-outer-name
+def check_installed_packages(
+    console: Console,
+    debug: bool,
+) -> None:
+    """Checks if the installed packages are the same as those on the platform pyproject.toml file.
 
-    String manipulation is used to extract the implicit
-    data type from the field type.
+    Compares the versions of the installed packages with the versions specified in the pyproject.toml file.
+    The source of truth for the package versions is the pyproject.toml file, and the installed packages are
+    checked against the specified versions. If the installed packages do not satisfy the version requirements,
+    an error is raised.
 
-    Args:
-        field_type (Any): typing object field type
-
-    Returns:
-        str: String representation of the implicit field tzxype
+    Parameters
+    ----------
+        console (Console): Console object to display messages and save logs
+        debug (bool): Flag to enable debug mode
     """
 
-    try:
-        if "BeforeValidator" in str(field_type):
-            field_type = "int"
+    def convert_poetry_version_specifier(
+        poetry_version: Union[str, Dict[str, str]]
+    ) -> str:
+        """
+        Convert a Poetry version specifier to a format compatible with the packaging library.
+        Handles both simple string specifiers and dictionary specifiers, extracting only the version value if it's a dict.
 
-        if "Optional" in str(field_type):
-            field_type = str(field_type.__args__[0])
+        Parameters
+        ----------
+            poetry_version (Union[str, Dict[str, str]]):
+                Poetry version specifier
 
-        if "Annotated[" in str(field_type):
-            field_type = str(field_type).rsplit("[", maxsplit=1)[-1].split(",")[0]
+        Returns
+        -------
+            str:
+                Version specifier compatible with the packaging library
+        """
+        if isinstance(poetry_version, dict):
+            poetry_version = poetry_version.get("version", "")
 
-        if "models" in str(field_type):
-            field_type = str(field_type).rsplit(".", maxsplit=1)[-1]
+        if isinstance(poetry_version, str):
+            if poetry_version.startswith("^"):
+                base_version = poetry_version[1:]
+                # Use regex to split the version and convert to integers only if they are purely numeric
+                parts = re.split(r"\.|\-", base_version)
+                try:
+                    major, minor = (int(x) for x in parts[:2])
+                except ValueError:
+                    # If conversion fails, return the original version specifier
+                    return poetry_version
+                next_major_version = major + 1
+                # Construct a version specifier that represents the range.
+                return f">={base_version},<{next_major_version}.0.0"
 
-        field_type = (
-            str(field_type)
-            .replace("<class '", "")
-            .replace("'>", "")
-            .replace("typing.", "")
-            .replace("pydantic.types.", "")
-            .replace("openbb_core.provider.abstract.data.", "")
-            .replace("datetime.datetime", "datetime")
-            .replace("datetime.date", "date")
-            .replace("NoneType", "None")
-            .replace(", None", "")
-        )
-    except TypeError:
-        field_type = str(field_type)
+            if poetry_version.startswith("~"):
+                base_version = poetry_version[1:]
+                parts = re.split(r"\.|\-", base_version)
+                try:
+                    major, minor = (int(x) for x in parts[:2])
+                except ValueError:
+                    # If conversion fails, return the original version specifier
+                    return poetry_version
+                next_minor_version = minor + 1
+                # Construct a version specifier that represents the range.
+                return f">={base_version},<{major}.{next_minor_version}.0"
 
-    return field_type
+            # No need to modify other specifiers, as they are compatible with packaging library
+        return poetry_version
 
+    def check_dependency(
+        package_name: str, version_spec: str, installed_packages_dict: Dict[str, str]
+    ) -> None:
+        """
+        Check if the installed package version satisfies the required version specifier.
+        Raises DependencyCheckError if the package is not installed or does not satisfy the version requirements.
 
-def get_endpoint_examples(
-    path: str,
-    func: Callable,
-    examples: Optional[List[Example]],
-) -> str:
-    """Get the examples for the given standard model or function.
+        Parameters
+        ----------
+            package_name (str):
+                Name of the package to check
+            version_spec (str):
+                Version specifier to check against
+            installed_packages_dict (Dict[str, str]):
+                Dictionary of installed packages and their versions
+        """
+        installed_version = installed_packages_dict.get(package_name.lower())
+        if not installed_version:
+            raise Exception(f"{package_name} is not installed.")
 
-    For a given standard model or function, the examples are fetched from the
-    list of Example objects and formatted into a string.
+        converted_version_spec = convert_poetry_version_specifier(version_spec)
+        specifier_set = specifiers.SpecifierSet(converted_version_spec)
 
-    Args:
-        path (str): Path of the router.
-        func (Callable): Router endpoint function.
-        examples (Optional[List[Example]]): List of Examples (APIEx or PythonEx type)
-        for the endpoint.
+        if not specifier_set.contains(installed_version, prereleases=True):
+            message = f"{package_name} version {installed_version} does not satisfy the specified version {converted_version_spec}."  # noqa: E501, pylint: disable=line-too-long
+            raise Exception(message)
 
-    Returns:
-        str: Formatted string containing the examples for the endpoint.
-    """
-    sig = inspect.signature(func)
-    parameter_map = dict(sig.parameters)
-    formatted_params = MethodDefinition.format_params(
-        path=path, parameter_map=parameter_map
+    console.log("\n[CRITICAL] Ensuring all the extensions are installed before the script runs...")  # fmt: skip
+
+    # Execute the pip list command once and store the output
+    pip_list_output = subprocess.run(
+        "pip list | grep openbb",  # noqa: S607
+        shell=True,  # noqa: S602
+        capture_output=True,
+        text=True,
+        check=False,
     )
-    explicit_params = dict(formatted_params)
-    explicit_params.pop("extra_params", None)
-    param_types = {k: v.annotation for k, v in explicit_params.items()}
-
-    return DocstringGenerator.build_examples(
-        path.replace("/", "."),
-        param_types,
-        examples,
-        "website",
-    )
-
-
-def get_provider_parameter_info(endpoint: Callable) -> Dict[str, str]:
-    """Get the name, type, description, default value and optionality
-    information for the provider parameter.
-
-    Function signature is insepcted to get the parameters of the router
-    endpoint function. The provider parameter is then extracted from the
-    function type annotations then the information is extracted from it.
-
-    Args:
-        endpoint (Callable): Router endpoint function
-
-    Returns:
-        Dict[str, str]: Dictionary of the provider parameter information
-    """
-
-    params_dict = endpoint.__annotations__
-    model_type = params_dict["provider_choices"].__args__[0]
-    provider_params_field = model_type.__dataclass_fields__["provider"]
-
-    # Type is Union[Literal[<provider_name>], None]
-    default = provider_params_field.type.__args__[0]
-    description = (
-        "The provider to use for the query, by default None. "
-        "If None, the provider specified in defaults is selected "
-        f"or '{default}' if there is no default."
-    )
-
-    provider_parameter_info = {
-        "name": provider_params_field.name,
-        "type": str(provider_params_field.type).replace("typing.", ""),
-        "description": description,
-        "default": default,
-        "optional": True,
-        "standard": True,
+    installed_packages = pip_list_output.stdout.splitlines()
+    installed_packages_dict = {
+        line.split()[0].lower(): line.split()[1] for line in installed_packages
     }
 
-    return provider_parameter_info
+    # Load the pyproject.toml file once
+    with open(PLATFORM_PATH / "pyproject.toml") as f:
+        toml_dict = toml.load(f)
 
+    # Extract the openbb dependencies, excluding the python dependency
+    dependencies = toml_dict["tool"]["poetry"]["dependencies"]
+    dependencies.pop("python", None)
 
-def get_provider_field_params(
-    model_map: Dict[str, Any],
-    params_type: str,
-    provider: str = "openbb",
-) -> List[Dict[str, Any]]:
-    """Get the fields of the given parameter type for the given provider
-    of the standard_model.
+    # Compare versions and check dependencies
+    for package, version_spec in dependencies.items():
+        normalized_package_name = package.replace("_", "-").lower()
+        try:
+            # Convert the version specifier before checking
+            converted_version_spec = convert_poetry_version_specifier(version_spec)
+            check_dependency(
+                normalized_package_name, converted_version_spec, installed_packages_dict
+            )
 
-    Args:
-        provider_map (Dict[str, Any]): Model Map containing the QueryParams and Data parameters
-        params_type (str): Parameters to fetch data for (QueryParams or Data)
-        provider (str, optional): Provider name. Defaults to "openbb".
-
-    Returns:
-        List[Dict[str, str]]: List of dictionaries containing the field name,
-        type, description, default, optional flag and standard flag for each provider.
-    """
-
-    provider_field_params = []
-    expanded_types = MethodDefinition.TYPE_EXPANSION
-
-    for field, field_info in model_map[provider][params_type]["fields"].items():
-        # Determine the field type, expanding it if necessary and if params_type is "Parameters"
-        field_type = get_field_data_type(field_info.annotation)
-
-        if params_type == "QueryParams" and field in expanded_types:
-            expanded_type = get_field_data_type(expanded_types[field])
-            field_type = f"Union[{expanded_type}, {field_type}]"
-
-        cleaned_description = (
-            str(field_info.description)
-            .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
-        )  # fmt: skip
-
-        # Add information for the providers supporting multiple symbols
-        if params_type == "QueryParams" and (
-            field_extra := field_info.json_schema_extra
-        ):
-            multiple_items_list = field_extra.get("multiple_items_allowed", None)
-            if multiple_items_list:
-                multiple_items = ", ".join(multiple_items_list)
-                cleaned_description += (
-                    f" Multiple items allowed for provider(s): {multiple_items}."
+            # Ensure debug_mode output shows the processed version specifier
+            if debug:
+                installed_version = installed_packages_dict.get(normalized_package_name)
+                console.log(
+                    f"{normalized_package_name}: Specified version {converted_version_spec}, Installed version {installed_version}"  # noqa: E501, pylint: disable=line-too-long
                 )
-                # Manually setting to List[<field_type>] for multiple items
-                # Should be removed if TYPE_EXPANSION is updated to include this
-                field_type = f"Union[{field_type}, List[{field_type}]]"
-
-        default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
-
-        provider_field_params.append(
-            {
-                "name": field,
-                "type": field_type,
-                "description": cleaned_description,
-                "default": default_value,
-                "optional": not field_info.is_required(),
-                "standard": provider == "openbb",
-            }
-        )
-
-    return provider_field_params
-
-
-def get_function_params_default_value(endpoint: Callable) -> Dict:
-    """Get the default for the endpoint function parameters.
-
-    Args:
-        endpoint (Callable): Router endpoint function
-
-    Returns:
-        Dict: Endpoint function parameters and their default values
-    """
-
-    default_values = {}
-
-    signature = inspect.signature(endpoint)
-    parameters = signature.parameters
-
-    for name, param in parameters.items():
-        if param.default is not inspect.Parameter.empty:
-            default_values[name] = param.default
-        else:
-            default_values[name] = ""
-
-    return default_values
-
-
-def get_post_method_parameters_info(endpoint: Callable) -> List[Dict[str, str]]:
-    """Get the parameters for the POST method endpoints.
-
-    Args:
-        endpoint (Callable): Router endpoint function
-
-    Returns:
-        List[Dict[str, str]]: List of dictionaries containing the name,
-        type, description, default and optionality of each parameter.
-    """
-    parameters_info = []
-    descriptions = {}
-
-    parameters_default_values = get_function_params_default_value(endpoint)
-    section = endpoint.__doc__.split("Parameters")[1].split("Returns")[0]  # type: ignore
-
-    lines = section.split("\n")
-    current_param = None
-    for line in lines:
-        cleaned_line = line.strip()
-
-        if ":" in cleaned_line:  # This line names a parameter
-            current_param = cleaned_line.split(":")[0]
-            current_param = current_param.strip()
-        elif current_param:  # This line describes the parameter
-            description = cleaned_line.strip()
-            descriptions[current_param] = description
-            # Reset current_param to ensure each description is
-            # correctly associated with the parameter
-            current_param = None
-
-    for param, param_type in endpoint.__annotations__.items():
-        if param == "return":
-            continue
-
-        parameters_info.append(
-            {
-                "name": param,
-                "type": get_field_data_type(param_type),
-                "description": descriptions.get(param, ""),
-                "default": parameters_default_values.get(param, ""),
-                "optional": "Optional" in str(param_type),
-            }
-        )
-
-    return parameters_info
-
-
-def get_post_method_returns_info(endpoint: Callable) -> List[Dict[str, str]]:
-    """Get the returns information for the POST method endpoints.
-
-    Args:
-        endpoint (Callable): Router endpoint function
-
-    Returns:
-        Dict[str, str]: Dictionary containing the name, type, description of the return value
-    """
-    section = endpoint.__doc__.split("Parameters")[1].split("Returns")[-1]  # type: ignore
-    description_lines = section.strip().split("\n")
-    description = description_lines[-1].strip() if len(description_lines) > 1 else ""
-    return_type = endpoint.__annotations__["return"].model_fields["results"].annotation
-
-    # Only one item is returned hence its a list with a single dictionary.
-    # Future changes to the return type will require changes to this code snippet.
-    return_info = [
-        {
-            "name": "results",
-            "type": get_field_data_type(return_type),
-            "description": description,
-        }
-    ]
-
-    return return_info
-
-
-# mypy: disable-error-code="attr-defined,arg-type"
-def generate_reference_file() -> None:
-    """Generate reference.json file using the ProviderInterface map."""
-
-    # ProviderInterface Map contains the model and its
-    # corresponding QueryParams and Data fields
-    pi_map = ProviderInterface().map
-    reference: Dict[str, Dict] = {}
-
-    # Fields for the reference dictionary to be used in the JSON file
-    REFERENCE_FIELDS = [
-        "deprecated",
-        "description",
-        "examples",
-        "parameters",
-        "returns",
-        "data",
-    ]
-
-    # Router object is used to get the endpoints and their
-    # corresponding APIRouter object
-    router = RouterLoader.from_extensions()
-    route_map = {route.path: route for route in router.api_router.routes}
-
-    for path, route in route_map.items():
-        # Initialize the reference fields as empty dictionaries
-        reference[path] = {field: {} for field in REFERENCE_FIELDS}
-
-        # Route method is used to distinguish between GET and POST methods
-        route_method = route.methods
-
-        # Route endpoint is the callable function
-        route_func = route.endpoint
-
-        # Standard model is used as the key for the ProviderInterface Map dictionary
-        standard_model = route.openapi_extra["model"] if route_method == {"GET"} else ""
-
-        # Model Map contains the QueryParams and Data fields for each provider for a standard model
-        model_map = pi_map[standard_model] if standard_model else ""
-
-        # Add endpoint model for GET methods
-        reference[path]["model"] = standard_model
-
-        # Add endpoint deprecation details
-        deprecated_value = getattr(route, "deprecated", None)
-        reference[path]["deprecated"] = {
-            "flag": bool(deprecated_value),
-            "message": route.summary if deprecated_value else None,
-        }
-
-        # Add endpoint description
-        if route_method == {"GET"}:
-            reference[path]["description"] = route.description
-        elif route_method == {"POST"}:
-            # POST method router `description` attribute is unreliable as it may or
-            # may not contain the "Parameters" and "Returns" sections. Hence, the
-            # endpoint function docstring is used instead.
-            description = route.endpoint.__doc__.split("Parameters")[0].strip()
-            # Remove extra spaces in between the string
-            reference[path]["description"] = re.sub(" +", " ", description)
-
-        # Add endpoint examples
-        examples = route.openapi_extra["examples"]
-        reference[path]["examples"] = get_endpoint_examples(path, route_func, examples)
-
-        # Add endpoint parameters fields for standard provider
-        if route_method == {"GET"}:
-            # openbb provider is always present hence its the standard field
-            reference[path]["parameters"]["standard"] = get_provider_field_params(
-                model_map, "QueryParams"
-            )
-
-            # Add `provider` parameter fields to the openbb provider
-            provider_parameter_fields = get_provider_parameter_info(route_func)
-            reference[path]["parameters"]["standard"].append(provider_parameter_fields)
-
-            # Add endpoint data fields for standard provider
-            reference[path]["data"]["standard"] = get_provider_field_params(
-                model_map, "Data"
-            )
-
-            for provider in model_map:
-                if provider == "openbb":
-                    continue
-
-                # Adds standard parameters to the provider parameters since they are
-                # inherited by the model.
-                # A copy is used to prevent the standard parameters fields from being
-                # modified.
-                reference[path]["parameters"][provider] = reference[path]["parameters"][
-                    "standard"
-                ].copy()
-                provider_query_params = get_provider_field_params(
-                    model_map, "QueryParams", provider
-                )
-                reference[path]["parameters"][provider].extend(provider_query_params)
-
-                # Adds standard data fields to the provider data fields since they are
-                # inherited by the model.
-                # A copy is used to prevent the standard data fields from being modified.
-                reference[path]["data"][provider] = reference[path]["data"][
-                    "standard"
-                ].copy()
-                provider_data = get_provider_field_params(model_map, "Data", provider)
-                reference[path]["data"][provider].extend(provider_data)
-
-        elif route_method == {"POST"}:
-            # Add endpoint parameters fields for POST methods
-            reference[path]["parameters"]["standard"] = get_post_method_parameters_info(
-                route_func
-            )
-
-        # Add endpoint returns data
-        # Currently only OBBject object is returned
-        if route_method == {"GET"}:
-            reference[path]["returns"]["OBBject"] = [
-                {
-                    "name": "results",
-                    "type": f"List[{standard_model}]",
-                    "description": "Serializable results.",
-                },
-                {
-                    "name": "provider",
-                    "type": f"Optional[{provider_parameter_fields['type']}]",
-                    "description": "Provider name.",
-                },
-                {
-                    "name": "warnings",
-                    "type": "Optional[List[Warning_]]",
-                    "description": "List of warnings.",
-                },
-                {
-                    "name": "chart",
-                    "type": "Optional[Chart]",
-                    "description": "Chart object.",
-                },
-                {
-                    "name": "extra",
-                    "type": "Dict[str, Any]",
-                    "description": "Extra info.",
-                },
-            ]
-
-        elif route_method == {"POST"}:
-            reference[path]["returns"]["OBBject"] = get_post_method_returns_info(
-                route_func
-            )
-
-    # Dumping the reference dictionary as a JSON file
-    with open(PLATFORM_CONTENT_PATH / "reference.json", "w", encoding="utf-8") as f:
-        json.dump(reference, f, indent=4)
+        except Exception as e:
+            raise e
 
 
 def create_reference_markdown_seo(path: str, description: str) -> str:
     """Create the SEO section for the markdown file.
 
-    Args:
-        path (str): Command path relative to the obb class
-        description (str): Description of the command
+    Parameters
+    ----------
+        path (str):
+            Command path relative to the obb class
+        description (str):
+            Description of the command
 
-    Returns:
-        str: SEO section for the markdown file
+    Returns
+    -------
+        str:
+            SEO section for the markdown file
     """
 
     with open(SEO_METADATA_PATH) as f:
@@ -518,13 +226,19 @@ def create_reference_markdown_intro(
 ) -> str:
     """Create the introduction section for the markdown file.
 
-    Args:
-        path (str): Command path relative to the obb class
-        description (str): Description of the command
-        deprecated (Dict[str, str]): Deprecated flag and message
+    Parameters
+    ----------
+        path (str):
+            Command path relative to the obb class
+        description (str):
+            Description of the command
+        deprecated (Dict[str, str]):
+            Deprecated flag and message
 
-    Returns:
-        str: Introduction section for the markdown file
+    Returns
+    -------
+        str:
+            Introduction section for the markdown file
     """
 
     deprecation_message = (
@@ -552,15 +266,20 @@ def create_reference_markdown_tabular_section(
 ) -> str:
     """Create the tabular section for the markdown file.
 
-    Args:
-        parameters (Dict[str, List[Dict[str, str]]]): Dictionary of
-        providers and their corresponding parameters
-        heading (str): Section heading for the tabular section
+    Parameters
+    ----------
+        parameters (Dict[str, List[Dict[str, str]]]):
+            Dictionary of providers and their corresponding parameters
+        heading (str):
+            Section heading for the tabular section
 
-    Returns:
-        str: Tabular section for the markdown file
+    Returns
+    -------
+        str:
+            Tabular section for the markdown file
     """
 
+    standard_params_list = []
     tables_list = []
 
     # params_list is a list of dictionaries containing the
@@ -572,13 +291,17 @@ def create_reference_markdown_tabular_section(
             for params in params_list
         ]
 
-        # Do not add default and optional columns in the Data section
-        # because James and Andrew don't like it
+        # Exclude default and optional columns in the Data section
         if heading == "Data":
             filtered_params = [
                 {k: v for k, v in params.items() if k not in ["default", "optional"]}
                 for params in filtered_params
             ]
+
+        if provider == "standard":
+            standard_params_list = filtered_params
+        else:
+            filtered_params = standard_params_list + filtered_params
 
         # Parameter information for every provider is extracted from the dictionary
         # and joined to form a row of the table.
@@ -613,48 +336,39 @@ def create_reference_markdown_tabular_section(
     return markdown
 
 
-def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
+def create_reference_markdown_returns_section(returns_content: str) -> str:
     """Create the returns section for the markdown file.
 
-    Args:
-        returns (List[Dict[str, str]]): List of dictionaries containing
-        the name, type and description of the returns
+    Parameters
+    ----------
+        returns_content (str):
+            Returns section formatted as a string
 
-    Returns:
-        str: Returns section for the markdown file
+    Returns
+    -------
+        str:
+            Returns section for the markdown file
     """
 
-    returns_data = ""
-
-    for params in returns:
-        returns_data += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
-        returns_data += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
-
-    # Remove the last two newline characters to render Returns section properly
-    returns_data = returns_data.rstrip("\n\n")
-
-    markdown = (
-        "---\n\n"
-        "## Returns\n\n"
-        "```python wordwrap\n"
-        "OBBject\n"
-        f"{returns_data}\n"
-        "```\n\n"
-    )
-
-    return markdown
+    return f"---\n\n## Returns\n\n```python wordwrap\n{returns_content}\n```\n\n"
 
 
 def create_data_model_markdown(title: str, description: str, model: str) -> str:
     """Create the basic markdown file content for the data model.
 
-    Args:
-        title (str): Title of the data model
-        description (str): Description of the data model
-        model (str): Model name
+    Parameters
+    ----------
+        title (str):
+            Title of the data model
+        description (str):
+            Description of the data model
+        model (str):
+            Model name
 
-    Returns:
-        str: Basic markdown file content for the data model
+    Returns
+    -------
+        str:
+            Basic markdown file content for the data model
     """
 
     # File name is used in the import statement
@@ -702,11 +416,15 @@ def create_data_model_markdown(title: str, description: str, model: str) -> str:
 def find_data_model_implementation_file(data_model: str) -> str:
     """Find the file name containing the data model class.
 
-    Args:
-        data_model (str): Data model name
+    Parameters
+    ----------
+        data_model (str):
+            Data model name
 
-    Returns:
-        str: File name containing the data model class
+    Returns
+    -------
+        str:
+            File name containing the data model class
     """
 
     # Function to search for the data model class in the file
@@ -732,8 +450,10 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
     """Generate index.mdx and _category_.json files for directories and sub-directories
     in the reference directory.
 
-    Args:
-        reference_content (Dict[str, str]): Endpoints and their corresponding descriptions.
+    Parameters
+    ----------
+        reference_content (Dict[str, str]):
+            Endpoints and their corresponding descriptions.
     """
 
     def generate_index_and_category(
@@ -864,13 +584,19 @@ def generate_reference_top_level_index() -> None:
 def create_data_models_index(title: str, description: str, model: str) -> str:
     """Create the index content for the data models.
 
-    Args:
-        title (str): Title of the data model
-        description (str): Description of the data model
-        model (str): Model name
+    Parameters
+    ----------
+        title (str):
+            Title of the data model
+        description (str):
+            Description of the data model
+        model (str):
+            Model name
 
-    Returns:
-        str: Index content for the data models
+    Returns
+    -------
+        str:
+            Index content for the data models
     """
 
     # Get the first sentence of the description
@@ -891,8 +617,10 @@ def create_data_models_index(title: str, description: str, model: str) -> str:
 def generate_data_models_index_files(content: str) -> None:
     """Generate index.mdx and _category_.json files for the data_models directory.
 
-    Args:
-        content (str): Content for the data models index file
+    Parameters
+    ----------
+        content (str):
+            Content for the data models index file
     """
 
     index_content = (
@@ -918,13 +646,19 @@ def generate_data_models_index_files(content: str) -> None:
 def generate_markdown_file(path: str, markdown_content: str, directory: str) -> None:
     """Generate markdown file using the content of the specified path and directory.
 
-    Args:
-        path (str): Path to the markdown file
-        markdown_content (str): Content for the markdown file
-        directory (str): Directory to save the markdown file
+    Parameters
+    ----------
+        path (str):
+            Path to the markdown file
+        markdown_content (str):
+            Content for the markdown file
+        directory (str):
+            Directory to save the markdown file
 
-    Raises:
-        ValueError: If the content type is invalid
+    Raises
+    ------
+        ValueError:
+            If the content type is invalid
     """
 
     # For reference, split the path to separate the
@@ -949,30 +683,37 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
         md_file.write(markdown_content)
 
 
-def generate_platform_markdown() -> None:
+# pylint: disable=redefined-outer-name
+def generate_platform_markdown(
+    console: Console,
+) -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
 
     data_models_index_content = []
     reference_index_content_dict = {}
 
-    print("[CRITICAL] Ensure all the extensions are installed before running this script!")  # fmt: skip
-
-    # Generate and read the reference.json file
-    print("[INFO] Generating the reference.json file...")
-    generate_reference_file()
-    with open(PLATFORM_CONTENT_PATH / "reference.json") as f:
-        reference = json.load(f)
+    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
+    # Load the reference.json file
+    try:
+        with open(REFERENCE_FILE_PATH) as f:
+            reference = json.load(f)
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            "File not found! Please ensure the file exists."
+        ) from exc
 
     # Clear the platform/reference folder
-    print("[INFO] Clearing the platform/reference folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_REFERENCE_PATH} folder...")
     shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
 
     # Clear the platform/data_models folder
-    print("[INFO] Clearing the platform/data_models folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_DATA_MODELS_PATH} folder...")
     shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
 
-    print(f"[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
-    print(f"[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(
+        f"\n[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories..."
+    )  # noqa: E501
+    console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in reference.items():
         reference_markdown_content = ""
@@ -990,6 +731,7 @@ def generate_platform_markdown() -> None:
         reference_markdown_content += create_reference_markdown_intro(
             path[1:], description, path_data["deprecated"]
         )
+        # reference_markdown_content += create_reference_markdown_examples(path_data["examples"])
         reference_markdown_content += path_data["examples"]
 
         if path_parameters_fields := path_data["parameters"]:
@@ -1036,10 +778,10 @@ def generate_platform_markdown() -> None:
             generate_markdown_file(model, data_markdown_content, "data_models")
 
     # Generate the index.mdx and _category_.json files for the reference directory
-    print(f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
     generate_reference_index_files(reference_index_content_dict)
-    print(
-        f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
+    console.log(
+        f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
     )
     generate_reference_top_level_index()
 
@@ -1048,10 +790,33 @@ def generate_platform_markdown() -> None:
     data_models_index_content_str = "".join(data_models_index_content)
 
     # Generate the index.mdx and _category_.json files for the data_models directory
-    print(f"[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
     generate_data_models_index_files(data_models_index_content_str)
-    print("[INFO] Markdown files generated successfully!")
+    console.log("\n[INFO] Markdown files generated successfully!")
 
 
 if __name__ == "__main__":
-    generate_platform_markdown()
+    parser = argparse.ArgumentParser(
+        prog="Platform Markdown Generator V2",
+        description="Generate markdown files for the Platform website docs.",
+    )
+
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output for debugging.",
+    )
+
+    args = parser.parse_args()
+    console = Console(True)
+    verbose = False
+
+    if args.verbose:
+        verbose = True
+
+    check_installed_packages(
+        console=console,
+        debug=verbose,
+    )
+    generate_platform_markdown(console=console)
