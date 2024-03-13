@@ -896,6 +896,8 @@ class ROUTER_etf(Container):
             Investment style of the ETF. (provider: intrinio)
         derivatives_based : Optional[str]
             This field is populated if the ETF holds either listed or over-the-counter derivatives in its portfolio. (provider: intrinio)
+        income_category : Optional[str]
+            Identifies if an Exchange Traded Fund (ETF) falls into a category that is specifically designed to provide a high yield or income (provider: intrinio)
         other_asset_types : Optional[str]
             If 'asset_class' field is classified as 'Other Asset Types' this field captures the specific category of the underlying assets. (provider: intrinio)
         single_category_designation : Optional[str]
@@ -994,6 +996,8 @@ class ROUTER_etf(Container):
             For ETFs where 'commodity_type' is 'Energy', this field provides detail on the type of energy exposure provided by the ETF. (provider: intrinio)
         agricultural_type : Optional[str]
             For ETFs where 'commodity_type' is 'Agricultural', this field provides detail on the type of agricultural exposure provided by the ETF. (provider: intrinio)
+        livestock_type : Optional[str]
+            For ETFs where 'commodity_type' is 'Livestock', this field provides detail on the type of livestock exposure provided by the ETF. (provider: intrinio)
         metal_type : Optional[str]
             For ETFs where 'commodity_type' is 'Gold & Metals', this field provides detail on the type of exposure provided by the ETF. (provider: intrinio)
         inverse_leveraged : Optional[str]
@@ -1010,6 +1014,12 @@ class ROUTER_etf(Container):
             This field is populated if the ETF has an intended investment objective of holding dividend-oriented stocks as stated in the prospectus. (provider: intrinio)
         regular_dividend_payor_type : Optional[str]
             This field is populated if the ETF has a value of'Dividend - Regular Payors' in the 'dividend_type' field. (provider: intrinio)
+        quant_strategies_type : Optional[str]
+            This field is populated if the ETF has either an index-linked or active strategy that is based on a proprietary quantitative strategy. (provider: intrinio)
+        other_quant_models : Optional[str]
+            For ETFs where 'quant_strategies_type' is 'Other Quant Model', this field provides the name of the specific proprietary quant model used as the underlying strategy for the ETF. (provider: intrinio)
+        hedge_fund_type : Optional[str]
+            For ETFs where 'other_asset_types' is 'Hedge Fund Replication', this field provides detail on the type of hedge fund replication strategy. (provider: intrinio)
         excludes_financials : Optional[bool]
             For equity ETFs, identifies those ETFs where the underlying fund holdings will not hold financials stocks, based on the funds intended objective. (provider: intrinio)
         excludes_technology : Optional[bool]
@@ -1042,14 +1052,6 @@ class ROUTER_etf(Container):
             This field is populated if the ETF has short exposure in any of its holdings e.g. in a long/short or inverse ETF. (provider: intrinio)
         ucits : Optional[bool]
             If true, the Exchange Traded Product (ETP) is Undertakings for the Collective Investment in Transferable Securities (UCITS) compliant (provider: intrinio)
-        quant_strategies_type : Optional[str]
-            This field is populated if the ETF has either an index-linked or active strategy that is based on a proprietary quantitative strategy. (provider: intrinio)
-        other_quant_models : Optional[str]
-            For ETFs where 'quant_strategies_type' is 'Other Quant Model', this field provides the name of the specific proprietary quant model used as the underlying strategy for the ETF. (provider: intrinio)
-        hedge_fund_type : Optional[str]
-            For ETFs where 'other_asset_types' is 'Hedge Fund Replication', this field provides detail on the type of hedge fund replication strategy. (provider: intrinio)
-        livestock : Optional[str]
-            For ETFs where 'commodity_type' is 'Livestock', this field provides detail on the type of livestock exposure provided by the ETF. (provider: intrinio)
         registered_countries : Optional[str]
             The list of countries where the ETF is legally registered for sale. This may differ from where the ETF is domiciled or traded, particularly in Europe. (provider: intrinio)
         issuer_country : Optional[str]
@@ -1064,8 +1066,6 @@ class ROUTER_etf(Container):
             Base currency in which NAV is reported. (provider: intrinio)
         listing_currency : Optional[str]
             Listing currency of the Exchange Traded Product (ETP) in which it is traded. Reported using the 3-digit ISO currency code. (provider: intrinio)
-        income_category : Optional[str]
-            Identifies if an Exchange Traded Fund (ETF) falls into a category that is specifically designed to provide a high yield or income (provider: intrinio)
         number_of_holdings : Optional[int]
             The number of holdings in the ETF. (provider: intrinio)
         month_end_assets : Optional[float]
