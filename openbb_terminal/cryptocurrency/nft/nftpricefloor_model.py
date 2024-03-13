@@ -17,7 +17,7 @@ API_URL = "https://api-bff.nftpricefloor.com"
 def get_collection_slugs() -> List[str]:
     df = get_collections()
     if not df.empty and "slug" in df.columns:
-        return df["slug"].tolist()
+        return df["slug"].values.tolist()
     return []
 
 

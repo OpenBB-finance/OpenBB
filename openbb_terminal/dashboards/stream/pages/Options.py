@@ -243,6 +243,7 @@ with st.sidebar:
         index=default_symbol,
         key="ticker",
     )
+    expiration_choice = None
     df = load_data(ticker)
     chains_df = df.chains
     if ticker == "":

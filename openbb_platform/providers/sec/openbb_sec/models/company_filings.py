@@ -1,5 +1,6 @@
 """SEC Company Filings Model."""
 
+# pylint: skip-file
 from datetime import (
     date as dateType,
     datetime,
