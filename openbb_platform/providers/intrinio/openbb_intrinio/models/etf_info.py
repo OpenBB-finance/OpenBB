@@ -48,6 +48,7 @@ class IntrinioEtfInfoData(EtfInfoData):
         "primary_symbol": "primary_ticker",
         "intraday_nav_symbol": "intraday_nav_ticker",
         "issuer_country": "issuing_entity_country_code",
+        "livestock_type": "livestock",
     }
 
     fund_listing_date: Optional[dateType] = Field(
@@ -397,6 +398,11 @@ class IntrinioEtfInfoData(EtfInfoData):
         description="For ETFs where 'commodity_type' is 'Agricultural',"
         + " this field provides detail on the type of agricultural exposure provided by the ETF.",
     )
+    livestock_type: Optional[str] = Field(
+        default=None,
+        description="For ETFs where 'commodity_type' is 'Livestock',"
+        + " this field provides detail on the type of livestock exposure provided by the ETF.",
+    )
     metal_type: Optional[str] = Field(
         default=None,
         description="For ETFs where 'commodity_type' is 'Gold & Metals',"
@@ -435,6 +441,22 @@ class IntrinioEtfInfoData(EtfInfoData):
         default=None,
         description="This field is populated if the ETF has a value of"
         + "'Dividend - Regular Payors' in the 'dividend_type' field.",
+    )
+    quant_strategies_type: Optional[str] = Field(
+        default=None,
+        description="This field is populated if the ETF has either an index-linked"
+        + " or active strategy that is based on a proprietary quantitative strategy.",
+    )
+    other_quant_models: Optional[str] = Field(
+        default=None,
+        description="For ETFs where 'quant_strategies_type' is 'Other Quant Model',"
+        + " this field provides the name of the specific proprietary quant model"
+        + " used as the underlying strategy for the ETF.",
+    )
+    hedge_fund_type: Optional[str] = Field(
+        default=None,
+        description="For ETFs where 'other_asset_types' is 'Hedge Fund Replication',"
+        + " this field provides detail on the type of hedge fund replication strategy.",
     )
     excludes_financials: Optional[bool] = Field(
         default=None,
@@ -513,27 +535,6 @@ class IntrinioEtfInfoData(EtfInfoData):
         default=None,
         description="If true, the Exchange Traded Product (ETP) is Undertakings for the Collective Investment"
         + " in Transferable Securities (UCITS) compliant",
-    )
-    quant_strategies_type: Optional[str] = Field(
-        default=None,
-        description="This field is populated if the ETF has either an index-linked"
-        + " or active strategy that is based on a proprietary quantitative strategy.",
-    )
-    other_quant_models: Optional[str] = Field(
-        default=None,
-        description="For ETFs where 'quant_strategies_type' is 'Other Quant Model',"
-        + " this field provides the name of the specific proprietary quant model"
-        + " used as the underlying strategy for the ETF.",
-    )
-    hedge_fund_type: Optional[str] = Field(
-        default=None,
-        description="For ETFs where 'other_asset_types' is 'Hedge Fund Replication',"
-        + " this field provides detail on the type of hedge fund replication strategy.",
-    )
-    livestock: Optional[str] = Field(
-        default=None,
-        description="For ETFs where 'commodity_type' is 'Livestock',"
-        + " this field provides detail on the type of livestock exposure provided by the ETF.",
     )
     registered_countries: Optional[str] = Field(
         default=None,
