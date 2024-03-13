@@ -16,14 +16,15 @@ echo "                                  |___/       "
 BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 
-033[1mAnnouncement\033[0m
-OpenBB Terminal v3.2.5 will be the last version made available.
+OpenBB Terminal v4 will be the last version of this Terminal.
 
-As we transition our focus to the OpenBB Platform, this repository will soon be rebranded as OpenBB-finance/OpenBBPlatform.
+To continue our mission of democratizing investment research, we are working on a new open-source CLI tool built on top of the OpenBB Platform that will soon be available to everyone for free on my.openbb.co.
 
-However, we are committed to continuing our mission to democratize investment research by helping users and contributors with financial data integration and standardization.
+Join us on social media to be among the first to hear the news.
 
-To achieve that, we are working on a new CLI tool built on top of the OpenBB Platform that will soon be available to everyone for free.
+Discord: openbb.co/discord
+Twitter: openbb.co/twitter
+LinkedIn: openbb.co/linkedin
 "
 echo "$BOOTUP_MESSAGE"
 
