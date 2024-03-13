@@ -58,7 +58,7 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
     Returns
     -------
-    OBBject[List[Data]]:
+    OBBject[List[Data]]
         Correlation matrix.
     """
     df = basemodel_to_df(data)
@@ -120,7 +120,7 @@ def ols_regression(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the results being model and results objects.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -169,7 +169,7 @@ def ols_regression_summary(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being summary object.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -260,7 +260,7 @@ def autocorrelation(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -317,7 +317,7 @@ def residual_autocorrelation(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -374,7 +374,7 @@ def cointegration(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     pairs = list(combinations(columns, 2))
@@ -450,7 +450,7 @@ def causality(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     X = get_target_column(basemodel_to_df(data), x_column)
@@ -518,7 +518,7 @@ def unit_root(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     dataset = get_target_column(basemodel_to_df(data), column)
@@ -568,7 +568,7 @@ def panel_random_effects(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -615,7 +615,7 @@ def panel_between(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -661,7 +661,7 @@ def panel_pooled(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -706,7 +706,7 @@ def panel_fixed(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -751,7 +751,7 @@ def panel_first_difference(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -797,7 +797,7 @@ def panel_fmac(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
