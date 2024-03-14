@@ -1,6 +1,47 @@
 {
   "functions": [
     {
+      "description": "Bring Your Own Data: single widget, own backend or native integration setup in OpenBB Terminal Pro.",
+      "helpUrl": "https://docs.openbb.co/excel/data-connectors",
+      "id": "BYOD",
+      "name": "BYOD",
+      "parameters": [
+        {
+          "description": "Name of the widget to get data for.",
+          "name": "widget",
+          "type": "string"
+        },
+        {
+          "description": "Name of the backend to use, required for widgets in custom backends or native integrations (e.g. database, snowflake).",
+          "name": "backend",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for, if applicable.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date to get data for, if applicable.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
+          "dimensionality": "matrix",
+          "name": "optional",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Slice data from a range.",
       "helpUrl": "https://docs.openbb.co/excel/data-slicer",
       "id": "GET",
@@ -32,54 +73,13 @@
       }
     },
     {
-      "description": "Bring Your Own Data features from OpenBB Terminal Pro.",
-      "helpUrl": "https://docs.openbb.co/excel/data-connectors",
-      "id": "BYOD",
-      "name": "BYOD",
-      "parameters": [
-        {
-          "description": "Name of the widget to get data for.",
-          "name": "widget",
-          "type": "string"
-        },
-        {
-          "description": "Name of the backend to use, required for widgets in custom backends.",
-          "name": "backend",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Symbol to get data for, if applicable.",
-          "name": "symbol",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Date to get data for, if applicable.",
-          "name": "date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
-          "dimensionality": "matrix",
-          "name": "optional",
-          "optional": true,
-          "type": "any"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Get historical price data for cryptocurrency pair(s) within a provider.",
       "helpUrl": "https://docs.openbb.co/excel/reference/crypto/price/historical",
       "id": "CRYPTO.PRICE.HISTORICAL",
       "name": "CRYPTO.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: fmp, polygon.",
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): fmp, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -167,7 +167,7 @@
       "name": "CURRENCY.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: polygon.",
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -469,7 +469,7 @@
       "name": "ECONOMY.CPI",
       "parameters": [
         {
-          "description": "The country to get data. Multiple items allowed: fred.",
+          "description": "The country to get data. Multiple items allowed for provider(s): fred.",
           "name": "country",
           "type": "string"
         },
@@ -521,7 +521,7 @@
       "name": "ECONOMY.FRED_REGIONAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fred.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
           "name": "symbol",
           "type": "string"
         },
@@ -680,7 +680,7 @@
       "name": "ECONOMY.FRED_SERIES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fred.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
           "name": "symbol",
           "type": "string"
         },
@@ -1066,7 +1066,7 @@
       }
     },
     {
-      "description": "Upcoming and Historical Dividend Calendar.",
+      "description": "Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/dividend",
       "id": "EQUITY.CALENDAR.DIVIDEND",
       "name": "EQUITY.CALENDAR.DIVIDEND",
@@ -1095,7 +1095,7 @@
       }
     },
     {
-      "description": "Upcoming and Historical earnings calendar.",
+      "description": "Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/earnings",
       "id": "EQUITY.CALENDAR.EARNINGS",
       "name": "EQUITY.CALENDAR.EARNINGS",
@@ -1124,7 +1124,7 @@
       }
     },
     {
-      "description": "Upcoming and Historical IPO Calendar.",
+      "description": "Get historical and upcoming initial public offerings (IPOs).",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/ipo",
       "id": "EQUITY.CALENDAR.IPO",
       "name": "EQUITY.CALENDAR.IPO",
@@ -1183,7 +1183,7 @@
       }
     },
     {
-      "description": "Calendar Splits. Show Stock Split Calendar.",
+      "description": "Get historical and upcoming stock split operations.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/splits",
       "id": "EQUITY.CALENDAR.SPLITS",
       "name": "EQUITY.CALENDAR.SPLITS",
@@ -1212,7 +1212,7 @@
       }
     },
     {
-      "description": "Equity Peers. Company peers.",
+      "description": "Get the closest peers for a given company.\n\nPeers consist of companies trading on the same exchange, operating within the same sector\nand with comparable market capitalizations.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/compare/peers",
       "id": "EQUITY.COMPARE.PEERS",
       "name": "EQUITY.COMPARE.PEERS",
@@ -1234,7 +1234,7 @@
       }
     },
     {
-      "description": "Get the most-recent filings submitted to the SEC.",
+      "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC\nfilings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/discovery/filings",
       "id": "EQUITY.DISCOVERY.FILINGS",
       "name": "EQUITY.DISCOVERY.FILINGS",
@@ -1340,7 +1340,7 @@
       }
     },
     {
-      "description": "Consensus price target and recommendation.",
+      "description": "Get consensus price target and recommendation.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/consensus",
       "id": "EQUITY.ESTIMATES.CONSENSUS",
       "name": "EQUITY.ESTIMATES.CONSENSUS",
@@ -1362,7 +1362,7 @@
       }
     },
     {
-      "description": "Historical analyst estimates for earnings and revenue.",
+      "description": "Get historical analyst estimates for earnings and revenue.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/historical",
       "id": "EQUITY.ESTIMATES.HISTORICAL",
       "name": "EQUITY.ESTIMATES.HISTORICAL",
@@ -1396,13 +1396,13 @@
       }
     },
     {
-      "description": "Analyst price targets by company.",
+      "description": "Get analyst price targets by company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/price_target",
       "id": "EQUITY.ESTIMATES.PRICE_TARGET",
       "name": "EQUITY.ESTIMATES.PRICE_TARGET",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: benzinga.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga.",
           "name": "symbol",
           "optional": true,
           "type": "string"
@@ -1491,7 +1491,7 @@
       }
     },
     {
-      "description": "Balance Sheet. Balance sheet statement.",
+      "description": "Get the balance sheet for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/balance",
       "id": "EQUITY.FUNDAMENTAL.BALANCE",
       "name": "EQUITY.FUNDAMENTAL.BALANCE",
@@ -1609,7 +1609,7 @@
       }
     },
     {
-      "description": "Balance Sheet Statement Growth. Information about the growth of the company balance sheet.",
+      "description": "Get the growth of a company's balance sheet items over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/balance_growth",
       "id": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
@@ -1637,7 +1637,7 @@
       }
     },
     {
-      "description": "Cash Flow Statement. Information about the cash flow statement.",
+      "description": "Get the cash flow statement for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/cash",
       "id": "EQUITY.FUNDAMENTAL.CASH",
       "name": "EQUITY.FUNDAMENTAL.CASH",
@@ -1755,7 +1755,7 @@
       }
     },
     {
-      "description": "Cash Flow Statement Growth. Information about the growth of the company cash flow statement.",
+      "description": "Get the growth of a company's cash flow statement items over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/cash_growth",
       "id": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
@@ -1783,7 +1783,7 @@
       }
     },
     {
-      "description": "Historical Dividends. Historical dividends data for a given company.",
+      "description": "Get historical dividend data for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/dividends",
       "id": "EQUITY.FUNDAMENTAL.DIVIDENDS",
       "name": "EQUITY.FUNDAMENTAL.DIVIDENDS",
@@ -1823,7 +1823,7 @@
       }
     },
     {
-      "description": "Historical Employees. Historical number of employees.",
+      "description": "Get historical employee count data for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/employee_count",
       "id": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
       "name": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
@@ -1845,7 +1845,7 @@
       }
     },
     {
-      "description": "Company Filings. Company filings data.",
+      "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC\nfilings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/filings",
       "id": "EQUITY.FUNDAMENTAL.FILINGS",
       "name": "EQUITY.FUNDAMENTAL.FILINGS",
@@ -1916,18 +1916,18 @@
       }
     },
     {
-      "description": "Fetch the historical values of a data tag from Intrinio.",
+      "description": "Get the historical values of a data tag from Intrinio.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_attributes",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: intrinio.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Intrinio data tag ID or code. Multiple items allowed: intrinio.",
+          "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
           "name": "tag",
           "type": "string"
         },
@@ -1979,7 +1979,7 @@
       }
     },
     {
-      "description": "Historical earnings-per-share for a given company.",
+      "description": "Get historical earnings per share data for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_eps",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
@@ -2007,7 +2007,7 @@
       }
     },
     {
-      "description": "Historical Splits. Historical splits data.",
+      "description": "Get historical stock splits for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_splits",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
@@ -2029,7 +2029,7 @@
       }
     },
     {
-      "description": "Income Statement. Report on a company's financial performance.",
+      "description": "Get the income statement for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/income",
       "id": "EQUITY.FUNDAMENTAL.INCOME",
       "name": "EQUITY.FUNDAMENTAL.INCOME",
@@ -2147,7 +2147,7 @@
       }
     },
     {
-      "description": "Income Statement Growth. Information about the growth of the company income statement.",
+      "description": "Get the growth of a company's income statement items over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/income_growth",
       "id": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
@@ -2181,18 +2181,18 @@
       }
     },
     {
-      "description": "Fetch the latest value of a data tag from Intrinio.",
+      "description": "Get the latest value of a data tag from Intrinio.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/latest_attributes",
       "id": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: intrinio.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Intrinio data tag ID or code. Multiple items allowed: intrinio.",
+          "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
           "name": "tag",
           "type": "string"
         },
@@ -2208,7 +2208,7 @@
       }
     },
     {
-      "description": "Key Executives. Key executives for a given company.",
+      "description": "Get executive management team data for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/management",
       "id": "EQUITY.FUNDAMENTAL.MANAGEMENT",
       "name": "EQUITY.FUNDAMENTAL.MANAGEMENT",
@@ -2230,13 +2230,13 @@
       }
     },
     {
-      "description": "Get Executive Compensation. Information about the executive compensation for a given company.",
+      "description": "Get executive management team compensation for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/management_compensation",
       "id": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
       "name": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2264,13 +2264,13 @@
       }
     },
     {
-      "description": "Key Metrics. Key metrics for a given company.",
+      "description": "Get fundamental metrics for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/metrics",
       "id": "EQUITY.FUNDAMENTAL.METRICS",
       "name": "EQUITY.FUNDAMENTAL.METRICS",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2304,13 +2304,13 @@
       }
     },
     {
-      "description": "Equity Valuation Multiples. Valuation multiples for a stock ticker.",
+      "description": "Get equity valuation multiples for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/multiples",
       "id": "EQUITY.FUNDAMENTAL.MULTIPLES",
       "name": "EQUITY.FUNDAMENTAL.MULTIPLES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2326,7 +2326,7 @@
       }
     },
     {
-      "description": "Company Overview. General information about a company.",
+      "description": "Get company general business and stock data for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/overview",
       "id": "EQUITY.FUNDAMENTAL.OVERVIEW",
       "name": "EQUITY.FUNDAMENTAL.OVERVIEW",
@@ -2348,13 +2348,13 @@
       }
     },
     {
-      "description": "Extensive set of ratios over time. Financial ratios for a given company.",
+      "description": "Get an extensive set of financial and accounting ratios for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/ratios",
       "id": "EQUITY.FUNDAMENTAL.RATIOS",
       "name": "EQUITY.FUNDAMENTAL.RATIOS",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp, intrinio.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -2394,7 +2394,7 @@
       }
     },
     {
-      "description": "Financial statements, as-reported.",
+      "description": "Get financial statements as reported by the company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/reported_financials",
       "id": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
       "name": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
@@ -2440,7 +2440,7 @@
       }
     },
     {
-      "description": "Revenue Geographic. Geographic revenue data.",
+      "description": "Get the revenue geographic breakdown for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/revenue_per_geography",
       "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
       "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
@@ -2474,7 +2474,7 @@
       }
     },
     {
-      "description": "Revenue Business Line. Business line revenue data.",
+      "description": "Get the revenue breakdown by business segment for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/revenue_per_segment",
       "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
       "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
@@ -2508,7 +2508,7 @@
       }
     },
     {
-      "description": "Search Intrinio data tags.",
+      "description": "Search Intrinio data tags to search in latest or historical attributes.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/search_attributes",
       "id": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
@@ -2536,7 +2536,7 @@
       }
     },
     {
-      "description": "Trailing 1yr dividend yield.",
+      "description": "Get the 1 year trailing dividend yield for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/trailing_dividend_yield",
       "id": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
       "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
@@ -2565,7 +2565,7 @@
       }
     },
     {
-      "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
+      "description": "Get earnings call transcripts for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/transcript",
       "id": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
       "name": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
@@ -2599,7 +2599,7 @@
       }
     },
     {
-      "description": "Get a current, complete, market snapshot.",
+      "description": "Get an updated equity market snapshot. This includes price data for thousands of stocks.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/market_snapshots",
       "id": "EQUITY.MARKET_SNAPSHOTS",
       "name": "EQUITY.MARKET_SNAPSHOTS",
@@ -2622,7 +2622,7 @@
       }
     },
     {
-      "description": "Insider Trading. Information about insider trading.",
+      "description": "Get data about trading by a company's management team and board of directors.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/insider_trading",
       "id": "EQUITY.OWNERSHIP.INSIDER_TRADING",
       "name": "EQUITY.OWNERSHIP.INSIDER_TRADING",
@@ -2680,7 +2680,7 @@
       }
     },
     {
-      "description": "Institutional Ownership. Institutional ownership data.",
+      "description": "Get data about institutional ownership for a given company over time.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/institutional",
       "id": "EQUITY.OWNERSHIP.INSTITUTIONAL",
       "name": "EQUITY.OWNERSHIP.INSTITUTIONAL",
@@ -2720,7 +2720,47 @@
       }
     },
     {
-      "description": "Share Statistics. Share statistics for a given company.",
+      "description": "Get data about major holders for a given company over time.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/major_holders",
+      "id": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
+      "name": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Page number of the data to fetch.",
+          "name": "page",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of records to return. (Ignores page if set. Default: None) (provider: fmp)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get data about share float for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/share_statistics",
       "id": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
       "name": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
@@ -2742,13 +2782,13 @@
       }
     },
     {
-      "description": "Equity Historical price. Load stock data for a specific ticker.",
+      "description": "Get historical price data for a given stock. This includes open, high, low, close, and volume.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/historical",
       "id": "EQUITY.PRICE.HISTORICAL",
       "name": "EQUITY.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp, polygon, tiingo.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo.",
           "name": "symbol",
           "type": "string"
         },
@@ -2830,7 +2870,7 @@
       }
     },
     {
-      "description": "Equity NBBO. Load National Best Bid and Offer for a specific equity.",
+      "description": "Get the National Best Bid and Offer for a given stock.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/nbbo",
       "id": "EQUITY.PRICE.NBBO",
       "name": "EQUITY.PRICE.NBBO",
@@ -2888,13 +2928,13 @@
       }
     },
     {
-      "description": "Price performance as a return, over different periods.",
+      "description": "Get price performance data for a given stock. This includes price changes for different time periods.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/performance",
       "id": "EQUITY.PRICE.PERFORMANCE",
       "name": "EQUITY.PRICE.PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2910,13 +2950,13 @@
       }
     },
     {
-      "description": "Equity Quote. Load stock data for a specific ticker.",
+      "description": "Get the latest quote for a given stock. Quote includes price, volume, and other data.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/quote",
       "id": "EQUITY.PRICE.QUOTE",
       "name": "EQUITY.PRICE.QUOTE",
       "parameters": [
         {
-          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: fmp, intrinio.",
+          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -2938,13 +2978,13 @@
       }
     },
     {
-      "description": "Equity Info. Get general price and performance metrics of a stock.",
+      "description": "Get general information about a company. This includes company name, industry, sector and price data.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/profile",
       "id": "EQUITY.PROFILE",
       "name": "EQUITY.PROFILE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp, intrinio.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -2960,7 +3000,7 @@
       }
     },
     {
-      "description": "Equity Screen. Screen for companies meeting various criteria.",
+      "description": "Screen for companies meeting various criteria. These criteria include\nmarket cap, price, beta, volume, and dividend yield.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/screener",
       "id": "EQUITY.SCREENER",
       "name": "EQUITY.SCREENER",
@@ -3079,7 +3119,7 @@
       }
     },
     {
-      "description": "Equity Search. Search for a company or stock ticker.",
+      "description": "Search for stock symbol, CIK, LEI, or company name.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/search",
       "id": "EQUITY.SEARCH",
       "name": "EQUITY.SEARCH",
@@ -3172,7 +3212,7 @@
       "name": "ETF.COUNTRIES",
       "parameters": [
         {
-          "description": "Symbol to get data for. (ETF) Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3194,7 +3234,7 @@
       "name": "ETF.EQUITY_EXPOSURE",
       "parameters": [
         {
-          "description": "Symbol to get data for. (Stock) Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3284,7 +3324,7 @@
       "name": "ETF.HOLDINGS_PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3306,7 +3346,7 @@
       "name": "ETF.INFO",
       "parameters": [
         {
-          "description": "Symbol to get data for. (ETF) Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3328,7 +3368,7 @@
       "name": "ETF.PRICE_PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3632,20 +3672,20 @@
           "type": "string"
         },
         {
-          "description": "The yield curve type.",
-          "name": "yield_curve_type",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Options: ecb, defaults to ecb.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The rating type. (provider: ecb)",
+          "description": "The rating type, either 'aaa' or 'all_ratings'. (provider: ecb)",
           "name": "rating",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The yield curve type. (provider: ecb)",
+          "name": "yield_curve_type",
           "optional": true,
           "type": "string"
         }
@@ -4138,8 +4178,8 @@
       "name": "INDEX.CONSTITUENTS",
       "parameters": [
         {
-          "description": "Index to fetch the constituents of.",
-          "name": "index",
+          "description": "Symbol to get data for.",
+          "name": "symbol",
           "type": "string"
         },
         {
@@ -4254,7 +4294,7 @@
       "name": "INDEX.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: intrinio, polygon.",
+          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -4312,15 +4352,10 @@
       "name": "NEWS.COMPANY",
       "parameters": [
         {
-          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio.",
+          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "The number of data entries to return.",
-          "name": "limit",
           "optional": true,
-          "type": "number"
+          "type": "string"
         },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
@@ -4333,6 +4368,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
@@ -4419,10 +4460,10 @@
           "type": "number"
         },
         {
-          "description": "Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)",
-          "name": "published_utc",
+          "description": "Page offset, used in conjunction with limit. (provider: tiingo)",
+          "name": "offset",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "A comma-separated list of the domains requested. (provider: tiingo)",
@@ -4561,7 +4602,7 @@
       "name": "REGULATORS.SEC.CIK_MAP",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed: fmp, intrinio.",
+          "description": "Symbol to get data for.",
           "name": "symbol",
           "type": "string"
         },
