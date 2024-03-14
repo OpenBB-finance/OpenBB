@@ -1,5 +1,6 @@
 """Provider registry map."""
 
+from copy import deepcopy
 import sys
 from inspect import getfile, isclass
 from pathlib import Path
@@ -82,9 +83,10 @@ class RegistryMap:
                 standard_data, extra_data = self.extract_info(fetcher, "data")
                 if model_name not in map_:
                     map_[model_name] = {}
+                    # The deepcopy avoids modifications from one model to affect another
                     map_[model_name]["openbb"] = {
-                        "QueryParams": standard_query,
-                        "Data": standard_data,
+                        "QueryParams": deepcopy(standard_query),
+                        "Data": deepcopy(standard_data),
                     }
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
@@ -98,7 +100,7 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
-                self._merge_json_schema_extra(p, fetcher, standard_query, extra_query)
+                self._merge_json_schema_extra(p, fetcher, map_[model_name])
 
         return map_, return_schemas
 
@@ -106,17 +108,18 @@ class RegistryMap:
         self,
         provider: str,
         fetcher: Fetcher,
-        standard_query: dict,
-        extra_query: dict,
+        model_map: dict,
     ):
         """Merge json schema extra for different providers"""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
+        std = model_map["openbb"]["QueryParams"]
+        extra = model_map[provider]["QueryParams"]
         for f, props in getattr(model, "__json_schema_extra__", {}).items():
             for p in props:
-                if f in standard_query["fields"]:
-                    model_field = standard_query["fields"][f]
-                elif f in extra_query["fields"]:
-                    model_field = extra_query["fields"][f]
+                if f in std["fields"]:
+                    model_field = std["fields"][f]
+                elif f in extra["fields"]:
+                    model_field = extra["fields"][f]
                 else:
                     continue
 
