@@ -205,7 +205,6 @@ The dates immediately above represent the report date, dividends paid are attrib
 :::
 
 ```python
-from pandas import to_datetime
 data = (
   obb.equity.fundamental.dividends("TGT", provider="fmp")
   .to_df()
