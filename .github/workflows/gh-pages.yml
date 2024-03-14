@@ -5,10 +5,11 @@ on:
     branches:
       - main
       - release/*
+      - "docs/*"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - develop
+      - main
       - "docs/*"
 
 concurrency:
@@ -102,7 +103,7 @@ jobs:
           (startsWith(github.ref, 'refs/heads/main')) ||
           (github.event_name == 'pull_request' &&
           github.event.pull_request.merged == true &&
-          github.event.pull_request.base.ref == 'develop' &&
+          github.event.pull_request.base.ref == 'main' &&
           startsWith(github.head_ref, 'docs/'))
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
