@@ -14,12 +14,7 @@ from openbb_core.provider.standard_models.recent_performance import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_request,
-    amake_requests,
-)
+from openbb_core.provider.utils.helpers import amake_request
 from openbb_intrinio.utils.references import ETF_PERFORMANCE_MAP
 from pydantic import Field
 
