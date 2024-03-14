@@ -2855,8 +2855,8 @@
             "standard": [
                 {
                     "name": "symbol",
-                    "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
+                    "type": "str",
+                    "description": "Symbol to get data for.",
                     "default": "",
                     "optional": false
                 },
