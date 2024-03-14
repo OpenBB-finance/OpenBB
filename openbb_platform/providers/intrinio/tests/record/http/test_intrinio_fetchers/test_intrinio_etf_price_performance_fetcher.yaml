@@ -9,87 +9,11 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/etfs/DJIA:US/stats?api_key=MOCK_API_KEY
-  response:
-    body:
-      string: !!binary |
-        H4sIAI0u82UAA6SVXU/bMBSG/0rl6xbZx9+968o2bTdDY0hIaIpMY4o110GJm61D/PedUMY3TSpu
-        4tjx85732Cf2NVn5pnFL35Dp2c8xKV32ZEqAgphQPmGcjEnyuXBNg8/WxTV+BjhQakzOfXZF2xTN
-        1YZM6YEQoIy0bExy7UIMaVlUyRerKuXLovZ5XSecGgOKpbIoQxtKn8qOpMwYYQEo4hYUqvRrVClu
-        tqzgnAqrqbGMaQPwjN14V+8Ozzi3zFiDjaaCSdWrcB9cWkEZp1ZxyTS24jW0raLLOJY3GDqtXQx/
-        /TZvI0AqyRRjskvjceB8Wfs7/gHalUdax7gfv83ibe4N38+Ai9C+x2c//qrNB2yYy+zTexazj37s
-        MaSFv8qhSgNjdWWEZYfFC0xpxiUM0dhGnCDMmeHdn8cEcEoVluDCRVRGu7eeZX+iO4HHuT2dKPZV
-        FkOV+b7KfKgy7KsMQ5VZzyZbJjlYRSUIA9q82Cf21gEntQLFORhlNSj7AsxV0R3bPeEFCI7VJUBz
-        Y6lkg1TuTXCutUD/TONBqy2gCZ8vyPSaBJTv3ouV/XDkvnX3hVt1d8jnWJ27ODodHVa/R5yO5lXr
-        a1+O5i7G0ccfn3BmDotfvsa5h1+/zLB/EZaheDI4PTnG8Tos7voHR9gNTUjYPznmGtdzhreGxNHG
-        l1X8vzX+z+LSpSVeHbfo7Pv8lNzc/AMAAP//AwD11lrT7gYAAA==
-    headers:
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 14 Mar 2024 17:06:22 GMT
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin,Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://api-v2.intrinio.com/etfs/DJIA:US/analytics?api_key=MOCK_API_KEY
-  response:
-    body:
-      string: !!binary |
-        H4sIAI4u82UAA3RQXWvCMBT9K+U+1xKTtE375nQb28tkThDGCFkb22DajCZaRfzvS51MxpC85J6P
-        3JNzhEZaKyppIX//CKEUTkIOGGE6QmQ0JhDCWq3dgbve8F7KDa9VVUOOcZSSf5w2vadQlNAQdkZv
-        G8ldJ0pZejRmGYtQCGInO7+Ql0LpA7+oTCt5Y1o3vJximkVs/HtuWFzdyaspo0nqTTi+obZqf13A
-        MIsIQSliSTKmOIRGdBvpeCG+IGeUMhojNGS1teik5WbrrBNtqdoKcpIShH5o6daQH0H57w133mR3
-        c/HiK2tFM9T4qM2n0MEqmJk+ICiYGh9NlsFUaB3cvz14pVPFRnZeO3t+mpzLrhT/A+bLhcc7VVzm
-        aO5HZVXr5+WCpFmCJizOYo9aWRoNebvV2ofbF7VofQ/N2Tp5na7gdPoGAAD//wMAl/gqbPEBAAA=
-    headers:
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 14 Mar 2024 17:06:22 GMT
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Origin,Accept-Encoding
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-    method: GET
     uri: https://api-v2.intrinio.com/etfs/GOVT:US/stats?api_key=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAI4u82UAA5RVXW8aMRD8K+ieE+Rd765t3orU9iEPrQSpIlXV6QoOWCVHdHegkij/vXshKgQS
+        H4sIAIlA82UAA5RVXW8aMRD8K+ieE+Rd765t3orU9iEPrQSpIlXV6QoOWCVHdHegkij/vXshKgQS
         LiCEzuZm1jP74cfsLtZ1MYt1Nvj56yKbFk3MBhkapEtjL43PLrIyNnlR1/q7LhYr/Rux7wFsCBfZ
         79gU+brO6/tNNrg0fUMukKeLrKmKtEjlLF+WMb9bls08r2Kzqkp9dZGUsJzm07RO01hOs4ECjTgX
         ODgAIgpsgbtJluViswUTGUYvlqwAWgkH2E0sqo74FsgZYTGevBhrOxl2wa1xQayegSyJ80cnf8au
@@ -110,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 14 Mar 2024 17:06:22 GMT
+      - Thu, 14 Mar 2024 18:23:05 GMT
       Transfer-Encoding:
       - chunked
       Vary:
@@ -132,7 +56,7 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAI4u82UAA5RVUW8aMQz+K9U9U2Q7cZzwNm3rc1daqdM2nW6Q0mjXo7s70Gi1/z4fXSkqlCsv
+        H4sIAIlA82UAA5RVUW8aMQz+K9U9U2Q7cZzwNm3rc1daqdM2nW6Q0mjXo7s70Gi1/z4fXSkqlCsv
         QEK+z/6cz/FjdhebppjFJht9+zHIpkUbs1FGQPYUzCmabJBVsc2LptHPZVEu9G9GHgZwKDLIfsa2
         yJdN3tyvshEOYZC1dZHKVM3yeRXzu3nV3uZ1bBd1pWfKpFTVNJ+mZZrGapqNYAgUAqFhi5a9WLCu
         n2Nelat3YVexqA+HNxzIk1EsiID1vQTPsY3xgYI36C2zFeR9yOW8LFrda1cauFoUZXqI67BICI6Y
@@ -153,7 +77,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 14 Mar 2024 17:06:22 GMT
+      - Thu, 14 Mar 2024 18:23:05 GMT
       Transfer-Encoding:
       - chunked
       Vary:
@@ -171,17 +95,20 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/etfs/SPY:US/analytics?api_key=MOCK_API_KEY
+    uri: https://api-v2.intrinio.com/etfs/DJIA:US/stats?api_key=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAI4u82UAA3RRy07DMBD8lcjnNFo7Dzu5IaDn0rRSESDLStzEah4QO31Q8e9sCqqQUOWLd2Zn
-        xzs+k1ZbqyptSfby5pNSOU0ywoBFMwhnNCQ+2ZqtO0l36OVB652sTVWTLKYiYAzoP7rpDyQLRRhw
-        5PZ9M7ZaukGVukRRTCECIQLwidrrAX1lqUxzkr+Nfadl23cODRIe85RFIohTwENvKFw96KuGJ2Ga
-        JhELKKeCxzck1hyvgpSylAOgiYhYzHzSqmGnnSzUOz4XcBywRIQpCybS1mrQVvajs051pekqkqU8
-        4YJRmkxLabcl2ZkY3HW6y88PCJ82mGGn2inXfPGw9PLXEXDqwosBvMfV3FsNo3XY5Eyx08Ol7fmS
-        e2XkXyxb5wgPpvgpgwVWxpoOy3XORZSwOYUQELW67JvpH0UEjMaI6GNRqw6jaC/yu+X9hnx9fQMA
-        AP//AwCMIK2E/wEAAA==
+        H4sIAIpA82UAA6SVXU/bMBSG/0rl6xbZx9+968o2bTdDY0hIaIpMY4o110GJm61D/PedUMY3TSpu
+        4tjx85732Cf2NVn5pnFL35Dp2c8xKV32ZEqAgphQPmGcjEnyuXBNg8/WxTV+BjhQakzOfXZF2xTN
+        1YZM6YEQoIy0bExy7UIMaVlUyRerKuXLovZ5XSecGgOKpbIoQxtKn8qOpMwYYQEo4hYUqvRrVClu
+        tqzgnAqrqbGMaQPwjN14V+8Ozzi3zFiDjaaCSdWrcB9cWkEZp1ZxyTS24jW0raLLOJY3GDqtXQx/
+        /TZvI0AqyRRjskvjceB8Wfs7/gHalUdax7gfv83ibe4N38+Ai9C+x2c//qrNB2yYy+zTexazj37s
+        MaSFv8qhSgNjdWWEZYfFC0xpxiUM0dhGnCDMmeHdn8cEcEoVluDCRVRGu7eeZX+iO4HHuT2dKPZV
+        FkOV+b7KfKgy7KsMQ5VZzyZbJjlYRSUIA9q82Cf21gEntQLFORhlNSj7AsxV0R3bPeEFCI7VJUBz
+        Y6lkg1TuTXCutUD/TONBqy2gCZ8vyPSaBJTv3ouV/XDkvnX3hVt1d8jnWJ27ODodHVa/R5yO5lXr
+        a1+O5i7G0ccfn3BmDotfvsa5h1+/zLB/EZaheDI4PTnG8Tos7voHR9gNTUjYPznmGtdzhreGxNHG
+        l1X8vzX+z+LSpSVeHbfo7Pv8lNzc/AMAAP//AwD11lrT7gYAAA==
     headers:
       Connection:
       - keep-alive
@@ -190,7 +117,43 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 14 Mar 2024 17:06:22 GMT
+      - Thu, 14 Mar 2024 18:23:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/DJIA:US/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAIpA82UAA3RQXWvCMBT9K+U+1xKTtE375nQb28tkThDGCFkb22DajCZaRfzvS51MxpC85J6P
+        3JNzhEZaKyppIX//CKEUTkIOGGE6QmQ0JhDCWq3dgbve8F7KDa9VVUOOcZSSf5w2vadQlNAQdkZv
+        G8ldJ0pZejRmGYtQCGInO7+Ql0LpA7+oTCt5Y1o3vJximkVs/HtuWFzdyaspo0nqTTi+obZqf13A
+        MIsIQSliSTKmOIRGdBvpeCG+IGeUMhojNGS1teik5WbrrBNtqdoKcpIShH5o6daQH0H57w133mR3
+        c/HiK2tFM9T4qM2n0MEqmJk+ICiYGh9NlsFUaB3cvz14pVPFRnZeO3t+mpzLrhT/A+bLhcc7VVzm
+        aO5HZVXr5+WCpFmCJizOYo9aWRoNebvV2ofbF7VofQ/N2Tp5na7gdPoGAAD//wMAl/gqbPEBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 18:23:06 GMT
       Transfer-Encoding:
       - chunked
       Vary:
@@ -212,7 +175,7 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAI8u82UAA3RQy2rDMBD8FaOzY2TZli3famh7yKEFOyVQihD2xhbxI0jKqyH/3q0JLaUEXbSz
+        H4sIAIpA82UAA3RQy2rDMBD8FaOzY2TZli3famh7yKEFOyVQihD2xhbxI0jKqyH/3q0JLaUEXbSz
         Mzu7cyEDWKtasCR///BJoxyQnDDK4gWNFjQjPtnojTtLd5zkEWArO912JGdRwPm/Xj8dsRUGifDJ
         Yer3A0hnVAMNyZOQ0kjQgPpEHcCgpWyU7s/yxptGkMM0OpwdUh4lAh1iKuaX3dG4zsCPSqRZFvEo
         oGHCWXJHYfXp10VEEUdBymI0imN0GZTZgpO12uEZCWWci5jSeWnbKQNWTntnnRobPbbzCJ5SemOA
@@ -227,7 +190,44 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 14 Mar 2024 17:06:23 GMT
+      - Thu, 14 Mar 2024 18:23:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY:US/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAIpA82UAA3RRy07DMBD8lcjnNFo7Dzu5IaDn0rRSESDLStzEah4QO31Q8e9sCqqQUOWLd2Zn
+        xzs+k1ZbqyptSfby5pNSOU0ywoBFMwhnNCQ+2ZqtO0l36OVB652sTVWTLKYiYAzoP7rpDyQLRRhw
+        5PZ9M7ZaukGVukRRTCECIQLwidrrAX1lqUxzkr+Nfadl23cODRIe85RFIohTwENvKFw96KuGJ2Ga
+        JhELKKeCxzck1hyvgpSylAOgiYhYzHzSqmGnnSzUOz4XcBywRIQpCybS1mrQVvajs051pekqkqU8
+        4YJRmkxLabcl2ZkY3HW6y88PCJ82mGGn2inXfPGw9PLXEXDqwosBvMfV3FsNo3XY5Eyx08Ol7fmS
+        e2XkXyxb5wgPpvgpgwVWxpoOy3XORZSwOYUQELW67JvpH0UEjMaI6GNRqw6jaC/yu+X9hnx9fQMA
+        AP//AwCMIK2E/wEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 18:23:06 GMT
       Transfer-Encoding:
       - chunked
       Vary:

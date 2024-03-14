@@ -389,7 +389,7 @@ def test_intrinio_etf_info_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_etf_price_performance_fetcher(credentials=test_credentials):
-    params = {"symbol": "DJIA,SPY,GOVT"}
+    params = {"symbol": "DJIA:US,SPY:US,GOVT:US"}
 
     fetcher = IntrinioEtfPricePerformanceFetcher()
     result = fetcher.test(params, credentials)

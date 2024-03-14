@@ -169,7 +169,9 @@ class IntrinioEtfPricePerformanceFetcher(
             result = await response.json()
 
             if "message" in result and result["message"] != []:  # type: ignore
-                warn(f"Symbol Error: {response.url.parts[-2]} - {result['message']}")  # type: ignore
+                warn(
+                    f"Symbol Error: {response.url.parts[-2]} - {result['message']}" # type: ignore
+                )
                 return
             _ = result.pop("message", None)  # type: ignore
             _ = result.pop("messages", None)  # type: ignore
@@ -185,7 +187,11 @@ class IntrinioEtfPricePerformanceFetcher(
                     _ = result.pop(k, None) if return_type in k else None  # type: ignore
                 if k in result:
                     data[ETF_PERFORMANCE_MAP.get(k, k)] = v
-            symbol = response.url.parts[-2] if response.url.parts[-2] else etf.get("ticker")  # type: ignore
+            symbol = (
+                response.url.parts[-2]
+                if response.url.parts[-2]
+                else etf.get("ticker")  # type: ignore
+            )
             # Get an additional set of data to combine with the first set.
             analytics_url = (  # type: ignore
                 "https://api-v2.intrinio.com/etfs/"
@@ -196,7 +202,10 @@ class IntrinioEtfPricePerformanceFetcher(
             if data:
                 analytics = await amake_request(analytics_url, session=session)
                 if "messages" in analytics and analytics["messages"] != []:  # type: ignore
-                    warn(f"Symbol Error: {analytics['messages']} for {etf.get('ticker')}")  # type: ignore
+                    warn(
+                        f"Symbol Error: {analytics['messages']}" # type: ignore
+                        + f"for {etf.get('ticker')}" # type: ignore
+                    )
                     return
                 # Remove the duplicate data from the analytics response.
                 _ = analytics.pop("messages", None)  # type: ignore
@@ -213,7 +222,7 @@ class IntrinioEtfPricePerformanceFetcher(
             raise EmptyDataError("No data was returned.")
 
         # Undo any formatting changes made to the symbols before sorting.
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.replace(":US", "").split(",")
 
         return sorted(
             results,
