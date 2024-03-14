@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-terminal"
-version = "3.2.4"
+version = "3.2.5"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
@@ -157,7 +157,7 @@ codespell = "^2.2.4"
 pydocstyle = "^6.3.0"
 sphinx = "^4.5.0"
 myst-parser = "^0.15.2"
-black = "^23.1.0"
+black = "^24.1.0"
 bandit = "^1.7.0"
 coverage = ">=5.5"
 vcrpy = "^4.1.1"

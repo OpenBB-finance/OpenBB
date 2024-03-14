@@ -8,7 +8,7 @@ import shutil
 import sys
 from dataclasses import Field
 from inspect import Parameter, _empty, isclass, signature
-from json import dump, dumps, load
+from json import dumps, load
 from pathlib import Path
 from typing import (
     Any,
@@ -189,11 +189,8 @@ class PackageBuilder:
         """Save the reference.json file."""
         self.console.log("\nWriting reference file...")
         data = ReferenceGenerator.get_reference_data()
-        file_path = self.directory / "assets" / "reference.json"
-        # Dumping the reference dictionary as a JSON file
-        self.console.log(str(file_path))
-        with open(file_path, "w", encoding="utf-8") as f:
-            dump(data, f, indent=4)
+        code = dumps(obj=data, indent=4)
+        self._write(code=code, name="reference", extension="json", folder="assets")
 
     def _run_linters(self):
         """Run the linters."""
@@ -895,12 +892,17 @@ class DocstringGenerator:
 
         Parameters
         ----------
-            field (FieldInfo): Pydantic field object containing field information.
-            target (Literal["docstring", "website"], optional): Target to return type for. Defaults to "docstring".
+            field_type (Any):
+                Typing object containing the field type.
+            is_required (bool):
+                Flag to indicate if the field is required.
+            target (Literal["docstring", "website"], optional):
+                Target to return type for. Defaults to "docstring".
 
         Returns
         -------
-            str: String representation of the field type.
+            str:
+                String representation of the field type.
         """
         is_optional = not is_required
 
@@ -910,7 +912,7 @@ class DocstringGenerator:
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
 
-            field_type = (
+            _type = (
                 str(_type)
                 .replace("<class '", "")
                 .replace("'>", "")
@@ -922,17 +924,22 @@ class DocstringGenerator:
                 .replace(", None", "")
             )
 
-            field_type = (
-                f"Optional[{field_type}]"
+            if "openbb_" in str(_type):
+                _type = (
+                    str(_type).split(".", maxsplit=1)[0].split("openbb_")[0]
+                    + str(_type).rsplit(".", maxsplit=1)[-1]
+                )
+
+            _type = (
+                f"Optional[{_type}]"
                 if is_optional and "Optional" not in str(_type)
-                else field_type
+                else _type
             )
 
             if target == "website":
-                field_type = re.sub(r"Optional\[(.*)\]", r"\1", field_type)
-                field_type = re.sub(r"Annotated\[(.*)\]", r"\1", field_type)
+                _type = re.sub(r"Optional\[(.*)\]", r"\1", _type)
 
-            return field_type
+            return _type
 
         except TypeError:
             # Fallback to the annotation if the repr fails
@@ -942,11 +949,10 @@ class DocstringGenerator:
     def get_OBBject_description(
         results_type: str,
         providers: Optional[str],
-        target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
-        indent = 2 if target == "docstring" else 0
+        indent = 2
 
         obbject_description = (
             f"{create_indent(indent)}OBBject\n"
@@ -1361,7 +1367,7 @@ class ReferenceGenerator:
                     # Should be removed if TYPE_EXPANSION is updated to include this
                     field_type = f"Union[{field_type}, List[{field_type}]]"
 
-            default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
+            default_value = "" if field_info.default is PydanticUndefined else field_info.default  # fmt: skip
 
             provider_field_params.append(
                 {
@@ -1374,6 +1380,56 @@ class ReferenceGenerator:
             )
 
         return provider_field_params
+
+    @staticmethod
+    def get_obbject_returns_fields(
+        model: str,
+        providers: str,
+    ) -> List[Dict[str, str]]:
+        """Get the fields of the OBBject returns object for the given standard_model.
+
+        Args
+        ----
+            model (str):
+                Standard model of the returned object.
+            providers (str):
+                Available providers for the model.
+
+        Returns
+        -------
+            List[Dict[str, str]]:
+                List of dictionaries containing the field name, type, description, default
+                and optionality of each field.
+        """
+        obbject_list = [
+            {
+                "name": "results",
+                "type": f"List[{model}]",
+                "description": "Serializable results.",
+            },
+            {
+                "name": "provider",
+                "type": f"Optional[{providers}]",
+                "description": "Provider name.",
+            },
+            {
+                "name": "warnings",
+                "type": "Optional[List[Warning_]]",
+                "description": "List of warnings.",
+            },
+            {
+                "name": "chart",
+                "type": "Optional[Chart]",
+                "description": "Chart object.",
+            },
+            {
+                "name": "extra",
+                "type": "Dict[str, Any]",
+                "description": "Extra info.",
+            },
+        ]
+
+        return obbject_list
 
     @staticmethod
     def get_post_method_parameters_info(
@@ -1392,6 +1448,8 @@ class ReferenceGenerator:
                 List of dictionaries containing the name,type, description, default
                 and optionality of each parameter.
         """
+        parameters_list = []
+
         # Define a regex pattern to match parameter blocks
         # This pattern looks for a parameter name followed by " : ", then captures the type and description
         pattern = re.compile(
@@ -1401,38 +1459,36 @@ class ReferenceGenerator:
         # Find all matches in the docstring
         matches = pattern.finditer(docstring)
 
-        # Initialize an empty list to store parameter dictionaries
-        parameters_list = []
+        if matches:
+            # Iterate over the matches to extract details
+            for match in matches:
+                # Extract named groups as a dictionary
+                param_info = match.groupdict()
 
-        # Iterate over the matches to extract details
-        for match in matches:
-            # Extract named groups as a dictionary
-            param_info = match.groupdict()
+                # Determine if the parameter is optional
+                is_optional = "Optional" in param_info["type"]
 
-            # Determine if the parameter is optional
-            is_optional = "Optional" in param_info["type"]
+                # If no default value is captured, set it to an empty string
+                default_value = (
+                    param_info["default"] if param_info["default"] is not None else ""
+                )
 
-            # If no default value is captured, set it to an empty string
-            default_value = (
-                param_info["default"] if param_info["default"] is not None else ""
-            )
+                # Create a new dictionary with fields in the desired order
+                param_dict = {
+                    "name": param_info["name"],
+                    "type": param_info["type"],
+                    "description": param_info["description"],
+                    "default": default_value,
+                    "optional": is_optional,
+                }
 
-            # Create a new dictionary with fields in the desired order
-            param_dict = {
-                "name": param_info["name"],
-                "type": param_info["type"],
-                "description": param_info["description"],
-                "default": default_value,
-                "optional": is_optional,
-            }
-
-            # Append the dictionary to the list
-            parameters_list.append(param_dict)
+                # Append the dictionary to the list
+                parameters_list.append(param_dict)
 
         return parameters_list
 
     @staticmethod
-    def get_post_method_returns_info(docstring: str) -> str:
+    def get_post_method_returns_info(docstring: str) -> List[Dict[str, str]]:
         """Get the returns information for the POST method endpoints.
 
         Parameters
@@ -1442,28 +1498,35 @@ class ReferenceGenerator:
 
         Returns
         -------
-            Dict[str, str]:
-                Dictionary containing the name, type, description of the return value
+            List[Dict[str, str]]:
+                Single element list having a dictionary containing the name, type,
+                description of the return value
         """
+        returns_list = []
+
         # Define a regex pattern to match the Returns section
         # This pattern captures the model name inside "OBBject[]" and its description
         match = re.search(r"Returns\n\s*-------\n\s*([^\n]+)\n\s*([^\n]+)", docstring)
-        return_type = match.group(1).strip()  # type: ignore
-        # Remove newlines and indentation from the description
-        description = match.group(2).strip().replace("\n", "").replace("    ", "")  # type: ignore
-        # Adjust regex to correctly capture content inside brackets, including nested brackets
-        content_inside_brackets = re.search(
-            r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
-        )
-        return_type_content = content_inside_brackets.group(1)  # type: ignore
 
-        return_info = (
-            f"OBBject\n"
-            f"{create_indent(1)}results : {return_type_content}\n"
-            f"{create_indent(2)}{description}"
-        )
+        if match:
+            return_type = match.group(1).strip()  # type: ignore
+            # Remove newlines and indentation from the description
+            description = match.group(2).strip().replace("\n", "").replace("    ", "")  # type: ignore
+            # Adjust regex to correctly capture content inside brackets, including nested brackets
+            content_inside_brackets = re.search(
+                r"OBBject\[\s*((?:[^\[\]]|\[[^\[\]]*\])*)\s*\]", return_type
+            )
+            return_type = content_inside_brackets.group(1)  # type: ignore
 
-        return return_info
+            returns_list = [
+                {
+                    "name": "results",
+                    "type": return_type,
+                    "description": description,
+                }
+            ]
+
+        return returns_list
 
     @classmethod
     def get_reference_data(cls) -> Dict[str, Dict[str, Any]]:
@@ -1488,7 +1551,7 @@ class ReferenceGenerator:
             # Route method is used to distinguish between GET and POST methods
             route_method = getattr(route, "methods", None)
             # Route endpoint is the callable function
-            route_func = getattr(route, "endpoint", None)
+            route_func = getattr(route, "endpoint", lambda: None)
             # Attribute contains the model and examples info for the endpoint
             openapi_extra = getattr(route, "openapi_extra", {})
             # Standard model is used as the key for the ProviderInterface Map dictionary
@@ -1503,7 +1566,9 @@ class ReferenceGenerator:
             # Add endpoint examples
             examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls.get_endpoint_examples(
-                path, route_func, examples  # type: ignore
+                path,
+                route_func,
+                examples,  # type: ignore
             )
             # Add data for the endpoints having a standard model
             if route_method == {"GET"}:
@@ -1547,31 +1612,26 @@ class ReferenceGenerator:
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
                 providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = (
-                    DocstringGenerator.get_OBBject_description(
-                        standard_model, providers, "website"
-                    )
+                reference[path]["returns"]["OBBject"] = cls.get_obbject_returns_fields(
+                    standard_model, providers
                 )
             # Add data for the endpoints without a standard model (data processing endpoints)
             elif route_method == {"POST"}:
                 # POST method router `description` attribute is unreliable as it may or
                 # may not contain the "Parameters" and "Returns" sections. Hence, the
                 # endpoint function docstring is used instead.
-                description = route_func.__doc__.split("Parameters")[0].strip()  # type: ignore
+                docstring = getattr(route_func, "__doc__", "")
+                description = docstring.split("Parameters")[0].strip()
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
                 # Add endpoint parameters fields for POST methods
-                reference[path]["parameters"][
-                    "standard"
-                ] = ReferenceGenerator.get_post_method_parameters_info(
-                    route_func.__doc__  # type: ignore
+                reference[path]["parameters"]["standard"] = (
+                    ReferenceGenerator.get_post_method_parameters_info(docstring)
                 )
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
-                reference[path]["returns"][
-                    "OBBject"
-                ] = cls.get_post_method_returns_info(
-                    route_func.__doc__  # type: ignore
+                reference[path]["returns"]["OBBject"] = (
+                    cls.get_post_method_returns_info(docstring)
                 )
 
         return reference
