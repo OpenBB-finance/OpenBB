@@ -15786,7 +15786,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                     "default": "",
                     "optional": false
                 },
@@ -15805,6 +15805,13 @@
         },
         "data": {
             "standard": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": "None",
+                    "optional": true
+                },
                 {
                     "name": "one_day",
                     "type": "float",
@@ -15876,9 +15883,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": "None",
                     "optional": true
                 },
@@ -15904,15 +15925,7 @@
                     "optional": true
                 }
             ],
-            "fmp": [
-                {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
-                }
-            ]
+            "fmp": []
         },
         "model": "PricePerformance"
     },
@@ -19075,7 +19088,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                     "default": "",
                     "optional": false
                 },
@@ -19094,6 +19107,13 @@
         },
         "data": {
             "standard": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": "None",
+                    "optional": true
+                },
                 {
                     "name": "one_day",
                     "type": "float",
@@ -19165,9 +19185,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": "None",
                     "optional": true
                 },
@@ -19193,15 +19227,7 @@
                     "optional": true
                 }
             ],
-            "fmp": [
-                {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
-                }
-            ]
+            "fmp": []
         },
         "model": "PricePerformance"
     },
@@ -20010,7 +20036,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                     "default": "",
                     "optional": false
                 },
@@ -20029,6 +20055,13 @@
         },
         "data": {
             "standard": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": "None",
+                    "optional": true
+                },
                 {
                     "name": "one_day",
                     "type": "float",
@@ -20100,9 +20133,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": "None",
                     "optional": true
                 },
@@ -20128,15 +20175,7 @@
                     "optional": true
                 }
             ],
-            "fmp": [
-                {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
-                }
-            ]
+            "fmp": []
         },
         "model": "EtfHoldingsPerformance"
     },
@@ -20210,6 +20249,282 @@
             "fmp": []
         },
         "model": "EtfEquityExposure"
+    },
+    "/etf/performance": {
+        "deprecated": {
+            "flag": null,
+            "message": null
+        },
+        "description": "Get price performance metrics over a variety of different windows.",
+        "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# This function accepts multiple tickers.\nobb.etf.performance(symbol='XLK,XLY', adjustment=splits_and_dividends, return_type=trailing, provider='intrinio')\n# This function accepts multiple tickers.\nobb.etf.performance(symbol='XLK,XLY', adjustment=splits_only, returns_type=calendar, provider='intrinio')\n```\n\n",
+        "parameters": {
+            "standard": [
+                {
+                    "name": "symbol",
+                    "type": "Union[str, List[str]]",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                    "default": "",
+                    "optional": false
+                },
+                {
+                    "name": "provider",
+                    "type": "Literal['intrinio']",
+                    "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'intrinio' if there is no default.",
+                    "default": "intrinio",
+                    "optional": true
+                }
+            ],
+            "intrinio": [
+                {
+                    "name": "return_type",
+                    "type": "Literal['trailing', 'calendar']",
+                    "description": "The type of returns to return, a trailing or calendar window.",
+                    "default": "trailing",
+                    "optional": true
+                },
+                {
+                    "name": "adjustment",
+                    "type": "Literal['splits_only', 'splits_and_dividends']",
+                    "description": "The adjustment factor, 'splits_only' will return pure price performance.",
+                    "default": "splits_and_dividends",
+                    "optional": true
+                }
+            ]
+        },
+        "returns": {
+            "OBBject": "OBBject\n    results : EtfPerformance\n        Serializable results.\n    provider : Literal['intrinio']\n        Provider name.\n    warnings : Optional[List[Warning_]]\n        List of warnings.\n    chart : Optional[Chart]\n        Chart object.\n    extra : Dict[str, Any]\n        Extra info.\n"
+        },
+        "data": {
+            "standard": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "one_day",
+                    "type": "float",
+                    "description": "One-day return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "wtd",
+                    "type": "float",
+                    "description": "Week to date return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "one_week",
+                    "type": "float",
+                    "description": "One-week return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "mtd",
+                    "type": "float",
+                    "description": "Month to date return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "one_month",
+                    "type": "float",
+                    "description": "One-month return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "qtd",
+                    "type": "float",
+                    "description": "Quarter to date return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "three_month",
+                    "type": "float",
+                    "description": "Three-month return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "six_month",
+                    "type": "float",
+                    "description": "Six-month return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "ytd",
+                    "type": "float",
+                    "description": "Year to date return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "one_year",
+                    "type": "float",
+                    "description": "One-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "three_year",
+                    "type": "float",
+                    "description": "Three-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "five_year",
+                    "type": "float",
+                    "description": "Five-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "ten_year",
+                    "type": "float",
+                    "description": "Ten-year return.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "max",
+                    "type": "float",
+                    "description": "Return from the beginning of the time series.",
+                    "default": "None",
+                    "optional": true
+                }
+            ],
+            "intrinio": [
+                {
+                    "name": "max_annualized",
+                    "type": "float",
+                    "description": "Annualized rate of return from inception.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volatility_one_year",
+                    "type": "float",
+                    "description": "Trailing one-year annualized volatility.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volatility_three_year",
+                    "type": "float",
+                    "description": "Trailing three-year annualized volatility.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volatility_five_year",
+                    "type": "float",
+                    "description": "Trailing five-year annualized volatility.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volume",
+                    "type": "int",
+                    "description": "The trading volume.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_30",
+                    "type": "float",
+                    "description": "The one-month average daily volume.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_90",
+                    "type": "float",
+                    "description": "The three-month average daily volume.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_180",
+                    "type": "float",
+                    "description": "The six-month average daily volume.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "beta",
+                    "type": "float",
+                    "description": "Beta compared to the S&P 500.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "nav",
+                    "type": "float",
+                    "description": "Net asset value per share.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "year_high",
+                    "type": "float",
+                    "description": "The 52-week high price.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "year_low",
+                    "type": "float",
+                    "description": "The 52-week low price.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "market_cap",
+                    "type": "float",
+                    "description": "The market capitalization.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "shares_outstanding",
+                    "type": "int",
+                    "description": "The number of shares outstanding.",
+                    "default": "None",
+                    "optional": true
+                },
+                {
+                    "name": "updated",
+                    "type": "date",
+                    "description": "The date of the data.",
+                    "default": "None",
+                    "optional": true
+                }
+            ]
+        },
+        "model": "EtfPerformance"
     },
     "/fixedincome/rate/ameribor": {
         "deprecated": {

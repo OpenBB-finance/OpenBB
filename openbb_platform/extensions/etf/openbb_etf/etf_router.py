@@ -1,5 +1,7 @@
 """ETF Router."""
 
+# pylint: disable=unused-argument
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -15,8 +17,6 @@ from openbb_etf.discovery.discovery_router import router as discovery_router
 
 router = Router(prefix="")
 router.include_router(discovery_router)
-
-# pylint: disable=unused-argument
 
 
 @router.command(
@@ -201,4 +201,37 @@ async def equity_exposure(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get the exposure to ETFs for a specific stock."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="EtfPerformance",
+    examples=[
+        APIEx(
+            description="This function accepts multiple tickers.",
+            parameters={
+                "symbol": "XLK,XLY",
+                "adjustment": "splits_and_dividends",
+                "return_type": "trailing",
+                "provider": "intrinio",
+            },
+        ),
+        APIEx(
+            description="This function accepts multiple tickers.",
+            parameters={
+                "symbol": "XLK,XLY",
+                "adjustment": "splits_only",
+                "returns_type": "calendar",
+                "provider": "intrinio",
+            },
+        ),
+    ],
+)
+async def performance(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get price performance metrics over a variety of different windows."""
     return await OBBject.from_query(Query(**locals()))

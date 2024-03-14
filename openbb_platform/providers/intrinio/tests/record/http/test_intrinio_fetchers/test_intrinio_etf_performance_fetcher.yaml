@@ -1,0 +1,235 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY:US/stats?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEqe8mUAA5RVbW8aMQz+K+g+U2Q7sZPwbdrWz11ppU7bdLpBSqNdj+7uQKPV/vt8dGVdaTmQ
+        ECImz2M/jl8estvYNMU8Ntn4y7dhNivamI0zArInYE7AZ8Osim1eNI1+r4pyqX8z4sgRieVh9j22
+        Rb5q8uZunY1xBMOsrYtUpmqeL6qY3y6q9iavY7usK71TJqWqZvksrdIsVrNsDCMgAXDGW48UHEo/
+        w6Iq1wcg17Go97s2xBwCGwDLQJ57CZ48G2DHaNiwAKK3rwFXi7Jo1dau1W+1LMp0HzdekVBcgIDk
+        BEQkPEO3N3X8i/8H2i8C0VhPhPoRQTDuOLptMjWDyGwZg7CzQq/TvK3KWQBPQgq3IvA8jOu0OlaU
+        1piVgCDkIViwR7E9aUJDNlgEYhuCV7JXWd6URAgAhjS5DEHsfxmJ1ZGCiPW5NQohMhbYHkO21QOa
+        FmXxWn5KiBpRqqbxrk2L6vBIgNAYCppg0pc2fAjJtko8dVVCFrQF0KHKmBalMmv0Gwnc03FapoaD
+        Dd4pnpzpwT/5Je88q2sS7RkWfgmzPZq9MV3YxOKNo9AD3+ZbUMiAcKCg48H7lziz361GTd5rQ2lL
+        gHUkPfitWgeGLZI16ILs5Ij2eT3p1KJTrdYHAhTl6CF4dNsBg45S0epUwaBvRC+B2KNXtDp1kHru
+        XsvBjmN8Q68lryPRsTfe6Tvt5Kld5N1m6lkkjrU6AokYrWqVfxDLtrJ30bG9zsYPWVL27nd+/xPM
+        p6tuIxa33ZacnH04H0y+LkEX0dmAAQYfL04HF/WyafVSm6Y/Yr259lmP12me8ue28eVEzXWaPh5H
+        Z3pKTar0eDlxXifwqU5zUGsTZ4uy28reau+yWuKv6U1RzXU7buDvzt9fZb9//wEAAP//AwCiiy4T
+        zQcAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/GOVT:US/stats?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEqe8mUAA5RVXW8aMRD8K+ieE+Rd765t3orU9iEPrQSpIlXV6QoOWCVHdHegkij/vXshKgQS
+        LiCEzuZm1jP74cfsLtZ1MYt1Nvj56yKbFk3MBhkapEtjL43PLrIyNnlR1/q7LhYr/Rux7wFsCBfZ
+        79gU+brO6/tNNrg0fUMukKeLrKmKtEjlLF+WMb9bls08r2Kzqkp9dZGUsJzm07RO01hOs4ECjTgX
+        ODgAIgpsgbtJluViswUTGUYvlqwAWgkH2E0sqo74FsgZYTGevBhrOxl2wa1xQayegSyJ80cnf8au
+        l4ui0b1mo7HLVbFID3EbWSEBjVhrlQkJ9tDNvIov+B3olJA2BRjAOXAiFjyRe3WcDxBudW1zaS0a
+        zTSqMHL4DtEJZWyttFlh/SLjHv42rc8S1voMQiDBaZ7ROQFzHt9OFzjrPbT+SOu3pTd5TsgCFmQT
+        lEYNkvDKl1ieKyt4ZBt8IEFqRZ7DthNlWl8CozPtqcCpOamcxPsmLcszDuO1FiGID9YDodBHWPYO
+        oUBtRtRMMdkA2oeTYqHkKuFZB3fEd1atBeEgqkbaDJ/E/+9BxjYT7FAVaMG6Qxx1xUVvnNfB4YKa
+        h9SB38XV9mBhYKOtr1PrEGe7mhVAo1nWwccefGDpYNh5jYbZG+12bTF2fIjDjshgtQl0yqJDp8mi
+        I8n4TmDQ+Y7svAMjROKPNEOH16T9p8MSvdcxJeGoRuAdr4F0NrNxWl/aMHxcHM0yb++vLssN6/QI
+        zjEGAjD+qFje5NkbH6pAdh/VH5vbbPCYJQ3QPucP63Dvb9qrs7hrr9M0mhdVrHvX/VG/N65iUa+q
+        TW+4LKe9z+Mv+l6TJn9ipW9+/fZjrOvbNEv5q83B9Uj3qzR5Wfe/6zLVqdT19YiEMAxRnOhuHafL
+        hW4P5WZ8dcW6E/9O5kU50zv0GT/8NB5lT0//AAAA//8DAMX+dFr8BwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/DJIA:US/stats?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEqe8mUAA6SVUW/bIBDHv0rEc1LBAQbylqXbtL2sWlep0jRZNCYJGsGVTbxlVb/7zk3XplkT
+        O+qLBWd+//ufwccdWbm6tgtXk/H3H0NS2OTImAAFMaJ8RDUZkuhSbusan40Na3wNcCbMkNy4ZPOm
+        zuvbDRnTMyE4UK2yIUmV9cHHRV5Gl6/KmJZ55dK6irg0eBSLRV74xhcuFi1JmZLAWcao1CzDke7W
+        KGPYbFlOGUVEghZaGbOff+NsdTw9Y4oLAwKo5Epw3a3wlFxwA1RoqhnPtMioeA1tymATxtIGU8e1
+        Df6P29aNiBFcMK61ydQOm5aVe6SfkWNVxHUIp/HbGg5zB1zvAXPfvMVnN/6qzWesn8vk4ls+Zhe9
+        69HHmbtNvow9c7WHSBtptNKSgZIaTB+RbcoR0pxz/GmkxsMLYBjgEZzZgNpo+MG17C71KLBb3cuF
+        4lRl0VeZn6rM+yrDqcrQV5l1bLNhuEMmoxKEBqX/2yd2qMFJlUHGOejMKMCGsQ+mMm/bdkd67FRM
+        CiVAolpmQPaSeXLBqVQmw35nNGtFEHdpTsZ3xKN+O85X5t2F/dJeGHbVXiIfQ3ljw+B6cF7+GnA6
+        mJaNq1wxmNoQBu+/fcCVyc9+ugrXnn/+NMH53C98/iI4vrrEeOVnj/OzC5z62kecX11y9EQnWhqJ
+        0doVZfi3N+73bGnjAu+OB3TydXpN7u//AgAA//8DAEYFB6fvBgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/SPY/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEqe8mUAA3RRy2rDMBD8lbBnx6wky5Z8K21zTuMEUtoiRKzEIn60lvJq6L9XTksolKCLdjTD
+        7IzO0Bjn9MY4yF/eIii1N5ADRZqMkY1RQARru/Yn5Q+dOhizVZXdVJBzImJKkfx7rrsD5ExgnPII
+        9l29a4zyvS5NCblIOaOc8Rgj0HvTB19Valuf1C+xa41qutYHgzRDJnjCYkbEcOgNia96cxVlaZZQ
+        mSQxSpbxGwpnj1e+REFTSeOgEcFERtDofmu8Wun3EBIpy4jkgkkZ87CBq3RvnOp23nndlrbdQC4F
+        yRglJB1SGb+G/Aw2hB3u6vMD2dMylNjqZii2mD7MRsXrDpGm0xFHHD3OJ6N5v3M+kLxdbU1/oT1f
+        it9Y9RfLF0WAe7v6GeNpmKyzbRgXRSaSlE4IMgyoM2VXDx8pEqSEB8QcV5VuQxfNRX43u1/C19c3
+        AAAA//8DACUgSzgAAgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/GOVT/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEqe8mUAAyTLMQrDMAxG4av8aM4JsgW6ZOtaSinCVhpBaoElJ0Po3WvI+Ph4J0mtVmmk6T5j
+        SknccZOikmmgby/+SNeHNWRDscDKu8DbsmhSKQG+pjDsKgdiVUfm4P5f9E6WxWl8lrZtr98fAAD/
+        /wMApD90THMAAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 403
+      message: Forbidden
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/etfs/DJIA/analytics?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEue8mUAA3RQ3W7CIBh9lYbr2mBLgXLndFu2m5k5E5NlIazFlkhhKWg1xncfdW7Lshhu+M4P
+        3+EcQSudE7V0gL2+xaASXgIGUpiiEcxGkIIYrNXaH7jvLe+l3PBG1Q1gaZrgf5S2fWBgglEMdlZv
+        W8l9JypZBZSkiCYwBmInu7CPV0LpA7+orJG8tcYPD1MCSZKN6fe5YvFNJ39NRU5JUqRjSvIreqf2
+        P2pShBUIoxzjIi3GWfC0ottIz0vxARhFiGIM4RDXNaKTjtutd16YSpkasIwgCL9o6deAHYEKPxzu
+        vC1u5uIplGZEOxR5r+270NEqmtk+ymA0tSGbrKKp0Dq6fbkLSq/KjeyCdvb4MDnXXSv+B2TLRcA7
+        VV7mZB5G5ZQJ83KRkQLDCc2LPKBOVlYDZrZah3D7shEmFNGerZPn6QqcTp8AAAD//wMAdW7fa/MB
+        AAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 14 Mar 2024 06:50:51 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
