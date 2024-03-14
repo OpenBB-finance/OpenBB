@@ -909,17 +909,10 @@ class DocstringGenerator:
         try:
             _type = field_type
 
-            # Gets the inner type for further processing
-            if "Optional" in str(_type):
-                _type = _type.__args__[0]
-
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
 
-            if "openbb_" in str(_type):
-                _type = _type.__name__
-
-            field_type = (
+            _type = (
                 str(_type)
                 .replace("<class '", "")
                 .replace("'>", "")
@@ -927,16 +920,26 @@ class DocstringGenerator:
                 .replace("pydantic.types.", "")
                 .replace("datetime.datetime", "datetime")
                 .replace("datetime.date", "date")
-                .replace("datetime.time", "time")
                 .replace("NoneType", "None")
                 .replace(", None", "")
             )
 
-            # Manual injection ensures correct type representation after processing the field type
-            if is_optional and "Optional" not in str(_type) and target == "docstring":
-                field_type = f"Optional[{field_type}]"
+            if "openbb_" in str(_type):
+                _type = (
+                    str(_type).split(".", maxsplit=1)[0]
+                    + str(_type).rsplit(".", maxsplit=1)[-1]
+                )
 
-            return field_type
+            _type = (
+                f"Optional[{_type}]"
+                if is_optional and "Optional" not in str(_type)
+                else _type
+            )
+
+            if target == "website":
+                _type = re.sub(r"Optional\[(.*)\]", r"\1", _type)
+
+            return _type
 
         except TypeError:
             # Fallback to the annotation if the repr fails
