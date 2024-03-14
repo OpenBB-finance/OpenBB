@@ -31,6 +31,13 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "query": "vanguard",
+                "provider": "intrinio",
+                "exchange": "arcx",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -186,6 +193,26 @@ def test_etf_search(params, obb):
         ),
         (
             {
+                "provider": "tradier",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "SPY,DJIA",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
                 "provider": "tmx",
                 "symbol": "SPY:US",
                 "start_date": "2023-01-01",
@@ -210,6 +237,7 @@ def test_etf_historical(params, obb):
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
+        ({"symbol": "IOO,QQQ", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration

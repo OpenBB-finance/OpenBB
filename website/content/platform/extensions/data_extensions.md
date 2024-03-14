@@ -91,6 +91,7 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector | pip install openbb-seeking-alpha | None |
 | openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector | pip install openbb-stockgrid | None |
 | openbb-tmx | [TMX](https://money.tmx.com) data connector | pip install openbb-tmx | None |
+| openbb-tradier | [Tradier](https://tradier.com) data connector | pip install openbb-tradier | None |
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector | pip install openbb-wsj | None |
 
 Have you published a data provider extension and want it featured on this list? Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion. Code contributions, for new and existing, data providers are always welcome.

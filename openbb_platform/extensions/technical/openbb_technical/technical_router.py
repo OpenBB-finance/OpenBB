@@ -315,6 +315,7 @@ def adosc(
     Returns
     -------
     OBBject[List[Data]]
+        The calculated data.
     """
     validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
@@ -930,7 +931,6 @@ def donchian(
                 "ichimoku_data = obb.technical.ichimoku(data=stock_data.results, conversion=9, base=26, lookahead=False)",
             ],
         ),
-        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def ichimoku(
@@ -972,6 +972,7 @@ def ichimoku(
     OBBject[List[Data]]
         The calculated data.
     """
+    validate_data(data, [conversion, base, lagging])
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
     df_ichimoku, df_span = df_target.ta.ichimoku(
@@ -1093,6 +1094,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     Returns
     -------
     OBBject[List[Data]]
+        The calculated data.
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])

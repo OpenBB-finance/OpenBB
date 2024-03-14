@@ -16,12 +16,11 @@ from typing import (
     get_origin,
     get_type_hints,
 )
-
 from openbb_core.app.model.custom_parameter import (
     OpenBBCustomChoices,
     OpenBBCustomParameter,
 )
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator, Field
 from typing_extensions import Annotated
 
 SEP = "__"
@@ -32,8 +31,141 @@ class ArgparseActionType(Enum):
     store_true = "store_true"
 
 
+class CustomArgument(BaseModel):
+
+    name: str
+    type: Optional[Any]
+    dest: str
+    default: Any
+    required: bool
+    action: Literal["store_true", "store"]
+    help: str
+    nargs: Optional[Literal["+"]]
+    choices: Optional[Any]
+
+    @model_validator(mode="after")  # type: ignore
+    @classmethod
+    def validate_action(cls, values: "CustomArgument"):
+        if values.type is bool and values.action != "store_true":
+            raise ValueError('If type is bool, action must be "store_true"')
+        return values
+
+    @model_validator(mode="after")  # type: ignore
+    @classmethod
+    def remove_props_on_store_true(cls, values: "CustomArgument"):
+        if values.action == "store_true":
+            values.type = None
+            values.nargs = None
+            values.choices = None
+        return values
+
+
+class CustomArgumentGroup(BaseModel):
+    name: str
+    arguments: List[CustomArgument]
+
+
+class ReferenceToCustomArgumentsProcessor:
+    def __init__(self, reference: Dict[str, Dict]):
+        self.reference = reference
+        self.custom_groups: Dict[str, List[CustomArgumentGroup]] = {}
+
+        self.build_custom_groups()
+
+    def _parse_type(self, type_: str) -> type:
+        if "Union" in type_ and "str" in type_:
+            return str
+        if "Union" in type_ and "int" in type_:
+            return int
+        if type_ in ["date", "datetime.time", "time"]:
+            return str
+
+        return eval(type_)  # pylint: disable=eval-used
+
+    def _get_nargs(self, type_: type) -> Union[int, str]:
+        if get_origin(type_) is list:
+            return "+"
+        return None
+
+    def _get_choices(self, type_: type) -> Tuple:
+
+        type_origin = get_origin(type_)
+
+        choices = ()
+
+        if type_origin is Literal:
+            choices = get_args(type_)
+            # param_type = type(choices[0])
+
+        if type_origin is list:
+            type_ = get_args(type_)[0]
+
+            if get_origin(type_) is Literal:
+                choices = get_args(type_)
+                # param_type = type(choices[0])
+
+        if type_origin is Union:
+
+            # check if it's an Optional, which would be a Union with NoneType
+            if type(None) in get_args(type_):
+                # remove NoneType from the args
+                args = [arg for arg in get_args(type_) if arg != type(None)]
+                # if there is only one arg left, use it
+                if len(args) > 1:
+                    raise ValueError(
+                        "Union with NoneType should have only one type left"
+                    )
+                type_ = args[0]
+
+                if get_origin(type_) is Literal:
+                    choices = get_args(type_)
+                    # param_type = type(choices[0])
+
+        return choices
+
+    def build_custom_groups(self):
+        for route, v in self.reference.items():
+
+            for provider, args in v["parameters"].items():
+                if provider == "standard":
+                    continue
+
+                custom_arguments = []
+                for arg in args:
+                    if arg.get("standard"):
+                        continue
+
+                    type_ = self._parse_type(arg["type"])
+
+                    custom_arguments.append(
+                        CustomArgument(
+                            name=arg["name"],
+                            type=type_,
+                            dest=arg["name"],
+                            default=arg["default"],
+                            required=not (arg["optional"]),
+                            action="store" if type_ != bool else "store_true",
+                            help=arg["description"],
+                            nargs=self._get_nargs(type_),
+                            choices=self._get_choices(type_),
+                        )
+                    )
+
+                group = CustomArgumentGroup(name=provider, arguments=custom_arguments)
+
+                if route not in self.custom_groups:
+                    self.custom_groups[route] = []
+
+                self.custom_groups[route].append(group)
+
+
 class ArgparseTranslator:
-    def __init__(self, func: Callable, add_help: Optional[bool] = True):
+    def __init__(
+        self,
+        func: Callable,
+        custom_argument_groups: Optional[List[CustomArgumentGroup]] = None,
+        add_help: Optional[bool] = True,
+    ):
         """
         Initializes the ArgparseTranslator.
 
@@ -55,6 +187,13 @@ class ArgparseTranslator:
 
         if any(param in self.type_hints for param in self.signature.parameters):
             self._generate_argparse_arguments(self.signature.parameters)
+
+        if custom_argument_groups:
+            for group in custom_argument_groups:
+                argparse_group = self._parser.add_argument_group(group.name)
+                for argument in group.arguments:
+                    kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+                    argparse_group.add_argument(f"--{argument.name}", **kwargs)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
@@ -348,10 +487,16 @@ class ArgparseTranslator:
         return wrapper_func
 
 
-# from openbb import obb
+from openbb import obb
+
+ref_processor = ReferenceToCustomArgumentsProcessor(obb.coverage.reference)
 
 
-# translator = ArgparseTranslator(obb.economy.cpi)
-# equity_historical_price = translator.translate()
-# result = equity_historical_price()
-# print(result)
+ref_equity_price_historical = ref_processor.custom_groups["/equity/price/historical"]
+
+translator = ArgparseTranslator(
+    obb.equity.price.historical, ref_equity_price_historical
+)
+equity_historical_price = translator.translate()
+result = equity_historical_price()
+print(result)
