@@ -40,6 +40,30 @@ VENUES = {
 }
 
 
+ETF_EXCHANGES = Literal[
+    "xnas",
+    "arcx",
+    "bats",
+    "xnys",
+    "bvmf",
+    "xshg",
+    "xshe",
+    "xhkg",
+    "xbom",
+    "xnse",
+    "xidx",
+    "tase",
+    "xkrx",
+    "xkls",
+    "xmex",
+    "xses",
+    "roco",
+    "xtai",
+    "xbkk",
+    "xist",
+]
+
+
 class IntrinioCompany(Data):
     """Intrinio Company Data."""
 
