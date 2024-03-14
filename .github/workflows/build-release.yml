@@ -11,6 +11,8 @@ on:
   push:
     branches:
       - release/v3/*
+  workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
