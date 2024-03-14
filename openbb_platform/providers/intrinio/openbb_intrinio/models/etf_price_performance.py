@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+import asyncio
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
@@ -151,7 +152,6 @@ class IntrinioEtfPricePerformanceFetcher(
         symbols = [
             symbol + ":US" if ":" not in symbol else symbol for symbol in symbols
         ]
-        urls = [f"{base_url}{symbol}/stats?api_key={api_key}" for symbol in symbols]
 
         adjustment = (
             "split_only"
@@ -163,15 +163,14 @@ class IntrinioEtfPricePerformanceFetcher(
 
         results = []
 
-        async def response_callback(response: ClientResponse, session: ClientSession):
+        async def get_one(symbol: str, **kwargs):
             """Response callback."""
 
-            result = await response.json()
+            url = f"{base_url}{symbol}/stats?api_key={api_key}"
+            result = await amake_request(url, **kwargs)
 
             if "message" in result and result["message"] != []:  # type: ignore
-                warn(
-                    f"Symbol Error: {response.url.parts[-2]} - {result['message']}"  # type: ignore
-                )
+                warn(f"Symbol Error: {symbol} - {result['message']}")  # type: ignore
                 return
             _ = result.pop("message", None)  # type: ignore
             _ = result.pop("messages", None)  # type: ignore
@@ -187,11 +186,6 @@ class IntrinioEtfPricePerformanceFetcher(
                     _ = result.pop(k, None) if return_type in k else None  # type: ignore
                 if k in result:
                     data[ETF_PERFORMANCE_MAP.get(k, k)] = v
-            symbol = (
-                response.url.parts[-2]
-                if response.url.parts[-2]
-                else etf.get("ticker")  # type: ignore
-            )
             # Get an additional set of data to combine with the first set.
             analytics_url = (  # type: ignore
                 "https://api-v2.intrinio.com/etfs/"
@@ -200,7 +194,7 @@ class IntrinioEtfPricePerformanceFetcher(
                 + api_key
             )
             if data:
-                analytics = await amake_request(analytics_url, session=session)
+                analytics = await amake_request(analytics_url, **kwargs)
                 if "messages" in analytics and analytics["messages"] != []:  # type: ignore
                     warn(
                         f"Symbol Error: {analytics['messages']}"  # type: ignore
@@ -216,7 +210,9 @@ class IntrinioEtfPricePerformanceFetcher(
 
             results.append(data)
 
-        await amake_requests(urls, response_callback, **kwargs)  # type: ignore
+        tasks = [get_one(symbol, **kwargs) for symbol in symbols]
+
+        await asyncio.gather(*tasks)
 
         if not results:
             raise EmptyDataError("No data was returned.")
