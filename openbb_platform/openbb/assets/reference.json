@@ -17684,7 +17684,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                     "default": "",
                     "optional": false
                 },
@@ -17733,7 +17733,7 @@
                     "name": "symbol",
                     "type": "str",
                     "description": "Symbol representing the entity requested in the data.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
@@ -17803,14 +17803,28 @@
                     "name": "one_year",
                     "type": "float",
                     "description": "One-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
+                    "default": null,
                     "optional": true
                 },
                 {
@@ -21292,12 +21306,12 @@
             "OBBject": [
                 {
                     "name": "results",
-                    "type": "List[PricePerformance]",
+                    "type": "List[EtfPricePerformance]",
                     "description": "Serializable results."
                 },
                 {
                     "name": "provider",
-                    "type": "Optional[Literal['fmp']]",
+                    "type": "Optional[Literal['fmp', 'intrinio']]",
                     "description": "Provider name."
                 },
                 {
@@ -21323,7 +21337,7 @@
                     "name": "symbol",
                     "type": "str",
                     "description": "Symbol representing the entity requested in the data.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
@@ -21393,14 +21407,28 @@
                     "name": "one_year",
                     "type": "float",
                     "description": "One-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
+                    "default": null,
                     "optional": true
                 },
                 {
@@ -21431,105 +21459,105 @@
                     "name": "max_annualized",
                     "type": "float",
                     "description": "Annualized rate of return from inception.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volatility_one_year",
                     "type": "float",
                     "description": "Trailing one-year annualized volatility.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volatility_three_year",
                     "type": "float",
                     "description": "Trailing three-year annualized volatility.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volatility_five_year",
                     "type": "float",
                     "description": "Trailing five-year annualized volatility.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volume",
                     "type": "int",
                     "description": "The trading volume.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volume_avg_30",
                     "type": "float",
                     "description": "The one-month average daily volume.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volume_avg_90",
                     "type": "float",
                     "description": "The three-month average daily volume.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "volume_avg_180",
                     "type": "float",
                     "description": "The six-month average daily volume.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "beta",
                     "type": "float",
                     "description": "Beta compared to the S&P 500.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "nav",
                     "type": "float",
                     "description": "Net asset value per share.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "year_high",
                     "type": "float",
                     "description": "The 52-week high price.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "year_low",
                     "type": "float",
                     "description": "The 52-week low price.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "market_cap",
                     "type": "float",
                     "description": "The market capitalization.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "shares_outstanding",
                     "type": "int",
                     "description": "The number of shares outstanding.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "updated",
                     "type": "date",
                     "description": "The date of the data.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 }
             ]
@@ -22393,7 +22421,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                     "default": "",
                     "optional": false
                 },
@@ -22442,7 +22470,7 @@
                     "name": "symbol",
                     "type": "str",
                     "description": "Symbol representing the entity requested in the data.",
-                    "default": "None",
+                    "default": null,
                     "optional": true
                 },
                 {
@@ -22512,14 +22540,28 @@
                     "name": "one_year",
                     "type": "float",
                     "description": "One-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
                     "optional": true
                 },
                 {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
-                    "default": "None",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
+                    "default": null,
                     "optional": true
                 },
                 {
