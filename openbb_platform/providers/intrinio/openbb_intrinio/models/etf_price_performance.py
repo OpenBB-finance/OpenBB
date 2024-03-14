@@ -159,7 +159,7 @@ class IntrinioEtfPricePerformanceFetcher(
         results = []
 
         async def get_one(symbol: str, **kwargs):
-            """Response callback."""
+            """Get data for one symbol."""
 
             url = f"{base_url}{symbol}/stats?api_key={api_key}"
             result = await amake_request(url, **kwargs)
@@ -182,11 +182,8 @@ class IntrinioEtfPricePerformanceFetcher(
                 if k in result:
                     data[ETF_PERFORMANCE_MAP.get(k, k)] = v
             # Get an additional set of data to combine with the first set.
-            analytics_url = (  # type: ignore
-                "https://api-v2.intrinio.com/etfs/"
-                + symbol
-                + "/analytics?api_key="
-                + api_key
+            analytics_url = (
+                f"https://api-v2.intrinio.com/etfs/{symbol}/analytics?api_key={api_key}"
             )
             if data:
                 analytics = await amake_request(analytics_url, **kwargs)
