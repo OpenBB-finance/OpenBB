@@ -1,7 +1,7 @@
 """Provider registry map."""
 
-from copy import deepcopy
 import sys
+from copy import deepcopy
 from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
@@ -112,14 +112,14 @@ class RegistryMap:
     ):
         """Merge json schema extra for different providers"""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
-        std = model_map["openbb"]["QueryParams"]
-        extra = model_map[provider]["QueryParams"]
+        std_fields = model_map["openbb"]["QueryParams"]["fields"]
+        extra_fields = model_map[provider]["QueryParams"]["fields"]
         for f, props in getattr(model, "__json_schema_extra__", {}).items():
             for p in props:
-                if f in std["fields"]:
-                    model_field = std["fields"][f]
-                elif f in extra["fields"]:
-                    model_field = extra["fields"][f]
+                if f in std_fields:
+                    model_field = std_fields[f]
+                elif f in extra_fields:
+                    model_field = extra_fields[f]
                 else:
                     continue
 
