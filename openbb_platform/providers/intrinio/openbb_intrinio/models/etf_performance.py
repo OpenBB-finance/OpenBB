@@ -158,7 +158,6 @@ class IntrinioEtfPerformanceFetcher(
         return_type = "trailing" if query.return_type == "calendar" else "calendar"
 
         results = []
-        print(urls)
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Response callback."""
