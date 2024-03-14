@@ -76,7 +76,6 @@ def skew(
         Rolling skew.
 
     """
-
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_skew_{window}"
@@ -132,7 +131,7 @@ def variance(
     index: str, optional
         The name of the index column, default is "date".
 
-    Returns:
+    Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling variance values.
@@ -177,8 +176,8 @@ def stdev(
     Calculate the rolling standard deviation of a target column within a given window size.
 
     Standard deviation is a measure of the amount of variation or dispersion of a set of values.
-     It is widely used to assess the risk and volatility of financial returns or other time series data
-     over a specified rolling window.  It is the square root of the variance.
+    It is widely used to assess the risk and volatility of financial returns or other time series data
+    over a specified rolling window.  It is the square root of the variance.
 
     Parameters
     ----------
@@ -191,12 +190,11 @@ def stdev(
     index: str, optional
         The name of the index column, default is "date".
 
-    Returns:
+    Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling standard deviation values.
     """
-
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_stdev_{window}"
@@ -255,12 +253,11 @@ def kurtosis(
     index: str, optional
         The name of the index column, default is "date".
 
-    Returns:
+    Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling kurtosis values.
     """
-
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_kurtosis_{window}"
@@ -324,12 +321,11 @@ def quantile(
     index: str, optional
         The name of the index column, default is "date".
 
-    Returns:
+    Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling quantile values with the median.
     """
-
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     validate_window(series_target, window)
@@ -398,11 +394,11 @@ def mean(
     index: str, optional
         The name of the index column, default is "date".
 
-    Returns:
-        OBBject[List[Data]]
-            An object containing the rolling mean values.
+    Returns
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling mean values.
     """
-
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_mean_{window}"

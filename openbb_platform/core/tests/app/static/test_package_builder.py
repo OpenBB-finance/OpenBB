@@ -46,11 +46,6 @@ def test_package_builder_build(package_builder):
     package_builder.build()
 
 
-def test_save_module_map(package_builder):
-    """Test save module map."""
-    package_builder._save_module_map()
-
-
 def test_save_modules(package_builder):
     """Test save module."""
     package_builder._save_modules()
