@@ -168,6 +168,7 @@ class IntrinioEtfPricePerformanceFetcher(
                 warn(f"Symbol Error: {response.url.parts[-2]} - {result['message']}")  # type: ignore
                 return
             _ = result.pop("message", None)  # type: ignore
+            _ = result.pop("messages", None) # type: ignore
 
             data = {}
             etf = result.pop("etf", {})  # type: ignore
@@ -180,15 +181,14 @@ class IntrinioEtfPricePerformanceFetcher(
                     _ = result.pop(k, None) if return_type in k else None  # type: ignore
                 if k in result:
                     data[ETF_PERFORMANCE_MAP.get(k, k)] = v
-
+            symbol = response.url.parts[-2] if response.url.parts[-2] else etf.get("ticker") # type: ignore
             # Get an additional set of data to combine with the first set.
-            analytics_url = (
+            analytics_url = ( # type: ignore
                 "https://api-v2.intrinio.com/etfs/"
-                + etf.get("ticker")
+                + symbol
                 + "/analytics?api_key="
                 + api_key
             )
-
             if "data":
                 analytics = await amake_request(analytics_url, session=session)
                 if "messages" in analytics and analytics["messages"] != []:  # type: ignore
