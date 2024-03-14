@@ -170,7 +170,7 @@ class IntrinioEtfPricePerformanceFetcher(
 
             if "message" in result and result["message"] != []:  # type: ignore
                 warn(
-                    f"Symbol Error: {response.url.parts[-2]} - {result['message']}" # type: ignore
+                    f"Symbol Error: {response.url.parts[-2]} - {result['message']}"  # type: ignore
                 )
                 return
             _ = result.pop("message", None)  # type: ignore
@@ -203,8 +203,8 @@ class IntrinioEtfPricePerformanceFetcher(
                 analytics = await amake_request(analytics_url, session=session)
                 if "messages" in analytics and analytics["messages"] != []:  # type: ignore
                     warn(
-                        f"Symbol Error: {analytics['messages']}" # type: ignore
-                        + f"for {etf.get('ticker')}" # type: ignore
+                        f"Symbol Error: {analytics['messages']}"  # type: ignore
+                        + f"for {etf.get('ticker')}"  # type: ignore
                     )
                     return
                 # Remove the duplicate data from the analytics response.
