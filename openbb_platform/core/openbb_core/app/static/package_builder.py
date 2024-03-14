@@ -1098,6 +1098,7 @@ class DocstringGenerator:
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
         examples: Optional[List[Example]] = None,
+        target: Literal["docstring", "website"] = "docstring",
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
@@ -1122,22 +1123,26 @@ class DocstringGenerator:
                 if hasattr(results_type, "results_type_repr"):
                     results_type = results_type.results_type_repr()
 
-                doc = cls.generate_model_docstring(
-                    model_name=model_name,
-                    summary=func.__doc__ or "",
-                    explicit_params=explicit_params,
-                    kwarg_params=kwarg_params,
-                    returns=returns,
-                    results_type=results_type,
-                )
+                if target == "docstring":
+                    doc = cls.generate_model_docstring(
+                        model_name=model_name,
+                        summary=func.__doc__ or "",
+                        explicit_params=explicit_params,
+                        kwarg_params=kwarg_params,
+                        returns=returns,
+                        results_type=results_type,
+                    )
+                else:
+                    doc = ""
         else:
             doc = doc.replace("\n    ", f"\n{create_indent(2)}")
 
-        if doc and examples:
+        if examples:
             doc += cls.build_examples(
                 path.replace("/", "."),
                 param_types,
                 examples,
+                target,
             )
 
         return doc
@@ -1229,6 +1234,7 @@ class ReferenceGenerator:
     def get_endpoint_examples(
         cls,
         path: str,
+        model: str,
         func: Callable,
         examples: Optional[List[Example]],
     ) -> str:
@@ -1241,6 +1247,8 @@ class ReferenceGenerator:
         ----------
             path (str):
                 Path of the router.
+            model (str):
+                Standard model of the function.
             func (Callable):
                 Router endpoint function.
             examples (Optional[List[Example]]):
@@ -1257,15 +1265,14 @@ class ReferenceGenerator:
         formatted_params = MethodDefinition.format_params(
             path=path, parameter_map=parameter_map
         )
-        explicit_params = dict(formatted_params)
-        explicit_params.pop("extra_params", None)
-        param_types = {k: v.annotation for k, v in explicit_params.items()}
 
-        return DocstringGenerator.build_examples(
+        return DocstringGenerator.generate(
             path.replace("/", "."),
-            param_types,
+            func,
+            formatted_params,
+            model,
             examples,
-            "website",
+            "website",  # type: ignore
         )
 
     @classmethod
@@ -1567,6 +1574,7 @@ class ReferenceGenerator:
             examples = openapi_extra.get("examples", [])
             reference[path]["examples"] = cls.get_endpoint_examples(
                 path,
+                standard_model,
                 route_func,
                 examples,  # type: ignore
             )
