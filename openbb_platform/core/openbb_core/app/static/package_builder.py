@@ -926,7 +926,7 @@ class DocstringGenerator:
 
             if "openbb_" in str(_type):
                 _type = (
-                    str(_type).split(".", maxsplit=1)[0]
+                    str(_type).split(".", maxsplit=1)[0].split("openbb_")[0]
                     + str(_type).rsplit(".", maxsplit=1)[-1]
                 )
 
