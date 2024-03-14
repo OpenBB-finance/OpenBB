@@ -13,6 +13,8 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.etf_info import IntrinioEtfInfoFetcher
+from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
@@ -360,5 +362,23 @@ def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
     }
 
     fetcher = IntrinioReportedFinancialsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_etf_search_fetcher(credentials=test_credentials):
+    params = {"query": "factor", "exchange": "bats"}
+
+    fetcher = IntrinioEtfSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "DJIA,SPY,GOVT"}
+
+    fetcher = IntrinioEtfInfoFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

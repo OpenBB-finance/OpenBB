@@ -11,6 +11,8 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.etf_info import IntrinioEtfInfoFetcher
+from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
@@ -55,6 +57,8 @@ intrinio_provider = Provider(
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "EquitySearch": IntrinioEquitySearchFetcher,
         "EtfHistorical": IntrinioEquityHistoricalFetcher,
+        "EtfInfo": IntrinioEtfInfoFetcher,
+        "EtfSearch": IntrinioEtfSearchFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
