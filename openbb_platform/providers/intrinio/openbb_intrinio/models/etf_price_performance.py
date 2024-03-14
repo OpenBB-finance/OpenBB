@@ -193,7 +193,7 @@ class IntrinioEtfPricePerformanceFetcher(
                 + "/analytics?api_key="
                 + api_key
             )
-            if "data":
+            if data:
                 analytics = await amake_request(analytics_url, session=session)
                 if "messages" in analytics and analytics["messages"] != []:  # type: ignore
                     warn(f"Symbol Error: {analytics['messages']} for {etf.get('ticker')}")  # type: ignore
