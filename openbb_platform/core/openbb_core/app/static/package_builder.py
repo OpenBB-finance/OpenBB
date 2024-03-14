@@ -892,20 +892,32 @@ class DocstringGenerator:
 
         Parameters
         ----------
-            field (FieldInfo): Pydantic field object containing field information.
-            target (Literal["docstring", "website"], optional): Target to return type for. Defaults to "docstring".
+            field_type (Any):
+                Typing object containing the field type.
+            is_required (bool):
+                Flag to indicate if the field is required.
+            target (Literal["docstring", "website"], optional):
+                Target to return type for. Defaults to "docstring".
 
         Returns
         -------
-            str: String representation of the field type.
+            str:
+                String representation of the field type.
         """
         is_optional = not is_required
 
         try:
             _type = field_type
 
+            # Gets the inner type for further processing
+            if "Optional" in str(_type):
+                _type = _type.__args__[0]
+
             if "BeforeValidator" in str(_type):
                 _type = "Optional[int]" if is_optional else "int"  # type: ignore
+
+            if "openbb_" in str(_type):
+                _type = _type.__name__
 
             field_type = (
                 str(_type)
@@ -915,19 +927,14 @@ class DocstringGenerator:
                 .replace("pydantic.types.", "")
                 .replace("datetime.datetime", "datetime")
                 .replace("datetime.date", "date")
+                .replace("datetime.time", "time")
                 .replace("NoneType", "None")
                 .replace(", None", "")
             )
 
-            field_type = (
-                f"Optional[{field_type}]"
-                if is_optional and "Optional" not in str(_type)
-                else field_type
-            )
-
-            if target == "website":
-                field_type = re.sub(r"Optional\[(.*)\]", r"\1", field_type)
-                field_type = re.sub(r"Annotated\[(.*)\]", r"\1", field_type)
+            # Manual injection ensures correct type representation after processing the field type
+            if is_optional and "Optional" not in str(_type) and target == "docstring":
+                field_type = f"Optional[{field_type}]"
 
             return field_type
 
