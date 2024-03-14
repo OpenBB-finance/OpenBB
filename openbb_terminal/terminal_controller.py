@@ -96,7 +96,6 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "reports",
         "dashboards",
         "alternative",
         "econometrics",
@@ -243,7 +242,6 @@ class TerminalController(BaseController):
         mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
-        mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
@@ -521,12 +519,6 @@ class TerminalController(BaseController):
         from openbb_terminal.forex.forex_controller import ForexController
 
         self.queue = self.load_class(ForexController, self.queue)
-
-    def call_reports(self, _):
-        """Process reports command."""
-        from openbb_terminal.reports.reports_controller import ReportController
-
-        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command."""

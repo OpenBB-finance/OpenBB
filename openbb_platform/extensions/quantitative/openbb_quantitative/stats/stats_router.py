@@ -50,7 +50,7 @@ def skew(
     data: List[Data],
     target: str,
 ) -> OBBject[List[Data]]:
-    """Get the  skew. of the data set
+    """Get the skew of the data set.
 
     Skew is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
     Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
@@ -70,7 +70,6 @@ def skew(
     OBBject[List[Data]]
         Rolling skew.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = pd.DataFrame([skew_(series_target)], columns=["skew"])
@@ -170,7 +169,6 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     OBBject[List[Data]]
         An object containing the rolling standard deviation values.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = pd.DataFrame([std_dev_(series_target)], columns=["stdev"])
@@ -218,11 +216,10 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
         The name of the column for which to calculate kurtosis.
 
     Returns
-    ------
+    -------
     OBBject[List[Data]]
         An object containing the kurtosis value
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = pd.DataFrame([kurtosis_(series_target)], columns=["kurtosis"])
@@ -278,7 +275,6 @@ def quantile(
     OBBject[List[Data]]
         An object containing the rolling quantile values with the median.
     """
-
     df = basemodel_to_df(
         data,
     )
@@ -335,7 +331,6 @@ def mean(
         OBBject[List[Data]]
             An object containing the mean value.
     """
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = pd.DataFrame([mean_(series_target)], columns=["mean"])

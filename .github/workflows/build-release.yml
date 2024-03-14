@@ -11,6 +11,8 @@ on:
   push:
     branches:
       - release/v3/*
+  workflow_dispatch:
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -39,12 +41,3 @@ jobs:
           workflow: macos-build.yml
           token: ${{ secrets.GITHUB_TOKEN }}
           wait-for-completion-timeout: 2h
-
-  trigger-docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger docker Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: docker-build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
