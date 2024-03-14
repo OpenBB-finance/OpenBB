@@ -17229,7 +17229,7 @@
             "message": null
         },
         "description": "Get historical price data for a given stock. This includes open, high, low, close, and volume.",
-        "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.historical(symbol='AAPL', provider='fmp')\nobb.equity.price.historical(symbol='AAPL', interval='1d', provider='intrinio')\n```\n\n",
+        "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.price.historical(symbol='AAPL', provider='fmp')\nobb.equity.price.historical(symbol='AAPL', interval=1d, provider='intrinio')\n```\n\n",
         "parameters": {
             "standard": [
                 {
@@ -17238,13 +17238,6 @@
                     "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
                     "default": "",
                     "optional": false
-                },
-                {
-                    "name": "interval",
-                    "type": "str",
-                    "description": "Time interval of the data to return.",
-                    "default": "1d",
-                    "optional": true
                 },
                 {
                     "name": "start_date",
@@ -17268,8 +17261,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "start_time",
                     "type": "datetime.time",
@@ -17301,6 +17309,13 @@
             ],
             "polygon": [
                 {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
+                {
                     "name": "adjustment",
                     "type": "Literal['splits_only', 'unadjusted']",
                     "description": "The adjustment factor to apply. Default is splits only.",
@@ -17329,8 +17344,23 @@
                     "optional": true
                 }
             ],
-            "tiingo": [],
+            "tiingo": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1d', '1W', '1M', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "extended_hours",
                     "type": "bool",
@@ -19474,13 +19504,6 @@
                     "optional": false
                 },
                 {
-                    "name": "interval",
-                    "type": "str",
-                    "description": "Time interval of the data to return.",
-                    "default": "1d",
-                    "optional": true
-                },
-                {
                     "name": "start_date",
                     "type": "Union[date, str]",
                     "description": "Start date of the data, in YYYY-MM-DD format.",
@@ -19502,8 +19525,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "start_time",
                     "type": "datetime.time",
@@ -19535,6 +19573,13 @@
             ],
             "polygon": [
                 {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
+                {
                     "name": "adjustment",
                     "type": "Literal['splits_only', 'unadjusted']",
                     "description": "The adjustment factor to apply. Default is splits only.",
@@ -19563,8 +19608,23 @@
                     "optional": true
                 }
             ],
-            "tiingo": [],
+            "tiingo": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1d', '1W', '1M', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "extended_hours",
                     "type": "bool",
