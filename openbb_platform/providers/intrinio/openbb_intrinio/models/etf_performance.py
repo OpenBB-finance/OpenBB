@@ -158,16 +158,17 @@ class IntrinioEtfPerformanceFetcher(
         return_type = "trailing" if query.return_type == "calendar" else "calendar"
 
         results = []
+        print(urls)
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Response callback."""
 
             result = await response.json()
 
-            if "messages" in result and result["messages"] != []:  # type: ignore
-                warn(f"Symbol Error: {result['messages']} for {response.url.parts[-1]}")  # type: ignore
+            if "message" in result and result["message"] != []:  # type: ignore
+                warn(f"Symbol Error: {response.url.parts[-2]} - {result['message']}")  # type: ignore
                 return
-            _ = result.pop("messages", None)  # type: ignore
+            _ = result.pop("message", None)  # type: ignore
 
             data = {}
             etf = result.pop("etf", {})  # type: ignore
