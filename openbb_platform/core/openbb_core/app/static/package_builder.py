@@ -1135,7 +1135,11 @@ class DocstringGenerator:
                 else:
                     doc = ""
         else:
-            doc = doc.replace("\n    ", f"\n{create_indent(2)}")
+            doc = (
+                doc.replace("\n    ", f"\n{create_indent(2)}")
+                if target == "docstring"
+                else ""
+            )
 
         if examples:
             doc += cls.build_examples(
@@ -1267,7 +1271,7 @@ class ReferenceGenerator:
         )
 
         return DocstringGenerator.generate(
-            path.replace("/", "."),
+            path,
             func,
             formatted_params,
             model,
