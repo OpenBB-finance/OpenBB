@@ -1,6 +1,0 @@
-  Symbol Compound_v2   Aave BlockFi
-0    DAI       2.72%  2.18%       –
-1   USDC       1.29%  1.82%       –
-2    ETH       2.78%      –       –
-3   WBTC       2.32%  0.46%       –
-4   USDT       3.59%  2.59%       –

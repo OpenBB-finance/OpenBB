@@ -17730,6 +17730,13 @@
         "data": {
             "standard": [
                 {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": null,
+                    "optional": true
+                },
+                {
                     "name": "one_day",
                     "type": "float",
                     "description": "One-day return.",
@@ -17800,9 +17807,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": null,
                     "optional": true
                 },
@@ -17828,15 +17849,7 @@
                     "optional": true
                 }
             ],
-            "fmp": [
-                {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
-                }
-            ]
+            "fmp": []
         },
         "model": "PricePerformance"
     },
@@ -21252,37 +21265,53 @@
             "flag": null,
             "message": null
         },
-        "description": "Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.",
+        "description": "Price performance as a return, over different periods.",
         "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.price_performance(symbol='QQQ', provider='fmp')\nobb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')\n```\n\n",
         "parameters": {
             "standard": [
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                     "default": "",
                     "optional": false
                 },
                 {
                     "name": "provider",
-                    "type": "Literal['fmp']",
+                    "type": "Literal['fmp', 'intrinio']",
                     "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                     "default": "fmp",
                     "optional": true
                 }
             ],
-            "fmp": []
+            "fmp": [],
+            "intrinio": [
+                {
+                    "name": "return_type",
+                    "type": "Literal['trailing', 'calendar']",
+                    "description": "The type of returns to return, a trailing or calendar window.",
+                    "default": "trailing",
+                    "optional": true
+                },
+                {
+                    "name": "adjustment",
+                    "type": "Literal['splits_only', 'splits_and_dividends']",
+                    "description": "The adjustment factor, 'splits_only' will return pure price performance.",
+                    "default": "splits_and_dividends",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
                 {
                     "name": "results",
-                    "type": "List[PricePerformance]",
+                    "type": "List[EtfPricePerformance]",
                     "description": "Serializable results."
                 },
                 {
                     "name": "provider",
-                    "type": "Optional[Literal['fmp']]",
+                    "type": "Optional[Literal['fmp', 'intrinio']]",
                     "description": "Provider name."
                 },
                 {
@@ -21304,6 +21333,13 @@
         },
         "data": {
             "standard": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": null,
+                    "optional": true
+                },
                 {
                     "name": "one_day",
                     "type": "float",
@@ -21375,9 +21411,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": null,
                     "optional": true
                 },
@@ -21403,17 +21453,116 @@
                     "optional": true
                 }
             ],
-            "fmp": [
+            "fmp": [],
+            "intrinio": [
                 {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
+                    "name": "max_annualized",
+                    "type": "float",
+                    "description": "Annualized rate of return from inception.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volatility_one_year",
+                    "type": "float",
+                    "description": "Trailing one-year annualized volatility.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volatility_three_year",
+                    "type": "float",
+                    "description": "Trailing three-year annualized volatility.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volatility_five_year",
+                    "type": "float",
+                    "description": "Trailing five-year annualized volatility.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volume",
+                    "type": "int",
+                    "description": "The trading volume.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_30",
+                    "type": "float",
+                    "description": "The one-month average daily volume.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_90",
+                    "type": "float",
+                    "description": "The three-month average daily volume.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "volume_avg_180",
+                    "type": "float",
+                    "description": "The six-month average daily volume.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "beta",
+                    "type": "float",
+                    "description": "Beta compared to the S&P 500.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "nav",
+                    "type": "float",
+                    "description": "Net asset value per share.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "year_high",
+                    "type": "float",
+                    "description": "The 52-week high price.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "year_low",
+                    "type": "float",
+                    "description": "The 52-week low price.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "market_cap",
+                    "type": "float",
+                    "description": "The market capitalization.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "shares_outstanding",
+                    "type": "int",
+                    "description": "The number of shares outstanding.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "updated",
+                    "type": "date",
+                    "description": "The date of the data.",
+                    "default": null,
+                    "optional": true
                 }
             ]
         },
-        "model": "PricePerformance"
+        "model": "EtfPricePerformance"
     },
     "/etf/holdings": {
         "deprecated": {
@@ -22318,6 +22467,13 @@
         "data": {
             "standard": [
                 {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "Symbol representing the entity requested in the data.",
+                    "default": null,
+                    "optional": true
+                },
+                {
                     "name": "one_day",
                     "type": "float",
                     "description": "One-day return.",
@@ -22388,9 +22544,23 @@
                     "optional": true
                 },
                 {
+                    "name": "two_year",
+                    "type": "float",
+                    "description": "Two-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
                     "name": "three_year",
                     "type": "float",
                     "description": "Three-year return.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "four_year",
+                    "type": "float",
+                    "description": "Four-year",
                     "default": null,
                     "optional": true
                 },
@@ -22416,15 +22586,7 @@
                     "optional": true
                 }
             ],
-            "fmp": [
-                {
-                    "name": "symbol",
-                    "type": "str",
-                    "description": "The ticker symbol.",
-                    "default": "",
-                    "optional": false
-                }
-            ]
+            "fmp": []
         },
         "model": "EtfHoldingsPerformance"
     },
