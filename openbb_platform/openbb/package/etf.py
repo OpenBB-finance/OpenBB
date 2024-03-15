@@ -738,6 +738,8 @@ class ROUTER_etf(Container):
 
         EtfHoldingsPerformance
         ----------------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
         one_day : Optional[float]
             One-day return.
         wtd : Optional[float]
@@ -758,16 +760,18 @@ class ROUTER_etf(Container):
             Year to date return.
         one_year : Optional[float]
             One-year return.
+        two_year : Optional[float]
+            Two-year return.
         three_year : Optional[float]
             Three-year return.
+        four_year : Optional[float]
+            Four-year
         five_year : Optional[float]
             Five-year return.
         ten_year : Optional[float]
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        symbol : Optional[str]
-            The ticker symbol. (provider: fmp)
 
         Examples
         --------
@@ -1192,34 +1196,38 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio."
             ),
         ],
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "intrinio"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
+        """Price performance as a return, over different periods.
 
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        return_type : Literal['trailing', 'calendar']
+            The type of returns to return, a trailing or calendar window. (provider: intrinio)
+        adjustment : Literal['splits_only', 'splits_and_dividends']
+            The adjustment factor, 'splits_only' will return pure price performance. (provider: intrinio)
 
         Returns
         -------
         OBBject
-            results : List[PricePerformance]
+            results : List[EtfPricePerformance]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1228,8 +1236,10 @@ class ROUTER_etf(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        PricePerformance
-        ----------------
+        EtfPricePerformance
+        -------------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
         one_day : Optional[float]
             One-day return.
         wtd : Optional[float]
@@ -1250,16 +1260,48 @@ class ROUTER_etf(Container):
             Year to date return.
         one_year : Optional[float]
             One-year return.
+        two_year : Optional[float]
+            Two-year return.
         three_year : Optional[float]
             Three-year return.
+        four_year : Optional[float]
+            Four-year
         five_year : Optional[float]
             Five-year return.
         ten_year : Optional[float]
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        symbol : Optional[str]
-            The ticker symbol. (provider: fmp)
+        max_annualized : Optional[float]
+            Annualized rate of return from inception. (provider: intrinio)
+        volatility_one_year : Optional[float]
+            Trailing one-year annualized volatility. (provider: intrinio)
+        volatility_three_year : Optional[float]
+            Trailing three-year annualized volatility. (provider: intrinio)
+        volatility_five_year : Optional[float]
+            Trailing five-year annualized volatility. (provider: intrinio)
+        volume : Optional[int]
+            The trading volume. (provider: intrinio)
+        volume_avg_30 : Optional[float]
+            The one-month average daily volume. (provider: intrinio)
+        volume_avg_90 : Optional[float]
+            The three-month average daily volume. (provider: intrinio)
+        volume_avg_180 : Optional[float]
+            The six-month average daily volume. (provider: intrinio)
+        beta : Optional[float]
+            Beta compared to the S&P 500. (provider: intrinio)
+        nav : Optional[float]
+            Net asset value per share. (provider: intrinio)
+        year_high : Optional[float]
+            The 52-week high price. (provider: intrinio)
+        year_low : Optional[float]
+            The 52-week low price. (provider: intrinio)
+        market_cap : Optional[float]
+            The market capitalization. (provider: intrinio)
+        shares_outstanding : Optional[int]
+            The number of shares outstanding. (provider: intrinio)
+        updated : Optional[date]
+            The date of the data. (provider: intrinio)
 
         Examples
         --------
@@ -1275,14 +1317,14 @@ class ROUTER_etf(Container):
                     "provider": self._get_provider(
                         provider,
                         "/etf/price_performance",
-                        ("fmp",),
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
             )
         )
 

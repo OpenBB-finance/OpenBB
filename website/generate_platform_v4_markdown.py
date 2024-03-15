@@ -336,21 +336,34 @@ def create_reference_markdown_tabular_section(
     return markdown
 
 
-def create_reference_markdown_returns_section(returns_content: str) -> str:
+def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
     """Create the returns section for the markdown file.
 
-    Parameters
-    ----------
-        returns_content (str):
-            Returns section formatted as a string
-
+    Args
+    ----
+        returns (List[Dict[str, str]]):
+            List of dictionaries containing the name, type and description of the returns
     Returns
     -------
         str:
             Returns section for the markdown file
     """
 
-    return f"---\n\n## Returns\n\n```python wordwrap\n{returns_content}\n```\n\n"
+    returns_str = ""
+
+    for params in returns:
+        returns_str += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
+        returns_str += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
+
+    # Remove the last two newline characters to render Returns section properly
+    returns_str = returns_str.rstrip("\n\n")
+
+    # For easy debugging of the created strings
+    markdown = (
+        f"---\n\n## Returns\n\n```python wordwrap\nOBBject\n{returns_str}\n```\n\n"
+    )
+
+    return markdown
 
 
 def create_data_model_markdown(title: str, description: str, model: str) -> str:
