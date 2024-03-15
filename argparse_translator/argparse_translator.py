@@ -503,16 +503,16 @@ class ArgparseTranslator:
         return wrapper_func
 
 
-# from openbb import obb
+from openbb import obb
 
-# ref_processor = ReferenceToCustomArgumentsProcessor(obb.coverage.reference)
+ref_processor = ReferenceToCustomArgumentsProcessor(obb.coverage.reference)
 
 
-# ref_equity_price_historical = ref_processor.custom_groups["/equity/price/historical"]
+ref_equity_price_historical = ref_processor.custom_groups["/equity/price/historical"]
 
-# translator = ArgparseTranslator(
-#     obb.equity.price.historical, ref_equity_price_historical
-# )
-# equity_historical_price = translator.translate()
-# result = equity_historical_price()
-# print(result)
+translator = ArgparseTranslator(
+    obb.equity.price.historical, ref_equity_price_historical
+)
+equity_historical_price = translator.translate()
+result = equity_historical_price()
+print(result)
