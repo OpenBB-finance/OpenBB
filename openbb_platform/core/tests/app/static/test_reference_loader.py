@@ -5,6 +5,13 @@ import pytest
 from openbb_core.app.static.reference_loader import ReferenceLoader
 
 
+@pytest.fixture(scope="function")
+def reference_loader():
+    ReferenceLoader._instances = {}
+    yield ReferenceLoader
+    ReferenceLoader._instances = {}
+
+
 @pytest.fixture
 def mock_reference_data(tmp_path):
     """Fixture to create a mock reference.json file."""
@@ -17,27 +24,27 @@ def mock_reference_data(tmp_path):
     return tmp_path
 
 
-def test_load_reference_data(mock_reference_data):
+def test_load_reference_data(mock_reference_data, reference_loader):
     """Test loading of reference data."""
-    loader = ReferenceLoader(directory=mock_reference_data)
+    loader = reference_loader(directory=mock_reference_data)
     assert loader.reference == {
         "key": "value"
     }, "Reference data should match the mock data"
 
 
-def test_default_directory_load():
+def test_default_directory_load(reference_loader):
     """Test loading from the default directory."""
     # This test assumes the default directory and reference.json file exist and are correctly set up
-    loader = ReferenceLoader()
+    loader = reference_loader()
     # Perform a basic check to ensure some data is loaded; specifics will depend on the actual reference.json content
     assert (
         isinstance(loader.reference, dict) and loader.reference
     ), "Should load data from the default directory"
 
 
-def test_missing_reference_file(tmp_path):
+def test_missing_reference_file(tmp_path, reference_loader):
     """Test behavior when the reference.json file is missing."""
-    loader = ReferenceLoader(
+    loader = reference_loader(
         directory=tmp_path
     )  # tmp_path does not contain a reference.json file
     assert (
@@ -45,8 +52,8 @@ def test_missing_reference_file(tmp_path):
     ), "Should return an empty dictionary if the reference file is missing"
 
 
-def test_nonexistent_directory():
+def test_nonexistent_directory(reference_loader):
     """Test initialization with a nonexistent directory."""
     assert (
-        ReferenceLoader(directory=Path("/nonexistent/path")).reference == {}
+        reference_loader(directory=Path("/nonexistent/path")).reference == {}
     ), "Should return an empty dictionary if the directory does not exist"
