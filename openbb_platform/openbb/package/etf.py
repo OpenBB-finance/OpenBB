@@ -371,7 +371,7 @@ class ROUTER_etf(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
-            Optional[Literal["fmp", "sec"]],
+            Optional[Literal["fmp", "intrinio", "sec"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -384,7 +384,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'sec']]
+        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -401,7 +401,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfHoldings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'sec']]
+            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -423,9 +423,10 @@ class ROUTER_etf(Container):
         cusip : Optional[str]
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
-            The ISIN of the holding. (provider: fmp, sec)
+            The ISIN of the holding. (provider: fmp, intrinio, sec)
         balance : Optional[int]
             The balance of the holding, in shares or units. (provider: fmp);
+            The number of units of the security held, if available. (provider: intrinio);
             The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
             The type of units. (provider: fmp);
@@ -433,9 +434,9 @@ class ROUTER_etf(Container):
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding, in dollars. (provider: fmp, sec)
+            The value of the holding, in dollars. (provider: fmp, intrinio, sec)
         weight : Optional[float]
-            The weight of the holding, as a normalized percent. (provider: fmp);
+            The weight of the holding, as a normalized percent. (provider: fmp, intrinio);
             The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
@@ -444,7 +445,7 @@ class ROUTER_etf(Container):
         issuer_category : Optional[str]
             The issuer category of the holding. (provider: fmp, sec)
         country : Optional[str]
-            The country of the holding. (provider: fmp, sec)
+            The country of the holding. (provider: fmp, intrinio, sec)
         is_restricted : Optional[str]
             Whether the holding is restricted. (provider: fmp, sec)
         fair_value_level : Optional[int]
@@ -460,7 +461,30 @@ class ROUTER_etf(Container):
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
         updated : Optional[Union[date, datetime]]
-            The date the data was updated. (provider: fmp)
+            The date the data was updated. (provider: fmp);
+            The 'as_of' date for the holding. (provider: intrinio)
+        security_type : Optional[str]
+            The type of instrument for this holding. Examples(Bond='BOND', Equity='EQUI') (provider: intrinio)
+        ric : Optional[str]
+            The Reuters Instrument Code. (provider: intrinio)
+        sedol : Optional[str]
+            The Stock Exchange Daily Official List. (provider: intrinio)
+        share_class_figi : Optional[str]
+            The OpenFIGI symbol for the holding. (provider: intrinio)
+        maturity_date : Optional[date]
+            The maturity date for the debt security, if available. (provider: intrinio, sec)
+        contract_expiry_date : Optional[date]
+            Expiry date for the futures contract held, if available. (provider: intrinio)
+        coupon : Optional[float]
+            The coupon rate of the debt security, if available. (provider: intrinio)
+        unit : Optional[str]
+            The units of the 'balance' field. (provider: intrinio)
+        units_per_share : Optional[float]
+            Number of units of the security held per share outstanding of the ETF, if available. (provider: intrinio)
+        face_value : Optional[float]
+            The face value of the debt security, if available. (provider: intrinio)
+        derivatives_value : Optional[float]
+            The notional value of derivatives contracts held. (provider: intrinio)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -469,8 +493,6 @@ class ROUTER_etf(Container):
             The issuer conditions of the holding. (provider: sec)
         asset_conditional : Optional[str]
             The asset conditions of the holding. (provider: sec)
-        maturity_date : Optional[date]
-            The maturity date of the debt security. (provider: sec)
         coupon_kind : Optional[str]
             The type of coupon for the debt security. (provider: sec)
         rate_type : Optional[str]
@@ -591,7 +613,7 @@ class ROUTER_etf(Container):
                     "provider": self._get_provider(
                         provider,
                         "/etf/holdings",
-                        ("fmp", "sec"),
+                        ("fmp", "intrinio", "sec"),
                     )
                 },
                 standard_params={
