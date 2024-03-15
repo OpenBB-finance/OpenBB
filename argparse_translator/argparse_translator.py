@@ -80,7 +80,15 @@ class ReferenceToCustomArgumentsProcessor:
         if type_ in ["date", "datetime.time", "time"]:
             return str
 
-        return eval(type_)  # pylint: disable=eval-used
+        if any(x in type_ for x in ["gt=", "ge=", "lt=", "le="]):
+            type_ = type_.split(",")[0]
+
+        type_ = eval(type_)  # pylint: disable=eval-used
+
+        if get_origin(type_) is Literal:
+            type_ = type(get_args(type_)[0])
+
+        return type_
 
     def _get_nargs(self, type_: type) -> Union[int, str]:
         if get_origin(type_) is list:
@@ -193,7 +201,15 @@ class ArgparseTranslator:
                 argparse_group = self._parser.add_argument_group(group.name)
                 for argument in group.arguments:
                     kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
-                    argparse_group.add_argument(f"--{argument.name}", **kwargs)
+
+                    arguments_in_use = []
+
+                    for action_group in self._parser._action_groups:
+                        for action in action_group._group_actions:
+                            arguments_in_use.extend(action.option_strings)
+
+                    if f"--{argument.name}" not in arguments_in_use:
+                        argparse_group.add_argument(f"--{argument.name}", **kwargs)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
