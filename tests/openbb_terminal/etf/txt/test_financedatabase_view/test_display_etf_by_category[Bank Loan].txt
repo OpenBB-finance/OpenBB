@@ -1,6 +1,0 @@
-                             long_name                             family   category
-SRLN   SPDR Blackstone Senior Loan ETF  SPDR State Street Global Advisors  Bank Loan
-FTSL      First Trust Senior Loan Fund                        First Trust  Bank Loan
-FLBL  Franklin Liberty Senior Loan ETF     Franklin Templeton Investments  Bank Loan
-SNLN    Highland/iBoxx Senior Loan ETF                     Highland Funds  Bank Loan
-FLRT    Pacific Global Senior Loan ETF                     Pacific Global  Bank Loan

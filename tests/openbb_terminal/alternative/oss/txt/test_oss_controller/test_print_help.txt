@@ -1,5 +1,0 @@
-    rossidx            the fastest-growing open-source startups    [RunaCapital]
-    rs                 repo summary                                [GitHub]
-    sh                 repo star history                           [GitHub]
-    tr                 top starred repos                           [GitHub]
-

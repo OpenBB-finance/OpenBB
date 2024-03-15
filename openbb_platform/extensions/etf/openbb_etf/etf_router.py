@@ -116,7 +116,7 @@ async def countries(
 
 
 @router.command(
-    model="PricePerformance",
+    model="EtfPricePerformance",
     examples=[
         APIEx(parameters={"symbol": "QQQ", "provider": "fmp"}),
         APIEx(parameters={"symbol": "SPY,QQQ,IWM,DJIA", "provider": "fmp"}),
@@ -128,7 +128,7 @@ async def price_performance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`."""
+    """Price performance as a return, over different periods."""
     return await OBBject.from_query(Query(**locals()))
 
 
