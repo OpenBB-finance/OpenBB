@@ -21582,7 +21582,7 @@
                 },
                 {
                     "name": "provider",
-                    "type": "Literal['fmp', 'sec']",
+                    "type": "Literal['fmp', 'intrinio', 'sec']",
                     "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                     "default": "fmp",
                     "optional": true
@@ -21604,6 +21604,7 @@
                     "optional": true
                 }
             ],
+            "intrinio": [],
             "sec": [
                 {
                     "name": "date",
@@ -21630,7 +21631,7 @@
                 },
                 {
                     "name": "provider",
-                    "type": "Optional[Literal['fmp', 'sec']]",
+                    "type": "Optional[Literal['fmp', 'intrinio', 'sec']]",
                     "description": "Provider name."
                 },
                 {
@@ -21812,6 +21813,127 @@
                     "name": "updated",
                     "type": "Union[date, datetime]",
                     "description": "The date the data was updated.",
+                    "default": null,
+                    "optional": true
+                }
+            ],
+            "intrinio": [
+                {
+                    "name": "security_type",
+                    "type": "str",
+                    "description": "The type of instrument for this holding. Examples(Bond='BOND', Equity='EQUI')",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "isin",
+                    "type": "str",
+                    "description": "The International Securities Identification Number.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "ric",
+                    "type": "str",
+                    "description": "The Reuters Instrument Code.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "sedol",
+                    "type": "str",
+                    "description": "The Stock Exchange Daily Official List.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "share_class_figi",
+                    "type": "str",
+                    "description": "The OpenFIGI symbol for the holding.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "country",
+                    "type": "str",
+                    "description": "The country or region of the holding.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "maturity_date",
+                    "type": "date",
+                    "description": "The maturity date for the debt security, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "contract_expiry_date",
+                    "type": "date",
+                    "description": "Expiry date for the futures contract held, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "coupon",
+                    "type": "float",
+                    "description": "The coupon rate of the debt security, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "balance",
+                    "type": "Union[float, int]",
+                    "description": "The number of units of the security held, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "unit",
+                    "type": "str",
+                    "description": "The units of the 'balance' field.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "units_per_share",
+                    "type": "float",
+                    "description": "Number of units of the security held per share outstanding of the ETF, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "face_value",
+                    "type": "float",
+                    "description": "The face value of the debt security, if available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "derivatives_value",
+                    "type": "float",
+                    "description": "The notional value of derivatives contracts held.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "value",
+                    "type": "float",
+                    "description": "The market value of the holding, on the 'as_of' date.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "weight",
+                    "type": "float",
+                    "description": "The weight of the holding, as a normalized percent.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "updated",
+                    "type": "date",
+                    "description": "The 'as_of' date for the holding.",
                     "default": null,
                     "optional": true
                 }

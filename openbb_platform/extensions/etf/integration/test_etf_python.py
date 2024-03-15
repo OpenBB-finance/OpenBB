@@ -325,6 +325,12 @@ def test_etf_holdings_date(params, obb):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "DJIA",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

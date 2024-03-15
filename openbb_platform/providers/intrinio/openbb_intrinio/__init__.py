@@ -11,6 +11,7 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.etf_holdings import IntrinioEtfHoldingsFetcher
 from openbb_intrinio.models.etf_info import IntrinioEtfInfoFetcher
 from openbb_intrinio.models.etf_price_performance import (
     IntrinioEtfPricePerformanceFetcher,
@@ -60,6 +61,7 @@ intrinio_provider = Provider(
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "EquitySearch": IntrinioEquitySearchFetcher,
         "EtfHistorical": IntrinioEquityHistoricalFetcher,
+        "EtfHoldings": IntrinioEtfHoldingsFetcher,
         "EtfInfo": IntrinioEtfInfoFetcher,
         "EtfPricePerformance": IntrinioEtfPricePerformanceFetcher,
         "EtfSearch": IntrinioEtfSearchFetcher,
