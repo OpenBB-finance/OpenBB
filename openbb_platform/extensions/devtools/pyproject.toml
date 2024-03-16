@@ -8,14 +8,14 @@ packages = [{ include = "openbb_devtools" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"               # scipy forces <4.0 explicitly
-ruff = "^0.3.3"
-pylint = "^3.1.0"
+ruff = "^0.1.5"
+pylint = "^3.0.2"
 mypy = "^1.6.1"
 pydocstyle = "^6.3.0"
 black = "^24.1.0"
-bandit = "^1.7.8"
+bandit = "^1.7.5"
 codespell = "^2.2.5"
-pre-commit = "^4.4.0"
+pre-commit = "^3.5.0"
 tox = "^4.11.3"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
