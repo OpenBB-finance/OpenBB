@@ -82,6 +82,8 @@ class ROUTER_equity_fundamental(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Optional[Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm']]]
+            None (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -602,6 +604,8 @@ class ROUTER_equity_fundamental(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Optional[Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd']]]
+            None (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -1652,6 +1656,8 @@ class ROUTER_equity_fundamental(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Optional[Union[Literal['annual', 'quarter'], Literal['annual', 'quarter', 'ttm', 'ytd'], Literal['annual', 'quarter', 'ttm']]]
+            None (provider: fmp, intrinio, polygon, yfinance)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -3103,6 +3109,8 @@ class ROUTER_equity_fundamental(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Union[Literal['annual', 'quarter', 'ttm'], Literal['annual', 'quarter', 'ttm', 'ytd']]
+            Time period of the data to return. (provider: fmp, intrinio)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
@@ -3313,6 +3321,10 @@ class ROUTER_equity_fundamental(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
+        period : Literal['annual', 'quarter']
+            None
+        statement_type : Literal['balance', 'income', 'cash']
+            Cash flow statements are reported as YTD, Q4 is the same as FY. (provider: intrinio)
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 

@@ -72,6 +72,8 @@ class ROUTER_equity_price(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+            Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -354,6 +356,8 @@ class ROUTER_equity_price(Container):
 
         PricePerformance
         ----------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
         one_day : Optional[float]
             One-day return.
         wtd : Optional[float]
@@ -374,16 +378,18 @@ class ROUTER_equity_price(Container):
             Year to date return.
         one_year : Optional[float]
             One-year return.
+        two_year : Optional[float]
+            Two-year return.
         three_year : Optional[float]
             Three-year return.
+        four_year : Optional[float]
+            Four-year
         five_year : Optional[float]
             Five-year return.
         ten_year : Optional[float]
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        symbol : Optional[str]
-            The ticker symbol. (provider: fmp)
 
         Examples
         --------

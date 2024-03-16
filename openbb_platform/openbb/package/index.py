@@ -121,6 +121,8 @@ class ROUTER_index(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        symbol : Literal['dowjones', 'sp500', 'nasdaq']
+            None
 
         Returns
         -------
@@ -232,6 +234,8 @@ class ROUTER_index(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
+            Time interval of the data to return. (provider: fmp, polygon, yfinance)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio, polygon)
         sort : Literal['asc', 'desc']

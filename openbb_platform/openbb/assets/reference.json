@@ -2760,6 +2760,13 @@
             ],
             "fred": [
                 {
+                    "name": "limit",
+                    "type": "int",
+                    "description": "The number of data entries to return.",
+                    "default": 100000,
+                    "optional": true
+                },
+                {
                     "name": "frequency",
                     "type": "Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
                     "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
@@ -4556,6 +4563,13 @@
                 }
             ],
             "benzinga": [
+                {
+                    "name": "action",
+                    "type": "Literal['Downgrades', 'Maintains', 'Reinstates', 'Reiterates', 'Upgrades', 'Assumes', 'Initiates Coverage On', 'Terminates Coverage On', 'Removes', 'Suspends', 'Firm Dissolved']",
+                    "description": "Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined.",
+                    "default": null,
+                    "optional": true
+                },
                 {
                     "name": "action_change",
                     "type": "Literal['Announces', 'Maintains', 'Lowers', 'Raises', 'Removes', 'Adjusts']",
@@ -6967,8 +6981,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "fiscal_year",
                     "type": "int",
@@ -6978,6 +7007,13 @@
                 }
             ],
             "polygon": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "filing_date",
                     "type": "date",
@@ -7070,7 +7106,15 @@
                     "optional": true
                 }
             ],
-            "yfinance": []
+            "yfinance": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -8719,8 +8763,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "fiscal_year",
                     "type": "int",
@@ -8730,6 +8789,13 @@
                 }
             ],
             "polygon": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "filing_date",
                     "type": "date",
@@ -8822,7 +8888,15 @@
                     "optional": true
                 }
             ],
-            "yfinance": []
+            "yfinance": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -9584,6 +9658,20 @@
                 }
             ],
             "intrinio": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
+                {
+                    "name": "statement_type",
+                    "type": "Literal['balance', 'income', 'cash']",
+                    "description": "Cash flow statements are reported as YTD, Q4 is the same as FY.",
+                    "default": "income",
+                    "optional": true
+                },
                 {
                     "name": "fiscal_year",
                     "type": "int",
@@ -10789,8 +10877,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "fiscal_year",
                     "type": "int",
@@ -10800,6 +10903,13 @@
                 }
             ],
             "polygon": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "filing_date",
                     "type": "date",
@@ -10892,7 +11002,15 @@
                     "optional": true
                 }
             ],
-            "yfinance": []
+            "yfinance": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter']",
+                    "description": "None",
+                    "default": "annual",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -13983,8 +14101,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm']",
+                    "description": "Time period of the data to return.",
+                    "default": "annual",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "period",
+                    "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                    "description": "Time period of the data to return.",
+                    "default": "annual",
+                    "optional": true
+                },
                 {
                     "name": "fiscal_year",
                     "type": "int",
@@ -17268,8 +17401,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "start_time",
                     "type": "datetime.time",
@@ -17301,6 +17449,13 @@
             ],
             "polygon": [
                 {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
+                {
                     "name": "adjustment",
                     "type": "Literal['splits_only', 'unadjusted']",
                     "description": "The adjustment factor to apply. Default is splits only.",
@@ -17329,8 +17484,23 @@
                     "optional": true
                 }
             ],
-            "tiingo": [],
+            "tiingo": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1d', '1W', '1M', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "extended_hours",
                     "type": "bool",
@@ -17849,7 +18019,15 @@
                     "optional": true
                 }
             ],
-            "fmp": []
+            "fmp": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "The ticker symbol.",
+                    "default": "",
+                    "optional": false
+                }
+            ]
         },
         "model": "PricePerformance"
     },
@@ -18106,6 +18284,13 @@
                 }
             ],
             "sec": [
+                {
+                    "name": "name",
+                    "type": "str",
+                    "description": "None",
+                    "default": null,
+                    "optional": true
+                },
                 {
                     "name": "cik",
                     "type": "str",
@@ -19515,8 +19700,23 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "start_time",
                     "type": "datetime.time",
@@ -19548,6 +19748,13 @@
             ],
             "polygon": [
                 {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
+                {
                     "name": "adjustment",
                     "type": "Literal['splits_only', 'unadjusted']",
                     "description": "The adjustment factor to apply. Default is splits only.",
@@ -19576,8 +19783,23 @@
                     "optional": true
                 }
             ],
-            "tiingo": [],
+            "tiingo": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1d', '1W', '1M', '1Y']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "extended_hours",
                     "type": "bool",
@@ -21453,7 +21675,15 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "The ticker symbol.",
+                    "default": "",
+                    "optional": false
+                }
+            ],
             "intrinio": [
                 {
                     "name": "max_annualized",
@@ -22708,7 +22938,15 @@
                     "optional": true
                 }
             ],
-            "fmp": []
+            "fmp": [
+                {
+                    "name": "symbol",
+                    "type": "str",
+                    "description": "The ticker symbol.",
+                    "default": "",
+                    "optional": false
+                }
+            ]
         },
         "model": "EtfHoldingsPerformance"
     },
@@ -24739,7 +24977,15 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
                 {
                     "name": "limit",
@@ -24750,6 +24996,13 @@
                 }
             ],
             "polygon": [
+                {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "sort",
                     "type": "Literal['asc', 'desc']",
@@ -24765,7 +25018,15 @@
                     "optional": true
                 }
             ],
-            "yfinance": []
+            "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -24923,7 +25184,15 @@
                     "optional": true
                 }
             ],
-            "fmp": [],
+            "fmp": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ],
             "intrinio": [
                 {
                     "name": "limit",
@@ -24934,6 +25203,13 @@
                 }
             ],
             "polygon": [
+                {
+                    "name": "interval",
+                    "type": "str",
+                    "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                    "default": "1d",
+                    "optional": true
+                },
                 {
                     "name": "sort",
                     "type": "Literal['asc', 'desc']",
@@ -24949,7 +25225,15 @@
                     "optional": true
                 }
             ],
-            "yfinance": []
+            "yfinance": [
+                {
+                    "name": "interval",
+                    "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                    "description": "Time interval of the data to return.",
+                    "default": "1d",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -25086,7 +25370,15 @@
                     "optional": true
                 }
             ],
-            "fmp": []
+            "fmp": [
+                {
+                    "name": "symbol",
+                    "type": "Literal['dowjones', 'sp500', 'nasdaq']",
+                    "description": "None",
+                    "default": "dowjones",
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [

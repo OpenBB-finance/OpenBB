@@ -756,6 +756,8 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
+        limit : int
+            The number of data entries to return. (provider: fred)
         frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
 
                 Frequency aggregation to convert high frequency data to lower frequency.
