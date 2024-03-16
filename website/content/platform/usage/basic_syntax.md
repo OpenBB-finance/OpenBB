@@ -225,7 +225,7 @@ This example will use Python and the Requests library, so the syntax will vary a
 ```python
 import requests
 
-get_url = "http://127.0.0.1:8000/api/v1/index/market?provider=cboe&symbol=vix&interval=1d"
+get_url = "http://127.0.0.1:8000/api/v1/index/price/historical?provider=cboe&symbol=vix&interval=1d"
 get_response = requests.get(get_url)
 data_results = get_response.json()["results"]
 

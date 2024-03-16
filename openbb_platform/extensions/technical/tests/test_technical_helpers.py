@@ -81,7 +81,7 @@ def test_calculate_cones_with_mock_data(mock_data):
         lower_q=0.1,
         upper_q=0.9,
         is_crypto=False,
-        model="STD",
+        model="std",
     )
     assert not result.empty
 
