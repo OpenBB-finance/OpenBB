@@ -118,7 +118,7 @@ class IntrinioMarketSnapshotsFetcher(
                         tzinfo=timezone("America/New_York"),
                     )
             if isinstance(dt, str):
-                    dt = datetime.fromisoformat(dt)
+                dt = datetime.fromisoformat(dt)
             else:
                 try:
                     dt = datetime.fromisoformat(transformed_params["date"])  # type: ignore
