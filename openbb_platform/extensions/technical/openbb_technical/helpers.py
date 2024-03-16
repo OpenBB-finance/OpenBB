@@ -383,12 +383,12 @@ def calculate_cones(
     upper_q: float,
     is_crypto: bool,
     model: Literal[
-        "STD",
-        "Parkinson",
-        "Garman-Klass",
-        "Hodges-Tompkins",
-        "Rogers-Satchell",
-        "Yang-Zhang",
+        "std",
+        "parkinson",
+        "garman_klass",
+        "hodges_tompkins",
+        "rogers_satchell",
+        "yang_zhang",
     ],
     trading_periods: Optional[int] = None,
 ) -> pd.DataFrame:
@@ -415,12 +415,12 @@ def calculate_cones(
     data = data.sort_index(ascending=True)
 
     model_functions = {
-        "STD": standard_deviation,
-        "Parkinson": parkinson,
-        "Garman-Klass": garman_klass,
-        "Hodges-Tompkins": hodges_tompkins,
-        "Rogers-Satchell": rogers_satchell,
-        "Yang-Zhang": yang_zhang,
+        "std": standard_deviation,
+        "parkinson": parkinson,
+        "garman_klass": garman_klass,
+        "hodges_tompkins": hodges_tompkins,
+        "rogers_satchell": rogers_satchell,
+        "yang_zhang": yang_zhang,
     }
 
     for window in windows:

@@ -1,6 +1,6 @@
 ---
-title: Quality Assurance
-sidebar_position: 2
+title: Tests
+sidebar_position: 6
 description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
 keywords:
 - OpenBB QA process
@@ -12,9 +12,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quality Assurance - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
-We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your extension.
+We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your work.
 
 Primarily, we have tools that semi-automate the creation of unit and integration tests.
 
@@ -22,7 +22,7 @@ Primarily, we have tools that semi-automate the creation of unit and integration
 
 ## Unit tests
 
-Each `Fetcher` comes equipped with a `test` method that will ensure that it is implemented correctly and that it is returning the expected data. It also ensures that all types are correct and that the data is valid.
+Each `Fetcher` comes equipped with a `test` method that will ensure it is implemented correctly, that it is returning the expected data, that all types are correct, and that the data is valid.
 
 To create unit tests for your Fetchers, you can run the following command:
 
@@ -30,8 +30,7 @@ To create unit tests for your Fetchers, you can run the following command:
 python openbb_platform/providers/tests/utils/unit_tests_generator.py
 ```
 
-> Note that you should be running this file from the root of the repository.
-> Note that the `tests` folder must exist in order to generate the tests.
+> Run this file from the root of the repository, and the `tests` folder must exist, in order to generate the tests.
 
 The automatic unit test generation will add unit tests for all the fetchers available in a given provider.
 
@@ -41,7 +40,10 @@ To record the unit tests, you can run the following command:
 pytest <path_to_the_unit_test_file> --record=all
 ```
 
-> Note that sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
+:::note
+Sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
+:::
+
 
 ## Integration tests
 

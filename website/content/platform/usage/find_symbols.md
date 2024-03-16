@@ -369,8 +369,8 @@ With the `openbb-yfinance` extension, index time series can be loaded using the 
 
 ```python
 (
-    obb.index.market("au_utilities", provider="yfinance").to_df().tail(1)
-    == obb.index.market("^AXUJ", provider="yfinance").to_df().tail(1)
+    obb.index.price.historical("au_utilities", provider="yfinance").to_df().tail(1)
+    == obb.index.price.historical("^AXUJ", provider="yfinance").to_df().tail(1)
 )
 ```
 

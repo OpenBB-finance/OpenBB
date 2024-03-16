@@ -1,6 +1,6 @@
 ---
 title: Deprecating Endpoints
-sidebar_position: 5
+sidebar_position: 4
 description: This guide provides detailed instructions on how to deprecate an endpoint in the OpenBB Platform.
 keywords:
 - OpenBB community
@@ -28,9 +28,7 @@ Deprecating commands is essential to maintaining the OpenBB Platform. This guide
 
     ```python
 
-    ...
     from openbb_core.app.deprecation import OpenBBDeprecationWarning
-    ...
 
         @router.command(
             model="MarketIndices",
@@ -49,7 +47,6 @@ Deprecating commands is essential to maintaining the OpenBB Platform. This guide
         ) -> OBBject:
             """Historical Market Indices."""
         return await OBBject.from_query(Query(**locals()))
-
     ```
 
 3. Get approval from a OpenBB Platform maintainer: We will help you determine the appropriate version for the deprecation warning, and communicate the change(s) to the relevant personnel that might depend on the endpoint you are deprecating.

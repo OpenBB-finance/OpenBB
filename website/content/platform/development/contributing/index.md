@@ -21,20 +21,29 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Expectations For Contributors - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
+Thank you for taking the time to engage as a contributor. There is no contribution that is too small.
+whether it is a spelling error in the documentation, or contributing code and participating in the
+standardization of data, we appreciate all of you.
+
+We hope your contributing experience is a good one, and if there's anything we can do to improve, please send us your feedback.
+The list below is intended to provide some guidance on what the general expectations are.
+
 1. Use Cases:
    - Ensure that your contributions directly enhance the OpenBB Platform's functionality or extension ecosystem.
 
 2. Documentation:
    - All code contributions should come with relevant documentation, including the purpose of the contribution, how it works, and any changes it makes to existing functionalities.
    - Update any existing documentation if your contribution alters the behavior of the OpenBB Platform.
+   - New router functions must have usage [examples](contributing/function_examples) defined.
 
 3. Code Quality:
-   - Your code should adhere strictly to the OpenBB Platform's coding standards and conventions.
+   - Your code should adhere strictly to the OpenBB Platform's coding standards and [conventions](architecture_overview).
    - Ensure clarity, maintainability, and proper organization in your code.
 
-4. Testing:
+4. [Testing](tests):
    - All contributions must be thoroughly tested to avoid introducing bugs to the OpenBB Platform.
    - Contributions should include relevant automated tests (unit and integration), and any new feature should come with its test cases.
+   - See the page [here](tests) for details on the testing and QA infrastructure.
 
 5. Performance:
    - Your contributions should be optimized for performance and should not degrade the overall efficiency of the OpenBB Platform.
