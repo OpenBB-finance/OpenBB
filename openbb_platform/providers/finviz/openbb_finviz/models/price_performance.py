@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from finvizfinance.screener import performance
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -108,7 +109,17 @@ class FinvizPricePerformanceFetcher(
             screen_df = screen_df.fillna("N/A").replace("N/A", None)  # type: ignore
         except Exception as e:
             raise e from e
-        return screen_df.to_dict(orient="records")
+        symbols = query.symbol.split(",")
+
+        # Check for missing symbols and warn of the missing symbols.
+        for symbol in symbols:
+            if symbol not in screen_df["Ticker"].tolist():
+                warn(f"Symbol Error: {symbol} was not found.")
+
+        return sorted(
+            screen_df.to_dict(orient="records"),
+            key=(lambda item: (symbols.index(item.get("Ticker", len(symbols))))),
+        )
 
     @staticmethod
     def transform_data(

@@ -1,18 +1,20 @@
 """Charting router."""
 
-from typing import TYPE_CHECKING, Any, Dict, Tuple
+from typing import Any, Dict, Tuple
 
+import pandas as pd
 from openbb_core.app.model.charts.chart import ChartFormat
 from openbb_core.app.utils import basemodel_to_df
 
-from .core.plotly_ta.ta_class import PlotlyTA
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 
 CHART_FORMAT = ChartFormat.plotly
 
-if TYPE_CHECKING:
-    from .core.openbb_figure import OpenBBFigure
+# if TYPE_CHECKING:
 
-    # from .core.openbb_figure_table import OpenBBFigureTable
+# from .core.openbb_figure_table import OpenBBFigureTable
 
 
 def equity_price_historical(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
@@ -58,6 +60,7 @@ def _ta_ma(ma_type: str, **kwargs):
         False,
         volume=False,
     )
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
     content = fig.show(external=True).to_plotly_json()
 
     return fig, content
@@ -174,3 +177,102 @@ def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Exponential moving average chart."""
     ma_type = "ema"
     return _ta_ma(ma_type, **kwargs)
+
+
+def technical_cones(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Volatility Cones Chart."""
+
+    data = kwargs.get("data")
+
+    if isinstance(data, pd.DataFrame) and not data.empty and "window" in data.columns:
+        df_ta = data.set_index("window")
+    else:
+        df_ta = basemodel_to_df(kwargs["obbject_item"], index="window")
+
+    df_ta.columns = [col.title().replace("_", " ") for col in df_ta.columns]
+
+    # Check if the data is formatted as expected.
+    if not all(col in df_ta.columns for col in ["Realized", "Min", "Median", "Max"]):
+        raise ValueError("Data supplied does not match the expected format.")
+
+    model = (
+        str(kwargs.get("model"))
+        .replace("std", "Standard Deviation")
+        .replace("_", "-")
+        .title()
+        if kwargs.get("model")
+        else "Standard Deviation"
+    )
+
+    symbol = str(kwargs.get("symbol")) + " - " if kwargs.get("symbol") else ""
+
+    title = (
+        str(kwargs.get("title"))
+        if kwargs.get("title")
+        else f"{symbol}Realized Volatility Cones - {model} Model"
+    )
+
+    colors = [
+        "green",
+        "red",
+        "burlywood",
+        "grey",
+        "orange",
+        "blue",
+    ]
+    color = 0
+
+    fig = OpenBBFigure()
+
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+
+    text_color = "black" if ChartStyle().plt_style == "light" else "white"
+
+    for col in df_ta.columns:
+        fig.add_scatter(
+            x=df_ta.index,
+            y=df_ta[col],
+            name=col,
+            mode="lines+markers",
+            hovertemplate=f"{col}: %{{y}}<extra></extra>",
+            marker=dict(
+                color=colors[color],
+                size=11,
+            ),
+        )
+        color += 1
+
+    fig.set_title(title)
+
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color=text_color),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            xanchor="right",
+            y=1.02,
+            x=1,
+            bgcolor="rgba(0,0,0,0)",
+        ),
+        yaxis=dict(
+            ticklen=0,
+        ),
+        xaxis=dict(
+            type="category",
+            tickmode="array",
+            ticklen=0,
+            tickvals=df_ta.index,
+            ticktext=df_ta.index,
+            title_text="Period",
+            showgrid=False,
+            zeroline=False,
+        ),
+        margin=dict(l=20, r=20, b=20),
+        dragmode="pan",
+    )
+
+    content = fig.to_plotly_json()
+
+    return fig, content

@@ -1,3 +1,0 @@
-[yellow]Unable to check for updates... Check your internet connection and try again...[/yellow]
-
-
