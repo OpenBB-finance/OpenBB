@@ -45,6 +45,31 @@ class IntrinioMarketSnapshotsData(MarketSnapshotsData):
         "last_volume": "total_trade_volume",
     }
 
+    last_price: Optional[float] = Field(
+        default=None,
+        description="The last trade price.",
+    )
+    last_size: Optional[int] = Field(
+        default=None,
+        description="The last trade size.",
+    )
+    last_volume: Optional[int] = Field(
+        default=None,
+        description="The last trade volume.",
+    )
+    last_trade_timestamp: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the last trade.",
+    )
+    last_bid_timestamp: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the last bid price.",
+    )
+    last_ask_timestamp: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the last ask price.",
+    )
+
 
 class IntrinioMarketSnapshotsFetcher(
     Fetcher[
