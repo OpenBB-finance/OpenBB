@@ -1,7 +1,7 @@
 ---
-title: Architectural Considerations
-sidebar_position: 6
-description: This guide provides insights into the architectural considerations of the OpenBB Platform. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
+title: Architecture Overview
+sidebar_position: 2
+description: This guide provides insights into the architecture and components of the OpenBB Platform. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
 keywords:
 - OpenBB Platform Architecture
 - Key Classes
@@ -13,11 +13,93 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Architectural Considerations - Developer Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Architecture Overview - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-## Important classes
+This page provides a general overview of the OpenBB Platform architecture and the key Python classes most processes interact with.
 
-### The `Data` class
+## Core Dependencies
+
+:::note
+In reference to, "core", we mean the `openbb-core` package.
+:::
+
+The OpenBB Platform core relies on a set of carefully selected Python libraries. These include:
+
+- FastAPI for building the API.
+- Uvicorn as the ASGI server.
+- Pandas for data manipulation and analysis.
+- Pydantic for data validation and serialization using Python type annotations.
+- Requests/AIOHTTP for making HTTP requests.
+- Websockets for handling WebSocket connections.
+
+These dependencies are specified in the `pyproject.toml` files.
+
+### Importance Of A Lean Core
+
+Keeping the OpenBB Platform core as lean as possible is crucial for maintaining the platform's performance, ease of use, and flexibility. A lean core means faster installation times, less memory usage, and overall better performance. It also reduces the risk of conflicts between dependencies and makes the platform easier to maintain and update.
+
+Moreover, a lean core allows for greater flexibility. Users of the platform can add additional functionality through extensions without being burdened by unnecessary core dependencies. This makes the OpenBB Platform adaptable to a wide range of use cases and requirements.
+
+## Python Interface
+
+When using the OpenBB Platform from a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
+
+For example, `obb.technical.ema?`:
+
+```python
+obb.technical.ema(
+    data: Union[list, dict, pandas.core.frame.DataFrame, List[pandas.core.frame.DataFrame], pandas.core.series.Series, List[pandas.core.series.Series], numpy.ndarray, openbb_core.provider.abstract.data.Data, List[openbb_core.provider.abstract.data.Data]],
+    target: str = 'close',
+    index: str = 'date',
+    length: int = 50,
+    offset: int = 0,
+    chart: bool = False,
+) -> openbb_core.app.model.obbject.OBBject
+```
+
+We can easily deduct that the `ema` command accepts data in a number of formats.
+
+> Other types might be added in the future.
+
+## API Interface
+
+When using the OpenBB Platform via an API Interface, the types are a bit more constrained than the Python interface. For example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means - i.e., any data processing command, which are characterized as POST endpoints on the API, will accept data as a list of records, in the **request body**
+
+```json
+[
+    {
+        "open": 80,
+        "high": 80.69,
+        "low": 77.37,
+        "close": 77.62,
+        "volume": 2487300
+    }
+]
+```
+
+## `QueryParams` Class
+
+The QueryParams class is a standardized model for handling query input parameters in the OpenBB platform. It extends the BaseModel from the Pydantic library, which provides runtime data validation and serialization.
+
+The class includes a dictionary, `__alias_dict__`, which can be used to map the original parameter names to aliases. This can be useful when dealing with different data providers that may use different naming conventions for similar parameters.
+
+The `__json_schema_extra__` dictionary can be used to define whether multiple items are accepted by a parameter.
+
+```
+__json_schema_extra__ = {
+    "symbol": ["multiple_items_allowed"],
+    "category": ["multiple_items_allowed"],
+}
+```
+
+The `__repr__` method provides a string representation of the QueryParams object, which includes the class name and a list of the model's parameters and their values.
+
+The `model_config` attribute is a `ConfigDict` instance that allows extra fields not defined in the model and populates the model by name.
+
+The `model_dump` method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
+
+
+## `Data` Class
 
 The OpenBB Standardized Data Model.
 
@@ -59,19 +141,7 @@ The class is highly extensible and can be subclassed to create more specific mod
 particular datasets or domains, while still benefiting from the base functionality provided by the
 `Data` class.
 
-### The `QueryParams` class
-
-The QueryParams class is a standardized model for handling query input parameters in the OpenBB platform. It extends the BaseModel from the Pydantic library, which provides runtime data validation and serialization.
-
-The class includes a dictionary, `__alias_dict__`, which can be used to map the original parameter names to aliases. This can be useful when dealing with different data providers that may use different naming conventions for similar parameters.
-
-The `__repr__` method provides a string representation of the QueryParams object, which includes the class name and a list of the model's parameters and their values.
-
-The `model_config` attribute is a `ConfigDict` instance that allows extra fields not defined in the model and populates the model by name.
-
-The `model_dump` method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
-
-### The `Fetcher` class
+## `Fetcher` Class
 
 The `Fetcher` class is an abstract base class designed to provide a structured way to fetch data from various providers. It uses generics to allow for flexibility in the types of queries, data, and return values it handles.
 
@@ -94,7 +164,7 @@ The `Fetcher` class implementation is based on the [TET pattern](/platform/devel
 
 :::
 
-### The `OBBject` class
+## `OBBject` Class
 
 The OBBject class is a generic class in the OpenBB platform that represents a standardized object for handling and manipulating data fetched from various providers. It extends the `Tagged` class and uses Python's generics to allow flexibility in the type of results it can handle.
 
@@ -104,7 +174,7 @@ The class provides several methods for converting the fetched data into differen
 
 The class also includes a `__repr__` method for a human-readable representation of the object, as well as the familiar Pydantic BaseModel methods like `model_dump()` and `model_json_schema()`.
 
-### The `Router` class
+## `Router` Class
 
 The `Router` class in the OpenBB platform is responsible for managing and routing API requests. It uses the `APIRouter` from the FastAPI library to handle routing.
 
@@ -122,7 +192,7 @@ The `Router` class exposes a `command` decorator that allows for the registratio
 This decorator enforces that the decorated function (of type `Callable`) returns an `OBBject` instance. I.e., the signature of a decorated function should translate to `Callable[P, OBBject]` (a callable object (like a function) that takes arguments of type `P` and returns an object of type `OBBject`).
 :::
 
-## Import statements
+## Import Statements
 
 ```python
 
@@ -143,7 +213,7 @@ from openbb_core.app.router import Router
 
 ```
 
-## The TET pattern
+## The TET Pattern
 
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
 
@@ -175,7 +245,7 @@ As the OpenBB Platform has its own standardization framework and the data fetche
 
     Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) children.
 
-## Data processing commands
+## Data Processing Commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
 
@@ -263,62 +333,3 @@ results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50
 ```
 
 > Note that that for this example we've used the `OBBject.to_dataframe()` method to have an example dataframe, but it could be any other dataframe that you have.
-
-## Python Interface
-
-When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
-
-Looking at an example on the `ta` menu:
-
-```python
-def ema(
-        self,
-        data: Union[List[Data], pandas.DataFrame],
-        target: str = "close",
-        index: str = "date",
-        length: int = 50,
-        offset: int = 0,
-        chart: bool = False,
-    ) -> OBBject[List[Data]]:
-```
-
-We can easily deduct that the `ema` command accept data in the formats of `List[Data]` or `pandas.DataFrame`.
-
-> Note that other types might be added in the future.
-
-## API Interface
-
-When using the OpenBB Platform on a API Interface, the types are a bit more limited than on the Python one, as, for example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means, i.e., any given data processing command, which are characterized as POST endpoints on the API, will accept data as a list of records on the **request body**, i.e.:
-
-```json
-[
-    {
-        "open": 80,
-        "high": 80.69,
-        "low": 77.37,
-        "close": 77.62,
-        "volume": 2487300
-    }
-]
-```
-
-## Core Dependencies
-
-The OpenBB Platform core relies on a set of carefully selected Python libraries to provide its functionality. These dependencies include:
-
-> Note that, in this context by core we mean the `openbb-core` package.
-
-- FastAPI for building the API.
-- Uvicorn as the ASGI server.
-- Pandas for data manipulation and analysis.
-- Pydantic for data validation and serialization using Python type annotations.
-- Requests for making HTTP requests.
-- Websockets for handling WebSocket connections.
-
-These dependencies are specified in the `pyproject.toml` files.
-
-### Importance of a Lean Core
-
-Keeping the OpenBB Platform core as lean as possible is crucial for maintaining the platform's performance, ease of use, and flexibility. A lean core means faster installation times, less memory usage, and overall better performance. It also reduces the risk of conflicts between dependencies and makes the platform easier to maintain and update.
-
-Moreover, a lean core allows for greater flexibility. Users of the platform can add additional functionality through extensions without being burdened by unnecessary core dependencies. This makes the OpenBB Platform adaptable to a wide range of use cases and requirements.
