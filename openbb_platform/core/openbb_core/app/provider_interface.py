@@ -249,22 +249,22 @@ class ProviderInterface(metaclass=SingletonMeta):
         if query:
             # We need to use query if we want the field description to show up in the
             # swagger, it's a fastapi limitation
-            default = Query(
+            default = Query(  # type: ignore
                 default=default,
                 title=provider_name,
                 description=description,
                 alias=field.alias or None,
-                json_schema_extra=field.json_schema_extra,
+                json_schema_extra=getattr(field, "json_schema_extra", {}),
             )
         elif provider_name:
-            default: FieldInfo = Field(
+            default: FieldInfo = Field(  # type: ignore
                 default=default or None,
                 title=provider_name,
                 description=description,
-                json_schema_extra=field.json_schema_extra,
+                json_schema_extra=getattr(field, "json_schema_extra", {}),
             )
 
-        return DataclassField(new_name, type_, default)
+        return DataclassField(new_name, type_, default)  # type: ignore
 
     @classmethod
     def _extract_params(
@@ -287,7 +287,10 @@ class ProviderInterface(metaclass=SingletonMeta):
                     )
             else:
                 for name, field in model_details["QueryParams"]["fields"].items():
-                    if name not in providers["openbb"]["QueryParams"]["fields"]:
+                    if (name not in providers["openbb"]["QueryParams"]["fields"]) or (
+                        field.annotation
+                        != providers["openbb"]["QueryParams"]["fields"][name].annotation
+                    ):
                         s_name = to_snake_case(name)
                         incoming = cls._create_field(
                             s_name,
