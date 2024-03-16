@@ -192,6 +192,10 @@ class ROUTER_etf(Container):
                 description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
         ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -218,6 +222,8 @@ class ROUTER_etf(Container):
         ----------
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+        interval : Optional[str]
+            Time interval of the data to return.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -226,8 +232,6 @@ class ROUTER_etf(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        interval : Union[Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d'], Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y'], str, Literal['1d', '1W', '1M', '1Y'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']]
-            Time interval of the data to return. (provider: fmp, intrinio, polygon, tiingo, yfinance)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -341,6 +345,7 @@ class ROUTER_etf(Container):
                 },
                 standard_params={
                     "symbol": symbol,
+                    "interval": interval,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
