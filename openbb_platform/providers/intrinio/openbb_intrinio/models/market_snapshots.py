@@ -104,7 +104,7 @@ class IntrinioMarketSnapshotsFetcher(
             if isinstance(transformed_params["date"], datetime):
                 dt = transformed_params["date"]
                 dt = dt.astimezone(tz=timezone("America/New_York"))
-            elif isinstance(transformed_params["date"], (dateType, str)):
+            if isinstance(transformed_params["date"], dateType):
                 dt = transformed_params["date"]
                 if isinstance(dt, dateType):
                     dt = datetime(
@@ -117,8 +117,8 @@ class IntrinioMarketSnapshotsFetcher(
                         0,
                         tzinfo=timezone("America/New_York"),
                     )
-            if isinstance(dt, str):
-                dt = datetime.fromisoformat(dt)
+            if isinstance(transformed_params["date"], str):
+                dt = datetime.fromisoformat(transformed_params["date"])
             else:
                 try:
                     dt = datetime.fromisoformat(transformed_params["date"])  # type: ignore
