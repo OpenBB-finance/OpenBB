@@ -122,10 +122,10 @@ class IntrinioMarketSnapshotsFetcher(
             else:
                 try:
                     dt = datetime.fromisoformat(str(transformed_params["date"]))  # type: ignore
-                except ValueError:
+                except ValueError as exc:
                     raise ValueError(
                         "Invalid date format. Please use '2024-03-08T12:15-0400'."
-                    )
+                    ) from exc
 
             transformed_params["date"] = (
                 dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
