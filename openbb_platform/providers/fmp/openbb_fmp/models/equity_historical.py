@@ -149,7 +149,7 @@ class FMPEquityHistoricalFetcher(
 
         if not results:
             raise EmptyDataError(
-                f"{','.join(messages) if messages else 'No data found'}"
+                f"{str(','.join(messages)).replace(',',' ') if messages else 'No data found'}"
             )
 
         return results
