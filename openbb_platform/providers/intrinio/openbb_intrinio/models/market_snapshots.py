@@ -61,13 +61,29 @@ class IntrinioMarketSnapshotsData(MarketSnapshotsData):
         default=None,
         description="The timestamp of the last trade.",
     )
+    bid_size: Optional[int] = Field(
+        default=None,
+        description="The size of the last bid price. Bid price and size is not always available.",
+    )
+    bid_price: Optional[float] = Field(
+        default=None,
+        description="The last bid price. Bid price and size is not always available.",
+    )
+    ask_price: Optional[float] = Field(
+        default=None,
+        description="The last ask price. Ask price and size is not always available.",
+    )
+    ask_size: Optional[int] = Field(
+        default=None,
+        description="The size of the last ask price. Ask price and size is not always available.",
+    )
     last_bid_timestamp: Optional[datetime] = Field(
         default=None,
-        description="The timestamp of the last bid price.",
+        description="The timestamp of the last bid price. Bid price and size is not always available.",
     )
     last_ask_timestamp: Optional[datetime] = Field(
         default=None,
-        description="The timestamp of the last ask price.",
+        description="The timestamp of the last ask price. Ask price and size is not always available.",
     )
 
 
@@ -84,7 +100,7 @@ class IntrinioMarketSnapshotsFetcher(
         """Transform the query params."""
         transformed_params = params
 
-        if "at_datetime" in transformed_params:
+        if "date" in transformed_params:
             if isinstance(transformed_params["date"], datetime):
                 dt = transformed_params["date"]
                 dt = dt.astimezone(tz=timezone("America/New_York"))
@@ -101,17 +117,17 @@ class IntrinioMarketSnapshotsFetcher(
                         0,
                         tzinfo=timezone("America/New_York"),
                     )
-                if isinstance(dt, str):
+            if isinstance(dt, str):
                     dt = datetime.fromisoformat(dt)
             else:
                 try:
-                    dt = datetime.fromisoformat(transformed_params["date"])
+                    dt = datetime.fromisoformat(transformed_params["date"])  # type: ignore
                 except ValueError:
                     raise ValueError(
                         "Invalid date format. Please use '2024-03-08T12:15-0400'."
                     )
 
-            transformed_params["at_datetime"] = (
+            transformed_params["date"] = (
                 dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
                 .replace("+", "-")
                 .replace("T00:", "T20:")
