@@ -90,7 +90,9 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
-
+        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT
@@ -184,6 +186,8 @@ class Charting:
             if has_data
             else self._obbject.to_dataframe()
         )
+        if "date" in data_as_df.columns:
+            data_as_df = data_as_df.set_index("date")
         try:
             fig, content = to_chart(
                 data_as_df,
@@ -194,7 +198,6 @@ class Charting:
                 prepost=prepost,
                 volume_ticks_x=volume_ticks_x,
             )
-
             self._obbject.chart = Chart(
                 fig=fig, content=content, format=charting_router.CHART_FORMAT
             )
