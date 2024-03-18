@@ -28,11 +28,11 @@ class ECBEUYieldCurveQueryParams(EUYieldCurveQueryParams):
         default="aaa",
         description="The rating type, either 'aaa' or 'all_ratings'.",
     )
-    yield_curve_type: Literal["spot_rate", "instantaneous_forward", "par_yield"] = (
-        Field(
-            default="spot_rate",
-            description="The yield curve type.",
-        )
+    yield_curve_type: Literal[
+        "spot_rate", "instantaneous_forward", "par_yield"
+    ] = Field(
+        default="spot_rate",
+        description="The yield curve type.",
     )
 
 

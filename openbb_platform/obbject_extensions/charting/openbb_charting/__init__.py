@@ -87,7 +87,9 @@ class Charting:
             hasattr(self._obbject, "_standard_params")
             and self._obbject._standard_params  # pylint: disable=protected-access
         ):
-            kwargs["standard_params"] = (
+            kwargs[
+                "standard_params"
+            ] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
 

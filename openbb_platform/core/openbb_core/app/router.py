@@ -235,7 +235,6 @@ class Router:
         model = kwargs.pop("model", "")
 
         if func := SignatureInspector.complete(func, model):
-
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model

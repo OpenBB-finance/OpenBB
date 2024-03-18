@@ -272,9 +272,9 @@ class TmxIndexSnapshotsFetcher(
         return [
             TmxIndexSnapshotsData.model_validate(
                 {
-                    "change_percent" if k == "percentChange" else k: (
-                        None if v in ["", 0] else v
-                    )
+                    "change_percent"
+                    if k == "percentChange"
+                    else k: (None if v in ["", 0] else v)
                     for k, v in d.items()
                 }
             )

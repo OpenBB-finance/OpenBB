@@ -249,7 +249,6 @@ class TradierEquityQuoteFetcher(
         results: List[TradierEquityQuoteData] = []
 
         for d in data:
-
             d["exch"] = (
                 OPTIONS_EXCHANGES.get(d["exch"])
                 if d.get("type") in ["option", "index"]

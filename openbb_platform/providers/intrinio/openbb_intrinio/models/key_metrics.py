@@ -349,7 +349,6 @@ class IntrinioKeyMetricsFetcher(
 
         results: List[IntrinioKeyMetricsData] = []
         for item in data:
-
             if item.get("marketcap") is None or isinstance(item.get("marketcap"), dict):
                 warn(f"Symbol Error: No data found for {item.get('symbol')}")
                 continue

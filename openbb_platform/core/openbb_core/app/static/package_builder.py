@@ -1583,9 +1583,9 @@ class ReferenceGenerator:
                 for provider in model_map:
                     if provider == "openbb":
                         # openbb provider is always present hence its the standard field
-                        reference[path]["parameters"]["standard"] = (
-                            cls.get_provider_field_params(standard_model, "QueryParams")
-                        )
+                        reference[path]["parameters"][
+                            "standard"
+                        ] = cls.get_provider_field_params(standard_model, "QueryParams")
                         # Add `provider` parameter fields to the openbb provider
                         provider_parameter_fields = cls.get_provider_parameter_info(
                             standard_model
@@ -1595,15 +1595,15 @@ class ReferenceGenerator:
                         )
 
                         # Add endpoint data fields for standard provider
-                        reference[path]["data"]["standard"] = (
-                            cls.get_provider_field_params(standard_model, "Data")
-                        )
+                        reference[path]["data"][
+                            "standard"
+                        ] = cls.get_provider_field_params(standard_model, "Data")
                         continue
                     # Adds provider specific parameter fields to the reference
-                    reference[path]["parameters"][provider] = (
-                        cls.get_provider_field_params(
-                            standard_model, "QueryParams", provider
-                        )
+                    reference[path]["parameters"][
+                        provider
+                    ] = cls.get_provider_field_params(
+                        standard_model, "QueryParams", provider
                     )
                     # Adds provider specific data fields to the reference
                     reference[path]["data"][provider] = cls.get_provider_field_params(
@@ -1625,13 +1625,13 @@ class ReferenceGenerator:
                 # Remove extra spaces in between the string
                 reference[path]["description"] = re.sub(" +", " ", description)
                 # Add endpoint parameters fields for POST methods
-                reference[path]["parameters"]["standard"] = (
-                    ReferenceGenerator.get_post_method_parameters_info(docstring)
-                )
+                reference[path]["parameters"][
+                    "standard"
+                ] = ReferenceGenerator.get_post_method_parameters_info(docstring)
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
-                reference[path]["returns"]["OBBject"] = (
-                    cls.get_post_method_returns_info(docstring)
-                )
+                reference[path]["returns"][
+                    "OBBject"
+                ] = cls.get_post_method_returns_info(docstring)
 
         return reference
