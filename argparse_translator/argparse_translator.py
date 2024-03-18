@@ -20,7 +20,7 @@ from openbb_core.app.model.custom_parameter import (
     OpenBBCustomChoices,
     OpenBBCustomParameter,
 )
-from pydantic import BaseModel, model_validator, Field
+from pydantic import BaseModel, model_validator
 from typing_extensions import Annotated
 
 SEP = "__"
@@ -81,6 +81,8 @@ class ReferenceToCustomArgumentsProcessor:
             return str
 
         if any(x in type_ for x in ["gt=", "ge=", "lt=", "le="]):
+            if "Annotated" in type_:
+                type_ = type_.replace("Annotated[", "").replace("]", "")
             type_ = type_.split(",")[0]
 
         type_ = eval(type_)  # pylint: disable=eval-used
