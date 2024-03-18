@@ -23302,7 +23302,7 @@
             "standard": [
                 {
                     "name": "provider",
-                    "type": "Literal['fmp', 'polygon']",
+                    "type": "Literal['fmp', 'intrinio', 'polygon']",
                     "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                     "default": "fmp",
                     "optional": true
@@ -23317,6 +23317,15 @@
                     "optional": true
                 }
             ],
+            "intrinio": [
+                {
+                    "name": "date",
+                    "type": "Union[Union[date, datetime, str], str]",
+                    "description": "The date of the data. Can be a datetime or an ISO datetime string. Historical data appears to go back to mid-June 2022. Example: '2024-03-08T12:15:00+0400'",
+                    "default": null,
+                    "optional": true
+                }
+            ],
             "polygon": []
         },
         "returns": {
@@ -23328,7 +23337,7 @@
                 },
                 {
                     "name": "provider",
-                    "type": "Optional[Literal['fmp', 'polygon']]",
+                    "type": "Optional[Literal['fmp', 'intrinio', 'polygon']]",
                     "description": "Provider name."
                 },
                 {
@@ -23510,6 +23519,78 @@
                     "name": "earnings_date",
                     "type": "Union[date, datetime]",
                     "description": "The upcoming earnings announcement date.",
+                    "default": null,
+                    "optional": true
+                }
+            ],
+            "intrinio": [
+                {
+                    "name": "last_price",
+                    "type": "float",
+                    "description": "The last trade price.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "last_size",
+                    "type": "int",
+                    "description": "The last trade size.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "last_volume",
+                    "type": "int",
+                    "description": "The last trade volume.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "last_trade_timestamp",
+                    "type": "datetime",
+                    "description": "The timestamp of the last trade.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "bid_size",
+                    "type": "int",
+                    "description": "The size of the last bid price. Bid price and size is not always available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "bid_price",
+                    "type": "float",
+                    "description": "The last bid price. Bid price and size is not always available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "ask_price",
+                    "type": "float",
+                    "description": "The last ask price. Ask price and size is not always available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "ask_size",
+                    "type": "int",
+                    "description": "The size of the last ask price. Ask price and size is not always available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "last_bid_timestamp",
+                    "type": "datetime",
+                    "description": "The timestamp of the last bid price. Bid price and size is not always available.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "last_ask_timestamp",
+                    "type": "datetime",
+                    "description": "The timestamp of the last ask price. Ask price and size is not always available.",
                     "default": null,
                     "optional": true
                 }

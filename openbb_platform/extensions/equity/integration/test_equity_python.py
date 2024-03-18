@@ -1559,7 +1559,8 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        # ({"provider": "polygon"}),  # premium endpoint
+        ({"provider": "polygon"}),
+        ({"provider": "intrinio", "date": "2022-06-30"}),
     ],
 )
 @pytest.mark.integration
