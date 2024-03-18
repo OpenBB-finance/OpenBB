@@ -375,3 +375,28 @@ def test_charting_technical_cones(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "DGS10",
+                "transform": "pc1",
+                "chart": True,
+                "provider": "fred",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_fred_series(params, obb):
+    """Test chart economy fred series."""
+    result = obb.economy.fred_series(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
