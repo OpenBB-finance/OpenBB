@@ -1,18 +1,20 @@
 """Command runner module."""
 
-import warnings
 from copy import deepcopy
+from dataclasses import asdict, is_dataclass
 from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, Dict, List, Optional, Tuple
+from warnings import catch_warnings, showwarning, warn
 
-from pydantic import ConfigDict, create_model
+from fastapi.params import Query
+from pydantic import BaseModel, ConfigDict, create_model
 
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.model.abstract.warning import cast_warning
+from openbb_core.app.model.abstract.warning import OpenBBWarning, cast_warning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
@@ -176,13 +178,51 @@ class ParametersBuilder:
         return kwargs
 
     @staticmethod
+    def _warn_kwargs(
+        provider_choices: Dict[str, Any],
+        extra_params: Dict[str, Any],
+        model: BaseModel,
+    ) -> None:
+        """Warn if kwargs received and ignored by the validation model."""
+        # We only check the extra_params annotation because ignored fields
+        # will always be kwargs
+        annotation = getattr(
+            model.model_fields.get("extra_params", None), "annotation", None
+        )
+        if annotation:
+            # When there is no annotation there is nothing to warn
+            valid = asdict(annotation()) if is_dataclass(annotation) else {}  # type: ignore
+            provider = provider_choices.get("provider", None)
+            for p in extra_params:
+                if (field := valid.get(p)) and provider:
+                    providers = (
+                        field.title
+                        if isinstance(field, Query) and isinstance(field.title, str)
+                        else ""
+                    ).split(",")
+                    if provider not in providers:
+                        warn(
+                            message=f"Parameter '{p}' is not supported by '{provider}'."
+                            f" Available for: {', '.join(providers)}.",
+                            category=OpenBBWarning,
+                        )
+                else:
+                    warn(
+                        message=f"Parameter '{p}' not found.",
+                        category=OpenBBWarning,
+                    )
+
+    @staticmethod
+    def _as_dict(obj: Any) -> Dict[str, Any]:
+        """Safely convert an object to a dict."""
+        return asdict(obj) if is_dataclass(obj) else dict(obj)
+
+    @staticmethod
     def validate_kwargs(
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Validate kwargs and if possible coerce to the correct type."""
-        config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
-
         sig = signature(func)
         fields = {
             n: (
@@ -191,11 +231,17 @@ class ParametersBuilder:
             )
             for n, p in sig.parameters.items()
         }
+        # We allow extra fields to return with model with 'cc: CommandContext'
+        config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
         ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
+        # Validate and coerce
         model = ValidationModel(**kwargs)
-        result = dict(model)
-
-        return result
+        ParametersBuilder._warn_kwargs(
+            ParametersBuilder._as_dict(kwargs.get("provider_choices", {})),
+            ParametersBuilder._as_dict(kwargs.get("extra_params", {})),
+            ValidationModel,
+        )
+        return dict(model)
 
     @classmethod
     def build(
@@ -230,7 +276,10 @@ class ParametersBuilder:
             kwargs=kwargs,
             route_default=user_settings.defaults.routes.get(route, None),
         )
-        kwargs = cls.validate_kwargs(func=func, kwargs=kwargs)
+        kwargs = cls.validate_kwargs(
+            func=func,
+            kwargs=kwargs,
+        )
         return kwargs
 
 
@@ -242,30 +291,12 @@ class StaticCommandRunner:
         cls,
         func: Callable,
         kwargs: Dict[str, Any],
-        show_warnings: bool = True,
     ) -> OBBject:
         """Run a command and return the output."""
-
-        with warnings.catch_warnings(record=True) as warning_list:
-            obbject = await maybe_coroutine(func, **kwargs)
-            obbject.provider = getattr(
-                kwargs.get("provider_choices", None), "provider", None
-            )
-
-        if warning_list:
-            obbject.warnings = []
-            for w in warning_list:
-                obbject.warnings.append(cast_warning(w))
-                if show_warnings:
-                    warnings.showwarning(
-                        message=w.message,
-                        category=w.category,
-                        filename=w.filename,
-                        lineno=w.lineno,
-                        file=w.file,
-                        line=w.line,
-                    )
-
+        obbject = await maybe_coroutine(func, **kwargs)
+        obbject.provider = getattr(
+            kwargs.get("provider_choices", None), "provider", None
+        )
         return obbject
 
     @classmethod
@@ -294,68 +325,70 @@ class StaticCommandRunner:
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
-        # If we're on Jupyter we need to pop here because we will lose "chart" after
-        # ParametersBuilder.build. This needs to be fixed in a way that chart is
-        # added to the function signature and shared for jupyter and api
-        # We can check in the router decorator if the given function has a chart
-        # in the charting extension then we add it there. This way we can remove
-        # the chart parameter from the commands.py and package_builder, it will be
-        # added to the function signature in the router decorator
-        chart = kwargs.pop("chart", False)
+        with catch_warnings(record=True) as warning_list:
+            # If we're on Jupyter we need to pop here because we will lose "chart" after
+            # ParametersBuilder.build. This needs to be fixed in a way that chart is
+            # added to the function signature and shared for jupyter and api
+            # We can check in the router decorator if the given function has a chart
+            # in the charting extension then we add it there. This way we can remove
+            # the chart parameter from the commands.py and package_builder, it will be
+            # added to the function signature in the router decorator
+            chart = kwargs.pop("chart", False)
 
-        kwargs = ParametersBuilder.build(
-            args=args,
-            execution_context=execution_context,
-            func=func,
-            route=route,
-            kwargs=kwargs,
-        )
-
-        # If we're on the api we need to remove "chart" here because the parameter is added on
-        # commands.py and the function signature does not expect "chart"
-        kwargs.pop("chart", None)
-        # We also pop custom headers
-
-        model_headers = (
-            SystemService().system_settings.api_settings.custom_headers or {}
-        )
-        custom_headers = {
-            name: kwargs.pop(name.replace("-", "_"), default)
-            for name, default in model_headers.items() or {}
-        } or None
-
-        try:
-            obbject = await cls._command(
+            kwargs = ParametersBuilder.build(
+                args=args,
+                execution_context=execution_context,
                 func=func,
+                route=route,
                 kwargs=kwargs,
-                show_warnings=user_settings.preferences.show_warnings,
             )
-            # pylint: disable=protected-access
-            obbject._route = route
-            obbject._standard_params = kwargs.get("standard_params", None)
 
-            if chart and obbject.results:
-                cls._chart(
-                    obbject=obbject,
-                    **kwargs,
+            # If we're on the api we need to remove "chart" here because the parameter is added on
+            # commands.py and the function signature does not expect "chart"
+            kwargs.pop("chart", None)
+            # We also pop custom headers
+            model_headers = system_settings.api_settings.custom_headers or {}
+            custom_headers = {
+                name: kwargs.pop(name.replace("-", "_"), default)
+                for name, default in model_headers.items() or {}
+            } or None
+
+            try:
+                obbject = await cls._command(func, kwargs)
+                # pylint: disable=protected-access
+                obbject._route = route
+                obbject._standard_params = kwargs.get("standard_params", None)
+
+                if chart and obbject.results:
+                    cls._chart(obbject, **kwargs)
+
+            except Exception as e:
+                raise OpenBBError(e) from e
+            finally:
+                ls = LoggingService(system_settings, user_settings)
+                ls.log(
+                    user_settings=user_settings,
+                    system_settings=system_settings,
+                    route=route,
+                    func=func,
+                    kwargs=kwargs,
+                    exec_info=exc_info(),
+                    custom_headers=custom_headers,
                 )
 
-        except Exception as e:
-            raise OpenBBError(e) from e
-        finally:
-            ls = LoggingService(
-                user_settings=user_settings, system_settings=system_settings
-            )
-            ls.log(
-                user_settings=user_settings,
-                system_settings=system_settings,
-                route=route,
-                func=func,
-                kwargs=kwargs,
-                exec_info=exc_info(),
-                custom_headers=custom_headers,
-            )
-
+        if warning_list:
+            obbject.warnings = []
+            for w in warning_list:
+                obbject.warnings.append(cast_warning(w))
+                if user_settings.preferences.show_warnings:
+                    showwarning(
+                        message=w.message,
+                        category=w.category,
+                        filename=w.filename,
+                        lineno=w.lineno,
+                        file=w.file,
+                        line=w.line,
+                    )
         return obbject
 
     @classmethod
