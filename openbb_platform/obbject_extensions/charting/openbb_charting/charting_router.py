@@ -375,7 +375,7 @@ def economy_fred_series(
     has_params = hasattr(params, "transform") and params.transform is not None  # type: ignore
 
     # Get a unique list of all units of measurement in the DataFrame.
-    y_units = list(set([metadata.get(col).get("units") for col in columns if col in metadata]))  # type: ignore
+    y_units = list({metadata.get(col).get("units") for col in columns if col in metadata})  # type: ignore
 
     if len(y_units) > 2 and has_params is False and allow_unsafe is True:
         raise RuntimeError(
