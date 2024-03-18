@@ -945,15 +945,10 @@ class DocstringGenerator:
             # Fallback to the annotation if the repr fails
             return field_type  # type: ignore
 
-        except TypeError:
-            # Fallback to the annotation if the repr fails
-            return field_type  # type: ignore
-
     @staticmethod
     def get_OBBject_description(
         results_type: str,
         providers: Optional[str],
-        target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
