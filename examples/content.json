@@ -47,5 +47,11 @@
 		"img": "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/develop/examples/impliedEarningsMove.webp",
 		"description":
 			"Calculate the implied earnings move using options prices. This notebook demonstrates how to get the data from free sources and apply filters to arrive at the expected move, as a percent, in either direction."
+	},
+	{
+		"title": "Streamlit News Headlines",
+		"url": "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/examples/streamlit/news.py",
+		"img": "https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/develop/examples/streamlit_news.webp",
+		"description": "An example Streamlit dashboard for news headlines with data from Biztoc, Benzinga, FMP, Intrinio, and Tiingo."
 	}
 ]

@@ -45,18 +45,17 @@ class IntrinioCalendarIpoData(CalendarIpoData):
     __alias_dict__ = {"symbol": "ticker", "ipo_date": "date"}
 
     status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
-        description="""
-            The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.
-            Priced IPOs have taken place.
-            Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place
-        """,
+        description=(
+            "The status of the IPO. Upcoming IPOs have not taken place yet but are expected to. "
+            "Priced IPOs have taken place. Withdrawn IPOs were expected to take place, but were subsequently withdrawn."
+        ),
         default=None,
     )
     exchange: Optional[str] = Field(
-        description="""
-            The acronym of the stock exchange that the company is going to trade publicly on.
-            Typically NYSE or NASDAQ.
-        """,
+        description=(
+            "The acronym of the stock exchange that the company is going to trade publicly on. "
+            "Typically NYSE or NASDAQ."
+        ),
         default=None,
     )
     offer_amount: Optional[float] = Field(
@@ -67,48 +66,48 @@ class IntrinioCalendarIpoData(CalendarIpoData):
         description="The price per share at which the IPO was offered.", default=None
     )
     share_price_lowest: Optional[float] = Field(
-        description="""
-            The expected lowest price per share at which the IPO will be offered.
-            Before an IPO is priced, companies typically provide a range of prices per share at which
-            they expect to offer the IPO (typically available for upcoming IPOs).
-        """,
+        description=(
+            "The expected lowest price per share at which the IPO will be offered. "
+            "Before an IPO is priced, companies typically provide a range of prices per share at which "
+            "they expect to offer the IPO (typically available for upcoming IPOs)."
+        ),
         default=None,
     )
     share_price_highest: Optional[float] = Field(
-        description="""
-            The expected highest price per share at which the IPO will be offered.
-            Before an IPO is priced, companies typically provide a range of prices per share at which
-            they expect to offer the IPO (typically available for upcoming IPOs).
-        """,
+        description=(
+            "The expected highest price per share at which the IPO will be offered. "
+            "Before an IPO is priced, companies typically provide a range of prices per share at which "
+            "they expect to offer the IPO (typically available for upcoming IPOs)."
+        ),
         default=None,
     )
     share_count: Optional[int] = Field(
         description="The number of shares offered in the IPO.", default=None
     )
     share_count_lowest: Optional[int] = Field(
-        description="""
-            The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced,
-            companies typically provide a range of shares that they expect to offer in the IPO
-            (typically available for upcoming IPOs).
-        """,
+        description=(
+            "The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced, "
+            "companies typically provide a range of shares that they expect to offer in the IPO "
+            "(typically available for upcoming IPOs)."
+        ),
         default=None,
     )
     share_count_highest: Optional[int] = Field(
-        description="""
-            The expected highest number of shares that will be offered in the IPO. Before an IPO is priced,
-            companies typically provide a range of shares that they expect to offer in the IPO
-            (typically available for upcoming IPOs).
-        """,
+        description=(
+            "The expected highest number of shares that will be offered in the IPO. Before an IPO is priced, "
+            "companies typically provide a range of shares that they expect to offer in the IPO "
+            "(typically available for upcoming IPOs)."
+        ),
         default=None,
     )
     announcement_url: Optional[str] = Field(
         description="The URL to the company's announcement of the IPO", default=None
     )
     sec_report_url: Optional[str] = Field(
-        description="""
-            The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing,
-            which is required to be filed before an IPO takes place.
-        """,
+        description=(
+            "The URL to the company's S-1, S-1/A, F-1, or F-1/A SEC filing, which is required to be filed "
+            "before an IPO takes place."
+        ),
         default=None,
     )
     open_price: Optional[float] = Field(
@@ -124,24 +123,24 @@ class IntrinioCalendarIpoData(CalendarIpoData):
         default=None,
     )
     day_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price and the close price on the first trading day
-            (only available for priced IPOs).
-        """,
+        description=(
+            "The percentage change between the open price and the close price on the first trading day "
+            "(only available for priced IPOs)."
+        ),
         default=None,
     )
     week_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price on the first trading day and the close price approximately
-            a week after the first trading day (only available for priced IPOs).
-        """,
+        description=(
+            "The percentage change between the open price on the first trading day and the close price approximately "
+            "a week after the first trading day (only available for priced IPOs)."
+        ),
         default=None,
     )
     month_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price on the first trading day and the close price approximately
-            a month after the first trading day (only available for priced IPOs).
-        """,
+        description=(
+            "The percentage change between the open price on the first trading day and the close price approximately "
+            "a month after the first trading day (only available for priced IPOs)."
+        ),
         default=None,
     )
     id: Optional[str] = Field(description="The Intrinio ID of the IPO.", default=None)

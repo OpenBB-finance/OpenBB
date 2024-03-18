@@ -1530,10 +1530,10 @@ def cg(
     methods=["POST"],
     examples=[
         PythonEx(
-            description="Get the cones indicator.",
+            description="Realized Volatility Cones.",
             code=[
-                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
-                "cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='STD')",
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='yfinance')",
+                "cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='std')",
             ],
         ),
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
@@ -1545,13 +1545,13 @@ def cones(
     lower_q: float = 0.25,
     upper_q: float = 0.75,
     model: Literal[
-        "STD",
-        "Parkinson",
-        "Garman-Klass",
-        "Hodges-Tompkins",
-        "Rogers-Satchell",
-        "Yang-Zhang",
-    ] = "STD",
+        "std",
+        "parkinson",
+        "garman_klass",
+        "hodges_tompkins",
+        "rogers_satchell",
+        "yang_zhang",
+    ] = "std",
     is_crypto: bool = False,
     trading_periods: Optional[int] = None,
 ) -> OBBject[List[Data]]:
@@ -1581,7 +1581,7 @@ def cones(
         The lower quantile value for calculations
     upper_q : float, optional
         The upper quantile value for calculations
-    model : Literal["STD", "Parkinson", "Garman-Klass", "Hodges-Tompkins", "Rogers-Satchell", "Yang-Zhang"], optional
+    model : Literal["std", "parkinson", "garman_klass", "hodges_tompkins", "rogers_satchell", "yang_zhang"], optional
         The model used to calculate realized volatility
 
             Standard deviation measures how widely returns are dispersed from the average return.

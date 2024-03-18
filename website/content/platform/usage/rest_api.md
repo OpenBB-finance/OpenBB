@@ -87,8 +87,6 @@ response = requests.get(url=url, headers=headers)
 response.json()
 ```
 
-Refer to the Developer Guidelines for custom authorization procedures.
-
 ## Advanced API Settings
 
 When deploying the API to the public internet, it's crucial to configure it in a way you ensure the application functions correctly and securely. Two critical aspects to consider are Cross-Origin Resource Sharing (CORS) and the configuration of the "servers" list.
