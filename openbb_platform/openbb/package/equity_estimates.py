@@ -205,11 +205,11 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): tmx, yfinance."
             ),
         ],
         provider: Annotated[
-            Optional[Literal["fmp", "yfinance"]],
+            Optional[Literal["fmp", "tmx", "yfinance"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -221,8 +221,8 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): yfinance.
-        provider : Optional[Literal['fmp', 'yfinance']]
+            Symbol to get data for. Multiple items allowed for provider(s): tmx, yfinance.
+        provider : Optional[Literal['fmp', 'tmx', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -232,7 +232,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'yfinance']]
+            provider : Optional[Literal['fmp', 'tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -253,6 +253,18 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
+        target_upside : Optional[float]
+            Percent of upside, as a normalized percent. (provider: tmx)
+        total_analysts : Optional[int]
+            Total number of analyst. (provider: tmx)
+        buy_ratings : Optional[int]
+            Number of buy ratings. (provider: tmx)
+        sell_ratings : Optional[int]
+            Number of sell ratings. (provider: tmx)
+        hold_ratings : Optional[int]
+            Number of hold ratings. (provider: tmx)
+        consensus_action : Optional[str]
+            Consensus action. (provider: tmx)
         recommendation : Optional[str]
             Recommendation - buy, sell, etc. (provider: yfinance)
         recommendation_mean : Optional[float]
@@ -278,14 +290,14 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/consensus",
-                        ("fmp", "yfinance"),
+                        ("fmp", "tmx", "yfinance"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
+                extra_info={"symbol": {"multiple_items_allowed": ["tmx", "yfinance"]}},
             )
         )
 
@@ -420,7 +432,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
+                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga, finviz."
             ),
         ] = None,
         limit: Annotated[
@@ -428,7 +440,7 @@ class ROUTER_equity_estimates(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
         provider: Annotated[
-            Optional[Literal["benzinga", "fmp"]],
+            Optional[Literal["benzinga", "finviz", "fmp"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
             ),
@@ -440,10 +452,10 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple items allowed for provider(s): benzinga.
+            Symbol to get data for. Multiple items allowed for provider(s): benzinga, finviz.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'fmp']]
+        provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -475,7 +487,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp']]
+            provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -534,6 +546,10 @@ class ROUTER_equity_estimates(Container):
             Unique ID of this entry. (provider: benzinga)
         last_updated : Optional[datetime]
             Last updated timestamp, UTC. (provider: benzinga)
+        status : Optional[str]
+            The action taken by the firm. This could be 'Upgrade', 'Downgrade', 'Reiterated', etc. (provider: finviz)
+        rating_change : Optional[str]
+            The rating given by the analyst. This could be 'Buy', 'Sell', 'Underweight', etc. If the rating is a revision, the change is indicated by '->' (provider: finviz)
         news_url : Optional[str]
             News URL of the price target. (provider: fmp)
         news_title : Optional[str]
@@ -558,7 +574,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/price_target",
-                        ("benzinga", "fmp"),
+                        ("benzinga", "finviz", "fmp"),
                     )
                 },
                 standard_params={
@@ -566,6 +582,8 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["benzinga"]}},
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["benzinga", "finviz"]}
+                },
             )
         )

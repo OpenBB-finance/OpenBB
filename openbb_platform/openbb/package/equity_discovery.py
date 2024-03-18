@@ -19,8 +19,10 @@ class ROUTER_equity_discovery(Container):
     gainers
     growth_tech
     losers
+    top_retail
     undervalued_growth
     undervalued_large_caps
+    upcoming_release_days
     """
 
     def __repr__(self) -> str:
@@ -328,9 +330,9 @@ class ROUTER_equity_discovery(Container):
             ),
         ] = "desc",
         provider: Annotated[
-            Optional[Literal["yfinance"]],
+            Optional[Literal["tmx", "yfinance"]],
             OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tmx' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -341,17 +343,19 @@ class ROUTER_equity_discovery(Container):
         ----------
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
-        provider : Optional[Literal['yfinance']]
+        provider : Optional[Literal['tmx', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
+            If None, the provider specified in defaults is selected or 'tmx' if there is
             no default.
+        category : Literal['dividend', 'energy', 'healthcare', 'industrials', 'price_performer', 'rising_stars', 'real_estate', 'tech', 'utilities', '52w_high', 'volume']
+            The category of list to retrieve. Defaults to `price_performer`. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[EquityGainers]
                 Serializable results.
-            provider : Optional[Literal['yfinance']]
+            provider : Optional[Literal['tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -374,6 +378,8 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
+        rank : Optional[int]
+            The rank of the stock in the list. (provider: tmx)
         market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
@@ -395,7 +401,7 @@ class ROUTER_equity_discovery(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/discovery/gainers",
-                        ("yfinance",),
+                        ("tmx", "yfinance"),
                     )
                 },
                 standard_params={
@@ -583,6 +589,84 @@ class ROUTER_equity_discovery(Container):
 
     @exception_handler
     @validate
+    def top_retail(
+        self,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 5,
+        provider: Annotated[
+            Optional[Literal["nasdaq"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'nasdaq' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Tracks over $30B USD/day of individual investors trades.
+
+        It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
+        ADRs, and ETPs.
+
+        Parameters
+        ----------
+        limit : int
+            The number of data entries to return.
+        provider : Optional[Literal['nasdaq']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'nasdaq' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[TopRetail]
+                Serializable results.
+            provider : Optional[Literal['nasdaq']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        TopRetail
+        ---------
+        date : date
+            The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        activity : float
+            Activity of the symbol.
+        sentiment : float
+            Sentiment of the symbol. 1 is bullish, -1 is bearish.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.top_retail(provider='nasdaq')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/discovery/top_retail",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/top_retail",
+                        ("nasdaq",),
+                    )
+                },
+                standard_params={
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
     def undervalued_growth(
         self,
         sort: Annotated[
@@ -753,6 +837,79 @@ class ROUTER_equity_discovery(Container):
                 standard_params={
                     "sort": sort,
                 },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def upcoming_release_days(
+        self,
+        provider: Annotated[
+            Optional[Literal["seeking_alpha"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'seeking_alpha' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get upcoming earnings release dates.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['seeking_alpha']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'seeking_alpha' if there is
+            no default.
+        limit : int
+            The number of data entries to return.In this case, the number of lookahead days. (provider: seeking_alpha)
+
+        Returns
+        -------
+        OBBject
+            results : List[UpcomingReleaseDays]
+                Serializable results.
+            provider : Optional[Literal['seeking_alpha']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        UpcomingReleaseDays
+        -------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : str
+            The full name of the asset.
+        exchange : str
+            The exchange the asset is traded on.
+        release_time_type : str
+            The type of release time.
+        release_date : date
+            The date of the release.
+        sector_id : Optional[int]
+            The sector ID of the asset. (provider: seeking_alpha)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.upcoming_release_days(provider='seeking_alpha')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/discovery/upcoming_release_days",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/upcoming_release_days",
+                        ("seeking_alpha",),
+                    )
+                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
