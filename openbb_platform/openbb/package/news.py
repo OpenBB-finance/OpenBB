@@ -154,7 +154,7 @@ class ROUTER_news(Container):
             Source of the news article (provider: yfinance)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
-        publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
+        publisher : Optional[PolygonPublisher]
             Publisher of the article. (provider: polygon)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)

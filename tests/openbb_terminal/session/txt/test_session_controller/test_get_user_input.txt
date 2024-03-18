@@ -1,2 +1,0 @@
-[info]
-Please enter your credentials or press <ENTER> for guest mode:[/info]

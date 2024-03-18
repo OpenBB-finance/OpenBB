@@ -32,6 +32,13 @@ def headers():
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "query": "vanguard",
+                "provider": "intrinio",
+                "exchange": "arcx",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -235,6 +242,7 @@ def test_etf_historical(params, headers):
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
+        ({"symbol": "IOO,QQQ", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
@@ -325,6 +333,12 @@ def test_etf_holdings_date(params, headers):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "DJIA",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -343,6 +357,14 @@ def test_etf_holdings(params, headers):
     [
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}),
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}),
+        (
+            {
+                "symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK",
+                "return_type": "trailing",
+                "adjustment": "splits_and_dividends",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
