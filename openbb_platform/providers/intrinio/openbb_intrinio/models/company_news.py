@@ -95,4 +95,4 @@ class IntrinioCompanyNewsFetcher(
     ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
         modeled_data = [IntrinioCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(modeled_data, query.start_date, query.end_date)  # type: ignore
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

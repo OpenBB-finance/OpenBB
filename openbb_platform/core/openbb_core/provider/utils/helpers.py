@@ -2,7 +2,7 @@
 
 import asyncio
 import re
-from datetime import datetime
+from datetime import date, datetime
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
@@ -177,13 +177,13 @@ async def amake_requests(
             is_exception = isinstance(result, Exception)
 
             if is_exception and kwargs.get("raise_for_status", False):
-                raise result
+                raise result  # type: ignore[misc]
 
             if is_exception or not result:
                 continue
 
-            results.extend(  # type: ignore
-                result if isinstance(result, list) else [result]
+            results.extend(
+                result if isinstance(result, list) else [result]  # type: ignore[list-item]
             )
 
         return results
@@ -283,17 +283,23 @@ def run_async(
 
 
 def filter_by_dates(
-    data: List[Data],
-    start_date: datetime,
-    end_date: datetime,
+    data: List[Data], start_date: Optional[date] = None, end_date: Optional[date] = None
 ) -> List[Data]:
     """Filter data by dates."""
-    if not any([start_date, end_date]):
+    if start_date is None and end_date is None:
         return data
 
-    return list(
-        filter(
-            lambda d: start_date <= d.date.date() <= end_date,
-            data,
-        )
-    )
+    def slice_date(d: Data) -> bool:
+        _date = getattr(d, "date", None)
+        dt = _date.date() if _date and isinstance(_date, datetime) else _date
+        if dt:
+            if start_date and end_date:
+                return start_date <= dt <= end_date
+            elif start_date:
+                return dt >= start_date
+            elif end_date:
+                return dt <= end_date
+            return True
+        return False
+
+    return list(filter(slice_date, data))

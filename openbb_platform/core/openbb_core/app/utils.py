@@ -17,7 +17,7 @@ from openbb_core.provider.abstract.data import Data
 
 def basemodel_to_df(
     data: Union[List[Data], Data],
-    index: Optional[Union[None, str, Iterable]] = None,
+    index: Optional[str] = None,
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     if isinstance(data, list):
@@ -44,9 +44,7 @@ def basemodel_to_df(
             df.set_index("date", inplace=True)
             df.sort_index(axis=0, inplace=True)
         else:
-            df = (
-                df.set_index(index) if index is not None and index in df.columns else df
-            )
+            df = df.set_index(index) if index and index in df.columns else df
 
     return df
 

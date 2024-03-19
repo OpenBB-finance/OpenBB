@@ -8,6 +8,7 @@ from typing import (
     ClassVar,
     Dict,
     Generic,
+    Hashable,
     List,
     Literal,
     Optional,
@@ -245,7 +246,7 @@ class OBBject(Tagged, Generic[T]):
         orient: Literal[
             "dict", "list", "series", "split", "tight", "records", "index"
         ] = "list",
-    ) -> Dict[str, List]:
+    ) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
         """Convert results field to a dictionary using any of pandas to_dict options.
 
         Parameters
@@ -256,25 +257,20 @@ class OBBject(Tagged, Generic[T]):
 
         Returns
         -------
-        Dict[str, List]
-            Dictionary of lists.
+        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
+            Dictionary of lists or list of dictionaries if orient is "records".
         """
-        df = self.to_dataframe(index=None)  # type: ignore
-        transpose = False
-        if orient == "list":
-            transpose = True
-            if not isinstance(self.results, dict):
-                transpose = False
-            else:  # Only enter the loop if self.results is a dictionary
-                self.results: Dict[str, Any] = self.results  # type: ignore
-                for _, value in self.results.items():
-                    if not isinstance(value, dict):
-                        transpose = False
-                        break
-        if transpose:
+        df = self.to_dataframe(index=None)
+        if (
+            orient == "list"
+            and isinstance(self.results, dict)
+            and all(
+                isinstance(value, dict) for value in self.results.values()
+            )  # pylint: disable=no-member
+        ):
             df = df.T
         results = df.to_dict(orient=orient)
-        if orient == "list" and "index" in results:
+        if isinstance(results, dict) and orient == "list" and "index" in results:
             del results["index"]
         return results
 
