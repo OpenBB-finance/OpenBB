@@ -59,6 +59,17 @@ class CustomArgument(BaseModel):
             values.choices = None
         return values
 
+    # override
+    def model_dump(self, **kwargs):
+
+        res = super().model_dump(**kwargs)
+
+        # Check if choices is present and if it's an empty tuple remove it
+        if "choices" in res and not res["choices"]:
+            del res["choices"]
+
+        return res
+
 
 class CustomArgumentGroup(BaseModel):
     name: str
@@ -204,14 +215,20 @@ class ArgparseTranslator:
                 for argument in group.arguments:
                     kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
 
-                    arguments_in_use = []
-
-                    for action_group in self._parser._action_groups:
-                        for action in action_group._group_actions:
-                            arguments_in_use.extend(action.option_strings)
-
-                    if f"--{argument.name}" not in arguments_in_use:
+                    # If the argument is already in use, we can't repeat it
+                    if f"--{argument.name}" not in self._parser_arguments():
                         argparse_group.add_argument(f"--{argument.name}", **kwargs)
+
+    def _parser_arguments(self) -> List[str]:
+        """Get all the arguments from all groups currently defined on the parser."""
+        arguments_in_use = []
+
+        # pylint: disable=protected-access
+        for action_group in self._parser._action_groups:
+            for action in action_group._group_actions:
+                arguments_in_use.extend(action.option_strings)
+
+        return arguments_in_use
 
     @property
     def parser(self) -> argparse.ArgumentParser:
