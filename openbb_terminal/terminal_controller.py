@@ -90,7 +90,6 @@ class TerminalController(BaseController):
         "about",
         "support",
         "survey",
-        "update",
         "record",
         "stop",
         "exe",
