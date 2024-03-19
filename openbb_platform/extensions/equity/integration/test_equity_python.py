@@ -217,8 +217,7 @@ def test_equity_fundamental_cash_growth(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "start_date": "2020-01-01",
-                "end_date": "2021-01-01",
+                "year": 2022,
                 "provider": "fmp",
             }
         ),
