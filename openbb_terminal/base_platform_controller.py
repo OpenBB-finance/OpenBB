@@ -8,6 +8,7 @@ from types import MethodType
 from typing import Dict, List, Optional
 
 import pandas as pd
+from openbb import obb
 
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal.core.session.current_user import get_current_user
@@ -50,7 +51,9 @@ class PlatformController(BaseController):
             raise ValueError("Either platform_target or translators must be provided.")
 
         self._translated_target = (
-            ArgparseClassProcessor(target_class=platform_target)
+            ArgparseClassProcessor(
+                target_class=platform_target, reference=obb.coverage.reference
+            )
             if platform_target
             else DummyTranslation()
         )

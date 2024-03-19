@@ -3,10 +3,10 @@ from openbb_terminal.base_platform_controller import PlatformController
 
 
 class PlatformControllerFactory:
-    def __init__(self, platform_router: type):
+    def __init__(self, platform_router: type, **kwargs):
         self.platform_router = platform_router
         self._translated_target = ArgparseClassProcessor(
-            target_class=self.platform_router
+            target_class=self.platform_router, reference=kwargs.get("reference", {})
         )
         self.router_name = (
             str(type(self.platform_router))

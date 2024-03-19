@@ -153,7 +153,9 @@ class TerminalController(BaseController):
             target = getattr(obb, router)
 
             if value == "menu":
-                pcf = PlatformControllerFactory(target)
+                pcf = PlatformControllerFactory(
+                    target, reference=obb.coverage.reference
+                )
                 DynamicController = pcf.create()
 
                 # Bind the method to the class
