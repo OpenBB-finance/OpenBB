@@ -3,8 +3,8 @@
 # pylint: disable=unused-argument
 
 import asyncio
-import warnings
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
@@ -13,8 +13,6 @@ from openbb_core.provider.standard_models.etf_info import (
 )
 from openbb_core.provider.utils.helpers import amake_request
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
@@ -85,7 +83,7 @@ class FMPEtfInfoFetcher(
             url = f"https://financialmodelingprep.com/api/v4/etf-info?symbol={symbol}&apikey={api_key}"
             response = await amake_request(url)
             if not response:
-                _warn(f"No results found for {symbol}.")
+                warn(f"No results found for {symbol}.")
             results.extend(response)
 
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
