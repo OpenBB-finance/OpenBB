@@ -1,5 +1,7 @@
 """Fixed Income Rate Router."""
+
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -8,20 +10,25 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/rate")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="AMERIBOR")
+@router.command(
+    model="AMERIBOR",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "30_day_ma", "provider": "fred"}),
+    ],
+)
 async def ameribor(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Ameribor.
 
     Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
@@ -31,13 +38,19 @@ async def ameribor(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SONIA")
+@router.command(
+    model="SONIA",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "total_nominal_value", "provider": "fred"}),
+    ],
+)
 async def sonia(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Sterling Overnight Index Average.
 
     SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -47,13 +60,16 @@ async def sonia(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="IORB")
+@router.command(
+    model="IORB",
+    examples=[APIEx(parameters={"provider": "fred"})],
+)
 async def iorb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Interest on Reserve Balances.
 
     Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
@@ -63,13 +79,19 @@ async def iorb(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FEDFUNDS")
+@router.command(
+    model="FEDFUNDS",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "daily", "provider": "fred"}),
+    ],
+)
 async def effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Fed Funds Rate.
 
     Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -79,13 +101,19 @@ async def effr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="PROJECTIONS")
+@router.command(
+    model="PROJECTIONS",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"long_run": True, "provider": "fred"}),
+    ],
+)
 async def effr_forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Fed Funds Rate Projections.
 
     The projections for the federal funds rate are the value of the midpoint of the
@@ -96,13 +124,19 @@ async def effr_forecast(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ESTR")
+@router.command(
+    model="ESTR",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"parameter": "number_of_active_banks", "provider": "fred"}),
+    ],
+)
 async def estr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Euro Short-Term Rate.
 
     The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -113,13 +147,19 @@ async def estr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EuropeanCentralBankInterestRates")
+@router.command(
+    model="EuropeanCentralBankInterestRates",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"interest_rate_type": "refinancing", "provider": "fred"}),
+    ],
+)
 async def ecb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """European Central Bank Interest Rates.
 
     The Governing Council of the ECB sets the key interest rates for the euro area:
@@ -132,13 +172,25 @@ async def ecb(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="DiscountWindowPrimaryCreditRate")
+@router.command(
+    model="DiscountWindowPrimaryCreditRate",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "start_date": "2023-02-01",
+                "end_date": "2023-05-01",
+                "provider": "fred",
+            }
+        ),
+    ],
+)
 async def dpcredit(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Discount Window Primary Credit Rate.
 
     A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.

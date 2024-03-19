@@ -1,8 +1,8 @@
 # pylint: disable=W0613:unused-argument
-# ruff: noqa: F401
 """Commodity Futures Trading Commission (CFTC) Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -11,18 +11,23 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/cftc")
 
 
-@router.command(model="COTSearch")
+@router.command(
+    model="COTSearch",
+    examples=[
+        APIEx(parameters={"provider": "nasdaq"}),
+        APIEx(parameters={"query": "gold", "provider": "nasdaq"}),
+    ],
+)
 async def cot_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Curated Commitment of Traders Reports.
 
     Search a list of curated Commitment of Traders Reports series information.
@@ -30,12 +35,29 @@ async def cot_search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="COT")
+@router.command(
+    model="COT",
+    examples=[
+        APIEx(parameters={"provider": "nasdaq"}),
+        APIEx(
+            description="Get the Commitment of Traders Report for Gold.",
+            parameters={"id": "GC=F", "provider": "nasdaq"},
+        ),
+        APIEx(
+            description="Enter the report ID by the Nasdaq Data Link Code.",
+            parameters={"id": "088691", "provider": "nasdaq"},
+        ),
+        APIEx(
+            description="Get the report for futures only.",
+            parameters={"id": "088691", "data_type": "F", "provider": "nasdaq"},
+        ),
+    ],
+)
 async def cot(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
+) -> OBBject:
+    """Commitment of Traders Reports."""
     return await OBBject.from_query(Query(**locals()))

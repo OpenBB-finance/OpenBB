@@ -27,6 +27,8 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     with_ttm: Optional[bool] = Field(
         default=False, description="Include trailing twelve months (TTM) data."
     )
@@ -117,7 +119,11 @@ class FMPKeyMetricsData(KeyMetricsData):
         default=None, description="Interest coverage"
     )
     income_quality: Optional[float] = Field(default=None, description="Income quality")
-    dividend_yield: Optional[float] = Field(default=None, description="Dividend yield")
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
     payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")
     sales_general_and_administrative_to_revenue: Optional[float] = Field(
         default=None,

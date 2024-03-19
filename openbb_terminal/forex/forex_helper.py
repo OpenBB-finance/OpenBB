@@ -1,4 +1,5 @@
 """Forex helper."""
+
 import argparse
 import logging
 import os

@@ -1,29 +1,28 @@
 import json
+import shutil
 import sys
+from functools import reduce
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.static.package_builder import PathHandler
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
+XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
+# URLs: the platorm url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
+XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
 
 
-class CommandLib(PathHandler):
+class CommandLib:
     """Command library."""
 
-    MANUAL_MAP = {
-        "/last": "/equity/fundamental/latest_attributes",
-        "/hist": "/equity/fundamental/historical_attributes",
-    }
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
@@ -32,26 +31,148 @@ class CommandLib(PathHandler):
         "str": "Text",
         "string": "Text",
     }
+    API_PREFIX = "/api/v1"
+
+    # These examples will be generated in the core, but we keep them here meanwhile
+    EXAMPLE_PARAMS: Dict[str, Dict] = {
+        "/get": {
+            "array": '{"a","b","c";"d","e","f"}',
+            "rows": '"d"',
+            "columns": '"c"',
+        },
+        "/byod": {
+            "widget": '"widget_name"',
+            "backend": '"backend_name"',
+        },
+        "crypto": {
+            "symbol": '"BTCUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"coin"',
+        },
+        "currency": {
+            "symbol": '"EURUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "derivatives": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "/derivatives/futures/curve": {
+            "symbol": '"NG"',
+        },
+        "economy": {
+            "countries": '"united_states"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "units": '"growth_previous"',
+            "frequency": '"quarterly"',
+            "harmonized": "TRUE",
+            "query": '"gdp"',
+            "symbol": '"GFDGDPA188S"',
+            "limit": 5,
+            "period": '"quarter"',
+            "type": '"real"',
+            "adjusted": "TRUE",
+        },
+        "/economy/fred_regional": {
+            "symbol": '"NYICLAIMS"',
+        },
+        "equity": {
+            "symbol": '"AAPL"',
+            "tag": '"ebitda"',
+            "query": '"ebitda"',
+            "year": 2022,
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+            "form_type": '"10-K"',
+            "period": '"annual"',
+            "frequency": '"quarterly"',
+            "type": "",
+            "sort": '"desc"',
+            "structure": '"flat"',
+            "date": '"2023-05-07"',
+            "page": 1,
+            "interval": '"1d"',
+            "is_symbol": "FALSE",
+        },
+        "/equity/fundamental/reported_financials": {
+            "symbol": '"AAPL"',
+            "period": '"annual"',
+            "statement_type": '"balance"',
+            "limit": 5,
+        },
+        "etf": {
+            "symbol": '"SPY"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"global"',
+        },
+        "fixedincome": {
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "maturity": '"90d"',
+            "category": '"nonfinancial"',
+            "grade": '"aa"',
+            "date": '"2023-05-07"',
+            "yield_curve": '"spot"',
+            "index_type": '"yield"',
+            "inflation_adjusted": "TRUE",
+            "interest_rate_type": '"deposit"',
+        },
+        "index": {
+            "symbol": '"^GSPC"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "index": '"sp500"',
+        },
+        "news": {
+            "symbol": '"AAPL"',
+            "symbols": '"AAPL,MSFT"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+        },
+        "regulators": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"AAPL"',
+        },
+    }
 
     def __init__(self):
-        self.pi = ProviderInterface()
-        self.route_map = self.build_route_map()
         self.xl_funcs = self.read_xl_funcs()
+        self.openapi = self.read_openapi()
         self.seo_metadata = self.read_seo_metadata()
 
-        self.update()
-
     @staticmethod
-    def fetch():
+    def fetch_xl_funcs():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
-    def update(self):
-        """Update with manual map."""
-        for key, value in self.MANUAL_MAP.items():
-            self.route_map[key] = self.route_map[value]
+    @staticmethod
+    def fetch_openapi():
+        """Fetch the openapi.json."""
+        r = requests.get(XL_PLATFORM_URL, timeout=10)
+        with open(XL_PLATFORM_PATH, "w") as f:
+            json.dump(r.json(), f, indent=2)
+
+    @staticmethod
+    def _traverse(
+        parts: List[str], map_: dict, exclude: Optional[List[str]] = None
+    ) -> dict:
+        """Traverse the map."""
+        parts = [p for p in parts if p not in (exclude or [])]
+        try:
+            return reduce(lambda x, y: x[y], parts, map_)
+        except KeyError:
+            return {}
 
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
@@ -68,55 +189,108 @@ class CommandLib(PathHandler):
             for func in funcs["functions"]
         }
 
+    def read_openapi(self) -> dict:
+        """Get the openapi.json."""
+        with open(XL_PLATFORM_PATH) as f:
+            return json.load(f)
+
     def to_xl(self, type_: str) -> str:
         """Convert a type to an Excel type."""
         return self.XL_TYPE_MAP.get(type_, type_).title()
 
     def get_func(self, cmd: str) -> str:
         """Get the func of the command."""
-        if cmd in self.route_map:
-            return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
-        return ""
+        return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
-    def get_model(self, cmd: str) -> str:
-        """Get the model of the command."""
-        route = self.route_map.get(cmd, None)
-        if route:
-            return route.openapi_extra.get("model", "")
-        return ""
+    def _get_signature(self, cmd: str, parameters: dict, sep: str = ",") -> str:
+        """Get the signature of the command."""
+        sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+        sig += "("
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                sig += f"{p_name}"
+            else:
+                sig += f"[{p_name}]"
+            sig += sep
+        sig = sig.strip(f"{sep} ") + ")"
+        return sig
 
-    def get_xl_param(self, cmd, param):
-        for p in self.xl_funcs[cmd]["parameters"]:
-            if p["name"] == param:
-                return p
-        return None
-
-    def get_parameters(self, cmd: str) -> dict:
+    def _get_parameters(self, cmd: str) -> dict:
         """Get the parameters of the command."""
         parameters = {}
-        cmd_info = self.xl_funcs[cmd]
-        for p in cmd_info["parameters"]:
+        for p in self.xl_funcs[cmd]["parameters"]:
             parameters[p["name"]] = {
                 "type": self.to_xl(str(p["type"])),
                 "description": p["description"].replace("\n", " "),
-                "optional": str(p.get("optional", False)).title(),
+                "required": not p.get("optional", False),
             }
 
         return parameters
 
-    def get_data(self, cmd: str) -> dict:
-        """Get the data of the command."""
-        model_name = self.get_model(cmd)
-        if model_name:
-            schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
-            data = {}
-            for name, info in schema.items():
-                data[name] = {
-                    "description": info.get("description", "").replace("\n", " "),
-                }
-            return data
+    def _get_data(self, cmd: str) -> dict:
+        """Get the data of the command from the openapi."""
+        schema = self._traverse(
+            [
+                "paths",
+                self.API_PREFIX + cmd,
+                "get",
+                "responses",
+                "200",
+                "content",
+                "application/json",
+                "schema",
+            ],
+            self.openapi,
+        )
+        if "$ref" in schema and (
+            inner_schema := self._traverse(
+                schema["$ref"].split("/"), self.openapi, ["#"]
+            )
+        ):
+            models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
+            if models.get("type") == "array":
+                models = models["items"]
 
+            d = {}
+            for k, v in self._traverse(["discriminator", "mapping"], models).items():
+                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
+                d[k] = {
+                    name: {"description": info.get("description", "").replace("\n", "")}
+                    for name, info in model_schema["properties"].items()
+                }
+            return d
         return {}
+
+    def _get_examples(
+        self, cmd: str, signature_: str, parameters: dict, sep: str = ","
+    ) -> dict:
+        """Get the examples of the command."""
+        sig = signature_.split("(")[0] + "("
+        category = signature_.split(".")[1].lower()
+
+        def get_p_value(cmd, p_name) -> str:
+            if cmd in self.EXAMPLE_PARAMS:
+                return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
+            return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+
+        required_eg = sig
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                p_value = get_p_value(cmd, p_name)
+                required_eg += f"{p_value}{sep}"
+        required_eg = required_eg.strip(f"{sep} ") + ")"
+
+        standard_eg = sig
+        for p_name, p_info in parameters.items():
+            if p_name == "provider":
+                break
+            p_value = get_p_value(cmd, p_name)
+            standard_eg += f"{p_value}{sep}"
+        standard_eg = standard_eg.strip(f"{sep} ") + ")"
+
+        if cmd in ("/get", "/byod"):
+            return {"Required": required_eg, "Standard": standard_eg}
+        return {"Required": required_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -124,19 +298,22 @@ class CommandLib(PathHandler):
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = (
-            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required; [optional])"
-        )
+        parameters = self._get_parameters(cmd)
+        function = self.xl_funcs[cmd].get("name", "")
+        signature_ = self._get_signature(cmd, parameters)
+        data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        if model_name := self.get_model(cmd):
-            return {
-                "name": name,
-                "description": description,
-                "signature": signature_,
-                "return": return_,
-                "model_name": model_name,
-            }
-        return {}
+        examples = self._get_examples(cmd, signature_, parameters)
+        return {
+            "name": name,
+            "description": description,
+            "function": function,
+            "signature": signature_,
+            "parameters": parameters,
+            "data": data,
+            "return": return_,
+            "examples": examples,
+        }
 
 
 class Editor:
@@ -147,40 +324,27 @@ class Editor:
         directory: Path,
         interface: Literal["excel"],
         main_folder: str,
-        cmds_folder: str,
         cmd_lib: CommandLib,
     ) -> None:
         """Initialize the editor."""
         self.directory = directory
         self.interface = interface
         self.main_folder = main_folder
-        self.cmds_folder = cmds_folder
 
         self.target_dir = directory / interface / main_folder
         self.cmd_lib = cmd_lib
-
-    @staticmethod
-    def delete(path: Path):
-        """Delete all files in a directory."""
-        for file in path.glob("*"):
-            if file.is_dir():
-                Editor.delete(file)
-            else:
-                file.unlink()
 
     @staticmethod
     def write(path: Path, content: str):
         with open(path, "w", encoding="utf-8", newline="\n") as f:  # type: ignore
             f.write(content)
 
-    def generate_md(self, path: Path, cmd: str):
-        cmd_info = self.cmd_lib.get_info(cmd)
-
+    def generate_md(self, path: Path, cmd: str, cmd_info: dict):
         def get_header() -> str:
             header = ""
             metadata = self.cmd_lib.seo_metadata.get(cmd, {})
             if metadata:
-                title = metadata["title"]
+                title = metadata["title"].upper()
                 description = metadata["description"]
                 keywords = metadata["keywords"]
                 header = "---\n"
@@ -190,66 +354,94 @@ class Editor:
                 for kw in keywords:
                     header += f"- {kw}\n"
                 header += "---\n\n"
+            else:
+                title = cmd_info["name"].upper()
+                header = "---\n"
+                header += f"title: {title}\n"
+                header += "---\n\n"
             return header
 
-        def get_tab() -> str:
-            tab = "<!-- markdownlint-disable MD041 -->\n\n"
-            # tab += "import Tabs from '@theme/Tabs';\n"
-            # tab += "import TabItem from '@theme/TabItem';\n\n"
-            return tab
+        def get_head_title() -> str:
+            func = cmd_info["function"]
+            title = "<!-- markdownlint-disable MD033 -->\n"
+            title += "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
+            title += f'<HeadTitle title="{func} | OpenBB Add-in for Excel Docs" />\n\n'
+            return title
 
         def get_description() -> str:
             description = cmd_info.get("description", "")
             description += "\n\n"
             return description
 
-        def get_sintax() -> str:
-            sig = cmd_info["signature"]
-            syntax = "## Syntax\n\n"
-            syntax += f"```{self.interface} wordwrap\n"
-            syntax += f"{sig}\n"
-            syntax += "```\n\n"
-            return syntax
+        def get_syntax() -> str:
+            if sig := cmd_info["signature"]:
+                syntax = "## Syntax\n\n"
+                syntax += f"```{self.interface}\n"
+                syntax += f"{sig}\n"
+                syntax += "```\n\n"
+                return syntax
+            return ""
 
         def get_parameters() -> str:
-            parameters = "## Parameters\n\n"
-            parameters += "| Name | Type | Description | Optional |\n"
-            parameters += "| ---- | ---- | ----------- | -------- |\n"
-            for field_name, field_info in self.cmd_lib.get_parameters(cmd).items():
-                name = field_name
-                type_ = field_info["type"]
-                description = field_info["description"]
-                optional = field_info["optional"]
-                parameters += f"| {name} | {type_} | {description} | {optional} |\n"
-            parameters += "\n"
-            return parameters
+            if parameter_schema := cmd_info["parameters"]:
+                parameters = "## Parameters\n\n"
+                parameters += "| Name | Type | Description | Required |\n"
+                parameters += "| ---- | ---- | ----------- | -------- |\n"
+                for field_name, field_info in parameter_schema.items():
+                    name = field_name
+                    type_ = field_info["type"]
+                    description = field_info["description"]
+                    required = field_info["required"]
+                    required_str = str(required).title()
+                    if required:
+                        parameters += f"| **{name}** | **{type_}** | **{description}** | **{required_str}** |\n"
+                    else:
+                        parameters += (
+                            f"| {name} | {type_} | {description} | {required_str} |\n"
+                        )
+                parameters += "\n"
+                return parameters
+            return ""
 
-        # def get_return_type() -> str:
-        #     ret = cmd_info["return"]
-        #     return_ = "## Return Type\n\n"
-        #     return_ += f"* {ret}\n\n"
-        #     return return_
+        def get_data() -> str:
+            if data_schema := cmd_info["data"]:
+                data = "import Tabs from '@theme/Tabs';\n"
+                data += "import TabItem from '@theme/TabItem';\n\n"
+                data += "## Data\n\n"
+                data += "<Tabs>\n"
+                for provider, fields in data_schema.items():
+                    data += f"<TabItem value='{provider}'>\n\n"
+                    data += "| Name | Description |\n"
+                    data += "| ---- | ----------- |\n"
+                    for name, info in fields.items():
+                        description = info["description"]
+                        data += f"| {name} | {description} |\n"
+                    data += "</TabItem>\n"
+                data += "</Tabs>\n"
+                return data
+            return ""
 
-        def get_return_data() -> str:
-            data = "## Return Data\n\n"
-            data += "| Name | Description |\n"
-            data += "| ---- | ----------- |\n"
-            for field_name, field_info in self.cmd_lib.get_data(cmd).items():
-                name = field_name
-                description = field_info["description"]
-                data += f"| {name} | {description} |\n"
-            return data
+        def get_examples() -> str:
+            if cmd_examples := cmd_info["examples"]:
+                examples = "### Example\n\n"
+                for _, v in cmd_examples.items():
+                    # examples += f"### {k}\n\n"
+                    examples += f"```{self.interface}\n"
+                    examples += f"{v}\n"
+                    examples += "```\n\n"
+
+                return examples
+            return ""
 
         content = get_header()
-        content += get_tab()
+        content += get_head_title()
         content += get_description()
-        content += get_sintax()
+        content += get_syntax()
+        content += get_examples()
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        # content += get_return_type()
-        # content += "---\n\n"
-        content += get_return_data()
+        content += get_data()
         Editor.write(path, content)
 
     def generate_sidebar(self):
@@ -287,11 +479,11 @@ class Editor:
                 content += OPEN_UL
                 for file in files:
                     t = file.stem
-                    title = t if t != self.cmds_folder else t.title()
+                    title = t.upper() if t != self.main_folder else t.title()
                     if command:
                         p = (
-                            self.cmds_folder
-                            if self.cmds_folder in file.parts
+                            self.main_folder
+                            if self.main_folder in file.parts
                             else folder
                         )
                         cmd = "/" + filter_path(file.parts.index(p) + 1, file)
@@ -315,25 +507,28 @@ class Editor:
         def get_index(path: Path, folder: str) -> str:
             """Generate the index.mdx file."""
 
-            content = f"# {folder}\n\n"
+            cmd_path = filter_path(
+                path.parts.index(self.main_folder) + 1, path
+            ).replace("/", ".")
+            head_title = (
+                cmd_path.title() if cmd_path == self.main_folder else cmd_path.upper()
+            )
+
+            content = f"# {head_title}\n\n"
             content += CARD
 
             ### Main folder
             if folder == self.main_folder:
-                files = list(path.glob("*"))
-                # Put the cmds_folder folder at the end
-                index = next(
-                    (
-                        i
-                        for i, path in enumerate(files)
-                        if path.stem == self.cmds_folder
-                    ),
-                    None,
+                # sort the folders first and then files to push byod,get to the bottom
+                files = sorted(
+                    list(path.glob("*")),
+                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
                 )
-                if index is not None:
-                    cmd_folder = files.pop(index)
-                    files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=True)
+                content += get_cards(
+                    folder=folder,
+                    files=files,
+                    command=False,
+                )
                 return content
 
             ### Menus
@@ -356,9 +551,7 @@ class Editor:
         def format_label(text: str):
             if text == self.main_folder:
                 return self.main_folder.title()
-            if text == self.cmds_folder:
-                return self.cmds_folder.title()
-            return text.lower()
+            return text.upper()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
             Editor.write(path=path / "index.mdx", content=get_index(path, folder))
@@ -371,40 +564,53 @@ class Editor:
 
         def recursive(path: Path):
             position = 1
-            for p in path.iterdir():
+            for p in sorted(path.iterdir()):
                 if p.is_dir():
                     write_mdx_and_category(p, p.name, position)
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.main_folder, 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 6)
         recursive(self.target_dir)
+
+    def dump(self, reference_map: Dict) -> None:
+        """Dump the reference structured information to json."""
+        with open(self.target_dir / "reference_map.json", "w") as f:
+            json.dump(reference_map, f, indent=2)
 
     def go(self):
         """Generate the website reference."""
 
-        self.delete(self.target_dir)
+        reference_map = {}
+
+        shutil.rmtree(self.target_dir, ignore_errors=True)
+
+        # We start from xl_funcs to make sure only the commands in the add-in are included
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
-                if folder:
-                    folder = self.cmds_folder + "/" + folder
                 filename = cmd.split("/")[-1] + ".md"
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
-                self.generate_md(filepath, cmd)
+                cmd_info = self.cmd_lib.get_info(cmd)
+                reference_map[cmd] = cmd_info
+                self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
+        self.dump(reference_map)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--update":
-        CommandLib.fetch()
+    if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
+        pass
+    else:
+        CommandLib.fetch_xl_funcs()
+        CommandLib.fetch_openapi()
+
     Editor(
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
-        cmds_folder="library",
         cmd_lib=CommandLib(),
     ).go()

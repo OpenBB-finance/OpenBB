@@ -47,3 +47,33 @@ This notebook explains how to calculate and plot the Copper-to-Gold ratio.
 - Getting the historical series from FRED for the 10-year constant maturity US treasury bill.
 - Performing basic DataFrame operations.
 - Creating charts with Plotly Graph Objects.
+
+### openbbPlatformAsLLMTools
+
+This notebook shows you how you can use OpenbB Platform as functions in an LLM by leveraging function calling.
+
+- Create an LLM tool from an OpenBB Platform function
+- Convert all OpenBB Platform functions to LLM tools
+- Build a basic Langchain agent that can utilize function calling
+- Run the agent
+
+### usdLiquidityIndex
+
+This notebook demonstrates how to query the Federal Reserve Economic Database and recreate the USD Liquidity Index.
+
+- Search FRED for series IDs.
+- Load multiple series as a single call.
+- Unpacking the data response from the FRED query.
+- Perform arithmetic operations on a DataFrame.
+- Normalization methods for a series or DataFrame.
+- Simple processes for creating charts.
+
+### impliedEarningsMove
+
+This notebook demonstrates how to calculate the implied earnings move using options prices from free sources.
+
+- Get upcoming earnings calendar.
+- Fetch options chains data.
+- Get the last price of the underlying stock.
+- Find the nearest call and put strikes to the last price of the stock.
+- Calculate the implied daily move using the price of a straddle.

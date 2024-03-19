@@ -28,6 +28,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
+:::warning
+The instructons on this page are for installing the OpenBB Terminal from PyPI, which uses a legacy version of the Python SDK.  If you do not wish to install the OpenBB Terminal application, please refer to the installation instructions [here](/platform/installation)
+:::
+
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
 
@@ -208,7 +212,7 @@ Make sure to have completed all previous steps. If followed, there will be a vir
 Install the main package of Openbb SDK with `pip`, a package manager.
 
 ```shell
-pip install openbb==3.2.4 --no-cache-dir
+pip install openbb==3.2.5 --no-cache-dir
 ```
 
 This method provides access to the data aggregation and charting functions of the OpenBB SDK. It does not provide access to the advanced features that are provided by the Portfolio Optimization and Machine Learning toolkits.
@@ -216,23 +220,23 @@ This method provides access to the data aggregation and charting functions of th
 The toolkits can be installed individually with:
 
 ```shell
-pip install "openbb[optimization]==3.2.4" --no-cache-dir
+pip install "openbb[optimization]==5" --no-cache-dir
 ```
 
 and
 
 ```shell
-pip install "openbb[forecast]==3.2.4" --no-cache-dir
+pip install "openbb[forecast]==3.2.5" --no-cache-dir
 ```
 
 Install all available toolkits at once with:
 
 ```shell
-pip install "openbb[all]==3.2.4" --no-cache-dir
+pip install "openbb[all]==3.2.5" --no-cache-dir
 ```
 
 :::info
-`pip install openbb[all]==3.2.4` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
+`pip install openbb[all]==3.2.5` is not yet compatible with environments such as Google Colab and Kaggle as they come with preinstalled packages that can conflict with the ones used in the OpenBBTerminal and SDK.  It may be possible to install without the extra toolkits, but we currently do not officially support this type of installation.  We are working on a solution to this problem and will update this section once it is resolved.
 :::
 
 ## Verify Installation

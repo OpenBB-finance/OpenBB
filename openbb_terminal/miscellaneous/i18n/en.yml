@@ -26,8 +26,6 @@ en:
   account/show: Shows the current Personal Access Token
   account/revoke: Revoke the Personal Access Token
   account/_info_: Cloud storage of keys
-  account/sync: Turn the keys synchronization on/off
-  account/pull: Pull keys from cloud
   account/clear: Clear keys from cloud
   account/_routines_: Cloud storage of routines
   account/list: List available routines
@@ -117,12 +115,11 @@ en:
   futures/search: search for a future based on category or exchange
   futures/historical: get historical timeseries
   futures/curve: get futures curves
-  alternative: alternative datasets, such as COVID and open source metrics
+  alternative: alternative datasets, such as open source metrics
   econometrics: statistical and quantitative methods for relationships between datasets
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
-  dashboards: interactive dashboards using voila and jupyter notebooks
-  askobb: BETA FEATURE - Ask OpenBB LLM for the data you are interested in
+  dashboards: interactive dashboards using streamlit
   stocks/filings: the most-recent form submissions to the SEC
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
@@ -149,6 +146,7 @@ en:
   stocks/forecast: forecast techniques           rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
+  stocks/options/screen: screens tickers based on preset
   stocks/options/load: load new ticker
   stocks/options/exp: see and set expiration dates
   stocks/options/_ticker: Ticker
@@ -167,6 +165,12 @@ en:
   stocks/options/eodchain: gets option chain at a specific date
   stocks/options/pricing: shows options pricing and risk neutral valuation
   stocks/options/hedge: shows portfolio weights in order to neutralise delta
+  stocks/options/screen/view: view available presets (or one in particular)
+  stocks/options/screen/set: set one of the available presets
+  stocks/options/screen/_preset: Preset
+  stocks/options/screen/scr: screen data from this preset
+  stocks/options/screen/_screened_tickers: Last screened tickers
+  stocks/options/screen/ca: take these to comparison analysis menu
   stocks/options/hedge/_ticker: Ticker
   stocks/options/hedge/_expiry: Expiry
   stocks/options/hedge/pick: pick the underlying asset position
@@ -298,7 +302,7 @@ en:
   stocks/gov/lobbying: corporate lobbying details
   stocks/ca/ticker: set ticker to get similar companies from
   stocks/ca/_ticker: Ticker to get similar companies from
-  stocks/ca/tsne: run TSNE on all SP500 stocks
+  stocks/ca/tsne: run TSNE on all SP500 stocks and returns closest tickers
   stocks/ca/get: get similar stocks
   stocks/ca/set: reset and set similar companies
   stocks/ca/add: add more similar companies
@@ -343,7 +347,6 @@ en:
   stocks/ba/hist: plot historical RHI and AHI data by hour
   stocks/ba/jcdr: Jim Cramer's daily recommendations
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
-  stocks/ba/ns: Top news articles and sentiment provided by Onclusive
   stocks/fa/load: load a specific stock ticker for analysis
   stocks/fa/_ticker: Ticker
   stocks/fa/_company_overview: Company Overview
@@ -420,6 +423,7 @@ en:
   stocks/ta/cci: commodity channel index
   stocks/ta/macd: moving average convergence/divergence
   stocks/ta/rsi: relative strength index
+  stocks/ta/rsp: relative strength percentile
   stocks/ta/stoch: stochastic oscillator
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
@@ -441,7 +445,6 @@ en:
   stocks/ta/_custom_: Custom
   stocks/ta/fib: fibonacci retracement
   stocks/ta/multi: plot multiple indicators on the same chart
-  stocks/ta/ichimoku: Ichimoku Kinko Hyo indicator
   stocks/qa/load: load new ticker
   stocks/qa/pick: pick target column for analysis
   stocks/qa/_ticker: Ticker
@@ -508,7 +511,6 @@ en:
   crypto/disc/dapp_metrics: show dapp metrics
   crypto/disc/defi_chains: show available defi chains
   crypto/disc/tokens: show chains that support tokens
-  crypto/disc/fees: cryptos where users pay most fees on
   crypto/ov/global: global crypto market statistics
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins
@@ -539,7 +541,6 @@ en:
   crypto/onchain/btcblockdata: displays BTC single block data
   crypto/onchain/gwei: check current eth gas fees
   crypto/onchain/whales: check crypto wales transactions
-  crypto/onchain/topledger: get on-chain data from topledger
   crypto/onchain/lt: last trades by dex or month
   crypto/onchain/dvcp: daily volume for crypto pair
   crypto/onchain/tv: token volume on DEXes
@@ -583,7 +584,7 @@ en:
   crypto/defi/anchor: anchor earnings data
   crypto/tools/aprtoapy: convert apr to apy
   crypto/tools/il: calculate impermanent loss
-  crypto/nft/fp: collection floor price
+  crypto/nft/fp: collection sales/floor price
   crypto/nft/collections: top ethereum collections
   crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
@@ -702,7 +703,6 @@ en:
   etf/scr: screener ETFs                 overview/performance, using preset filters
   etf/overview: get overview
   etf/holdings: top company holdings
-  etf/holding_perf: Performance of holdings in ETF.
   etf/weights: sector weights allocation
   etf/candle: view a candle chart for ETF
   etf/news: latest news of the company
@@ -769,8 +769,8 @@ en:
   economy/spread: show bond spread matrix
   economy/events: show economic calendar
   economy/edebt: show external debt statistics for various countries
-  economy/usdli: Compare the USD Liquidity Index against a choice of indices
   economy/plot: plot data from the above commands together
+  economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/eval: create new series by performing operations on loaded data
@@ -922,10 +922,9 @@ en:
   funds/exclusion: exclusion policy
   funds/_country_ms: Current Country MorningStar
   alternative/hn: Hacker News most popular stories
-  alternative/covid: COVID menu,                 cases, deaths, rates
-  alternative/oss: Open Source menu,           star history, repos information
-  alternative/realestate: Real Estate menu,           sold prices, HPIs
-  alternative/companieshouse: Companies House menu,       UK company information
+  alternative/covid: COVID menu                  cases, deaths, rates
+  alternative/oss: Open Source menu            star history, repos information
+  alternative/realestate: Real Estate menu            sold prices, HPIs
   alternative/covid/slopes: get countries with highest slope in cases
   alternative/covid/country: select country for data
   alternative/covid/_country: Country
@@ -945,14 +944,6 @@ en:
   alternative/realestate/_enddate: End Date <YYYY-MM-DD>
   alternative/realestate/regionstats: retrieve UK sold house price stats by region
   alternative/realestate/_region: Region
-  alternative/companieshouse/_company: Current Company
-  alternative/companieshouse/search: search for companies by name
-  alternative/companieshouse/load: retrieve basic company details by company registration number
-  alternative/companieshouse/officers: retrieve company officies
-  alternative/companieshouse/signifcontrol: retrieve those with significant control over the company
-  alternative/companieshouse/filings: retrieve list of documents filed with Companies House (Default 100)
-  alternative/companieshouse/filingdocument: download filed document
-  alternative/companieshouse/charges: registered charges against the company
   econometrics/_data_loc: Looking for data in
   econometrics/load: load a dataset (also works with StatsModels datasets)
   econometrics/export: export a processed dataset
@@ -990,8 +981,6 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   econometrics/garch: estimate future volatility with GARCH
   econometrics/ret: calculate returns for the given time series
-  econometrics/vif: perform collinearity test (VIF)
-  econometrics/_assumption_testing_: Assumption Testing
   portfolio/bro: brokers holdings    supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization   optimize your portfolio weights efficiently
   portfolio/load: load transactions into the portfolio (use load --example for an example)
@@ -1104,7 +1093,6 @@ en:
   reports/_OpenBB_reports_: OpenBB reports
   reports/_Custom_reports_: Custom reports
   reports/run: Run a Jupyter notebook from OpenBBUserData/reports/custom reports
-  reports/exe: Execute a Jupyter notebook through a hyperlink using papermill
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
@@ -1122,7 +1110,6 @@ en:
   forecast/rename: Rename columns from dataset
   forecast/export: Export a processed dataset
   forecast/_feateng_: Feature Engineering
-  forecast/timegpt: TimeGPT-1 (Beta) by Nixtla
   forecast/ema: Add Exponentially Weighted Moving Average
   forecast/sto: Add Stochastic Oscillator %K and %D
   forecast/rsi: Add Relative Strength Index

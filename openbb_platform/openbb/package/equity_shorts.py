@@ -1,11 +1,11 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -18,14 +18,19 @@ class ROUTER_equity_shorts(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def fails_to_deliver(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get reported Fail-to-deliver (FTD) data.
@@ -59,7 +64,7 @@ class ROUTER_equity_shorts(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityFTD
@@ -77,20 +82,24 @@ class ROUTER_equity_shorts(Container):
         description : Optional[str]
             The description of the Security.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.shorts.fails_to_deliver(symbol="AAPL")
+        >>> obb.equity.shorts.fails_to_deliver(symbol='AAPL', provider='sec')
         """  # noqa: E501
 
         return self._run(
             "/equity/shorts/fails_to_deliver",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/shorts/fails_to_deliver",
+                        ("sec",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

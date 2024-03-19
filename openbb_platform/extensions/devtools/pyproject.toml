@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-devtools"
-version = "1.0.0"
+version = "1.1.4"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -12,8 +12,9 @@ ruff = "^0.1.5"
 pylint = "^3.0.2"
 mypy = "^1.6.1"
 pydocstyle = "^6.3.0"
-black = "^23.11.0"
+black = "^24.1.0"
 bandit = "^1.7.5"
+codespell = "^2.2.5"
 pre-commit = "^3.5.0"
 tox = "^4.11.3"
 pytest = "^7.4.3"

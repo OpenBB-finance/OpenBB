@@ -1,8 +1,7 @@
 """Analyst Estimates Standard Model."""
 
-
 from datetime import date as dateType
-from typing import List, Literal, Set, Union
+from typing import List, Literal, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -24,11 +23,16 @@ class AnalystEstimatesQueryParams(QueryParams):
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    @classmethod
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
+
+    @field_validator("period", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
 
 
 class AnalystEstimatesData(Data):
@@ -72,8 +76,9 @@ class AnalystEstimatesData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+    @classmethod
+    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+        """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None

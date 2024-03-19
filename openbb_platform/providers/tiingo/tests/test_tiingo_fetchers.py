@@ -39,7 +39,7 @@ def test_tiingo_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = TiingoCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -48,7 +48,7 @@ def test_tiingo_company_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tiingo_world_news_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"limit": 20}
 
     fetcher = TiingoWorldNewsFetcher()
     result = fetcher.test(params, credentials)

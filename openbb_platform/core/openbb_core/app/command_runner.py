@@ -1,15 +1,15 @@
+"""Command runner module."""
+
 import warnings
-from contextlib import nullcontext
 from copy import deepcopy
 from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
-from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from pydantic import ConfigDict, create_model
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -27,6 +27,8 @@ from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 
 
 class ExecutionContext:
+    """Execution context."""
+
     def __init__(
         self,
         command_map: CommandMap,
@@ -145,8 +147,11 @@ class ParametersBuilder:
             command_coverage: Dict[str, List[str]],
             route_default: Optional[Dict[str, Optional[str]]],
         ) -> Optional[str]:
-            """Get the default provider for the given route.
-            Either pick it from the user defaults or from the command coverage."""
+            """
+            Get the default provider for the given route.
+
+            Either pick it from the user defaults or from the command coverage.
+            """
             cmd_cov_given_route = command_coverage.get(route, None)
             command_cov_provider = (
                 cmd_cov_given_route[0] if cmd_cov_given_route else None
@@ -175,8 +180,7 @@ class ParametersBuilder:
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
-        """Validate kwargs and if possible coerce to the correct type"""
-
+        """Validate kwargs and if possible coerce to the correct type."""
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
 
         sig = signature(func)
@@ -202,6 +206,7 @@ class ParametersBuilder:
         route: str,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
+        """Build the parameters for a function."""
         func = cls.get_polished_func(func=func)
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
@@ -230,24 +235,36 @@ class ParametersBuilder:
 
 
 class StaticCommandRunner:
+    """Static Command Runner."""
+
     @classmethod
-    async def _command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
-        """Run a command and return the output"""
-        context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
-            warnings.catch_warnings(record=True)
-            if not Env().DEBUG_MODE
-            else nullcontext()
-        )
+    async def _command(
+        cls,
+        func: Callable,
+        kwargs: Dict[str, Any],
+        show_warnings: bool = True,
+    ) -> OBBject:
+        """Run a command and return the output."""
 
-        with context_manager as warning_list:
+        with warnings.catch_warnings(record=True) as warning_list:
             obbject = await maybe_coroutine(func, **kwargs)
-
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
             )
 
-            if warning_list:
-                obbject.warnings = list(map(cast_warning, warning_list))
+        if warning_list:
+            obbject.warnings = []
+            for w in warning_list:
+                obbject.warnings.append(cast_warning(w))
+                if show_warnings:
+                    warnings.showwarning(
+                        message=w.message,
+                        category=w.category,
+                        filename=w.filename,
+                        lineno=w.lineno,
+                        file=w.file,
+                        line=w.line,
+                    )
 
         return obbject
 
@@ -255,22 +272,14 @@ class StaticCommandRunner:
     def _chart(
         cls,
         obbject: OBBject,
-        user_settings: UserSettings,
-        system_settings: SystemSettings,
-        route: str,
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
-        cs = ChartingService(
-            user_settings=user_settings, system_settings=system_settings
-        )
-        obbject.chart = cs.chart(
-            user_settings=user_settings,
-            system_settings=system_settings,
-            route=route,
-            obbject_item=obbject.results,
-            **kwargs,
-        )
+        if "charting" not in obbject.accessors:
+            raise OpenBBError(
+                "Charting is not installed. Please install `openbb-charting`."
+            )
+        obbject.charting.show(render=False, **kwargs)  # type: ignore
 
     @classmethod
     async def _execute_func(
@@ -281,7 +290,7 @@ class StaticCommandRunner:
         func: Callable,
         kwargs: Dict[str, Any],
     ) -> OBBject:
-        """Execute a function and return the output"""
+        """Execute a function and return the output."""
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
@@ -305,19 +314,29 @@ class StaticCommandRunner:
         # If we're on the api we need to remove "chart" here because the parameter is added on
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
+        # We also pop custom headers
+
+        model_headers = (
+            SystemService().system_settings.api_settings.custom_headers or {}
+        )
+        custom_headers = {
+            name: kwargs.pop(name.replace("-", "_"), default)
+            for name, default in model_headers.items() or {}
+        } or None
 
         try:
             obbject = await cls._command(
                 func=func,
                 kwargs=kwargs,
+                show_warnings=user_settings.preferences.show_warnings,
             )
+            # pylint: disable=protected-access
+            obbject._route = route
+            obbject._standard_params = kwargs.get("standard_params", None)
 
             if chart and obbject.results:
                 cls._chart(
                     obbject=obbject,
-                    user_settings=user_settings,
-                    system_settings=system_settings,
-                    route=route,
                     **kwargs,
                 )
 
@@ -334,6 +353,7 @@ class StaticCommandRunner:
                 func=func,
                 kwargs=kwargs,
                 exec_info=exc_info(),
+                custom_headers=custom_headers,
             )
 
         return obbject
@@ -346,6 +366,7 @@ class StaticCommandRunner:
         *args,
         **kwargs,
     ) -> OBBject:
+        """Run a command and return the OBBject as output."""
         timestamp = datetime.now()
         start_ns = perf_counter_ns()
 
@@ -381,39 +402,45 @@ class StaticCommandRunner:
 
 
 class CommandRunner:
+    """Command runner."""
+
     def __init__(
         self,
         command_map: Optional[CommandMap] = None,
         system_settings: Optional[SystemSettings] = None,
         user_settings: Optional[UserSettings] = None,
     ) -> None:
+        """Initialize the command runner."""
         self._command_map = command_map or CommandMap()
         self._system_settings = system_settings or SystemService().system_settings
         self._user_settings = user_settings or UserService.read_default_user_settings()
 
-        self._logging_service = LoggingService(
-            system_settings=self._system_settings, user_settings=self._user_settings
-        )
-        self._charting_service = ChartingService(
+    def init_logging_service(self) -> None:
+        """Initialize the logging service."""
+        _ = LoggingService(
             system_settings=self._system_settings, user_settings=self._user_settings
         )
 
     @property
     def command_map(self) -> CommandMap:
+        """Command map."""
         return self._command_map
 
     @property
     def system_settings(self) -> SystemSettings:
+        """System settings."""
         return self._system_settings
 
     @property
     def user_settings(self) -> UserSettings:
+        """User settings."""
         return self._user_settings
 
     @user_settings.setter
     def user_settings(self, user_settings: UserSettings) -> None:
         self._user_settings = user_settings
 
+    # pylint: disable=W1113
     async def run(
         self,
         route: str,
@@ -434,6 +461,7 @@ class CommandRunner:
 
         return await StaticCommandRunner.run(execution_context, *args, **kwargs)
 
+    # pylint: disable=W1113
     def sync_run(
         self,
         route: str,

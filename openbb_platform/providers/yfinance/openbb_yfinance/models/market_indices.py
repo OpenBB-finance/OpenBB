@@ -1,4 +1,5 @@
 """Yahoo Finance Market Indices Model."""
+
 # ruff: noqa: SIM105
 
 
@@ -25,6 +26,8 @@ class YFinanceMarketIndicesQueryParams(MarketIndicesQueryParams):
 
     Source: https://finance.yahoo.com/world-indices
     """
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
@@ -85,6 +88,7 @@ class YFinanceMarketIndicesFetcher(
 
         return YFinanceMarketIndicesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: YFinanceMarketIndicesQueryParams,

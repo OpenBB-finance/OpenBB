@@ -17,11 +17,6 @@ class SecSicSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: bool = Field(
-        default=True,
-        description="Whether to use the cache or not. The full list will be cached for seven days if True.",
-    )
-
 
 class SecSicSearchData(Data):
     """SEC Standard Industrial Classification Code (SIC) Data."""
@@ -42,6 +37,7 @@ class SecSicSearchFetcher(
 ):
     """Transform the query, extract and transform the data from the SEC endpoints."""
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_query(
         params: Dict[str, Any], **kwargs: Any
@@ -49,6 +45,7 @@ class SecSicSearchFetcher(
         """Transform the query."""
         return SecSicSearchQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: SecSicSearchQueryParams,
@@ -83,7 +80,10 @@ class SecSicSearchFetcher(
 
         return results
 
+    # pylint: disable=unused-argument
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecSicSearchData]:
+    def transform_data(
+        query: SecSicSearchQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecSicSearchData]:
         """Transform the data."""
         return [SecSicSearchData.model_validate(d) for d in data]

@@ -1,4 +1,5 @@
 """Calculator Model"""
+
 ___docformat__ = "numpy"
 
 import logging

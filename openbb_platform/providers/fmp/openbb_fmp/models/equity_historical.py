@@ -1,5 +1,8 @@
 """FMP Equity Historical Price Model."""
 
+# pylint: disable=unused-argument
+
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -9,14 +12,19 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
-from pydantic import Field, NonNegativeInt
+from pydantic import Field
+
+_warn = warnings.warn
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -26,23 +34,16 @@ class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
-    limit: Optional[NonNegativeInt] = Field(
-        default=None,
-        description="Number of days to look back (Only for interval 1d).",
-        alias="timeseries",
-    )
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description="Time granularity to fetch data for."
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
 
 
 class FMPEquityHistoricalData(EquityHistoricalData):
     """FMP Equity Historical Price Data."""
 
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
-    )
     adj_close: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
@@ -51,14 +52,13 @@ class FMPEquityHistoricalData(EquityHistoricalData):
     )
     change: Optional[float] = Field(
         default=None,
-        description="Change in the price of the symbol from the previous day.",
+        description="Change in the price from the previous close.",
     )
     change_percent: Optional[float] = Field(
-        default=None, description="Change % in the price of the symbol."
-    )
-    change_over_time: Optional[float] = Field(
         default=None,
-        description="Change % in the price of the symbol over a period of time.",
+        description="Change in the price from the previous close, as a normalized percent.",
+        alias="changeOverTime",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 
@@ -110,17 +110,20 @@ class FMPEquityHistoricalFetcher(
             kwargs.update({"preferences": {"request_timeout": 30}})
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            data: dict = await response.json()
+            data = await response.json()
             symbol = response.url.parts[-1]
+            results = []
+            if not data:
+                _warn(f"No data found the the symbol: {symbol}")
+                return results
 
             if isinstance(data, dict):
-                data = data.get("historical", [])
+                results = data.get("historical", [])
 
             if "," in query.symbol:
-                for d in data:
+                for d in results:
                     d["symbol"] = symbol
-
-            return data
+            return results
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
@@ -131,4 +134,15 @@ class FMPEquityHistoricalFetcher(
         query: FMPEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
-        return [FMPEquityHistoricalData.model_validate(d) for d in data]
+
+        # Get rid of duplicate fields.
+        to_pop = ["label", "changePercent"]
+        results: List[FMPEquityHistoricalData] = []
+
+        for d in sorted(data, key=lambda x: x["date"], reverse=False):
+            _ = [d.pop(pop) for pop in to_pop if pop in d]
+            if d.get("unadjusted_volume") == d.get("volume"):
+                _ = d.pop("unadjusted_volume")
+            results.append(FMPEquityHistoricalData.model_validate(d))
+
+        return results

@@ -74,23 +74,23 @@ import pandas as pd
 df = pd.DataFrame()
 
 df["yfinance"] = (
-  obb.equity.fundamental.balance("TGT", provider="yfinance", limit=4)
-  .to_df()["TotalAssets"].reset_index(drop=True)
+  obb.equity.fundamental.balance("TGT", provider="yfinance", limit=3)
+  .to_df().get("total_assets")
 )
 
 df["fmp"] = (
-  obb.equity.fundamental.balance("TGT", provider="fmp", limit=4)
-  .to_df()["assets"].convert_dtypes().reset_index(drop=True)
+  obb.equity.fundamental.balance("TGT", provider="fmp", limit=3)
+  .to_df().get("total_assets")
 )
 
 df["intrinio"] = (
-  obb.equity.fundamental.balance("TGT", provider="intrinio", limit=4)
-  .to_df()["total assets"].convert_dtypes().reset_index(drop=True)
+  obb.equity.fundamental.balance("TGT", provider="intrinio", limit=3)
+  .to_df().get("total_assets")
 )
 
 df["polygon"] = (
-  obb.equity.fundamental.balance("TGT", provider="polygon", limit=4)
-  .to_df()["total_assets"].convert_dtypes().reset_index(drop=True)
+  obb.equity.fundamental.balance("TGT", provider="polygon", limit=3)
+  .to_df().get("total_assets")
 )
 
 df
@@ -117,7 +117,7 @@ data = (
   .to_df()
 )
 
-shares = data["weighted_average_shares_outstanding"]/1000000
+shares = data["weighted_average_basic_shares_outstanding"]/1000000
 ```
 
 Where this data starts,
@@ -126,7 +126,7 @@ Where this data starts,
 shares.head(1)
 ```
 
-| date       |   weighted_average_shares_outstanding |
+| date       |   weighted_average_basic_shares_outstanding |
 |:--------------------|--------------------------------------:|
 | 1986-07-31 |                           1168.82 |
 
@@ -136,7 +136,7 @@ versus currently,
 shares.tail(1)
 ```
 
-| date       |   weighted_average_shares_outstanding |
+| date       |   weighted_average_basic_shares_outstanding |
 |:--------------------|--------------------------------------:|
 | 2023-10-31 |                           461.6 |
 
@@ -182,11 +182,11 @@ Dividends paid is in the cash flow statement. We can calculate the amount-per-sh
 ```python
 dividends = (
   obb.equity.fundamental.cash("TGT", provider='fmp', limit=150, period="quarter")
-  .to_df()[["dividends_paid"]]
+  .to_df()[["payment_of_dividends"]]
 )
 
-dividends["shares"] = data[["weighted_average_shares_outstanding"]]
-dividends["div_per_share"] = dividends["dividends_paid"]/dividends["shares"]
+dividends["shares"] = data[["weighted_average_basic_shares_outstanding"]]
+dividends["div_per_share"] = abs(dividends["payment_of_dividends"]/dividends["shares"])
 
 dividends["div_per_share"].tail(4)
 ```
@@ -205,14 +205,16 @@ The dates immediately above represent the report date, dividends paid are attrib
 :::
 
 ```python
-(
+data = (
   obb.equity.fundamental.dividends("TGT", provider="fmp")
-  .to_df()["dividend"]
-  .loc["2022-11-15":"2023-08-15"]
+  .to_df()
+  [["ex_dividend_date", "amount"]]
 )
+data.ex_dividend_date = data.ex_dividend_date.astype(str)
+data.set_index("ex_dividend_date").loc["2023-08-15": "2022-11-15"]
 ```
 
- date          |   dividend |
+| ex_dividend_date |   dividend |
 |:--------------|-----------:|
 | 2022-11-15  |       1.08 |
 | 2023-02-14  |       1.08 |
@@ -230,7 +232,7 @@ The `openbb-intrinio` data extension has an endpoint for extracting a single fac
 Search attributes by keyword.
 
 ```python
-obb.equity.fundamental.search_attributes("marketcap").head(1)
+obb.equity.fundamental.search_attributes("marketcap").to_df().head(1)
 ```
 
 |    | id         | name                  | tag       | statement_code   | statement_type   | parent_name   |   sequence | factor   | transaction   | type      | unit   |
@@ -259,9 +261,10 @@ marketcap.tail(5)
 Doing some quick math, and ignoring the most recent value, we can see that the market cap of Target was down nearly a quarter over the last four reporting periods.
 
 ```python
+marketcap.index = marketcap.index.astype(str)
 (
-    (marketcap.loc["2023-09-30"] - marketcap.loc["2022-12-31"])/marketcap.loc["2022-12-31"]
-).value
+    (marketcap.loc["2023-09-30"].value - marketcap.loc["2022-12-31"].value)/marketcap.loc["2022-12-31"].value
+)
 ```
 
 ```console
@@ -304,7 +307,7 @@ We'll use this endpoint to extract the data, and compare with some of Target's c
 tickers = ["COST", "BJ", "DLTR", "DG", "WMT", "BIG", "M", "KSS", "TJX"]
 # Create a dictionary of tickers and company names.
 names = {
-    ticker: obb.equity.fundamental.overview(ticker, provider="fmp").results.company_name
+    ticker: obb.equity.profile(ticker, provider="fmp").results[0].name
     for ticker in tickers
 }
 # Create a column for each.

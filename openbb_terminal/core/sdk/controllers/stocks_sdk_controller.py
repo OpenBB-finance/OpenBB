@@ -24,7 +24,6 @@ class StocksController(model.StocksRoot):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
@@ -45,8 +44,6 @@ class StocksController(model.StocksRoot):
             `mentions`: Get interest over time from google api [Source: google].\n
             `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
             `messages`: Get last messages for a given ticker [Source: stocktwits].\n
-            `ns`: Getting Onclusive Data. [Source: Invisage Platform]\n
-            `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
             `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
             `queries`: Get related queries from google api [Source: google].\n
             `redditsent`: Find posts related to a specific search term in Reddit.\n
@@ -121,7 +118,6 @@ class StocksController(model.StocksRoot):
         """Stocks Darkpool Shorts Submodule
 
         Attributes:
-            `ctb`: Get stocks with highest cost to borrow [Source: Interactive Broker]\n
             `dpotc`: Get all FINRA data associated with a ticker\n
             `dpotc_chart`: Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]\n
             `ftd`: Display fails-to-deliver data for a given ticker. [Source: SEC]\n

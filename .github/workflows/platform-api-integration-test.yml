@@ -32,26 +32,18 @@ jobs:
         if: github.event_name == 'pull_request'
         run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
 
-      - name: Setup Python 3.9
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           architecture: x64
 
-      - name: Load cached venv
-        id: cached-python-environment
-        uses: actions/cache@v3
-        with:
-          path: runner_env
-          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-
       - name: Install Dependencies
-        if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
           python -m venv runner_env
           source runner_env/bin/activate
           pip install poetry toml
-          python openbb_platform/dev_install.py -e all
+          python openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
         run: |
@@ -87,20 +79,15 @@ jobs:
       - name: Wait for 42 seconds
         run: sleep 42
 
-      - name: Run API Integration Tests
+      - name: Check installed packages
         run: |
           source runner_env/bin/activate
           pip list
-          cd openbb_platform
-          pytest -m integration
 
-      - name: Cache pip packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: Run Integration Tests
+        run: |
+          source runner_env/bin/activate
+          pytest openbb_platform -m integration
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master

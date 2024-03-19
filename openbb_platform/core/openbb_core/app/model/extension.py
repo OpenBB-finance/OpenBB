@@ -1,11 +1,14 @@
+"""Extension class for OBBject extensions."""
+
 import warnings
 from typing import Callable, List, Optional
 
 
 class Extension:
-    """Serves as extension entry point and must be created by each extension package.
+    """
+    Serves as OBBject extension entry point and must be created by each extension package.
 
-    See README.md for more information on how to create an extension.
+    See https://docs.openbb.co/platform/development/developer-guidelines/obbject_extensions.
     """
 
     def __init__(
@@ -37,7 +40,7 @@ class Extension:
 
     @staticmethod
     def register_accessor(name, cls) -> Callable:
-        """Register a custom accessor"""
+        """Register a custom accessor."""
 
         def decorator(accessor):
             if hasattr(cls, name):
@@ -49,20 +52,22 @@ class Extension:
                 )
             setattr(cls, name, CachedAccessor(name, accessor))
             # pylint: disable=protected-access
-            cls._accessors.add(name)
+            cls.accessors.add(name)
             return accessor
 
         return decorator
 
 
 class CachedAccessor:
-    """CachedAccessor"""
+    """CachedAccessor."""
 
     def __init__(self, name: str, accessor) -> None:
+        """Initialize the cached accessor."""
         self._name = name
         self._accessor = accessor
 
     def __get__(self, obj, cls):
+        """Get the cached accessor."""
         if obj is None:
             return self._accessor
         accessor_obj = self._accessor(obj)

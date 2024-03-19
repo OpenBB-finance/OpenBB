@@ -57,7 +57,6 @@ from openbb_terminal.terminal_helper import (
     print_goodbye,
     reset,
     suppress_stdout,
-    update_terminal,
     welcome_message,
 )
 
@@ -83,13 +82,11 @@ class TerminalController(BaseController):
         "keys",
         "settings",
         "survey",
-        "update",
         "featflags",
         "exe",
         "guess",
         "news",
         "intro",
-        "askobb",
         "record",
     ]
     CHOICES_MENUS = [
@@ -99,7 +96,6 @@ class TerminalController(BaseController):
         "portfolio",
         "forex",
         "etf",
-        "reports",
         "dashboards",
         "alternative",
         "econometrics",
@@ -214,8 +210,6 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not is_installer():
-            mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("news")
         mt.add_raw("\n")
@@ -231,8 +225,6 @@ class TerminalController(BaseController):
         mt.add_cmd("record")
         mt.add_cmd("stop")
         mt.add_cmd("exe")
-        mt.add_raw("\n")
-        mt.add_cmd("askobb")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")
@@ -250,7 +242,6 @@ class TerminalController(BaseController):
         mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
-        mt.add_menu("reports")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
@@ -475,16 +466,6 @@ class TerminalController(BaseController):
         """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
 
-    def call_update(self, _):
-        """Process update command."""
-        if not is_installer():
-            self.update_success = not update_terminal()
-        else:
-            console.print(
-                "Find the most recent release of the OpenBB Terminal here: "
-                "https://openbb.co/products/terminal#get-started\n"
-            )
-
     def call_account(self, _):
         """Process account command."""
         from openbb_terminal.account.account_controller import AccountController
@@ -538,12 +519,6 @@ class TerminalController(BaseController):
         from openbb_terminal.forex.forex_controller import ForexController
 
         self.queue = self.load_class(ForexController, self.queue)
-
-    def call_reports(self, _):
-        """Process reports command."""
-        from openbb_terminal.reports.reports_controller import ReportController
-
-        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command."""

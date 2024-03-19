@@ -1,4 +1,5 @@
 """Substack View"""
+
 __docformat__ = "numpy"
 
 

@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
@@ -275,6 +275,8 @@ def _get_argument_parser(
 def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
     choice_map: dict = {}
     for action in argument_parser._actions:  # pylint: disable=protected-access
+        if action.help == SUPPRESS:
+            continue
         if len(action.option_strings) == 1:
             long_name = action.option_strings[0]
             short_name = ""

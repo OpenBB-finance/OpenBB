@@ -45,6 +45,7 @@ openbb_terminal/core/plots/assets/plotly*.js
 .dccache
 *rome.json
 **/node_modules/*
+.cursorignore
 # pyinstaller artifacts
 *.pyo
 **/dist/*
@@ -84,3 +85,7 @@ lightning_logs/
 
 # Platform auto generated files
 openbb_platform/openbb/package/*
+
+# Reference files
+website/content/excel/reference/*
+website/content/excel/reference/*/*

@@ -26,8 +26,7 @@ class CompanyFilingsQueryParams(QueryParams):
     form_type: Optional[str] = Field(
         default=None,
         description=(
-            "Filter by form type. Visit https://www.sec.gov/forms "
-            "for a list of supported form types."
+            "Filter by form type. Check the data provider for available types."
         ),
     )
     limit: NonNegativeInt = Field(
@@ -36,8 +35,8 @@ class CompanyFilingsQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: Union[str, List[str], Set[str]]):
+        """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
@@ -46,28 +45,24 @@ class CompanyFilingsQueryParams(QueryParams):
 class CompanyFilingsData(Data):
     """Company Filings Data."""
 
+    filing_date: dateType = Field(description="The date of the filing.")
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Accepted date of the filing."
+    )
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     cik: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )
-    filing_date: dateType = Field(description="Filing date of the SEC report.")
-    accepted_date: datetime = Field(description="Accepted date of the SEC report.")
-    report_type: str = Field(description="Type of the SEC report.")
-    filing_url: str = Field(description="URL to the filing page on the SEC site.")
-    report_url: str = Field(description="URL to the actual report on the SEC site.")
+    report_type: Optional[str] = Field(default=None, description="Type of filing.")
+    filing_url: Optional[str] = Field(
+        default=None, description="URL to the filing page."
+    )
+    report_url: str = Field(description="URL to the actual report.")
 
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
-
-    @field_validator("date", "filing_date", mode="before", check_fields=False)
+    @field_validator("filing_date", "accepted_date", mode="before", check_fields=False)
     @classmethod
     def convert_date(cls, v: str):
         """Convert date to date type."""
-        return parser.parse(str(v)).date()
+        return parser.parse(str(v)).date() if v else None

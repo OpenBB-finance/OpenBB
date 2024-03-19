@@ -1,4 +1,5 @@
 """Cryptocurrency helpers"""
+
 # pylint: disable=C0302,too-many-return-statements
 
 import difflib
@@ -480,9 +481,11 @@ def load_from_yahoofinance(
         s_date_start = s_start_dt.strftime("%Y-%m-%d")
         df = yf.download(
             pair,
-            start=s_date_start
-            if s_start_dt > start_date
-            else start_date.strftime("%Y-%m-%d"),
+            start=(
+                s_date_start
+                if s_start_dt > start_date
+                else start_date.strftime("%Y-%m-%d")
+            ),
             progress=False,
             interval=s_int,
         )

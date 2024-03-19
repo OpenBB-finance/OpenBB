@@ -1,4 +1,5 @@
 """REST API for the OpenBB Platform."""
+
 import logging
 from contextlib import asynccontextmanager
 
@@ -75,9 +76,11 @@ app.add_middleware(
 )
 AppLoader.from_routers(
     app=app,
-    routers=[AuthService().router, router_system, router_coverage, router_commands]
-    if Env().DEV_MODE
-    else [router_commands],
+    routers=(
+        [AuthService().router, router_system, router_coverage, router_commands]
+        if Env().DEV_MODE
+        else [router_commands]
+    ),
     prefix=system.api_settings.prefix,
 )
 
@@ -85,6 +88,7 @@ AppLoader.from_routers(
 @app.exception_handler(Exception)
 async def api_exception_handler(_: Request, exc: Exception):
     """Exception handler for all other exceptions."""
+    logger.error(exc)
     return JSONResponse(
         status_code=404,
         content={
@@ -97,6 +101,7 @@ async def api_exception_handler(_: Request, exc: Exception):
 @app.exception_handler(OpenBBError)
 async def openbb_exception_handler(_: Request, exc: OpenBBError):
     """Exception handler for OpenBB errors."""
+    logger.error(exc.original)
     openbb_error = exc.original
     status_code = 400 if "No results" in str(openbb_error) else 500
     return JSONResponse(

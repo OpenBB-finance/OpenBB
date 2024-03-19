@@ -30,7 +30,7 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 <div style={{
   height: 80
 }}>
-<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.4/x86.64.MacOS.OpenBB.Terminal.v3.2.4.pkg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.4/ARM64.MacOS.OpenBB.Terminal.v3.2.4.pkg" label="Mac M1 Installer" />
+<InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/x86.64.MacOS.OpenBB.Terminal.v3.2.5.pkg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/ARM64.MacOS.OpenBB.Terminal.v3.2.5.pkg" label="Mac M1 Installer" />
 </div>
 
 <details><summary>Minimum Requirements</summary>

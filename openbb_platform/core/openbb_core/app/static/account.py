@@ -1,4 +1,5 @@
 """Account."""
+
 # pylint: disable=W0212:protected-access
 import json
 from functools import wraps

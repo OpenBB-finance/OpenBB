@@ -1,4 +1,0 @@
-   vol strike option_type
-12  13   80.0         put
-14   2   85.0         put
-16   6   90.0         put

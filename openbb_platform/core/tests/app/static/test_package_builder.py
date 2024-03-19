@@ -1,4 +1,5 @@
 """Test the package_builder.py file."""
+
 # pylint: disable=redefined-outer-name, protected-access
 
 from dataclasses import dataclass
@@ -25,14 +26,14 @@ from typing_extensions import Annotated
 
 
 @pytest.fixture(scope="module")
-def tmp_package_dir(tmp_path_factory):
-    return tmp_path_factory.mktemp("package")
+def tmp_openbb_dir(tmp_path_factory):
+    return tmp_path_factory.mktemp("openbb")
 
 
 @pytest.fixture(scope="module")
-def package_builder(tmp_package_dir):
+def package_builder(tmp_openbb_dir):
     """Return package builder."""
-    return PackageBuilder(tmp_package_dir)
+    return PackageBuilder(tmp_openbb_dir)
 
 
 def test_package_builder_init(package_builder):
@@ -43,11 +44,6 @@ def test_package_builder_init(package_builder):
 def test_package_builder_build(package_builder):
     """Test package builder build."""
     package_builder.build()
-
-
-def test_save_module_map(package_builder):
-    """Test save module map."""
-    package_builder._save_module_map()
 
 
 def test_save_modules(package_builder):
@@ -260,8 +256,10 @@ def test_build_func_returns(method_definition, return_type, expected_output):
     assert output == expected_output
 
 
-def test_build_command_method_signature(method_definition):
+@patch("openbb_core.app.static.package_builder.MethodDefinition")
+def test_build_command_method_signature(mock_method_definitions, method_definition):
     """Test build command method signature."""
+    mock_method_definitions.is_deprecated_function.return_value = False
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -271,8 +269,29 @@ def test_build_command_method_signature(method_definition):
         func_name="test_func",
         formatted_params=formatted_params,
         return_type=return_type,
+        path="test_path",
     )
     assert output
+
+
+@patch("openbb_core.app.static.package_builder.MethodDefinition")
+def test_build_command_method_signature_deprecated(
+    mock_method_definitions, method_definition
+):
+    """Test build command method signature."""
+    mock_method_definitions.is_deprecated_function.return_value = True
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+    return_type = int
+    output = method_definition.build_command_method_signature(
+        func_name="test_func",
+        formatted_params=formatted_params,
+        return_type=return_type,
+        path="test_path",
+    )
+    assert "@deprecated" in output
 
 
 def test_build_command_method_doc(method_definition):
@@ -287,7 +306,7 @@ def test_build_command_method_doc(method_definition):
     }
 
     output = method_definition.build_command_method_doc(
-        func=some_func, formatted_params=formatted_params
+        path="/menu/submenu/command", func=some_func, formatted_params=formatted_params
     )
     assert output
     assert isinstance(output, str)
@@ -302,7 +321,10 @@ def test_build_command_method_body(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
@@ -321,7 +343,10 @@ def test_build_command_method(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method(
             path="openbb_core.app.static.container.Container",
@@ -469,7 +494,7 @@ def test_generate_model_docstring(docstring_generator):
     summary = "This is a summary."
 
     pi = docstring_generator.provider_interface
-    params = pi.params[model_name]
+    kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
     return_schema = pi.return_schema[model_name]
     returns = return_schema.model_fields
 
@@ -483,7 +508,7 @@ def test_generate_model_docstring(docstring_generator):
         model_name=model_name,
         summary=summary,
         explicit_params=explicit_dict,
-        params=params,
+        kwarg_params=kwarg_params,
         returns=returns,
         results_type="List[WorldNews]",
     )
@@ -507,21 +532,26 @@ def test_generate(docstring_generator):
     }
 
     doc = docstring_generator.generate(
-        func=some_func, formatted_params=formatted_params, model_name="WorldNews"
+        path="/menu/submenu/command",
+        func=some_func,
+        formatted_params=formatted_params,
+        model_name="WorldNews",
     )
     assert doc
     assert "Parameters" in doc
     assert "Returns" in doc
 
 
-def test_read_extension_map(package_builder, tmp_package_dir):
+def test_read_extension_map(package_builder, tmp_openbb_dir):
     """Test read extension map."""
 
     PATH = "openbb_core.app.static.package_builder."
     open_mock = mock_open()
     with patch(PATH + "open", open_mock), patch(PATH + "load") as mock_load:
-        package_builder._read_extension_map(tmp_package_dir)
-        open_mock.assert_called_once_with(Path(tmp_package_dir, "extension_map.json"))
+        package_builder._read(Path(tmp_openbb_dir / "assets" / "extension_map.json"))
+        open_mock.assert_called_once_with(
+            Path(tmp_openbb_dir / "assets" / "extension_map.json")
+        )
         mock_load.assert_called_once()
 
 
@@ -576,7 +606,7 @@ def test_read_extension_map(package_builder, tmp_package_dir):
 )
 def test_package_diff(
     package_builder,
-    tmp_package_dir,
+    tmp_openbb_dir,
     ext_built,
     ext_installed,
     ext_inst_version,
@@ -589,21 +619,19 @@ def test_package_diff(
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."
-    with patch.object(
-        PackageBuilder, "_read_extension_map"
-    ) as mock_read_extension_map, patch(
+    with patch.object(PackageBuilder, "_read") as mock_read, patch(
         PATH + "entry_points", mock_entry_points
-    ), patch.object(
-        EntryPoint, "dist", new_callable=PropertyMock
-    ) as mock_obj:
+    ), patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj:
 
         class MockPathDistribution:
             version = ext_inst_version
 
         mock_obj.return_value = MockPathDistribution()
-        mock_read_extension_map.return_value = ext_built
+        mock_read.return_value = ext_built
 
-        add, remove = package_builder._diff(tmp_package_dir)
+        add, remove = package_builder._diff(
+            Path(tmp_openbb_dir, "assets", "extension_map.json")
+        )
 
         # We add whatever is not built, but is installed
         assert add == expected_add
@@ -621,20 +649,22 @@ def test_package_diff(
         ({"this"}, {"that"}, False),
     ],
 )
-def test_auto_build(package_builder, tmp_package_dir, add, remove, openbb_auto_build):
+def test_auto_build(package_builder, tmp_openbb_dir, add, remove, openbb_auto_build):
     """Test auto build."""
 
-    with patch.object(PackageBuilder, "_diff") as mock_package_diff, patch.object(
+    with patch.object(PackageBuilder, "_diff") as mock_assets_diff, patch.object(
         PackageBuilder, "build"
     ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
-        mock_package_diff.return_value = add, remove
+        mock_assets_diff.return_value = add, remove
 
         package_builder.auto_build()
 
     if openbb_auto_build:
-        mock_package_diff.assert_called_once_with(Path(tmp_package_dir, "package"))
+        mock_assets_diff.assert_called_once_with(
+            Path(tmp_openbb_dir, "assets", "extension_map.json")
+        )
         if add or remove:
             mock_build.assert_called_once()
     else:
-        mock_package_diff.assert_not_called()
+        mock_assets_diff.assert_not_called()
         mock_build.assert_not_called()

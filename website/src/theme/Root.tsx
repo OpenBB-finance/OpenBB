@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import posthog from "posthog-js";
 import { useLocation } from "@docusaurus/router";
+import posthog from "posthog-js";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export const iFrameContext = createContext({
   isIFrame: false,
@@ -11,6 +11,7 @@ export const useIFrameContext = () => useContext(iFrameContext);
 export default function Root({ children }) {
   const [isIFrame, setIsIFrame] = useState(false);
   const [posthogLoaded, setPosthogLoaded] = useState(false);
+  const location = useLocation();
   useEffect(() => {
     setIsIFrame(window?.self !== window?.top);
     if (window?.self !== window?.top) {
@@ -28,7 +29,7 @@ export default function Root({ children }) {
       },
       loaded: () => {
         setPosthogLoaded(true);
-        posthog.onFeatureFlags(function () {
+        posthog.onFeatureFlags(() => {
           if (!posthog.isFeatureEnabled("record-web", { send_event: false })) {
             posthog.stopSessionRecording();
             console.log("Stopped session recording");
@@ -45,12 +46,24 @@ export default function Root({ children }) {
     });
   }, []);
 
-  const location = useLocation();
-
   useEffect(() => {
     if (posthogLoaded)
       posthog.capture("$pageview");
   }, [location.pathname, posthogLoaded]);
+
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/pro") || location.pathname.startsWith("/excel")) {
+      const cookie = document.cookie?.split(";").find((c) => c.trim().startsWith("docs-login="));
+      const payload = decodeURIComponent(cookie?.split('=')[1].split('.')[0]);
+      if (isValidBase64(payload)) {
+        const decodedPayload = atob(decodeURIComponent(payload));
+        // decide what we want to do whether the user is logged in or not
+      } else {
+        console.error('Invalid base64 string:', payload);
+      }
+    }
+  }, [location.pathname])
 
   return (
     <iFrameContext.Provider
@@ -61,4 +74,12 @@ export default function Root({ children }) {
       {children}
     </iFrameContext.Provider>
   );
+}
+
+function isValidBase64(str) {
+  try {
+    return btoa(atob(str)) == str;
+  } catch (err) {
+    return false;
+  }
 }

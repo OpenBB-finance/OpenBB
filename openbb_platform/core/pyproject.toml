@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.0.1"
+version = "1.1.4"
 description = "OpenBB package with core functionality"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -15,7 +15,7 @@ html5lib = "^1.1"
 fastapi = "^0.104.1"
 python-jose = "^3.3.0"
 uuid7 = "^0.1.0"
-posthog = "^3.0.1"
+posthog = "^3.3.1"
 python-multipart = "^0.0.6"
 pydantic = "^2.5.1"
 requests = "^2.31.0"
@@ -29,7 +29,6 @@ pytest = "^7.0.0"
 pytest-subtests = "^0.11.0"
 pytest-recorder = "^0.2.4"
 pytest-asyncio = "^0.23.2"
-black = "^23.11.0"
 
 [build-system]
 requires = ["poetry-core"]
