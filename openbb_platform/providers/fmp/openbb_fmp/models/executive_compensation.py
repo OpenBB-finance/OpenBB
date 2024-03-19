@@ -104,7 +104,7 @@ class FMPExecutiveCompensationFetcher(
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
         if not results:
-            raise EmptyDataError(f"No data found for {query.symbol}.")
+            raise EmptyDataError("No data found for given symbols.")
 
         return sorted(results, key=lambda x: (x["year"]), reverse=True)
 
