@@ -194,18 +194,19 @@ class ParametersBuilder:
             valid = asdict(annotation()) if is_dataclass(annotation) else {}  # type: ignore
             provider = provider_choices.get("provider", None)
             for p in extra_params:
-                if (field := valid.get(p)) and provider:
-                    providers = (
-                        field.title
-                        if isinstance(field, Query) and isinstance(field.title, str)
-                        else ""
-                    ).split(",")
-                    if provider not in providers:
-                        warn(
-                            message=f"Parameter '{p}' is not supported by '{provider}'."
-                            f" Available for: {', '.join(providers)}.",
-                            category=OpenBBWarning,
-                        )
+                if field := valid.get(p):
+                    if provider:
+                        providers = (
+                            field.title
+                            if isinstance(field, Query) and isinstance(field.title, str)
+                            else ""
+                        ).split(",")
+                        if provider not in providers:
+                            warn(
+                                message=f"Parameter '{p}' is not supported by '{provider}'."
+                                f" Available for: {', '.join(providers)}.",
+                                category=OpenBBWarning,
+                            )
                 else:
                     warn(
                         message=f"Parameter '{p}' not found.",
