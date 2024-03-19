@@ -9,8 +9,8 @@ from openbb_core.provider.standard_models.etf_countries import (
     EtfCountriesData,
     EtfCountriesQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
 from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
 from openbb_fmp.utils.helpers import create_url, response_callback
 from pandas import DataFrame
 
