@@ -205,11 +205,11 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): tmx, yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
         provider: Annotated[
-            Optional[Literal["fmp", "tmx", "yfinance"]],
+            Optional[Literal["fmp", "yfinance"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -221,8 +221,8 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): tmx, yfinance.
-        provider : Optional[Literal['fmp', 'tmx', 'yfinance']]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -230,9 +230,9 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
+            results : List[PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx', 'yfinance']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -253,18 +253,6 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
-        target_upside : Optional[float]
-            Percent of upside, as a normalized percent. (provider: tmx)
-        total_analysts : Optional[int]
-            Total number of analyst. (provider: tmx)
-        buy_ratings : Optional[int]
-            Number of buy ratings. (provider: tmx)
-        sell_ratings : Optional[int]
-            Number of sell ratings. (provider: tmx)
-        hold_ratings : Optional[int]
-            Number of hold ratings. (provider: tmx)
-        consensus_action : Optional[str]
-            Consensus action. (provider: tmx)
         recommendation : Optional[str]
             Recommendation - buy, sell, etc. (provider: yfinance)
         recommendation_mean : Optional[float]
@@ -290,14 +278,14 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/consensus",
-                        ("fmp", "tmx", "yfinance"),
+                        ("fmp", "yfinance"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["tmx", "yfinance"]}},
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
             )
         )
 
@@ -306,16 +294,11 @@ class ROUTER_equity_estimates(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            ),
         ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 30,
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBCustomParameter(
@@ -328,16 +311,16 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        period : Literal['quarter', 'annual']
-            Time period of the data to return.
-        limit : int
-            The number of data entries to return.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Literal['quarter', 'annual']
+            Time period of the data to return. (provider: fmp)
+        limit : Optional[int]
+            The number of data entries to return. (provider: fmp)
 
         Returns
         -------
@@ -359,45 +342,45 @@ class ROUTER_equity_estimates(Container):
             Symbol representing the entity requested in the data.
         date : date
             The date of the data.
-        estimated_revenue_low : int
+        estimated_revenue_low : Optional[int]
             Estimated revenue low.
-        estimated_revenue_high : int
+        estimated_revenue_high : Optional[int]
             Estimated revenue high.
-        estimated_revenue_avg : int
+        estimated_revenue_avg : Optional[int]
             Estimated revenue average.
-        estimated_ebitda_low : int
-            Estimated EBITDA low.
-        estimated_ebitda_high : int
-            Estimated EBITDA high.
-        estimated_ebitda_avg : int
-            Estimated EBITDA average.
-        estimated_ebit_low : int
-            Estimated EBIT low.
-        estimated_ebit_high : int
-            Estimated EBIT high.
-        estimated_ebit_avg : int
-            Estimated EBIT average.
-        estimated_net_income_low : int
-            Estimated net income low.
-        estimated_net_income_high : int
-            Estimated net income high.
-        estimated_net_income_avg : int
-            Estimated net income average.
-        estimated_sga_expense_low : int
+        estimated_sga_expense_low : Optional[int]
             Estimated SGA expense low.
-        estimated_sga_expense_high : int
+        estimated_sga_expense_high : Optional[int]
             Estimated SGA expense high.
-        estimated_sga_expense_avg : int
+        estimated_sga_expense_avg : Optional[int]
             Estimated SGA expense average.
-        estimated_eps_avg : float
+        estimated_ebitda_low : Optional[int]
+            Estimated EBITDA low.
+        estimated_ebitda_high : Optional[int]
+            Estimated EBITDA high.
+        estimated_ebitda_avg : Optional[int]
+            Estimated EBITDA average.
+        estimated_ebit_low : Optional[int]
+            Estimated EBIT low.
+        estimated_ebit_high : Optional[int]
+            Estimated EBIT high.
+        estimated_ebit_avg : Optional[int]
+            Estimated EBIT average.
+        estimated_net_income_low : Optional[int]
+            Estimated net income low.
+        estimated_net_income_high : Optional[int]
+            Estimated net income high.
+        estimated_net_income_avg : Optional[int]
+            Estimated net income average.
+        estimated_eps_avg : Optional[float]
             Estimated EPS average.
-        estimated_eps_high : float
+        estimated_eps_high : Optional[float]
             Estimated EPS high.
-        estimated_eps_low : float
+        estimated_eps_low : Optional[float]
             Estimated EPS low.
-        number_analyst_estimated_revenue : int
+        number_analyst_estimated_revenue : Optional[int]
             Number of analysts who estimated revenue.
-        number_analysts_estimated_eps : int
+        number_analysts_estimated_eps : Optional[int]
             Number of analysts who estimated EPS.
 
         Examples
@@ -418,10 +401,9 @@ class ROUTER_equity_estimates(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
-                    "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -432,7 +414,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga, finviz."
+                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp."
             ),
         ] = None,
         limit: Annotated[
@@ -440,7 +422,7 @@ class ROUTER_equity_estimates(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
         provider: Annotated[
-            Optional[Literal["benzinga", "finviz", "fmp"]],
+            Optional[Literal["benzinga", "fmp"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
             ),
@@ -452,10 +434,10 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple items allowed for provider(s): benzinga, finviz.
+            Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
+        provider : Optional[Literal['benzinga', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -487,7 +469,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
+            provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -546,10 +528,6 @@ class ROUTER_equity_estimates(Container):
             Unique ID of this entry. (provider: benzinga)
         last_updated : Optional[datetime]
             Last updated timestamp, UTC. (provider: benzinga)
-        status : Optional[str]
-            The action taken by the firm. This could be 'Upgrade', 'Downgrade', 'Reiterated', etc. (provider: finviz)
-        rating_change : Optional[str]
-            The rating given by the analyst. This could be 'Buy', 'Sell', 'Underweight', etc. If the rating is a revision, the change is indicated by '->' (provider: finviz)
         news_url : Optional[str]
             News URL of the price target. (provider: fmp)
         news_title : Optional[str]
@@ -574,7 +552,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/price_target",
-                        ("benzinga", "finviz", "fmp"),
+                        ("benzinga", "fmp"),
                     )
                 },
                 standard_params={
@@ -582,8 +560,6 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {"multiple_items_allowed": ["benzinga", "finviz"]}
-                },
+                extra_info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
             )
         )
