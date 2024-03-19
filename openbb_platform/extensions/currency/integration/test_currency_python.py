@@ -67,6 +67,15 @@ def test_currency_search(params, obb):
         ),
         (
             {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "EURUSD,USDJPY",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
                 "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,

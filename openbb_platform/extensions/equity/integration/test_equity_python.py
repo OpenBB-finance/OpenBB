@@ -880,6 +880,15 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
                 "timezone": "UTC",
                 "source": "realtime",
                 "start_time": None,
