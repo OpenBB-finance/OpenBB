@@ -243,12 +243,14 @@ def test_equity_fundamental_cash_growth(params, headers):
             {
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "year": None,
             }
         ),
         (
             {
                 "symbol": "AAPL,MSFT",
                 "provider": "fmp",
+                "year": None,
             }
         ),
     ],
