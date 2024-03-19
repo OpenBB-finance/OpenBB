@@ -123,7 +123,9 @@ class FMPEquityValuationMultiplesFetcher(
 
         async def get_one(symbol):
             """Get data for one symbol."""
-            url = create_url(3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"])
+            url = create_url(
+                3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
+            )
             result = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
