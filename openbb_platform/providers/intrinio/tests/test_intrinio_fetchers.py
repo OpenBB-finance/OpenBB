@@ -37,6 +37,7 @@ from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
+from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
@@ -57,6 +58,12 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
             ("api_key", "MOCK_API_KEY"),
+            ("X-Amz-Algorithm", "MOCK_X-Amz-Algorithm"),
+            ("X-Amz-Credential", "MOCK_X-Amz-Credential"),
+            ("X-Amz-Date", "MOCK_X-Amz-Date"),
+            ("X-Amz-Expires", "MOCK_X-Amz-Expires"),
+            ("X-Amz-SignedHeaders", "MOCK_X-Amz-SignedHeaders"),
+            ("X-Amz-Signature", "MOCK_X-Amz-Signature"),
         ],
     }
 
@@ -402,5 +409,14 @@ def test_intrinio_etf_price_performance_fetcher(credentials=test_credentials):
     params = {"symbol": "SPY:US"}
 
     fetcher = IntrinioEtfPricePerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_market_snapshots_fetcher(credentials=test_credentials):
+    params = {"date": date(2022, 6, 30)}
+
+    fetcher = IntrinioMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

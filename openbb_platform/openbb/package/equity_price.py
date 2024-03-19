@@ -354,6 +354,8 @@ class ROUTER_equity_price(Container):
 
         PricePerformance
         ----------------
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
         one_day : Optional[float]
             One-day return.
         wtd : Optional[float]
@@ -374,16 +376,18 @@ class ROUTER_equity_price(Container):
             Year to date return.
         one_year : Optional[float]
             One-year return.
+        two_year : Optional[float]
+            Two-year return.
         three_year : Optional[float]
             Three-year return.
+        four_year : Optional[float]
+            Four-year
         five_year : Optional[float]
             Five-year return.
         ten_year : Optional[float]
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        symbol : Optional[str]
-            The ticker symbol. (provider: fmp)
 
         Examples
         --------
