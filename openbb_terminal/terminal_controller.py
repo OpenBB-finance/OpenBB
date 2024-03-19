@@ -288,17 +288,6 @@ class TerminalController(BaseController):
         """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
 
-    # TODO: revamp or remove
-    def call_update(self, _):
-        """Process update command."""
-        if not is_installer():
-            self.update_success = not update_terminal()
-        else:
-            console.print(
-                "Find the most recent release of the OpenBB Terminal here: "
-                "https://openbb.co/products/terminal#get-started\n"
-            )
-
     def call_featflags(self, _):
         """Process feature flags command."""
         from openbb_terminal.featflags_controller import FeatureFlagsController
