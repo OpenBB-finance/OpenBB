@@ -91,7 +91,9 @@ class FMPPricePerformanceFetcher(
         symbols = query.symbol.split(",")
         if len(data) != len(symbols):
             data_symbols = [d["symbol"] for d in data]
-            missing_symbols = [symbol for symbol in symbols if symbol not in data_symbols]
+            missing_symbols = [
+                symbol for symbol in symbols if symbol not in data_symbols
+            ]
             warn(f"Missing data for symbols: {missing_symbols}")
 
         return [FMPPricePerformanceData.model_validate(i) for i in data]
