@@ -192,9 +192,9 @@ class OBBject(Tagged, Generic[T]):
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
-                    df = pd.DataFrame(res)
+                    df = pd.DataFrame(res)  # type: ignore[call-overload]
                     # Set index, if any
-                    if index is not None and index in df.columns:
+                    if df and index and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
@@ -267,8 +267,9 @@ class OBBject(Tagged, Generic[T]):
             orient == "list"
             and isinstance(self.results, dict)
             and all(
-                isinstance(value, dict) for value in self.results.values()
-            )  # pylint: disable=no-member
+                isinstance(value, dict)
+                for value in self.results.values()  # pylint: disable=no-member
+            )
         ):
             df = df.T
         results = df.to_dict(orient=orient)

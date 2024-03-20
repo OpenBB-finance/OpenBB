@@ -3,7 +3,7 @@
 import ast
 import json
 from datetime import time
-from typing import Dict, Iterable, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import numpy as np
 import pandas as pd
