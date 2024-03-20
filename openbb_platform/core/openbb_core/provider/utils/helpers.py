@@ -295,9 +295,9 @@ def filter_by_dates(
         if dt:
             if start_date and end_date:
                 return start_date <= dt <= end_date
-            elif start_date:
+            if start_date:
                 return dt >= start_date
-            elif end_date:
+            if end_date:
                 return dt <= end_date
             return True
         return False
