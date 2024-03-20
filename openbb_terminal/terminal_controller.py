@@ -148,7 +148,7 @@ class TerminalController(BaseController):
         # pylint: disable=unused-argument
         def method_call_command(self, _, target: BaseModel):
             df = pd.DataFrame.from_dict(target.model_dump(), orient="index")
-            return print_rich_table(df)
+            return print_rich_table(df, show_index=True)
 
         for router, value in PLATFORM_ROUTERS.items():
             target = getattr(obb, router)
