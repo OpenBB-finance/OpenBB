@@ -39,7 +39,7 @@ multi_index_base_model = [
 def test_df_to_basemodel():
     base_model = df_to_basemodel(df)
     assert isinstance(base_model, list)
-    assert base_model[0].x == 1
+    assert base_model[0].x == 1  # type: ignore[attr-defined]
 
 
 def test_df_to_basemodel_multiindex():

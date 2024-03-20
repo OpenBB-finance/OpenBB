@@ -24,9 +24,7 @@ class MockOBBject(BaseModel):
 @pytest.fixture(scope="function")
 def logging_service():
     mock_system_settings = Mock()
-    mock_system_settings = "mock_system_settings"
     mock_user_settings = Mock()
-    mock_user_settings = "mock_user_settings"
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
 
@@ -45,8 +43,8 @@ def logging_service():
             user_settings=mock_user_settings,
         )
 
-        assert mock_setup_handlers.assert_called_once
-        assert mock_log_startup.assert_called_once
+        mock_setup_handlers.assert_called_once()
+        mock_log_startup.assert_called_once()
 
         return logging_service
 
@@ -68,8 +66,8 @@ def test_logging_settings_setter(logging_service):
             custom_user_settings,
         )
 
-    assert logging_service.logging_settings.system_settings == "custom_system_settings"
-    assert logging_service.logging_settings.user_settings == "custom_user_settings"
+    assert logging_service.logging_settings.system_settings == "custom_system_settings"  # type: ignore[attr-defined]
+    assert logging_service.logging_settings.user_settings == "custom_user_settings"  # type: ignore[attr-defined]
 
 
 def test_log_startup(logging_service):
@@ -101,7 +99,7 @@ def test_log_startup(logging_service):
             "STARTUP: %s ",
             json.dumps(expected_log_data),
         )
-        mock_get_logger.assert_called_once
+        mock_get_logger.assert_called_once()
 
 
 @pytest.mark.parametrize(
@@ -163,7 +161,7 @@ def test_log(
                     exec_info=exec_info,
                     custom_headers=custom_headers,
                 )
-                assert mock_log_startup.assert_called_once
+                mock_log_startup.assert_called_once()
 
         else:
             mock_info = mock_get_logger.return_value.info

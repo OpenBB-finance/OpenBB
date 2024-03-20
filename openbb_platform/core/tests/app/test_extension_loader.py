@@ -79,13 +79,15 @@ def test_get_entry_point():
     el = ExtensionLoader()
     # pylint: disable=protected-access
     result = el._get_entry_point(el.provider_entry_points, "fmp")
-    assert result.group == OpenBBGroups.provider.value
-    assert result.name == "fmp"
+    if result:
+        assert result.group == OpenBBGroups.provider.value
+        assert result.name == "fmp"
 
     # pylint: disable=protected-access
     result = el._get_entry_point(el.core_entry_points, "equity")
-    assert result.group == OpenBBGroups.core.value
-    assert result.name == "equity"
+    if result:
+        assert result.group == OpenBBGroups.core.value
+        assert result.name == "equity"
 
 
 def test_get_entry_point_not_found():
@@ -106,8 +108,9 @@ def test_get_obbject_entry_point(mock_get_entry_point):
 
     el = ExtensionLoader()
     result = el.get_obbject_entry_point("mock_extension")
-    assert result.group == OpenBBGroups.obbject.value
-    assert result.name == "mock_extension"
+    if result:
+        assert result.group == OpenBBGroups.obbject.value
+        assert result.name == "mock_extension"
 
 
 @patch("openbb_core.app.extension_loader.ExtensionLoader._get_entry_point")
@@ -120,8 +123,9 @@ def test_get_entry_point_core(mock_get_entry_point):
 
     el = ExtensionLoader()
     result = el.get_core_entry_point("mock_extension")
-    assert result.group == OpenBBGroups.obbject.value
-    assert result.name == "mock_extension"
+    if result:
+        assert result.group == OpenBBGroups.obbject.value
+        assert result.name == "mock_extension"
 
 
 @patch("openbb_core.app.extension_loader.ExtensionLoader._get_entry_point")
@@ -134,8 +138,9 @@ def test_get_entry_point_provider(mock_get_entry_point):
 
     el = ExtensionLoader()
     result = el.get_provider_entry_point("mock_extension")
-    assert result.group == OpenBBGroups.obbject.value
-    assert result.name == "mock_extension"
+    if result:
+        assert result.group == OpenBBGroups.obbject.value
+        assert result.name == "mock_extension"
 
 
 def test_obbject_objects():

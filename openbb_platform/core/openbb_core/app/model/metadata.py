@@ -48,7 +48,9 @@ class Metadata(BaseModel):
             # List[Data]
             if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
                 _columns = [list(d.model_dump().keys()) for d in arg_val]
-                ld_columns = (item for sublist in _columns for item in sublist)  # flatten
+                ld_columns = (
+                    item for sublist in _columns for item in sublist
+                )  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
                     "columns": list(set(ld_columns)),
