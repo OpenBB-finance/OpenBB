@@ -279,7 +279,12 @@ class StaticCommandRunner:
             raise OpenBBError(
                 "Charting is not installed. Please install `openbb-charting`."
             )
-        obbject.charting.show(render=False, **kwargs)  # type: ignore
+        chart_params = (
+            kwargs["extra_params"].__dict__.get("chart_params", {})
+            if "extra_params" in kwargs
+            else {}
+        )
+        obbject.charting.show(render=False, **chart_params, **kwargs)  # type: ignore
 
     @classmethod
     async def _execute_func(

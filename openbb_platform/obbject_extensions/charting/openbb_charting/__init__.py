@@ -17,7 +17,7 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
-from openbb_charting.core.to_chart import ChartIndicators, to_chart
+from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.utils.helpers import get_charting_functions
 
 ext = Extension(name="charting")
@@ -33,7 +33,7 @@ class Charting:
     show
         Display chart and save it to the OBBject.
     to_chart
-        Returns the plotly json representation of the chart.
+        Redraws the chart and saves it to the OBBject, with an optional entry point for Data.
     functions
         Returns a list of Platform commands with charting functions.
     indicators
@@ -78,6 +78,7 @@ class Charting:
 
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
+
         charting_function = self._get_chart_function(
             self._obbject._route  # pylint: disable=protected-access
         )
@@ -119,7 +120,6 @@ class Charting:
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
-        prepost: bool = False,
         volume_ticks_x: int = 7,
         render: bool = True,
         **kwargs,
@@ -133,7 +133,7 @@ class Charting:
 
         Parameters
         ----------
-        data : Union[pd.DataFrame, pd.Series]
+        data : Union[Data, pd.DataFrame, pd.Series]
             Data to be plotted Data to be plotted (OHLCV data).
         indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
             Indicators to be plotted, by default None
@@ -149,6 +149,8 @@ class Charting:
             Volume ticks, by default 7
         render : bool, optional
             If True, the chart will be rendered, by default True
+        kwargs: Dict[str, Any]
+            Extra parameters to be passed to the chart constructor.
 
         Examples
         --------
@@ -188,27 +190,28 @@ class Charting:
         )
         if "date" in data_as_df.columns:
             data_as_df = data_as_df.set_index("date")
-        try:
-            fig, content = to_chart(
-                data_as_df,
-                indicators=indicators,
-                symbol=symbol,
-                candles=candles,
-                volume=volume,
-                prepost=prepost,
-                volume_ticks_x=volume_ticks_x,
-            )
-            self._obbject.chart = Chart(
-                fig=fig, content=content, format=charting_router.CHART_FORMAT
-            )
-            if render:
-                fig.show(**kwargs)
 
-        except Exception:
-            try:
-                if has_data:
-                    self.show(data=data_as_df, symbol=symbol, render=render, **kwargs)
-                else:
-                    self.show(**kwargs)
-            except Exception as e:
-                raise RuntimeError("Could not create chart from the OBBject.") from e
+        if (
+            hasattr(self._obbject, "_standard_params")
+            and self._obbject._standard_params  # pylint: disable=protected-access
+        ):
+            kwargs["standard_params"] = (
+                self._obbject._standard_params.__dict__  # pylint: disable=protected-access
+            )
+
+        kwargs["candles"] = candles
+        kwargs["volume"] = volume
+        kwargs["volume_ticks_x"] = volume_ticks_x
+        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
+        kwargs["indicators"] = indicators
+        kwargs["symbol"] = symbol
+
+        try:
+            if has_data:
+                self.show(data=data_as_df, render=render, **kwargs)
+            else:
+                self.show(**kwargs, render=render)
+        except Exception as e:
+            raise RuntimeError("Could not create chart from the OBBject.") from e
