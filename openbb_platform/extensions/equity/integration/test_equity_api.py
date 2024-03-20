@@ -941,6 +941,15 @@ def test_equity_compare_groups(params, headers):
         ),
         (
             {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
                 "timezone": "UTC",
                 "source": "realtime",
                 "start_time": None,
@@ -1663,7 +1672,8 @@ def test_equity_darkpool_otc(params, headers):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        # ({"provider": "polygon"}),  # premium endpoint
+        ({"provider": "polygon"}),
+        ({"provider": "intrinio", "date": "2022-06-30"}),
     ],
 )
 @pytest.mark.integration
