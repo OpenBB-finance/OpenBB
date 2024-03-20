@@ -199,10 +199,9 @@ def print_rich_table(  # noqa: PLR0912
     columns_to_auto_color: Optional[List[str]] = None,
     rows_to_auto_color: Optional[List[str]] = None,
     export: bool = False,
-    print_to_console: bool = False,
     limit: Optional[int] = 1000,
-    source: Optional[str] = None,
     columns_keep_types: Optional[List[str]] = None,
+    use_tabulate_df: bool = True,
 ):
     """Prepare a table from df in rich.
 
@@ -232,22 +231,11 @@ def print_rich_table(  # noqa: PLR0912
         Whether we are exporting the table to a file. If so, we don't want to print it.
     limit: Optional[int]
         Limit the number of rows to show.
-    print_to_console: bool
-        Whether to print the table to the console. If False and interactive mode is
-        enabled, the table will be displayed in a new window. Otherwise, it will print to the
-        console.
-    source: Optional[str]
-        Source of the table. If provided, it will be displayed in the header of the table.
     columns_keep_types: Optional[List[str]]
         Columns to keep their types, i.e. not convert to numeric
     """
     if export:
         return
-
-    current_user = get_current_user()
-    enable_interactive = (
-        current_user.preferences.USE_INTERACTIVE_DF and plots_backend().isatty
-    )
 
     # Make a copy of the dataframe to avoid SettingWithCopyWarning
     df = df.copy()
@@ -278,30 +266,6 @@ def print_rich_table(  # noqa: PLR0912
             )
         return output
 
-    if enable_interactive and not print_to_console:
-        df_outgoing = df.copy()
-        # If headers are provided, use them
-        if headers is not None:
-            # We check if headers are valid
-            df_outgoing.columns = _get_headers(headers)
-
-        if show_index and index_name not in df_outgoing.columns:
-            # If index name is provided, we use it
-            df_outgoing.index.name = index_name or "Index"
-            df_outgoing = df_outgoing.reset_index()
-
-        for col in df_outgoing.columns:
-            if col == "":
-                df_outgoing = df_outgoing.rename(columns={col: "  "})
-
-        plots_backend().send_table(
-            df_table=df_outgoing,
-            title=title,
-            source=source,  # type: ignore
-            theme=current_user.preferences.TABLE_STYLE,
-        )
-        return
-
     df = df.copy() if not limit else df.copy().iloc[:limit]
     if automatic_coloring:
         if columns_to_auto_color:
@@ -320,7 +284,7 @@ def print_rich_table(  # noqa: PLR0912
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
-    if current_user.preferences.USE_TABULATE_DF:
+    if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
         if show_index:
