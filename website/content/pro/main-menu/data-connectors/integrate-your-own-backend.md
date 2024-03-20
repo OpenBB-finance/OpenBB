@@ -60,7 +60,7 @@ The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQL
 
 2. **Run the Client**: Simply click on our app and type in the port you would like to use. If you are unsure of a good port, feel free to select `Recommend Port`.
 
-3. **Connect inside the Terminal PRo**: Once your client is up and running, click [here](https://pro.openbb.co/app/data-connectors) to enable the connectors. Now feel free to enter login credentials for any Snowflake, MySQL, or SQLite database and begin to analyze your data inside of our terminal.
+3. **Connect inside the Terminal Pro**: Once your client is up and running, click [here](https://pro.openbb.co/app/data-connectors) to enable the connectors. Now feel free to enter login credentials for any Snowflake, MySQL, or SQLite database and begin to analyze your data inside of our terminal.
 
 ### Quick Start with Python and FastAPI
 
