@@ -168,7 +168,12 @@ class MenuText:
 
         self.menu_text += cmd + "\n"
 
-    def add_menu(self, key_menu: str, condition: Optional[Union[bool, str]] = True):
+    def add_menu(
+        self,
+        key_menu: str,
+        condition: Optional[Union[bool, str]] = True,
+        menu_description: str = "",
+    ):
         """Append menu text (after translation from key) to a menu
 
         Parameters
@@ -180,10 +185,19 @@ class MenuText:
             If condition is false, the menu line is greyed out.
         """
         spacing = (23 - (len(key_menu) + 4)) * " "
-        if condition:
-            self.menu_text += f"[menu]>   {key_menu}{spacing}{i18n.t(self.menu_path + key_menu)}[/menu]\n"
+
+        if menu_description:
+            menu = f"{key_menu}{spacing}{menu_description}"
         else:
-            self.menu_text += f"[unvl]>   {key_menu}{spacing}{i18n.t(self.menu_path + key_menu)}[/unvl]\n"
+            menu_description = i18n.t(self.menu_path + key_menu)
+            if menu_description == key_menu:
+                menu_description = ""
+            menu = f"{key_menu}{spacing}{menu_description}"
+
+        if condition:
+            self.menu_text += f"[menu]>   {menu}[/menu]\n"
+        else:
+            self.menu_text += f"[unvl]>   {menu}[/unvl]\n"
 
     def add_setting(self, key_setting: str, status: bool = True):
         """Append menu text (after translation from key) to a menu
