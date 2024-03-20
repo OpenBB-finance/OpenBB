@@ -343,7 +343,7 @@ class ImportDefinition:
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
@@ -567,6 +567,10 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
+            elif name == "kwargs":
+                formatted["**" + name] = Parameter(
+                    name="kwargs", kind=Parameter.VAR_KEYWORD, annotation=Any
+                )
             elif name == "provider_choices":
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 field = fields["provider"]
