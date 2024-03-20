@@ -190,7 +190,7 @@ class MenuText:
             menu = f"{key_menu}{spacing}{menu_description}"
         else:
             menu_description = i18n.t(self.menu_path + key_menu)
-            if menu_description == key_menu:
+            if menu_description == self.menu_path + key_menu:
                 menu_description = ""
             menu = f"{key_menu}{spacing}{menu_description}"
 
