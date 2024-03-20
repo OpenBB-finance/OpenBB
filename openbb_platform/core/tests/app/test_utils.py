@@ -25,11 +25,11 @@ df = pd.DataFrame(
 df_multiindex = df.set_index(["x", "y"])
 
 simple_base_model = [
-    Data(x=i, y=j, z=k) for i in range(2) for j in range(6, 8) for k in range(10, 12)
+    Data(x=i, y=j, z=k) for i in range(2) for j in range(6, 8) for k in range(10, 12)  # type: ignore[call-arg]
 ]
 
 multi_index_base_model = [
-    Data(x=i, y=j, z=k, is_multiindex=True, multiindex_names="['x','y']")
+    Data(x=i, y=j, z=k, is_multiindex=True, multiindex_names="['x','y']")  # type: ignore[call-arg]
     for i in range(2)
     for j in range(6, 8)
     for k in range(10, 12)
@@ -93,11 +93,11 @@ def test_list_to_basemodel(data_list, expected):
     "data_dict, expected",
     [
         # Simple dictionary
-        ({"a": 10}, Data(a=10)),
+        ({"a": 10}, Data(a=10)),  # type: ignore[call-arg]
         # Nested dictionary (assuming Data can handle nested dicts)
-        ({"b": {"c": 20}}, Data(b={"c": 20})),
+        ({"b": {"c": 20}}, Data(b={"c": 20})),  # type: ignore[call-arg]
         # Dictionary with list (assuming Data can handle lists)
-        ({"d": [30, 40]}, Data(d=[30, 40])),
+        ({"d": [30, 40]}, Data(d=[30, 40])),  # type: ignore[call-arg]
     ],
 )
 def test_dict_to_basemodel(data_dict, expected):
