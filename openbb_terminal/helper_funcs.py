@@ -60,6 +60,8 @@ MENU_RESET = 2
 GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
 GPT_INDEX_VER = 0.4
 
+ALLOWED_NUMBER_OF_ROWS = 366
+ALLOWED_NUMBER_OF_COLUMNS = 15
 
 # Command location path to be shown in the figures depending on watermark flag
 command_location = ""
@@ -284,6 +286,23 @@ def print_rich_table(  # noqa: PLR0912
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
+    exceeds_allowed_columns = len(df.columns) > ALLOWED_NUMBER_OF_COLUMNS
+    exceeds_allowed_rows = len(df) > ALLOWED_NUMBER_OF_ROWS
+
+    if exceeds_allowed_columns:
+        original_columns = df.columns.tolist()
+        trimmed_columns = df.columns.tolist()[:ALLOWED_NUMBER_OF_COLUMNS]
+        df = df[trimmed_columns]
+        trimmed_columns = [
+            col for col in original_columns if col not in trimmed_columns
+        ]
+
+    if exceeds_allowed_rows:
+        n_rows = len(df.index)
+        trimmed_rows = df.index.tolist()[:ALLOWED_NUMBER_OF_ROWS]
+        df = df.loc[trimmed_rows]
+        trimmed_rows_count = n_rows - ALLOWED_NUMBER_OF_ROWS
+
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -330,6 +349,21 @@ def print_rich_table(  # noqa: PLR0912
         console.print(table)
     else:
         console.print(df.to_string(col_space=0))
+
+    if exceeds_allowed_columns:
+        console.print(
+            f"[yellow]\nAllowed number of columns exceeded ({ALLOWED_NUMBER_OF_COLUMNS}).\n"
+            f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
+        )
+
+    if exceeds_allowed_rows:
+        console.print(
+            f"[yellow]\nAllowed number of rows exceeded ({ALLOWED_NUMBER_OF_ROWS}).\n"
+            f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
+        )
+
+    if exceeds_allowed_columns or exceeds_allowed_rows:
+        console.print("Use the `--export` flag to analyse the full output on a file.")
 
 
 def check_non_negative(value) -> int:
