@@ -132,7 +132,9 @@ class MenuText:
         )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def add_cmd(self, key_command: str, condition: bool = True):
+    def add_cmd(
+        self, key_command: str, condition: bool = True, command_description: str = ""
+    ):
         """Append command text (after translation from key) to a menu
 
         Parameters
@@ -144,10 +146,19 @@ class MenuText:
             If condition is false, the command line is greyed out.
         """
         spacing = (23 - (len(key_command) + 4)) * " "
-        if condition:
-            cmd = f"[cmds]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/cmds]"
+
+        if command_description:
+            cmd = f"{key_command}{spacing}{command_description}"
         else:
-            cmd = f"[unvl]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/unvl]"
+            command_description = i18n.t(self.menu_path + key_command)
+            if command_description == self.menu_path + key_command:
+                command_description = ""
+            cmd = f"{key_command}{spacing}{command_description}"
+
+        if condition:
+            cmd = f"[cmds]    {cmd}[/cmds]"
+        else:
+            cmd = f"[unvl]    {cmd}[/unvl]"
 
         sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
 

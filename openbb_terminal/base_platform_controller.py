@@ -38,12 +38,13 @@ class PlatformController(BaseController):
     def __init__(
         self,
         name: str,
+        parent_path: List[str],
         platform_target: Optional[type] = None,
         queue: Optional[List[str]] = None,
         translators: Optional[Dict] = None,
     ):
         """Construct a Platform based Controller."""
-        self.PATH = f"/{name}/"
+        self.PATH = f"/{'/'.join(parent_path)}/{name}/" if parent_path else f"/{name}/"
         super().__init__(queue)
         self._name = name
 
@@ -101,6 +102,7 @@ class PlatformController(BaseController):
             self._generate_controller_call(
                 controller=SubController,
                 name=path,
+                parent_path=self.path,
                 translators=sub_menu_translators,
             )
 
@@ -145,10 +147,17 @@ class PlatformController(BaseController):
         )
         setattr(self, f"call_{name}", bound_method)
 
-    def _generate_controller_call(self, controller, name, translators):
-        def method(self, _, controller=controller, name=name, translators=translators):
+    def _generate_controller_call(self, controller, name, parent_path, translators):
+        def method(
+            self,
+            _,
+            controller=controller,
+            name=name,
+            parent_path=parent_path,
+            translators=translators,
+        ):
             self.queue = self.load_class(
-                controller, name, self.queue, translators=translators
+                controller, name, parent_path, self.queue, translators=translators
             )
 
         # Bind the method to the class
@@ -175,6 +184,17 @@ class PlatformController(BaseController):
         if self.CHOICES_COMMANDS:
             mt.add_raw("\nCommands\n\n")
             for command in self.CHOICES_COMMANDS:
-                mt.add_cmd(command.replace(f"{self._name}_", ""))
+
+                command_description = (
+                    obb.coverage.reference.get(f"{self.PATH}{command}", {})
+                    .get("description", "")
+                    .split(".")[0]
+                    .lower()
+                )
+
+                mt.add_cmd(
+                    key_command=command.replace(f"{self._name}_", ""),
+                    command_description=command_description,
+                )
 
         console.print(text=mt.menu_text, menu=self._name)

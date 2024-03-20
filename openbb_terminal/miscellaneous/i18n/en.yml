@@ -1,22 +1,15 @@
 en:
-  _home_: Information, guides and support for the OpenBB Terminal
-  intro: introduction on the OpenBB Terminal
-  about: discover the capabilities of the OpenBB Terminal (https://openbb.co/docs)
+  _home_: Information, guides and support for the OpenBB Platform CLI
+  intro: introduction on the OpenBB Platform CLI
+  about: discover the capabilities of the OpenBB Platform CLI (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
-  survey: fill in our 2-minute survey so we better understand how we can improve the terminal
-  update: attempt to update the terminal automatically (GitHub version)
-  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
-  news: display news articles based on term and data sources
-  keys: set API keys and check their validity
+  survey: fill in our 2-minute survey so we better understand how we can improve the CLI
   featflags: enable and disable feature flags
-  sources: select your preferred data sources
-  account: manage your OpenBB account
-  settings: tune settings (export folder, timezone, language, plot size)
   _scripts_: Record and execute your own .openbb routine scripts
   record: start recording current session
   stop: stop session recording and convert to .openbb routine
   exe: execute .openbb routine scripts (use exe --example for an example)
-  _configure_: Configure your own terminal
+  _configure_: Configure your own CLI
   _main_menu_: Main menu
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
@@ -28,8 +21,8 @@ en:
   featflags/reporthtml: open report as HTML otherwise notebook
   featflags/exithelp: automatically print help when quitting menu
   featflags/rcontext: remember contexts loaded params during session
-  featflags/rich: colorful rich terminal
-  featflags/richpanel: colorful rich terminal panel
+  featflags/rich: colorful rich CLI
+  featflags/richpanel: colorful rich CLI panel
   featflags/ion: interactive matplotlib mode
   featflags/watermark: watermark in figures
   featflags/cmdloc: command location displayed in figures

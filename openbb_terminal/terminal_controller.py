@@ -140,8 +140,10 @@ class TerminalController(BaseController):
     def _generate_platform_commands(self):
         """Generate Platform based commands/menus."""
 
-        def method_call_class(self, _, controller, name, target):
-            self.queue = self.load_class(controller, name, target, self.queue)
+        def method_call_class(self, _, controller, name, parent_path, target):
+            self.queue = self.load_class(
+                controller, name, parent_path, target, self.queue
+            )
 
         # pylint: disable=unused-argument
         def method_call_command(self, _, target: BaseModel):
@@ -167,6 +169,7 @@ class TerminalController(BaseController):
                         controller=DynamicController,
                         name=router,
                         target=target,
+                        parent_path=self.path,
                     ),
                     method_call_class,
                 )
@@ -248,8 +251,6 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not is_installer():
-            mt.add_cmd("update")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("featflags")
