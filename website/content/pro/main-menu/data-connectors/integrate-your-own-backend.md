@@ -56,7 +56,7 @@ The language-agnostic API approach offers flexibility by allowing you to use the
 
 The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from our terminal.
 
-1. **Install our Client**: Reach out to us [here](mailto:colin.delahunty@openbb.finance?subject=Data%20Connector) to recieve your free client.
+1. **Install our Client**: Reach out to us [here](mailto:colin.delahunty@openbb.finance?subject=Data%20Connector) to receive your free client.
 
 2. **Run the Client**: Simply click on our app and type in the port you would like to use. If you are unsure of a good port, feel free to select `Recommend Port`.
 
