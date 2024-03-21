@@ -1,5 +1,6 @@
 """Command runner module."""
 
+import json
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
@@ -296,31 +297,17 @@ class StaticCommandRunner:
     ) -> OBBject:
         """Run a command and return the output."""
 
-        with catch_warnings(record=True) as warning_list:
-            obbject = await maybe_coroutine(func, **kwargs)
-            obbject.provider = getattr(
-                kwargs.get("provider_choices", None), "provider", None
-            )
-
-        if warning_list:
-            obbject.warnings = []
-            for w in warning_list:
-                obbject.warnings.append(cast_warning(w))
-                if show_warnings:
-                    showwarning(
-                        message=w.message,
-                        category=w.category,
-                        filename=w.filename,
-                        lineno=w.lineno,
-                        file=w.file,
-                        line=w.line,
-                    )
+        obbject = await maybe_coroutine(func, **kwargs)
+        obbject.provider = getattr(
+            kwargs.get("provider_choices", None), "provider", None
+        )
         return obbject
 
     @classmethod
     def _chart(
         cls,
         obbject: OBBject,
+        metadata: Optional[Any] = None,
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
@@ -333,7 +320,19 @@ class StaticCommandRunner:
             if "extra_params" in kwargs
             else {}
         )
-        obbject.charting.show(render=False, **chart_params, **kwargs)  # type: ignore
+
+        # TODO: Update when a proper metadata transmission solution is implemented.
+        try:
+            message = (
+                getattr(metadata[0], "message", "{}")
+                if metadata and isinstance(metadata, list) and len(metadata) > 0
+                else "{}"
+            )
+            metadata = json.loads(str(message)) if message else {}
+        except json.JSONDecodeError:
+            metadata = {}
+
+        obbject.charting.show(render=False, metadata=metadata, **chart_params, **kwargs)  # type: ignore
 
     @classmethod
     async def _execute_func(
@@ -383,7 +382,7 @@ class StaticCommandRunner:
                 obbject._standard_params = kwargs.get("standard_params", None)
 
                 if chart and obbject.results:
-                    cls._chart(obbject, **kwargs)
+                    cls._chart(obbject, warning_list, **kwargs)
 
             except Exception as e:
                 raise OpenBBError(e) from e

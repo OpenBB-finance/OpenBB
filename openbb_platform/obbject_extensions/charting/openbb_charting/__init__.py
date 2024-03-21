@@ -93,7 +93,7 @@ class Charting:
             )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
-        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
+
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT

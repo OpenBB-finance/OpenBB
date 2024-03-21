@@ -573,9 +573,7 @@ def economy_fred_series(
     if normalize:
         df_ta = df_ta.apply(z_score_standardization)
 
-    # Extract the metadata from the warnings.
-    warnings = kwargs.get("warnings")
-    metadata = json.loads(warnings[0].message) if warnings else {}  # type: ignore
+    metadata = kwargs.get("metadata", {})
 
     # Check if the request was transformed by the FRED API.
     params = kwargs["extra_params"] if kwargs.get("extra_params") else {}
