@@ -8,6 +8,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
 
 # ruff: noqa: S106
+# pylint: disable=redefined-outer-name, protected-access
 
 
 class MockLoggingSettings:
@@ -38,19 +39,37 @@ def logging_service():
         "openbb_core.app.logs.logging_service.LoggingService._log_startup",
         mock_log_startup,
     ):
-        logging_service = LoggingService(
+        _logging_service = LoggingService(
+            system_settings=mock_system_settings,
+            user_settings=mock_user_settings,
+        )
+
+        return _logging_service
+
+
+def test_correctly_initialized():
+    mock_system_settings = Mock()
+    mock_user_settings = Mock()
+    mock_setup_handlers = Mock()
+    mock_log_startup = Mock()
+
+    with patch(
+        "openbb_core.app.logs.logging_service.LoggingSettings",
+        MockLoggingSettings,
+    ), patch(
+        "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
+        mock_setup_handlers,
+    ), patch(
+        "openbb_core.app.logs.logging_service.LoggingService._log_startup",
+        mock_log_startup,
+    ):
+        LoggingService(
             system_settings=mock_system_settings,
             user_settings=mock_user_settings,
         )
 
         mock_setup_handlers.assert_called_once()
         mock_log_startup.assert_called_once()
-
-        return logging_service
-
-
-def test_correctly_initialized(logging_service):
-    assert logging_service
 
 
 def test_logging_settings_setter(logging_service):
@@ -91,7 +110,10 @@ def test_log_startup(logging_service):
         expected_log_data = {
             "route": "test_route",
             "PREFERENCES": "your_preferences",
-            "KEYS": {"username": "defined", "password": "defined"},
+            "KEYS": {
+                "username": "defined",
+                "password": "defined",  # pragma: allowlist secret
+            },
             "SYSTEM": "your_system_settings",
             "custom_headers": {"X-OpenBB-Test": "test"},
         }
