@@ -1,6 +1,5 @@
 """Charting router."""
 
-import json
 from typing import Any, Dict, Tuple
 
 import pandas as pd
