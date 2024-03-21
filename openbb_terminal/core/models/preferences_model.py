@@ -1,7 +1,7 @@
 import os
-from typing import Literal, Optional
+from typing import Literal
 
-from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
+from pydantic import NonNegativeInt, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import HOME_DIRECTORY

@@ -6,7 +6,7 @@ import os
 import sys
 import webbrowser
 from contextlib import contextmanager
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from packaging import version
 
@@ -307,15 +307,15 @@ def reset(queue: Optional[List[str]] = None):
     dev = get_current_system().DEV_BACKEND
 
     try:
-        # save the current user
-        user_profile = get_current_user().profile
-        session: Dict[str, Any] = {
-            "access_token": user_profile.token,
-            "token_type": user_profile.token_type,
-            "uuid": user_profile.uuid,
-            "username": user_profile.username,
-            "remember": user_profile.remember,
-        }
+        # # save the current user
+        # user_profile = get_current_user().profile
+        # session: Dict[str, Any] = {
+        #     "access_token": user_profile.token,
+        #     "token_type": user_profile.token_type,
+        #     "uuid": user_profile.uuid,
+        #     "username": user_profile.username,
+        #     "remember": user_profile.remember,
+        # }
 
         # remove the hub routines
         if not is_local():

@@ -3,8 +3,6 @@
 __docformat__ = "numpy"
 
 import argparse
-import io
-import logging
 import os
 import random
 import re

@@ -1,7 +1,6 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 # IMPORTS INTERNAL
