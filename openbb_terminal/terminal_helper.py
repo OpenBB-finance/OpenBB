@@ -2,26 +2,17 @@
 
 __docformat__ = "numpy"
 
-import hashlib
-import logging
 import os
 import sys
 import webbrowser
-
-# IMPORTATION STANDARD
 from contextlib import contextmanager
 from typing import Any, Dict, List, Optional
 
-import matplotlib.pyplot as plt
-
-# IMPORTATION THIRDPARTY
 from packaging import version
 
-# IMPORTATION INTERNAL
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
-from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
@@ -34,14 +25,6 @@ from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
-
-try:
-    __import__("git")
-except ImportError:
-    WITH_GIT = False
-else:
-    WITH_GIT = True
-logger = logging.getLogger(__name__)
 
 
 def print_goodbye():
@@ -58,7 +41,7 @@ def print_goodbye():
     # "...when offered a flight to the moon, nobody asks about what seat."
 
     text = """
-[param]Thank you for using the OpenBB Terminal and being part of this journey.[/param]
+[param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
 
 We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
 
@@ -69,17 +52,6 @@ In the meantime, check out our other products:
 [bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
     """
     console.print(text)
-    logger.info("END")
-
-
-def sha256sum(filename):
-    h = hashlib.sha256()
-    b = bytearray(128 * 1024)
-    mv = memoryview(b)
-    with open(filename, "rb", buffering=0) as f:
-        for n in iter(lambda: f.readinto(mv), 0):
-            h.update(mv[:n])
-    return h.hexdigest()
 
 
 def open_openbb_documentation(  # noqa: PLR0912
@@ -210,7 +182,7 @@ def hide_splashscreen():
         pyi_splash.update_text("Terminal Loaded!")
         pyi_splash.close()
     except Exception as e:
-        logger.info(e)
+        console.print(f"Error: Unable to hide splashscreen: {e}")
 
 
 def is_auth_enabled() -> bool:
@@ -256,7 +228,6 @@ def bootup():
             # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")
     except Exception as e:
-        logger.exception("Exception: %s", str(e))
         console.print(e, "\n")
 
 
@@ -331,9 +302,6 @@ def welcome_message():
 def reset(queue: Optional[List[str]] = None):
     """Resets the terminal.  Allows for checking code without quitting"""
     console.print("resetting...")
-    logger.info("resetting")
-    plt.close("all")
-    plots_backend().close(reset=True)
     load_env_files()
     debug = get_current_system().DEBUG_MODE
     dev = get_current_system().DEV_BACKEND
@@ -371,11 +339,10 @@ def reset(queue: Optional[List[str]] = None):
         else:
             from openbb_terminal.core.session import session_controller
 
-            session_controller.main(session, queue=queue_list)
+            session_controller.launch_terminal(queue=queue_list)
 
     except Exception as e:
-        logger.exception("Exception: %s", str(e))
-        console.print("Unfortunately, resetting wasn't possible!\n")
+        console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
         print_goodbye()
 
 
