@@ -210,7 +210,8 @@ class ParametersBuilder:
                                 f" Available for: {', '.join(providers)}.",
                                 category=OpenBBWarning,
                             )
-                else:
+                # "chart_params" is a special kwarg that should not create a warning.
+                elif "chart_params" not in p:
                     warn(
                         message=f"Parameter '{p}' not found.",
                         category=OpenBBWarning,
