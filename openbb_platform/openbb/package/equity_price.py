@@ -540,7 +540,7 @@ class ROUTER_equity_price(Container):
             Earnings per share. (provider: fmp)
         pe : Optional[float]
             Price earnings ratio. (provider: fmp)
-        earnings_announcement : Optional[Union[datetime, str]]
+        earnings_announcement : Optional[datetime]
             Upcoming earnings announcement date. (provider: fmp)
         is_darkpool : Optional[bool]
             Whether or not the current trade is from a darkpool. (provider: intrinio)

@@ -235,8 +235,7 @@ def test_equity_fundamental_cash_growth(params, headers):
         (
             {
                 "symbol": "AAPL",
-                "start_date": "2020-01-01",
-                "end_date": "2021-01-01",
+                "year": 2022,
                 "provider": "fmp",
             }
         ),
@@ -244,12 +243,14 @@ def test_equity_fundamental_cash_growth(params, headers):
             {
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "year": None,
             }
         ),
         (
             {
                 "symbol": "AAPL,MSFT",
                 "provider": "fmp",
+                "year": None,
             }
         ),
     ],

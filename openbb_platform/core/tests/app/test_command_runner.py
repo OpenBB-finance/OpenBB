@@ -1,18 +1,23 @@
+from dataclasses import dataclass
 from inspect import Parameter
 from typing import Dict, List
 from unittest.mock import Mock, patch
 
 import pytest
+from fastapi import Query
+from fastapi.params import Query as QueryParam
 from openbb_core.app.command_runner import (
     CommandRunner,
     ExecutionContext,
     ParametersBuilder,
     StaticCommandRunner,
 )
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.router import CommandMap
+from pydantic import BaseModel, ConfigDict
 
 
 @pytest.fixture()
@@ -222,6 +227,65 @@ def test_parameters_builder_validate_kwargs(mock_func):
     )
 
     assert result == {"a": 1, "b": 2, "c": 3.0, "d": 4, "provider_choices": {}}
+
+
+@pytest.mark.parametrize(
+    "provider_choices, extra_params, expect",
+    [
+        (
+            {"provider": "provider1"},
+            {"exists_in_2": ...},
+            OpenBBWarning,
+        ),
+        (
+            {"provider": "inexistent_provider"},
+            {"exists_in_both": ...},
+            OpenBBWarning,
+        ),
+        (
+            {},
+            {"inexistent_field": ...},
+            OpenBBWarning,
+        ),
+        (
+            {"provider": "provider2"},
+            {"exists_in_2": ...},
+            None,
+        ),
+        (
+            {"provider": "provider2"},
+            {"exists_in_both": ...},
+            None,
+        ),
+        (
+            {},
+            {"exists_in_both": ...},
+            None,
+        ),
+    ],
+)
+def test_parameters_builder__warn_kwargs(provider_choices, extra_params, expect):
+    """Test _warn_kwargs."""
+
+    @dataclass
+    class SomeModel:
+        """SomeModel"""
+
+        exists_in_2: QueryParam = Query(..., title="provider2")
+        exists_in_both: QueryParam = Query(..., title="provider1,provider2")
+
+    class Model(BaseModel):
+        """Model"""
+
+        model_config = ConfigDict(arbitrary_types_allowed=True)
+        extra_params: SomeModel
+
+    with pytest.warns(expect) as warning_info:
+        # pylint: disable=protected-access
+        ParametersBuilder._warn_kwargs(provider_choices, extra_params, Model)
+
+        if not expect:
+            assert len(warning_info) == 0
 
 
 def test_parameters_builder_build(mock_func, execution_context):

@@ -1,7 +1,9 @@
 """FMP Equity Quote Model."""
 
+import asyncio
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,8 +11,9 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
-from openbb_fmp.utils.helpers import get_querystring
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import get_querystring, response_callback
 from pydantic import Field, field_validator
 
 
@@ -54,7 +57,7 @@ class FMPEquityQuoteData(EquityQuoteData):
     )
     eps: Optional[float] = Field(default=None, description="Earnings per share.")
     pe: Optional[float] = Field(default=None, description="Price earnings ratio.")
-    earnings_announcement: Optional[Union[datetime, str]] = Field(
+    earnings_announcement: Optional[datetime] = Field(
         default=None, description="Upcoming earnings announcement date."
     )
 
@@ -62,8 +65,10 @@ class FMPEquityQuoteData(EquityQuoteData):
     @classmethod
     def validate_last_timestamp(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        v = int(v) if isinstance(v, str) else v
-        return datetime.utcfromtimestamp(int(v)).replace(tzinfo=timezone.utc)
+        if v:
+            v = int(v) if isinstance(v, str) else v
+            return datetime.fromtimestamp(int(v), tz=timezone.utc)
+        return None
 
     @field_validator("earnings_announcement", mode="before", check_fields=False)
     @classmethod
@@ -109,16 +114,29 @@ class FMPEquityQuoteFetcher(
         query_str = get_querystring(query.model_dump(), ["symbol"])
 
         symbols = query.symbol.split(",")
-        symbols_split = [
-            ",".join(symbols[i : i + 10]) for i in range(0, len(symbols), 10)
-        ]
 
-        urls = [
-            f"{base_url}/quote/{symbol}?{query_str}&apikey={api_key}"
-            for symbol in symbols_split
-        ]
+        results = []
 
-        return await amake_requests(urls, **kwargs)
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = f"{base_url}/quote/{symbol}?{query_str}&apikey={api_key}"
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result or len(result) == 0:
+                warn(f"Symbol Error: No data found for {symbol}")
+            if result and len(result) > 0:
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(s) for s in symbols])
+
+        if not results:
+            raise EmptyDataError("No data found for the given symbols.")
+
+        return sorted(
+            results,
+            key=(lambda item: (symbols.index(item.get("symbol", len(symbols))))),
+        )
 
     @staticmethod
     def transform_data(

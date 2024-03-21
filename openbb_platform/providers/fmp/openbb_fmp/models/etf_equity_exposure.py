@@ -3,8 +3,8 @@
 # pylint: disable=unused-argument
 
 import asyncio
-import warnings
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_equity_exposure import (
@@ -13,9 +13,8 @@ from openbb_core.provider.standard_models.etf_equity_exposure import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import response_callback
 from pydantic import field_validator
-
-_warn = warnings.warn
 
 
 class FMPEtfEquityExposureQueryParams(EtfEquityExposureQueryParams):
@@ -70,15 +69,18 @@ class FMPEtfEquityExposureFetcher(
         async def get_one(symbol):
             """Get one symbol."""
             url = f"https://financialmodelingprep.com/api/v3/etf-stock-exposure/{symbol}?apikey={api_key}"
-            response = await amake_request(url)
+            response = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
             if not response:
-                _warn(f"No results found for {symbol}.")
-            results.extend(response)
+                warn(f"No results found for {symbol}.")
+            if response:
+                results.extend(response)
 
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
         if not results:
-            raise EmptyDataError()
+            raise EmptyDataError("No data was found for the given symbols.")
 
         return results
 

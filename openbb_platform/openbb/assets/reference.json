@@ -4310,7 +4310,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp.",
                     "default": null,
                     "optional": true
                 },
@@ -4657,11 +4657,20 @@
             "standard": [
                 {
                     "name": "symbol",
-                    "type": "str",
-                    "description": "Symbol to get data for.",
+                    "type": "Union[str, List[str]]",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                     "default": "",
                     "optional": false
                 },
+                {
+                    "name": "provider",
+                    "type": "Literal['fmp']",
+                    "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
+                    "default": "fmp",
+                    "optional": true
+                }
+            ],
+            "fmp": [
                 {
                     "name": "period",
                     "type": "Literal['quarter', 'annual']",
@@ -4673,18 +4682,10 @@
                     "name": "limit",
                     "type": "int",
                     "description": "The number of data entries to return.",
-                    "default": 30,
-                    "optional": true
-                },
-                {
-                    "name": "provider",
-                    "type": "Literal['fmp']",
-                    "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
-                    "default": "fmp",
+                    "default": null,
                     "optional": true
                 }
-            ],
-            "fmp": []
+            ]
         },
         "returns": {
             "OBBject": [
@@ -4735,141 +4736,141 @@
                     "name": "estimated_revenue_low",
                     "type": "int",
                     "description": "Estimated revenue low.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_revenue_high",
                     "type": "int",
                     "description": "Estimated revenue high.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_revenue_avg",
                     "type": "int",
                     "description": "Estimated revenue average.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebitda_low",
-                    "type": "int",
-                    "description": "Estimated EBITDA low.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebitda_high",
-                    "type": "int",
-                    "description": "Estimated EBITDA high.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebitda_avg",
-                    "type": "int",
-                    "description": "Estimated EBITDA average.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebit_low",
-                    "type": "int",
-                    "description": "Estimated EBIT low.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebit_high",
-                    "type": "int",
-                    "description": "Estimated EBIT high.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_ebit_avg",
-                    "type": "int",
-                    "description": "Estimated EBIT average.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_net_income_low",
-                    "type": "int",
-                    "description": "Estimated net income low.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_net_income_high",
-                    "type": "int",
-                    "description": "Estimated net income high.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "estimated_net_income_avg",
-                    "type": "int",
-                    "description": "Estimated net income average.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_sga_expense_low",
                     "type": "int",
                     "description": "Estimated SGA expense low.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_sga_expense_high",
                     "type": "int",
                     "description": "Estimated SGA expense high.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_sga_expense_avg",
                     "type": "int",
                     "description": "Estimated SGA expense average.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebitda_low",
+                    "type": "int",
+                    "description": "Estimated EBITDA low.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebitda_high",
+                    "type": "int",
+                    "description": "Estimated EBITDA high.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebitda_avg",
+                    "type": "int",
+                    "description": "Estimated EBITDA average.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebit_low",
+                    "type": "int",
+                    "description": "Estimated EBIT low.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebit_high",
+                    "type": "int",
+                    "description": "Estimated EBIT high.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_ebit_avg",
+                    "type": "int",
+                    "description": "Estimated EBIT average.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_net_income_low",
+                    "type": "int",
+                    "description": "Estimated net income low.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_net_income_high",
+                    "type": "int",
+                    "description": "Estimated net income high.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "estimated_net_income_avg",
+                    "type": "int",
+                    "description": "Estimated net income average.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_eps_avg",
                     "type": "float",
                     "description": "Estimated EPS average.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_eps_high",
                     "type": "float",
                     "description": "Estimated EPS high.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "estimated_eps_low",
                     "type": "float",
                     "description": "Estimated EPS low.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "number_analyst_estimated_revenue",
                     "type": "int",
                     "description": "Number of analysts who estimated revenue.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "number_analysts_estimated_eps",
                     "type": "int",
                     "description": "Number of analysts who estimated EPS.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
                 }
             ],
             "fmp": []
@@ -4888,7 +4889,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. Multiple items allowed for provider(s): yfinance.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.",
                     "default": "",
                     "optional": false
                 },
@@ -15040,25 +15041,25 @@
                     "optional": false
                 },
                 {
-                    "name": "label",
-                    "type": "str",
-                    "description": "Label of the historical stock splits.",
-                    "default": "",
-                    "optional": false
-                },
-                {
                     "name": "numerator",
                     "type": "float",
-                    "description": "Numerator of the historical stock splits.",
-                    "default": "",
-                    "optional": false
+                    "description": "Numerator of the split.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "denominator",
                     "type": "float",
-                    "description": "Denominator of the historical stock splits.",
-                    "default": "",
-                    "optional": false
+                    "description": "Denominator of the split.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "split_ratio",
+                    "type": "str",
+                    "description": "Split ratio.",
+                    "default": null,
+                    "optional": true
                 }
             ],
             "fmp": []
@@ -16950,7 +16951,7 @@
                 },
                 {
                     "name": "earnings_announcement",
-                    "type": "Union[datetime, str]",
+                    "type": "datetime",
                     "description": "Upcoming earnings announcement date.",
                     "default": null,
                     "optional": true
