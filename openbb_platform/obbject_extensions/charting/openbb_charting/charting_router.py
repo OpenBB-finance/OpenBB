@@ -18,9 +18,9 @@ from openbb_charting.query_params import (
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.helpers import (
     calculate_returns,
+    heikin_ashi,
     should_share_axis,
     z_score_standardization,
-    heikin_ashi,
 )
 
 CHART_FORMAT = ChartFormat.plotly
@@ -248,26 +248,6 @@ def equity_price_historical(
     return fig, content
 
 
-def _ta_ma(ma_type: str, **kwargs):
-    """Plot moving average helper."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
-    window = kwargs.get("window", 50)
-    offset = kwargs.get("offset", 0)
-    symbol = kwargs.get("symbol", "")
-
-    ta = PlotlyTA()
-    fig = ta.plot(
-        data,
-        {f"{ma_type.lower()}": dict(length=window, offset=offset)},
-        f"{symbol.upper()} {ma_type.upper()}",
-        False,
-        volume=False,
-    )
-    content = fig.show(external=True).to_plotly_json()
-
-    return fig, content
-
-
 def etf_historical(
     **kwargs: EquityPriceHistoricalChartQueryParams,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
@@ -296,6 +276,50 @@ def crypto_price_historical(
     return equity_price_historical(**kwargs)
 
 
+def _ta_ma(ma_type: str, **kwargs):
+    """Plot moving average helper."""
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+    window = kwargs.get("window", 50)
+    offset = kwargs.get("offset", 0)
+    symbol = kwargs.get("symbol", "")
+
+    ta = PlotlyTA()
+    fig = ta.plot(
+        data,
+        {f"{ma_type.lower()}": dict(length=window, offset=offset)},
+        f"{symbol.upper()} {ma_type.upper()}",
+        False,
+        volume=False,
+    )
+    content = fig.show(external=True).to_plotly_json()
+
+    return fig, content
+
+
+def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Plot simple moving average chart."""
+    ma_type = "sma"
+    return _ta_ma(ma_type, **kwargs)
+
+
+def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Exponential moving average chart."""
+    ma_type = "ema"
+    return _ta_ma(ma_type, **kwargs)
+
+
+def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Hull moving average chart."""
+    ma_type = "hma"
+    return _ta_ma(ma_type, **kwargs)
+
+
+def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Weighted moving average chart."""
+    ma_type = "wma"
+    return _ta_ma(ma_type, **kwargs)
+
+
 def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Zero lag moving average chart."""
     ma_type = "zlma"
@@ -322,12 +346,6 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     return fig, content
 
 
-def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Plot simple moving average chart."""
-    ma_type = "sma"
-    return _ta_ma(ma_type, **kwargs)
-
-
 def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
@@ -347,12 +365,6 @@ def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     content = fig.show(external=True).to_plotly_json()
 
     return fig, content
-
-
-def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Hull moving average chart."""
-    ma_type = "hma"
-    return _ta_ma(ma_type, **kwargs)
 
 
 def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
@@ -376,12 +388,6 @@ def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     return fig, content
 
 
-def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Weighted moving average chart."""
-    ma_type = "wma"
-    return _ta_ma(ma_type, **kwargs)
-
-
 def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Relative strength index chart."""
     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
@@ -401,12 +407,6 @@ def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     content = fig.show(external=True).to_plotly_json()
 
     return fig, content
-
-
-def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Exponential moving average chart."""
-    ma_type = "ema"
-    return _ta_ma(ma_type, **kwargs)
 
 
 def technical_cones(
