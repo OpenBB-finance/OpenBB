@@ -119,14 +119,21 @@ class PlatformController(BaseController):
         def method(self, other_args: List[str], translator=translator):
             parser = translator.parser
 
-            if ns_parser := self.parse_known_args_and_warn(parser, other_args):
+            if ns_parser := self.parse_known_args_and_warn(
+                parser=parser,
+                other_args=other_args,
+                export_allowed="raw_data_and_figures",
+            ):
                 try:
                     obbject = translator.execute_func(parsed_args=ns_parser)
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()
                     elif hasattr(obbject, "to_dataframe"):
-                        print_rich_table(obbject.to_dataframe(), show_index=True)
+                        print_rich_table(
+                            obbject.to_dataframe(),
+                            show_index=True,
+                        )
                     elif isinstance(obbject, dict):
                         print_rich_table(
                             pd.DataFrame.from_dict(obbject, orient="index"),

@@ -25,11 +25,6 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
-NO_EXPORT = 0
-EXPORT_ONLY_RAW_DATA_ALLOWED = 1
-EXPORT_ONLY_FIGURES_ALLOWED = 2
-EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
-
 MENU_GO_BACK = 0
 MENU_QUIT = 1
 MENU_RESET = 2

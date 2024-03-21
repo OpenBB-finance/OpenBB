@@ -344,7 +344,7 @@ class ControllerDoc:
         def mock_func(fparser: argparse.ArgumentParser, *args, **kwargs):
             """Mock function to get the parser"""
             allowed = [EXPORT_BOTH_RAW_DATA_AND_FIGURES, EXPORT_ONLY_FIGURES_ALLOWED]
-            export = kwargs.get("export_allowed", NO_EXPORT)
+            export = kwargs.get("export_allowed", "no_export")
 
             if export in allowed:
                 self.image_exportable[command] = True

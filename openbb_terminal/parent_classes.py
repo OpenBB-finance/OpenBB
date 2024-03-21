@@ -15,7 +15,7 @@ import urllib
 import webbrowser
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 # IMPORTS THIRDPARTY
 from prompt_toolkit.formatted_text import HTML
@@ -51,11 +51,6 @@ from openbb_terminal.terminal_helper import (
 logger = logging.getLogger(__name__)
 
 # pylint: disable=R0912
-
-NO_EXPORT = 0
-EXPORT_ONLY_RAW_DATA_ALLOWED = 1
-EXPORT_ONLY_FIGURES_ALLOWED = 2
-EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
 
@@ -1029,7 +1024,9 @@ class BaseController(metaclass=ABCMeta):
         cls,
         parser: argparse.ArgumentParser,
         other_args: List[str],
-        export_allowed: int = NO_EXPORT,
+        export_allowed: Literal[
+            "no_export", "raw_data_only", "figures_only", "raw_data_and_figures"
+        ] = "no_export",
         raw: bool = False,
         limit: int = 0,
     ):
@@ -1041,9 +1038,8 @@ class BaseController(metaclass=ABCMeta):
             Parser with predefined arguments
         other_args: List[str]
             list of arguments to parse
-        export_allowed: int
-            Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
-            EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        export_allowed: Literal["no_export", "raw_data_only", "figures_only", "raw_data_and_figures"]
+            Export options
         raw: bool
             Add the --raw flag
         limit: int
@@ -1069,14 +1065,14 @@ class BaseController(metaclass=ABCMeta):
                 help="Label for legend when hold is on.",
             )
 
-        if export_allowed > NO_EXPORT:
+        if export_allowed != "no_export":
             choices_export = []
             help_export = "Does not export!"
 
-            if export_allowed == EXPORT_ONLY_RAW_DATA_ALLOWED:
+            if export_allowed == "raw_data_only":
                 choices_export = ["csv", "json", "xlsx"]
                 help_export = "Export raw data into csv, json, xlsx"
-            elif export_allowed == EXPORT_ONLY_FIGURES_ALLOWED:
+            elif export_allowed == "figures_only":
                 choices_export = ["png", "jpg", "pdf", "svg"]
                 help_export = "Export figure into png, jpg, pdf, svg "
             else:
@@ -1093,8 +1089,8 @@ class BaseController(metaclass=ABCMeta):
 
             # If excel is an option, add the sheet name
             if export_allowed in [
-                EXPORT_ONLY_RAW_DATA_ALLOWED,
-                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+                "raw_data_only",
+                "raw_data_and_figures",
             ]:
                 parser.add_argument(
                     "--sheet-name",
@@ -1141,8 +1137,8 @@ class BaseController(metaclass=ABCMeta):
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
             if export_allowed in [
-                EXPORT_ONLY_RAW_DATA_ALLOWED,
-                EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+                "raw_data_only",
+                "raw_data_and_figures",
             ]:
                 ns_parser.is_image = any(
                     ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]

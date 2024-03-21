@@ -2,7 +2,7 @@ from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from types import MethodType
-from typing import Callable, List
+from typing import Callable, List, Literal
 from unittest.mock import patch
 
 from openbb_terminal.core.session.current_system import get_current_system
@@ -13,7 +13,9 @@ def __mock_parse_known_args_and_warn(
     controller,
     parser: ArgumentParser,
     other_args: List[str],
-    export_allowed: int = 0,
+    export_allowed: Literal[
+        "no_export", "raw_data_only", "figures_only", "raw_data_and_figures"
+    ] = "no_export",
     raw: bool = False,
     limit: int = 0,
 ) -> None:
@@ -26,9 +28,8 @@ def __mock_parse_known_args_and_warn(
         Parser with predefined arguments
     other_args: List[str]
         list of arguments to parse
-    export_allowed: int
-        Choose from 0, 1,
-        2 and EXPORT_BOTH_RAW_DATA_AND_FIGURES
+    export_allowed: Literal["no_export", "raw_data_only", "figures_only", "raw_data_and_figures"]
+            Export options
     raw: bool
         Add the --raw flag
     limit: int
@@ -41,14 +42,14 @@ def __mock_parse_known_args_and_warn(
         "-h", "--help", action="store_true", help="show this help message"
     )
 
-    if export_allowed > 0:
+    if export_allowed != "no_export":
         choices_export = []
         help_export = "Does not export!"
 
-        if export_allowed == 1:
+        if export_allowed == "raw_data_only":
             choices_export = ["csv", "json", "xlsx"]
             help_export = "Export raw data into csv, json, xlsx"
-        elif export_allowed == 2:
+        elif export_allowed == "figures_only":
             choices_export = ["png", "jpg", "pdf", "svg"]
             help_export = "Export figure into png, jpg, pdf, svg "
         else:
