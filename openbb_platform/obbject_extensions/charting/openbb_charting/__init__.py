@@ -134,17 +134,15 @@ class Charting:
         Parameters
         ----------
         data : Union[Data, pd.DataFrame, pd.Series]
-            Data to be plotted Data to be plotted (OHLCV data).
+            Data to be plotted (OHLCV data).
         indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
             Indicators to be plotted, by default None
         symbol : str, optional
-            Symbol to be plotted, by default ""
+            Symbol to be plotted. This is used for labels and titles, by default ""
         candles : bool, optional
             If True, candles will be plotted, by default True
         volume : bool, optional
             If True, volume will be plotted, by default True
-        prepost : bool, optional
-            If True, prepost will be plotted, by default False
         volume_ticks_x : int, optional
             Volume ticks, by default 7
         render : bool, optional
