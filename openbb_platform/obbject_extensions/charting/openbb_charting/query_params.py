@@ -82,6 +82,10 @@ class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
         default=True,
         description="If True, and OHLC exists, and there is only one symbol in the data, candles will be plotted.",
     )
+    heikin_ashi: bool = Field(
+        default=False,
+        description="If True, and `candles=True`, Heikin Ashi candles will be plotted.",
+    )
     volume: bool = Field(
         default=True,
         description="If True, and volume exists, and `candles=True`, volume will be plotted.",

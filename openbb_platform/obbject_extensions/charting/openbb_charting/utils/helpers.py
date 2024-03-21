@@ -5,6 +5,7 @@ from inspect import getmembers, getsource, isfunction
 from typing import List
 
 import pandas as pd
+from pandas_ta import candles
 
 
 def get_charting_functions() -> List[str]:
@@ -45,3 +46,42 @@ def should_share_axis(
     ratio = max(range1, range2) / min(range1, range2)
     # If the ratio is less than the threshold, the two columns can share an axis
     return ratio < threshold
+
+
+def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
+    """Return OHLC data as Heikin Ashi Candles.
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        DataFrame containing OHLC data.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame copy with Heikin Ashi candle calculations.
+    """
+
+    df = data.copy()
+
+    check_columns = ["open", "high", "low", "close"]
+
+    for item in check_columns:
+        if item not in df.columns:
+            raise ValueError(
+                "The expected column labels, "
+                f"{check_columns}"
+                ", were not found in DataFrame."
+            )
+
+    ha = candles.ha(
+        df["open"],
+        df["high"],
+        df["low"],
+        df["close"],
+    )
+
+    for item in check_columns:
+        df[item] = ha[f"HA_{item}"]
+
+    return df

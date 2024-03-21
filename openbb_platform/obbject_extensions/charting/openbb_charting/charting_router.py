@@ -20,6 +20,7 @@ from openbb_charting.utils.helpers import (
     calculate_returns,
     should_share_axis,
     z_score_standardization,
+    heikin_ashi,
 )
 
 CHART_FORMAT = ChartFormat.plotly
@@ -103,6 +104,9 @@ def equity_price_historical(
         and returns is False
         and candles is True
     ):
+        if kwargs.get("heikin_ashi") is True:
+            data = heikin_ashi(data)
+            title = f"{title} - Heikin Ashi"
 
         ta = PlotlyTA()
         fig = ta.plot(  # type: ignore
