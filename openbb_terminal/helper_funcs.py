@@ -2,10 +2,6 @@
 
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines
-
-# IMPORTS STANDARD LIBRARY
-# IMPORTS STANDARD
 import argparse
 import io
 import logging
@@ -15,22 +11,14 @@ import re
 from datetime import (
     datetime,
 )
-from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-# IMPORTS THIRDPARTY
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pandas.io.formats.format
 import pytz
 import requests
-from pandas.plotting import register_matplotlib_converters
-from PIL import Image, ImageDraw
 from rich.table import Table
 
-from openbb_terminal import plots_backend
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
 )
@@ -38,15 +26,6 @@ from openbb_terminal.core.config.paths import (
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
-
-logger = logging.getLogger(__name__)
-
-register_matplotlib_converters()
-if (
-    get_current_user().preferences.PLOT_BACKEND is not None
-    and get_current_user().preferences.PLOT_BACKEND != "None"
-):
-    matplotlib.use(get_current_user().preferences.PLOT_BACKEND)
 
 NO_EXPORT = 0
 EXPORT_ONLY_RAW_DATA_ALLOWED = 1
@@ -150,12 +129,6 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
             for tag in matching_placeholders:
                 commands[command_num] = command.replace(tag, placeholders[tag])
     return commands
-
-
-def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
-    """Log and output an error."""
-    logger.error(str(error))
-    raise error
 
 
 def return_colored_value(value: str):
@@ -263,9 +236,7 @@ def print_rich_table(  # noqa: PLR0912
         if isinstance(_headers, pd.Index):
             output = list(_headers)
         if len(output) != len(df.columns):
-            log_and_raise(
-                ValueError("Length of headers does not match length of DataFrame")
-            )
+            raise ValueError("Length of headers does not match length of DataFrame.")
         return output
 
     df = df.copy() if not limit else df.copy().iloc[:limit]
@@ -318,7 +289,7 @@ def print_rich_table(  # noqa: PLR0912
                 table.add_column(str(column))
 
         if isinstance(floatfmt, list) and len(floatfmt) != len(df.columns):
-            log_and_raise(
+            raise (
                 ValueError(
                     "Length of floatfmt list does not match length of DataFrame columns."
                 )
@@ -370,7 +341,7 @@ def check_non_negative(value) -> int:
     """Argparse type to check non negative int."""
     new_value = int(value)
     if new_value < 0:
-        log_and_raise(argparse.ArgumentTypeError(f"{value} is negative"))
+        raise argparse.ArgumentTypeError(f"{value} is negative")
     return new_value
 
 
@@ -378,9 +349,7 @@ def check_positive(value) -> int:
     """Argparse type to check positive int."""
     new_value = int(value)
     if new_value <= 0:
-        log_and_raise(
-            argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
-        )
+        raise argparse.ArgumentTypeError(f"{value} is an invalid positive int value")
     return new_value
 
 
@@ -538,109 +507,6 @@ def check_file_type_saved(valid_types: Optional[List[str]] = None):
 def system_clear():
     """Clear screen."""
     os.system("cls||clear")  # nosec # noqa: S605,S607
-
-
-def screenshot() -> None:
-    """Screenshot the terminal window or the plot window.
-
-    Parameters
-    ----------
-    terminal_window_target: bool
-        Target the terminal window
-    """
-    try:
-        if plt.get_fignums():
-            img_buf = io.BytesIO()
-            plt.savefig(img_buf, format="png")
-            shot = Image.open(img_buf)
-            screenshot_to_canvas(shot, plot_exists=True)
-
-        else:
-            console.print("No plots found.\n")
-
-    except Exception as err:
-        console.print(f"Cannot reach window - {err}\n")
-
-
-def screenshot_to_canvas(shot, plot_exists: bool = False):
-    """Frame image to OpenBB canvas.
-
-    Parameters
-    ----------
-    shot
-        Image to frame with OpenBB Canvas
-    plot_exists: bool
-        Variable to say whether the image is a plot or screenshot of terminal
-    """
-    WHITE_LINE_WIDTH = 3
-    OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
-    OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
-    UPPER_SPACE = 40
-    BACKGROUND_WIDTH_SLACK = 150
-    BACKGROUND_HEIGHT_SLACK = 150
-
-    background = Image.open(
-        Path(os.path.abspath(__file__), "../../images/background.png")
-    )
-    logo = Image.open(
-        Path(os.path.abspath(__file__), "../../images/openbb_horizontal_logo.png")
-    )
-
-    try:
-        if plot_exists:
-            HEADER_HEIGHT = 0
-            RADIUS = 8
-
-            background = background.resize(
-                (
-                    shot.width + BACKGROUND_WIDTH_SLACK,
-                    shot.height + BACKGROUND_HEIGHT_SLACK,
-                )
-            )
-
-            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
-            y = UPPER_SPACE
-
-            white_shape = (
-                (x, y),
-                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT),
-            )
-            img = ImageDraw.Draw(background)
-            img.rounded_rectangle(
-                white_shape,
-                fill="black",
-                outline="white",
-                width=WHITE_LINE_WIDTH,
-                radius=RADIUS,
-            )
-            background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
-
-            # Logo
-            background.paste(
-                logo,
-                (
-                    int((background.width - logo.width) / 2),
-                    UPPER_SPACE
-                    + OUTSIDE_CANVAS_HEIGHT
-                    + HEADER_HEIGHT
-                    + int(
-                        (
-                            background.height
-                            - UPPER_SPACE
-                            - OUTSIDE_CANVAS_HEIGHT
-                            - HEADER_HEIGHT
-                            - logo.height
-                        )
-                        / 2
-                    ),
-                ),
-                logo,
-            )
-
-            background.show(title="screenshot")
-
-    except Exception:
-        console.print("Shot failed.")
 
 
 # Write an abstract helper to make requests from a url with potential headers and params
