@@ -194,7 +194,7 @@ class OBBject(Tagged, Generic[T]):
                 try:
                     df = pd.DataFrame(res)  # type: ignore[call-overload]
                     # Set index, if any
-                    if df and index and index in df.columns:
+                    if df is not None and index is not None and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:

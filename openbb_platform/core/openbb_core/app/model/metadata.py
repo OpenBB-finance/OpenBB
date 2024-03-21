@@ -115,7 +115,9 @@ class Metadata(BaseModel):
                 }
 
             else:
-                new_arg_val = str(arg_val)[:80]
+                str_repr_arg_val = str(arg_val)
+                if len(str_repr_arg_val) > 80:
+                    new_arg_val = str_repr_arg_val[:80]
 
             v[arg] = new_arg_val or arg_val
 
