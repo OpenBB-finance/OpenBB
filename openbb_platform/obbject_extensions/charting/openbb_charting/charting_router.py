@@ -461,7 +461,7 @@ def technical_cones(
             x=df_ta.index,
             y=df_ta[col],
             name=col,
-            mode="lines",
+            mode="lines+markers",
             hovertemplate=f"{col}: %{{y}}<extra></extra>",
             marker=dict(
                 color=colors[color],
