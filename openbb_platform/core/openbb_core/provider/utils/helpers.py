@@ -299,7 +299,7 @@ def filter_by_dates(
     if start_date is None and end_date is None:
         return data
 
-    def slice_date(d: Data) -> bool:
+    def _filter(d: Data) -> bool:
         _date = getattr(d, "date", None)
         dt = _date.date() if _date and isinstance(_date, datetime) else _date
         if dt:
@@ -312,4 +312,4 @@ def filter_by_dates(
             return True
         return False
 
-    return list(filter(slice_date, data))
+    return list(filter(_filter, data))
