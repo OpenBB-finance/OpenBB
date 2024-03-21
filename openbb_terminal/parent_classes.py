@@ -38,19 +38,16 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    screenshot,
     set_command_location,
     system_clear,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.rich_config import console, get_ordered_list_sources
+from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import (
     is_auth_enabled,
     open_openbb_documentation,
     print_guest_block_msg,
 )
-
-from .helper_classes import TerminalStyle as _TerminalStyle
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +93,6 @@ class BaseController(metaclass=ABCMeta):
         "support",
         "wiki",
         "stop",
-        "screenshot",
         "hold",
     ]
 
@@ -326,7 +322,6 @@ class BaseController(metaclass=ABCMeta):
                                             ),
                                             tickfont=dict(
                                                 size=18,
-                                                color=_TerminalStyle().get_colors()[i],
                                             ),
                                             title=dict(
                                                 font=dict(
@@ -967,21 +962,6 @@ class BaseController(metaclass=ABCMeta):
             RECORD_SESSION = False
             SESSION_RECORDED = list()
 
-    def call_screenshot(self, other_args: List[str]) -> None:
-        """Process screenshot command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="screenshot",
-            description="Screenshot terminal window or plot figure open into an OpenBB frame. "
-            "Default target is plot if there is one open, otherwise it's terminal window. "
-            " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            screenshot()
-
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(
@@ -1142,26 +1122,6 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-
-        # TODO : this is a temporary workaround
-        # ideally, we should drop `source` argument
-
-        result = StringIO()
-        parser.print_help(file=result)
-        has_provider = "--provider" in result.getvalue()
-
-        if not has_provider:
-            sources = get_ordered_list_sources(f"{cls.PATH}{parser.prog}")
-            # Allow to change source if there is more than one
-            if len(sources) > 1:
-                parser.add_argument(
-                    "--source",
-                    action="store",
-                    dest="source",
-                    choices=sources,
-                    default=sources[0],  # the first source from the list is the default
-                    help="Data source to select from",
-                )
 
         current_user = get_current_user()
 
