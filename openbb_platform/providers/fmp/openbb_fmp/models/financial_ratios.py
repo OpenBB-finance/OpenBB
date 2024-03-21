@@ -9,10 +9,12 @@ from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
-    amake_requests,
+    amake_request,
     to_snake_case,
 )
+from openbb_fmp.utils.helpers import response_callback
 from pydantic import Field, model_validator
 
 
@@ -232,9 +234,14 @@ class FMPFinancialRatiosFetcher(
             if query.period != "ttm"
             else ttm_url
         )
-        results = await amake_requests(url, **kwargs)
+        results = await amake_request(
+            url, response_callback=response_callback, **kwargs
+        )
 
-        return results
+        if not results:
+            raise EmptyDataError(f"No data found for the symbol {query.symbol}.")
+
+        return results  # type: ignore
 
     @staticmethod
     def transform_data(
