@@ -292,12 +292,29 @@ class StaticCommandRunner:
         cls,
         func: Callable,
         kwargs: Dict[str, Any],
+        show_warnings: bool = True,
     ) -> OBBject:
         """Run a command and return the output."""
-        obbject = await maybe_coroutine(func, **kwargs)
-        obbject.provider = getattr(
-            kwargs.get("provider_choices", None), "provider", None
-        )
+
+        with catch_warnings(record=True) as warning_list:
+            obbject = await maybe_coroutine(func, **kwargs)
+            obbject.provider = getattr(
+                kwargs.get("provider_choices", None), "provider", None
+            )
+
+        if warning_list:
+            obbject.warnings = []
+            for w in warning_list:
+                obbject.warnings.append(cast_warning(w))
+                if show_warnings:
+                    showwarning(
+                        message=w.message,
+                        category=w.category,
+                        filename=w.filename,
+                        lineno=w.lineno,
+                        file=w.file,
+                        line=w.line,
+                    )
         return obbject
 
     @classmethod

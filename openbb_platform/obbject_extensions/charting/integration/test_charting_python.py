@@ -42,7 +42,7 @@ def get_equity_data():
     [
         (
             {
-                "provider": "fmp",
+                "provider": "yfinance",
                 "symbol": "AAPL",
                 "chart": True,
             }
@@ -53,6 +53,98 @@ def get_equity_data():
 def test_charting_equity_price_historical(params, obb):
     """Test chart equity price historical."""
     result = obb.equity.price.historical(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "JPYUSD",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_currency_price_historical(params, obb):
+    """Test chart currency price historical."""
+    result = obb.currency.price.historical(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "BTCUSD",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_crypto_price_historical(params, obb):
+    """Test chart crypto price historical."""
+    result = obb.crypto.price.historical(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "NDX",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_index_price_historical(params, obb):
+    """Test chart index price historical."""
+    result = obb.index.price.historical(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "QQQ",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_etf_historical(params, obb):
+    """Test chart etf historical."""
+    result = obb.etf.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
