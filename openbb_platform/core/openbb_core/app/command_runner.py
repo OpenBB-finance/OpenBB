@@ -1,5 +1,7 @@
 """Command runner module."""
 
+# pylint: disable=R0903
+
 import json
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
@@ -235,7 +237,7 @@ class ParametersBuilder:
         }
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
-        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
+        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore  # pylint: disable=C0103
         # Validate and coerce
         model = ValidationModel(**kwargs)
         ParametersBuilder._warn_kwargs(
@@ -245,6 +247,7 @@ class ParametersBuilder:
         )
         return dict(model)
 
+    # pylint: disable=R0913
     @classmethod
     def build(
         cls,
@@ -285,6 +288,7 @@ class ParametersBuilder:
         return kwargs
 
 
+# pylint: disable=too-few-public-methods
 class StaticCommandRunner:
     """Static Command Runner."""
 
@@ -293,7 +297,7 @@ class StaticCommandRunner:
         cls,
         func: Callable,
         kwargs: Dict[str, Any],
-        show_warnings: bool = True,
+        show_warnings: bool = True,  # pylint: disable=unused-argument   # type: ignore
     ) -> OBBject:
         """Run a command and return the output."""
 
@@ -321,7 +325,7 @@ class StaticCommandRunner:
             else {}
         )
 
-        # TODO: Update when a proper metadata transmission solution is implemented.
+        # TODO: Update when a proper metadata transmission solution is implemented.  # pylint: disable=W0511
         try:
             message = (
                 getattr(metadata[0], "message", "{}")
@@ -332,8 +336,11 @@ class StaticCommandRunner:
         except json.JSONDecodeError:
             metadata = {}
 
-        obbject.charting.show(render=False, metadata=metadata, **chart_params, **kwargs)  # type: ignore
+        obbject.charting.show(  # type: ignore
+            render=False, metadata=metadata, **chart_params, **kwargs
+        )
 
+    # pylint: disable=R0913, R0914
     @classmethod
     async def _execute_func(
         cls,
@@ -413,6 +420,7 @@ class StaticCommandRunner:
                     )
         return obbject
 
+    # pylint: disable=W0718
     @classmethod
     async def run(
         cls,
