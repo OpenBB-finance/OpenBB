@@ -1,3 +1,4 @@
+# pylint: disable=C0413
 """Helper functions for charting."""
 
 from inspect import getmembers, getsource, isfunction
@@ -5,11 +6,12 @@ from typing import List
 
 import pandas as pd
 
-from openbb_charting import charting_router
-
 
 def get_charting_functions() -> List[str]:
     """Discover charting functions."""
+
+    from openbb_charting import charting_router
+
     implemented_functions = []
 
     for name, obj in getmembers(charting_router, isfunction):
