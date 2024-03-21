@@ -718,7 +718,7 @@ class BaseController(metaclass=ABCMeta):
             type=str,
             dest="description",
             help="The description of the routine",
-            default=f"Routine recorded at {datetime.now().strftime('%H:%M')} from the OpenBB Terminal",
+            default=f"Routine recorded at {datetime.now().strftime('%H:%M')} from the OpenBB Platform CLI",
             nargs="+",
         )
         parser.add_argument(
@@ -910,7 +910,7 @@ class BaseController(metaclass=ABCMeta):
 
                 # Writing to file
                 with open(routine_file, "w") as file1:
-                    lines = ["# OpenBB Terminal - Routine", "\n"]
+                    lines = ["# OpenBB Platform CLI - Routine", "\n"]
                     username = get_current_user().profile.username
                     lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
                     lines += [

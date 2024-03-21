@@ -271,9 +271,11 @@ class ConsoleAndPanel:
                 if current_user.preferences.ENABLE_RICH_PANEL:
                     if current_user.preferences.SHOW_VERSION:
                         version = get_current_system().VERSION
-                        version = f"[param]OpenBB Terminal v{version}[/param] (https://openbb.co)"
+                        version = f"[param]OpenBB Platform CLI v{version}[/param] (https://openbb.co)"
                     else:
-                        version = "[param]OpenBB Terminal[/param] (https://openbb.co)"
+                        version = (
+                            "[param]OpenBB Platform CLI[/param] (https://openbb.co)"
+                        )
                     self.__console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

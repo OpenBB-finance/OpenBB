@@ -163,7 +163,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     str
         Error that occurred - if empty means no error
     str
-        Processed string from .openbb script that can be run by the OpenBB Terminal
+        Processed string from .openbb script that can be run by the OpenBB Platform CLI
     """
     ROUTINE_VARS: Dict[str, Union[str, List[str]]] = dict()
     if script_inputs:
@@ -462,7 +462,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
             final_lines.append(line)
 
     # If the list is non null, then we want to convert this into a parsed string that is
-    # recognized by the OpenBB Terminal
+    # recognized by the OpenBB Platform CLI
     if final_lines:
         parsed_script = f"{'/'.join([line.rstrip() for line in final_lines])}".replace(
             "//", "/home/"

@@ -296,11 +296,11 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Terminal v{get_current_system().VERSION}")
+    console.print(f"\nWelcome to OpenBB Platform CLI v{get_current_system().VERSION}")
 
 
 def reset(queue: Optional[List[str]] = None):
-    """Resets the terminal.  Allows for checking code without quitting"""
+    """Resets the CLI.  Allows for checking code without quitting"""
     console.print("resetting...")
     load_env_files()
     debug = get_current_system().DEBUG_MODE

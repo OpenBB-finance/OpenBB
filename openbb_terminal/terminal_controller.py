@@ -835,7 +835,7 @@ def parse_args_and_run():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
-        description="The OpenBB Terminal.",
+        description="The OpenBB Platform CLI.",
     )
     parser.add_argument(
         "-d",
@@ -843,7 +843,7 @@ def parse_args_and_run():
         dest="debug",
         action="store_true",
         default=False,
-        help="Runs the terminal in debug mode.",
+        help="Runs the CLI in debug mode.",
     )
     parser.add_argument(
         "--dev",
