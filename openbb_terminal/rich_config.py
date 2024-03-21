@@ -155,12 +155,11 @@ class MenuText:
                 command_description = ""
             cmd = f"{key_command}{spacing}{command_description}"
 
-        if condition:
-            cmd = f"[cmds]    {cmd}[/cmds]"
-        else:
-            cmd = f"[unvl]    {cmd}[/unvl]"
+        cmd = f"[cmds]    {cmd}[/cmds]" if condition else f"[unvl]    {cmd}[/unvl]"
 
-        sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
+        # sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
+        # TODO: add sources from the platform reference
+        sources = []
 
         if sources:
             space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
