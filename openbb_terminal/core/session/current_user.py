@@ -46,7 +46,8 @@ def is_local() -> bool:
     bool
         True if user is guest, False otherwise.
     """
-    return not bool(__current_user.profile.token)
+    # return not bool(__current_user.profile.token)
+    return True
 
 
 def set_default_user():
