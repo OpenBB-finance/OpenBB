@@ -1,6 +1,6 @@
 ---
-title: Get the ETF holdings performance
-description: OpenBB Platform Data Model
+title: "Etf Holdings Performance"
+description: "Get the recent price performance of each ticker held in the ETF"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,23 +27,37 @@ EtfHoldingsPerformanceQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp. |  | False |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp. |  | False |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -85,3 +99,4 @@ EtfHoldingsPerformanceQueryParams,
 </TabItem>
 
 </Tabs>
+

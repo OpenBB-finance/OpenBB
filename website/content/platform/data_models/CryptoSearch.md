@@ -1,6 +1,6 @@
 ---
-title: Cryptocurrency Search
-description: OpenBB Platform Data Model
+title: "Crypto Search"
+description: "Search available cryptocurrency pairs within a provider"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,23 +27,37 @@ CryptoSearchQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| query | str | Search query. |  | True |
+| query | str | Search query. | None | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| query | str | Search query. | None | True |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ CryptoSearchQueryParams,
 </TabItem>
 
 </Tabs>
+

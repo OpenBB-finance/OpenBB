@@ -1,6 +1,6 @@
 ---
-title: Equity Peers
-description: OpenBB Platform Data Model
+title: "Equity Peers"
+description: "Get the closest peers for a given company"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,23 +27,44 @@ EquityPeersQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| symbol | str | Symbol to get data for. |  | False |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| peers_list | List[str] | A list of equity peers based on sector, exchange and market cap. |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -51,3 +72,4 @@ EquityPeersQueryParams,
 </TabItem>
 
 </Tabs>
+

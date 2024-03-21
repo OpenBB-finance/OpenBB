@@ -1,6 +1,6 @@
 ---
-title: Secured Overnight Financing Rate
-description: OpenBB Platform Data Model
+title: "SOFR"
+description: "Secured Overnight Financing Rate"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ SOFRQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -51,10 +54,21 @@ SOFRQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | SOFR rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ SOFRQueryParams,
 </TabItem>
 
 </Tabs>
+

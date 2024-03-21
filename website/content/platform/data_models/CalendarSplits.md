@@ -1,6 +1,6 @@
 ---
-title: Calendar Splits
-description: OpenBB Platform Data Model
+title: "Calendar Splits"
+description: "Get historical and upcoming stock split operations"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,22 @@ CalendarSplitsQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -41,10 +53,24 @@ CalendarSplitsQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| label | str | Label of the stock splits. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| numerator | float | Numerator of the stock splits. |
+| denominator | float | Denominator of the stock splits. |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -56,3 +82,4 @@ CalendarSplitsQueryParams,
 </TabItem>
 
 </Tabs>
+

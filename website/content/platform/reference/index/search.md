@@ -1,9 +1,6 @@
 ---
-title: search
-description: Learn how to perform index search and retrieve index data using this
-  Python API. Understand the different parameters and their defaults, and get detailed
-  information about index symbols, names, and additional attributes such as ISIN code,
-  region, description, currency, and trading times.
+title: "search"
+description: "Learn how to perform index search and retrieve index data using this  Python API. Understand the different parameters and their defaults, and get detailed  information about index symbols, names, and additional attributes such as ISIN code,  region, description, currency, and trading times."
 keywords:
 - index search
 - search indices
@@ -15,16 +12,25 @@ keywords:
 - US indices
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="index/search - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Index Search. Search for indices.
+Filters indices for rows containing the query.
 
-```python wordwrap
-obb.index.search(query: str, is_symbol: bool = False, provider: Literal[str] = cboe)
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.index.search(provider='cboe')
+obb.index.search(query='SPX', provider='cboe')
 ```
 
 ---
@@ -32,7 +38,8 @@ obb.index.search(query: str, is_symbol: bool = False, provider: Literal[str] = c
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -48,7 +55,7 @@ obb.index.search(query: str, is_symbol: bool = False, provider: Literal[str] = c
 | query | str | Search query. |  | True |
 | is_symbol | bool | Whether to search by ticker symbol. | False | True |
 | provider | Literal['cboe'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
-| europe | bool | Filter for European indices. False for US indices. | False | True |
+| use_cache | bool | When True, the Cboe Index directory will be cached for 24 hours. Set as False to bypass. | True | True |
 </TabItem>
 
 </Tabs>
@@ -59,20 +66,17 @@ obb.index.search(query: str, is_symbol: bool = False, provider: Literal[str] = c
 
 ```python wordwrap
 OBBject
-    results : List[IndexSearch]
+    results : IndexSearch
         Serializable results.
-
-    provider : Optional[Literal['cboe']]
+    provider : Literal['cboe']
         Provider name.
-
     warnings : Optional[List[Warning_]]
         List of warnings.
-
     chart : Optional[Chart]
         Chart object.
+    extra : Dict[str, Any]
+        Extra info.
 
-    metadata: Optional[Metadata]
-        Metadata info about the command execution.
 ```
 
 ---
@@ -80,7 +84,8 @@ OBBject
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -94,8 +99,6 @@ OBBject
 | ---- | ---- | ----------- |
 | symbol | str | Symbol representing the entity requested in the data. |
 | name | str | Name of the index. |
-| isin | str | ISIN code for the index. Valid only for European indices. |
-| region | str | Region for the index. Valid only for European indices |
 | description | str | Description for the index. |
 | data_delay | int | Data delay for the index. Valid only for US indices. |
 | currency | str | Currency for the index. |

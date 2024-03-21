@@ -1,6 +1,6 @@
 ---
-title: Institutional Ownership
-description: OpenBB Platform Data Model
+title: "Institutional Ownership"
+description: "Get data about institutional ownership for a given company over time"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,30 +27,53 @@ InstitutionalOwnershipQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| include_current_quarter | bool | Include current quarter data. | False | True |
-| date | date | A specific date to get data for. | None | True |
+| symbol | str | Symbol to get data for. |  | False |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| include_current_quarter | bool | Include current quarter data. | False | True |
+| date | Union[date, str] | A specific date to get data for. | None | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | symbol | str | Symbol representing the entity requested in the data. |
-| cik | str | CIK of the company. |
+| cik | str | Central Index Key (CIK) for the requested entity. |
+| date | date | The date of the data. |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| symbol | str | Symbol representing the entity requested in the data. |
+| cik | str | Central Index Key (CIK) for the requested entity. |
 | date | date | The date of the data. |
 | investors_holding | int | Number of investors holding the stock. |
 | last_investors_holding | int | Number of investors holding the stock in the last quarter. |
@@ -88,3 +111,4 @@ InstitutionalOwnershipQueryParams,
 </TabItem>
 
 </Tabs>
+

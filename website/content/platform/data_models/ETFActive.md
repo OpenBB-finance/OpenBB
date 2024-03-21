@@ -1,6 +1,6 @@
 ---
-title: Get the most active ETFs
-description: OpenBB Platform Data Model
+title: "ETF Active"
+description: "Get the most active ETFs"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,24 +27,39 @@ ETFActiveQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| sort | str | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
+| sort | Literal['asc', 'desc'] | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
+| limit | int | The number of data entries to return. | 10 | True |
+| provider | Literal['wsj'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'wsj' if there is no default. | wsj | True |
+</TabItem>
+
+<TabItem value='wsj' label='wsj'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| sort | Literal['asc', 'desc'] | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
 | limit | int | The number of data entries to return. | 10 | True |
 | provider | Literal['wsj'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'wsj' if there is no default. | wsj | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -79,3 +94,4 @@ ETFActiveQueryParams,
 </TabItem>
 
 </Tabs>
+

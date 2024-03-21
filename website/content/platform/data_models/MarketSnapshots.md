@@ -1,6 +1,6 @@
 ---
-title: Get a current, complete, market snapshot
-description: OpenBB Platform Data Model
+title: "Market Snapshots"
+description: "Get an updated equity market snapshot"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ MarketSnapshotsQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -42,15 +45,25 @@ MarketSnapshotsQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | provider | Literal['fmp', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| market | Literal['AMEX', 'AMS', 'ASE', 'ASX', 'ATH', 'BME', 'BRU', 'BUD', 'BUE', 'CAI', 'CNQ', 'CPH', 'DFM', 'DOH', 'DUS', 'ETF', 'EURONEXT', 'HEL', 'HKSE', 'ICE', 'IOB', 'IST', 'JKT', 'JNB', 'JPX', 'KLS', 'KOE', 'KSC', 'KUW', 'LSE', 'MEX', 'MIL', 'NASDAQ', 'NEO', 'NSE', 'NYSE', 'NZE', 'OSL', 'OTC', 'PNK', 'PRA', 'RIS', 'SAO', 'SAU', 'SES', 'SET', 'SGO', 'SHH', 'SHZ', 'SIX', 'STO', 'TAI', 'TLV', 'TSX', 'TWO', 'VIE', 'WSE', 'XETRA'] | The market to fetch data for. | NASDAQ | True |
+| market | Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra'] | The market to fetch data for. | nasdaq | True |
+</TabItem>
+
+<TabItem value='polygon' label='polygon'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| provider | Literal['fmp', 'polygon'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -59,10 +72,10 @@ MarketSnapshotsQueryParams,
 | high | float | The high price. |
 | low | float | The low price. |
 | close | float | The close price. |
-| prev_close | float | The previous closing price of the stock. |
-| change | float | The change in price. |
-| change_percent | float | The change, as a percent. |
 | volume | int | The trading volume. |
+| prev_close | float | The previous close price. |
+| change | float | The change in price from the previous close. |
+| change_percent | float | The change in price from the previous close, as a normalized percent. |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
@@ -74,24 +87,24 @@ MarketSnapshotsQueryParams,
 | high | float | The high price. |
 | low | float | The low price. |
 | close | float | The close price. |
-| prev_close | float | The previous closing price of the stock. |
-| change | float | The change in price. |
-| change_percent | float | The change, as a percent. |
 | volume | int | The trading volume. |
-| price | float | The last price of the stock. |
-| avg_volume | int | Average volume of the stock. |
+| prev_close | float | The previous close price. |
+| change | float | The change in price from the previous close. |
+| change_percent | float | The change in price from the previous close, as a normalized percent. |
+| last_price | float | The last price of the stock. |
+| last_price_timestamp | Union[date, datetime] | The timestamp of the last price. |
 | ma50 | float | The 50-day moving average. |
 | ma200 | float | The 200-day moving average. |
 | year_high | float | The 52-week high. |
 | year_low | float | The 52-week low. |
-| market_cap | float | Market cap of the stock. |
-| shares_outstanding | float | Number of shares outstanding. |
+| volume_avg | int | Average daily trading volume. |
+| market_cap | int | Market cap of the stock. |
 | eps | float | Earnings per share. |
 | pe | float | Price to earnings ratio. |
+| shares_outstanding | int | Number of shares outstanding. |
+| name | str | The company name associated with the symbol. |
 | exchange | str | The exchange of the stock. |
-| timestamp | Union[int, float] | The timestamp of the data. |
-| earnings_announcement | str | The earnings announcement of the stock. |
-| name | str | The name associated with the stock symbol. |
+| earnings_date | Union[date, datetime] | The upcoming earnings announcement date. |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
@@ -103,10 +116,10 @@ MarketSnapshotsQueryParams,
 | high | float | The high price. |
 | low | float | The low price. |
 | close | float | The close price. |
-| prev_close | float | The previous closing price of the stock. |
-| change | float | The change in price. |
-| change_percent | float | The change, as a percent. |
 | volume | int | The trading volume. |
+| prev_close | float | The previous close price. |
+| change | float | The change in price from the previous close. |
+| change_percent | float | The change in price from the previous close, as a normalized percent. |
 | vwap | float | The volume weighted average price of the stock on the current trading day. |
 | prev_open | float | The previous trading session opening price. |
 | prev_high | float | The previous trading session high price. |
@@ -127,3 +140,4 @@ MarketSnapshotsQueryParams,
 </TabItem>
 
 </Tabs>
+

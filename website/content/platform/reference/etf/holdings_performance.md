@@ -1,10 +1,6 @@
 ---
-title: holdings_performance
-description: Get the ETF holdings performance using the `obb.etf.holdings_performance`
-  function in Python. This function returns a variety of performance metrics for ETF
-  holdings, including one-day return, week-to-date return, one-week return, month-to-date
-  return, and more. Analyze and chart the performance of ETF holdings with this comprehensive
-  function.
+title: "holdings_performance"
+description: "Get the ETF holdings performance using the `obb.etf.holdings_performance`  function in Python. This function returns a variety of performance metrics for ETF  holdings, including one-day return, week-to-date return, one-week return, month-to-date  return, and more. Analyze and chart the performance of ETF holdings with this comprehensive  function."
 keywords:
 - ETF holdings performance
 - etf holdings performance python
@@ -18,17 +14,24 @@ keywords:
 - etf performance chart
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<HeadTitle title="etf/holdings_performance - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-Get the ETF holdings performance.
+Get the recent price performance of each ticker held in the ETF.
 
-```python wordwrap
-obb.etf.holdings_performance(symbol: Union[str, List[str]], provider: Literal[str] = fmp)
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.etf.holdings_performance(symbol='XLK', provider='fmp')
 ```
 
 ---
@@ -36,11 +39,20 @@ obb.etf.holdings_performance(symbol: Union[str, List[str]], provider: Literal[st
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp. |  | False |
+| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): finviz, fmp. |  | False |
 | provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
@@ -52,20 +64,17 @@ obb.etf.holdings_performance(symbol: Union[str, List[str]], provider: Literal[st
 
 ```python wordwrap
 OBBject
-    results : List[EtfHoldingsPerformance]
+    results : EtfHoldingsPerformance
         Serializable results.
-
-    provider : Optional[Literal['fmp']]
+    provider : Literal['fmp']
         Provider name.
-
     warnings : Optional[List[Warning_]]
         List of warnings.
-
     chart : Optional[Chart]
         Chart object.
+    extra : Dict[str, Any]
+        Extra info.
 
-    metadata: Optional[Metadata]
-        Metadata info about the command execution.
 ```
 
 ---
@@ -73,7 +82,8 @@ OBBject
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

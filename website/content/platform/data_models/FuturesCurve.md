@@ -1,6 +1,6 @@
 ---
-title: Futures Historical Price
-description: OpenBB Platform Data Model
+title: "Futures Curve"
+description: "Futures Term Structure, current or historical"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,24 +27,48 @@ FuturesCurveQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| date | date | A specific date to get data for. | None | True |
+| symbol | str | Symbol to get data for. |  | False |
+| date | Union[date, str] | A specific date to get data for. | None | True |
+| provider | Literal['cboe', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
+</TabItem>
+
+<TabItem value='cboe' label='cboe'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| date | Union[date, str] | A specific date to get data for. | None | True |
+| provider | Literal['cboe', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| date | Union[date, str] | A specific date to get data for. | None | True |
 | provider | Literal['cboe', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -61,4 +85,13 @@ FuturesCurveQueryParams,
 | symbol | str | The trading symbol for the tenor of future. |
 </TabItem>
 
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| expiration | str | Futures expiration month. |
+| price | float | The close price. |
+</TabItem>
+
 </Tabs>
+

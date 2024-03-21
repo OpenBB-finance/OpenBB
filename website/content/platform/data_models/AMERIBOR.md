@@ -1,6 +1,6 @@
 ---
-title: Ameribor
-description: OpenBB Platform Data Model
+title: "Ameribor"
+description: "Ameribor"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ AMERIBORQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -51,10 +54,21 @@ AMERIBORQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | AMERIBOR rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ AMERIBORQueryParams,
 </TabItem>
 
 </Tabs>
+

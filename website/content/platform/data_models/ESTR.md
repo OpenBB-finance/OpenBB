@@ -1,6 +1,6 @@
 ---
-title: Euro Short-Term Rate
-description: OpenBB Platform Data Model
+title: "ESTR"
+description: "Euro Short-Term Rate"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ ESTRQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -51,10 +54,21 @@ ESTRQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | ESTR rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ ESTRQueryParams,
 </TabItem>
 
 </Tabs>
+

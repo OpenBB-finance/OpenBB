@@ -1,6 +1,6 @@
 ---
-title: Sterling Overnight Index Average
-description: OpenBB Platform Data Model
+title: "Sonia"
+description: "Sterling Overnight Index Average"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ SONIAQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -51,10 +54,21 @@ SONIAQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | SONIA rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ SONIAQueryParams,
 </TabItem>
 
 </Tabs>
+

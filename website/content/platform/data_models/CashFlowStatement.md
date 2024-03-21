@@ -1,6 +1,6 @@
 ---
-title: Cash Flow Statement
-description: OpenBB Platform Data Model
+title: "Cash Flow Statement"
+description: "Get the cash flow statement for a given company"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,16 +27,19 @@ CashFlowStatementQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 5 | True |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int, Ge(ge=0) | The number of data entries to return. | 5 | True |
 | provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
@@ -44,20 +47,30 @@ CashFlowStatementQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 5 | True |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int, Ge(ge=0) | The number of data entries to return. | 5 | True |
 | provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| cik | str | Central Index Key (CIK) of the company. | None | True |
+</TabItem>
+
+<TabItem value='intrinio' label='intrinio'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int, Ge(ge=0) | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| fiscal_year | int | The specific fiscal year. Reports do not go beyond 2008. | None | True |
 </TabItem>
 
 <TabItem value='polygon' label='polygon'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
-| limit | int | The number of data entries to return. | 5 | True |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int, Ge(ge=0) | The number of data entries to return. | 5 | True |
 | provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 | filing_date | date | Filing date of the financial statement. | None | True |
 | filing_date_lt | date | Filing date less than the given date. | None | True |
@@ -69,105 +82,166 @@ CashFlowStatementQueryParams,
 | period_of_report_date_lte | date | Period of report date less than or equal to the given date. | None | True |
 | period_of_report_date_gt | date | Period of report date greater than the given date. | None | True |
 | period_of_report_date_gte | date | Period of report date greater than or equal to the given date. | None | True |
-| include_sources | bool | Whether to include the sources of the financial statement. | None | True |
-| order | Literal['asc', 'desc'] | Order of the financial statement. | None | True |
-| sort | Literal['filing_date', 'period_of_report_date'] | Sort of the financial statement. | None | True |
+| include_sources | bool | Whether to include the sources of the financial statement. | False | True |
+| order | Literal[None, 'asc', 'desc'] | Order of the financial statement. | None | True |
+| sort | Literal[None, 'filing_date', 'period_of_report_date'] | Sort of the financial statement. | None | True |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int, Ge(ge=0) | The number of data entries to return. | 5 | True |
+| provider | Literal['fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol representing the entity requested in the data. |
-| date | date | The date of the data. |
-| period | str | Reporting period of the statement. |
-| cik | str | Central Index Key (CIK) of the company. |
-| net_income | float | Net income. |
-| depreciation_and_amortization | float | Depreciation and amortization. |
-| stock_based_compensation | float | Stock based compensation. |
-| deferred_income_tax | float | Deferred income tax. |
-| other_non_cash_items | float | Other non-cash items. |
-| changes_in_operating_assets_and_liabilities | float | Changes in operating assets and liabilities. |
-| accounts_receivables | float | Accounts receivables. |
-| inventory | float | Inventory. |
-| vendor_non_trade_receivables | float | Vendor non-trade receivables. |
-| other_current_and_non_current_assets | float | Other current and non-current assets. |
-| accounts_payables | float | Accounts payables. |
-| deferred_revenue | float | Deferred revenue. |
-| other_current_and_non_current_liabilities | float | Other current and non-current liabilities. |
-| net_cash_flow_from_operating_activities | float | Net cash flow from operating activities. |
-| purchases_of_marketable_securities | float | Purchases of investments. |
-| sales_from_maturities_of_investments | float | Sales and maturities of investments. |
-| investments_in_property_plant_and_equipment | float | Investments in property, plant, and equipment. |
-| payments_from_acquisitions | float | Acquisitions, net of cash acquired, and other |
-| other_investing_activities | float | Other investing activities |
-| net_cash_flow_from_investing_activities | float | Net cash used for investing activities. |
-| taxes_paid_on_net_share_settlement | float | Taxes paid on net share settlement of equity awards. |
-| dividends_paid | float | Payments for dividends and dividend equivalents |
-| common_stock_repurchased | float | Payments related to repurchase of common stock |
-| debt_proceeds | float | Proceeds from issuance of term debt |
-| debt_repayment | float | Payments of long-term debt |
-| other_financing_activities | float | Other financing activities, net |
-| net_cash_flow_from_financing_activities | float | Net cash flow from financing activities. |
-| net_change_in_cash | float | Net increase (decrease) in cash, cash equivalents, and restricted cash |
+| period_ending | date | The end date of the reporting period. |
+| fiscal_period | str | The fiscal period of the report. |
+| fiscal_year | int | The fiscal year of the fiscal period. |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol representing the entity requested in the data. |
-| date | date | The date of the data. |
-| period | str | Reporting period of the statement. |
-| cik | str | Central Index Key (CIK) of the company. |
+| period_ending | date | The end date of the reporting period. |
+| fiscal_period | str | The fiscal period of the report. |
+| fiscal_year | int | The fiscal year of the fiscal period. |
+| filing_date | date | The date of the filing. |
+| accepted_date | datetime | The date the filing was accepted. |
+| reported_currency | str | The currency in which the cash flow statement was reported. |
 | net_income | float | Net income. |
 | depreciation_and_amortization | float | Depreciation and amortization. |
-| stock_based_compensation | float | Stock based compensation. |
 | deferred_income_tax | float | Deferred income tax. |
-| other_non_cash_items | float | Other non-cash items. |
-| changes_in_operating_assets_and_liabilities | float | Changes in operating assets and liabilities. |
-| accounts_receivables | float | Accounts receivables. |
-| inventory | float | Inventory. |
-| vendor_non_trade_receivables | float | Vendor non-trade receivables. |
-| other_current_and_non_current_assets | float | Other current and non-current assets. |
-| accounts_payables | float | Accounts payables. |
-| deferred_revenue | float | Deferred revenue. |
-| other_current_and_non_current_liabilities | float | Other current and non-current liabilities. |
-| net_cash_flow_from_operating_activities | float | Net cash flow from operating activities. |
-| purchases_of_marketable_securities | float | Purchases of investments. |
-| sales_from_maturities_of_investments | float | Sales and maturities of investments. |
-| investments_in_property_plant_and_equipment | float | Investments in property, plant, and equipment. |
-| payments_from_acquisitions | float | Acquisitions, net of cash acquired, and other |
-| other_investing_activities | float | Other investing activities |
-| net_cash_flow_from_investing_activities | float | Net cash used for investing activities. |
-| taxes_paid_on_net_share_settlement | float | Taxes paid on net share settlement of equity awards. |
-| dividends_paid | float | Payments for dividends and dividend equivalents |
-| common_stock_repurchased | float | Payments related to repurchase of common stock |
-| debt_proceeds | float | Proceeds from issuance of term debt |
-| debt_repayment | float | Payments of long-term debt |
-| other_financing_activities | float | Other financing activities, net |
-| net_cash_flow_from_financing_activities | float | Net cash flow from financing activities. |
-| net_change_in_cash | float | Net increase (decrease) in cash, cash equivalents, and restricted cash |
-| reported_currency | str | Reported currency in the statement. |
-| filling_date | date | Filling date. |
-| accepted_date | datetime | Accepted date. |
-| calendar_year | int | Calendar year. |
-| change_in_working_capital | int | Change in working capital. |
-| other_working_capital | int | Other working capital. |
-| common_stock_issued | int | Common stock issued. |
-| effect_of_forex_changes_on_cash | int | Effect of forex changes on cash. |
-| cash_at_beginning_of_period | int | Cash at beginning of period. |
-| cash_at_end_of_period | int | Cash, cash equivalents, and restricted cash at end of period |
-| operating_cash_flow | int | Operating cash flow. |
-| capital_expenditure | int | Capital expenditure. |
-| free_cash_flow | int | Free cash flow. |
-| link | str | Link to the statement. |
-| final_link | str | Link to the final statement. |
+| stock_based_compensation | float | Stock-based compensation. |
+| change_in_working_capital | float | Change in working capital. |
+| change_in_account_receivables | float | Change in account receivables. |
+| change_in_inventory | float | Change in inventory. |
+| change_in_account_payable | float | Change in account payable. |
+| change_in_other_working_capital | float | Change in other working capital. |
+| change_in_other_non_cash_items | float | Change in other non-cash items. |
+| net_cash_from_operating_activities | float | Net cash from operating activities. |
+| purchase_of_property_plant_and_equipment | float | Purchase of property, plant and equipment. |
+| acquisitions | float | Acquisitions. |
+| purchase_of_investment_securities | float | Purchase of investment securities. |
+| sale_and_maturity_of_investments | float | Sale and maturity of investments. |
+| other_investing_activities | float | Other investing activities. |
+| net_cash_from_investing_activities | float | Net cash from investing activities. |
+| repayment_of_debt | float | Repayment of debt. |
+| issuance_of_common_equity | float | Issuance of common equity. |
+| repurchase_of_common_equity | float | Repurchase of common equity. |
+| payment_of_dividends | float | Payment of dividends. |
+| other_financing_activities | float | Other financing activities. |
+| net_cash_from_financing_activities | float | Net cash from financing activities. |
+| effect_of_exchange_rate_changes_on_cash | float | Effect of exchange rate changes on cash. |
+| net_change_in_cash_and_equivalents | float | Net change in cash and equivalents. |
+| cash_at_beginning_of_period | float | Cash at beginning of period. |
+| cash_at_end_of_period | float | Cash at end of period. |
+| operating_cash_flow | float | Operating cash flow. |
+| capital_expenditure | float | Capital expenditure. |
+| free_cash_flow | float | None |
+| link | str | Link to the filing. |
+| final_link | str | Link to the filing document. |
+</TabItem>
+
+<TabItem value='intrinio' label='intrinio'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| period_ending | date | The end date of the reporting period. |
+| fiscal_period | str | The fiscal period of the report. |
+| fiscal_year | int | The fiscal year of the fiscal period. |
+| reported_currency | str | The currency in which the balance sheet is reported. |
+| net_income_continuing_operations | float | Net Income (Continuing Operations) |
+| net_income_discontinued_operations | float | Net Income (Discontinued Operations) |
+| net_income | float | Consolidated Net Income. |
+| provision_for_loan_losses | float | Provision for Loan Losses |
+| provision_for_credit_losses | float | Provision for credit losses |
+| depreciation_expense | float | Depreciation Expense. |
+| amortization_expense | float | Amortization Expense. |
+| share_based_compensation | float | Share-based compensation. |
+| non_cash_adjustments_to_reconcile_net_income | float | Non-Cash Adjustments to Reconcile Net Income. |
+| changes_in_operating_assets_and_liabilities | float | Changes in Operating Assets and Liabilities (Net) |
+| net_cash_from_continuing_operating_activities | float | Net Cash from Continuing Operating Activities |
+| net_cash_from_discontinued_operating_activities | float | Net Cash from Discontinued Operating Activities |
+| net_cash_from_operating_activities | float | Net Cash from Operating Activities |
+| divestitures | float | Divestitures |
+| sale_of_property_plant_and_equipment | float | Sale of Property, Plant, and Equipment |
+| acquisitions | float | Acquisitions |
+| purchase_of_investments | float | Purchase of Investments |
+| purchase_of_investment_securities | float | Purchase of Investment Securities |
+| sale_and_maturity_of_investments | float | Sale and Maturity of Investments |
+| loans_held_for_sale | float | Loans Held for Sale (Net) |
+| purchase_of_property_plant_and_equipment | float | Purchase of Property, Plant, and Equipment |
+| other_investing_activities | float | Other Investing Activities (Net) |
+| net_cash_from_continuing_investing_activities | float | Net Cash from Continuing Investing Activities |
+| net_cash_from_discontinued_investing_activities | float | Net Cash from Discontinued Investing Activities |
+| net_cash_from_investing_activities | float | Net Cash from Investing Activities |
+| payment_of_dividends | float | Payment of Dividends |
+| repurchase_of_common_equity | float | Repurchase of Common Equity |
+| repurchase_of_preferred_equity | float | Repurchase of Preferred Equity |
+| issuance_of_common_equity | float | Issuance of Common Equity |
+| issuance_of_preferred_equity | float | Issuance of Preferred Equity |
+| issuance_of_debt | float | Issuance of Debt |
+| repayment_of_debt | float | Repayment of Debt |
+| other_financing_activities | float | Other Financing Activities (Net) |
+| cash_interest_received | float | Cash Interest Received |
+| net_change_in_deposits | float | Net Change in Deposits |
+| net_increase_in_fed_funds_sold | float | Net Increase in Fed Funds Sold |
+| net_cash_from_continuing_financing_activities | float | Net Cash from Continuing Financing Activities |
+| net_cash_from_discontinued_financing_activities | float | Net Cash from Discontinued Financing Activities |
+| net_cash_from_financing_activities | float | Net Cash from Financing Activities |
+| effect_of_exchange_rate_changes | float | Effect of Exchange Rate Changes |
+| other_net_changes_in_cash | float | Other Net Changes in Cash |
+| net_change_in_cash_and_equivalents | float | Net Change in Cash and Equivalents |
+| cash_income_taxes_paid | float | Cash Income Taxes Paid |
+| cash_interest_paid | float | Cash Interest Paid |
+</TabItem>
+
+<TabItem value='polygon' label='polygon'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| period_ending | date | The end date of the reporting period. |
+| fiscal_period | str | The fiscal period of the report. |
+| fiscal_year | int | The fiscal year of the fiscal period. |
+| net_cash_flow_from_operating_activities_continuing | int | Net cash flow from operating activities continuing. |
+| net_cash_flow_from_operating_activities_discontinued | int | Net cash flow from operating activities discontinued. |
+| net_cash_flow_from_operating_activities | int | Net cash flow from operating activities. |
+| net_cash_flow_from_investing_activities_continuing | int | Net cash flow from investing activities continuing. |
+| net_cash_flow_from_investing_activities_discontinued | int | Net cash flow from investing activities discontinued. |
+| net_cash_flow_from_investing_activities | int | Net cash flow from investing activities. |
+| net_cash_flow_from_financing_activities_continuing | int | Net cash flow from financing activities continuing. |
+| net_cash_flow_from_financing_activities_discontinued | int | Net cash flow from financing activities discontinued. |
+| net_cash_flow_from_financing_activities | int | Net cash flow from financing activities. |
+| net_cash_flow_continuing | int | Net cash flow continuing. |
+| net_cash_flow_discontinued | int | Net cash flow discontinued. |
+| exchange_gains_losses | int | Exchange gains losses. |
+| net_cash_flow | int | Net cash flow. |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| period_ending | date | The end date of the reporting period. |
+| fiscal_period | str | The fiscal period of the report. |
+| fiscal_year | int | The fiscal year of the fiscal period. |
 </TabItem>
 
 </Tabs>
+
