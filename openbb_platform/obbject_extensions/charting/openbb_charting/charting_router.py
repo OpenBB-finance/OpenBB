@@ -267,21 +267,28 @@ def _ta_ma(ma_type: str, **kwargs):
 def etf_historical(
     **kwargs: EquityPriceHistoricalChartQueryParams,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """ETF historical chart."""
+    """ETF Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def index_price_historical(
     **kwargs: EquityPriceHistoricalChartQueryParams,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Index price historical chart."""
+    """Index Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def currency_price_historical(
     **kwargs: EquityPriceHistoricalChartQueryParams,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Currency price historical chart."""
+    """Currency Price Historical Chart."""
+    return equity_price_historical(**kwargs)
+
+
+def crypto_price_historical(
+    **kwargs: EquityPriceHistoricalChartQueryParams,
+) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Crypto Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
