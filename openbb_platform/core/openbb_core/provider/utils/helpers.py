@@ -6,7 +6,16 @@ from datetime import date, datetime
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
+from typing import (
+    Awaitable,
+    Callable,
+    List,
+    Literal,
+    Optional,
+    TypeVar,
+    Union,
+    cast,
+)
 
 import requests
 from anyio import start_blocking_portal
@@ -21,6 +30,7 @@ from openbb_core.provider.utils.client import (
 
 T = TypeVar("T")
 P = ParamSpec("P")
+D = TypeVar("D", bound="Data")
 
 
 def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
@@ -283,8 +293,8 @@ def run_async(
 
 
 def filter_by_dates(
-    data: List[Data], start_date: Optional[date] = None, end_date: Optional[date] = None
-) -> List[Data]:
+    data: List[D], start_date: Optional[date] = None, end_date: Optional[date] = None
+) -> List[D]:
     """Filter data by dates."""
     if start_date is None and end_date is None:
         return data
