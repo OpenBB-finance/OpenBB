@@ -93,8 +93,4 @@ class QueryExecutor:
         filtered_credentials = self.filter_credentials(
             credentials, provider, fetcher.require_credentials
         )
-
-        try:
-            return await fetcher.fetch_data(params, filtered_credentials, **kwargs)
-        except Exception as e:
-            raise OpenBBError(e) from e
+        return await fetcher.fetch_data(params, filtered_credentials, **kwargs)

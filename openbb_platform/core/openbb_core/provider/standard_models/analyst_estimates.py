@@ -1,7 +1,7 @@
 """Analyst Estimates Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -17,10 +17,6 @@ class AnalystEstimatesQueryParams(QueryParams):
     """Analyst Estimates Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["quarter", "annual"] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
-    limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
@@ -28,24 +24,12 @@ class AnalystEstimatesQueryParams(QueryParams):
         """Convert field to uppercase."""
         return v.upper()
 
-    @field_validator("period", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
-
 
 class AnalystEstimatesData(Data):
     """Analyst Estimates data."""
 
-    symbol: Optional[str] = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-    date: Optional[dateType] = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("date", ""),
-    )
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     estimated_revenue_low: Optional[ForceInt] = Field(
         default=None, description="Estimated revenue low."
     )
@@ -54,6 +38,15 @@ class AnalystEstimatesData(Data):
     )
     estimated_revenue_avg: Optional[ForceInt] = Field(
         default=None, description="Estimated revenue average."
+    )
+    estimated_sga_expense_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense low."
+    )
+    estimated_sga_expense_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense high."
+    )
+    estimated_sga_expense_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense average."
     )
     estimated_ebitda_low: Optional[ForceInt] = Field(
         default=None, description="Estimated EBITDA low."
@@ -77,24 +70,10 @@ class AnalystEstimatesData(Data):
         default=None, description="Estimated net income low."
     )
     estimated_net_income_high: Optional[ForceInt] = Field(
-        default=None,
-        description="Estimated net income high.",
+        default=None, description="Estimated net income high."
     )
     estimated_net_income_avg: Optional[ForceInt] = Field(
-        default=None,
-        description="Estimated net income average.",
-    )
-    estimated_sga_expense_low: Optional[ForceInt] = Field(
-        default=None,
-        description="Estimated SGA expense low.",
-    )
-    estimated_sga_expense_high: Optional[ForceInt] = Field(
-        default=None,
-        description="Estimated SGA expense high.",
-    )
-    estimated_sga_expense_avg: Optional[ForceInt] = Field(
-        default=None,
-        description="Estimated SGA expense average.",
+        default=None, description="Estimated net income average."
     )
     estimated_eps_avg: Optional[float] = Field(
         default=None, description="Estimated EPS average."
@@ -106,10 +85,8 @@ class AnalystEstimatesData(Data):
         default=None, description="Estimated EPS low."
     )
     number_analyst_estimated_revenue: Optional[ForceInt] = Field(
-        default=None,
-        description="Number of analysts who estimated revenue.",
+        default=None, description="Number of analysts who estimated revenue."
     )
     number_analysts_estimated_eps: Optional[ForceInt] = Field(
-        default=None,
-        description="Number of analysts who estimated EPS.",
+        default=None, description="Number of analysts who estimated EPS."
     )

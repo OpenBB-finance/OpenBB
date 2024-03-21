@@ -28,14 +28,16 @@ class HistoricalSplitsQueryParams(QueryParams):
 class HistoricalSplitsData(Data):
     """Historical Splits Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-date)")
-    symbol: Optional[str] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
-    )
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     numerator: Optional[float] = Field(
-        default=None, description="Numerator of the stock splits."
+        default=None,
+        description="Numerator of the split.",
     )
     denominator: Optional[float] = Field(
-        default=None, description="Denominator of the stock splits."
+        default=None,
+        description="Denominator of the split.",
     )
-    factor: Optional[float] = Field(default=None, description="The split factor value.")
+    split_ratio: Optional[str] = Field(
+        default=None,
+        description="Split ratio.",
+    )

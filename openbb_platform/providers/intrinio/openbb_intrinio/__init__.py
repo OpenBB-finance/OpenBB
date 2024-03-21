@@ -34,6 +34,7 @@ from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
 # )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
+from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
@@ -76,6 +77,7 @@ intrinio_provider = Provider(
         "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
         "MarketIndices": IntrinioIndexHistoricalFetcher,
+        "MarketSnapshots": IntrinioMarketSnapshotsFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,
