@@ -18,7 +18,7 @@ def validate(func: Callable[P, R]) -> Callable[P, R]:
 
 
 @overload
-def validate(**dec_kwargs) -> Callable[P, R]:
+def validate(**dec_kwargs) -> Callable[[Callable[P, R]], Callable[P, R]]:
     pass
 
 
