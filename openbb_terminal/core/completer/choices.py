@@ -1,14 +1,12 @@
 from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
-from io import StringIO
 from types import MethodType
 from typing import Callable, List
 from unittest.mock import patch
 
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
-from openbb_terminal.rich_config import get_ordered_list_sources
 
 
 def __mock_parse_known_args_and_warn(
@@ -83,26 +81,6 @@ def __mock_parse_known_args_and_warn(
             help="Number of entries to show in data.",
             type=check_positive,
         )
-
-    # TODO : this is a temporary workaround
-    # ideally, we should drop `source` argument
-
-    result = StringIO()
-    parser.print_help(file=result)
-    has_provider = "--provider" in result.getvalue()
-
-    if not has_provider:
-        sources = get_ordered_list_sources(f"{controller.PATH}{parser.prog}")
-        # Allow to change source if there is more than one
-        if len(sources) > 1:
-            parser.add_argument(
-                "--source",
-                action="store",
-                dest="source",
-                choices=sources,
-                default=sources[0],  # the first source from the list is the default
-                help="Data source to select from",
-            )
 
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:

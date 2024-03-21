@@ -1,4 +1,4 @@
-# Pull Request the OpenBBTerminal
+# Pull Request the OpenBB Platform CLI
 
 ## Description
 
@@ -14,8 +14,8 @@
 - Please provide instructions so we can reproduce.
 - Please also list any relevant details for your test configuration.
 
-- [ ] Ensure the affected commands still execute in the OpenBB Terminal.
-- [ ] Ensure the Platform (previously named SDK) is working as intended.
+- [ ] Ensure the affected commands still execute in the OpenBB Platform CLI.
+- [ ] Ensure the Platform is working as intended.
 - [ ] Check any related reports.
 
 ## Checklist

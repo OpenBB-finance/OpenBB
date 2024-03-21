@@ -1,7 +1,7 @@
 import os
-from typing import Literal, Optional
+from typing import Literal
 
-from pydantic import NonNegativeInt, PositiveFloat, PositiveInt
+from pydantic import NonNegativeInt, PositiveInt
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.config.paths import HOME_DIRECTORY
@@ -13,27 +13,6 @@ from openbb_terminal.core.models import BaseModel
 @dataclass(config=dict(validate_assignment=True, frozen=True))
 class PreferencesModel(BaseModel):
     """Data model for preferences."""
-
-    # PLOT
-    # Plot backend
-    # Examples:
-    # "tkAgg" - This uses the tkinter library.  If unsure, set to this
-    # "module://backend_interagg" - This is what pycharm defaults to in Scientific Mode
-    # "MacOSX" - Mac default.  Does not work with backtesting
-    # "Qt5Agg" - This requires the PyQt5 package is installed
-    # See more: https://matplotlib.org/stable/tutorials/introductory/usage.html#the-builtin-backends
-    PLOT_BACKEND: Optional[str] = None
-    PLOT_DPI: PositiveInt = 100
-    PLOT_HEIGHT: PositiveInt = 500
-    PLOT_WIDTH: PositiveInt = 800
-    PLOT_HEIGHT_PERCENTAGE: PositiveFloat = 50.0
-    PLOT_WIDTH_PERCENTAGE: PositiveFloat = 70.0
-    # Whether to open plot image exports after they are created
-    PLOT_OPEN_EXPORT: bool = False
-    # Use interactive window to display plots
-    PLOT_ENABLE_PYWRY: bool = True
-    PLOT_PYWRY_WIDTH: PositiveInt = 1400
-    PLOT_PYWRY_HEIGHT: PositiveInt = 762
 
     # FEATURE FLAGS
     FILE_OVERWRITE: bool = False
