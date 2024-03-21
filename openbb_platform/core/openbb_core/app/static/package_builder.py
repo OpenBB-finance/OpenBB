@@ -561,14 +561,14 @@ class MethodDefinition:
                 ],
                 default=False,
             )
-
+        kwargs = None
         formatted: Dict[str, Parameter] = {}
 
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
             elif name == "kwargs":
-                formatted["**" + name] = Parameter(
+                kwargs = Parameter(
                     name="kwargs", kind=Parameter.VAR_KEYWORD, annotation=Any
                 )
             elif name == "provider_choices":
@@ -628,7 +628,8 @@ class MethodDefinition:
                     annotation=updated_type,
                     default=param.default,
                 )
-
+        if kwargs:
+            formatted["**kwargs"] = kwargs
         return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
