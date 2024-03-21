@@ -104,7 +104,7 @@ def equity_price_historical(
         and returns is False
         and candles is True
     ):
-        if kwargs.get("heikin_ashi") is True:
+        if "heikin_ashi" in kwargs and kwargs["heikin_ashi"] is True:
             data = heikin_ashi(data)
             title = f"{title} - Heikin Ashi"
 
