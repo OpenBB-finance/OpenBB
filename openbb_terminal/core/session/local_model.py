@@ -6,56 +6,13 @@ from typing import List, Optional
 
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
-    SESSION_FILE_PATH,
 )
-from openbb_terminal.core.models.sources_model import get_allowed_sources
 from openbb_terminal.core.session.current_user import (
     get_env_dict,
     set_credential,
     set_preference,
-    set_sources,
 )
-from openbb_terminal.core.session.sources_handler import merge_sources
 from openbb_terminal.rich_config import console
-
-
-def save_session(data: dict, file_path: Path = SESSION_FILE_PATH):
-    """Save the login info to a file.
-
-    Parameters
-    ----------
-    data : dict
-        The data to write.
-    file_path : Path
-        The file path.
-    """
-    try:
-        with open(file_path, "w") as file:
-            file.write(json.dumps(data))
-    except Exception:
-        console.print("[red]Failed to save session info.[/red]")
-
-
-def get_session(file_path: Path = SESSION_FILE_PATH) -> dict:
-    """Get the session info from the file.
-
-    Parameters
-    ----------
-    file_path : Path
-        The file path.
-
-    Returns
-    -------
-    dict
-        The session info.
-    """
-    try:
-        if os.path.isfile(file_path):
-            with open(file_path) as file:
-                return json.load(file)
-    except Exception:
-        console.print("\n[red]Failed to get login info.[/red]")
-    return {}
 
 
 def remove(path: Path) -> bool:
@@ -115,7 +72,6 @@ def apply_configs(configs: dict):
     set_rich_style_from_hub(configs)
     set_chart_style_from_hub(configs)
     set_table_style_from_hub(configs)
-    set_sources_from_hub(configs)
 
 
 def set_credentials_from_hub(configs: dict):
@@ -217,18 +173,3 @@ def set_table_style_from_hub(configs: dict):
             table_style = terminal_style.get("table", None)
             if table_style:
                 set_preference("TABLE_STYLE", table_style)
-
-
-def set_sources_from_hub(configs: dict):
-    """Set sources from hub.
-
-    Parameters
-    ----------
-    configs : dict
-        The configurations.
-    """
-    if configs:
-        incoming = configs.get("features_sources", {}) or {}
-        if incoming:
-            choices = merge_sources(incoming=incoming, allowed=get_allowed_sources())
-            set_sources(choices)
