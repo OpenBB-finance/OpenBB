@@ -234,6 +234,12 @@ class ParametersBuilder:
         }
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
+
+        # If the function has 'kwargs' and 'data' it is a POST command.
+        # We remove 'kwargs' from the validation model so we don't create an error trying to validate them.
+        if "kwargs" in fields and "data" in fields:
+            _ = fields.pop("kwargs")
+
         ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
         # Validate and coerce
         model = ValidationModel(**kwargs)
@@ -326,6 +332,12 @@ class StaticCommandRunner:
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
+        # If "data" and "kwargs" are both keys in kwargs, it is a POST command.
+        # We want to unpack the "kwargs" into the kwargs dict.
+        if "data" in kwargs and "kwargs" in kwargs:
+            _kwargs = kwargs.pop("kwargs")
+            kwargs.update(_kwargs)
+
         with catch_warnings(record=True) as warning_list:
             # If we're on Jupyter we need to pop here because we will lose "chart" after
             # ParametersBuilder.build. This needs to be fixed in a way that chart is
@@ -335,7 +347,6 @@ class StaticCommandRunner:
             # the chart parameter from the commands.py and package_builder, it will be
             # added to the function signature in the router decorator
             chart = kwargs.pop("chart", False)
-
             kwargs = ParametersBuilder.build(
                 args=args,
                 execution_context=execution_context,
