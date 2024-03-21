@@ -25,7 +25,6 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
-import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -42,7 +41,7 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     print_rich_table,
 )
-from openbb_terminal.menu import is_papermill, session
+from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
@@ -196,23 +195,22 @@ class TerminalController(BaseController):
                     "*.openbb"
                 )
             }
-            if get_current_user().profile.get_token():
-                self.ROUTINE_DEFAULT_FILES = {
-                    filepath.name: filepath
-                    for filepath in Path(
-                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                        / "hub"
-                        / "default"
-                    ).rglob("*.openbb")
-                }
-                self.ROUTINE_PERSONAL_FILES = {
-                    filepath.name: filepath
-                    for filepath in Path(
-                        get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                        / "hub"
-                        / "personal"
-                    ).rglob("*.openbb")
-                }
+            self.ROUTINE_DEFAULT_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "default"
+                ).rglob("*.openbb")
+            }
+            self.ROUTINE_PERSONAL_FILES = {
+                filepath.name: filepath
+                for filepath in Path(
+                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
+                    / "hub"
+                    / "personal"
+                ).rglob("*.openbb")
+            }
 
             choices["exe"] = {
                 "--file": {
@@ -578,9 +576,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                             search_ignore_case=True,
                         )
 
-                elif is_papermill():
-                    pass
-
                 # Get input from user without auto-completion
                 else:
                     an_input = input(f"{get_flair()} / $ ")
@@ -641,7 +636,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
     if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
         set_show_prompt(False)
-        return session_controller.main(welcome=False)
+        return session_controller.launch_terminal()
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -824,8 +819,6 @@ def main(
         set_system_variable("DEV_BACKEND", True)
         constants.BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
         constants.BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
-
-    cfg.start_plot_backend()
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)
