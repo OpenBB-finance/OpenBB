@@ -1586,12 +1586,12 @@ class ROUTER_equity_fundamental(Container):
         ----------------
         date : date
             The date of the data.
-        label : str
-            Label of the historical stock splits.
-        numerator : float
-            Numerator of the historical stock splits.
-        denominator : float
-            Denominator of the historical stock splits.
+        numerator : Optional[float]
+            Numerator of the split.
+        denominator : Optional[float]
+            Denominator of the split.
+        split_ratio : Optional[str]
+            Split ratio.
 
         Examples
         --------
@@ -1992,7 +1992,7 @@ class ROUTER_equity_fundamental(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 10,
         period: Annotated[
-            Literal["quarter", "annual"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         provider: Annotated[
@@ -2011,7 +2011,7 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Time period of the data to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -3379,7 +3379,7 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarter", "annual"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
@@ -3400,7 +3400,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3470,7 +3470,7 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
-            Literal["quarter", "annual"],
+            Literal["annual", "quarter"],
             OpenBBCustomParameter(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
@@ -3491,7 +3491,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.

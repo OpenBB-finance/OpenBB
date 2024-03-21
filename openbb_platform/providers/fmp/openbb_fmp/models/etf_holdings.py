@@ -2,12 +2,12 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -18,8 +18,6 @@ from openbb_core.provider.standard_models.etf_holdings import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
@@ -174,7 +172,7 @@ class FMPEtfHoldingsFetcher(
             try:
                 data = await get_data_many(url, **kwargs)
             except Exception:
-                _warn(
+                warn(
                     "No data found for this symbol and date, attempting to retrieve the most recent data available."
                 )
 
