@@ -1,5 +1,6 @@
 """OpenBB OBBject extension for charting."""
 
+import warnings
 from typing import (
     Any,
     Callable,
@@ -13,12 +14,18 @@ import numpy as np
 import pandas as pd
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.extension import Extension
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
 from openbb_charting.core.to_chart import ChartIndicators
+from openbb_charting.query_params import ChartParams
 from openbb_charting.utils.helpers import get_charting_functions
+
+warnings.filterwarnings(
+    "ignore", category=UserWarning, module="openbb_core.app.model.extension", lineno=49
+)
 
 ext = Extension(name="charting")
 
@@ -44,14 +51,12 @@ class Charting:
         """Initialize Charting extension."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.charts.charting_settings import ChartingSettings
-        from openbb_core.app.model.obbject import OBBject
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._handle_backend()
 
     @classmethod
     def indicators(cls):
@@ -73,8 +78,27 @@ class Charting:
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
+
+        if route is None:
+            raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
         return getattr(charting_router, adjusted_route)
+
+    def get_chart_params(self) -> ChartParams:
+        """Returns the QueryParams class for the function the OBBject was created from.
+        Without assigning to a variable, it will print the docstring to the console.
+        """
+
+        if self._obbject._route is None:  # pylint: disable=protected-access
+            raise ValueError("OBBject was initialized with no function route.")
+        charting_function = (
+            self._obbject._route  # pylint: disable=protected-access
+        ).replace("/", "_")[1:]
+        if hasattr(ChartParams, charting_function):
+            return getattr(ChartParams, charting_function)()
+        raise ValueError(
+            f"Error: No chart parameters are defined for the route: {charting_function}"
+        )
 
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
@@ -93,6 +117,8 @@ class Charting:
             )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+
+        self._handle_backend()
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
