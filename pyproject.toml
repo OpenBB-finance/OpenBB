@@ -23,7 +23,7 @@ openbb-charting = "^2.0.0"
 
 # Terminal dependencies
 prompt-toolkit = "^3.0.16"
-rich = "^12.6.0"
+rich = "^13"
 python-dotenv = "^1.0.0"
 python-i18n = "^0.3.9"
 
