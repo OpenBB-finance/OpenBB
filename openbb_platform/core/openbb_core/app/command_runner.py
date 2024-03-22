@@ -229,7 +229,7 @@ class ParametersBuilder:
         sig = signature(func)
         fields = {
             n: (
-                p.annotation if p.annotation is not Parameter.empty else Any,
+                Any if p.annotation is Parameter.empty else p.annotation,
                 ... if p.default is Parameter.empty else p.default,
             )
             for n, p in sig.parameters.items()
