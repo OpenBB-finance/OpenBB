@@ -1,19 +1,20 @@
 """Platform Equity Controller."""
 
 __docformat__ = "numpy"
-
 import logging
+import os
 from functools import partial, update_wrapper
 from types import MethodType
 from typing import Dict, List, Optional
 
 import pandas as pd
 from openbb import obb
+from openbb_charting.core.openbb_figure import OpenBBFigure
 
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.helper_funcs import print_rich_table
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
@@ -126,21 +127,40 @@ class PlatformController(BaseController):
             ):
                 try:
                     obbject = translator.execute_func(parsed_args=ns_parser)
+                    df: pd.DataFrame = None
+                    fig: OpenBBFigure = None
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()
+                        fig = obbject.chart.fig
+                        if hasattr(obbject, "to_dataframe"):
+                            df = obbject.to_dataframe()
+                        elif isinstance(obbject, dict):
+                            df = pd.DataFrame.from_dict(obbject, orient="index")
+                        else:
+                            df = None
+
                     elif hasattr(obbject, "to_dataframe"):
-                        print_rich_table(
-                            obbject.to_dataframe(),
-                            show_index=True,
-                        )
+                        df = obbject.to_dataframe()
+                        print_rich_table(df, show_index=True)
+
                     elif isinstance(obbject, dict):
-                        print_rich_table(
-                            pd.DataFrame.from_dict(obbject, orient="index"),
-                            show_index=True,
-                        )
+                        df = pd.DataFrame.from_dict(obbject, orient="index")
+                        print_rich_table(df, show_index=True)
+
                     else:
                         console.print(obbject)
+
+                    if hasattr(ns_parser, "export") and ns_parser.export:
+                        sheet_name = getattr(ns_parser, "sheet_name", None)
+                        export_data(
+                            export_type=ns_parser.export,
+                            dir_path=os.path.dirname(os.path.abspath(__file__)),
+                            func_name=translator.func.__name__,
+                            df=df,
+                            sheet_name=sheet_name,
+                            figure=fig,
+                        )
 
                 except Exception as e:
                     console.print(f"[red]{e}[/]\n")
