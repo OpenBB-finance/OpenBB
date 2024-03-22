@@ -332,6 +332,7 @@ class StaticCommandRunner:
         user_settings = execution_context.user_settings
         system_settings = execution_context.system_settings
 
+        # TODO: Use execution_context > CommandMap to get the method (GET, POST)
         # If "data" and "kwargs" are both keys in kwargs, it is a POST command.
         # We want to unpack the "kwargs" into the kwargs dict.
         if "data" in kwargs and "kwargs" in kwargs:
