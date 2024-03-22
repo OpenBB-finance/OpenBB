@@ -176,16 +176,13 @@ class PlatformController(BaseController):
         setattr(self, f"call_{name}", bound_method)
 
     def _generate_controller_call(self, controller, name, parent_path, translators):
-        def method(
-            self,
-            _,
-            controller=controller,
-            name=name,
-            parent_path=parent_path,
-            translators=translators,
-        ):
+        def method(self, _, controller, name, parent_path, translators):
             self.queue = self.load_class(
-                controller, name, parent_path, self.queue, translators=translators
+                class_ins=controller,
+                name=name,
+                parent_path=parent_path,
+                translators=translators,
+                queue=self.queue,
             )
 
         # Bind the method to the class
@@ -194,7 +191,11 @@ class PlatformController(BaseController):
         # Update the wrapper and set the attribute
         bound_method = update_wrapper(
             partial(
-                bound_method, controller=controller, name=name, translators=translators
+                bound_method,
+                name=name,
+                parent_path=parent_path,
+                translators=translators,
+                controller=controller,
             ),
             method,
         )
