@@ -14,14 +14,14 @@ def test_check_int_valid():
 def test_check_int_invalid():
     """Test if the check_int function raises an error when the value is not an int."""
     with pytest.raises(TypeError):
-        check_int("not_an_integer")
+        check_int("not_an_integer")  # type: ignore[arg-type]
 
 
 def test_data_model():
     """Test the Data model."""
-    some_data = Data(test="test")
+    some_data = Data(test="test")  # type: ignore[call-arg]
 
-    assert some_data.test == "test"
+    assert some_data.test == "test"  # type: ignore[attr-defined]
     assert not some_data.__alias_dict__
     assert some_data.__repr__() == "Data(test=test)"
     assert some_data.model_dump() == {"test": "test"}
@@ -35,9 +35,9 @@ def test_data_model_alias():
 
         __alias_dict__ = {"test_alias": "test"}
 
-    some_data = SomeData(test="Hello")
+    some_data = SomeData(test="Hello")  # type: ignore[call-arg]
 
     assert some_data.__alias_dict__ == {"test_alias": "test"}
     assert some_data.__repr__() == "SomeData(test_alias=Hello)"
     assert some_data.model_dump() == {"test_alias": "Hello"}
-    assert some_data.test_alias == "Hello"
+    assert some_data.test_alias == "Hello"  # type: ignore[attr-defined]

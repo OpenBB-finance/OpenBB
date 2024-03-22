@@ -8,7 +8,7 @@ def test_tagged_model():
 
 
 def test_fields():
-    fields = Tagged.__fields__
+    fields = Tagged.model_fields
     fields_keys = fields.keys()
 
     assert "id" in fields_keys

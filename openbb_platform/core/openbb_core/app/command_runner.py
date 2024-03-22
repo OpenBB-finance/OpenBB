@@ -6,7 +6,7 @@ from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type
 from warnings import catch_warnings, showwarning, warn
 
 from fastapi.params import Query
@@ -181,7 +181,7 @@ class ParametersBuilder:
     def _warn_kwargs(
         provider_choices: Dict[str, Any],
         extra_params: Dict[str, Any],
-        model: BaseModel,
+        model: Type[BaseModel],
     ) -> None:
         """Warn if kwargs received and ignored by the validation model."""
         # We only check the extra_params annotation because ignored fields
@@ -247,7 +247,7 @@ class ParametersBuilder:
     @classmethod
     def build(
         cls,
-        args: Tuple[Any],
+        args: Tuple[Any, ...],
         execution_context: ExecutionContext,
         func: Callable,
         route: str,
@@ -317,7 +317,7 @@ class StaticCommandRunner:
     async def _execute_func(
         cls,
         route: str,
-        args: Tuple[Any],
+        args: Tuple[Any, ...],
         execution_context: ExecutionContext,
         func: Callable,
         kwargs: Dict[str, Any],
