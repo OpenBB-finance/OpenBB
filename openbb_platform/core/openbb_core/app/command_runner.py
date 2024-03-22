@@ -218,7 +218,12 @@ class ParametersBuilder:
     @staticmethod
     def _as_dict(obj: Any) -> Dict[str, Any]:
         """Safely convert an object to a dict."""
-        return asdict(obj) if is_dataclass(obj) else dict(obj)
+        try:
+            if isinstance(obj, dict):
+                return obj
+            return asdict(obj) if is_dataclass(obj) else dict(obj)
+        except Exception:
+            return {}
 
     @staticmethod
     def validate_kwargs(
