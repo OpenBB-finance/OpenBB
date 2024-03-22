@@ -84,6 +84,11 @@ jobs:
           source runner_env/bin/activate
           pip list
 
+      - name: Build openbb
+        run: |
+          source runner_env/bin/activate
+          python -c "import openbb; openbb.build()"
+
       - name: Run Integration Tests
         run: |
           source runner_env/bin/activate
