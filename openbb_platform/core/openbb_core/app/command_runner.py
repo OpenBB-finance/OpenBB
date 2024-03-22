@@ -20,7 +20,7 @@ from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.provider_interface import ExtraParams, ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -189,9 +189,11 @@ class ParametersBuilder:
         annotation = getattr(
             model.model_fields.get("extra_params", None), "annotation", None
         )
-        if annotation:
+        if is_dataclass(annotation) and any(
+            t is ExtraParams for t in getattr(annotation, "__bases__", [])
+        ):
             # When there is no annotation there is nothing to warn
-            valid = asdict(annotation()) if is_dataclass(annotation) else {}  # type: ignore
+            valid = asdict(annotation())  # type: ignore
             provider = provider_choices.get("provider", None)
             for p in extra_params:
                 if field := valid.get(p):
