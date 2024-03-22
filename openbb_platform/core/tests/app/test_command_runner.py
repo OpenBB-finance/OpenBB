@@ -3,7 +3,6 @@ from inspect import Parameter
 from typing import Dict, List
 from unittest.mock import Mock, patch
 
-from openbb_core.app.provider_interface import ExtraParams
 import pytest
 from fastapi import Query
 from fastapi.params import Query as QueryParam
@@ -17,6 +16,7 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
 from pydantic import BaseModel, ConfigDict
 
