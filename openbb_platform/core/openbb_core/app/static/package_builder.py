@@ -531,7 +531,7 @@ class MethodDefinition:
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         """Reorder the params."""
         formatted_keys = list(params.keys())
-        for k in ["provider", "extra_params", "**kwargs"]:
+        for k in ["provider", "extra_params"]:
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
