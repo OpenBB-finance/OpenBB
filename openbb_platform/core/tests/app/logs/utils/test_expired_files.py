@@ -2,6 +2,7 @@ import os
 import tempfile
 from pathlib import Path
 from time import time
+from typing import List
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -92,7 +93,7 @@ def mock_path():
 def test_remove_file_list_no_files(mock_path):
     # Arrange
     # Let's assume the file list is empty, meaning there are no files to remove
-    file_list = []
+    file_list: List[Path] = []
 
     # Act
     remove_file_list(file_list)
