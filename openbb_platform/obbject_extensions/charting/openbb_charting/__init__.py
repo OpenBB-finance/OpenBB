@@ -84,8 +84,8 @@ class Charting:
         adjusted_route = route.replace("/", "_")[1:]
         return getattr(charting_router, adjusted_route)
 
-    def get_chart_params(self) -> ChartParams:
-        """Returns the QueryParams class for the function the OBBject was created from.
+    def get_params(self) -> ChartParams:
+        """Returns the ChartQueryParams class for the function the OBBject was created from.
         Without assigning to a variable, it will print the docstring to the console.
         """
 
