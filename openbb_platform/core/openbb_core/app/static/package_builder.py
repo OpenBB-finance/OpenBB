@@ -567,7 +567,7 @@ class MethodDefinition:
         formatted: Dict[str, Parameter] = {}
         var_kw = []
         for name, param in parameter_map.items():
-            if name in ["extra_params"]:
+            if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
                 var_kw.append(name)
             elif name == "provider_choices":
