@@ -3,6 +3,7 @@ from inspect import Parameter
 from typing import Dict, List
 from unittest.mock import Mock, patch
 
+from openbb_core.app.provider_interface import ExtraParams
 import pytest
 from fastapi import Query
 from fastapi.params import Query as QueryParam
@@ -228,45 +229,57 @@ def test_parameters_builder_validate_kwargs(mock_func):
 
 
 @pytest.mark.parametrize(
-    "provider_choices, extra_params, expect",
+    "provider_choices, extra_params, base, expect",
     [
         (
             {"provider": "provider1"},
             {"exists_in_2": ...},
+            ExtraParams,
             OpenBBWarning,
         ),
         (
             {"provider": "inexistent_provider"},
             {"exists_in_both": ...},
+            ExtraParams,
             OpenBBWarning,
         ),
         (
             {},
             {"inexistent_field": ...},
+            ExtraParams,
             OpenBBWarning,
+        ),
+        (
+            {},
+            {"inexistent_field": ...},
+            object,
+            None,
         ),
         (
             {"provider": "provider2"},
             {"exists_in_2": ...},
+            ExtraParams,
             None,
         ),
         (
             {"provider": "provider2"},
             {"exists_in_both": ...},
+            ExtraParams,
             None,
         ),
         (
             {},
             {"exists_in_both": ...},
+            ExtraParams,
             None,
         ),
     ],
 )
-def test_parameters_builder__warn_kwargs(provider_choices, extra_params, expect):
+def test_parameters_builder__warn_kwargs(provider_choices, extra_params, base, expect):
     """Test _warn_kwargs."""
 
     @dataclass
-    class SomeModel:
+    class SomeModel(base):
         """SomeModel"""
 
         exists_in_2: QueryParam = Query(..., title="provider2")
