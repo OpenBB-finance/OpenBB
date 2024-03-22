@@ -85,10 +85,6 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
-        "intro",
-        "about",
-        "support",
-        "survey",
         "record",
         "stop",
         "exe",
@@ -245,10 +241,6 @@ class TerminalController(BaseController):
         mt = MenuText("")
         mt.add_raw("\n")
         mt.add_info("_home_")
-        mt.add_cmd("intro")
-        mt.add_cmd("about")
-        mt.add_cmd("support")
-        mt.add_cmd("survey")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("featflags")
@@ -281,22 +273,11 @@ class TerminalController(BaseController):
         custom_filters = [sort_filter, url]
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
-    @staticmethod
-    def call_survey(_) -> None:
-        """Process survey command."""
-        webbrowser.open("https://openbb.co/survey")
-
     def call_featflags(self, _):
         """Process feature flags command."""
         from openbb_terminal.featflags_controller import FeatureFlagsController
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
-
-    def call_intro(self, _):
-        """Process intro command."""
-        webbrowser.open(
-            "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
-        )
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""

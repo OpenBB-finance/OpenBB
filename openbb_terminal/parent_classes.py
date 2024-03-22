@@ -44,7 +44,6 @@ from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import (
     is_auth_enabled,
-    open_openbb_documentation,
     print_guest_block_msg,
 )
 
@@ -525,44 +524,6 @@ class BaseController(metaclass=ABCMeta):
         """Process help command."""
         self.print_help()
 
-    def call_about(self, other_args: List[str]) -> None:
-        """Process about command."""
-        description = "Display the documentation of the menu or command."
-        if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
-            description += (
-                f" E.g. 'about {self.CHOICES_COMMANDS[0]}' opens a guide about the command "
-                f"{self.CHOICES_COMMANDS[0]} and 'about {self.CHOICES_MENUS[0]}' opens a guide about the "
-                f"menu {self.CHOICES_MENUS[0]}."
-            )
-
-        parser = argparse.ArgumentParser(
-            add_help=False, prog="about", description=description
-        )
-        parser.add_argument(
-            "-c",
-            "--command",
-            type=str,
-            dest="command",
-            default=None,
-            help="Obtain documentation on the given command or menu",
-            choices=self.CHOICES_COMMANDS + self.CHOICES_MENUS + self.CHOICES_COMMON,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser:
-            arg_type = ""
-            if ns_parser.command in self.CHOICES_COMMANDS:
-                arg_type = "command"
-            elif ns_parser.command in self.CHOICES_MENUS:
-                arg_type = "menu"
-
-            open_openbb_documentation(
-                self.PATH, command=ns_parser.command, arg_type=arg_type
-            )
-
     def call_quit(self, _) -> None:
         """Process quit menu command."""
         self.save_class()
@@ -596,97 +557,6 @@ class BaseController(metaclass=ABCMeta):
             self.queue.insert(0, "reset")
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
-
-    def call_resources(self, other_args: List[str]) -> None:
-        """Process resources command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="resources",
-            description="Display available markdown resources.",
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            if os.path.isfile(self.FILE_PATH):
-                with open(self.FILE_PATH) as f:
-                    console.print(Markdown(f.read()))
-
-            else:
-                console.print("No resources available.\n")
-
-    def call_support(self, other_args: List[str]) -> None:
-        """Process support command."""
-        self.save_class()
-
-        path_split = [x for x in self.PATH.split("/") if x != ""]
-        main_menu = path_split[0] if len(path_split) else "home"
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="support",
-            description="Submit your support request",
-        )
-
-        parser.add_argument(
-            "-c",
-            "--command",
-            action="store",
-            dest="command",
-            choices=["generic"] + self.support_commands,
-            help="Command that needs support",
-        )
-
-        parser.add_argument(
-            "--msg",
-            "-m",
-            action="store",
-            type=str,
-            nargs="+",
-            dest="msg",
-            required=False,
-            default="",
-            help="Message to send. Enclose it with double quotes",
-        )
-
-        parser.add_argument(
-            "--type",
-            "-t",
-            action="store",
-            dest="type",
-            required=False,
-            choices=SUPPORT_TYPE,
-            default="generic",
-            help="Support ticket type",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            # prefill_form(
-            #     ticket_type=ns_parser.type,
-            #     menu=main_menu,
-            #     command=ns_parser.command,
-            #     message=" ".join(ns_parser.msg),
-            #     path=self.PATH,
-            # )
-            form_url = "https://my.openbb.co/app/terminal/support?"
-
-            params = {
-                "type": ns_parser.type,
-                "menu": main_menu,
-                "path": self.PATH,
-                "command": ns_parser.command,
-                "message": " ".join(ns_parser.msg.replace('"', "")),
-            }
-
-            url_params = urllib.parse.urlencode(params)
-
-            webbrowser.open(form_url + url_params)
 
     def call_record(self, other_args) -> None:
         """Process record command."""

@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 
 import os
 import sys
-import webbrowser
 from contextlib import contextmanager
 from typing import List, Optional
 
@@ -52,119 +51,6 @@ In the meantime, check out our other products:
 [bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
     """
     console.print(text)
-
-
-def open_openbb_documentation(  # noqa: PLR0912
-    path,
-    url="https://docs.openbb.co/terminal",
-    command=None,
-    arg_type="",
-):
-    """Opens the documentation page based on your current location within the terminal. Make exceptions for menus
-    that are considered 'common' by adjusting the path accordingly."""
-    if path == "/" and command is None:
-        path = "/usage/overview/structure-and-navigation"
-        command = ""
-    elif "keys" in path:
-        path = "/usage/data/api-keys"
-        command = ""
-    elif "settings" in path:
-        path = "/usage/overview/customizing-the-terminal"
-        command = ""
-    elif "featflags" in path:
-        path = "/usage/overview/customizing-the-terminal#feature-flags-menu"
-        command = ""
-    elif "sources" in path:
-        path = "/usage/usage/data/data-sources"
-        command = ""
-    elif "account" in path:
-        path = "/usage/hub"
-        command = ""
-    elif arg_type == "command":  # user passed a command name
-        if command in ["settings", "featflags"]:
-            path = "/usage/overview/customizing-the-terminal"
-            command = ""
-        else:
-            path = f"/reference/{path}"
-    elif "askobb" in path:
-        path = "/usage/askobb-feature"
-        command = ""
-    elif arg_type == "menu":  # user passed a menu name
-        if command in ["ta", "qa"]:
-            menu = path.split("/")[-2]
-            path = f"/menus/common/{menu}"
-        elif command == "stocks":
-            path = "/menus/stocks/introduction"
-            command = ""
-        elif command == "forecast":
-            command = ""
-            path = "/menus/forecast"
-        elif command == "crypto":
-            path = "/menus/crypto/introduction"
-            command = ""
-
-        else:
-            path = f"/menus/{path}"
-    else:  # user didn't pass argument and is in a menu
-        menu = path.split("/")[-2]
-        if menu == "crypto" and not command:
-            path = "/crypto/introduction"
-        if menu == "stocks":
-            path = "/stocks/introduction"
-        path = f"/menus/common/{menu}" if menu in ["ta", "qa"] else f"/menus/{path}"
-
-    if command:
-        if command == "keys":
-            path = "/usage/data/api-keys"
-            command = ""
-        elif "settings" in path or "featflags" in path:
-            path = "/usage/overview/customizing-the-terminal"
-            command = ""
-        elif "sources" in path:
-            path = "/usage/data/data-sources"
-            command = ""
-        elif command in ["record", "stop", "exe"]:
-            path = "/usage/routines/introduction-to-routines"
-            command = ""
-        elif command == "sources":
-            path = "/usage/data/data-sources"
-            command = ""
-        elif command == "askobb":
-            path = "/usage/askobb-feature"
-            command = ""
-        elif command == "news":
-            path = "/usage/overview/commands-and-arguments#help-arguments"
-            command = ""
-        elif command in [
-            "intro",
-            "about",
-            "support",
-            "survey",
-            "update",
-            "wiki",
-        ]:
-            path = "/usage"
-            command = ""
-        elif command in ["ta", "qa"]:
-            path = f"/menus/common/{command}"
-            command = ""
-        elif command == "stocks":
-            path = "/menus/stocks/introduction"
-            command = ""
-        elif command == "account":
-            path = "/usage/hub"
-            command = ""
-        elif command == "news":
-            path = "/usage/overview/commands-and-arguments#help-arguments"
-            command = ""
-        path += command
-
-    full_url = f"{url}{path.replace('//', '/')}"
-
-    if full_url[-1] == "/":
-        full_url = full_url[:-1]
-
-    webbrowser.open(full_url)
 
 
 def hide_splashscreen():
