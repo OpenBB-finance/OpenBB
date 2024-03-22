@@ -11,8 +11,6 @@ import json
 import logging
 import os
 import re
-import urllib
-import webbrowser
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -20,7 +18,6 @@ from typing import Any, Dict, List, Literal, Optional, Union
 # IMPORTS THIRDPARTY
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
-from rich.markdown import Markdown
 
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
@@ -83,8 +80,6 @@ class BaseController(metaclass=ABCMeta):
         "exit",
         "r",
         "reset",
-        "support",
-        "wiki",
         "stop",
         "hold",
     ]
@@ -94,8 +89,6 @@ class BaseController(metaclass=ABCMeta):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: dict = {}
-    ABOUT_CHOICES: dict = {}
     HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
@@ -146,49 +139,6 @@ class BaseController(metaclass=ABCMeta):
         )
         self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
-
-        # Add in about options
-        self.ABOUT_CHOICES = {
-            c: None for c in self.CHOICES_COMMANDS + self.CHOICES_MENUS
-        }
-
-        # Remove common choices from list of support commands
-        self.support_commands = [
-            c for c in self.controller_choices if c not in self.CHOICES_COMMON
-        ]
-
-        # Add in support options
-        support_choices: dict = {c: {} for c in self.controller_choices}
-
-        support_choices = {c: None for c in (["generic"] + self.support_commands)}
-
-        support_choices["--command"] = {
-            c: None for c in (["generic"] + self.support_commands)
-        }
-
-        support_choices["-c"] = {c: None for c in (["generic"] + self.support_commands)}
-
-        support_choices["--type"] = {c: None for c in (SUPPORT_TYPE)}
-
-        self.SUPPORT_CHOICES = support_choices
-
-        self.HELP_CHOICES = {
-            c: None for c in ["on", "off", "-s", "--sameaxis", "--title"]
-        }
-
-        # Add in news options
-        news_choices = [
-            "--term",
-            "-t",
-            "--sources",
-            "-s",
-            "--help",
-            "-h",
-            "--tag",
-            "--taglist",
-            "--sourcelist",
-        ]
-        self.NEWS_CHOICES = {c: None for c in news_choices}
 
     def check_path(self) -> None:
         """Check if command path is valid."""

@@ -103,11 +103,6 @@ class TerminalController(BaseController):
         CHOICES_MENUS.append("account")
 
     PATH = "/"
-
-    GUESS_TOTAL_TRIES = 0
-    GUESS_NUMBER_TRIES_LEFT = 0
-    GUESS_SUM_SCORE = 0.0
-    GUESS_CORRECTLY = 0
     CHOICES_GENERATION = False
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
@@ -181,7 +176,6 @@ class TerminalController(BaseController):
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["support"] = self.SUPPORT_CHOICES
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
             choices["hold"]["off"] = {"--title": None}
 
@@ -239,9 +233,6 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_raw("\n")
-        mt.add_info("_home_")
-        mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("featflags")
         mt.add_raw("\n")
@@ -249,7 +240,6 @@ class TerminalController(BaseController):
         mt.add_cmd("record")
         mt.add_cmd("stop")
         mt.add_cmd("exe")
-        mt.add_raw("\n")
         mt.add_raw("\n")
         mt.add_info("Platform CLI")
         for router, value in PLATFORM_ROUTERS.items():
