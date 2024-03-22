@@ -272,7 +272,7 @@ def test_filter_log_line(input_text, expected_output, formatter):
 
 def test_formatException_invalid():
     with pytest.raises(Exception):
-        formatter.formatException(Exception("Big bad error"))
+        formatter.formatException(Exception("Big bad error"))  # type: ignore[attr-defined]
 
 
 def test_format(formatter):

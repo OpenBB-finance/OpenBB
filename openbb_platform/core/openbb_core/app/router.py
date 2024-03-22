@@ -350,7 +350,7 @@ class SignatureInspector:
 
             func = cls.inject_return_type(
                 func=func,
-                return_map=provider_interface.return_map.get(model),
+                return_map=provider_interface.return_map.get(model, {}),
                 model=model,
             )
 
@@ -374,11 +374,7 @@ class SignatureInspector:
         return_map: Dict[str, dict],
         model: str,
     ) -> Callable[P, OBBject]:
-        """
-        Inject full return model into the function.
-        Also updates __name__ and __doc__ for API schemas.
-        """
-
+        """Inject full return model into the function. Also updates __name__ and __doc__ for API schemas."""
         results: Dict[str, Any] = {"list_type": [], "dict_type": []}
 
         for provider, return_data in return_map.items():
@@ -397,7 +393,7 @@ class SignatureInspector:
             if not v:
                 continue
 
-            inner_type = SerializeAsAny[
+            inner_type: Any = SerializeAsAny[  # type: ignore[misc,valid-type]
                 Annotated[
                     Union[tuple(v)],  # type: ignore
                     Field(discriminator="provider"),

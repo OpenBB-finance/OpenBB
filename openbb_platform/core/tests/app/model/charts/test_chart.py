@@ -41,7 +41,7 @@ def test_charting_config_validation():
     chart = Chart(content=content, format=chart_format)
 
     with pytest.raises(ValueError):
-        chart.content = "Invalid Content"
+        chart.content = "Invalid Content"  # type: ignore[assignment]
 
     assert chart.content == content
     assert chart.format == chart_format
