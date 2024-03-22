@@ -149,3 +149,14 @@ class TechnicalConesChartQueryParams(ChartQueryParams):
         default=None,
         description="Symbol represented by the data. Used to label the chart.",
     )
+
+
+class ChartParams:
+    """Chart Query Params."""
+
+    equity_price_historical = EquityPriceHistoricalChartQueryParams
+    economy_fred_series = EconomyFredSeriesChartQueryParams
+    equity_price_historical = EquityPriceHistoricalChartQueryParams
+    etf_historical = EquityPriceHistoricalChartQueryParams
+    index_price_historical = EquityPriceHistoricalChartQueryParams
+    technical_cones = TechnicalConesChartQueryParams
