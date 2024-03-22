@@ -531,7 +531,7 @@ class MethodDefinition:
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         """Reorder the params."""
         formatted_keys = list(params.keys())
-        for k in ["provider", "extra_params"]:
+        for k in ["provider", "extra_params", "**kwargs"]:
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
@@ -561,14 +561,14 @@ class MethodDefinition:
                 ],
                 default=False,
             )
-        kwargs = None
+
         formatted: Dict[str, Parameter] = {}
 
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
             elif name == "kwargs":
-                kwargs = Parameter(
+                formatted["**" + name] = Parameter(
                     name="kwargs", kind=Parameter.VAR_KEYWORD, annotation=Any
                 )
             elif name == "provider_choices":
@@ -628,8 +628,7 @@ class MethodDefinition:
                     annotation=updated_type,
                     default=param.default,
                 )
-        if kwargs:
-            formatted["**kwargs"] = kwargs
+
         return MethodDefinition.reorder_params(params=formatted)
 
     @staticmethod
