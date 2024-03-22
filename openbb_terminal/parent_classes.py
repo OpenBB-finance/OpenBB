@@ -905,7 +905,8 @@ class BaseController(metaclass=ABCMeta):
                 # Writing to file
                 with open(routine_file, "w") as file1:
                     lines = ["# OpenBB Platform CLI - Routine", "\n"]
-                    username = get_current_user().profile.username
+                    # username = get_current_user().profile.username
+                    username = "openbb_local"
                     lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
                     lines += [
                         f"# Title: {SESSION_RECORDED_NAME}",
