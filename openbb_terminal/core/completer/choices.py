@@ -293,7 +293,6 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 def build_controller_choice_map(controller) -> dict:
     command_list = controller.CHOICES_COMMANDS
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
-    controller_choice_map["hold"] = controller.HELP_CHOICES
 
     for command in command_list:
         try:
