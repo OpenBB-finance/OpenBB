@@ -193,7 +193,7 @@ class Charting:
             **kwargs,
         )
         if render:
-            fig.show(**kwargs)
+            return fig.show(**kwargs)
 
         return fig
 
