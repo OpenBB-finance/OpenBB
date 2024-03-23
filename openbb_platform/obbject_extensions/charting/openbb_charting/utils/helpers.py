@@ -40,12 +40,19 @@ def should_share_axis(
     df: pd.DataFrame, col1: str, col2: str, threshold: float = 0.15
 ) -> bool:
     """Determine whether two columns should share an axis."""
-    range1 = df[col1].max() - df[col1].min()
-    range2 = df[col2].max() - df[col2].min()
-    # Calculate the ratio of the two ranges
-    ratio = max(range1, range2) / min(range1, range2)
-    # If the ratio is less than the threshold, the two columns can share an axis
-    return ratio < threshold
+    try:
+        if isinstance(df, pd.Series):
+            df = df.to_frame()
+        range1 = df[col1].max() - df[col1].min()
+        range2 = df[col2].max() - df[col2].min()
+        # Calculate the ratio of the two ranges
+        ratio = max(range1, range2) / min(range1, range2)
+        # If the ratio is less than the threshold, the two columns can share an axis
+        if ratio == 1:
+            return True
+        return ratio < threshold
+    except Exception:
+        return False
 
 
 def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:

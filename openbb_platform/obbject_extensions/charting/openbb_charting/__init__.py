@@ -1,5 +1,7 @@
 """OpenBB OBBject extension for charting."""
 
+# pylint: disable=too-many-arguments,unused-argument
+
 import warnings
 from typing import (
     Any,
@@ -17,10 +19,13 @@ from openbb_core.app.model.extension import Extension
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
+from plotly.graph_objs import Figure
 
 from openbb_charting import charting_router
+from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.query_params import ChartParams
+from openbb_charting.utils.generic_charts import line_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
 warnings.filterwarnings(
@@ -100,6 +105,98 @@ class Charting:
             f"Error: No chart parameters are defined for the route: {charting_function}"
         )
 
+    # pylint: disable=too-many-locals
+    def create_line_chart(
+        self,
+        data: Union[
+            list,
+            dict,
+            pd.DataFrame,
+            List[pd.DataFrame],
+            pd.Series,
+            List[pd.Series],
+            np.ndarray,
+            Data,
+        ],
+        index: Optional[str] = None,
+        target_column: Optional[str] = None,
+        title: Optional[str] = None,
+        x: Optional[str] = None,
+        xtitle: Optional[str] = None,
+        y: Optional[Union[str, List[str]]] = None,
+        ytitle: Optional[str] = None,
+        y2: Optional[Union[str, List[str]]] = None,
+        y2title: Optional[str] = None,
+        layout_kwargs: Optional[dict] = None,
+        scatter_kwargs: Optional[dict] = None,
+        normalize: bool = False,
+        returns: bool = False,
+        render: bool = True,
+        **kwargs,
+    ) -> Union[OpenBBFigure, Figure, None]:
+        """Create a line chart from external data and render a chart or return the OpenBBFigure.
+
+        Parameters
+        ----------
+        data : Union[Data, pd.DataFrame, pd.Series]
+            Data to be plotted (OHLCV data).
+        index : Optional[str], optional
+            Index column, by default None
+        target_column : Optional[str], optional
+            Target column to be plotted, by default None
+        title : Optional[str], optional
+            Chart title, by default None
+        x : Optional[str], optional
+            X-axis column, by default None
+        xtitle : Optional[str], optional
+            X-axis title, by default None
+        y : Optional[Union[str, List[str]]], optional
+            Y-axis column(s), by default None
+            If None are supplied, the layout is optimized for the contents of data.
+            Where many units/scales are present,
+            it will attempt to divide based on the range of values.
+        ytitle : Optional[str], optional
+            Y-axis title, by default None
+        y2 : Optional[Union[str, List[str]]], optional
+            Y2-axis column(s), by default None
+        y2title : Optional[str], optional
+            Y2-axis title, by default None
+        layout_kwargs : Optional[dict], optional
+            Additional Plotly Layout parameters for `fig.update_layout`, by default None
+        scatter_kwargs : Optional[dict], optional
+            Additional Plotly parameters applied on creation of each scatter plot, by default None
+        normalize : bool, optional
+            Normalize the data with Z-Score Standardization, by default False
+        returns : bool, optional
+            Convert the data to cumulative returns, by default False
+        render: bool, optional
+            If True, the chart will be rendered, by default True
+        **kwargs: Dict[str, Any]
+            Extra parameters to be passed to `figure.show()`
+        """
+        self._handle_backend()
+        fig = line_chart(
+            data=data,
+            index=index,
+            target_column=target_column,
+            title=title,
+            x=x,
+            xtitle=xtitle,
+            y=y,
+            ytitle=ytitle,
+            y2=y2,
+            y2title=y2title,
+            layout_kwargs=layout_kwargs,
+            scatter_kwargs=scatter_kwargs,
+            normalize=normalize,
+            returns=returns,
+            **kwargs,
+        )
+        if render:
+            fig.show(**kwargs)
+
+        return fig
+
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
 
@@ -127,7 +224,7 @@ class Charting:
         if render:
             fig.show(**kwargs)
 
-    # pylint: disable=too-many-arguments
+    # pylint: disable=too-many-locals
     def to_chart(
         self,
         data: Optional[
@@ -142,6 +239,8 @@ class Charting:
                 Data,
             ]
         ] = None,
+        target_column: Optional[str] = None,
+        index: Optional[str] = None,
         indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -202,10 +301,11 @@ class Charting:
         has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
             data
         )
+
         index = (
             data.index.name
             if has_data and isinstance(data, (pd.DataFrame, pd.Series))
-            else None
+            else index
         )
         data_as_df: pd.DataFrame = (
             basemodel_to_df(convert_to_basemodel(data), index=index)
@@ -214,6 +314,12 @@ class Charting:
         )
         if "date" in data_as_df.columns:
             data_as_df = data_as_df.set_index("date")
+
+        if index is not None and index in data_as_df.columns:
+            data_as_df = data_as_df.set_index(index)
+
+        if target_column is not None:
+            data_as_df = data_as_df[[target_column]]
 
         if (
             hasattr(self._obbject, "_standard_params")
@@ -231,6 +337,8 @@ class Charting:
         kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
         kwargs["indicators"] = indicators
         kwargs["symbol"] = symbol
+        kwargs["target_column"] = target_column
+        kwargs["index"] = index
 
         try:
             if has_data:
@@ -238,4 +346,7 @@ class Charting:
             else:
                 self.show(**kwargs, render=render)
         except Exception as e:
-            raise RuntimeError("Could not create chart from the OBBject.") from e
+            raise RuntimeError(
+                "The charting router has no path for this function."
+                + " Create a custom chart with any data using the `create_line_chart` method."
+            ) from e
