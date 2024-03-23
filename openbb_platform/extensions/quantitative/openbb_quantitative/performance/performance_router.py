@@ -1,3 +1,7 @@
+"""Quantitative Performance Router."""
+
+# pylint: disable=unused-argument
+
 from typing import List
 
 import numpy as np
@@ -47,6 +51,7 @@ def omega_ratio(
     target: str,
     threshold_start: float = 0.0,
     threshold_end: float = 1.5,
+    **extra_params,
 ) -> OBBject[List[OmegaModel]]:
     """Calculate the Omega Ratio.
 
@@ -64,6 +69,9 @@ def omega_ratio(
         Start threshold, by default 0.0
     threshold_end : float, optional
         End threshold, by default 1.5
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -122,6 +130,7 @@ def sharpe_ratio(
     rfr: float = 0.0,
     window: PositiveInt = 252,
     index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Get Rolling Sharpe Ratio.
 
@@ -143,6 +152,9 @@ def sharpe_ratio(
     window : PositiveInt, optional
         Window size, by default 252
     index : str, optional
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -193,6 +205,7 @@ def sortino_ratio(
     window: PositiveInt = 252,
     adjusted: bool = False,
     index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Get rolling Sortino Ratio.
 
@@ -222,6 +235,10 @@ def sortino_ratio(
         Adjust sortino ratio to compare it to sharpe ratio, by default False
     index:str
         Index column for input data
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
+
     Returns
     -------
     OBBject[List[Data]]

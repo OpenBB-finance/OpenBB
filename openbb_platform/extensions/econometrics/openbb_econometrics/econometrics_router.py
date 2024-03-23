@@ -1,5 +1,7 @@
 """Econometrics Router."""
 
+# pylint: disable=unused-argument
+
 import re
 from itertools import combinations
 from typing import Dict, List, Literal
@@ -43,7 +45,10 @@ router = Router(prefix="")
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
+def correlation_matrix(
+    data: List[Data],
+    **extra_params,
+) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
     The correlation matrix provides a view of how different variables in your dataset relate to one another.
@@ -55,6 +60,9 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     ----------
     data : List[Data]
         Input dataset.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -101,6 +109,7 @@ def ols_regression(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Perform Ordinary Least Squares (OLS) regression.
 
@@ -117,6 +126,9 @@ def ols_regression(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -153,6 +165,7 @@ def ols_regression_summary(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Data]:
     """Perform Ordinary Least Squares (OLS) regression.
 
@@ -166,6 +179,9 @@ def ols_regression_summary(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -238,6 +254,7 @@ def autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Data]:
     """Perform Durbin-Watson test for autocorrelation.
 
@@ -257,6 +274,9 @@ def autocorrelation(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -293,6 +313,7 @@ def residual_autocorrelation(
     y_column: str,
     x_columns: List[str],
     lags: PositiveInt = 1,
+    **extra_params,
 ) -> OBBject[Data]:
     """Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.
 
@@ -314,6 +335,9 @@ def residual_autocorrelation(
         List of columns to use as exogenous variables.
     lags: PositiveInt
         Number of lags to use in the test.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -351,6 +375,7 @@ def residual_autocorrelation(
 def cointegration(
     data: List[Data],
     columns: List[str],
+    **extra_params,
 ) -> OBBject[Data]:
     """Show co-integration between two timeseries using the two step Engle-Granger test.
 
@@ -371,6 +396,9 @@ def cointegration(
         Data columns to check cointegration
     maxlag: PositiveInt
         Number of lags to use in the test.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -426,6 +454,7 @@ def causality(
     y_column: str,
     x_column: str,
     lag: PositiveInt = 3,
+    **extra_params,
 ) -> OBBject[Data]:
     """Perform Granger causality test to determine if X 'causes' y.
 
@@ -447,6 +476,9 @@ def causality(
         Columns to use as exogenous variables.
     lag: PositiveInt
         Number of lags to use in the test.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -494,6 +526,7 @@ def unit_root(
     data: List[Data],
     column: str,
     regression: Literal["c", "ct", "ctt"] = "c",
+    **extra_params,
 ) -> OBBject[Data]:
     """Perform Augmented Dickey-Fuller (ADF) unit root test.
 
@@ -515,6 +548,9 @@ def unit_root(
     regression: Literal["c", "ct", "ctt"]
         Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
         constant, trend, and trend-squared.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -549,6 +585,7 @@ def panel_random_effects(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Perform One-way Random Effects model for panel data.
 
@@ -565,6 +602,9 @@ def panel_random_effects(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -596,6 +636,7 @@ def panel_between(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Perform a Between estimator regression on panel data.
 
@@ -612,6 +653,9 @@ def panel_between(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -641,6 +685,7 @@ def panel_pooled(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Perform a Pooled coefficient estimator regression on panel data.
 
@@ -658,6 +703,9 @@ def panel_pooled(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -687,6 +735,7 @@ def panel_fixed(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """One- and two-way fixed effects estimator for panel data.
 
@@ -703,6 +752,9 @@ def panel_fixed(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -732,6 +784,7 @@ def panel_first_difference(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Perform a first-difference estimate for panel data.
 
@@ -748,6 +801,9 @@ def panel_first_difference(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -777,6 +833,7 @@ def panel_fmac(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
+    **extra_params,
 ) -> OBBject[Dict]:
     """Fama-MacBeth estimator for panel data.
 
@@ -794,6 +851,9 @@ def panel_fmac(
         Target column.
     x_columns: List[str]
         List of columns to use as exogenous variables.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------

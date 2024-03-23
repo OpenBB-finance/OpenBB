@@ -49,6 +49,7 @@ router = Router(prefix="/stats")
 def skew(
     data: List[Data],
     target: str,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Get the skew of the data set.
 
@@ -64,6 +65,9 @@ def skew(
         Time series data.
     target : str
         Target column name.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -100,7 +104,11 @@ def skew(
         ),
     ],
 )
-def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
+def variance(
+    data: List[Data],
+    target: str,
+    **extra_params,
+) -> OBBject[List[Data]]:
     """
     Calculate the  variance of a target column.
 
@@ -113,6 +121,9 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate variance.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -149,7 +160,11 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
         ),
     ],
 )
-def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
+def stdev(
+    data: List[Data],
+    target: str,
+    **extra_params,
+) -> OBBject[List[Data]]:
     """
     Calculate the rolling standard deviation of a target column.
 
@@ -163,6 +178,9 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate standard deviation.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -199,7 +217,11 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
         ),
     ],
 )
-def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
+def kurtosis(
+    data: List[Data],
+    target: str,
+    **extra_params,
+) -> OBBject[List[Data]]:
     """
     Calculate the rolling kurtosis of a target column.
 
@@ -214,6 +236,9 @@ def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate kurtosis.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -254,6 +279,7 @@ def quantile(
     data: List[Data],
     target: str,
     quantile_pct: NonNegativeFloat = 0.5,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the quantile of a target column at a specified quantile percentage.
@@ -269,6 +295,9 @@ def quantile(
         The name of the column for which to calculate the quantile.
     quantile_pct: NonNegativeFloat, optional
         The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -311,6 +340,7 @@ def quantile(
 def mean(
     data: List[Data],
     target: str,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the  mean (average) of a target column.
@@ -325,6 +355,9 @@ def mean(
         The time series data as a list of data points.
     target: str
         The name of the column for which to calculate the mean.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------

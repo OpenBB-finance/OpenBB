@@ -1,6 +1,7 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines, unused-argument
+
 from typing import List, Literal, Optional
 
 import pandas as pd
@@ -48,6 +49,7 @@ def atr(
     mamode: Literal["rma", "ema", "sma", "wma"] = "rma",
     drift: NonNegativeInt = 1,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Average True Range.
 
@@ -73,7 +75,9 @@ def atr(
         The difference period, by default 1
     offset : int, optional
         How many periods to offset the result, by default 0
-
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
     Returns
     -------
     OBBject[List[Data]]
@@ -112,6 +116,7 @@ def fib(
     period: PositiveInt = 120,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Create Fibonacci Retracement Levels.
 
@@ -129,6 +134,9 @@ def fib(
         Index column name, by default "date"
     period : PositiveInt, optional
         Period to calculate the indicator, by default 120
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -180,6 +188,7 @@ def obv(
     data: List[Data],
     index: str = "date",
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the On Balance Volume (OBV).
 
@@ -200,6 +209,9 @@ def obv(
         Index column name, by default "date"
     offset : int, optional
         How many periods to offset the result, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -234,6 +246,7 @@ def fisher(
     index: str = "date",
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Perform the Fisher Transform.
 
@@ -253,6 +266,9 @@ def fisher(
         Fisher period, by default 14
     signal : PositiveInt, optional
         Fisher Signal period, by default 1
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -289,6 +305,7 @@ def adosc(
     fast: PositiveInt = 3,
     slow: PositiveInt = 10,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Accumulation/Distribution Oscillator.
 
@@ -311,6 +328,9 @@ def adosc(
         Number of periods to be used for the slow calculation, by default 10.
     offset : int, optional
         Offset to be used for the calculation, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -349,6 +369,7 @@ def bbands(
     std: NonNegativeFloat = 2,
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Bollinger Bands.
 
@@ -381,6 +402,9 @@ def bbands(
         Moving average mode to be used for the calculation, by default "sma".
     offset : int, optional
         Offset to be used for the calculation, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -426,6 +450,7 @@ def zlma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the zero lag exponential moving average (ZLEMA).
 
@@ -448,6 +473,9 @@ def zlma(
         Number of periods to be used for the calculation, by default 50.
     offset : int, optional
         Offset to be used for the calculation, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -490,6 +518,7 @@ def aroon(
     index: str = "date",
     length: int = 25,
     scalar: int = 100,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Aroon Indicator.
 
@@ -515,6 +544,9 @@ def aroon(
         Number of periods to be used for the calculation, by default 25.
     scalar : int, optional
         Scalar to be used for the calculation, by default 100.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -551,6 +583,7 @@ def sma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Simple Moving Average (SMA).
 
@@ -574,6 +607,9 @@ def sma(
         Number of periods to be used for the calculation, by default 50.
     offset : int, optional
         Offset from the current period, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -618,6 +654,7 @@ def demark(
     show_all: bool = True,
     asint: bool = True,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Demark sequential indicator.
 
@@ -641,6 +678,9 @@ def demark(
         If True, fill NAs with 0 and change type to int, by default True.
     offset : int, optional
         How many periods to offset the result
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -676,6 +716,7 @@ def vwap(
     index: str = "date",
     anchor: str = "D",
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Volume Weighted Average Price (VWAP).
 
@@ -696,6 +737,9 @@ def vwap(
         https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
     offset : int, optional
         Offset from the current period, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -742,6 +786,7 @@ def macd(
     fast: int = 12,
     slow: int = 26,
     signal: int = 9,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Moving Average Convergence Divergence (MACD).
 
@@ -768,6 +813,9 @@ def macd(
         Number of periods for the slow EMA, by default 26.
     signal : int, optional
         Number of periods for the signal EMA, by default 9.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -810,6 +858,7 @@ def hma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Hull Moving Average (HMA).
 
@@ -830,6 +879,9 @@ def hma(
         Number of periods for the HMA, by default 50.
     offset : int, optional
         Offset of the HMA, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -879,6 +931,7 @@ def donchian(
     lower_length: PositiveInt = 20,
     upper_length: PositiveInt = 20,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Donchian Channels.
 
@@ -900,6 +953,9 @@ def donchian(
         Number of periods for the upper band, by default 20.
     offset : int, optional
         Offset of the Donchian Channel, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -941,6 +997,7 @@ def ichimoku(
     lagging: PositiveInt = 52,
     offset: PositiveInt = 26,
     lookahead: bool = False,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Ichimoku Cloud.
 
@@ -966,6 +1023,9 @@ def ichimoku(
         Number of periods for the offset, by default 26.
     lookahead : bool, optional
         drops the Chikou Span Column to prevent potential data leak
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1009,6 +1069,7 @@ def clenow(
     index: str = "date",
     target: str = "close",
     period: PositiveInt = 90,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Clenow Volatility Adjusted Momentum.
 
@@ -1026,6 +1087,9 @@ def clenow(
         Target column name, by default "close".
     period : PositiveInt, optional
         Number of periods for the momentum, by default 90.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1066,7 +1130,12 @@ def clenow(
         APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
-def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
+def ad(
+    data: List[Data],
+    index: str = "date",
+    offset: int = 0,
+    **extra_params,
+) -> OBBject[List[Data]]:
     """Calculate the Accumulation/Distribution Line.
 
     Similar to the On Balance Volume (OBV).
@@ -1090,6 +1159,9 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
         Index column name to use with `data`, by default "date".
     offset : int, optional
         Offset of the AD, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1125,6 +1197,7 @@ def adx(
     length: int = 50,
     scalar: float = 100.0,
     drift: int = 1,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Average Directional Index (ADX).
 
@@ -1144,6 +1217,9 @@ def adx(
         Scalar value for the ADX, by default 100.0.
     drift : int, optional
         Drift value for the ADX, by default 1.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1182,6 +1258,7 @@ def wma(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Weighted Moving Average (WMA).
 
@@ -1202,6 +1279,9 @@ def wma(
         The length of the WMA, by default 50.
     offset : int, optional
         The offset of the WMA, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1244,6 +1324,7 @@ def cci(
     index: str = "date",
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Commodity Channel Index (CCI).
 
@@ -1263,6 +1344,9 @@ def cci(
         The length of the CCI, by default 14.
     scalar : PositiveFloat, optional
         The scalar of the CCI, by default 0.015.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1300,6 +1384,7 @@ def rsi(
     length: int = 14,
     scalar: float = 100.0,
     drift: int = 1,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Relative Strength Index (RSI).
 
@@ -1323,6 +1408,9 @@ def rsi(
         The scalar to use for the RSI, by default 100.0
     drift : int, optional
         The drift to use for the RSI, by default 1
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1366,6 +1454,7 @@ def stoch(
     fast_k_period: NonNegativeInt = 14,
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Stochastic Oscillator.
 
@@ -1388,6 +1477,9 @@ def stoch(
         The slow %D period, by default 3.
     slow_k_period : NonNegativeInt, optional
         The slow %K period, by default 3.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1431,6 +1523,7 @@ def kc(
     scalar: PositiveFloat = 20,
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Keltner Channels.
 
@@ -1454,6 +1547,9 @@ def kc(
         The moving average mode to use for the Keltner Channels, by default "ema"
     offset : NonNegativeInt, optional
         The offset to use for the Keltner Channels, by default 0
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1491,7 +1587,10 @@ def kc(
     ],
 )
 def cg(
-    data: List[Data], index: str = "date", length: PositiveInt = 14
+    data: List[Data],
+    index: str = "date",
+    length: PositiveInt = 14,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Center of Gravity.
 
@@ -1509,6 +1608,9 @@ def cg(
         Index column name to use with `data`, by default "date"
     length : PositiveInt, optional
         The length of the COG, by default 14
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1554,6 +1656,7 @@ def cones(
     ] = "std",
     is_crypto: bool = False,
     trading_periods: Optional[int] = None,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 
@@ -1607,6 +1710,9 @@ def cones(
         Whether the data is crypto or not. If True, volatility is calculated for 365 days instead of 252
     trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -1650,6 +1756,7 @@ def ema(
     index: str = "date",
     length: int = 50,
     offset: int = 0,
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Calculate the Exponential Moving Average (EMA).
 
@@ -1670,6 +1777,9 @@ def ema(
         The length of the calculation, by default 50.
     offset : int, optional
         The offset of the calculation, by default 0.
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
