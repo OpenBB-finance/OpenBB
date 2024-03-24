@@ -408,11 +408,11 @@ class PlotlyTA(PltTA):
                 decreasing=dict(line=dict(width=cc_linewidth)),
                 increasing=dict(line=dict(width=cc_linewidth)),
                 name=f"{symbol} OHLC",
-                hoverinfo="y",
                 showlegend=False,
                 row=1,
                 col=1,
                 secondary_y=False,
+                hoverinfo="x+y",
             )
         else:
             fig.add_scatter(
@@ -424,24 +424,9 @@ class PlotlyTA(PltTA):
                 col=1,
                 secondary_y=False,
             )
+            fig.update_layout(yaxis=dict(nticks=15))
             if self.theme:
                 self.inchart_colors = self.theme.get_colors()[1:]
-
-        fig.update_layout(
-            yaxis=dict(
-                ticklen=0,
-                nticks=15,
-                gridcolor="rgba(128,128,128,0.3)",
-            ),
-            yaxis2=dict(
-                ticklen=0,
-                showgrid=False,
-            ),
-            xaxis=dict(
-                ticklen=0,
-                gridcolor="rgba(128,128,128,0.3)",
-            ),
-        )
 
         fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig
@@ -580,7 +565,6 @@ class PlotlyTA(PltTA):
             Processed plotly figure
         """
         new_subplot = OpenBBFigure(charting_settings=self.charting_settings)
-        new_subplot.update_layout(ChartStyle().plotly_template.get("layout", {}))
         new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
         )

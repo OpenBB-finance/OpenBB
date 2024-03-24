@@ -9,6 +9,7 @@ from openbb_core.app.utils import basemodel_to_df
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+from openbb_charting.core.to_chart import to_chart
 from openbb_charting.query_params import (
     EconomyFredSeriesChartQueryParams,
     EquityPriceHistoricalChartQueryParams,
@@ -36,16 +37,16 @@ def equity_price_historical(
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
-        if "date" in data.columns:
-            data = data.set_index("date")
-
     else:
         data = basemodel_to_df(
             kwargs["obbject_item"], index=kwargs.get("index", "date")  # type: ignore
         )
 
+    if "date" in data.columns:
+        data = data.set_index("date")
+
     target_column = (
-        str(kwargs["target_column"]) if kwargs.get("target_column") else "close"
+        str(kwargs.get("target_column"))
     )
     normalize = kwargs.get("normalize") is True
     returns = kwargs.get("returns") is True
@@ -54,7 +55,7 @@ def equity_price_historical(
     title = f"{kwargs.get('title')}" if "title" in kwargs else "Historical Prices"
     y1title = ""
     y2title = ""
-
+    candles = True
     multi_symbol = (
         bool(kwargs.get("multi_symbol") is True)
         or (
@@ -62,7 +63,7 @@ def equity_price_historical(
             and target_column in data.columns
             and len(data.symbol.unique()) > 1
         )
-        or "target_column" in kwargs
+        or ("target_column" in kwargs and kwargs.get("target_column") is not None)
         or "symbol" in data.columns
         or (
             "symbol" not in data.columns
@@ -120,6 +121,9 @@ def equity_price_historical(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
+        )
+        fig.update_traces(
+            selector=dict(type="candles", mode="lines"), connectgaps=True
         )
         content = fig.show(external=True).to_plotly_json()
 
@@ -275,21 +279,119 @@ def crypto_price_historical(
     return equity_price_historical(**kwargs)
 
 
-def _ta_ma(ma_type: str, **kwargs):
+def _ta_ma(**kwargs):
     """Plot moving average helper."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
-    window = kwargs.get("window", 50)
-    offset = kwargs.get("offset", 0)
-    symbol = kwargs.get("symbol", "")
+    index = kwargs.get("index") if "index" in kwargs and kwargs.get("index") is not None else "date"
+    data = kwargs.get("data")
+    ma_type = kwargs["ma_type"] if "ma_type" in kwargs and kwargs.get("ma_type") is not None else "sma"
+    ma_types = ma_type.split(",") if isinstance(ma_type, str) else ma_type
 
-    ta = PlotlyTA()
-    fig = ta.plot(
-        data,
-        {f"{ma_type.lower()}": dict(length=window, offset=offset)},
-        f"{symbol.upper()} {ma_type.upper()}",
-        False,
-        volume=False,
+    if isinstance(data, pd.DataFrame) and not data.empty:
+        data = data.set_index(index) if index in data.columns else data
+
+    if data is None:
+        data = basemodel_to_df(kwargs["obbject_item"], index=index)
+
+    if isinstance(data, list):
+        data = basemodel_to_df(data, index=index)
+
+
+    window = kwargs.get("length", []) if "length" in kwargs and kwargs.get("length") is not None else [50]
+    offset = kwargs.get("offset", 0)
+    target_column = (
+        kwargs.get("target_column")
+        if "target_column" in kwargs and kwargs.get("target_column") is not None
+        else "close"
     )
+    if "target" in kwargs and kwargs.get("target") is not None:
+        target_column = kwargs.get("target") if kwargs.get("target") != "close" else target_column
+
+    if target_column not in data.columns and "close" in data.columns:
+        target_column = "close"
+
+    if target_column not in data.columns and "close" not in data.columns:
+        raise ValueError(f"Column '{target_column}', or 'close', not found in the data.")
+
+    df = data.copy()
+    if target_column in data.columns:
+        df = df[[target_column]]
+        df.columns = ["close"]
+    title = kwargs.get("title") if "title" in kwargs and kwargs.get("title") is not None else f"{ma_type.upper()}"
+
+    fig = OpenBBFigure()
+    fig = fig.create_subplots(
+        1,
+        1,
+        shared_xaxes=True,
+        vertical_spacing=0.06,
+        horizontal_spacing=0.01,
+        row_width=[1],
+        specs=[[{"secondary_y": True}]],
+    )
+
+    ma_df = pd.DataFrame()
+    window = [window] if isinstance(window, int) else window
+    for w in window:
+        for ma_type in ma_types:
+            ma_df[f"{ma_type.upper()} {w}"] = getattr(df.ta, ma_type)(length=w, offset=offset)
+
+    if kwargs.get("dropnan") is True:
+        ma_df = ma_df.dropna()
+        data = data.iloc[-len(ma_df):]
+
+    color = 0
+
+    if "candles" in kwargs and kwargs.get("candles") is True and kwargs.get("target_column") is None:
+        fig, _ = to_chart(data, candles=True, volume=False)
+
+    else:
+        ma_df[f"{target_column}".title()] = data[target_column]
+
+    for col in ma_df.columns:
+        name = col.replace("_", " ")
+        fig.add_scatter(
+            x=ma_df.index,
+            y=ma_df[col],
+            name=name,
+            mode="lines",
+            hovertemplate=f"{name}: %{{y}}<extra></extra>",
+            line=dict(width=1, color=LARGE_CYCLER[color]),
+            showlegend=True,
+        )
+        color += 1
+
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+
+    fig.update_layout(
+        title=dict(text=title, x=0.5, font=dict(size=16)),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            xanchor="right",
+            y=1.02,
+            x=0.95,
+            bgcolor="rgba(0,0,0,0)",
+        ),
+        xaxis=dict(
+            ticklen=0,
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            zeroline=True,
+            mirror=True,
+        ),
+        yaxis=dict(
+            ticklen=0,
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            zeroline=True,
+            mirror=True,
+            autorange=True,
+        ),
+    )
+
     content = fig.show(external=True).to_plotly_json()
 
     return fig, content
@@ -297,32 +399,37 @@ def _ta_ma(ma_type: str, **kwargs):
 
 def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Plot simple moving average chart."""
-    ma_type = "sma"
-    return _ta_ma(ma_type, **kwargs)
+    if "ma_type" not in kwargs:
+        kwargs["ma_type"] = "sma"
+    return _ta_ma(**kwargs)
 
 
 def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Exponential moving average chart."""
-    ma_type = "ema"
-    return _ta_ma(ma_type, **kwargs)
+    if "ma_type" not in kwargs:
+        kwargs["ma_type"] = "ema"
+    return _ta_ma(**kwargs)
 
 
 def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Hull moving average chart."""
-    ma_type = "hma"
-    return _ta_ma(ma_type, **kwargs)
+    if "ma_type" not in kwargs:
+        kwargs["ma_type"] = "hma"
+    return _ta_ma(**kwargs)
 
 
 def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Weighted moving average chart."""
-    ma_type = "wma"
-    return _ta_ma(ma_type, **kwargs)
+    if "ma_type" not in kwargs:
+        kwargs["ma_type"] = "wma"
+    return _ta_ma(**kwargs)
 
 
 def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Zero lag moving average chart."""
-    ma_type = "zlma"
-    return _ta_ma(ma_type, **kwargs)
+    if "ma_type" not in kwargs:
+        kwargs["ma_type"] = "zlma"
+    return _ta_ma(**kwargs)
 
 
 def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
