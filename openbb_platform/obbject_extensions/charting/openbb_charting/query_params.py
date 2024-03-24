@@ -151,6 +151,58 @@ class TechnicalConesChartQueryParams(ChartQueryParams):
     )
 
 
+class MAQueryParams(ChartQueryParams):
+    """Moving Average Query Params."""
+
+    target_column: str = Field(
+        default="close",
+        description="The column to calculate the moving average on.",
+    )
+    index: str = Field(
+        default="date",
+        description="The index column.",
+    )
+    length: Optional[Union[int, List[int]]] = Field(
+        default=50,
+        description="Window length for the moving average."
+        "+ The number is relative to the interval of the time series data.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset for the moving average.",
+    )
+    dropnan: bool = Field(
+        default=False,
+        description="If True, rows containing NaN will be dropped."
+        +" This will reduce the length of the charted data by the longest window.",
+    )
+    symbol: Optional[str] = Field(
+        default=None,
+        description="Symbol represented by the data. Used to label the chart.",
+    )
+
+
+class TechnicalSMAChartQueryParams(MAQueryParams):
+    """Technical SMA Chart Query Params."""
+
+
+class TechnicalEMAChartQueryParams(MAQueryParams):
+    """Technical EMA Chart Query Params."""
+
+
+class TechnicalHMAChartQueryParams(MAQueryParams):
+    """Technical HMA Chart Query Params."""
+
+
+class TechnicalWMAChartQueryParams(MAQueryParams):
+    """Technical WMA Chart Query Params."""
+
+
+class TechnicalZLMAChartQueryParams(MAQueryParams):
+    """Technical ZLMA Chart Query Params."""
+
+
+
 class ChartParams:
     """Chart Query Params."""
 
@@ -160,3 +212,9 @@ class ChartParams:
     etf_historical = EquityPriceHistoricalChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
     technical_cones = TechnicalConesChartQueryParams
+    technical_sma = TechnicalSMAChartQueryParams
+    technical_ema = TechnicalEMAChartQueryParams
+    technical_hma = TechnicalHMAChartQueryParams
+    technical_wma = TechnicalWMAChartQueryParams
+    technical_zlma = TechnicalZLMAChartQueryParams
+

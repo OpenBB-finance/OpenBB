@@ -751,6 +751,7 @@ class OpenBBFigure(go.Figure):
             opacity=0.7,
             secondary_y=True,
             hoverinfo="y",
+            showlegend=False,
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
