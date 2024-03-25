@@ -185,14 +185,15 @@ class ParametersBuilder:
     ) -> None:
         """Warn if kwargs received and ignored by the validation model."""
         # We only check the extra_params annotation because ignored fields
-        # will always be kwargs
+        # will always be there
         annotation = getattr(
             model.model_fields.get("extra_params", None), "annotation", None
         )
         if is_dataclass(annotation) and any(
             t is ExtraParams for t in getattr(annotation, "__bases__", [])
         ):
-            # When there is no annotation there is nothing to warn
+            # When we only warn when endpoint is bound to a model, so we need
+            # to check if the annotation is a dataclass and child of ExtraParams
             valid = asdict(annotation())  # type: ignore
             provider = provider_choices.get("provider", None)
             for p in extra_params:
