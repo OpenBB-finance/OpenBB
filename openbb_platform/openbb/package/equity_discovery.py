@@ -31,19 +31,24 @@ class ROUTER_equity_discovery(Container):
     def active(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the most actively traded stocks based on volume.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -61,7 +66,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityActive
@@ -85,10 +90,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.active(sort="desc")
+        >>> obb.equity.discovery.active(provider='yfinance')
+        >>> obb.equity.discovery.active(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -113,19 +119,24 @@ class ROUTER_equity_discovery(Container):
     def aggressive_small_caps(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top small cap stocks based on earnings growth.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -143,7 +154,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityAggressiveSmallCaps
@@ -167,10 +178,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.aggressive_small_caps(sort="desc")
+        >>> obb.equity.discovery.aggressive_small_caps(provider='yfinance')
+        >>> obb.equity.discovery.aggressive_small_caps(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -216,7 +228,12 @@ class ROUTER_equity_discovery(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
@@ -254,7 +271,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         DiscoveryFilings
@@ -272,12 +289,12 @@ class ROUTER_equity_discovery(Container):
         link : str
             URL to the filing page on the SEC site.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.filings(limit=100)
+        >>> obb.equity.discovery.filings(provider='fmp')
         >>> # Get filings for the year 2023, limited to 100 results
-        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31')
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -305,19 +322,24 @@ class ROUTER_equity_discovery(Container):
     def gainers(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price gainers in the stock market.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -335,7 +357,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityGainers
@@ -359,10 +381,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.gainers(sort="desc")
+        >>> obb.equity.discovery.gainers(provider='yfinance')
+        >>> obb.equity.discovery.gainers(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -387,19 +410,24 @@ class ROUTER_equity_discovery(Container):
     def growth_tech(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get top tech stocks based on revenue and earnings growth.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -417,7 +445,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GrowthTechEquities
@@ -441,10 +469,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.growth_tech(sort="desc")
+        >>> obb.equity.discovery.growth_tech(provider='yfinance')
+        >>> obb.equity.discovery.growth_tech(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -469,19 +498,24 @@ class ROUTER_equity_discovery(Container):
     def losers(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get the top price losers in the stock market.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -499,7 +533,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityLosers
@@ -523,10 +557,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.losers(sort="desc")
+        >>> obb.equity.discovery.losers(provider='yfinance')
+        >>> obb.equity.discovery.losers(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -551,19 +586,24 @@ class ROUTER_equity_discovery(Container):
     def undervalued_growth(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued growth stocks.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -581,7 +621,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityUndervaluedGrowth
@@ -605,10 +645,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.undervalued_growth(sort="desc")
+        >>> obb.equity.discovery.undervalued_growth(provider='yfinance')
+        >>> obb.equity.discovery.undervalued_growth(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -633,19 +674,24 @@ class ROUTER_equity_discovery(Container):
     def undervalued_large_caps(
         self,
         sort: Annotated[
-            str,
+            Literal["asc", "desc"],
             OpenBBCustomParameter(
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get potentially undervalued large cap stocks.
 
         Parameters
         ----------
-        sort : str
+        sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -663,7 +709,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityUndervaluedLargeCaps
@@ -687,10 +733,11 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.discovery.undervalued_large_caps(sort="desc")
+        >>> obb.equity.discovery.undervalued_large_caps(provider='yfinance')
+        >>> obb.equity.discovery.undervalued_large_caps(sort='desc', provider='yfinance')
         """  # noqa: E501
 
         return self._run(

@@ -9,21 +9,21 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.polygon.io/v2/aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-10?apiKey=MOCK_API_KEY&limit=49999&sort=desc
+    uri: https://api.polygon.io/v2/aggs/ticker/X:BTCUSD/range/1/day/2023-01-01/2023-01-10?apiKey=MOCK_API_KEY&limit=49999&sort=asc
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/0zUTavbRhQG4P8ya3E43x9aNt110UVbKJRSnGuHpA0JseWUcrn/vcjSjOzdGOHH
-        7zmv5rUtn17+uVzb3H6ff/j13W+//Nim9u1+uf737uv9y9JmwqldL7f75+X29M3p/Pf9tlzObV6u
-        98t4os1/vLbvbeZkZUCuigg3FZ/a93/bTCEkYB4yta/rkSKgdGov60FVQH1qH9eDoU/t8+MZNaCp
-        rbKHCGbi+pnalzabByK9TQ9VQiMgjALZxMU6yqoQhtRRpV188LmLuv7mJiJDxSCZWQ/SjUh9J4lI
-        EryIXDmUtXbTKwgCUzfTawuxqWxAXaWkTfUiBD2CkjgeKleZ2a66eYFJaBkHE5cNVQzUmLpq1FUv
-        ZZDYVK/CrqKA5VBRy59ULmXd1XWpDsalSF7uGV1NRcBDTTaIoSZg3yn3CbsHQnJXuVz4UDUsqC91
-        G51nhZVSBA+UHbi4Dzi1QHZ0/QNee9TM3NEwBBxr5Qx/apJkmGGPWuIIxC7OJoSeQxWDyvBdda8R
-        NVVBeY+K2FVXgzzUKHwqkxFnVleJUYEry0zX5mykJwJK6SBzBF157TtN6tO1KvBD3ME9ZzhjXykZ
-        cQGvIEqVigy0GIxwoGSDdFj7tpEonVQGOxbqFE81EkuunpJYEEHITETIi4dpWmA6gppwN4keHf24
-        zVN3U9cS76AJ8fPbwmL69ufUbstpud/a3H7+qa3X1Lf75bb89enc5san0+n9+w8ZLyImcjaWiFN+
-        MCY6n9nb1F76jff2fwAAAP//OenW5ykFAAA=
+        H4sIAAAAAAAA/0zUzYobRxAH8Hfp81DUd3XNMZtbDjkkgUAIRpZkvPayy0qjNWbZdzcjdbdmTt3D
+        wG/+VdX9XpbH/ffjqczl3/m3vx/++ev3MpXXy/H08+Hl8ryUmXAqp+P58rScN292h2+X83I8lHk5
+        XY7jizL/917eykwsiCBkJiLkyTKVtx9lJjdNME2dyst1KzyV/bpyIrA6la/XjepUntaVJk5lRT3Y
+        hBjXZyrPZeZkMf2YbqARJ3BNM5RMlQF6MhhhB52sg+6Q1sCK0kBTBuNhOoXfTbHKmc1kYlTgXFGt
+        OsCKgDISuleQQSZodHKt443MBB9ioOJGDGfsKTnFEYhdfC0Geu1oFYOs4QNNiIZWVVC+oYFYG+pq
+        UOOuZmOvqhHX2nOSpxp4zbBUiuCBsgMn96RVcyStbODZk9aOhiHgHa3hdRO1hhn2qJXVwTgVydN9
+        /dWmKgIaU1fZRtTUCugtKmOvrwdCvbc0XTZjpGFB1FQ3TzAJTeNg4nU+bmqKgd7VNAIaKoP0rmZ2
+        NVGuA31TBTU3g8ScymN4iaSCJ5Erh7LmUIMgsPYKr31oahAbUDsvQZW6SghKQyVx3B6ZNLOmSmgE
+        hFEgm7j0qMGqEIYtapAOMgKyk9rLG4QMOZoqzLyZJDci9U1TGZAzI8JNxbspJGAe0s1V0saqCmjv
+        qq39vbG3YjRVsG5GyTwQ6eP/qZyX3XI5l7n8+UdZr6nXy/G8fHo8lLlI7gjzsKvHPX3ZhdgO6YB7
+        4887ZFEpU9n3G+/jVwAAAP//yGhUvikFAAA=
     headers:
       Connection:
       - keep-alive
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 02 Feb 2024 00:32:56 GMT
+      - Thu, 29 Feb 2024 04:34:31 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -42,7 +42,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 2aaabbf87c33533d52377a8f5211dd26
+      - 39a109da8ec1fa735a01d0c52ba02343
     status:
       code: 200
       message: OK

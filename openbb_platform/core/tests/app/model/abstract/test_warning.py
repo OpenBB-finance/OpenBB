@@ -19,7 +19,7 @@ def test_warn_model(category, message):
 
 
 def test_fields():
-    fields = Warning_.__fields__
+    fields = Warning_.model_fields
     fields_keys = fields.keys()
 
     assert "category" in fields_keys

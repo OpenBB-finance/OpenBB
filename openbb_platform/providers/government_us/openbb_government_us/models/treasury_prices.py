@@ -12,8 +12,9 @@ from openbb_core.provider.standard_models.treasury_prices import (
     TreasuryPricesData,
     TreasuryPricesQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_government_us.utils.helpers import get_random_agent
-from pandas import read_csv, to_datetime
+from pandas import Index, read_csv, to_datetime
 from pydantic import Field
 
 
@@ -111,18 +112,21 @@ class GovernmentUSTreasuryPricesFetcher(
         """Transform the data."""
 
         try:
+            if not data:
+                raise EmptyDataError("Data not found")
             results = read_csv(StringIO(data), header=0)
-            columns = [
-                "cusip",
-                "security_type",
-                "rate",
-                "maturity_date",
-                "call_date",
-                "bid",
-                "offer",
-                "eod_price",
-            ]
-            results.columns = columns
+            results.columns = Index(
+                [
+                    "cusip",
+                    "security_type",
+                    "rate",
+                    "maturity_date",
+                    "call_date",
+                    "bid",
+                    "offer",
+                    "eod_price",
+                ]
+            )
             results["date"] = query.date.strftime("%Y-%m-%d")  # type: ignore
             for col in ["maturity_date", "call_date"]:
                 results[col] = (

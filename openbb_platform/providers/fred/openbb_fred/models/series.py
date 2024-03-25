@@ -195,6 +195,7 @@ class FredSeriesFetcher(
         """Transform data."""
         results = (
             pd.DataFrame(data)
+            .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})
             .fillna("N/A")

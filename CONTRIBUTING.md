@@ -1370,7 +1370,6 @@ The convention is as follows:
     "news": [
       "Feedparser",
       "NewsApi",
-      "Ultima"
     ],
             ...
 ```
@@ -1497,7 +1496,6 @@ class ForexController(BaseController):
     CHOICES_MENUS = [
         "forecast",
         "qa",
-        "oanda",
         "ta",
     ]
     RESOLUTION = ["i", "d", "w", "m"]
@@ -1705,8 +1703,11 @@ The accepted branch naming conventions are:
 - `hotfix/hotfix-name`
 - `release/2.1.0` or `release/2.1.0rc0`.
 - `bugfix/bugfix-name`
+- `docs/docs-name`
 
 All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/*` branches can only have PRs pointing to `main` branch.
+
+The `docs/docs-name` branch is used to update documentation in-between releases, it will trigger the website deployment to GitHub pages.
 
 ## Installers
 

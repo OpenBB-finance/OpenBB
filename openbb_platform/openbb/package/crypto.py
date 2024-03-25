@@ -33,7 +33,12 @@ class ROUTER_crypto(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search available cryptocurrency pairs within a provider.
@@ -58,7 +63,7 @@ class ROUTER_crypto(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CryptoSearch
@@ -74,12 +79,11 @@ class ROUTER_crypto(Container):
         exchange_name : Optional[str]
             The short name of the exchange the crypto trades on. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.crypto.search()
-        >>> obb.crypto.search("BTCUSD")
-        >>> obb.crypto.search("ETH-USD")
+        >>> obb.crypto.search(provider='fmp')
+        >>> obb.crypto.search(query='BTCUSD', provider='fmp')
         """  # noqa: E501
 
         return self._run(

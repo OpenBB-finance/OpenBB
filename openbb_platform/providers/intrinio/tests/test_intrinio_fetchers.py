@@ -13,6 +13,12 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.etf_holdings import IntrinioEtfHoldingsFetcher
+from openbb_intrinio.models.etf_info import IntrinioEtfInfoFetcher
+from openbb_intrinio.models.etf_price_performance import (
+    IntrinioEtfPricePerformanceFetcher,
+)
+from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
@@ -24,12 +30,14 @@ from openbb_intrinio.models.historical_dividends import (
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
-from openbb_intrinio.models.institutional_ownership import (
-    IntrinioInstitutionalOwnershipFetcher,
-)
+
+# from openbb_intrinio.models.institutional_ownership import (
+#     IntrinioInstitutionalOwnershipFetcher,
+# )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
+from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
@@ -53,6 +61,12 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
             ("api_key", "MOCK_API_KEY"),
+            ("X-Amz-Algorithm", "MOCK_X-Amz-Algorithm"),
+            ("X-Amz-Credential", "MOCK_X-Amz-Credential"),
+            ("X-Amz-Date", "MOCK_X-Amz-Date"),
+            ("X-Amz-Expires", "MOCK_X-Amz-Expires"),
+            ("X-Amz-SignedHeaders", "MOCK_X-Amz-SignedHeaders"),
+            ("X-Amz-Signature", "MOCK_X-Amz-Signature"),
         ],
     }
 
@@ -127,7 +141,13 @@ def test_intrinio_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
-    params = {"source": "delayed"}
+    params = {
+        "source": "delayed",
+        "trade_type": "block",
+        "sentiment": "neutral",
+        "start_date": date(2023, 11, 20),
+        "min_value": 10000000,
+    }
 
     fetcher = IntrinioOptionsUnusualFetcher()
     result = fetcher.test(params, credentials)
@@ -300,13 +320,14 @@ def test_intrinio_insider_trading_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.record_http
-def test_intrinio_institutional_ownership_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+# Disabled due to unreliable Intrinio endpoint
+# @pytest.mark.record_http
+# def test_intrinio_institutional_ownership_fetcher(credentials=test_credentials):
+#     params = {"symbol": "AAPL"}
 
-    fetcher = IntrinioInstitutionalOwnershipFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
+#     fetcher = IntrinioInstitutionalOwnershipFetcher()
+#     result = fetcher.test(params, credentials)
+#     assert result is None
 
 
 @pytest.mark.record_http
@@ -374,5 +395,49 @@ def test_intrinio_zack_sales_estimates_fetcher(credentials=test_credentials):
     }
 
     fetcher = IntrinioZackSalesEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+def test_intrinio_etf_search_fetcher(credentials=test_credentials):
+    params = {"query": "factor", "exchange": "bats"}
+
+    fetcher = IntrinioEtfSearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "DJIA,SPY,GOVT"}
+
+    fetcher = IntrinioEtfInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_etf_holdings_fetcher(credentials=test_credentials):
+    params = {"symbol": "DJIA"}
+
+    fetcher = IntrinioEtfHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_etf_price_performance_fetcher(credentials=test_credentials):
+    params = {"symbol": "SPY:US"}
+
+    fetcher = IntrinioEtfPricePerformanceFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_market_snapshots_fetcher(credentials=test_credentials):
+    params = {"date": date(2022, 6, 30)}
+
+    fetcher = IntrinioMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

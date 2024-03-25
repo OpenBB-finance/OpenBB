@@ -36,7 +36,12 @@ class ROUTER_fixedincome_government(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["federal_reserve", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Government Treasury Rates.
@@ -63,7 +68,7 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         TreasuryRates
@@ -97,10 +102,10 @@ class ROUTER_fixedincome_government(Container):
         year_30 : Optional[float]
             30 year Treasury rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
+        >>> obb.fixedincome.government.treasury_rates(provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -135,7 +140,12 @@ class ROUTER_fixedincome_government(Container):
             Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """US Yield Curve. Get United States yield curve.
@@ -162,7 +172,7 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         USYieldCurve
@@ -172,10 +182,11 @@ class ROUTER_fixedincome_government(Container):
         rate : float
             Associated rate given in decimal form (0.05 is 5%)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
+        >>> obb.fixedincome.government.us_yield_curve(provider='fred')
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')
         """  # noqa: E501
 
         return self._run(

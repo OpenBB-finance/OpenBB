@@ -3,7 +3,10 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.custom_parameter import (
+    OpenBBCustomChoices,
+    OpenBBCustomParameter,
+)
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -50,7 +53,12 @@ class ROUTER_fixedincome_corporate(Container):
         grade: Annotated[
             Literal["aa", "a2_p2"], OpenBBCustomParameter(description="The grade.")
         ] = "aa",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Commercial Paper.
@@ -89,7 +97,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CommercialPaper
@@ -99,10 +107,11 @@ class ROUTER_fixedincome_corporate(Container):
         rate : Optional[float]
             Commercial Paper Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.commercial_paper(maturity="15d")
+        >>> obb.fixedincome.corporate.commercial_paper(provider='fred')
+        >>> obb.fixedincome.corporate.commercial_paper(maturity='15d', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -138,7 +147,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["spot", "par"],
             OpenBBCustomParameter(description="The yield curve type."),
         ] = "spot",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """High Quality Market Corporate Bond.
@@ -171,7 +185,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HighQualityMarketCorporateBond
@@ -187,10 +201,11 @@ class ROUTER_fixedincome_corporate(Container):
         series_id : Optional[str]
             FRED series id. (provider: fred)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.hqm(yield_curve="par")
+        >>> obb.fixedincome.corporate.hqm(provider='fred')
+        >>> obb.fixedincome.corporate.hqm(yield_curve='par', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -231,7 +246,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["yield", "yield_to_worst", "total_return", "spread"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "yield",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """ICE BofA US Corporate Bond Indices.
@@ -275,7 +295,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ICEBofA
@@ -285,10 +305,11 @@ class ROUTER_fixedincome_corporate(Container):
         rate : Optional[float]
             ICE BofA US Corporate Bond Indices Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")
+        >>> obb.fixedincome.corporate.ice_bofa(provider='fred')
+        >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -330,7 +351,12 @@ class ROUTER_fixedincome_corporate(Container):
             Literal["aaa", "baa"],
             OpenBBCustomParameter(description="The type of series."),
         ] = "aaa",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Moody Corporate Bond Index.
@@ -367,7 +393,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         MoodyCorporateBondIndex
@@ -377,10 +403,11 @@ class ROUTER_fixedincome_corporate(Container):
         rate : Optional[float]
             Moody Corporate Bond Index Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.moody(index_type="baa")
+        >>> obb.fixedincome.corporate.moody(provider='fred')
+        >>> obb.fixedincome.corporate.moody(index_type='baa', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -419,13 +446,24 @@ class ROUTER_fixedincome_corporate(Container):
             ),
         ] = None,
         maturity: Annotated[
-            List[float], OpenBBCustomParameter(description="The maturities in years.")
-        ] = [10.0],
+            Union[float, str, List[Union[float, str]]],
+            OpenBBCustomParameter(
+                description="Maturities in years. Multiple items allowed for provider(s): fred."
+            ),
+        ] = 10.0,
         category: Annotated[
-            List[Literal["par_yield", "spot_rate"]],
-            OpenBBCustomParameter(description="The category."),
-        ] = ["spot_rate"],
-        provider: Optional[Literal["fred"]] = None,
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred."
+            ),
+            OpenBBCustomChoices(choices=["par_yield", "spot_rate"]),
+        ] = "spot_rate",
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Spot Rates.
@@ -442,10 +480,10 @@ class ROUTER_fixedincome_corporate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : List[float]
-            The maturities in years.
-        category : List[Literal['par_yield', 'spot_rate']]
-            The category.
+        maturity : Union[float, str, List[Union[float, str]]]
+            Maturities in years. Multiple items allowed for provider(s): fred.
+        category : Union[str, List[str]]
+            Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
@@ -462,7 +500,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SpotRate
@@ -472,10 +510,11 @@ class ROUTER_fixedincome_corporate(Container):
         rate : Optional[float]
             Spot Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])
+        >>> obb.fixedincome.corporate.spot_rates(provider='fred')
+        >>> obb.fixedincome.corporate.spot_rates(maturity='10,20,30,50', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -495,5 +534,9 @@ class ROUTER_fixedincome_corporate(Container):
                     "category": category,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "maturity": {"multiple_items_allowed": ["fred"]},
+                    "category": {"multiple_items_allowed": ["fred"]},
+                },
             )
         )

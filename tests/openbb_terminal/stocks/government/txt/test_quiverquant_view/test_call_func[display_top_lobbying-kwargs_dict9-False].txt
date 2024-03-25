@@ -1,5 +1,0 @@
-        Amount
-Ticker        
-ILMN      9.30
-EGOV      4.15
-

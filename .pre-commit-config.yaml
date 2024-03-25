@@ -10,7 +10,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 24.1.0
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
@@ -76,11 +76,3 @@ repos:
             "cassettes/.*|record/.*|website/content/api/.*|openbb_platform/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_platform/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
     exclude: package.lock.json
-  - repo: local
-    hooks:
-      - id: reserved_args
-        name: Check validity of reserved arguments
-        entry: python custom_pre_commit/check_reserved_args.py
-        language: system
-        types: [python]
-        files: .*_controller\.py$

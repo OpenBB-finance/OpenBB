@@ -45,7 +45,7 @@ def get_crypto_data():
         return data["crypto_data"]
 
     # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTC"])  # noqa: S311
+    symbol = random.choice(["BTCUSD"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
     data["crypto_data"] = openbb.obb.crypto.price.historical(
@@ -844,7 +844,7 @@ def test_technical_cg(params, data_type, obb):
                 "index": "date",
                 "lower_q": "0.3",
                 "upper_q": "0.7",
-                "model": "Parkinson",
+                "model": "parkinson",
                 "is_crypto": "True",
                 "trading_periods": "",
             },

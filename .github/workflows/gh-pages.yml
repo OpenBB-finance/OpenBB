@@ -5,10 +5,11 @@ on:
     branches:
       - main
       - release/*
+      - "docs/*"
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - develop
+      - main
       - "docs/*"
 
 concurrency:
@@ -36,7 +37,7 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.4.0
+          version: 1.8.1
           virtualenvs-create: true
           virtualenvs-in-project: true
 
@@ -50,17 +51,6 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Install packages
-        run: poetry install --no-interaction -E forecast -E doc -E optimization
-
-      - name: Generate SDK v3 Markdown
-        run: |
-          source .venv/bin/activate
-          pip uninstall Brotli -y
-          pytest tests/website --autodoc
-          poetry run python website/generate_sdk_v3_markdown.py
-          poetry run python website/generate_terminal_v3_markdown.py
-
       - name: Generate Platform Markdown
         run: |
           source .venv/bin/activate
@@ -68,7 +58,7 @@ jobs:
           poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
           poetry run python website/generate_platform_v4_markdown.py
-      
+
       - name: Generate Excel Docs
         run: |
           source .venv/bin/activate
@@ -102,7 +92,7 @@ jobs:
           (startsWith(github.ref, 'refs/heads/main')) ||
           (github.event_name == 'pull_request' &&
           github.event.pull_request.merged == true &&
-          github.event.pull_request.base.ref == 'develop' &&
+          github.event.pull_request.base.ref == 'main' &&
           startsWith(github.head_ref, 'docs/'))
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}

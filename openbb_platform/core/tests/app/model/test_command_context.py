@@ -13,7 +13,7 @@ def test_command_context():
 
 
 def test_fields():
-    fields = CommandContext.__fields__
+    fields = CommandContext.model_fields
     fields_keys = fields.keys()
 
     assert "user_settings" in fields_keys

@@ -43,7 +43,7 @@ def test_charting_extension_function_coverage() -> None:
     """Test if all charting extension functions are covered by integration tests."""
     functions = Charting.functions()
 
-    test_names = [f"test_chart_{func}" for func in functions]
+    test_names = [f"test_charting_{func}" for func in functions]
     integration_tests_modules = get_integration_tests(
         test_type="python", filter_charting_ext=False
     )

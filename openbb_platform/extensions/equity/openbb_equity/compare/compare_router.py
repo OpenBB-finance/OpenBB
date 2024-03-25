@@ -2,6 +2,7 @@
 """Comparison Analysis Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -14,7 +15,10 @@ from openbb_core.app.router import Router
 router = Router(prefix="/compare")
 
 
-@router.command(model="EquityPeers")
+@router.command(
+    model="EquityPeers",
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
+)
 async def peers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -31,12 +35,27 @@ async def peers(
 @router.command(
     model="CompareGroups",
     examples=[
-        "# Group by sector and analyze valuation",
-        "obb.equity.compare.groups(group='sector', metric='valuation')",
-        "# Group by industry and analyze performance",
-        "obb.equity.compare.groups(group='industry', metric='performance')",
-        "# Group by country and analyze valuation",
-        "obb.equity.compare.groups(group='country', metric='valuation')",
+        APIEx(parameters={"provider": "finviz"}),
+        APIEx(
+            description="Group by sector and analyze valuation.",
+            parameters={"group": "sector", "metric": "valuation", "provider": "finviz"},
+        ),
+        APIEx(
+            description="Group by industry and analyze performance.",
+            parameters={
+                "group": "industry",
+                "metric": "performance",
+                "provider": "finviz",
+            },
+        ),
+        APIEx(
+            description="Group by country and analyze valuation.",
+            parameters={
+                "group": "country",
+                "metric": "valuation",
+                "provider": "finviz",
+            },
+        ),
     ],
 )
 async def groups(

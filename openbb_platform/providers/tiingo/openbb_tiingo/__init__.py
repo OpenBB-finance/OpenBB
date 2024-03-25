@@ -15,6 +15,7 @@ tiingo_provider = Provider(
     credentials=["token"],
     fetcher_dict={
         "EquityHistorical": TiingoEquityHistoricalFetcher,
+        "EtfHistorical": TiingoEquityHistoricalFetcher,
         "CompanyNews": TiingoCompanyNewsFetcher,
         "WorldNews": TiingoWorldNewsFetcher,
         "CryptoHistorical": TiingoCryptoHistoricalFetcher,

@@ -37,13 +37,81 @@ from openbb import obb
 If the installation is fresh, or an extension was just installed, the Python interface will need to be rebuilt. It will only take a few moments to complete.
 :::
 
-The simplest way to find a ticker for a company is with a simple fuzzy query.
+The simplest way to find tickers is with a basic text query.
+
+## Search Nasdaq
+
+```python
+obb.equity.search("JPMorgan", provider="nasdaq").to_df().head(3)
+```
+
+|    | symbol   | name                                                             | nasdaq_traded   | exchange   | market_category   | etf   |   round_lot_size | test_issue   | financial_status   | cqs_symbol   | nasdaq_symbol   | next_shares   |
+|---:|:---------|:-----------------------------------------------------------------|:----------------|:-----------|:------------------|:------|-----------------:|:-------------|:-------------------|:-------------|:----------------|:--------------|
+|  0 | AMJB     | JPMorgan Chase & Co. Alerian MLP Index ETNs due January 28, 2044 | Y               | P          |                   | Y     |              100 | N            |                    | AMJB         | AMJB            | N             |
+|  1 | BBAG     | JPMorgan BetaBuilders U.S. Aggregate Bond ETF                    | Y               | P          |                   | Y     |              100 | N            |                    | BBAG         | BBAG            | N             |
+|  2 | BBAX     | JPMorgan BetaBuilders Developed Asia Pacific-ex Japan ETF        | Y               | Z          |                   | Y     |              100 | N            |                    | BBAX         | BBAX            | N             |
+
+
+## Search Cboe
+
+```python
+obb.index.search("SPX", provider="cboe").to_df().tail(5)
+```
+
+|    | symbol   | name                                  | description                                                                                                                                              |   data_delay | currency   | time_zone       | open_time   | close_time   | tick_days   | tick_frequency   | tick_period   |
+|---:|:---------|:--------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------|-------------:|:-----------|:----------------|:------------|:-------------|:------------|:-----------------|:--------------|
+| 32 | SPXVIV   | PROSHARES S&P 500 EX-HEALTH CARE ETF  | PROSHARES S&P 500 EX-HEALTH CARE ETF                                                                                                                     |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
+| 33 | VIX1D    | Cboe 1-Day Volatility Index®          | Estimates expected volatility by aggregating the weighted prices of P.M.-settled S&P 500 Index (SPX℠) puts and calls over a wide range of strike prices. |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
+| 34 | VIX3M    | Cboe S&P 500 3 Month Volatility Index | The Cboe 3-Month Volatility Index (VIX3M) is designed to be a constant measure of 3-month implied volatility of the S&P 500? (SPX) Index options.        |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
+| 35 | WPUT     | Cboe S&P 500 One-Week PutWrite Index  | Tracks the value of a portfolio that overlays a short weekly SPX put  on one-month Treasury bills                                                        |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
+| 36 | XSPAM    | Mini SPX Index (AM Settlement)        | Mini SPX Index (AM Settlement)                                                                                                                           |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
+
+## Search ETFs
+
+```python
+obb.etf.search("gold", provider="tmx").to_df().iloc[-5:]
+```
+
+|                       | VALT.B                         | VALT.U                         | XGD                                    | ZGD                                     | ZJG                        |
+|:----------------------|:---------------------------|:---------------------------|:--------------------------------------|:---------------------------------------|:--------------------------|
+| name                  | CI Gold Bullion Fund       | CI Gold Bullion Fund       | iShares S&P/TSX Global Gold Index ETF | BMO Equal Weight Global Gold Index ETF | BMO Junior Gold Index ETF |
+| short_name            | VALT.B:CA                  | CI Gold Bullion            | iShares S&P/TSX                       | BMO Equal Weight                       | BMO Junior Gold           |
+| inception_date        | 2021-03-17                 | 2021-01-06                 | 2001-03-23                            | 2012-11-14                             | 2010-01-19                |
+| issuer                | CI Global Asset Management | CI Global Asset Management | RBC iShares                           | BMO ETF                                | BMO ETF                   |
+| investment_style      | Gold                       | Gold                       | Mid Cap Growth                        | Mid Cap Blend                          | Small Cap Blend           |
+| esg                   | False                      | False                      | False                                 | False                                  | True                      |
+| currency              | CAD                        | USD                        | CAD                                   | CAD                                    | CAD                       |
+| unit_price            | 27.23                      | 20.25                      | 15.15                                 | 65.3                                   | 57.9                      |
+| close                 | 27.31                      | 20.22                      | 15.15                                 | 63.9                                   | 58.1                      |
+| prev_close            | 27.35                      | 20.26                      | 15.44                                 | 65.3                                   | 59.16                     |
+| return_1m             | 0.0008210000000000001      | -0.012248000000000002      | -0.080416                             | -0.077245                              | -0.052842                 |
+| return_3m             | -0.010862                  | 0.027784                   | -0.023677                             | -0.009352000000000001                  | 0.000172                  |
+| return_6m             | 0.056706000000000006       | 0.041046                   | -0.082551                             | -0.07498                               | -0.048376                 |
+| return_ytd            | -0.003618                  | -0.007048                  | -0.074745                             | -0.067335                              | -0.04167099999999999      |
+| return_1y             | 0.06689300000000001        | 0.06554299999999999        | -0.129462                             | -0.0836                                | -0.08241899999999999      |
+| beta_1y               | 0.57958                    | 0.725625                   | 0.372225                              | 0.469185                               | 0.433886                  |
+| return_3y             | nan                        | 0.030979999999999997       | -0.033076                             | -0.021792                              | -0.028114                 |
+| beta_3y               | 0.681245                   | 0.699766                   | 0.515024                              | 0.671806                               | 0.654367                  |
+| return_5y             | nan                        | nan                        | 0.076559                              | 0.08920299999999999                    | 0.068623                  |
+| beta_5y               | -0.008613                  | 0.233721                   | 0.738329                              | 0.997267                               | 1.103204                  |
+| return_10y            | nan                        | nan                        | 0.044696999999999994                  | 0.05585                                | 0.041349                  |
+| beta_10y              | 0.633314                   | 0.633314                   | 0.38428                               | 0.445404                               | 0.452332                  |
+| beta_15y              | nan                        | nan                        | 0.395464                              | nan                                    | nan                       |
+| return_from_inception | 0.08311199999999999        | nan                        | 0.069155                              | -0.006563                              | -0.022995                 |
+| avg_volume            | 430                        | 690                        | 456399                                | 436                                    | 511                       |
+| avg_volume_30d        | 1428                       | 4747                       | 1194453                               | 3417                                   | 1491                      |
+| aum                   | 14976500.0                 | 28147500.0                 | 986265000.0                           | 41396935.0                             | 52271541.0                |
+| pe_ratio              | nan                        | nan                        | 26.4436                               | 17.2285                                | 26.8283                   |
+| pb_ratio              | nan                        | nan                        | 1.909                                 | 1.3891                                 | 1.531                     |
+| management_fee        | 0.00155                    | 0.00155                    | 0.0060999999999999995                 | 0.0055000000000000005                  | 0.0055000000000000005     |
+| mer                   | nan                        | nan                        | 0.0060999999999999995                 | 0.0062                                 | 0.0060999999999999995     |
+| distribution_yield    | 0.015347                   | 0.016145                   | 0.016212999999999998                  | 0.008305                               | 0.009537                  |
+| dividend_frequency    | Annually                   | Annually                   | Semi-Annually                         | Annually                               | Annually                  |
+| beta_20y              | nan                        | nan                        | 0.560996                              | nan                                    | nan                       |
+
+
 
 ## Search the SEC
-
-Perform a quick search using the `openbb-sec` provider.
-
-### Find a Company
 
 Use an empty string, `""`, to return the complete list - over 10,000.
 
@@ -260,7 +328,7 @@ obb.equity.screener(
 | MRK      | Merck & Co., Inc.           | 258192673024 | Healthcare             | Drug Manufacturers—General |  0.375 |  101.75 |                   2.92 |  6760568 | NYSE       | New York Stock Exchange | US        | False    | True               |
 | VZ       | Verizon Communications Inc. | 152314546478 | Communication Services | Telecom Services           |  0.391 |   36.23 |                   2.66 | 14960968 | NYSE       | New York Stock Exchange | US        | False    | True               |
 
-## Find an Index
+## Get Available Indices
 
 List all indices from a source with:
 
@@ -301,8 +369,8 @@ With the `openbb-yfinance` extension, index time series can be loaded using the 
 
 ```python
 (
-    obb.index.market("au_utilities", provider="yfinance").to_df().tail(1)
-    == obb.index.market("^AXUJ", provider="yfinance").to_df().tail(1)
+    obb.index.price.historical("au_utilities", provider="yfinance").to_df().tail(1)
+    == obb.index.price.historical("^AXUJ", provider="yfinance").to_df().tail(1)
 )
 ```
 
@@ -313,3 +381,4 @@ With the `openbb-yfinance` extension, index time series can be loaded using the 
 :::
 
 The examples above show demonstrate the most basic ways to find ticker symbols with the OpenBB Platform. Create your own custom scripts for discovery by combining these with other methods.
+

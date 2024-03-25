@@ -42,7 +42,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Ameribor.
@@ -76,7 +81,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AMERIBOR
@@ -86,10 +91,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             AMERIBOR rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()
+        >>> obb.fixedincome.rate.ameribor(provider='fred')
+        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -126,7 +132,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Discount Window Primary Credit Rate.
@@ -161,7 +172,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         DiscountWindowPrimaryCreditRate
@@ -171,10 +182,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             Discount Window Primary Credit Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()
+        >>> obb.fixedincome.rate.dpcredit(provider='fred')
+        >>> obb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -215,7 +227,12 @@ class ROUTER_fixedincome_rate(Container):
             Literal["deposit", "lending", "refinancing"],
             OpenBBCustomParameter(description="The type of interest rate."),
         ] = "lending",
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """European Central Bank Interest Rates.
@@ -252,7 +269,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EuropeanCentralBankInterestRates
@@ -262,10 +279,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             European Central Bank Interest Rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ecb(interest_rate_type="refinancing")
+        >>> obb.fixedincome.rate.ecb(provider='fred')
+        >>> obb.fixedincome.rate.ecb(interest_rate_type='refinancing', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -303,7 +321,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["federal_reserve", "fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Fed Funds Rate.
@@ -337,7 +360,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         FEDFUNDS
@@ -347,10 +370,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             FED rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()
+        >>> obb.fixedincome.rate.effr(provider='fred')
+        >>> obb.fixedincome.rate.effr(parameter='daily', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -374,7 +398,14 @@ class ROUTER_fixedincome_rate(Container):
     @exception_handler
     @validate
     def effr_forecast(
-        self, provider: Optional[Literal["fred"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Fed Funds Rate Projections.
 
@@ -404,7 +435,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PROJECTIONS
@@ -426,10 +457,11 @@ class ROUTER_fixedincome_rate(Container):
         central_tendency_low : Optional[float]
             Central tendency of low projection of rates.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.effr_forecast(long_run=True)
+        >>> obb.fixedincome.rate.effr_forecast(provider='fred')
+        >>> obb.fixedincome.rate.effr_forecast(long_run=True, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -463,7 +495,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Euro Short-Term Rate.
@@ -498,7 +535,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ESTR
@@ -508,10 +545,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             ESTR rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.estr(parameter="number_of_active_banks")
+        >>> obb.fixedincome.rate.estr(provider='fred')
+        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -548,7 +586,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Interest on Reserve Balances.
@@ -580,7 +623,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IORB
@@ -590,10 +633,10 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             IORB rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.iorb()
+        >>> obb.fixedincome.rate.iorb(provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -630,7 +673,12 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Sterling Overnight Index Average.
@@ -664,7 +712,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SONIA
@@ -674,10 +722,11 @@ class ROUTER_fixedincome_rate(Container):
         rate : Optional[float]
             SONIA rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.sonia(parameter="total_nominal_value")
+        >>> obb.fixedincome.rate.sonia(provider='fred')
+        >>> obb.fixedincome.rate.sonia(parameter='total_nominal_value', provider='fred')
         """  # noqa: E501
 
         return self._run(
