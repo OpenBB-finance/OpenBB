@@ -20,7 +20,7 @@ from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.provider_interface import ExtraParams, ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -185,13 +185,16 @@ class ParametersBuilder:
     ) -> None:
         """Warn if kwargs received and ignored by the validation model."""
         # We only check the extra_params annotation because ignored fields
-        # will always be kwargs
+        # will always be there
         annotation = getattr(
             model.model_fields.get("extra_params", None), "annotation", None
         )
-        if annotation:
-            # When there is no annotation there is nothing to warn
-            valid = asdict(annotation()) if is_dataclass(annotation) else {}  # type: ignore
+        if is_dataclass(annotation) and any(
+            t is ExtraParams for t in getattr(annotation, "__bases__", [])
+        ):
+            # We only warn when endpoint defines ExtraParams, so we need
+            # to check if the annotation is a dataclass and child of ExtraParams
+            valid = asdict(annotation())  # type: ignore
             provider = provider_choices.get("provider", None)
             for p in extra_params:
                 if field := valid.get(p):
@@ -216,7 +219,12 @@ class ParametersBuilder:
     @staticmethod
     def _as_dict(obj: Any) -> Dict[str, Any]:
         """Safely convert an object to a dict."""
-        return asdict(obj) if is_dataclass(obj) else dict(obj)
+        try:
+            if isinstance(obj, dict):
+                return obj
+            return asdict(obj) if is_dataclass(obj) else dict(obj)
+        except Exception:
+            return {}
 
     @staticmethod
     def validate_kwargs(
@@ -227,7 +235,7 @@ class ParametersBuilder:
         sig = signature(func)
         fields = {
             n: (
-                p.annotation,
+                Any if p.annotation is Parameter.empty else p.annotation,
                 ... if p.default is Parameter.empty else p.default,
             )
             for n, p in sig.parameters.items()

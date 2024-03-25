@@ -206,17 +206,57 @@ def test_is_annotated_dc_annotated(method_definition):
     assert result
 
 
-def test_reorder_params(method_definition):
-    """Test reorder params."""
-    params = {
-        "provider": Parameter.empty,
-        "extra_params": Parameter.empty,
-        "param1": Parameter.empty,
-        "param2": Parameter.empty,
-    }
-    result = method_definition.reorder_params(params=params)
+@pytest.mark.parametrize(
+    "params, var_kw, expected",
+    [
+        (
+            {
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            None,
+            ["extra_params", "param1", "param2", "provider"],
+        ),
+        (
+            {
+                "param1": Parameter.empty,
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["extra_params"],
+            ["param1", "param2", "provider", "extra_params"],
+        ),
+        (
+            {
+                "param2": Parameter.empty,
+                "any_kwargs": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+            },
+            ["any_kwargs"],
+            ["param2", "param1", "provider", "any_kwargs"],
+        ),
+        (
+            {
+                "any_kwargs": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["any_kwargs", "extra_params"],
+            ["param1", "param2", "provider", "any_kwargs", "extra_params"],
+        ),
+    ],
+)
+def test_reorder_params(method_definition, params, var_kw, expected):
+    """Test reorder params, ensure var_kw are last after 'provider'."""
+    result = method_definition.reorder_params(params, var_kw)
     assert result
-    assert list(result.keys()) == ["param1", "param2", "provider", "extra_params"]
+    assert list(result.keys()) == expected
 
 
 def test_build_func_params(method_definition):
