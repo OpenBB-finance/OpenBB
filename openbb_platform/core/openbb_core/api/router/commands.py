@@ -51,7 +51,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     parameter_list = sig.parameters.values()
     return_annotation = sig.return_annotation
     new_parameter_list = []
-    var_kw_start = len(parameter_list)
+    var_kw_pos = len(parameter_list)
     for pos, parameter in enumerate(parameter_list):
         var_kind = None
         var_name = None
@@ -60,7 +60,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             continue
 
         if parameter.kind == Parameter.VAR_KEYWORD:
-            var_kw_start = pos
+            var_kw_pos = pos
             var_kind = Parameter.POSITIONAL_OR_KEYWORD
             var_default = None
             var_name = parameter.name
@@ -77,7 +77,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
 
     if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
         new_parameter_list.insert(
-            var_kw_start,
+            var_kw_pos,
             Parameter(
                 "chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -85,12 +85,12 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                 annotation=bool,
             ),
         )
-        var_kw_start += 1
+        var_kw_pos += 1
 
     if custom_headers := SystemService().system_settings.api_settings.custom_headers:
         for name, default in custom_headers.items():
             new_parameter_list.insert(
-                var_kw_start,
+                var_kw_pos,
                 Parameter(
                     name.replace("-", "_"),
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -100,11 +100,11 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                     ],
                 ),
             )
-            var_kw_start += 1
+            var_kw_pos += 1
 
     if Env().API_AUTH:
         new_parameter_list.insert(
-            var_kw_start,
+            var_kw_pos,
             Parameter(
                 "__authenticated_user_settings",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -114,7 +114,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                 ],
             ),
         )
-        var_kw_start += 1
+        var_kw_pos += 1
 
     return Signature(
         parameters=new_parameter_list,

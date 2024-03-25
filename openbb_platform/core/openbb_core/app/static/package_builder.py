@@ -529,11 +529,11 @@ class MethodDefinition:
 
     @staticmethod
     def reorder_params(
-        params: Dict[str, Parameter], var_kw: List[str]
+        params: Dict[str, Parameter], var_kw: Optional[List[str]] = None
     ) -> "OrderedDict[str, Parameter]":
         """Reorder the params and make sure VAR_KEYWORD come after 'provider."""
         formatted_keys = list(params.keys())
-        for k in ["provider"] + var_kw:
+        for k in ["provider"] + (var_kw or []):
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
