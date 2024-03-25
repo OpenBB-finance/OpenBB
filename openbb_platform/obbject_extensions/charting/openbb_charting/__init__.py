@@ -119,7 +119,7 @@ class Charting:
             Data,
         ],
         index: Optional[str] = None,
-        target_column: Optional[str] = None,
+        target: Optional[str] = None,
         title: Optional[str] = None,
         x: Optional[str] = None,
         xtitle: Optional[str] = None,
@@ -142,7 +142,7 @@ class Charting:
             Data to be plotted (OHLCV data).
         index : Optional[str], optional
             Index column, by default None
-        target_column : Optional[str], optional
+        target : Optional[str], optional
             Target column to be plotted, by default None
         title : Optional[str], optional
             Chart title, by default None
@@ -178,7 +178,7 @@ class Charting:
         fig = line_chart(
             data=data,
             index=index,
-            target_column=target_column,
+            target=target,
             title=title,
             x=x,
             xtitle=xtitle,
@@ -200,29 +200,44 @@ class Charting:
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
 
-        charting_function = self._get_chart_function(
-            self._obbject._route  # pylint: disable=protected-access
-        )
-        kwargs["obbject_item"] = self._obbject.results
-        kwargs["charting_settings"] = self._charting_settings
-        if (
-            hasattr(self._obbject, "_standard_params")
-            and self._obbject._standard_params  # pylint: disable=protected-access
-        ):
-            kwargs["standard_params"] = (
-                self._obbject._standard_params.__dict__  # pylint: disable=protected-access
+        try:
+            charting_function = self._get_chart_function(
+                self._obbject._route  # pylint: disable=protected-access
             )
-        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
-        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+            kwargs["obbject_item"] = self._obbject.results
+            kwargs["charting_settings"] = self._charting_settings
+            if (
+                hasattr(self._obbject, "_standard_params")
+                and self._obbject._standard_params  # pylint: disable=protected-access
+            ):
+                kwargs["standard_params"] = (
+                    self._obbject._standard_params.__dict__  # pylint: disable=protected-access
+                )
+            kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+            kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
 
-        self._handle_backend()
+            self._handle_backend()
 
-        fig, content = charting_function(**kwargs)
-        self._obbject.chart = Chart(
-            fig=fig, content=content, format=charting_router.CHART_FORMAT
-        )
-        if render:
-            fig.show(**kwargs)
+            fig, content = charting_function(**kwargs)
+            self._obbject.chart = Chart(
+                fig=fig, content=content, format=charting_router.CHART_FORMAT
+            )
+            if render:
+                fig.show(**kwargs)
+        except Exception:
+            try:
+                fig = self.create_line_chart(render=False, **kwargs)
+                content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=charting_router.CHART_FORMAT
+                )
+                if render:
+                    return fig.show(**kwargs)  # type: ignore
+            except Exception as e:
+                raise RuntimeError(
+                    "The charting router has no path for this function"
+                    + " and failed to automatically create a generic chart with the data provided."
+                ) from e
 
     # pylint: disable=too-many-locals
     def to_chart(
@@ -239,7 +254,7 @@ class Charting:
                 Data,
             ]
         ] = None,
-        target_column: Optional[str] = None,
+        target: Optional[str] = None,
         index: Optional[str] = None,
         indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
@@ -318,8 +333,8 @@ class Charting:
         if index is not None and index in data_as_df.columns:
             data_as_df = data_as_df.set_index(index)
 
-        if target_column is not None:
-            data_as_df = data_as_df[[target_column]]
+        if target is not None:
+            data_as_df = data_as_df[[target]]
 
         if (
             hasattr(self._obbject, "_standard_params")
@@ -337,7 +352,7 @@ class Charting:
         kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
         kwargs["indicators"] = indicators
         kwargs["symbol"] = symbol
-        kwargs["target_column"] = target_column
+        kwargs["target"] = target
         kwargs["index"] = index
 
         try:
@@ -345,8 +360,18 @@ class Charting:
                 self.show(data=data_as_df, render=render, **kwargs)
             else:
                 self.show(**kwargs, render=render)
-        except Exception as e:
-            raise RuntimeError(
-                "The charting router has no path for this function."
-                + " Create a custom chart with any data using the `create_line_chart` method."
-            ) from e
+        except Exception:
+            try:
+                fig = self.create_line_chart(
+                    data=data_as_df, render=False, **kwargs)
+                content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
+                self._obbject.chart = Chart(
+                    fig=fig, content=content, format=charting_router.CHART_FORMAT
+                )
+                if render:
+                    return fig.show(**kwargs)  # type: ignore
+            except Exception as e:
+                raise RuntimeError(
+                    "The charting router has no path for this function"
+                    + " and failed to automatically create a generic chart with the data provided."
+                ) from e
