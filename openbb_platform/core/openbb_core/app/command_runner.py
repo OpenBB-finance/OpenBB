@@ -192,7 +192,7 @@ class ParametersBuilder:
         if is_dataclass(annotation) and any(
             t is ExtraParams for t in getattr(annotation, "__bases__", [])
         ):
-            # When we only warn when endpoint is bound to a model, so we need
+            # We only warn when endpoint defines ExtraParams, so we need
             # to check if the annotation is a dataclass and child of ExtraParams
             valid = asdict(annotation())  # type: ignore
             provider = provider_choices.get("provider", None)
