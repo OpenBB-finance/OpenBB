@@ -748,7 +748,7 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.7,
+            opacity=0.5,
             secondary_y=True,
             showlegend=False,
             hovertemplate="%{y}<extra></extra>",

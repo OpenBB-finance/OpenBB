@@ -29,14 +29,15 @@ CHART_FORMAT = ChartFormat.plotly
 
 # from .core.openbb_figure_table import OpenBBFigureTable
 
-
-def equity_price_historical(
+def equity_price_historical(  # noqa: PLR0912
     **kwargs: EquityPriceHistoricalChartQueryParams,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Equity price chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
+    elif "data" in kwargs and isinstance(kwargs["data"], list):
+        data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
     else:
         data = basemodel_to_df(
             kwargs["obbject_item"], index=kwargs.get("index", "date")  # type: ignore
@@ -45,8 +46,8 @@ def equity_price_historical(
     if "date" in data.columns:
         data = data.set_index("date")
 
-    target_column = (
-        str(kwargs.get("target_column"))
+    target = (
+        str(kwargs.get("target"))
     )
     normalize = kwargs.get("normalize") is True
     returns = kwargs.get("returns") is True
@@ -60,10 +61,10 @@ def equity_price_historical(
         bool(kwargs.get("multi_symbol") is True)
         or (
             "symbol" in data.columns
-            and target_column in data.columns
+            and target in data.columns
             and len(data.symbol.unique()) > 1
         )
-        or ("target_column" in kwargs and kwargs.get("target_column") is not None)
+        or ("target" in kwargs and kwargs.get("target") is not None)
         or "symbol" in data.columns
         or (
             "symbol" not in data.columns
@@ -71,13 +72,16 @@ def equity_price_historical(
         )
     )
 
+    target = "close" if target is None or target == "None" or target == "" else target
+
     if multi_symbol is True:
-        if "symbol" not in data.columns and target_column in data.columns:
-            data = data[[target_column]]
-            y1title = target_column
-        if "symbol" in data.columns and target_column in data.columns:
-            data = data.pivot(columns="symbol", values=target_column)
-            y1title = target_column
+        if "symbol" not in data.columns and target in data.columns:
+            data = data[[target]]
+            y1title = target.title()
+        if "symbol" in data.columns and target in data.columns:
+            data = data.pivot(columns="symbol", values=target)
+            y1title = target
+            title = f"Historical {target.title()}"
 
     indicators = kwargs.get("indicators", {})
     candles = bool(~data.columns.isin(["open", "high", "low", "close"]).all())
@@ -85,15 +89,15 @@ def equity_price_historical(
     volume = kwargs.get("volume", True) if "volume" in data.columns else False
 
     if normalize is True:
-        if "symbol" not in data.columns and target_column in data.columns:
-            data = data[[target_column]]
+        if "symbol" not in data.columns and target in data.columns:
+            data = data[[target]]
         multi_symbol = True
         candles = False
         volume = False
 
     if returns is True:
-        if "symbol" not in data.columns and target_column in data.columns:
-            data = data[[target_column]]
+        if "symbol" not in data.columns and target in data.columns:
+            data = data[[target]]
         multi_symbol = True
         candles = False
         volume = False
@@ -116,31 +120,70 @@ def equity_price_historical(
             candles=candles,
             volume=volume,  # type: ignore
         )
+        fig.update_traces(
+            selector=dict(type="scatter", mode="lines"), connectgaps=True
+        )
+        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
         fig.update_layout(
             title=dict(text=title, x=0.5, font=dict(size=16)),
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
+            showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                xanchor="auto",
+                y=1.02,
+                x=0.95,
+                xref="paper",
+                bgcolor="rgba(0,0,0,0)",
+                font=dict(size=12),
+            ),
+            xaxis=dict(
+                ticklen=0,
+                showgrid=True,
+                gridcolor="rgba(128,128,128,0.3)",
+                zeroline=True,
+                mirror=True,
+            ),
+            yaxis=dict(
+                ticklen=0,
+                showgrid=True,
+                gridcolor="rgba(128,128,128,0.3)",
+                zeroline=True,
+                mirror=True,
+            ),
+            yaxis2=dict(
+                ticklen=0,
+                gridcolor="rgba(128,128,128,0.3)",
+            ),
+            yaxis3=dict(
+                ticklen=0,
+                gridcolor="rgba(128,128,128,0.3)",
+            ),
+            dragmode="pan",
+            hovermode="x",
         )
-        fig.update_traces(
-            selector=dict(type="candles", mode="lines"), connectgaps=True
-        )
+
         content = fig.show(external=True).to_plotly_json()
 
         return fig, content
 
     if multi_symbol is True or candles is False:
 
-        if "symbol" not in data.columns and target_column in data.columns:
-            data = data[[target_column]]
+        if "symbol" not in data.columns and target in data.columns:
+            data = data[[target]]
 
-        title: str = kwargs.get("title") if "title" in kwargs else "Historical Prices"  # type: ignore
+        if "symbol" in data.columns:
+            data = data.pivot(columns="symbol", values=target)
+
+        title: str = kwargs.get("title") if "title" in kwargs else title if title else "Historical Prices"  # type: ignore
 
         y1title = data.iloc[:, 0].name
         y2title = ""
 
         if len(data.columns) > 2 or normalize is True or returns is True:
-
             if returns is True or (len(data.columns) > 2 and normalize is False):
                 data = data.apply(calculate_returns)
                 title = f"{title} - Cumulative Returns"
@@ -281,6 +324,7 @@ def crypto_price_historical(
 
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
+
     index = kwargs.get("index") if "index" in kwargs and kwargs.get("index") is not None else "date"
     data = kwargs.get("data")
     ma_type = kwargs["ma_type"] if "ma_type" in kwargs and kwargs.get("ma_type") is not None else "sma"
@@ -295,26 +339,25 @@ def _ta_ma(**kwargs):
     if isinstance(data, list):
         data = basemodel_to_df(data, index=index)
 
-
     window = kwargs.get("length", []) if "length" in kwargs and kwargs.get("length") is not None else [50]
     offset = kwargs.get("offset", 0)
-    target_column = (
-        kwargs.get("target_column")
-        if "target_column" in kwargs and kwargs.get("target_column") is not None
+    target = (
+        kwargs.get("target")
+        if "target" in kwargs and kwargs.get("target") is not None
         else "close"
     )
     if "target" in kwargs and kwargs.get("target") is not None:
-        target_column = kwargs.get("target") if kwargs.get("target") != "close" else target_column
+        target = kwargs.get("target") if kwargs.get("target") != "close" else target
 
-    if target_column not in data.columns and "close" in data.columns:
-        target_column = "close"
+    if target not in data.columns and "close" in data.columns:
+        target = "close"
 
-    if target_column not in data.columns and "close" not in data.columns:
-        raise ValueError(f"Column '{target_column}', or 'close', not found in the data.")
+    if target not in data.columns and "close" not in data.columns:
+        raise ValueError(f"Column '{target}', or 'close', not found in the data.")
 
     df = data.copy()
-    if target_column in data.columns:
-        df = df[[target_column]]
+    if target in data.columns:
+        df = df[[target]]
         df.columns = ["close"]
     title = kwargs.get("title") if "title" in kwargs and kwargs.get("title") is not None else f"{ma_type.upper()}"
 
@@ -328,6 +371,7 @@ def _ta_ma(**kwargs):
         row_width=[1],
         specs=[[{"secondary_y": True}]],
     )
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     ma_df = pd.DataFrame()
     window = [window] if isinstance(window, int) else window
@@ -341,11 +385,12 @@ def _ta_ma(**kwargs):
 
     color = 0
 
-    if "candles" in kwargs and kwargs.get("candles") is True and kwargs.get("target_column") is None:
-        fig, _ = to_chart(data, candles=True, volume=False)
+    if "candles" in kwargs and kwargs.get("candles") is True and kwargs.get("target") is None:
+        volume = kwargs.get("volume") is True
+        fig, _ = to_chart(data, candles=True, volume=volume)
 
     else:
-        ma_df[f"{target_column}".title()] = data[target_column]
+        ma_df[f"{target}".title()] = data[target]
 
     for col in ma_df.columns:
         name = col.replace("_", " ")
@@ -359,8 +404,6 @@ def _ta_ma(**kwargs):
             showlegend=True,
         )
         color += 1
-
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     fig.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=16)),
@@ -433,8 +476,24 @@ def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 
 def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-    """Aroon chart."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+    """Technical Aroon Chart."""
+
+    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        data = kwargs["data"]
+    else:
+        data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "date" in data.columns:
+        data = data.set_index("date")
+
+    if "symbol" in data.columns and len(data.symbol.unique()) > 1:
+        raise ValueError("Please provide data with only one symbol and columnns for OHLC.")
+
+    symbol = kwargs.get("symbol", "")
+
+    volume = kwargs.get("volume") is True
+    title = f"Aroon Indicator & Oscillator {symbol}"
+
     length = kwargs.get("length", 25)
     scalar = kwargs.get("scalar", 100)
     symbol = kwargs.get("symbol", "")
@@ -443,10 +502,11 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     fig = ta.plot(
         data,
         dict(aroon=dict(length=length, scalar=scalar)),
-        f"Aroon on {symbol}",
+        title,
         False,
-        volume=False,
+        volume=volume,
     )
+
     content = fig.show(external=True).to_plotly_json()
 
     return fig, content
@@ -454,19 +514,33 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        data = kwargs["data"]
+    else:
+        data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "date" in data.columns:
+        data = data.set_index("date")
+
+    if "symbol" in data.columns and len(data.symbol.unique()) > 1:
+        raise ValueError("Please provide data with only one symbol and columnns for OHLC.")
+
     fast = kwargs.get("fast", 12)
     slow = kwargs.get("slow", 26)
     signal = kwargs.get("signal", 9)
     symbol = kwargs.get("symbol", "")
 
+    title = f"{symbol.upper()} MACD"
+    volume = kwargs.get("volume") is True
+
     ta = PlotlyTA()
     fig = ta.plot(
         data,
         dict(macd=dict(fast=fast, slow=slow, signal=signal)),
-        f"{symbol.upper()} MACD",
+        title,
         False,
-        volume=False,
+        volume=volume,
     )
     content = fig.show(external=True).to_plotly_json()
 
@@ -475,7 +549,18 @@ def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Average directional movement index chart."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        data = kwargs["data"]
+    else:
+        data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "date" in data.columns:
+        data = data.set_index("date")
+
+    if "symbol" in data.columns and len(data.symbol.unique()) > 1:
+        raise ValueError("Please provide data with only one symbol and columnns for OHLC.")
+
     length = kwargs.get("length", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)
@@ -496,7 +581,19 @@ def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Relative strength index chart."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        data = kwargs["data"]
+    else:
+        data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
+
+    if "date" in data.columns:
+        data = data.set_index("date")
+
+    if "symbol" in data.columns and len(data.symbol.unique()) > 1:
+        raise ValueError("Please provide data with only one symbol and columnns for OHLC.")
+
+
     window = kwargs.get("window", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)
@@ -797,6 +894,7 @@ def economy_fred_series(
                 title=dict(text=y1title, standoff=30, font=dict(size=18)),
                 tickfont=dict(size=14),
                 anchor="x",
+                gridcolor="rgba(128,128,128,0.3)",
             )
             if y1title
             else None
@@ -841,6 +939,7 @@ def economy_fred_series(
             title=(
                 dict(text=xtitle, standoff=30, font=dict(size=18)) if xtitle else None
             ),
+            gridcolor="rgba(128,128,128,0.3)",
             domain=[0.095, 0.95] if y3title else None,
         ),
         margin=dict(r=25, l=25) if normalize is False else None,

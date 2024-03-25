@@ -1,6 +1,6 @@
 """Charting Extension Query Params."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,8 +16,8 @@ def _get_type_name(t):
     return t.__name__
 
 
-class ChartQueryParams(QueryParams):
-    """Chart Query Parmams Base Model."""
+class BaseQueryParams(QueryParams):
+    """Base Query Parmams Base Model."""
 
     def __init__(self, **data):
         super().__init__(**data)
@@ -42,6 +42,9 @@ class ChartQueryParams(QueryParams):
         )
         return repr_str
 
+
+class ChartQueryParams(BaseQueryParams):
+
     data: Optional[Union[Data, List[Data]]] = Field(
         default=None,
         description="Filtered versions of the data contained in the original `self.results`."
@@ -57,7 +60,7 @@ class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
         default=None,
         description="Title of the chart.",
     )
-    target_column: Optional[str] = Field(
+    target: Optional[str] = Field(
         default=None,
         description="The specific column to target. If supplied, this will override the candles and volume parameters.",
     )
@@ -154,7 +157,7 @@ class TechnicalConesChartQueryParams(ChartQueryParams):
 class MAQueryParams(ChartQueryParams):
     """Moving Average Query Params."""
 
-    target_column: str = Field(
+    target: str = Field(
         default="close",
         description="The column to calculate the moving average on.",
     )
@@ -202,6 +205,73 @@ class TechnicalZLMAChartQueryParams(MAQueryParams):
     """Technical ZLMA Chart Query Params."""
 
 
+class TechnicalADXChartQueryParams(ChartQueryParams):
+    """Technical ADX Chart Query Params."""
+
+    length: Optional[int] = Field(
+        default=50,
+        description="Window length for the ADX, by default is 50.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the ADX by, default is 100.",
+    )
+    drift: Optional[int] = Field(
+        default=1,
+        description="Drift value for the ADX, by default is 1.",
+    )
+
+
+class TechnicalArooonChartQueryParams(ChartQueryParams):
+    """Technical Aroon Chart Query Params."""
+
+    length: Optional[int] = Field(
+        default=25,
+        description="Window length for the Aroon, by default is 50.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the Aroon by, default is 100.",
+    )
+
+
+class TechnicalMACDChartQueryParams(ChartQueryParams):
+    """Technical MACD Chart Query Params."""
+
+    fast: Optional[int] = Field(
+        default=12,
+        description="Window length for the fast EMA, by default is 12.",
+    )
+    slow: Optional[int] = Field(
+        default=26,
+        description="Window length for the slow EMA, by default is 26.",
+    )
+    signal: Optional[int] = Field(
+        default=9,
+        description="Window length for the signal line, by default is 9.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the MACD by, default is 100.",
+    )
+
+
+class TechnicalRSIChartQueryParams(ChartQueryParams):
+    """Technical RSI Chart Query Params."""
+
+    length: Optional[int] = Field(
+        default=14,
+        description="Window length for the RSI, by default is 14.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the RSI by, default is 100.",
+    )
+    drift: Optional[int] = Field(
+        default=1,
+        description="Drift value for the RSI, by default is 1.",
+    )
+
 
 class ChartParams:
     """Chart Query Params."""
@@ -217,4 +287,326 @@ class ChartParams:
     technical_hma = TechnicalHMAChartQueryParams
     technical_wma = TechnicalWMAChartQueryParams
     technical_zlma = TechnicalZLMAChartQueryParams
+    technical_adx = TechnicalADXChartQueryParams
+    technical_aroon = TechnicalArooonChartQueryParams
+    technical_macd = TechnicalMACDChartQueryParams
+    technical_rsi = TechnicalRSIChartQueryParams
+
+
+class IndicatorsQueryParams(BaseQueryParams):
+    """Indicators Query Params."""
+
+
+class MAIndicatorsQueryParams(IndicatorsQueryParams):
+    """Moving Average Indicators Query Params."""
+
+    length: Optional[Union[int, List[int]]] = Field(
+        default=50,
+        description="Window length for the moving average."
+        + " The number is relative to the interval of the time series data.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset for the moving average.",
+    )
+
+
+class SMAIndicatorsQueryParams(MAIndicatorsQueryParams):
+    """Simple Moving Average Indicators Query Params."""
+
+
+class EMAIndicatorsQueryParams(MAIndicatorsQueryParams):
+    """Exponential Moving Average Indicators Query Params."""
+
+
+class HMAIndicatorsQueryParams(MAIndicatorsQueryParams):
+    """Hull Moving Average Indicators Query Params."""
+
+
+class WMAIndicatorsQueryParams(MAIndicatorsQueryParams):
+    """Weighted Moving Average Indicators Query Params."""
+
+
+class ZLMAIndicatorsQueryParams(MAIndicatorsQueryParams):
+    """Zero-Lag Moving Average Indicators Query Params."""
+
+
+class ADIndicatorsQueryParams(IndicatorsQueryParams):
+    """Accumlation/Distribution Indicators Query Params."""
+
+    offset: Optional[int] = Field(
+        default=0,
+        description="Offset value for the AD, by default is 0.",
+    )
+
+
+class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
+    """Accumlation/Distribution Oscillator Indicators Query Params."""
+
+    fast: Optional[int] = Field(
+        default=3,
+        description="Number of periods to use for the fast calculation, by default 3.",
+    )
+    slow: Optional[int] = Field(
+        default=10,
+        description="Number of periods to use for the slow calculation, by default 10.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Offset to be used for the calculation, by default is 0.",
+    )
+
+
+class ADXIndicatorsQueryParams(IndicatorsQueryParams):
+    """Average Directional Index Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=50,
+        description="Window length for the ADX, by default is 50.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the ADX by, default is 100.",
+    )
+    drift: Optional[int] = Field(
+        default=1,
+        description="Drift value for the ADX, by default is 1.",
+    )
+
+
+class AroonIndicatorsQueryParams(IndicatorsQueryParams):
+    """Aroon Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=25,
+        description="Window length for the Aroon, by default is 50.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the Aroon by, default is 100.",
+    )
+
+
+class ATRIndicatorsQueryParams(IndicatorsQueryParams):
+    """Average True Range Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=14,
+        description="Window length for the ATR, by default is 14.",
+    )
+    mamode: Literal["rma", "ema", "sma", "wma"] = Field(
+        default="rma",
+        description="The mode to use for the moving average calculation.",
+    )
+    drift: Optional[int] = Field(
+        default=1,
+        description="The difference period.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset the result, by default is 0.",
+    )
+
+
+class CCIIndicatorsQueryParams(IndicatorsQueryParams):
+    """Commodity Channel Index Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=14,
+        description="Window length for the CCI, by default is 14.",
+    )
+    scalar: Optional[float] = Field(
+        default=0.015,
+        description="Scalar to multiply the CCI by, default is 0.015.",
+    )
+
+
+class DonchianIndicatorsQueryParams(IndicatorsQueryParams):
+    """Donchian Channel Indicators Query Params."""
+
+    lower: Optional[int] = Field(
+        default=20,
+        description="Window length for the lower band, by default is 20.",
+    )
+    upper: Optional[int] = Field(
+        default=20,
+        description="Window length for the upper band, by default is 20.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset the result, by default is 0.",
+    )
+
+
+class FisherIndicatorsQueryParams(IndicatorsQueryParams):
+    """Fisher Transform Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=14,
+        description="Window length for the Fisher Transform, by default is 14.",
+    )
+    signal: Optional[int] = Field(
+        default=1,
+        description="Fisher Signal Period",
+    )
+
+
+class KCIndicatorsQueryParams(IndicatorsQueryParams):
+    """Keltner Channel Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=20,
+        description="Window length for the Keltner Channel, by default is 20.",
+    )
+    scalar: Optional[float] = Field(
+        default=20,
+        description="Scalar to multiply the ATR by, default is 20.",
+    )
+    mamode: Literal["ema", "sma", "wma", "hna", "zlma"] = Field(
+        default="rma",
+        description="The mode to use for the moving average calculation.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset the result, by default is 0.",
+    )
+
+
+class OBVIndicatorsQueryParams(IndicatorsQueryParams):
+    """On Balance Volume Indicators Query Params."""
+
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset the result, by default is 0.",
+    )
+
+class RSIIndicatorsQueryParams(IndicatorsQueryParams):
+    """RSI Indicators Query Params."""
+
+    length: Optional[int] = Field(
+        default=14,
+        description="Window length for the RSI, by default is 14.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the RSI by, default is 100.",
+    )
+    drift: Optional[int] = Field(
+        default=1,
+        description="Drift value for the RSI, by default is 1.",
+    )
+
+
+
+class StochIndicatorsQueryParams(IndicatorsQueryParams):
+    """Stochastic Oscillator Indicators Query Params."""
+
+    fast_k: Optional[int] = Field(
+        default=14,
+        description="The fast %K period, by default 14.",
+    )
+    slow_d: Optional[int] = Field(
+        default=3,
+        description="The slow %D period, by default 3.",
+    )
+    slow_k: Optional[int] = Field(
+        default=3,
+        description="The slow %K period, by default 3.",
+    )
+
+
+class FibIndicatorsQueryParams(IndicatorsQueryParams):
+    """Fibonacci Retracement Indicators Query Params."""
+
+    period: Optional[int] = Field(
+        default=120,
+        description="The period to calculate the Fibonacci Retracement, by default 120.",
+    )
+    start_date: Optional[str] = Field(
+        default=None,
+        description="The start date for the Fibonacci Retracement.",
+    )
+    end_date: Optional[str] = Field(
+        default=None,
+        description="The end date for the Fibonacci Retracement.",
+    )
+
+
+class ClenowIndicatorsQueryParams(IndicatorsQueryParams):
+    """Clenow Volatility Adjusted Momentum Indicators Query Params."""
+
+    period: Optional[int] = Field(
+        default=90,
+        description="The number of periods for the momentum, by default 90.",
+    )
+
+
+class DemarkIndicatorsQueryParams(IndicatorsQueryParams):
+    """Demark Indicators Query Params."""
+
+    show_all: bool = Field(
+        default=False,
+        description="Show 1 - 13. If set to False, show 6 - 9.",
+    )
+    offset: Optional[int] = Field(
+        default=0,
+        description="Number of periods to offset the result, by default is 0.",
+    )
+
+class IchimokuIndicatorsQueryParams(IndicatorsQueryParams):
+    """Ichimoku Cloud Indicators Query Params."""
+
+    conversion: Optional[int] = Field(
+        default=9,
+        description="The conversion line period, by default 9.",
+    )
+    base: Optional[int] = Field(
+        default=26,
+        description="The base line period, by default 26.",
+    )
+    lagging: Optional[int] = Field(
+        default=52,
+        description="The lagging line period, by default 52.",
+    )
+    offset: Optional[int] = Field(
+        default=26,
+        description="The offset period, by default 26.",
+    )
+    lookahead: bool = Field(
+        default=False,
+        description="Drops the Chikou Span Column to prevent potential data leak",
+    )
+
+class SRLinesIndicatorsQueryParams(IndicatorsQueryParams):
+    """Support and Resistance Lines Indicators Query Params."""
+
+    show: bool = Field(
+        default=True,
+        description="Show the support and resistance lines.",
+    )
+
+
+class IndicatorsParams:
+    """Indicators Query Params."""
+
+    sma = SMAIndicatorsQueryParams
+    ema = EMAIndicatorsQueryParams
+    hma = HMAIndicatorsQueryParams
+    wma = WMAIndicatorsQueryParams
+    zlma = ZLMAIndicatorsQueryParams
+    ad = ADIndicatorsQueryParams
+    adoscillator = ADOscillatorIndicatorsQueryParams
+    adx = ADXIndicatorsQueryParams
+    aroon = AroonIndicatorsQueryParams
+    atr = ATRIndicatorsQueryParams
+    cci = CCIIndicatorsQueryParams
+    clenow = ClenowIndicatorsQueryParams
+    demark = DemarkIndicatorsQueryParams
+    donchian = DonchianIndicatorsQueryParams
+    fib = FibIndicatorsQueryParams
+    fisher = FisherIndicatorsQueryParams
+    ichimoku = IchimokuIndicatorsQueryParams
+    kc = KCIndicatorsQueryParams
+    obv = OBVIndicatorsQueryParams
+    stoch = StochIndicatorsQueryParams
 

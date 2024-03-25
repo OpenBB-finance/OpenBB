@@ -77,7 +77,7 @@ class Custom(PltTA):
                     fig.add_scatter(
                         x=[df_ta.index[0], x_range],
                         y=[lv, lv],
-                        opacity=1,
+                        opacity=0.8,
                         mode="lines+text",
                         text=["", f"{lv:{self.get_float_precision()}}"],
                         textposition="top center",
@@ -100,7 +100,7 @@ class Custom(PltTA):
                     fig.add_scatter(
                         x=[df_ta.index[0], x_range],
                         y=[lv, lv],
-                        opacity=1,
+                        opacity=0.85,
                         mode="lines+text",
                         text=["", f"{lv:{self.get_float_precision()}}"],
                         textposition="top center",
@@ -200,7 +200,7 @@ class Custom(PltTA):
                 name=fibs[i],
                 x=[min_date, df_ta2.index.max()],
                 y=[levels[i], levels[i]],
-                opacity=0.9,
+                opacity=0.85,
                 mode="lines+text",
                 text=text,
                 textposition=text_pos,

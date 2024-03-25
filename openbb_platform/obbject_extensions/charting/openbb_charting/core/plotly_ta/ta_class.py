@@ -12,10 +12,9 @@ import pandas as pd
 
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
-
-from .base import PltTA
-from .data_classes import ChartIndicators
-from .ta_helpers import check_columns
+from openbb_charting.core.plotly_ta.base import PltTA
+from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+from openbb_charting.core.plotly_ta.ta_helpers import check_columns
 
 charting_EXTENSION_PATH = Path(__file__).parent.parent.parent
 CHARTING_INSTALL_PATH = charting_EXTENSION_PATH.parent
@@ -385,7 +384,6 @@ class PlotlyTA(PltTA):
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
         fig = OpenBBFigure(charting_settings=self.charting_settings)
-        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
         fig = fig.create_subplots(
             1,
             1,
@@ -407,7 +405,7 @@ class PlotlyTA(PltTA):
                 close=self.df_stock.close,
                 decreasing=dict(line=dict(width=cc_linewidth)),
                 increasing=dict(line=dict(width=cc_linewidth)),
-                name=f"{symbol} OHLC",
+                name=f"{symbol}",
                 showlegend=False,
                 row=1,
                 col=1,
@@ -418,7 +416,7 @@ class PlotlyTA(PltTA):
             fig.add_scatter(
                 x=self.df_stock.index,
                 y=self.df_stock[self.close_column],
-                name=f"{symbol} Close",
+                name=f"{symbol}",
                 connectgaps=True,
                 row=1,
                 col=1,
@@ -465,16 +463,16 @@ class PlotlyTA(PltTA):
         )
 
         figure = self.init_plot(symbol, candles) if fig is None else fig
-
         subplot_row, fig_new = 2, {}
         inchart_index, ma_done = 0, False
 
         figure = self.process_fig(figure, volume_ticks_x)
 
-        # Aroon indicator is always plotted first since it has 2 subplot rows
+        # Aroon indicator is always plotted first since it has 2 subplot rows.
+        # ATR messes up the volume layout so we plot it last.
         plot_indicators = sorted(
             self.indicators.get_active_ids(),
-            key=lambda x: 50 if x == "aroon" else 999 if x in self.subplots else 1,
+            key=lambda x: 50 if x == "aroon" else 1000 if x == "atr" else 999 if x in self.subplots else 1,
         )
 
         for indicator in plot_indicators:
@@ -492,6 +490,7 @@ class PlotlyTA(PltTA):
                     figure, inchart_index = getattr(self, f"plot_{indicator}")(
                         figure, self.df_ta, inchart_index
                     )
+                    figure.layout.annotations = None
                 elif indicator in ["fib", "srlines", "demark", "clenow", "ichimoku"]:
                     figure = getattr(self, f"plot_{indicator}")(figure, self.df_ta)
                 else:
@@ -518,25 +517,25 @@ class PlotlyTA(PltTA):
                 continue
 
         figure.update(fig_new)
-        figure.update_yaxes(
-            row=1,
-            col=1,
-            secondary_y=False,
-            nticks=15 if subplot_row < 3 else 10,
-            tickfont=dict(size=16),
-        )
+        for row in range(0,subplot_row + 1):
+            figure.update_yaxes(
+                row=row,
+                col=1,
+                secondary_y=False,
+                nticks=15 if subplot_row < 3 else 6,
+                tickfont=dict(size=12),
+            )
         figure.update_traces(
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
-        figure.update_layout(showlegend=False)
         if hasattr(figure, "hide_holidays"):
             figure.hide_holidays(self.prepost)
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))
 
-        # We remove xaxis labels from all but bottom subplot, and we make sure
-        # they all match the bottom one
+        # We remove xaxis labels from all but bottom subplot,
+        # and we make sure they all match the bottom one
         xbottom = f"y{subplot_row+1}"
         xaxes = list(figure.select_xaxes())
         for xa in xaxes:
@@ -547,6 +546,42 @@ class PlotlyTA(PltTA):
             if xa.anchor != xbottom:
                 xa.matches = xbottom.replace("y", "x")
 
+        fib_legend_shown = False
+        sr_legend_shown = False
+        for item in figure.data:
+            if item.name:
+                item.name = item.name.replace("_", " ")
+                if "MA " not in item.name:
+                    item.showlegend = False
+                if "<b>" in item.name:
+                    item.name = "Fib"
+                    item.hoverinfo = "none"
+                    item.hoveron = "fills"
+                    item.pop("hovertemplate", None)
+                    item.legendgroup = "Fib"
+                    if not fib_legend_shown:
+                        item.showlegend = True
+                        fib_legend_shown = True
+                if (
+                    "Historical" not in item.name and "Candlestick" not in item.name and "Fib" not in item.name and item.name is not None
+                ):
+                    if "MA " in item.name or "VWAP" in item.name or "DC" in item.name or "KC" in item.name or "-sen" in item.name or "Senkou" in item.name:
+                        item.showlegend = True
+                        item.hoverinfo = "y"
+                        item.hovertemplate = "%{fullData.name}:%{y}<extra></extra>"
+                    else:
+                        item.hovertemplate= "%{y}<extra></extra>"
+            if item.name is None:
+                item.name = "SR Lines"
+                item.hoverinfo = "none"
+                item.hoveron = "fills"
+                item.legendgroup = "SR Lines"
+                item.pop("hovertemplate", None)
+                if not sr_legend_shown:
+                    item.showlegend = True
+                    sr_legend_shown = True
+
+        figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
 
     def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
@@ -568,7 +603,6 @@ class PlotlyTA(PltTA):
         new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
-
         subplots: Dict[str, Dict[str, List[Any]]] = {}
         grid_ref = fig._validate_get_grid_ref()  # pylint: disable=protected-access
         for r, plot_row in enumerate(grid_ref):

@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 import pandas as pd
 import pandas_ta as ta
 
-from .ta_helpers import check_columns
+from openbb_charting.core.plotly_ta.ta_helpers import check_columns
 
 # pylint: disable=E1123
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
