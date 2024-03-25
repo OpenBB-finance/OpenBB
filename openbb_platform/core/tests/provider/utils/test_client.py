@@ -11,14 +11,16 @@ from yarl import URL
 
 def test_obfuscate():
     """Test the obfuscate helper."""
-    params = {
-        "api_key": "1234",
-        "token": "1234",
-        "auth": "1234",
-        "auth_token": "1234",
-        "c": "1234",
-        "api_key2": "1234",
-    }
+    params = CIMultiDict(
+        {
+            "api_key": "1234",
+            "token": "1234",
+            "auth": "1234",
+            "auth_token": "1234",
+            "c": "1234",
+            "api_key2": "1234",
+        }
+    )
 
     assert client.obfuscate(params) == {
         "api_key": "********",

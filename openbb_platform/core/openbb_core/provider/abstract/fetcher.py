@@ -65,7 +65,7 @@ class Fetcher(Generic[Q, R]):
         super().__init_subclass__(*args, **kwargs)
 
         if cls.aextract_data != Fetcher.aextract_data:
-            cls.extract_data = cls.aextract_data
+            cls.extract_data = cls.aextract_data  # type: ignore[method-assign]
         elif cls.extract_data == Fetcher.extract_data:
             raise NotImplementedError(
                 "Fetcher subclass must implement either extract_data or aextract_data"
