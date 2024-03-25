@@ -57,6 +57,8 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             continue
 
         if parameter.kind == Parameter.VAR_KEYWORD:
+            # We track VAR_KEYWORD parameter to insert the any additional
+            # parameters we need to add before it and avoid a SyntaxError
             var_kw_start = pos
 
         new_parameter_list.append(
