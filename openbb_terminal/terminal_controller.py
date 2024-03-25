@@ -136,8 +136,9 @@ class TerminalController(BaseController):
             )
 
         # pylint: disable=unused-argument
-        def method_call_command(self, _, target: BaseModel):
-            df = pd.DataFrame.from_dict(target.model_dump(), orient="index")
+        def method_call_command(self, _, router: str):
+            mdl = getattr(obb, router)
+            df = pd.DataFrame.from_dict(mdl.model_dump(), orient="index")
             return print_rich_table(df, show_index=True)
 
         for router, value in PLATFORM_ROUTERS.items():
@@ -166,7 +167,8 @@ class TerminalController(BaseController):
             else:
                 bound_method = MethodType(method_call_command, self)
                 bound_method = update_wrapper(
-                    partial(bound_method, target=target), method_call_command
+                    partial(bound_method, router=router),
+                    method_call_command,
                 )
 
             setattr(self, f"call_{router}", bound_method)

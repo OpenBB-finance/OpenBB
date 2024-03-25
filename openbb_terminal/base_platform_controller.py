@@ -148,7 +148,7 @@ class PlatformController(BaseController):
                         df = pd.DataFrame.from_dict(obbject, orient="index")
                         print_rich_table(df, show_index=True)
 
-                    else:
+                    elif obbject:
                         console.print(obbject)
 
                     if hasattr(ns_parser, "export") and ns_parser.export:
