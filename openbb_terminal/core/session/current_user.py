@@ -1,7 +1,7 @@
 # IMPORTS STANDARD
 import dataclasses
 from copy import deepcopy
-from typing import Any, Dict, Optional
+from typing import Any
 
 from openbb import obb
 from openbb_core.app.model.user_settings import UserSettings
@@ -24,14 +24,14 @@ __local_user = UserModel(  # type: ignore
 __current_user = __local_user
 
 
-def get_current_user() -> UserModel:
-    """Get current user."""
-    return deepcopy(__current_user)
-
-
 def get_platform_user() -> UserSettings:
     """Get platform user."""
     return deepcopy(obb.user)
+
+
+def get_current_user() -> UserModel:
+    """Get current user."""
+    return deepcopy(__current_user)
 
 
 def set_current_user(user: UserModel):
@@ -56,26 +56,6 @@ def is_local() -> bool:
     return not bool(obb.user.profile.hub_session)
 
 
-def set_default_user():
-    """Set default user."""
-    env_dict = read_env()
-    preferences = load_dict_to_model(env_dict, PreferencesModel)
-    default_user = UserModel(preferences=preferences)
-    set_current_user(default_user)
-
-
-def copy_user(
-    preferences: Optional[PreferencesModel] = None,
-    user: Optional[UserModel] = None,
-):
-    current_user = user or get_current_user()
-    preferences = preferences or current_user.preferences
-
-    user_copy = UserModel(preferences=preferences)
-
-    return user_copy
-
-
 def set_preference(
     name: str,
     value: Any,
@@ -92,34 +72,4 @@ def set_preference(
     current_user = get_current_user()
     updated_preferences = dataclasses.replace(current_user.preferences, **{name: value})  # type: ignore
     updated_user = dataclasses.replace(current_user, preferences=updated_preferences)  # type: ignore
-    set_current_user(updated_user)
-
-
-def set_credential(name: str, value: str):
-    """Set credential
-
-    Parameters
-    ----------
-    name : str
-        Credential name
-    value : str
-        Credential value
-    """
-    current_user = get_current_user()
-    updated_credentials = dataclasses.replace(current_user.credentials, **{name: value})  # type: ignore
-    updated_user = dataclasses.replace(current_user, credentials=updated_credentials)  # type: ignore
-    set_current_user(updated_user)
-
-
-def set_sources(choices: Dict):
-    """Set sources
-
-    Parameters
-    ----------
-    choices : Dict
-        Sources dict
-    """
-    current_user = get_current_user()
-    updated_sources = dataclasses.replace(current_user.sources, choices=choices)  # type: ignore
-    updated_user = dataclasses.replace(current_user, sources=updated_sources)  # type: ignore
     set_current_user(updated_user)
