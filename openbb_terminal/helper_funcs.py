@@ -18,7 +18,7 @@ import pytz
 import requests
 from rich.table import Table
 
-from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_settings import get_current_settings
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import (
@@ -371,13 +371,11 @@ AVAILABLE_FLAIRS = {
 
 def get_flair() -> str:
     """Get a flair icon."""
-
-    current_user = get_current_user()  # pylint: disable=redefined-outer-name
-    current_flair = str(current_user.preferences.FLAIR)
+    current_flair = str(get_current_settings().FLAIR)
     flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
 
     if (
-        current_user.preferences.USE_DATETIME
+        get_current_settings().USE_DATETIME
         and get_user_timezone_or_invalid() != "INVALID"
     ):
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
@@ -561,11 +559,9 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     Returns two values, the first is a boolean indicating if the file exists and the
     second is a boolean indicating if the user wants to overwrite the file.
     """
-    # Jeroen asked for a flag to overwrite no matter what
-    current_user = get_current_user()
-    if current_user.preferences.FILE_OVERWRITE:
+    if get_current_settings().FILE_OVERWRITE:
         return False, True
-    if get_current_system().TEST_MODE:
+    if get_current_settings().TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()

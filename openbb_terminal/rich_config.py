@@ -11,8 +11,9 @@ from rich.progress import track
 from rich.text import Text
 
 from openbb_terminal.core.plots.terminal_style import theme
-from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_settings import get_current_settings
+
+from openbb import obb
 
 # pylint: disable=no-member,c-extension-no-member
 
@@ -54,15 +55,18 @@ def get_ordered_list_sources(command_path: str) -> List:
     Parameters
     ----------
     command_path: str
-        The command to find the source for. E.g. "stocks/load
+        The command to find the source for. E.g. "/equity/price/historical
 
     Returns
     -------
     List
         The list of sources for the given command.
     """
-    command_path = command_path[1:] if command_path.startswith("/") else command_path
-    return get_current_user().sources.choices.get(command_path, [])
+    command_reference = obb.coverage.reference.get(command_path, {})
+    if command_reference:
+        providers = list(command_reference["parameters"].keys())
+        return [provider for provider in providers if "standard" != provider]
+    return []
 
 
 class MenuText:
@@ -154,12 +158,9 @@ class MenuText:
             if command_description == self.menu_path + key_command:
                 command_description = ""
             cmd = f"{key_command}{spacing}{command_description}"
-
         cmd = f"[cmds]    {cmd}[/cmds]" if condition else f"[unvl]    {cmd}[/unvl]"
 
-        # sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
-        # TODO: add sources from the platform reference
-        sources = []
+        sources = get_ordered_list_sources(f"{self.menu_path}{key_command}")
 
         if sources:
             space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
@@ -219,7 +220,7 @@ class ConsoleAndPanel:
     """Create a rich console to wrap the console print with a Panel"""
 
     def __init__(self):
-        self.preferences = get_current_user().preferences
+        self.preferences = get_current_settings()
         self.__console = Console(
             theme=Theme(theme.console_style), highlight=False, soft_wrap=True
         )
@@ -227,7 +228,7 @@ class ConsoleAndPanel:
         self.menu_path = ""
 
     def reload_console(self):
-        current_preferences = get_current_user().preferences
+        current_preferences = get_current_settings()
         if current_preferences != self.preferences:
             self.preferences = current_preferences
             theme.apply_console_style(current_preferences.RICH_STYLE)
@@ -265,12 +266,11 @@ class ConsoleAndPanel:
 
     def print(self, *args, **kwargs):
         self.reload_console()
-        current_user = get_current_user()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if not get_current_system().TEST_MODE:
-                if current_user.preferences.ENABLE_RICH_PANEL:
-                    if current_user.preferences.SHOW_VERSION:
-                        version = get_current_system().VERSION
+            if not get_current_settings().TEST_MODE:
+                if get_current_settings().ENABLE_RICH_PANEL:
+                    if get_current_settings().SHOW_VERSION:
+                        version = get_current_settings().VERSION
                         version = f"[param]OpenBB Platform CLI v{version}[/param] (https://openbb.co)"
                     else:
                         version = (
@@ -289,7 +289,7 @@ class ConsoleAndPanel:
                     self.__console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))  # noqa: T201
-        elif not get_current_system().TEST_MODE:
+        elif not get_current_settings().TEST_MODE:
             self.__console.print(*args, **kwargs)
         else:
             print(*args, **kwargs)  # noqa: T201

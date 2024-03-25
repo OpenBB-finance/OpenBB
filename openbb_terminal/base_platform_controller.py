@@ -1,7 +1,7 @@
 """Platform Equity Controller."""
 
 __docformat__ = "numpy"
-import logging
+
 import os
 from functools import partial, update_wrapper
 from types import MethodType
@@ -18,8 +18,6 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-
-logger = logging.getLogger(__name__)
 
 
 class DummyTranslation:
@@ -203,7 +201,7 @@ class PlatformController(BaseController):
 
     def print_help(self):
         """Print help."""
-        mt = MenuText(self._name, 80)
+        mt = MenuText(self.PATH)
 
         if self.CHOICES_MENUS:
             mt.add_raw("Menus\n\n")
