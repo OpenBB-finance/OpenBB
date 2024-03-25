@@ -216,18 +216,28 @@ def test_is_annotated_dc_annotated(method_definition):
                 "param1": Parameter.empty,
                 "param2": Parameter.empty,
             },
+            None,
+            ["extra_params", "param1", "param2", "provider"],
+        ),
+        (
+            {
+                "param1": Parameter.empty,
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param2": Parameter.empty,
+            },
             ["extra_params"],
             ["param1", "param2", "provider", "extra_params"],
         ),
         (
             {
+                "param2": Parameter.empty,
                 "any_kwargs": Parameter.empty,
                 "provider": Parameter.empty,
                 "param1": Parameter.empty,
-                "param2": Parameter.empty,
             },
             ["any_kwargs"],
-            ["param1", "param2", "provider", "any_kwargs"],
+            ["param2", "param1", "provider", "any_kwargs"],
         ),
         (
             {
@@ -243,7 +253,7 @@ def test_is_annotated_dc_annotated(method_definition):
     ],
 )
 def test_reorder_params(method_definition, params, var_kw, expected):
-    """Test reorder params, ensure var_kw are last."""
+    """Test reorder params, ensure var_kw are last after 'provider'."""
     result = method_definition.reorder_params(params, var_kw)
     assert result
     assert list(result.keys()) == expected
