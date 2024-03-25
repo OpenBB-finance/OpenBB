@@ -91,3 +91,17 @@ async def analyst_search(
 ) -> OBBject:
     """Search for specific analysts and get their forecast track record."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SalesEstimates",
+    examples=[],
+)
+async def sales_estimates(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get sales estimates."""
+    return await OBBject.from_query(Query(**locals()))
