@@ -87,6 +87,6 @@ intrinio_provider = Provider(
         "SearchAttributes": IntrinioSearchAttributesFetcher,
         "ShareStatistics": IntrinioShareStatisticsFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,
-        "ZackSalesEstimates": IntrinioZackSalesEstimatesFetcher,
+        "SalesEstimates": IntrinioZackSalesEstimatesFetcher,
     },
 )
