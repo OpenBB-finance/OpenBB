@@ -23,7 +23,7 @@ from openbb_terminal.rich_config import MenuText, console
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
 
-from openbb_terminal.core.plots.plotly_helper import theme
+from openbb_terminal.core.plots.terminal_style import theme
 
 
 def set_and_save_preference(name: str, value: Union[bool, Path, str]):

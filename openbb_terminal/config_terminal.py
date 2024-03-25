@@ -16,7 +16,7 @@ from openbb_terminal.core.session.current_system import (
 from openbb_terminal.core.session.current_user import get_current_user
 
 # pylint: disable=unused-import
-from openbb_terminal.core.plots.plotly_helper import (
+from openbb_terminal.core.plots.terminal_style import (
     theme,
 )  # force init to get the console style
 

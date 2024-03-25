@@ -10,7 +10,7 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.plots.plotly_helper import theme
+from openbb_terminal.core.plots.terminal_style import theme
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 
