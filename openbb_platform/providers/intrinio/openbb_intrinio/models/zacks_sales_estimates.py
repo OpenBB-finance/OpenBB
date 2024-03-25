@@ -7,8 +7,7 @@ from openbb_core.provider.standard_models.sales_estimates import (
     SalesEstimatesData,
     SalesEstimatesQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many
-
+from openbb_intrinio.utils.helpers import get_data_one
 
 class IntrinioZackSalesEstimatesQueryParams(SalesEstimatesQueryParams):
     """Intrinio Zack Sales Estimates Query.
@@ -35,7 +34,7 @@ class IntrinioZackSalesEstimatesFetcher(
         return IntrinioZackSalesEstimatesQueryParams(**params)
 
     @staticmethod
-    async def aextract_data(
+     async def aextract_data(
         query: IntrinioZackSalesEstimatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -63,7 +62,7 @@ class IntrinioZackSalesEstimatesFetcher(
             sales_estimates_url = sales_estimates_url + f"&page_size={query.page_size}"
         sales_estimates_url = sales_estimates_url + f"&api_key={api_key}"
 
-        return await get_data_many(sales_estimates_url, **kwargs)
+        return await get_data_one(sales_estimates_url, **kwargs)
 
     @staticmethod
     def transform_data(
