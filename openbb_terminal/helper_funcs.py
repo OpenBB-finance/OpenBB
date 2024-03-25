@@ -18,15 +18,14 @@ import pytz
 import requests
 from rich.table import Table
 
-from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
-)
 from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    get_platform_user,
+)
 from openbb_terminal.rich_config import console
-
 
 ALLOWED_NUMBER_OF_ROWS = 366
 ALLOWED_NUMBER_OF_COLUMNS = 15
@@ -549,7 +548,9 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
-    full_path = get_current_user().preferences.USER_EXPORTS_DIRECTORY / default_filename
+    full_path = (
+        Path(get_platform_user().preferences.export_directory) / default_filename
+    )
 
     return full_path
 
@@ -767,12 +768,12 @@ def request(
     method = method.lower()
     if method not in ["delete", "get", "head", "patch", "post", "put"]:
         raise ValueError(f"Invalid method: {method}")
-    current_user = get_current_user()
+    current_user = get_platform_user()
     # We want to add a user agent to the request, so check if there are any headers
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers", {})
-    timeout = timeout or current_user.preferences.REQUEST_TIMEOUT
+    timeout = timeout or current_user.preferences.request_timeout
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()

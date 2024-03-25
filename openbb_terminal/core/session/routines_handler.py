@@ -1,5 +1,4 @@
 import os
-from os import walk
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -7,7 +6,9 @@ import numpy as np
 import pandas as pd
 
 import openbb_terminal.core.session.hub_model as Hub
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_platform_user,
+)
 from openbb_terminal.rich_config import console
 
 
@@ -70,45 +71,6 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
     return [personal_routines_dict, default_routines_dict]
 
 
-# use os.walk to search subdirectories and then construct file path
-def read_routine(file_name: str, folder: Optional[Path] = None) -> Optional[str]:
-    """Read the routine.
-
-    Parameters
-    ----------
-    file_name : str
-        The routine.
-    folder : Optional[Path]
-        The routines folder.
-
-    Returns
-    -------
-    file_name : str
-        The routine.
-    folder : Optional[Path]
-        The routines folder.
-    """
-
-    current_user = get_current_user()
-    if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
-
-    try:
-        user_folder = folder / "hub"
-        for path, _, files in walk(user_folder):
-            file_path = (
-                folder / os.path.relpath(path, folder) / file_name
-                if file_name in files
-                else folder / file_name
-            )
-        with open(file_path) as f:
-            routine = "".join(f.readlines())
-        return routine
-    except Exception:
-        console.print("[red]Failed to find routine.[/red]")
-        return None
-
-
 # created new directory structure to account for personal and default routines
 def save_routine(
     file_name: str,
@@ -139,9 +101,9 @@ def save_routine(
     """
     console_print = console.print if not silent else lambda *args, **kwargs: None
 
-    current_user = get_current_user()
+    current_user = get_platform_user()
     if folder is None:
-        folder = current_user.preferences.USER_ROUTINES_DIRECTORY
+        folder = Path(current_user.preferences.export_directory, "routines")
 
     try:
         user_folder = folder / "hub"

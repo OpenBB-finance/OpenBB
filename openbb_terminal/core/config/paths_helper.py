@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-from pathlib import Path
 from typing import List
 
 from openbb_terminal.core.config.paths import (
@@ -7,7 +6,7 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_platform_user
 
 # pylint: disable=W0603
 
@@ -34,37 +33,20 @@ def create_files(list_files: List):
                 pass
 
 
-current_user = get_current_user()
+current_user = get_platform_user()
+user_data_directory = current_user.preferences.data_directory
+user_export_directory = current_user.preferences.export_directory
 
 dirs_list = [
     SETTINGS_DIRECTORY,
-    current_user.preferences.USER_DATA_DIRECTORY,
-    current_user.preferences.USER_DATA_DIRECTORY / "styles",
-    current_user.preferences.USER_DATA_DIRECTORY / "reports",
-    current_user.preferences.USER_DATA_DIRECTORY / "reports" / "custom reports",
-    current_user.preferences.USER_DATA_DIRECTORY / "companies_house",
-    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY,
-    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics",
-    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "stocks",
-    current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "dashboards",
-    current_user.preferences.USER_EXPORTS_DIRECTORY,
-    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY,
-    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "views",
-    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "holdings",
-    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "allocation",
-    current_user.preferences.USER_PORTFOLIO_DATA_DIRECTORY / "optimization",
-    current_user.preferences.USER_PRESETS_DIRECTORY,
-    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "options",
-    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "screener",
-    current_user.preferences.USER_PRESETS_DIRECTORY / "stocks" / "insider",
-    current_user.preferences.USER_PRESETS_DIRECTORY / "etf" / "screener",
-    current_user.preferences.USER_ROUTINES_DIRECTORY,
-    current_user.preferences.USER_DATA_DIRECTORY / "sources",
+    user_data_directory,
+    user_data_directory / "styles",
+    user_export_directory,
+    user_export_directory / "routines",
 ]
 dirs_files = [
     SETTINGS_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    Path(current_user.preferences.USER_DATA_SOURCES_FILE),
 ]
 initialized = False
 

@@ -5,17 +5,18 @@ __docformat__ = "numpy"
 import os
 import sys
 from contextlib import contextmanager
+from pathlib import Path
 from typing import List, Optional
 
 from packaging import version
 
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import load_env_files
-from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
+from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import (
-    get_current_user,
+    get_platform_user,
     is_local,
     set_preference,
 )
@@ -193,21 +194,14 @@ def reset(queue: Optional[List[str]] = None):
     dev = get_current_system().DEV_BACKEND
 
     try:
-        # # save the current user
-        # user_profile = get_current_user().profile
-        # session: Dict[str, Any] = {
-        #     "access_token": user_profile.token,
-        #     "token_type": user_profile.token_type,
-        #     "uuid": user_profile.uuid,
-        #     "username": user_profile.username,
-        #     "remember": user_profile.remember,
-        # }
 
         # remove the hub routines
         if not is_local():
-            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
-            if not get_current_user().profile.remember:
-                Local.remove(HIST_FILE_PATH)
+            user = get_platform_user()
+            Local.remove(Path(user.preferences.export_directory, "routines", "hub"))
+
+            # if not get_current_user().profile.remember:
+            #     Local.remove(HIST_FILE_PATH)
 
         # we clear all openbb_terminal modules from sys.modules
         for module in list(sys.modules.keys()):

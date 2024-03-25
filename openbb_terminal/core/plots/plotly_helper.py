@@ -15,7 +15,10 @@ from typing import (
 
 from openbb_terminal.base_helpers import console
 from openbb_terminal.core.config.paths import STYLES_DIRECTORY_REPO
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    get_platform_user,
+)
 
 if TYPE_CHECKING:
     with contextlib.suppress(ImportError):
@@ -34,7 +37,9 @@ class TerminalStyle:
     """
 
     STYLES_REPO = STYLES_DIRECTORY_REPO
-    USER_STYLES_DIRECTORY: Path = get_current_user().preferences.USER_STYLES_DIRECTORY
+    USER_STYLES_DIRECTORY: Path = Path(
+        get_platform_user().preferences.user_styles_directory
+    )
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}

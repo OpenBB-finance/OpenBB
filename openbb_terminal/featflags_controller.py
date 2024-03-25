@@ -77,12 +77,9 @@ class FeatureFlagsController(BaseController):
         mt = MenuText("featflags/")
         mt.add_info("_info_")
         mt.add_raw("\n")
-        mt.add_setting("retryload", current_user.preferences.RETRY_WITH_LOAD)
         mt.add_setting("interactive", current_user.preferences.USE_INTERACTIVE_DF)
         mt.add_setting("cls", current_user.preferences.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", current_user.preferences.USE_PROMPT_TOOLKIT)
-        mt.add_setting("thoughts", current_user.preferences.ENABLE_THOUGHTS_DAY)
-        mt.add_setting("reporthtml", current_user.preferences.OPEN_REPORT_AS_HTML)
         mt.add_setting("exithelp", current_user.preferences.ENABLE_EXIT_AUTO_HELP)
         mt.add_setting("rcontext", current_user.preferences.REMEMBER_CONTEXTS)
         mt.add_setting("richpanel", current_user.preferences.ENABLE_RICH_PANEL)
@@ -106,12 +103,6 @@ class FeatureFlagsController(BaseController):
             "SHOW_VERSION", not get_current_user().preferences.SHOW_VERSION
         )
 
-    def call_retryload(self, _):
-        """Process retryload command"""
-        set_and_save_preference(
-            "RETRY_WITH_LOAD", not get_current_user().preferences.RETRY_WITH_LOAD
-        )
-
     def call_interactive(self, _):
         """Process interactive command"""
         set_and_save_preference(
@@ -130,20 +121,6 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "USE_PROMPT_TOOLKIT",
             not get_current_user().preferences.USE_PROMPT_TOOLKIT,
-        )
-
-    def call_thoughts(self, _):
-        """Process thoughts command"""
-        set_and_save_preference(
-            "ENABLE_THOUGHTS_DAY",
-            not get_current_user().preferences.ENABLE_THOUGHTS_DAY,
-        )
-
-    def call_reporthtml(self, _):
-        """Process reporthtml command"""
-        set_and_save_preference(
-            "OPEN_REPORT_AS_HTML",
-            not get_current_user().preferences.OPEN_REPORT_AS_HTML,
         )
 
     def call_exithelp(self, _):

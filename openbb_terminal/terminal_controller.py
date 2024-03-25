@@ -34,7 +34,11 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.core.session.current_user import get_current_user, set_preference
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    set_preference,
+    get_platform_user,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     get_flair,
@@ -175,6 +179,10 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
+
+        user = get_platform_user()
+        routines_directory = Path(user.preferences.export_directory, "routines")
+
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
@@ -183,25 +191,19 @@ class TerminalController(BaseController):
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath
-                for filepath in get_current_user().preferences.USER_ROUTINES_DIRECTORY.rglob(
-                    "*.openbb"
-                )
+                for filepath in routines_directory.rglob("*.openbb")
             }
             self.ROUTINE_DEFAULT_FILES = {
                 filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "default"
-                ).rglob("*.openbb")
+                for filepath in Path(routines_directory / "hub" / "default").rglob(
+                    "*.openbb"
+                )
             }
             self.ROUTINE_PERSONAL_FILES = {
                 filepath.name: filepath
-                for filepath in Path(
-                    get_current_user().preferences.USER_ROUTINES_DIRECTORY
-                    / "hub"
-                    / "personal"
-                ).rglob("*.openbb")
+                for filepath in Path(routines_directory / "hub" / "personal").rglob(
+                    "*.openbb"
+                )
             }
 
             choices["exe"] = {
@@ -357,7 +359,9 @@ class TerminalController(BaseController):
                     console.print("[red]Could not find the requested script.[/red]")
                     return
                 routine_text = response.json()["script"]
-                file_path = Path(get_current_user().preferences.USER_ROUTINES_DIRECTORY)
+                file_path = Path(
+                    get_platform_user().preferences.export_directory, "routines"
+                )
                 routine_path = file_path / file_name
                 with open(routine_path, "w") as file:
                     file.write(routine_text)
@@ -743,8 +747,8 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
 
 def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = (
-        get_current_user().preferences.USER_DATA_DIRECTORY / "routines" / file
+    user_routine_path = Path(
+        get_platform_user().preferences.export_directory, "routines"
     )
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 

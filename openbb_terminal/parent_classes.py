@@ -92,7 +92,6 @@ class BaseController(metaclass=ABCMeta):
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
-    TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
     CHOICES_GENERATION = False
@@ -430,7 +429,6 @@ class BaseController(metaclass=ABCMeta):
             self.queue.insert(0, "quit")
 
         if not is_local():
-
             user = get_platform_user()
             Local.remove(Path(user.preferences.export_directory, "routines", "hub"))
 
@@ -693,7 +691,6 @@ class BaseController(metaclass=ABCMeta):
             # If user doesn't specify they want to store routine locally
             # Confirm that the user is logged in
             elif not is_local():
-                # routine = read_routine(file_name=routine_file)
                 routine = "\n".join(SESSION_RECORDED[:-1])
                 hub_session = current_user.profile.hub_session
 
@@ -1043,6 +1040,3 @@ class BaseController(metaclass=ABCMeta):
 
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
-                elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
-                    console.print(f"\nTrying `load {an_input}`\n")
-                    self.queue.insert(0, "load " + an_input)
