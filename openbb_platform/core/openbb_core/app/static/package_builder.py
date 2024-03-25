@@ -528,10 +528,12 @@ class MethodDefinition:
         return getattr(PathHandler.build_route_map()[path], "summary", "")
 
     @staticmethod
-    def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
-        """Reorder the params."""
+    def reorder_params(
+        params: Dict[str, Parameter], var_kw: Optional[List[str]] = None
+    ) -> "OrderedDict[str, Parameter]":
+        """Reorder the params and make sure VAR_KEYWORD come after 'provider."""
         formatted_keys = list(params.keys())
-        for k in ["provider", "extra_params"]:
+        for k in ["provider"] + (var_kw or []):
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
@@ -563,14 +565,11 @@ class MethodDefinition:
             )
 
         formatted: Dict[str, Parameter] = {}
-
+        var_kw = []
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
-            elif name == "kwargs":
-                formatted["**" + name] = Parameter(
-                    name="kwargs", kind=Parameter.VAR_KEYWORD, annotation=Any
-                )
+                var_kw.append(name)
             elif name == "provider_choices":
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 field = fields["provider"]
@@ -624,12 +623,14 @@ class MethodDefinition:
 
                 formatted[name] = Parameter(
                     name=name,
-                    kind=Parameter.POSITIONAL_OR_KEYWORD,
+                    kind=param.kind,
                     annotation=updated_type,
                     default=param.default,
                 )
+                if param.kind == Parameter.VAR_KEYWORD:
+                    var_kw.append(name)
 
-        return MethodDefinition.reorder_params(params=formatted)
+        return MethodDefinition.reorder_params(params=formatted, var_kw=var_kw)
 
     @staticmethod
     def add_field_custom_annotations(

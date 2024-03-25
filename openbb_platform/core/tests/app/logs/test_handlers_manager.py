@@ -85,4 +85,4 @@ def test_update_handlers():
         for hdlr in handlers:
             if isinstance(hdlr, (MockPosthogHandler, MockPathTrackingFileHandler)):
                 assert hdlr.settings == changed_settings
-                assert hdlr.formatter.settings == changed_settings
+                assert hdlr.formatter.settings == changed_settings  # type: ignore[union-attr]
