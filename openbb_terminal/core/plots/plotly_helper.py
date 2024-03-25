@@ -130,7 +130,17 @@ class TerminalStyle:
             Style as a dictionary
         """
         with open(file) as f:
-            return json.load(f)
+            json_style: dict = json.load(f)
+            for key, value in json_style.items():
+                json_style[key] = value.replace(
+                    " ", ""
+                )  # remove whitespaces so Rich can parse it
+            return json_style
+
+    @property
+    def available_styles(self) -> List[str]:
+        """Return available styles."""
+        return list(self.console_styles_available.keys())
 
 
 theme = TerminalStyle(

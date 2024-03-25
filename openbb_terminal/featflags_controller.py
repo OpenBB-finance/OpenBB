@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
-import logging
+import argparse
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -23,7 +23,7 @@ from openbb_terminal.rich_config import MenuText, console
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
 
-logger = logging.getLogger(__name__)
+from openbb_terminal.core.plots.plotly_helper import theme
 
 
 def set_and_save_preference(name: str, value: Union[bool, Path, str]):
@@ -58,6 +58,7 @@ class FeatureFlagsController(BaseController):
         "tbhint",
         "overwrite",
         "version",
+        "console_style",
     ]
     PATH = "/featflags/"
 
@@ -88,6 +89,8 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("tbhint", current_user.preferences.TOOLBAR_HINT)
         mt.add_setting("overwrite", current_user.preferences.FILE_OVERWRITE)
         mt.add_setting("version", current_user.preferences.SHOW_VERSION)
+
+        mt.add_cmd("console_style")
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -177,3 +180,26 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "TOOLBAR_HINT", not get_current_user().preferences.TOOLBAR_HINT
         )
+
+    def call_console_style(self, other_args: List[str]) -> None:
+        """Process cosole_style command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="console_style",
+            description="Change your custom console style.",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-s",
+            "--style",
+            dest="style",
+            action="store",
+            required=True,
+            choices=theme.available_styles,
+        )
+
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            theme.apply_console_style(ns_parser.style)
+            set_and_save_preference("RICH_STYLE", ns_parser.style)
