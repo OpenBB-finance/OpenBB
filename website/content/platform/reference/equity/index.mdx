@@ -1,30 +1,25 @@
-# equity
+# Equity
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
+### Menus
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-<ReferenceCard
-    title="market_snapshots"
-    description="Get a current, complete, market snapshot."
-    url="/platform/reference/equity/market_snapshots"
-    command="true"
-/>
-<ReferenceCard
-    title="news"
-    description="Company News. Get news for one or more companies."
-    url="/platform/reference/equity/news"
-    command="true"
-/>
-<ReferenceCard
-    title="profile"
-    description="Equity Info. Get general price and performance metrics of a stock."
-    url="/platform/reference/equity/profile"
-    command="true"
-/>
-<ReferenceCard
-    title="search"
-    description="Equity Search. Search for a company or stock ticker."
-    url="/platform/reference/equity/search"
-    command="true"
-/>
+<ReferenceCard title="Calendar" description="dividend, splits, ipo, earnings" url="/platform/reference/equity/calendar" />
+<ReferenceCard title="Estimates" description="consensus, price_target, historical, analyst_search" url="/platform/reference/equity/estimates" />
+<ReferenceCard title="Discovery" description="filings, undervalued_growth, top_retail, growth_tech, active, losers, aggressive_small_caps, gainers,..." url="/platform/reference/equity/discovery" />
+<ReferenceCard title="Fundamental" description="historical_eps, filings, management, overview, management_compensation, dividends, reported_financials, balance,..." url="/platform/reference/equity/fundamental" />
+<ReferenceCard title="Ownership" description="insider_trading, major_holders, form_13f, share_statistics, institutional" url="/platform/reference/equity/ownership" />
+<ReferenceCard title="Price" description="nbbo, performance, historical, quote" url="/platform/reference/equity/price" />
+<ReferenceCard title="Darkpool" description="otc" url="/platform/reference/equity/darkpool" />
+<ReferenceCard title="Shorts" description="short_interest, short_volume, fails_to_deliver" url="/platform/reference/equity/shorts" />
+<ReferenceCard title="Compare" description="peers, groups" url="/platform/reference/equity/compare" />
 </ul>
+
+### Commands
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard title="search" description="Search for stock symbol, CIK, LEI, or company name" url="/platform/reference/equity/search" />
+<ReferenceCard title="market snapshots" description="Get an updated equity market snapshot" url="/platform/reference/equity/market_snapshots" />
+<ReferenceCard title="screener" description="Screen for companies meeting various criteria" url="/platform/reference/equity/screener" />
+<ReferenceCard title="profile" description="Get general information about a company" url="/platform/reference/equity/profile" />
+</ul>
+

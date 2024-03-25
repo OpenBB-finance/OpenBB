@@ -1,6 +1,6 @@
 ---
-title: Commitment of Traders Reports
-description: OpenBB Platform Data Model
+title: "COT"
+description: "Commitment of Traders Reports"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,14 +27,21 @@ COTQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | id | str | The series ID string for the report. Default report is Two-Year Treasury Note Futures. | 042601 | True |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| transform | Literal['diff', 'rdiff', 'cumul', 'normalize'] | Transform the data as difference, percent change, cumulative, or normalize. | None | True |
+| collapse | Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'] | Collapse the frequency of the time series. | None | True |
 | provider | Literal['nasdaq'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'nasdaq' if there is no default. | nasdaq | True |
 </TabItem>
 
@@ -43,50 +50,33 @@ COTQueryParams,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | id | str | The series ID string for the report. Default report is Two-Year Treasury Note Futures. | 042601 | True |
+| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| end_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
+| transform | Literal['diff', 'rdiff', 'cumul', 'normalize'] | Transform the data as difference, percent change, cumulative, or normalize. | None | True |
+| collapse | Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual'] | Collapse the frequency of the time series. | None | True |
 | provider | Literal['nasdaq'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'nasdaq' if there is no default. | nasdaq | True |
-| data_type | Literal['F', 'FO', 'CITS'] |
-            The type of data to reuturn. Default is "FO".
-
-            F = Futures only
-
-            FO = Futures and Options
-
-            CITS = Commodity Index Trader Supplemental. Only valid for commodities.
-             | FO | True |
+| data_type | Literal['F', 'FO', 'CITS'] | The type of data to reuturn. Default is 'FO'.       F = Futures only       FO = Futures and Options       CITS = Commodity Index Trader Supplemental. Only valid for commodities. | FO | True |
 | legacy_format | bool | Returns the legacy format of report. Default is False. | False | True |
-| report_type | Literal['ALL', 'CHG', 'OLD', 'OTR'] |
-            The type of report to return. Default is "ALL".
-
-            ALL = All
-
-            CHG = Change in Positions
-
-            OLD = Old Crop Years
-
-            OTR = Other Crop Years
-             | ALL | True |
-| measure | Literal['CR', 'NT', 'OI', 'CHG'] |
-            The measure to return. Default is None.
-
-            CR = Concentration Ratios
-
-            NT = Number of Traders
-
-            OI = Percent of Open Interest
-
-            CHG = Change in Positions. Only valid when data_type is "CITS".
-             | None | True |
-| start_date | date | The start date of the time series. Defaults to all. | None | True |
-| end_date | date | The end date of the time series. Defaults to the most recent data. | None | True |
-| transform | Literal['diff', 'rdiff', 'cumul', 'normalize'] | Transform the data as w/w difference, percent change, cumulative, or normalize. | None | True |
+| report_type | Literal['ALL', 'CHG', 'OLD', 'OTR'] | The type of report to return. Default is 'ALL'.       ALL = All       CHG = Change in Positions       OLD = Old Crop Years       OTR = Other Crop Years | ALL | True |
+| measure | Literal['CR', 'NT', 'OI', 'CHG'] | The measure to return. Default is None.       CR = Concentration Ratios       NT = Number of Traders       OI = Percent of Open Interest       CHG = Change in Positions. Only valid when data_type is 'CITS'. | None | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+</TabItem>
+
+<TabItem value='nasdaq' label='nasdaq'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -94,3 +84,4 @@ COTQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,6 +1,6 @@
 ---
-title: Get undervalued large cap Equities
-description: OpenBB Platform Data Model
+title: "Equity Undervalued Large Caps"
+description: "Get potentially undervalued large cap stocks"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,23 +27,37 @@ EquityUndervaluedLargeCapsQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| sort | str | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
+| sort | Literal['asc', 'desc'] | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
+| provider | Literal['yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'yfinance' if there is no default. | yfinance | True |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| sort | Literal['asc', 'desc'] | Sort order. Possible values: 'asc', 'desc'. Default: 'desc'. | desc | True |
 | provider | Literal['yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'yfinance' if there is no default. | yfinance | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -71,3 +85,4 @@ EquityUndervaluedLargeCapsQueryParams,
 </TabItem>
 
 </Tabs>
+

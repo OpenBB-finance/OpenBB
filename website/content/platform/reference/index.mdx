@@ -1,151 +1,76 @@
-# OpenBB Platform Reference
+# Reference
 
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>
 <ReferenceCard
-        title="quantitative"
-        description="normality, kurtosis, summary, omega_ratio, sortino_ratio, capm, quantile, skewness, sharpe_ratio, unitroot_test"
-        url="/platform/reference/quantitative"
-    />
+    title="Commodity"
+    description="lbma_fixing"
+    url="/platform/reference/commodity"
+/>
 <ReferenceCard
-        title="corporate"
-        description="spot_rates, commercial_paper, ice_bofa, hqm, moody"
-        url="/platform/reference/corporate"
-    />
+    title="Crypto"
+    description="search, historical"
+    url="/platform/reference/crypto"
+/>
 <ReferenceCard
-        title="rate"
-        description="estr, dpcredit, effr, effr_forecast, sonia, ameribor, iorb, ecb"
-        url="/platform/reference/rate"
-    />
+    title="Currency"
+    description="search, reference_rates, snapshots, historical"
+    url="/platform/reference/currency"
+/>
 <ReferenceCard
-        title="options"
-        description="unusual, chains"
-        url="/platform/reference/options"
-    />
+    title="Derivatives"
+    description="unusual, chains, curve, historical"
+    url="/platform/reference/derivatives"
+/>
 <ReferenceCard
-        title="gdp"
-        description="nominal, forecast, real"
-        url="/platform/reference/gdp"
-    />
+    title="Econometrics"
+    description="autocorrelation, panel_fixed, unit_root, cointegration, panel_pooled, panel_between, residual_autocorrelation, panel_random_effects,..."
+    url="/platform/reference/econometrics"
+/>
 <ReferenceCard
-        title="crypto"
-        description="search"
-        url="/platform/reference/crypto"
-    />
+    title="Economy"
+    description="calendar, fred_series, fred_regional, risk_premium, money_measures, balance_of_payments, fred_search, short_term_interest_rate,..."
+    url="/platform/reference/economy"
+/>
 <ReferenceCard
-        title="economy"
-        description="calendar, risk_premium, cpi"
-        url="/platform/reference/economy"
-    />
+    title="Equity"
+    description="search, market_snapshots, screener, profile, dividend, splits, ipo, earnings,..."
+    url="/platform/reference/equity"
+/>
 <ReferenceCard
-        title="government"
-        description="eu_yield_curve, treasury, us_yield_curve"
-        url="/platform/reference/government"
-    />
+    title="Etf"
+    description="search, holdings, info, sectors, holdings_date, holdings_performance, countries, price_performance,..."
+    url="/platform/reference/etf"
+/>
 <ReferenceCard
-        title="calendar"
-        description="dividend, split, ipo, earnings"
-        url="/platform/reference/calendar"
-    />
+    title="Fixedincome"
+    description="sofr, bond_prices, spot_rates, commercial_paper, ice_bofa, hqm, moody, estr,..."
+    url="/platform/reference/fixedincome"
+/>
 <ReferenceCard
-        title="futures"
-        description="curve, load"
-        url="/platform/reference/futures"
-    />
+    title="Index"
+    description="search, available, constituents, sectors, sp500_multiples, snapshots, market, historical"
+    url="/platform/reference/index"
+/>
 <ReferenceCard
-        title="sec"
-        description="schema_files, sic_search, filings, symbol_map, institutions_search, cik_map, rss_litigation"
-        url="/platform/reference/sec"
-    />
+    title="News"
+    description="company, world"
+    url="/platform/reference/news"
+/>
 <ReferenceCard
-        title="estimates"
-        description="consensus, price_target, historical"
-        url="/platform/reference/estimates"
-    />
+    title="Quantitative"
+    description="normality, summary, capm, unitroot_test, kurtosis, mean, skew, quantile,..."
+    url="/platform/reference/quantitative"
+/>
 <ReferenceCard
-        title="discovery"
-        description="filings, undervalued_growth, top_retail, growth_tech, active, losers, aggressive_small_caps, gainers,..."
-        url="/platform/reference/discovery"
-    />
+    title="Regulators"
+    description="schema_files, sic_search, symbol_map, institutions_search, cik_map, rss_litigation, cot, cot_search"
+    url="/platform/reference/regulators"
+/>
 <ReferenceCard
-        title="econometrics"
-        description="autocorrelation, panel_fixed, unit_root, cointegration, panel_pooled, panel_between, residual_autocorrelation,..."
-        url="/platform/reference/econometrics"
-    />
-<ReferenceCard
-        title="fundamental"
-        description="filings, management, overview, management_compensation, dividends, balance, balance_growth, ratios, multiples,..."
-        url="/platform/reference/fundamental"
-    />
-<ReferenceCard
-        title="ownership"
-        description="insider_trading, major_holders, share_statistics, institutional"
-        url="/platform/reference/ownership"
-    />
-<ReferenceCard
-        title="price"
-        description="nbbo, performance, historical, quote"
-        url="/platform/reference/price"
-    />
-<ReferenceCard
-        title="darkpool"
-        description="otc"
-        url="/platform/reference/darkpool"
-    />
-<ReferenceCard
-        title="news"
-        description="company, world"
-        url="/platform/reference/news"
-    />
-<ReferenceCard
-        title="shorts"
-        description="short_interest, short_volume, fails_to_deliver"
-        url="/platform/reference/shorts"
-    />
-<ReferenceCard
-        title="fixedincome"
-        description="sofr"
-        url="/platform/reference/fixedincome"
-    />
-<ReferenceCard
-        title="compare"
-        description="peers"
-        url="/platform/reference/compare"
-    />
-<ReferenceCard
-        title="equity"
-        description="search, news, market_snapshots, profile"
-        url="/platform/reference/equity"
-    />
-<ReferenceCard
-        title="index"
-        description="search, fred, available, european, european_constituents, constituents, sp500_multiples, snapshots, market"
-        url="/platform/reference/index"
-    />
-<ReferenceCard
-        title="etf"
-        description="search, holdings, info, sectors, holdings_date, holdings_performance, countries, price_performance, historical"
-        url="/platform/reference/etf"
-    />
-<ReferenceCard
-        title="spreads"
-        description="treasury_effr, tmc_effr, tmc"
-        url="/platform/reference/spreads"
-    />
-<ReferenceCard
-        title="cftc"
-        description="cot, cot_search"
-        url="/platform/reference/cftc"
-    />
-<ReferenceCard
-        title="currency"
-        description="search"
-        url="/platform/reference/currency"
-    />
-<ReferenceCard
-        title="technical"
-        description="sma, demark, stoch, obv, ichimoku, ad, bbands, rsi, kc, aroon, vwap, clenow, fisher, wma, adx, donchian, cones,..."
-        url="/platform/reference/technical"
-    />
+    title="Technical"
+    description="sma, demark, stoch, obv, ichimoku, ad, bbands, rsi,..."
+    url="/platform/reference/technical"
+/>
 </ul>

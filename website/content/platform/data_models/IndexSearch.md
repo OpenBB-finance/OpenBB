@@ -1,6 +1,6 @@
 ---
-title: Index Search
-description: OpenBB Platform Data Model
+title: "Index Search"
+description: "Filters indices for rows containing the query"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ IndexSearchQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -46,15 +49,18 @@ IndexSearchQueryParams,
 | query | str | Search query. |  | True |
 | is_symbol | bool | Whether to search by ticker symbol. | False | True |
 | provider | Literal['cboe'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'cboe' if there is no default. | cboe | True |
-| europe | bool | Filter for European indices. False for US indices. | False | True |
+| use_cache | bool | When True, the Cboe Index directory will be cached for 24 hours. Set as False to bypass. | True | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -68,8 +74,6 @@ IndexSearchQueryParams,
 | ---- | ---- | ----------- |
 | symbol | str | Symbol representing the entity requested in the data. |
 | name | str | Name of the index. |
-| isin | str | ISIN code for the index. Valid only for European indices. |
-| region | str | Region for the index. Valid only for European indices |
 | description | str | Description for the index. |
 | data_delay | int | Data delay for the index. Valid only for US indices. |
 | currency | str | Currency for the index. |
@@ -82,3 +86,4 @@ IndexSearchQueryParams,
 </TabItem>
 
 </Tabs>
+

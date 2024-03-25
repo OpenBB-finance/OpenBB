@@ -1,8 +1,6 @@
 ---
-title: sofr
-description: Learn about the Secured Overnight Financing Rate (SOFR), a measure of
-  the cost of borrowing cash overnight collateralized by Treasury securities. Explore
-  the SOFR Python function parameters, data returns, and more.
+title: "sofr"
+description: "Learn about the Secured Overnight Financing Rate (SOFR), a measure of  the cost of borrowing cash overnight collateralized by Treasury securities. Explore  the SOFR Python function parameters, data returns, and more."
 keywords:
 - Secured Overnight Financing Rate
 - SOFR
@@ -25,6 +23,9 @@ keywords:
 - rate
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fixedincome/sofr - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -36,8 +37,14 @@ Secured Overnight Financing Rate.
 The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
 borrowing cash overnight collateralizing by Treasury securities.
 
-```python wordwrap
-obb.fixedincome.sofr(start_date: Union[date, str] = None, end_date: Union[date, str] = None, provider: Literal[str] = fred)
+
+Examples
+--------
+
+```python
+from openbb import obb
+obb.fixedincome.sofr(provider='fred')
+obb.fixedincome.sofr(period=overnight, provider='fred')
 ```
 
 ---
@@ -45,7 +52,8 @@ obb.fixedincome.sofr(start_date: Union[date, str] = None, end_date: Union[date, 
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -72,20 +80,17 @@ obb.fixedincome.sofr(start_date: Union[date, str] = None, end_date: Union[date, 
 
 ```python wordwrap
 OBBject
-    results : List[SOFR]
+    results : SOFR
         Serializable results.
-
-    provider : Optional[Literal['fred']]
+    provider : Literal['fred']
         Provider name.
-
     warnings : Optional[List[Warning_]]
         List of warnings.
-
     chart : Optional[Chart]
         Chart object.
+    extra : Dict[str, Any]
+        Extra info.
 
-    metadata: Optional[Metadata]
-        Metadata info about the command execution.
 ```
 
 ---
@@ -93,7 +98,16 @@ OBBject
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | SOFR rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |

@@ -45,7 +45,7 @@ An example with the `openbb-charting` extension would output:
 {'charting'}
 ```
 
-> Find more about `OBBject` extensions [here](/website/content/platform/development/developer-guidelines/obbject_extensions.md).
+> Find more about `OBBject` extensions [here](obbject_extensions).
 
 ## Example
 

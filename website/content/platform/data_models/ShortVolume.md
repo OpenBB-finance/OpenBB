@@ -1,6 +1,6 @@
 ---
-title: Get reported Fail-to-deliver (FTD) data
-description: OpenBB Platform Data Model
+title: "Short Volume"
+description: "Get reported Fail-to-deliver (FTD) data"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,23 +27,37 @@ ShortVolumeQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. | None | True |
+| symbol | str | Symbol to get data for. |  | False |
+| provider | Literal['stockgrid'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'stockgrid' if there is no default. | stockgrid | True |
+</TabItem>
+
+<TabItem value='stockgrid' label='stockgrid'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
 | provider | Literal['stockgrid'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'stockgrid' if there is no default. | stockgrid | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -68,3 +82,4 @@ ShortVolumeQueryParams,
 </TabItem>
 
 </Tabs>
+

@@ -1,6 +1,6 @@
 ---
-title: Forecasted GDP Data
-description: OpenBB Platform Data Model
+title: "Gdp Forecast"
+description: "Forecasted GDP Data"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ GdpForecastQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -55,10 +58,21 @@ GdpForecastQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| value | float | Nominal GDP value on the date. |
+</TabItem>
+
+<TabItem value='oecd' label='oecd'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -67,3 +81,4 @@ GdpForecastQueryParams,
 </TabItem>
 
 </Tabs>
+

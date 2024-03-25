@@ -1,6 +1,6 @@
 ---
-title: Discount Window Primary Credit Rate
-description: OpenBB Platform Data Model
+title: "Discount Window Primary Credit Rate"
+description: "Discount Window Primary Credit Rate"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ DiscountWindowPrimaryCreditRateQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -51,10 +54,21 @@ DiscountWindowPrimaryCreditRateQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | Discount Window Primary Credit Rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -63,3 +77,4 @@ DiscountWindowPrimaryCreditRateQueryParams,
 </TabItem>
 
 </Tabs>
+

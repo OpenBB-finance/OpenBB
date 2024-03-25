@@ -1,6 +1,6 @@
 ---
-title: Extensive set of ratios over time
-description: OpenBB Platform Data Model
+title: "Financial Ratios"
+description: "Get an extensive set of financial and accounting ratios for a given company over time"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,42 +27,67 @@ FinancialRatiosQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| provider | Literal['fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
 </TabItem>
 
 <TabItem value='fmp' label='fmp'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
-| period | Literal['annual', 'quarter'] | Time period of the data to return. | annual | True |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
 | limit | int | The number of data entries to return. | 12 | True |
-| provider | Literal['fmp'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
-| with_ttm | bool | Include trailing twelve months (TTM) data. | False | True |
+| provider | Literal['fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+</TabItem>
+
+<TabItem value='intrinio' label='intrinio'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Symbol to get data for. |  | False |
+| period | str | Time period of the data to return. | annual | True |
+| limit | int | The number of data entries to return. | 12 | True |
+| provider | Literal['fmp', 'intrinio'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default. | fmp | True |
+| fiscal_year | int | The specific fiscal year. Reports do not go beyond 2008. | None | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| symbol | str | Symbol representing the entity requested in the data. |
-| date | str | The date of the data. |
-| period | str | Period of the financial ratios. |
+| period_ending | str | The date of the data. |
+| fiscal_period | str | Period of the financial ratios. |
+| fiscal_year | int | Fiscal year. |
+</TabItem>
+
+<TabItem value='fmp' label='fmp'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| period_ending | str | The date of the data. |
+| fiscal_period | str | Period of the financial ratios. |
+| fiscal_year | int | Fiscal year. |
 | current_ratio | float | Current ratio. |
 | quick_ratio | float | Quick ratio. |
 | cash_ratio | float | Cash ratio. |
@@ -115,8 +140,20 @@ FinancialRatiosQueryParams,
 | price_earnings_to_growth_ratio | float | Price earnings to growth ratio. |
 | price_sales_ratio | float | Price sales ratio. |
 | dividend_yield | float | Dividend yield. |
+| dividend_yield_percentage | float | Dividend yield percentage. |
+| dividend_per_share | float | Dividend per share. |
 | enterprise_value_multiple | float | Enterprise value multiple. |
 | price_fair_value | float | Price fair value. |
 </TabItem>
 
+<TabItem value='intrinio' label='intrinio'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| period_ending | str | The date of the data. |
+| fiscal_period | str | Period of the financial ratios. |
+| fiscal_year | int | Fiscal year. |
+</TabItem>
+
 </Tabs>
+

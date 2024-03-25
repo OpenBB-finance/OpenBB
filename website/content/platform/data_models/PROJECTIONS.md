@@ -1,6 +1,6 @@
 ---
-title: Fed Funds Rate Projections
-description: OpenBB Platform Data Model
+title: "Projections"
+description: "Fed Funds Rate Projections"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ PROJECTIONSQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -47,10 +50,27 @@ PROJECTIONSQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| range_high | float | High projection of rates. |
+| central_tendency_high | float | Central tendency of high projection of rates. |
+| median | float | Median projection of rates. |
+| range_midpoint | float | Midpoint projection of rates. |
+| central_tendency_midpoint | float | Central tendency of midpoint projection of rates. |
+| range_low | float | Low projection of rates. |
+| central_tendency_low | float | Central tendency of low projection of rates. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -65,3 +85,4 @@ PROJECTIONSQueryParams,
 </TabItem>
 
 </Tabs>
+

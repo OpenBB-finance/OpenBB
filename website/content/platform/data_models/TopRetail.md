@@ -1,6 +1,6 @@
 ---
-title: Tracks over $30B USD/day of individual investors trades
-description: OpenBB Platform Data Model
+title: "Top Retail"
+description: "Tracks over $30B USD/day of individual investors trades"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,21 @@ TopRetailQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| limit | int | The number of data entries to return. | 5 | True |
+| provider | Literal['nasdaq'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'nasdaq' if there is no default. | nasdaq | True |
+</TabItem>
+
+<TabItem value='nasdaq' label='nasdaq'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -40,10 +51,23 @@ TopRetailQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| symbol | str | Symbol representing the entity requested in the data. |
+| activity | float | Activity of the symbol. |
+| sentiment | float | Sentiment of the symbol. 1 is bullish, -1 is bearish. |
+</TabItem>
+
+<TabItem value='nasdaq' label='nasdaq'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -54,3 +78,4 @@ TopRetailQueryParams,
 </TabItem>
 
 </Tabs>
+

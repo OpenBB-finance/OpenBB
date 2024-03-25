@@ -1,6 +1,6 @@
 ---
-title: Futures Historical Price
-description: OpenBB Platform Data Model
+title: "Futures Historical"
+description: "Historical futures prices"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,14 +27,17 @@ FuturesHistoricalQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): yfinance. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | expiration | str | Future expiry date with format YYYY-MM | None | True |
@@ -45,24 +48,35 @@ FuturesHistoricalQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
+| symbol | Union[str, List[str]] | Symbol to get data for. Multiple items allowed for provider(s): yfinance. |  | False |
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | expiration | str | Future expiry date with format YYYY-MM | None | True |
 | provider | Literal['yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'yfinance' if there is no default. | yfinance | True |
-| interval | Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo'] | Data granularity. | 1d | True |
-| period | Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max'] | Time period of the data to return. | None | True |
-| prepost | bool | Include Pre and Post market data. | False | True |
-| adjust | bool | Adjust all the data automatically. | True | True |
-| back_adjust | bool | Back-adjusted data to mimic true historical prices. | False | True |
+| interval | Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q'] | Time interval of the data to return. | 1d | True |
 </TabItem>
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | datetime | The date of the data. |
+| open | float | The open price. |
+| high | float | The high price. |
+| low | float | The low price. |
+| close | float | The close price. |
+| volume | float | The trading volume. |
+</TabItem>
+
+<TabItem value='yfinance' label='yfinance'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -75,3 +89,4 @@ FuturesHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
+

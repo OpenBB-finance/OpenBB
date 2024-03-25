@@ -1,6 +1,6 @@
 ---
-title: Moody Corporate Bond Index
-description: OpenBB Platform Data Model
+title: "Moody Corporate Bond Index"
+description: "Moody Corporate Bond Index"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ MoodyCorporateBondIndexQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -53,10 +56,21 @@ MoodyCorporateBondIndexQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | Moody Corporate Bond Index Rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -65,3 +79,4 @@ MoodyCorporateBondIndexQueryParams,
 </TabItem>
 
 </Tabs>
+

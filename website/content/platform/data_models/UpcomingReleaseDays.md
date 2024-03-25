@@ -1,6 +1,6 @@
 ---
-title: Get upcoming release days
-description: OpenBB Platform Data Model
+title: "Upcoming Release Days"
+description: "Get upcoming earnings release dates"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ UpcomingReleaseDaysQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -47,10 +50,13 @@ UpcomingReleaseDaysQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -74,3 +80,4 @@ UpcomingReleaseDaysQueryParams,
 </TabItem>
 
 </Tabs>
+

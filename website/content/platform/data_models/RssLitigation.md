@@ -1,7 +1,6 @@
 ---
-title: The RSS feed provides links to litigation releases concerning civil lawsuits brought
-    by the Commission in federal court
-description: OpenBB Platform Data Model
+title: "Rss Litigation"
+description: "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -28,10 +27,20 @@ RssLitigationQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description | Default | Optional |
+| ---- | ---- | ----------- | ------- | -------- |
+| provider | Literal['sec'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'sec' if there is no default. | sec | True |
+</TabItem>
+
+<TabItem value='sec' label='sec'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -40,13 +49,17 @@ RssLitigationQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
+
 </TabItem>
 
 <TabItem value='sec' label='sec'>
@@ -61,3 +74,4 @@ RssLitigationQueryParams,
 </TabItem>
 
 </Tabs>
+

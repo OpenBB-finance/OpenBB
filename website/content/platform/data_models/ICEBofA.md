@@ -1,6 +1,6 @@
 ---
-title: ICE BofA US Corporate Bond Indices
-description: OpenBB Platform Data Model
+title: "ICE Bof A"
+description: "ICE BofA US Corporate Bond Indices"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,10 +27,13 @@ ICEBofAQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
@@ -56,10 +59,21 @@ ICEBofAQueryParams,
 
 </Tabs>
 
+---
+
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| date | date | The date of the data. |
+| rate | float | ICE BofA US Corporate Bond Indices Rate. |
+</TabItem>
+
+<TabItem value='fred' label='fred'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
@@ -68,3 +82,4 @@ ICEBofAQueryParams,
 </TabItem>
 
 </Tabs>
+

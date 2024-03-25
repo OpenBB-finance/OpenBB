@@ -1,6 +1,6 @@
 ---
-title: Euro Area Yield Curve
-description: OpenBB Platform Data Model
+title: "EU Yield Curve"
+description: "Euro Area Yield Curve"
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -27,15 +27,17 @@ EUYieldCurveQueryParams,
 )
 ```
 
+---
+
 ## Parameters
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| date | date | A specific date to get data for. | None | True |
-| yield_curve_type | Literal['spot_rate', 'instantaneous_forward', 'par_yield'] | The yield curve type. | spot_rate | True |
+| date | Union[date, str] | A specific date to get data for. | None | True |
 | provider | Literal['ecb'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'ecb' if there is no default. | ecb | True |
 </TabItem>
 
@@ -43,23 +45,35 @@ EUYieldCurveQueryParams,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| date | date | A specific date to get data for. | None | True |
-| yield_curve_type | Literal['spot_rate', 'instantaneous_forward', 'par_yield'] | The yield curve type. | spot_rate | True |
+| date | Union[date, str] | A specific date to get data for. | None | True |
 | provider | Literal['ecb'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'ecb' if there is no default. | ecb | True |
-| rating | Literal['A', 'C'] | The rating type. | A | True |
+| rating | Literal['aaa', 'all_ratings'] | The rating type, either 'aaa' or 'all_ratings'. | aaa | True |
+| yield_curve_type | Literal['spot_rate', 'instantaneous_forward', 'par_yield'] | The yield curve type. | spot_rate | True |
 </TabItem>
 
 </Tabs>
+
+---
 
 ## Data
 
 <Tabs>
-<TabItem value="standard" label="Standard">
+
+<TabItem value='standard' label='standard'>
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| maturity | str | Yield curve rate maturity. |
-| rate | float | Yield curve rate. |
+| maturity | float | Maturity, in years. |
+| rate | float | Yield curve rate, as a normalized percent. |
+</TabItem>
+
+<TabItem value='ecb' label='ecb'>
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| maturity | float | Maturity, in years. |
+| rate | float | Yield curve rate, as a normalized percent. |
 </TabItem>
 
 </Tabs>
+
