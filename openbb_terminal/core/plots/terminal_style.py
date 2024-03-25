@@ -13,7 +13,8 @@ from typing import (
     TypeVar,
 )
 
-from openbb_terminal.base_helpers import console
+from rich.console import Console
+
 from openbb_terminal.core.config.paths import STYLES_DIRECTORY_REPO
 from openbb_terminal.core.session.current_user import (
     get_current_user,
@@ -26,6 +27,7 @@ if TYPE_CHECKING:
 
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
+console = Console()
 
 
 class TerminalStyle:
