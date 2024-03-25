@@ -27,12 +27,6 @@ from openbb_terminal.core.session.current_system import get_current_system
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.rich_config import console
 
-MENU_GO_BACK = 0
-MENU_QUIT = 1
-MENU_RESET = 2
-
-GPT_INDEX_DIRECTORY = MISCELLANEOUS_DIRECTORY / "gpt_index/"
-GPT_INDEX_VER = 0.4
 
 ALLOWED_NUMBER_OF_ROWS = 366
 ALLOWED_NUMBER_OF_COLUMNS = 15
@@ -40,26 +34,8 @@ ALLOWED_NUMBER_OF_COLUMNS = 15
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
-# Command location path to be shown in the figures depending on watermark flag
-command_location = ""
-
 
 # pylint: disable=R1702,R0912
-
-
-# pylint: disable=global-statement
-def set_command_location(cmd_loc: str):
-    """Set command location.
-
-    Parameters
-    ----------
-    cmd_loc: str
-        Command location called by user
-    """
-    if cmd_loc.split("/")[-1] == "hold":
-        return
-    global command_location  # noqa
-    command_location = cmd_loc
 
 
 def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
@@ -602,6 +578,8 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     return False, True
 
 
+# This is a false positive on pylint and being tracked in pylint #3060
+# pylint: disable=abstract-class-instantiated
 def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
     """Saves a Pandas DataFrame to an Excel file.
 

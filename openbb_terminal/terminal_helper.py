@@ -131,7 +131,7 @@ def check_for_updates() -> None:
     except Exception:
         r = None
 
-    if r is not None and r.status_code == 200:
+    if r and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
         current_version = version.parse(get_current_system().VERSION)

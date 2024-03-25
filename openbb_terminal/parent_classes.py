@@ -7,8 +7,6 @@ __docformat__ = "numpy"
 # IMPORTS STANDARD
 import argparse
 import difflib
-import json
-import logging
 import os
 import re
 from abc import ABCMeta, abstractmethod
@@ -34,7 +32,6 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    set_command_location,
     system_clear,
 )
 from openbb_terminal.menu import session
@@ -44,13 +41,9 @@ from openbb_terminal.terminal_helper import (
     print_guest_block_msg,
 )
 
-logger = logging.getLogger(__name__)
-
 # pylint: disable=R0912
 
 controllers: Dict[str, Any] = {}
-
-SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
 
 # TODO: We should try to avoid these global variables
@@ -174,15 +167,6 @@ class BaseController(metaclass=ABCMeta):
             class_ins.PATH in controllers
             and arguments == 1
             and current_user.preferences.REMEMBER_CONTEXTS
-        ):
-            old_class = controllers[class_ins.PATH]
-            old_class.queue = self.queue
-            return old_class.menu()
-        # Add another case so options data is saved
-        if (
-            class_ins.PATH == "/stocks/options/"
-            and current_user.preferences.REMEMBER_CONTEXTS
-            and "/stocks/options/" in controllers
         ):
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -340,48 +324,6 @@ class BaseController(metaclass=ABCMeta):
         )
         return commands
 
-    def contains_keys(self, string_to_check: str) -> bool:
-        """Check if string contains keys."""
-        if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
-            return True
-        return False
-
-    def log_queue(self) -> None:
-        """Log command queue."""
-        if self.queue:
-            joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
-            if not self.contains_keys(joined_queue):
-                queue = {"path": self.PATH, "queue": joined_queue}
-                logger.info(
-                    "QUEUE: %s", json.dumps(queue, default=str, ensure_ascii=False)
-                )
-
-    def log_cmd_and_queue(
-        self, known_cmd: str, other_args_str: str, the_input: str
-    ) -> None:
-        """Log command and command queue.
-
-        Parameters
-        ----------
-        known_cmd : str
-            Current command
-        other_args_str : str
-            Command arguments
-        the_input : str
-            Raw command input (command queue)
-        """
-        if not self.contains_keys(the_input):
-            cmd = {
-                "path": self.PATH,
-                "known_cmd": known_cmd,
-                "other_args": other_args_str,
-                "input": the_input,
-            }
-            logger.info("CMD: %s", json.dumps(cmd))
-
-        if the_input not in self.KEYS_MENU:
-            self.log_queue()
-
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input.
 
@@ -433,16 +375,11 @@ class BaseController(metaclass=ABCMeta):
                 elif known_args.cmd == "r":
                     known_args.cmd = "reset"
 
-            set_command_location(f"{self.PATH}{known_args.cmd}")
-            self.log_cmd_and_queue(known_args.cmd, ";".join(other_args), an_input)
-
             getattr(
                 self,
                 "call_" + known_args.cmd,
                 lambda _: "Command not recognized!",
             )(other_args)
-
-        self.log_queue()
 
         if (
             an_input
@@ -1069,12 +1006,6 @@ class BaseController(metaclass=ABCMeta):
                     return [an_input]
 
             except SystemExit:
-                if not self.contains_keys(an_input):
-                    logger.exception(
-                        "The command '%s' doesn't exist on the %s menu.",
-                        an_input,
-                        self.PATH,
-                    )
                 console.print(
                     f"[red]The command '{an_input}' doesn't exist on the {self.PATH} menu.[/red]\n",
                 )
@@ -1098,12 +1029,7 @@ class BaseController(metaclass=ABCMeta):
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
-                    if not self.contains_keys(an_input) and an_input not in [
-                        "exit",
-                        "quit",
-                        "help",
-                    ]:
-                        logger.warning("Replacing by %s", an_input)
+
                     console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
                 elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
