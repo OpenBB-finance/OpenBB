@@ -735,11 +735,12 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            current_user = get_current_user()
+            current_user = get_platform_user()
             local_user = is_local()
             if not local_user:
-                console.print(f"[info]email:[/info] {current_user.profile.email}")
-                console.print(f"[info]uuid:[/info] {current_user.profile.uuid}")
+                hub_session = current_user.profile.hub_session
+                console.print(f"[info]email:[/info] {hub_session.email}")
+                console.print(f"[info]uuid:[/info] {hub_session.user_uuid}")
             else:
                 print_guest_block_msg()
 
