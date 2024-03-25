@@ -1,6 +1,6 @@
 ---
 title: Charting
-sidebar_position: 3
+sidebar_position: 2
 description: Learn about the charting feature of OpenBB Terminal Pro, powered by TradingView
   charting library. The page provides instructions for adjusting time intervals and
   timelines, using technical analysis indicators, and accessing editing tools. Learn

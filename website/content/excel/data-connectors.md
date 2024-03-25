@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data connectors | OpenBB Add-in for Excel Docs" />
 
-OpenBB Add-In for Excel allows you to access your [data connectors](https://docs.openbb.co/pro/main-menu/data-connectors) from OpenBB Terminal Pro inside Microsoft Excel. This can be done using the [OBB.BYOD](https://docs.openbb.co/excel/reference/byod) function.
+OpenBB Add-In for Excel allows you to access your [data connectors](https://docs.openbb.co/pro/data-connectors) from OpenBB Terminal Pro inside Microsoft Excel. This can be done using the [OBB.BYOD](https://docs.openbb.co/excel/reference/byod) function.
 
-## [Single widget](https://docs.openbb.co/pro/main-menu/data-connectors/single-widget)
+## [Single widget](https://docs.openbb.co/pro/data-connectors/single-widget)
 
 ```excel
 =OBB.BYOD("widget_name")
@@ -30,7 +30,7 @@ OpenBB Add-In for Excel allows you to access your [data connectors](https://docs
 
 :::
 
-## [Own backend](https://docs.openbb.co/pro/main-menu/data-connectors/integrate-your-own-backend)
+## [Own backend](https://docs.openbb.co/pro/data-connectors/integrate-your-own-backend)
 
 ```excel
 =OBB.BYOD("widget_name","backend_name")
@@ -53,7 +53,7 @@ The easiest way to pass optional parameters is to write them into cells and refe
 
 :::
 
-## [Native integrations](https://docs.openbb.co/pro/main-menu/data-connectors#native-integrations)
+## [Native integrations](https://docs.openbb.co/pro/data-connectors#native-integrations)
 
 Supported native integrations:
 
