@@ -72,18 +72,6 @@ def hide_splashscreen():
         console.print(f"Error: Unable to hide splashscreen: {e}")
 
 
-def is_auth_enabled() -> bool:
-    """Tell whether or not authentication is enabled.
-
-    Returns
-    -------
-    bool
-        If authentication is enabled
-    """
-    # TODO: This function is a temporary way to block authentication
-    return get_current_system().ENABLE_AUTHENTICATION
-
-
 def print_guest_block_msg():
     """Block guest users from using the terminal."""
     if is_local():

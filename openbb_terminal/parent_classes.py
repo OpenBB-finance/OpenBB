@@ -21,7 +21,6 @@ from prompt_toolkit.styles import Style
 # IMPORTS INTERNAL
 import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import config_terminal
-from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 # from openbb_terminal.core.config.paths import HIST_FILE_PATH
@@ -42,10 +41,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console
-from openbb_terminal.terminal_helper import (
-    is_auth_enabled,
-    print_guest_block_msg,
-)
+from openbb_terminal.terminal_helper import print_guest_block_msg
 
 # pylint: disable=R0912
 
@@ -81,10 +77,8 @@ class BaseController(metaclass=ABCMeta):
         "reset",
         "stop",
         "hold",
+        "whoami",
     ]
-
-    if is_auth_enabled():
-        CHOICES_COMMON += ["whoami"]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
@@ -1009,9 +1003,6 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
-
-                if get_show_prompt() and an_input in ("login", "logout"):
-                    return [an_input]
 
             except SystemExit:
                 console.print(

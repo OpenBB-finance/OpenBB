@@ -25,19 +25,18 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
-from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.session import constants, session_controller
+from openbb_terminal.core.session import constants
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import (
     get_current_user,
-    set_preference,
     get_platform_user,
+    set_preference,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
@@ -56,7 +55,6 @@ from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
     first_time_user,
-    is_auth_enabled,
     is_installer,
     print_goodbye,
     reset,
@@ -102,9 +100,6 @@ class TerminalController(BaseController):
             CHOICES_MENUS.append(router)
         else:
             CHOICES_COMMANDS.append(router)
-
-    if is_auth_enabled():
-        CHOICES_MENUS.append("account")
 
     PATH = "/"
     CHOICES_GENERATION = False
@@ -562,13 +557,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         try:
-            if (
-                an_input in ("login", "logout")
-                and get_show_prompt()
-                and is_auth_enabled()
-            ):
-                break
-
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
 
@@ -610,10 +598,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
                 console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
-
-    if an_input in ("login", "logout") and get_show_prompt() and is_auth_enabled():
-        set_show_prompt(False)
-        return session_controller.launch_terminal()
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
@@ -857,12 +841,6 @@ def parse_args_and_run():
             " to see testing argument options."
         ),
     )
-    if is_auth_enabled():
-        parser.add_argument(
-            "--login",
-            action="store_true",
-            help="Go to login prompt.",
-        )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
     # by papermill and that's why they have suppress help.
     parser.add_argument(
