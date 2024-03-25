@@ -328,11 +328,15 @@ class StaticCommandRunner:
             raise OpenBBError(
                 "Charting is not installed. Please install `openbb-charting`."
             )
-        chart_params = (
-            kwargs["extra_params"].__dict__.get("chart_params", {})
-            if "extra_params" in kwargs
-            else {}
-        )
+        chart_params = {}
+        if "extra_params" in kwargs:
+            extra_params = ParametersBuilder._as_dict(kwargs["extra_params"])
+            chart_params = extra_params.get("chart_params", {})
+        if "chart_params" in kwargs:
+            chart_params.update(kwargs.pop("chart_params", {}))
+        if "kwargs" in kwargs:
+            _kwargs = kwargs.pop("kwargs", {})
+            chart_params.update(_kwargs.get("chart_params", {}))
 
         # TODO: Update when a proper metadata transmission solution is implemented.  # pylint: disable=W0511
         try:
