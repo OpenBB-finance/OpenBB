@@ -46,7 +46,7 @@ from openbb_intrinio.models.search_attributes import (
 )
 from openbb_intrinio.models.share_statistics import IntrinioShareStatisticsFetcher
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
-from openbb_intrinio.models.zacks_sales_estimates import (
+from openbb_intrinio.models.sales_estimates import (
     IntrinioZackSalesEstimatesFetcher,
 )
 

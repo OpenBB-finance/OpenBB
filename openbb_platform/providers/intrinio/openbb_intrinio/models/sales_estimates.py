@@ -8,6 +8,9 @@ from openbb_core.provider.standard_models.sales_estimates import (
     SalesEstimatesQueryParams,
 )
 from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import IntrinioCompany
+from pydantic import Field
+
 
 class IntrinioZackSalesEstimatesQueryParams(SalesEstimatesQueryParams):
     """Intrinio Zack Sales Estimates Query.
@@ -18,6 +21,9 @@ class IntrinioZackSalesEstimatesQueryParams(SalesEstimatesQueryParams):
 
 class IntrinioZackSalesEstimatesData(SalesEstimatesData):
     """Intrinio Zack Sales Estimates Data."""
+    company: Optional[IntrinioCompany] = Field(
+        description="The company to get sales estimates data from.", default=None
+    )
 
 
 class IntrinioZackSalesEstimatesFetcher(
@@ -34,7 +40,7 @@ class IntrinioZackSalesEstimatesFetcher(
         return IntrinioZackSalesEstimatesQueryParams(**params)
 
     @staticmethod
-     async def aextract_data(
+    async def aextract_data(
         query: IntrinioZackSalesEstimatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
