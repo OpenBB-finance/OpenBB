@@ -16,6 +16,7 @@ from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
 from pydantic import BaseModel, ConfigDict
 
@@ -228,45 +229,57 @@ def test_parameters_builder_validate_kwargs(mock_func):
 
 
 @pytest.mark.parametrize(
-    "provider_choices, extra_params, expect",
+    "provider_choices, extra_params, base, expect",
     [
         (
             {"provider": "provider1"},
             {"exists_in_2": ...},
+            ExtraParams,
             OpenBBWarning,
         ),
         (
             {"provider": "inexistent_provider"},
             {"exists_in_both": ...},
+            ExtraParams,
             OpenBBWarning,
         ),
         (
             {},
             {"inexistent_field": ...},
+            ExtraParams,
             OpenBBWarning,
+        ),
+        (
+            {},
+            {"inexistent_field": ...},
+            object,
+            None,
         ),
         (
             {"provider": "provider2"},
             {"exists_in_2": ...},
+            ExtraParams,
             None,
         ),
         (
             {"provider": "provider2"},
             {"exists_in_both": ...},
+            ExtraParams,
             None,
         ),
         (
             {},
             {"exists_in_both": ...},
+            ExtraParams,
             None,
         ),
     ],
 )
-def test_parameters_builder__warn_kwargs(provider_choices, extra_params, expect):
+def test_parameters_builder__warn_kwargs(provider_choices, extra_params, base, expect):
     """Test _warn_kwargs."""
 
     @dataclass
-    class SomeModel:
+    class SomeModel(base):
         """SomeModel"""
 
         exists_in_2: QueryParam = Query(..., title="provider2")
