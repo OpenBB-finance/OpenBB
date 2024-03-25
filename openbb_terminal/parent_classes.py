@@ -11,6 +11,7 @@ import os
 import re
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 # IMPORTS THIRDPARTY
@@ -22,10 +23,15 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import config_terminal
 from openbb_terminal.account.show_prompt import get_show_prompt
 from openbb_terminal.core.completer.choices import build_controller_choice_map
-from openbb_terminal.core.config.paths import HIST_FILE_PATH
+
+# from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
-from openbb_terminal.core.session.current_user import get_current_user, is_local
+from openbb_terminal.core.session.current_user import (
+    get_current_user,
+    get_platform_user,
+    is_local,
+)
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
@@ -424,9 +430,12 @@ class BaseController(metaclass=ABCMeta):
             self.queue.insert(0, "quit")
 
         if not is_local():
-            Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub")
-            if not get_current_user().profile.remember:
-                Local.remove(HIST_FILE_PATH)
+
+            user = get_platform_user()
+            Local.remove(Path(user.preferences.export_directory, "routines", "hub"))
+
+            # if not get_current_user().profile.remember:
+            #     Local.remove(HIST_FILE_PATH)
 
     def call_reset(self, _) -> None:
         """Process reset command.
@@ -620,7 +629,7 @@ class BaseController(metaclass=ABCMeta):
                 "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
             )
         else:
-            current_user = get_current_user()
+            current_user = get_platform_user()
 
             # Check if the user just wants to store routine locally
             # This works regardless of whether they are logged in or not
@@ -631,7 +640,7 @@ class BaseController(metaclass=ABCMeta):
                 )
 
                 routine_file = os.path.join(
-                    current_user.preferences.USER_ROUTINES_DIRECTORY,
+                    f"{current_user.preferences.export_directory}/routines",
                     title_for_local_storage,
                 )
 
@@ -686,10 +695,11 @@ class BaseController(metaclass=ABCMeta):
             elif not is_local():
                 # routine = read_routine(file_name=routine_file)
                 routine = "\n".join(SESSION_RECORDED[:-1])
+                hub_session = current_user.profile.hub_session
 
                 if routine is not None:
                     kwargs = {
-                        "auth_header": current_user.profile.get_auth_header(),
+                        "auth_header": f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}",
                         "name": SESSION_RECORDED_NAME,
                         "description": SESSION_RECORDED_DESCRIPTION,
                         "routine": routine,

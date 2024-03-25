@@ -3,6 +3,9 @@ import dataclasses
 from copy import deepcopy
 from typing import Any, Dict, Optional
 
+from openbb import obb
+from openbb_core.app.model.user_settings import UserSettings
+
 # IMPORTS INTERNAL
 from openbb_terminal.core.models import (
     PreferencesModel,
@@ -26,6 +29,11 @@ def get_current_user() -> UserModel:
     return deepcopy(__current_user)
 
 
+def get_platform_user() -> UserSettings:
+    """Get platform user."""
+    return deepcopy(obb.user)
+
+
 def set_current_user(user: UserModel):
     """Set current user."""
     global __current_user  # pylint: disable=global-statement # noqa
@@ -45,8 +53,7 @@ def is_local() -> bool:
     bool
         True if user is guest, False otherwise.
     """
-    # return not bool(__current_user.profile.token)
-    return True
+    return not bool(obb.user.profile.hub_session)
 
 
 def set_default_user():

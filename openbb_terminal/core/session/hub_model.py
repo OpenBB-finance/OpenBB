@@ -14,7 +14,7 @@ from openbb_terminal.core.session.constants import (
     BackendEnvironment,
 )
 from openbb_terminal.core.session.current_system import get_current_system
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_user import get_platform_user
 from openbb_terminal.rich_config import console
 
 
@@ -482,7 +482,7 @@ def upload_routine(
             timeout=timeout,
         )
         if response.status_code == 200:
-            username = get_current_user().profile.username
+            username = get_platform_user().profile.hub_session.username
             console.print("[green]Successfully uploaded your routine.[/]")
 
             run_env = BackendEnvironment.HUB_URL.rstrip("/")
