@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-import pytz
+from pytz import all_timezones, timezone
 import requests
 from rich.table import Table
 
@@ -373,9 +373,7 @@ def get_flair() -> str:
         get_current_settings().USE_DATETIME
         and get_user_timezone_or_invalid() != "INVALID"
     ):
-        dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
-            "%Y %b %d, %H:%M"
-        )
+        dtime = datetime.now(timezone(get_user_timezone())).strftime("%Y %b %d, %H:%M")
 
         # if there is no flair, don't add an extra space after the time
         if flair == "":
@@ -399,7 +397,7 @@ def is_timezone_valid(user_tz: str) -> bool:
     bool
         True if timezone provided is valid
     """
-    return user_tz in pytz.all_timezones
+    return user_tz in all_timezones
 
 
 def get_user_timezone() -> str:

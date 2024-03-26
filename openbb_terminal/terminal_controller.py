@@ -92,7 +92,7 @@ class TerminalController(BaseController):
         "exe",
     ]
     CHOICES_MENUS = [
-        "featflags",
+        "settings",
     ]
 
     for router, value in PLATFORM_ROUTERS.items():
@@ -233,7 +233,7 @@ class TerminalController(BaseController):
         """Print help."""
         mt = MenuText("")
         mt.add_info("_configure_")
-        mt.add_menu("featflags")
+        mt.add_menu("settings")
         mt.add_raw("\n")
         mt.add_info("_scripts_")
         mt.add_cmd("record")
@@ -262,7 +262,7 @@ class TerminalController(BaseController):
         custom_filters = [sort_filter, url]
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
-    def call_featflags(self, _):
+    def call_settings(self, _):
         """Process feature flags command."""
         from openbb_terminal.featflags_controller import FeatureFlagsController
 
