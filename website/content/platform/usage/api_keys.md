@@ -58,7 +58,7 @@ Set `remember_me` as `False` to discard all credentials at the end of the sessio
 
 :::tip
 With `remember_me=True`, credentials will be permanently stored in the environment.
-Wrapping this sequence before deploying an API server is one (unsecure) way to authorize data providers for remote access.
+Wrapping this sequence before deploying an API server is one (insecure) way to authorize data providers for remote access.
 :::
 
 ### Local Environment
