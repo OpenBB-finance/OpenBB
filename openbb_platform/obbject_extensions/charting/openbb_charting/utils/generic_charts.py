@@ -97,8 +97,6 @@ def line_chart(  # noqa: PLR0912
     if same_axis is True:
         auto_layout = False
 
-    print(same_axis, auto_layout)
-
     if returns is True:
         df = df.apply(calculate_returns)
         auto_layout = False
