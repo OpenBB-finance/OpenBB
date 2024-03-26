@@ -337,7 +337,7 @@ class ZLMAIndicatorsQueryParams(MAIndicatorsQueryParams):
 
 
 class ADIndicatorsQueryParams(IndicatorsQueryParams):
-    """Accumlation/Distribution Indicators Query Params."""
+    """Accumulation/Distribution Indicators Query Params."""
 
     offset: int = Field(
         default=0,
@@ -346,7 +346,7 @@ class ADIndicatorsQueryParams(IndicatorsQueryParams):
 
 
 class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
-    """Accumlation/Distribution Oscillator Indicators Query Params."""
+    """Accumulation/Distribution Oscillator Indicators Query Params."""
 
     fast: int = Field(
         default=3,

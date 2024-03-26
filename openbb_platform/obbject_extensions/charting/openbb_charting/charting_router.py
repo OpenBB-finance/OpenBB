@@ -524,7 +524,7 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
     if "symbol" in data.columns and len(data.symbol.unique()) > 1:
         raise ValueError(
-            "Please provide data with only one symbol and columnns for OHLC."
+            "Please provide data with only one symbol and columns for OHLC."
         )
 
     symbol = kwargs.get("symbol", "")
@@ -565,7 +565,7 @@ def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
     if "symbol" in data.columns and len(data.symbol.unique()) > 1:
         raise ValueError(
-            "Please provide data with only one symbol and columnns for OHLC."
+            "Please provide data with only one symbol and columns for OHLC."
         )
 
     fast = kwargs.get("fast", 12)
@@ -604,7 +604,7 @@ def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
     if "symbol" in data.columns and len(data.symbol.unique()) > 1:
         raise ValueError(
-            "Please provide data with only one symbol and columnns for OHLC."
+            "Please provide data with only one symbol and columns for OHLC."
         )
 
     length = kwargs.get("length", 14)
@@ -640,7 +640,7 @@ def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
     if "symbol" in data.columns and len(data.symbol.unique()) > 1:
         raise ValueError(
-            "Please provide data with only one symbol and columnns for OHLC."
+            "Please provide data with only one symbol and columns for OHLC."
         )
 
     window = kwargs.get("window", 14)
