@@ -10,7 +10,6 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
-from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.helpers import (
@@ -44,6 +43,7 @@ def line_chart(  # noqa: PLR0912
     scatter_kwargs: Optional[dict] = None,
     normalize: bool = False,
     returns: bool = False,
+    same_axis: bool = False,
     **kwargs,
 ) -> Union[OpenBBFigure, Figure]:
     """Create a line chart."""
@@ -80,18 +80,24 @@ def line_chart(  # noqa: PLR0912
                 if found_index is True:
                     break
             if found_index is False:
-                df.set_index(df.iloc[:,0], inplace=True)
+                df.set_index(df.iloc[:, 0], inplace=True)
 
     if "symbol" in df.columns and len(df.symbol.unique()) > 1:
-        df = df.pivot(
-            columns="symbol", values=target if target else "close"
-        )
+        df = df.pivot(columns="symbol", values=target if target else "close")
+
+    if "symbol" not in df.columns and target in df.columns:
+        df = df[[target]]
 
     y = y.split(",") if isinstance(y, str) else y
 
-    if y is None:
+    if y is None or same_axis is True:
         y = df.columns.to_list()
         auto_layout = True
+
+    if same_axis is True:
+        auto_layout = False
+
+    print(same_axis, auto_layout)
 
     if returns is True:
         df = df.apply(calculate_returns)
@@ -112,10 +118,8 @@ def line_chart(  # noqa: PLR0912
     except Exception as _:
         fig = OpenBBFigure(create_backend=True)
 
+    # fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
-
-    text_color = "black" if ChartStyle().plt_style == "light" else "white"
     title = f"{title}" if title else ""
     xtitle = xtitle if xtitle else ""
     y1title = ytitle if ytitle else ""
@@ -234,34 +238,33 @@ def line_chart(  # noqa: PLR0912
     if not title and target is not None:
         title = f"{target.replace('_', ' ').title()}"
 
-
     fig.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=text_color),
         legend=dict(
             orientation="h",
             yanchor="bottom",
             xanchor="right",
             y=1.02,
-            x=1,
+            x=0.95,
             bgcolor="rgba(0,0,0,0)",
         ),
         yaxis=(
             dict(
                 ticklen=0,
                 side="right",
-                title=dict(text=y1title, standoff=30, font=dict(size=18)),
+                title=dict(
+                    text=y1title if ytitle else None, standoff=30, font=dict(size=16)
+                ),
                 tickfont=dict(size=14),
                 anchor="x",
+                showgrid=True,
                 mirror=True,
                 showline=True,
                 zeroline=False,
                 gridcolor="rgba(128,128,128,0.25)",
             )
-            if first_y
-            else None
         ),
         yaxis2=(
             dict(
@@ -269,17 +272,15 @@ def line_chart(  # noqa: PLR0912
                 side="left",
                 ticklen=0,
                 showgrid=False,
-                showline=False,
+                showline=True,
                 zeroline=False,
-                mirror=False,
+                mirror=True,
                 title=dict(
-                    text=y2title if y2title else None, standoff=10, font=dict(size=18)
+                    text=y2title if y2title else None, standoff=10, font=dict(size=16)
                 ),
                 tickfont=dict(size=14),
                 anchor="x",
             )
-            if second_y
-            else None
         ),
         yaxis3=(
             dict(
@@ -295,14 +296,12 @@ def line_chart(  # noqa: PLR0912
                 tickfont=dict(size=12, color="rgba(128,128,128,0.75)"),
                 anchor="free",
             )
-            if third_y
-            else None
         ),
         xaxis=dict(
             ticklen=0,
-            showgrid=False,
+            showgrid=True,
             title=(
-                dict(text=xtitle, standoff=30, font=dict(size=18)) if xtitle else None
+                dict(text=xtitle, standoff=30, font=dict(size=16)) if xtitle else None
             ),
             zeroline=False,
             showline=True,

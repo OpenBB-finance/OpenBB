@@ -35,10 +35,10 @@ PLT_CANDLESTICKS = dict(
     increasing=dict(line_color=PLT_STYLE_INCREASING, fillcolor=PLT_STYLE_INCREASING),
     decreasing=dict(line_color=PLT_STYLE_DECREASING, fillcolor=PLT_STYLE_DECREASING),
 )
-PLT_STYLE_INCREASING_GREEN = "#009600"
-PLT_STYLE_DECREASING_RED = "#c80000"
-PLT_FONT = dict(family="Fira Code", size=16)
-PLOTLY_FONT = dict(family="Fira Code", size=18)
+PLT_STYLE_INCREASING_GREEN = "#00ACFF"
+PLT_STYLE_DECREASING_RED = "#e4003a"
+PLT_FONT = dict(family="Arial", size=16)
+PLOTLY_FONT = dict(family="Arial", size=16)
 
 PLT_COLORWAY = [
     "#ffed00",
@@ -197,8 +197,10 @@ PLOTLY_THEME = dict(
             nticks=15,
             showline=True,
             showgrid=True,
+            ticklen=0,
         ),
         yaxis2=dict(
+            side="left",
             zeroline=False,
             fixedrange=False,
             anchor="x",
@@ -207,8 +209,9 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
-            showline=True,
+            tickfont=dict(size=12),
+            showline=False,
+            ticklen=0,
         ),
         yaxis3=dict(
             zeroline=False,
@@ -219,8 +222,9 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
+            tickfont=dict(size=12),
             showline=True,
+            ticklen=0,
         ),
         yaxis4=dict(
             zeroline=False,
@@ -231,24 +235,53 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
+            tickfont=dict(size=12),
             showline=True,
+            ticklen=0,
         ),
         xaxis=dict(
             showgrid=True,
-            zeroline=True,
+            zeroline=False,
             showline=True,
             rangeslider=dict(visible=False),
             tickfont=dict(size=16),
             title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis2=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis3=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis4=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
         ),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            xanchor="right",
             y=1.02,
-            x=1,
-            bgcolor="rgba(0,0,0,0)",
+            xanchor="right",
+            x=0.95,
+            font=dict(size=12),
         ),
         dragmode="pan",
         hovermode="x",

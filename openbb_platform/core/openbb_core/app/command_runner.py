@@ -330,8 +330,10 @@ class StaticCommandRunner:
             )
         chart_params = {}
         if "extra_params" in kwargs:
-            extra_params = ParametersBuilder._as_dict(kwargs["extra_params"])
-            chart_params = extra_params.get("chart_params", {})
+            try:
+                chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
+            except AttributeError:
+                chart_params = kwargs["extra_params"].get("chart_params")
         if "chart_params" in kwargs:
             chart_params.update(kwargs.pop("chart_params", {}))
         if "kwargs" in kwargs:

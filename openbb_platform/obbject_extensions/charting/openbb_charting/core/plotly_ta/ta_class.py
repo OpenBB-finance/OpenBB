@@ -472,7 +472,11 @@ class PlotlyTA(PltTA):
         # ATR messes up the volume layout so we plot it last.
         plot_indicators = sorted(
             self.indicators.get_active_ids(),
-            key=lambda x: 50 if x == "aroon" else 1000 if x == "atr" else 999 if x in self.subplots else 1,
+            key=lambda x: (
+                50
+                if x == "aroon"
+                else 1000 if x == "atr" else 999 if x in self.subplots else 1
+            ),
         )
 
         for indicator in plot_indicators:
@@ -517,7 +521,7 @@ class PlotlyTA(PltTA):
                 continue
 
         figure.update(fig_new)
-        for row in range(0,subplot_row + 1):
+        for row in range(0, subplot_row + 1):
             figure.update_yaxes(
                 row=row,
                 col=1,
@@ -563,14 +567,24 @@ class PlotlyTA(PltTA):
                         item.showlegend = True
                         fib_legend_shown = True
                 if (
-                    "Historical" not in item.name and "Candlestick" not in item.name and "Fib" not in item.name and item.name is not None
+                    "Historical" not in item.name
+                    and "Candlestick" not in item.name
+                    and "Fib" not in item.name
+                    and item.name is not None
                 ):
-                    if "MA " in item.name or "VWAP" in item.name or "DC" in item.name or "KC" in item.name or "-sen" in item.name or "Senkou" in item.name:
+                    if (
+                        "MA " in item.name
+                        or "VWAP" in item.name
+                        or "DC" in item.name
+                        or "KC" in item.name
+                        or "-sen" in item.name
+                        or "Senkou" in item.name
+                    ):
                         item.showlegend = True
                         item.hoverinfo = "y"
                         item.hovertemplate = "%{fullData.name}:%{y}<extra></extra>"
                     else:
-                        item.hovertemplate= "%{y}<extra></extra>"
+                        item.hovertemplate = "%{y}<extra></extra>"
             if item.name is None:
                 item.name = "SR Lines"
                 item.hoverinfo = "none"
@@ -581,6 +595,9 @@ class PlotlyTA(PltTA):
                     item.showlegend = True
                     sr_legend_shown = True
 
+        if "annotations" in figure.layout:
+            for item in figure.layout.annotations:  # type: ignore
+                item["font"]["size"] = 12
         figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
 

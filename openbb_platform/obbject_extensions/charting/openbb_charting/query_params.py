@@ -8,10 +8,14 @@ from pydantic import Field
 
 from openbb_charting.core.to_chart import ChartIndicators
 
+MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
+
 
 def _get_type_name(t):
     """Get the type name of a type hint."""
-    if hasattr(t, "__origin__"):
+    if isinstance(t, str):
+        return t
+    elif hasattr(t, "__origin__"):
         return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
     return t.__name__
 
@@ -177,7 +181,7 @@ class MAQueryParams(ChartQueryParams):
     dropnan: bool = Field(
         default=False,
         description="If True, rows containing NaN will be dropped."
-        +" This will reduce the length of the charted data by the longest window.",
+        + " This will reduce the length of the charted data by the longest window.",
     )
     symbol: Optional[str] = Field(
         default=None,
@@ -276,6 +280,7 @@ class TechnicalRSIChartQueryParams(ChartQueryParams):
 class ChartParams:
     """Chart Query Params."""
 
+    crypto_price_historical = EquityPriceHistoricalChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
@@ -300,14 +305,14 @@ class IndicatorsQueryParams(BaseQueryParams):
 class MAIndicatorsQueryParams(IndicatorsQueryParams):
     """Moving Average Indicators Query Params."""
 
-    length: Optional[Union[int, List[int]]] = Field(
+    length: Union[int, List[int]] = Field(
         default=50,
-        description="Window length for the moving average."
+        description="Window length for the moving average, by default is 50."
         + " The number is relative to the interval of the time series data.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
-        description="Number of periods to offset for the moving average.",
+        description="Number of periods to offset for the moving average, by default is 0.",
     )
 
 
@@ -334,7 +339,7 @@ class ZLMAIndicatorsQueryParams(MAIndicatorsQueryParams):
 class ADIndicatorsQueryParams(IndicatorsQueryParams):
     """Accumlation/Distribution Indicators Query Params."""
 
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Offset value for the AD, by default is 0.",
     )
@@ -343,15 +348,15 @@ class ADIndicatorsQueryParams(IndicatorsQueryParams):
 class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
     """Accumlation/Distribution Oscillator Indicators Query Params."""
 
-    fast: Optional[int] = Field(
+    fast: int = Field(
         default=3,
         description="Number of periods to use for the fast calculation, by default 3.",
     )
-    slow: Optional[int] = Field(
+    slow: int = Field(
         default=10,
         description="Number of periods to use for the slow calculation, by default 10.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Offset to be used for the calculation, by default is 0.",
     )
@@ -360,15 +365,15 @@ class ADOscillatorIndicatorsQueryParams(IndicatorsQueryParams):
 class ADXIndicatorsQueryParams(IndicatorsQueryParams):
     """Average Directional Index Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=50,
         description="Window length for the ADX, by default is 50.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float = Field(
         default=100,
         description="Scalar to multiply the ADX by, default is 100.",
     )
-    drift: Optional[int] = Field(
+    drift: int = Field(
         default=1,
         description="Drift value for the ADX, by default is 1.",
     )
@@ -377,11 +382,11 @@ class ADXIndicatorsQueryParams(IndicatorsQueryParams):
 class AroonIndicatorsQueryParams(IndicatorsQueryParams):
     """Aroon Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=25,
         description="Window length for the Aroon, by default is 50.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float = Field(
         default=100,
         description="Scalar to multiply the Aroon by, default is 100.",
     )
@@ -390,7 +395,7 @@ class AroonIndicatorsQueryParams(IndicatorsQueryParams):
 class ATRIndicatorsQueryParams(IndicatorsQueryParams):
     """Average True Range Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=14,
         description="Window length for the ATR, by default is 14.",
     )
@@ -398,11 +403,11 @@ class ATRIndicatorsQueryParams(IndicatorsQueryParams):
         default="rma",
         description="The mode to use for the moving average calculation.",
     )
-    drift: Optional[int] = Field(
+    drift: int = Field(
         default=1,
         description="The difference period.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Number of periods to offset the result, by default is 0.",
     )
@@ -411,11 +416,11 @@ class ATRIndicatorsQueryParams(IndicatorsQueryParams):
 class CCIIndicatorsQueryParams(IndicatorsQueryParams):
     """Commodity Channel Index Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=14,
         description="Window length for the CCI, by default is 14.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float = Field(
         default=0.015,
         description="Scalar to multiply the CCI by, default is 0.015.",
     )
@@ -441,11 +446,11 @@ class DonchianIndicatorsQueryParams(IndicatorsQueryParams):
 class FisherIndicatorsQueryParams(IndicatorsQueryParams):
     """Fisher Transform Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=14,
         description="Window length for the Fisher Transform, by default is 14.",
     )
-    signal: Optional[int] = Field(
+    signal: int = Field(
         default=1,
         description="Fisher Signal Period",
     )
@@ -454,19 +459,19 @@ class FisherIndicatorsQueryParams(IndicatorsQueryParams):
 class KCIndicatorsQueryParams(IndicatorsQueryParams):
     """Keltner Channel Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=20,
         description="Window length for the Keltner Channel, by default is 20.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float = Field(
         default=20,
-        description="Scalar to multiply the ATR by, default is 20.",
+        description="Scalar to multiply the ATR, by default is 20.",
     )
-    mamode: Literal["ema", "sma", "wma", "hna", "zlma"] = Field(
+    mamode: MAMODES = Field(
         default="rma",
-        description="The mode to use for the moving average calculation.",
+        description="The mode to use for the moving average calculation, by default is ema.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Number of periods to offset the result, by default is 0.",
     )
@@ -475,50 +480,50 @@ class KCIndicatorsQueryParams(IndicatorsQueryParams):
 class OBVIndicatorsQueryParams(IndicatorsQueryParams):
     """On Balance Volume Indicators Query Params."""
 
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Number of periods to offset the result, by default is 0.",
     )
 
+
 class RSIIndicatorsQueryParams(IndicatorsQueryParams):
     """RSI Indicators Query Params."""
 
-    length: Optional[int] = Field(
+    length: int = Field(
         default=14,
         description="Window length for the RSI, by default is 14.",
     )
-    scalar: Optional[float] = Field(
+    scalar: float = Field(
         default=100,
         description="Scalar to multiply the RSI by, default is 100.",
     )
-    drift: Optional[int] = Field(
+    drift: int = Field(
         default=1,
         description="Drift value for the RSI, by default is 1.",
     )
 
 
-
 class StochIndicatorsQueryParams(IndicatorsQueryParams):
     """Stochastic Oscillator Indicators Query Params."""
 
-    fast_k: Optional[int] = Field(
+    fast_k: int = Field(
         default=14,
-        description="The fast %K period, by default 14.",
+        description="The fast K period, by default 14.",
     )
-    slow_d: Optional[int] = Field(
+    slow_d: int = Field(
         default=3,
-        description="The slow %D period, by default 3.",
+        description="The slow D period, by default 3.",
     )
-    slow_k: Optional[int] = Field(
+    slow_k: int = Field(
         default=3,
-        description="The slow %K period, by default 3.",
+        description="The slow K period, by default 3.",
     )
 
 
 class FibIndicatorsQueryParams(IndicatorsQueryParams):
     """Fibonacci Retracement Indicators Query Params."""
 
-    period: Optional[int] = Field(
+    period: int = Field(
         default=120,
         description="The period to calculate the Fibonacci Retracement, by default 120.",
     )
@@ -535,7 +540,7 @@ class FibIndicatorsQueryParams(IndicatorsQueryParams):
 class ClenowIndicatorsQueryParams(IndicatorsQueryParams):
     """Clenow Volatility Adjusted Momentum Indicators Query Params."""
 
-    period: Optional[int] = Field(
+    period: int = Field(
         default=90,
         description="The number of periods for the momentum, by default 90.",
     )
@@ -548,27 +553,28 @@ class DemarkIndicatorsQueryParams(IndicatorsQueryParams):
         default=False,
         description="Show 1 - 13. If set to False, show 6 - 9.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=0,
         description="Number of periods to offset the result, by default is 0.",
     )
 
+
 class IchimokuIndicatorsQueryParams(IndicatorsQueryParams):
     """Ichimoku Cloud Indicators Query Params."""
 
-    conversion: Optional[int] = Field(
+    conversion: int = Field(
         default=9,
         description="The conversion line period, by default 9.",
     )
-    base: Optional[int] = Field(
+    base: int = Field(
         default=26,
         description="The base line period, by default 26.",
     )
-    lagging: Optional[int] = Field(
+    lagging: int = Field(
         default=52,
         description="The lagging line period, by default 52.",
     )
-    offset: Optional[int] = Field(
+    offset: int = Field(
         default=26,
         description="The offset period, by default 26.",
     )
@@ -576,6 +582,7 @@ class IchimokuIndicatorsQueryParams(IndicatorsQueryParams):
         default=False,
         description="Drops the Chikou Span Column to prevent potential data leak",
     )
+
 
 class SRLinesIndicatorsQueryParams(IndicatorsQueryParams):
     """Support and Resistance Lines Indicators Query Params."""
@@ -586,27 +593,104 @@ class SRLinesIndicatorsQueryParams(IndicatorsQueryParams):
     )
 
 
-class IndicatorsParams:
+class IndicatorsParams(QueryParams):
     """Indicators Query Params."""
 
-    sma = SMAIndicatorsQueryParams
-    ema = EMAIndicatorsQueryParams
-    hma = HMAIndicatorsQueryParams
-    wma = WMAIndicatorsQueryParams
-    zlma = ZLMAIndicatorsQueryParams
-    ad = ADIndicatorsQueryParams
-    adoscillator = ADOscillatorIndicatorsQueryParams
-    adx = ADXIndicatorsQueryParams
-    aroon = AroonIndicatorsQueryParams
-    atr = ATRIndicatorsQueryParams
-    cci = CCIIndicatorsQueryParams
-    clenow = ClenowIndicatorsQueryParams
-    demark = DemarkIndicatorsQueryParams
-    donchian = DonchianIndicatorsQueryParams
-    fib = FibIndicatorsQueryParams
-    fisher = FisherIndicatorsQueryParams
-    ichimoku = IchimokuIndicatorsQueryParams
-    kc = KCIndicatorsQueryParams
-    obv = OBVIndicatorsQueryParams
-    stoch = StochIndicatorsQueryParams
+    sma: SMAIndicatorsQueryParams = Field(
+        default=SMAIndicatorsQueryParams(),
+        description=SMAIndicatorsQueryParams().__repr__(),
+    )
+    ema: EMAIndicatorsQueryParams = Field(
+        default=EMAIndicatorsQueryParams(),
+        description=EMAIndicatorsQueryParams().__repr__(),
+    )
+    hma: HMAIndicatorsQueryParams = Field(
+        default=HMAIndicatorsQueryParams(),
+        description=HMAIndicatorsQueryParams().__repr__(),
+    )
+    wma: WMAIndicatorsQueryParams = Field(
+        default=WMAIndicatorsQueryParams(),
+        description=WMAIndicatorsQueryParams().__repr__(),
+    )
+    zlma: ZLMAIndicatorsQueryParams = Field(
+        default=ZLMAIndicatorsQueryParams(),
+        description=ZLMAIndicatorsQueryParams().__repr__(),
+    )
+    ad: ADIndicatorsQueryParams = Field(
+        default=ADIndicatorsQueryParams(),
+        description=ADIndicatorsQueryParams().__repr__(),
+    )
+    adoscillator: ADOscillatorIndicatorsQueryParams = Field(
+        default=ADOscillatorIndicatorsQueryParams(),
+        description=ADOscillatorIndicatorsQueryParams().__repr__(),
+    )
+    adx: ADXIndicatorsQueryParams = Field(
+        default=ADXIndicatorsQueryParams(),
+        description=ADXIndicatorsQueryParams().__repr__(),
+    )
+    aroon: AroonIndicatorsQueryParams = Field(
+        default=AroonIndicatorsQueryParams(),
+        description=AroonIndicatorsQueryParams().__repr__(),
+    )
+    atr: ATRIndicatorsQueryParams = Field(
+        default=ATRIndicatorsQueryParams(),
+        description=ATRIndicatorsQueryParams().__repr__(),
+    )
+    cci: CCIIndicatorsQueryParams = Field(
+        default=CCIIndicatorsQueryParams(),
+        description=CCIIndicatorsQueryParams().__repr__(),
+    )
+    clenow: ClenowIndicatorsQueryParams = Field(
+        default=ClenowIndicatorsQueryParams(),
+        description=ClenowIndicatorsQueryParams().__repr__(),
+    )
+    demark: DemarkIndicatorsQueryParams = Field(
+        default=DemarkIndicatorsQueryParams(),
+        description=DemarkIndicatorsQueryParams().__repr__(),
+    )
+    donchian: DonchianIndicatorsQueryParams = Field(
+        default=DonchianIndicatorsQueryParams(),
+        description=DonchianIndicatorsQueryParams().__repr__(),
+    )
+    fib: FibIndicatorsQueryParams = Field(
+        default=FibIndicatorsQueryParams(),
+        description=FibIndicatorsQueryParams().__repr__(),
+    )
+    fisher: FisherIndicatorsQueryParams = Field(
+        default=FisherIndicatorsQueryParams(),
+        description=FisherIndicatorsQueryParams().__repr__(),
+    )
+    ichimoku: IchimokuIndicatorsQueryParams = Field(
+        default=IchimokuIndicatorsQueryParams(),
+        description=IchimokuIndicatorsQueryParams().__repr__(),
+    )
+    kc: KCIndicatorsQueryParams = Field(
+        default=KCIndicatorsQueryParams(),
+        description=KCIndicatorsQueryParams().__repr__(),
+    )
+    obv: OBVIndicatorsQueryParams = Field(
+        default=OBVIndicatorsQueryParams(),
+        description=OBVIndicatorsQueryParams().__repr__(),
+    )
+    rsi: RSIIndicatorsQueryParams = Field(
+        default=RSIIndicatorsQueryParams(),
+        description=RSIIndicatorsQueryParams().__repr__(),
+    )
+    srlines: SRLinesIndicatorsQueryParams = Field(
+        default=SRLinesIndicatorsQueryParams(),
+        description=SRLinesIndicatorsQueryParams().__repr__(),
+    )
+    stoch: StochIndicatorsQueryParams = Field(
+        default=StochIndicatorsQueryParams(),
+        description=StochIndicatorsQueryParams().__repr__(),
+    )
 
+    def __repr__(self):
+        fields = self.__class__.model_fields
+        repr_str = "\n" + "\n".join(
+            [
+                f"{str(v.description).replace('IndicatorsQueryParams', ':').replace('ADOs', 'AD Os')}"
+                for k, v in fields.items()
+            ]
+        )
+        return repr_str

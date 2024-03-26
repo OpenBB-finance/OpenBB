@@ -24,7 +24,7 @@ from plotly.graph_objs import Figure
 from openbb_charting import charting_router
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.to_chart import ChartIndicators
-from openbb_charting.query_params import ChartParams
+from openbb_charting.query_params import ChartParams, IndicatorsParams
 from openbb_charting.utils.generic_charts import line_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
@@ -66,7 +66,8 @@ class Charting:
     @classmethod
     def indicators(cls):
         """Returns a list of the available indicators."""
-        return ChartIndicators.get_available_indicators()
+        # return ChartIndicators.get_available_indicators()
+        return IndicatorsParams()
 
     @classmethod
     def functions(cls):
@@ -131,6 +132,7 @@ class Charting:
         scatter_kwargs: Optional[dict] = None,
         normalize: bool = False,
         returns: bool = False,
+        same_axis: bool = False,
         render: bool = True,
         **kwargs,
     ) -> Union[OpenBBFigure, Figure, None]:
@@ -169,6 +171,8 @@ class Charting:
             Normalize the data with Z-Score Standardization, by default False
         returns : bool, optional
             Convert the data to cumulative returns, by default False
+        same_axis: bool, optional
+            If True, forces all data onto the same Y-axis, by default False
         render: bool, optional
             If True, the chart will be rendered, by default True
         **kwargs: Dict[str, Any]
@@ -190,6 +194,7 @@ class Charting:
             scatter_kwargs=scatter_kwargs,
             normalize=normalize,
             returns=returns,
+            same_axis=same_axis,
             **kwargs,
         )
         if render:
@@ -213,8 +218,11 @@ class Charting:
                 kwargs["standard_params"] = (
                     self._obbject._standard_params.__dict__  # pylint: disable=protected-access
                 )
-            kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+            kwargs["provider"] = (
+                self._obbject.provider
+            )  # pylint: disable=protected-access
             kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+
             if "kwargs" in kwargs:
                 _kwargs = kwargs.pop("kwargs")
                 kwargs.update(_kwargs.get("chart_params", {}))
@@ -237,8 +245,7 @@ class Charting:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:
                 raise RuntimeError(
-                    "The charting router has no path for this function"
-                    + " and failed to automatically create a generic chart with the data provided."
+                    "Failed to automatically create a generic chart with the data provided."
                 ) from e
 
     # pylint: disable=too-many-locals
@@ -267,7 +274,7 @@ class Charting:
         **kwargs,
     ):
         """
-        Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        Creates an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
 
         This function is used so it can be called at the module level and used out of the box,
         which allows some more flexibility, ease of use and doesn't require the user to know
@@ -364,8 +371,7 @@ class Charting:
                 self.show(**kwargs, render=render)
         except Exception:
             try:
-                fig = self.create_line_chart(
-                    data=data_as_df, render=False, **kwargs)
+                fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=charting_router.CHART_FORMAT
@@ -374,6 +380,5 @@ class Charting:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:
                 raise RuntimeError(
-                    "The charting router has no path for this function"
-                    + " and failed to automatically create a generic chart with the data provided."
+                    "Failed to automatically create a generic chart with the data provided."
                 ) from e

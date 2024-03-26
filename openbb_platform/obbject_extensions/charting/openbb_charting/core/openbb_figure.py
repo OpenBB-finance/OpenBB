@@ -756,9 +756,10 @@ class OpenBBFigure(go.Figure):
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis2=dict(
-                fixedrange=True,
+                fixedrange=False,
                 side="left",
-                nticks=10,
+                nticks=8,
+                autorange=False,
                 range=vol_scale["range"],
                 tickvals=vol_scale["ticks"],
                 showgrid=False,
