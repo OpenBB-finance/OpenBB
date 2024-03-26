@@ -32,11 +32,12 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.session import constants
-from openbb_terminal.core.session.current_system import set_system_variable
+from openbb_terminal.core.session.current_settings import (
+    set_settings,
+    get_current_settings,
+)
 from openbb_terminal.core.session.current_user import (
-    get_current_user,
     get_platform_user,
-    set_preference,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
@@ -53,7 +54,6 @@ from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
-    check_for_updates,
     first_time_user,
     is_installer,
     print_goodbye,
@@ -178,7 +178,7 @@ class TerminalController(BaseController):
         user = get_platform_user()
         routines_directory = Path(user.preferences.export_directory, "routines")
 
-        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+        if session and get_current_settings().USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
@@ -434,7 +434,6 @@ class TerminalController(BaseController):
                         console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
-                    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
                     self.queue = self.queue[1:]
 
 
@@ -468,15 +467,11 @@ def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     else:
         os.makedirs(export_path)
         console.print(f"[green]Folder '{export_path}' successfully created.[/green]")
-    set_preference("USER_EXPORTS_DIRECTORY", Path(export_path))
     return jobs_cmds
 
 
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
-
-    current_user = get_current_user()
-
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
@@ -494,10 +489,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 )
 
         t_controller.print_help()
-        check_for_updates()
 
     while ret_code:
-        if current_user.preferences.ENABLE_QUICK_EXIT:
+        if get_current_settings().ENABLE_QUICK_EXIT:
             console.print("Quick exit enabled")
             break
 
@@ -520,9 +514,9 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         else:
             try:
                 # Get input from user using auto-completion
-                if session and current_user.preferences.USE_PROMPT_TOOLKIT:
+                if session and get_current_settings().USE_PROMPT_TOOLKIT:
                     # Check if toolbar hint was enabled
-                    if current_user.preferences.TOOLBAR_HINT:
+                    if get_current_settings().TOOLBAR_HINT:
                         an_input = session.prompt(
                             f"{get_flair()} / $ ",
                             completer=t_controller.completer,
@@ -774,10 +768,10 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if debug:
-        set_system_variable("DEBUG_MODE", True)
+        set_settings("DEBUG_MODE", True)
 
     if dev:
-        set_system_variable("DEV_BACKEND", True)
+        set_settings("DEV_BACKEND", True)
         constants.BackendEnvironment.BASE_URL = "https://payments.openbb.dev/"
         constants.BackendEnvironment.HUB_URL = "https://my.openbb.dev/"
 

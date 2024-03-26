@@ -1,6 +1,8 @@
+from pydantic.dataclasses import dataclass
 from openbb_terminal.core.models import BaseModel
 
 
+@dataclass(config=dict(validate_assignment=True, frozen=True))
 class Settings(BaseModel):
     """Data model for settings."""
 

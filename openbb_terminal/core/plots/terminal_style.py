@@ -16,8 +16,8 @@ from typing import (
 from rich.console import Console
 
 from openbb_terminal.core.config.paths import STYLES_DIRECTORY_REPO
+from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.core.session.current_user import (
-    get_current_user,
     get_platform_user,
 )
 
@@ -78,7 +78,6 @@ class TerminalStyle:
 
     def apply_console_style(self, style: Optional[str] = None) -> None:
         """Apply the style to the console."""
-
         if style:
             if style in self.console_styles_available:
                 json_path: Optional[Path] = self.console_styles_available[style]
@@ -151,5 +150,5 @@ class TerminalStyle:
 
 
 theme = TerminalStyle(
-    get_current_user().preferences.RICH_STYLE,
+    get_current_settings().RICH_STYLE,
 )

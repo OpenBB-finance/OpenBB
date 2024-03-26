@@ -27,10 +27,10 @@ from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import (
-    get_current_user,
     get_platform_user,
     is_local,
 )
+from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
@@ -146,7 +146,7 @@ class BaseController(metaclass=ABCMeta):
 
     def load_class(self, class_ins, *args, **kwargs):
         """Check for an existing instance of the controller before creating a new one."""
-        current_user = get_current_user()
+        settings = get_current_settings()
         self.save_class()
         arguments = len(args) + len(kwargs)
         # Due to the 'arguments == 1' condition, we actually NEVER load a class
@@ -165,7 +165,7 @@ class BaseController(metaclass=ABCMeta):
         if (
             class_ins.PATH in controllers
             and arguments == 1
-            and current_user.preferences.REMEMBER_CONTEXTS
+            and settings.REMEMBER_CONTEXTS
         ):
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -280,7 +280,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
-        if get_current_user().preferences.REMEMBER_CONTEXTS:
+        if get_current_settings().REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
@@ -398,10 +398,7 @@ class BaseController(metaclass=ABCMeta):
     def call_home(self, _) -> None:
         """Process home command."""
         self.save_class()
-        if (
-            self.PATH.count("/") == 1
-            and get_current_user().preferences.ENABLE_EXIT_AUTO_HELP
-        ):
+        if self.PATH.count("/") == 1 and get_current_settings().ENABLE_EXIT_AUTO_HELP:
             self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
@@ -425,9 +422,6 @@ class BaseController(metaclass=ABCMeta):
         if not is_local():
             user = get_platform_user()
             Local.remove(Path(user.preferences.export_directory, "routines", "hub"))
-
-            # if not get_current_user().profile.remember:
-            #     Local.remove(HIST_FILE_PATH)
 
     def call_reset(self, _) -> None:
         """Process reset command.
@@ -663,8 +657,11 @@ class BaseController(metaclass=ABCMeta):
                 # Writing to file
                 with open(routine_file, "w") as file1:
                     lines = ["# OpenBB Platform CLI - Routine", "\n"]
-                    # username = get_current_user().profile.username
-                    username = "openbb_local"
+
+                    username = getattr(
+                        get_platform_user().profile.hub_session, "username", "local"
+                    )
+
                     lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
                     lines += [
                         f"# Title: {SESSION_RECORDED_NAME}",
@@ -751,13 +748,11 @@ class BaseController(metaclass=ABCMeta):
         ns_parser:
             Namespace with parsed arguments
         """
-        current_user = get_current_user()
-
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )
 
-        if current_user.preferences.USE_CLEAR_AFTER_CMD:
+        if get_current_settings().USE_CLEAR_AFTER_CMD:
             system_clear()
 
         try:
@@ -877,10 +872,7 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-
-        current_user = get_current_user()
-
-        if current_user.preferences.USE_CLEAR_AFTER_CMD:
+        if get_current_settings().USE_CLEAR_AFTER_CMD:
             system_clear()
 
         if "--help" in other_args or "-h" in other_args:
@@ -921,8 +913,7 @@ class BaseController(metaclass=ABCMeta):
 
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
-
-        current_user = get_current_user()
+        settings = get_current_settings()
         an_input = "HELP_ME"
 
         while True:
@@ -938,7 +929,7 @@ class BaseController(metaclass=ABCMeta):
                     if len(self.queue) > 1:
                         return self.queue[1:]
 
-                    if current_user.preferences.ENABLE_EXIT_AUTO_HELP:
+                    if settings.ENABLE_EXIT_AUTO_HELP:
                         return ["help"]
                     return []
 
@@ -963,9 +954,9 @@ class BaseController(metaclass=ABCMeta):
 
                 try:
                     # Get input from user using auto-completion
-                    if session and current_user.preferences.USE_PROMPT_TOOLKIT:
+                    if session and settings.USE_PROMPT_TOOLKIT:
                         # Check if toolbar hint was enabled
-                        if current_user.preferences.TOOLBAR_HINT:
+                        if settings.TOOLBAR_HINT:
                             an_input = session.prompt(
                                 f"{get_flair()} {self.PATH} $ ",
                                 completer=self.completer,

@@ -12,7 +12,7 @@ from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
 
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
-from openbb_terminal.core.session.current_user import get_current_user
+from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.menu import session
@@ -64,7 +64,7 @@ class PlatformController(BaseController):
             self._generate_commands()
             self._generate_sub_controllers()
 
-            if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
+            if session and get_current_settings().USE_PROMPT_TOOLKIT:
                 choices: dict = self.choices_default
                 self.completer = NestedCompleter.from_nested_dict(choices)
 

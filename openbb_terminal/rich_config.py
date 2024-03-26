@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 from typing import Iterable, List, Optional, Tuple, Union
 
 import i18n
+from openbb import obb
 from rich import panel
 from rich.console import Console, Theme
 from rich.progress import track
@@ -12,10 +13,6 @@ from rich.text import Text
 
 from openbb_terminal.core.plots.terminal_style import theme
 from openbb_terminal.core.session.current_settings import get_current_settings
-
-from openbb import obb
-
-# pylint: disable=no-member,c-extension-no-member
 
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
@@ -65,7 +62,7 @@ def get_ordered_list_sources(command_path: str) -> List:
     command_reference = obb.coverage.reference.get(command_path, {})
     if command_reference:
         providers = list(command_reference["parameters"].keys())
-        return [provider for provider in providers if "standard" != provider]
+        return [provider for provider in providers if provider != "standard"]
     return []
 
 
@@ -228,13 +225,11 @@ class ConsoleAndPanel:
         self.menu_path = ""
 
     def reload_console(self):
-        current_preferences = get_current_settings()
-        if current_preferences != self.preferences:
-            self.preferences = current_preferences
-            theme.apply_console_style(current_preferences.RICH_STYLE)
-            self.__console = Console(
-                theme=Theme(theme.console_style), highlight=False, soft_wrap=True
-            )
+        self.preferences = get_current_settings()
+        theme.apply_console_style(self.preferences.RICH_STYLE)
+        self.__console = Console(
+            theme=Theme(theme.console_style), highlight=False, soft_wrap=True
+        )
 
     def capture(self):
         return self.__console.capture()

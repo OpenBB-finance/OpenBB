@@ -14,11 +14,13 @@ import openbb_terminal.core.session.local_model as Local
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.constants import BackendEnvironment
-from openbb_terminal.core.session.current_system import get_current_system
+from openbb_terminal.core.session.current_settings import (
+    get_current_settings,
+    set_settings,
+)
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
     is_local,
-    set_preference,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.helper_funcs import request
@@ -123,7 +125,7 @@ def check_for_updates() -> None:
     if r and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(get_current_system().VERSION)
+        current_version = version.parse(get_current_settings().VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
@@ -171,15 +173,15 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    console.print(f"\nWelcome to OpenBB Platform CLI v{get_current_system().VERSION}")
+    console.print(f"\nWelcome to OpenBB Platform CLI v{get_current_settings().VERSION}")
 
 
 def reset(queue: Optional[List[str]] = None):
     """Resets the CLI.  Allows for checking code without quitting"""
     console.print("resetting...")
     load_env_files()
-    debug = get_current_system().DEBUG_MODE
-    dev = get_current_system().DEV_BACKEND
+    debug = get_current_settings().DEBUG_MODE
+    dev = get_current_settings().DEV_BACKEND
 
     try:
 
@@ -238,7 +240,7 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if SETTINGS_ENV_FILE.stat().st_size == 0:
-        set_preference("PREVIOUS_USE", True)
+        set_settings("PREVIOUS_USE", True)
         write_to_dotenv("OPENBB_PREVIOUS_USE", "True")
         return True
     return False

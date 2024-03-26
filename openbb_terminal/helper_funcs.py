@@ -19,12 +19,7 @@ import requests
 from rich.table import Table
 
 from openbb_terminal.core.session.current_settings import get_current_settings
-
-# IMPORTS INTERNAL
-from openbb_terminal.core.session.current_user import (
-    get_current_user,
-    get_platform_user,
-)
+from openbb_terminal.core.session.current_user import get_platform_user
 from openbb_terminal.rich_config import console
 
 ALLOWED_NUMBER_OF_ROWS = 366
@@ -415,7 +410,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    return get_current_user().preferences.TIMEZONE
+    return get_current_settings().TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
