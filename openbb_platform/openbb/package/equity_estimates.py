@@ -26,15 +26,15 @@ class ROUTER_equity_estimates(Container):
     def analyst_search(
         self,
         analyst_name: Annotated[
-            Optional[str],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts."
+                description="List of analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         firm_name: Annotated[
-            Optional[str],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
+                description="List of firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         provider: Annotated[
@@ -49,24 +49,24 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        analyst_name : Optional[str]
-            A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.
-        firm_name : Optional[str]
-            A comma separated list of firm names to bring back. Omitting will bring back all available firms.
+        analyst_name : Union[str, None, List[Optional[str]]]
+            List of analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
+        firm_name : Union[str, None, List[Optional[str]]]
+            List of firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
         provider : Optional[Literal['benzinga']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        analyst_ids : Optional[Union[str, List[str]]]
-            A comma separated list of analyst IDs to bring back. (provider: benzinga)
-        firm_ids : Optional[Union[str, List[str]]]
-            A comma separated list of firm IDs to bring back. (provider: benzinga)
+        analyst_ids : Optional[str]
+            List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
+        firm_ids : Optional[str]
+            List of firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         limit : Optional[int]
             Number of results returned. Limit 1000. (provider: benzinga)
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. (provider: benzinga)
-        fields : Optional[Union[str, List[str]]]
-            Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
+        fields : Optional[str]
+            List of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
 
         Returns
         -------
@@ -195,6 +195,13 @@ class ROUTER_equity_estimates(Container):
                     "firm_name": firm_name,
                 },
                 extra_params=kwargs,
+                info={
+                    "analyst_name": {"multiple_items_allowed": ["benzinga"]},
+                    "firm_name": {"multiple_items_allowed": ["benzinga"]},
+                    "analyst_ids": {"multiple_items_allowed": ["benzinga"]},
+                    "firm_ids": {"multiple_items_allowed": ["benzinga"]},
+                    "fields": {"multiple_items_allowed": ["benzinga"]},
+                },
             )
         )
 
@@ -205,7 +212,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance."
             ),
         ],
         provider: Annotated[
@@ -221,7 +228,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -285,7 +292,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
             )
         )
 
@@ -296,7 +303,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -312,7 +319,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -403,7 +410,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -414,7 +421,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp."
             ),
         ] = None,
         limit: Annotated[
@@ -434,7 +441,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp']]
@@ -455,11 +462,11 @@ class ROUTER_equity_estimates(Container):
             Importance level to filter by. Uses Greater Than or Equal To the importance indicated (provider: benzinga)
         action : Optional[Literal['downgrades', 'maintains', 'reinstates', 'reiterates', 'upgrades', 'assumes', 'initiates', 'terminates', 'removes', 'suspends', 'firm_dissolved']]
             Filter by a specific action_company. (provider: benzinga)
-        analyst_ids : Optional[Union[str, List[str]]]
+        analyst_ids : Optional[Union[List[str], str]]
             Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. (provider: benzinga)
-        firm_ids : Optional[Union[str, List[str]]]
+        firm_ids : Optional[Union[List[str], str]]
             Comma-separated list of firm IDs. (provider: benzinga)
-        fields : Optional[Union[str, List[str]]]
+        fields : Optional[Union[List[str], str]]
             Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
@@ -560,6 +567,6 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
+                info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
             )
         )
