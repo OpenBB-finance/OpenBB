@@ -2,7 +2,7 @@
 
 # pylint: disable=too-many-arguments,unused-argument,too-many-locals
 
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -10,6 +10,7 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
+from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.helpers import (
@@ -322,3 +323,224 @@ def line_chart(  # noqa: PLR0912
         )
 
     return fig
+
+
+def vertical_bar_chart(  # noqa: PLR0912
+    data: Union[
+        list,
+        dict,
+        pd.DataFrame,
+        List[pd.DataFrame],
+        pd.Series,
+        List[pd.Series],
+        np.ndarray,
+        Data,
+    ],
+    x: str,
+    y: Union[str, List[str]],
+    barmode: Literal["group", "stack", "relative", "overlay"] = "group",
+    xtype: Literal["category", "multicategory", "date", "log", "linear"] = "category",
+    title: Optional[str] = None,
+    xtitle: Optional[str] = None,
+    ytitle: Optional[str] = None,
+    orientation: Literal["h", "v"] = "v",
+    layout_kwargs: Optional[Dict[str, Any]] = None,
+    **kwargs,
+) -> Union[OpenBBFigure, Figure]:
+    """Create a vertical bar chart on a single x-axis with one or more values for the y-axis.
+
+    Parameters
+    ----------
+    data : Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data]
+        Data to plot.
+    x : str
+        The x-axis column name.
+    y : Union[str, List[str]]
+        The y-axis column name(s).
+    barmode : Literal["group", "stack", "relative", "overlay"], optional
+        The bar mode, by default "group".
+    xtype : Literal["category", "multicategory", "date", "log", "linear"], optional
+        The x-axis type, by default "category".
+    title : Optional[str], optional
+        The title of the chart, by default None.
+    xtitle : Optional[str], optional
+        The x-axis title, by default None.
+    ytitle : Optional[str], optional
+        The y-axis title, by default None.
+    layout_kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to apply with figure.update_layout(), by default None.
+
+    Returns
+    -------
+    OpenBBFigure
+        The OpenBBFigure object.
+    """
+
+    try:
+        figure = OpenBBFigure()
+    except Exception as _:
+        figure = OpenBBFigure(create_backend=True)
+
+    figure = figure.create_subplots(
+        1,
+        1,
+        shared_xaxes=True,
+        vertical_spacing=0.06,
+        horizontal_spacing=0.01,
+        row_width=[1],
+        specs=[[{"secondary_y": True}]],
+    )
+
+    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+
+    if isinstance(data, (Data, list, dict)):
+        data = basemodel_to_df(convert_to_basemodel(data), index=None)
+
+    bar_df = data.copy().set_index(x) # type: ignore
+    y = y.split(",") if isinstance(y, str) else y
+
+    for item in y:
+        figure.add_bar(
+            x=bar_df.index if orientation == "v" else bar_df[item],
+            y=bar_df[item] if orientation == "v" else bar_df.index,
+            name=bar_df[item].name,
+            showlegend= len(y) > 1,
+            legendgroup=bar_df[item].name,
+            orientation=orientation,
+            #hovertemplate=(
+            #    "%{fullData.name}: %{y}<extra></extra>"
+            #    if orientation == "v"
+            #    else "%{fullData.name}: %{x}<extra></extra>"
+            #),
+            hoverinfo="y" if orientation == "v" else "x",
+            width=0.95/len(y)*0.75 if barmode == "group" and len(y) > 1 else 0.90,
+        )
+
+    figure.update_layout(
+        title=dict(text=title if title else None, x=0.5, font=dict(size=20)),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=0.94,
+            bgcolor="rgba(0,0,0,0)",
+            font=dict(size=12),
+        ),
+        xaxis=dict(
+            type=xtype,
+            title=dict(text=xtitle if xtitle else None, standoff=30, font=dict(size=16)),
+            ticklen=0,
+            showgrid=False,
+            tickangle=-50 if len(bar_df.index) > 10 and barmode != "group" else None,
+            tickformat="<b>%{x}</b>",
+            tickfont=dict(size=12),
+            categoryorder="array" if orientation == "v" else None,
+            categoryarray=bar_df.index if orientation == "v" else None,
+        ),
+        yaxis=dict(
+            title=dict(text=ytitle if ytitle else None, standoff=30, font=dict(size=16)),
+            ticklen=0,
+            showgrid= len(y) > 1,
+            tickfont=dict(size=12),
+            side="left" if orientation == "h" else "right",
+            categoryorder="array" if orientation == "h" else None,
+            categoryarray=bar_df.index if orientation == "h" else None,
+        ),
+        margin=dict(pad=5),
+        barmode=barmode,
+        hovermode="x" if orientation == "v" else "y",
+    )
+    figure.update_xaxes(type="linear" if orientation == "h" else xtype)
+
+    if layout_kwargs:
+        figure.update_layout(
+            **layout_kwargs,
+        )
+
+    return figure
+
+
+def bar_increasing_decreasing(
+    keys: List[str],
+    values: List[Any],
+    title: Optional[str] = None,
+    xtitle: Optional[str] = None,
+    ytitle: Optional[str] = None,
+    colors: List[str] = ["blue", "red"],
+    orientation: Literal["h", "v"] = "h",
+    barmode: Literal["group", "stack", "relative", "overlay"] = "relative",
+    layout_kwargs: Optional[Dict[str, Any]] = None,
+):
+    figure  = OpenBBFigure()
+    figure = figure.create_subplots(
+        1,
+        1,
+        shared_xaxes=True,
+        vertical_spacing=0.06,
+        horizontal_spacing=0.01,
+        row_width=[1],
+        specs=[[{"secondary_y": True}]],
+    )
+    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+
+    try:
+        data = pd.Series(data=values, index=keys)
+        increasing_data = data[data > 0]
+        decreasing_data = data[data < 0]
+    except Exception as e:
+        raise ValueError(f"Error: {e}")
+
+    if not increasing_data.empty:
+        figure.add_bar(
+            x=increasing_data.index if orientation == "v" else increasing_data,
+            y=increasing_data if orientation == "v" else increasing_data.index,
+            marker=dict(color=colors[0]),
+            orientation=orientation,
+            showlegend=False,
+            width=0.95/len(keys)*0.75 if barmode == "group" else 0.95,
+            hoverinfo="y" if orientation == "v" else "x",
+        )
+    if not decreasing_data.empty:
+        figure.add_bar(
+            x=decreasing_data.index if orientation == "v" else decreasing_data,
+            y=decreasing_data if orientation == "v" else decreasing_data.index,
+            marker=dict(color=colors[1]),
+            orientation=orientation,
+            showlegend=False,
+            width=0.95/len(keys)*0.75 if barmode == "group" else 0.95,
+            hoverinfo="y" if orientation == "v" else "x",
+        )
+
+    figure.update_layout(
+        title=dict(text=title if title else None, x=0.5, font=dict(size=20)),
+        hovermode="x" if orientation == "v" else "y",
+        hoverlabel=dict(align="left" if orientation == "h" else "auto"),
+        yaxis=dict(
+            title=dict(text=ytitle if ytitle else None, standoff=30, font=dict(size=16)),
+            side="left" if orientation == "h" else "right",
+            showgrid= orientation == "v",
+            gridcolor="rgba(128,128,128,0.25)",
+            tickfont=dict(size=12),
+            ticklen=0,
+            categoryorder="array" if orientation == "h" else None,
+            categoryarray=keys if orientation == "h" else None,
+        ),
+        xaxis=dict(
+            title=dict(text=xtitle if xtitle else None, standoff=30, font=dict(size=16)),
+            showgrid= orientation == "h",
+            gridcolor="rgba(128,128,128,0.25)",
+            tickfont=dict(size=12),
+            ticklen=0,
+            categoryorder="array" if orientation == "v" else None,
+            categoryarray=keys if orientation == "v" else None,
+        ),
+        margin=dict(pad=5),
+    )
+
+    if layout_kwargs:
+        figure.update_layout(
+            **layout_kwargs,
+        )
+
+    return figure
