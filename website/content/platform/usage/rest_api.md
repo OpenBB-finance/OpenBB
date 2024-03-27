@@ -52,7 +52,7 @@ The API Docs provide interactive descriptions of all available endpoints that yo
 
 ## Data API Keys
 
-The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file. You can find more information about the structure of the file and environment variables in the [Local Environment](/platform/usage#local-environment) section.
+The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file. You can find more information about the structure of the file and environment variables in the [Local Environment](api_keys#local-environment) section.
 
 ## API Authorization
 
