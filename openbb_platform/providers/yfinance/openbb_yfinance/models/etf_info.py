@@ -265,18 +265,22 @@ class YFinanceEtfInfoFetcher(
             if ticker:
                 quote_type = ticker.pop("quoteType", "")
                 if quote_type == "ETF":
-                    for field in fields:
-                        if field in ticker and ticker.get(field) is not None:
-                            result[field] = ticker.get(field, None)
-                    if "firstTradeDateEpochUtc" in result:
-                        _first_trade = result.pop("firstTradeDateEpochUtc")
-                        if (
-                            "fundInceptionDate" not in result
-                            and _first_trade is not None
-                        ):
-                            result["fundInceptionDate"] = datetime.fromtimestamp(
-                                _first_trade
-                            )
+                    try:
+                        for field in fields:
+                            if field in ticker and ticker.get(field) is not None:
+                                result[field] = ticker.get(field, None)
+                        if "firstTradeDateEpochUtc" in result:
+                            _first_trade = result.pop("firstTradeDateEpochUtc")
+                            if (
+                                "fundInceptionDate" not in result
+                                and _first_trade is not None
+                            ):
+                                result["fundInceptionDate"] = datetime.fromtimestamp(
+                                    _first_trade
+                                )
+                    except Exception as e:
+                        _warn(f"Error processing data for {symbol}: {e}")
+                        result = None
                 if quote_type != "ETF":
                     _warn(f"{symbol} is not an ETF.")
                 if result:
