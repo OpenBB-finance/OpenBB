@@ -280,7 +280,7 @@ class YFinanceEtfInfoFetcher(
                                 )
                     except Exception as e:
                         _warn(f"Error processing data for {symbol}: {e}")
-                        result = None
+                        result = {}
                 if quote_type != "ETF":
                     _warn(f"{symbol} is not an ETF.")
                 if result:
