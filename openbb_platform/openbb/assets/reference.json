@@ -5024,14 +5024,14 @@
                 {
                     "name": "analyst_name",
                     "type": "Union[str, List[str]]",
-                    "description": "List of analyst names to return. Omitting will return all available analysts. Multiple items allowed for provider(s): benzinga.",
+                    "description": "Analyst names to return. Omitting will return all available analysts. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "firm_name",
                     "type": "Union[str, List[str]]",
-                    "description": "List of firm names to return. Omitting will return all available firms. Multiple items allowed for provider(s): benzinga.",
+                    "description": "Firm names to return. Omitting will return all available firms. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
@@ -5054,7 +5054,7 @@
                 {
                     "name": "firm_ids",
                     "type": "Union[str, List[str]]",
-                    "description": "List of firm IDs to return. Multiple items allowed for provider(s): benzinga.",
+                    "description": "Firm IDs to return. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
@@ -5075,7 +5075,7 @@
                 {
                     "name": "fields",
                     "type": "Union[str, List[str]]",
-                    "description": "List of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
+                    "description": "Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 }
