@@ -9,7 +9,6 @@ from time import perf_counter_ns
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type
 from warnings import catch_warnings, showwarning, warn
 
-from fastapi.params import Query
 from pydantic import BaseModel, ConfigDict, create_model
 
 from openbb_core.app.logs.logging_service import LoggingService
@@ -179,7 +178,6 @@ class ParametersBuilder:
 
     @staticmethod
     def _warn_kwargs(
-        provider_choices: Dict[str, Any],
         extra_params: Dict[str, Any],
         model: Type[BaseModel],
     ) -> None:
@@ -192,25 +190,9 @@ class ParametersBuilder:
         if is_dataclass(annotation) and any(
             t is ExtraParams for t in getattr(annotation, "__bases__", [])
         ):
-            # We only warn when endpoint defines ExtraParams, so we need
-            # to check if the annotation is a dataclass and child of ExtraParams
             valid = asdict(annotation())  # type: ignore
-            provider = provider_choices.get("provider", None)
             for p in extra_params:
-                if field := valid.get(p):
-                    if provider:
-                        providers = (
-                            field.title
-                            if isinstance(field, Query) and isinstance(field.title, str)
-                            else ""
-                        ).split(",")
-                        if provider not in providers:
-                            warn(
-                                message=f"Parameter '{p}' is not supported by '{provider}'."
-                                f" Available for: {', '.join(providers)}.",
-                                category=OpenBBWarning,
-                            )
-                else:
+                if p not in valid:
                     warn(
                         message=f"Parameter '{p}' not found.",
                         category=OpenBBWarning,
@@ -246,7 +228,6 @@ class ParametersBuilder:
         # Validate and coerce
         model = ValidationModel(**kwargs)
         ParametersBuilder._warn_kwargs(
-            ParametersBuilder._as_dict(kwargs.get("provider_choices", {})),
             ParametersBuilder._as_dict(kwargs.get("extra_params", {})),
             ValidationModel,
         )

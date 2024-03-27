@@ -229,61 +229,28 @@ def test_parameters_builder_validate_kwargs(mock_func):
 
 
 @pytest.mark.parametrize(
-    "provider_choices, extra_params, base, expect",
+    "extra_params, base, expect",
     [
         (
-            {"provider": "provider1"},
-            {"exists_in_2": ...},
+            {"exists": ...},
             ExtraParams,
-            OpenBBWarning,
+            None,
         ),
         (
-            {"provider": "inexistent_provider"},
-            {"exists_in_both": ...},
-            ExtraParams,
-            OpenBBWarning,
-        ),
-        (
-            {},
             {"inexistent_field": ...},
             ExtraParams,
             OpenBBWarning,
-        ),
-        (
-            {},
-            {"inexistent_field": ...},
-            object,
-            None,
-        ),
-        (
-            {"provider": "provider2"},
-            {"exists_in_2": ...},
-            ExtraParams,
-            None,
-        ),
-        (
-            {"provider": "provider2"},
-            {"exists_in_both": ...},
-            ExtraParams,
-            None,
-        ),
-        (
-            {},
-            {"exists_in_both": ...},
-            ExtraParams,
-            None,
         ),
     ],
 )
-def test_parameters_builder__warn_kwargs(provider_choices, extra_params, base, expect):
+def test_parameters_builder__warn_kwargs(extra_params, base, expect):
     """Test _warn_kwargs."""
 
     @dataclass
     class SomeModel(base):
         """SomeModel"""
 
-        exists_in_2: QueryParam = Query(..., title="provider2")
-        exists_in_both: QueryParam = Query(..., title="provider1,provider2")
+        exists: QueryParam = Query(...)
 
     class Model(BaseModel):
         """Model"""
@@ -293,7 +260,7 @@ def test_parameters_builder__warn_kwargs(provider_choices, extra_params, base, e
 
     with pytest.warns(expect) as warning_info:
         # pylint: disable=protected-access
-        ParametersBuilder._warn_kwargs(provider_choices, extra_params, Model)
+        ParametersBuilder._warn_kwargs(extra_params, Model)
 
         if not expect:
             assert len(warning_info) == 0
