@@ -21,7 +21,7 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     get_querystring,
 )
-from pydantic import Field, PrivateAttr, model_validator
+from pydantic import Field, PrivateAttr, field_validator, model_validator
 
 _warn = warnings.warn
 
@@ -44,6 +44,24 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
         default=None
     )
+    sort: Literal[
+        "adj_open",
+        "adj_high",
+        "adj_low",
+        "adj_close",
+        "adj_volume",
+        "split_ratio",
+        "dividend",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "date",
+    ] = Field(
+        default="date",
+        description="Column to sort the data by. Default is by date.",
+    )
 
     # pylint: disable=protected-access
     @model_validator(mode="after")  # type: ignore[arg-type]
@@ -60,6 +78,22 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         values._frequency = frequency_dict[values.interval]  # type: ignore[assignment]
 
         return values
+
+    @field_validator("sort", mode="after")
+    @classmethod
+    def map_sort(cls, v: str) -> str:
+        """Map the sort column to the Tiingo API columns."""
+        sort_dict = {
+            "adj_open": "adjOpen",
+            "adj_high": "adjHigh",
+            "adj_low": "adjLow",
+            "adj_close": "adjClose",
+            "adj_volume": "adjVolume",
+            "split_ratio": "splitFactor",
+            "dividend": "divCash",
+        }
+
+        return sort_dict[v]
 
 
 class TiingoEquityHistoricalData(EquityHistoricalData):
@@ -142,7 +176,7 @@ class TiingoEquityHistoricalFetcher(
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             data = await response.json()
             symbol = response.url.parts[-2]
-            results = []
+            results: List[Any] = []
             if not data:
                 _warn(f"No data found the the symbol: {symbol}")
                 return results
