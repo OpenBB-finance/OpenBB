@@ -8,6 +8,7 @@ from typing import (
     Callable,
     Dict,
     List,
+    Literal,
     Optional,
     Union,
 )
@@ -25,7 +26,7 @@ from openbb_charting import charting_router
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.query_params import ChartParams, IndicatorsParams
-from openbb_charting.utils.generic_charts import line_chart
+from openbb_charting.utils.generic_charts import bar_chart, line_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
 warnings.filterwarnings(
@@ -197,6 +198,84 @@ class Charting:
             same_axis=same_axis,
             **kwargs,
         )
+        if render:
+            return fig.show(**kwargs)
+
+        return fig
+
+    def create_bar_chart(
+        self,
+        data: Union[
+            list,
+            dict,
+            pd.DataFrame,
+            List[pd.DataFrame],
+            pd.Series,
+            List[pd.Series],
+            np.ndarray,
+            Data,
+        ],
+        x: str,
+        y: Union[str, List[str]],
+        barmode: Literal["group", "stack", "relative", "overlay"] = "group",
+        xtype: Literal[
+            "category", "multicategory", "date", "log", "linear"
+        ] = "category",
+        title: Optional[str] = None,
+        xtitle: Optional[str] = None,
+        ytitle: Optional[str] = None,
+        orientation: Literal["h", "v"] = "v",
+        colors: Optional[List[str]] = None,
+        layout_kwargs: Optional[Dict[str, Any]] = None,
+        render: bool = True,
+        **kwargs,
+    ) -> Union[OpenBBFigure, Figure, None]:
+        """Create a vertical bar chart on a single x-axis with one or more values for the y-axis.
+
+        Parameters
+        ----------
+        data : Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data]
+            Data to plot.
+        x : str
+            The x-axis column name.
+        y : Union[str, List[str]]
+            The y-axis column name(s).
+        barmode : Literal["group", "stack", "relative", "overlay"], optional
+            The bar mode, by default "group".
+        xtype : Literal["category", "multicategory", "date", "log", "linear"], optional
+            The x-axis type, by default "category".
+        title : Optional[str], optional
+            The title of the chart, by default None.
+        xtitle : Optional[str], optional
+            The x-axis title, by default None.
+        ytitle : Optional[str], optional
+            The y-axis title, by default None.
+        colors: Optional[List[str]], optional
+            Manually set the colors to cycle through for each column in 'y', by default None.
+        layout_kwargs : Optional[Dict[str, Any]], optional
+            Additional keyword arguments to apply with figure.update_layout(), by default None.
+
+        Returns
+        -------
+        OpenBBFigure
+            The OpenBBFigure object.
+        """
+
+        self._handle_backend()
+        fig = bar_chart(
+            data=data,
+            x=x,
+            y=y,
+            barmode=barmode,
+            xtype=xtype,
+            title=title,
+            xtitle=xtitle,
+            ytitle=ytitle,
+            orientation=orientation,
+            colors=colors,
+            layout_kwargs=layout_kwargs,
+        )
+
         if render:
             return fig.show(**kwargs)
 

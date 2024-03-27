@@ -49,7 +49,7 @@
         ],
         "dragmode": "pan",
         "font": {
-            "family": "Fira Code",
+            "family": "Arial",
             "size": 18
         },
         "hoverlabel": {

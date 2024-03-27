@@ -325,7 +325,7 @@ def line_chart(  # noqa: PLR0912
     return fig
 
 
-def vertical_bar_chart(  # noqa: PLR0912
+def bar_chart(  # noqa: PLR0912
     data: Union[
         list,
         dict,
@@ -344,6 +344,7 @@ def vertical_bar_chart(  # noqa: PLR0912
     xtitle: Optional[str] = None,
     ytitle: Optional[str] = None,
     orientation: Literal["h", "v"] = "v",
+    colors: Optional[List[str]] = None,
     layout_kwargs: Optional[Dict[str, Any]] = None,
     **kwargs,
 ) -> Union[OpenBBFigure, Figure]:
@@ -367,6 +368,8 @@ def vertical_bar_chart(  # noqa: PLR0912
         The x-axis title, by default None.
     ytitle : Optional[str], optional
         The y-axis title, by default None.
+    colors: Optional[List[str]], optional
+        Manually set the colors to cycle through for each column in 'y', by default None.
     layout_kwargs : Optional[Dict[str, Any]], optional
         Additional keyword arguments to apply with figure.update_layout(), by default None.
 
@@ -392,11 +395,13 @@ def vertical_bar_chart(  # noqa: PLR0912
     )
 
     figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    if colors is not None:
+        figure.update_layout(colorway=colors)
 
     if isinstance(data, (Data, list, dict)):
         data = basemodel_to_df(convert_to_basemodel(data), index=None)
 
-    bar_df = data.copy().set_index(x) # type: ignore
+    bar_df = data.copy().set_index(x)  # type: ignore
     y = y.split(",") if isinstance(y, str) else y
 
     for item in y:
@@ -404,20 +409,19 @@ def vertical_bar_chart(  # noqa: PLR0912
             x=bar_df.index if orientation == "v" else bar_df[item],
             y=bar_df[item] if orientation == "v" else bar_df.index,
             name=bar_df[item].name,
-            showlegend= len(y) > 1,
+            showlegend=len(y) > 1,
             legendgroup=bar_df[item].name,
             orientation=orientation,
-            #hovertemplate=(
-            #    "%{fullData.name}: %{y}<extra></extra>"
-            #    if orientation == "v"
-            #    else "%{fullData.name}: %{x}<extra></extra>"
-            #),
-            hoverinfo="y" if orientation == "v" else "x",
-            width=0.95/len(y)*0.75 if barmode == "group" and len(y) > 1 else 0.90,
+            hovertemplate=(
+                "%{y}<extra></extra>" if orientation == "v" else "%{x}<extra></extra>"
+            ),
+            width=0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95,
         )
 
     figure.update_layout(
         title=dict(text=title if title else None, x=0.5, font=dict(size=20)),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         legend=dict(
             orientation="h",
             yanchor="bottom",
@@ -429,19 +433,22 @@ def vertical_bar_chart(  # noqa: PLR0912
         ),
         xaxis=dict(
             type=xtype,
-            title=dict(text=xtitle if xtitle else None, standoff=30, font=dict(size=16)),
+            title=dict(
+                text=xtitle if xtitle else None, standoff=30, font=dict(size=16)
+            ),
             ticklen=0,
-            showgrid=False,
-            tickangle=-50 if len(bar_df.index) > 10 and barmode != "group" else None,
+            showgrid=orientation == "h",
             tickformat="<b>%{x}</b>",
             tickfont=dict(size=12),
             categoryorder="array" if orientation == "v" else None,
             categoryarray=bar_df.index if orientation == "v" else None,
         ),
         yaxis=dict(
-            title=dict(text=ytitle if ytitle else None, standoff=30, font=dict(size=16)),
+            title=dict(
+                text=ytitle if ytitle else None, standoff=30, font=dict(size=16)
+            ),
             ticklen=0,
-            showgrid= len(y) > 1,
+            showgrid=orientation == "v",
             tickfont=dict(size=12),
             side="left" if orientation == "h" else "right",
             categoryorder="array" if orientation == "h" else None,
@@ -449,9 +456,22 @@ def vertical_bar_chart(  # noqa: PLR0912
         ),
         margin=dict(pad=5),
         barmode=barmode,
-        hovermode="x" if orientation == "v" else "y",
     )
-    figure.update_xaxes(type="linear" if orientation == "h" else xtype)
+    if orientation == "h":
+        figure.update_layout(
+            xaxis=dict(
+                type="linear",
+                showspikes=False,
+            ),
+            yaxis=dict(
+                type="category",
+                showspikes=False,
+            ),
+            hoverlabel=dict(
+                font=dict(size=12),
+            ),
+            hovermode="y",
+        )
 
     if layout_kwargs:
         figure.update_layout(
@@ -472,11 +492,11 @@ def bar_increasing_decreasing(
     barmode: Literal["group", "stack", "relative", "overlay"] = "relative",
     layout_kwargs: Optional[Dict[str, Any]] = None,
 ):
-    figure  = OpenBBFigure()
+    figure = OpenBBFigure()
     figure = figure.create_subplots(
         1,
         1,
-        shared_xaxes=True,
+        shared_xaxes=False,
         vertical_spacing=0.06,
         horizontal_spacing=0.01,
         row_width=[1],
@@ -486,8 +506,8 @@ def bar_increasing_decreasing(
 
     try:
         data = pd.Series(data=values, index=keys)
-        increasing_data = data[data > 0]
-        decreasing_data = data[data < 0]
+        increasing_data = data[data > 0]  # type: ignore
+        decreasing_data = data[data < 0]  # type: ignore
     except Exception as e:
         raise ValueError(f"Error: {e}")
 
@@ -498,7 +518,7 @@ def bar_increasing_decreasing(
             marker=dict(color=colors[0]),
             orientation=orientation,
             showlegend=False,
-            width=0.95/len(keys)*0.75 if barmode == "group" else 0.95,
+            width=0.95 / len(keys) * 0.75 if barmode == "group" else 0.95,
             hoverinfo="y" if orientation == "v" else "x",
         )
     if not decreasing_data.empty:
@@ -508,7 +528,7 @@ def bar_increasing_decreasing(
             marker=dict(color=colors[1]),
             orientation=orientation,
             showlegend=False,
-            width=0.95/len(keys)*0.75 if barmode == "group" else 0.95,
+            width=0.95 / len(keys) * 0.75 if barmode == "group" else 0.95,
             hoverinfo="y" if orientation == "v" else "x",
         )
 
@@ -517,9 +537,11 @@ def bar_increasing_decreasing(
         hovermode="x" if orientation == "v" else "y",
         hoverlabel=dict(align="left" if orientation == "h" else "auto"),
         yaxis=dict(
-            title=dict(text=ytitle if ytitle else None, standoff=30, font=dict(size=16)),
+            title=dict(
+                text=ytitle if ytitle else None, standoff=30, font=dict(size=16)
+            ),
             side="left" if orientation == "h" else "right",
-            showgrid= orientation == "v",
+            showgrid=orientation == "v",
             gridcolor="rgba(128,128,128,0.25)",
             tickfont=dict(size=12),
             ticklen=0,
@@ -527,8 +549,10 @@ def bar_increasing_decreasing(
             categoryarray=keys if orientation == "h" else None,
         ),
         xaxis=dict(
-            title=dict(text=xtitle if xtitle else None, standoff=30, font=dict(size=16)),
-            showgrid= orientation == "h",
+            title=dict(
+                text=xtitle if xtitle else None, standoff=30, font=dict(size=16)
+            ),
+            showgrid=orientation == "h",
             gridcolor="rgba(128,128,128,0.25)",
             tickfont=dict(size=12),
             ticklen=0,
