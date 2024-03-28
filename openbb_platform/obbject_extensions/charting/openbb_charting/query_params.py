@@ -57,8 +57,30 @@ class ChartQueryParams(BaseQueryParams):
     )
 
 
+class EquityPricePerformanceChartQueryParams(ChartQueryParams):
+    """Equity Price Performance Chart Query Params."""
+
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+    orientation: Literal["v", "h"] = Field(
+        default="v",
+        description="Orientation of the bars.",
+    )
+    limit: Optional[int] = Field(
+        default=None,
+        description="Limit the number of bars to plot, from the most recent."
+        + " If None, the periods from one-day to five-years will be plotted, if available.",
+    )
+    layout_kwargs: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
+    )
+
+
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
-    """Historical Price Chart Query Params."""
+    """Equity Historical Price Chart Query Params."""
 
     title: Optional[str] = Field(
         default=None,
@@ -284,6 +306,7 @@ class ChartParams:
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
+    equity_price_performance = EquityPricePerformanceChartQueryParams
     etf_historical = EquityPriceHistoricalChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
     technical_cones = TechnicalConesChartQueryParams

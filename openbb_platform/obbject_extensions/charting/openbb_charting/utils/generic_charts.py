@@ -413,7 +413,9 @@ def bar_chart(  # noqa: PLR0912
             legendgroup=bar_df[item].name,
             orientation=orientation,
             hovertemplate=(
-                "%{y}<extra></extra>" if orientation == "v" else "%{x}<extra></extra>"
+                "%{fullData.name}:%{y}<extra></extra>"
+                if orientation == "v"
+                else "%{fullData.name}:%{x}<extra></extra>"
             ),
             width=0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95,
         )
@@ -470,7 +472,6 @@ def bar_chart(  # noqa: PLR0912
             hoverlabel=dict(
                 font=dict(size=12),
             ),
-            hovermode="y",
         )
 
     if layout_kwargs:

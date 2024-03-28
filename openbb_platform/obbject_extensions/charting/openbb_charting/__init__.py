@@ -315,7 +315,7 @@ class Charting:
                 fig.show(**kwargs)
         except Exception:
             try:
-                fig = self.create_line_chart(render=False, **kwargs)
+                fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=charting_router.CHART_FORMAT

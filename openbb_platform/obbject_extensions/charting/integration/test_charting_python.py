@@ -492,3 +492,28 @@ def test_charting_economy_fred_series(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+                "chart": True,
+                "provider": "finviz",
+                "chart_params": {"limit": 4, "orientation": "h"},
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_equity_price_performance(params, obb):
+    """Test chart equity price performance."""
+    result = obb.equity.price.performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
