@@ -174,16 +174,38 @@ class ChartIndicators:
         )
 
     @classmethod
-    def from_dict(cls, indicators: Dict[str, Dict[str, Any]]) -> "ChartIndicators":
-        """Return ChartIndicators from dictionary."""
-        data = []
-        for indicator in indicators:
-            args = []
-            for arg in indicators[indicator]:
-                args.append({"label": arg, "values": indicators[indicator][arg]})
-            data.append({"name": indicator, "args": args})
+    def from_dict(
+        cls, indicators: Dict[str, Dict[str, List[Dict[str, Any]]]]
+    ) -> "ChartIndicators":
+        """Return ChartIndicators from dictionary.
 
-        return cls(indicators=data)  # type: ignore
+        Example
+        -------
+        ChartIndicators.from_dict(
+            {
+                "ad": {
+                    "args": [
+                        {
+                            "label": "AD_LABEL",
+                            "values": [1, 2, 3],
+                        }
+                    ]
+                }
+            }
+        )
+        """
+        return cls(
+            indicators=[
+                TAIndicator(
+                    name=name,  # type: ignore[arg-type]
+                    args=[
+                        Arguments(label=label, values=values)
+                        for label, values in args.items()
+                    ],
+                )
+                for name, args in indicators.items()
+            ]
+        )
 
     def to_dataframe(
         self, df_ta: pd.DataFrame, ma_mode: Optional[List[str]] = None
