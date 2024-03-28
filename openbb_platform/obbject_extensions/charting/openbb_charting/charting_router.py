@@ -74,9 +74,9 @@ def equity_price_performance(  # noqa: PLR0912
 
     for col in cols:
         if col in data.columns and data[col].notnull().any():
-            df[col.replace("_", " ").title() if col !="ytd" else col.upper()] = data[col].apply(
-                lambda x: round(x * 100, 4) if x is not None else None
-            )
+            df[col.replace("_", " ").title() if col != "ytd" else col.upper()] = data[
+                col
+            ].apply(lambda x: round(x * 100, 4) if x is not None else None)
 
     if df.empty:
         raise ValueError(f"No columns matching, {cols}, were found in the data.")
@@ -139,7 +139,7 @@ def etf_price_performance(
     else:
         fig.set_title("ETF Price Performance")  # type: ignore
 
-    content = fig.show(external=True).to_plotly_json() # type: ignore
+    content = fig.show(external=True).to_plotly_json()  # type: ignore
     return fig, content
 
 

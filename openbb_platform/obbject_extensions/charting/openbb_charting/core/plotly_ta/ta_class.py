@@ -429,7 +429,6 @@ class PlotlyTA(PltTA):
         fig.set_title(symbol, x=0.5, y=0.98, xanchor="center", yanchor="top")
         return fig
 
-
     def plot_fig(  # noqa: PLR0912
         self,
         fig: Optional[OpenBBFigure] = None,
