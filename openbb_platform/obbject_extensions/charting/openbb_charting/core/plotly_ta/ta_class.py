@@ -112,11 +112,11 @@ class PlotlyTA(PltTA):
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
-            PLOTLY_TA = super().__new__(cls)
+            PLOTLY_TA = super().__new__(cls)  # type: ignore[attr-defined]
             PLOTLY_TA._locate_plugins(  # type: ignore[attr-defined]
                 getattr(cls.charting_settings, "debug_mode", False)
             )
-            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # type: ignore[attr-defined]
+            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # type: ignore[assignment]
 
         return PLOTLY_TA
 
