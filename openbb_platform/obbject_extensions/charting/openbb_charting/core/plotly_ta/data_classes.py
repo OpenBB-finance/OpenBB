@@ -70,12 +70,7 @@ class TAIndicator:
     def __post_init__(self):
         """Post init."""
         self.args = [
-            (
-                arg
-                if isinstance(arg, Arguments)
-                else Arguments(label=arg["label"], values=arg["values"])
-            )
-            for arg in self.args
+            arg if isinstance(arg, Arguments) else Arguments(**arg) for arg in self.args
         ]
 
     def __iter__(self):
