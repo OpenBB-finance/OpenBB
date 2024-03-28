@@ -289,7 +289,7 @@ class PlotlyTA(PltTA):
     def _clear_data(self):
         """Clear and reset all data to default values."""
         self.df_stock = None
-        self.indicators = None
+        self.indicators = {}
         self.params = None
         self.intraday = False
         self.show_volume = True
