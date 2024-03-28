@@ -88,7 +88,7 @@ class PlotlyTA(PltTA):
 
     inchart_colors: List[str] = []
     plugins: List[Type[PltTA]] = []
-    df_ta: pd.DataFrame = None
+    df_ta: Optional[pd.DataFrame] = None
     close_column: Optional[str] = "close"
     has_volume: bool = True
     show_volume: bool = True
