@@ -385,12 +385,9 @@ def economy_fred_series(
             + " Override this error by setting `allow_unsafe = True`."
         )
 
-    y1_units = y_units[0]
-
+    y1_units = y_units[0] if y_units else None
     y1title = y1_units
-
     y2title = y_units[1] if len(y_units) > 1 else None
-
     xtitle = ""
 
     # If the request was transformed, the y-axis will be shared under these conditions.
