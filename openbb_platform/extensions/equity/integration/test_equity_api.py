@@ -683,6 +683,20 @@ def test_equity_estimates_price_target(params, headers):
                 "firm_ids": None,
                 "firm_name": "Barclays",
                 "analyst_name": None,
+                "page": 0,
+            }
+        ),
+        (
+            {
+                "limit": 3,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "analyst_ids": None,
+                "firm_ids": None,
+                "firm_name": "Barclays,Credit Suisse",
+                "analyst_name": None,
+                "page": 1,
             }
         ),
     ],
