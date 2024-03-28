@@ -40,12 +40,15 @@ PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 
 class Console:
     """Console class to log messages to the console."""
 
-    verbose = True
+    def __init__(self, verbose: bool = False):
+        self.verbose = verbose
 
-    @classmethod
-    def log(cls, message: str) -> None:
-        if cls.verbose:
+    def log(self, message: str) -> None:
+        if self.verbose:
             print(message)
+
+
+console = Console(verbose=True)
 
 
 def create_reference_markdown_seo(path: str, description: str) -> str:
@@ -581,17 +584,17 @@ def generate_platform_markdown(paths: Dict) -> None:
     reference_index_content_dict = {}
 
     # Clear the platform/reference folder
-    Console.log(f"\n[INFO] Clearing the {PLATFORM_REFERENCE_PATH} folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_REFERENCE_PATH} folder...")
     shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
 
     # Clear the platform/data_models folder
-    Console.log(f"\n[INFO] Clearing the {PLATFORM_DATA_MODELS_PATH} folder...")
+    console.log(f"\n[INFO] Clearing the {PLATFORM_DATA_MODELS_PATH} folder...")
     shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
 
-    Console.log(
+    console.log(
         f"\n[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories..."
     )  # noqa: E501
-    Console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in paths.items():
         reference_markdown_content = ""
@@ -656,9 +659,9 @@ def generate_platform_markdown(paths: Dict) -> None:
             generate_markdown_file(model, data_markdown_content, "data_models")
 
     # Generate the index.mdx and _category_.json files for the reference directory
-    Console.log(f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
     generate_reference_index_files(reference_index_content_dict)
-    Console.log(
+    console.log(
         f"\n[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
     )
     generate_reference_top_level_index()
@@ -668,14 +671,14 @@ def generate_platform_markdown(paths: Dict) -> None:
     data_models_index_content_str = "".join(data_models_index_content)
 
     # Generate the index.mdx and _category_.json files for the data_models directory
-    Console.log(f"\n[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    console.log(f"\n[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
     generate_data_models_index_files(data_models_index_content_str)
-    Console.log("\n[INFO] Markdown files generated successfully!")
+    console.log("\n[INFO] Markdown files generated successfully!")
 
 
 def read_reference() -> dict:
     """Read the reference.json file."""
-    Console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
+    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
     # Load the reference.json file
     try:
         with open(REFERENCE_FILE_PATH) as f:
@@ -704,7 +707,7 @@ def get_openbb_versions() -> Dict[str, VersionConstraint]:
 
 def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
     """Check all the openbb packages are installed and have the correct version."""
-    Console.log("\n[INFO] Ensuring all packages installed...")
+    console.log("\n[INFO] Ensuring all packages installed...")
     pip_list_output = subprocess.run(
         "pip list | grep openbb",  # noqa: S607
         shell=True,  # noqa: S602
@@ -720,10 +723,10 @@ def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
     failures = set()
     for o, v in openbb_versions.items():
         if o not in installed:
-            Console.log(f"[INFO] Package '{o}' not installed.")
+            console.log(f"[INFO] Package '{o}' not installed.")
             failures.add(o)
         elif not v.allows(installed[o]):
-            Console.log(
+            console.log(
                 f"[INFO] Version '{installed[o]}' of '{o}' not compatible. Expected '{v}'."
             )
             failures.add(o)
@@ -734,7 +737,7 @@ def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
 
 def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) -> None:
     """Check all the openbb packages installed are in the reference file."""
-    Console.log("\n[INFO] Ensuring all packages built...")
+    console.log("\n[INFO] Ensuring all packages built...")
     core_version = reference.get("core", {})
     extensions = reference.get("extensions", {})
     built = {}
@@ -750,10 +753,10 @@ def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) 
     failures = set()
     for o, v in openbb_versions.items():
         if o not in built:
-            Console.log(f"[INFO] Package '{o}' not in reference file.")
+            console.log(f"[INFO] Package '{o}' not in reference file.")
             failures.add(o)
         elif not v.allows(built[o]):
-            Console.log(
+            console.log(
                 f"[INFO] Version '{built[o]}' of '{o}' not compatible. Expected '{v}'."
             )
             failures.add(o)
