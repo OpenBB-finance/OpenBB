@@ -45,7 +45,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
-from openbb_core.app.version import VERSION
+from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
@@ -192,6 +192,7 @@ class PackageBuilder:
                     "title": "OpenBB Platform (Python)",
                     "description": "This is the OpenBB Platform (Python).",
                 },
+                "core": CORE_VERSION.replace("dev", ""),
                 "extensions": ext_map,
                 "paths": data,
             },
