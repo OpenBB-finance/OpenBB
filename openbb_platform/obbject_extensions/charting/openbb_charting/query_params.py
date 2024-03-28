@@ -629,91 +629,91 @@ class IndicatorsParams(QueryParams):
 
     sma: SMAIndicatorsQueryParams = Field(
         default=SMAIndicatorsQueryParams(),
-        description=SMAIndicatorsQueryParams().__repr__(),
+        description=repr(SMAIndicatorsQueryParams()),
     )
     ema: EMAIndicatorsQueryParams = Field(
         default=EMAIndicatorsQueryParams(),
-        description=EMAIndicatorsQueryParams().__repr__(),
+        description=repr(EMAIndicatorsQueryParams()),
     )
     hma: HMAIndicatorsQueryParams = Field(
         default=HMAIndicatorsQueryParams(),
-        description=HMAIndicatorsQueryParams().__repr__(),
+        description=repr(HMAIndicatorsQueryParams()),
     )
     wma: WMAIndicatorsQueryParams = Field(
         default=WMAIndicatorsQueryParams(),
-        description=WMAIndicatorsQueryParams().__repr__(),
+        description=repr(WMAIndicatorsQueryParams()),
     )
     zlma: ZLMAIndicatorsQueryParams = Field(
         default=ZLMAIndicatorsQueryParams(),
-        description=ZLMAIndicatorsQueryParams().__repr__(),
+        description=repr(ZLMAIndicatorsQueryParams()),
     )
     ad: ADIndicatorsQueryParams = Field(
         default=ADIndicatorsQueryParams(),
-        description=ADIndicatorsQueryParams().__repr__(),
+        description=repr(ADIndicatorsQueryParams()),
     )
     adoscillator: ADOscillatorIndicatorsQueryParams = Field(
         default=ADOscillatorIndicatorsQueryParams(),
-        description=ADOscillatorIndicatorsQueryParams().__repr__(),
+        description=repr(ADOscillatorIndicatorsQueryParams()),
     )
     adx: ADXIndicatorsQueryParams = Field(
         default=ADXIndicatorsQueryParams(),
-        description=ADXIndicatorsQueryParams().__repr__(),
+        description=repr(ADXIndicatorsQueryParams()),
     )
     aroon: AroonIndicatorsQueryParams = Field(
         default=AroonIndicatorsQueryParams(),
-        description=AroonIndicatorsQueryParams().__repr__(),
+        description=repr(AroonIndicatorsQueryParams()),
     )
     atr: ATRIndicatorsQueryParams = Field(
         default=ATRIndicatorsQueryParams(),
-        description=ATRIndicatorsQueryParams().__repr__(),
+        description=repr(ATRIndicatorsQueryParams()),
     )
     cci: CCIIndicatorsQueryParams = Field(
         default=CCIIndicatorsQueryParams(),
-        description=CCIIndicatorsQueryParams().__repr__(),
+        description=repr(CCIIndicatorsQueryParams()),
     )
     clenow: ClenowIndicatorsQueryParams = Field(
         default=ClenowIndicatorsQueryParams(),
-        description=ClenowIndicatorsQueryParams().__repr__(),
+        description=repr(ClenowIndicatorsQueryParams()),
     )
     demark: DemarkIndicatorsQueryParams = Field(
         default=DemarkIndicatorsQueryParams(),
-        description=DemarkIndicatorsQueryParams().__repr__(),
+        description=repr(DemarkIndicatorsQueryParams()),
     )
     donchian: DonchianIndicatorsQueryParams = Field(
         default=DonchianIndicatorsQueryParams(),
-        description=DonchianIndicatorsQueryParams().__repr__(),
+        description=repr(DonchianIndicatorsQueryParams()),
     )
     fib: FibIndicatorsQueryParams = Field(
         default=FibIndicatorsQueryParams(),
-        description=FibIndicatorsQueryParams().__repr__(),
+        description=repr(FibIndicatorsQueryParams()),
     )
     fisher: FisherIndicatorsQueryParams = Field(
         default=FisherIndicatorsQueryParams(),
-        description=FisherIndicatorsQueryParams().__repr__(),
+        description=repr(FisherIndicatorsQueryParams()),
     )
     ichimoku: IchimokuIndicatorsQueryParams = Field(
         default=IchimokuIndicatorsQueryParams(),
-        description=IchimokuIndicatorsQueryParams().__repr__(),
+        description=repr(IchimokuIndicatorsQueryParams()),
     )
     kc: KCIndicatorsQueryParams = Field(
         default=KCIndicatorsQueryParams(),
-        description=KCIndicatorsQueryParams().__repr__(),
+        description=repr(KCIndicatorsQueryParams()),
     )
     obv: OBVIndicatorsQueryParams = Field(
         default=OBVIndicatorsQueryParams(),
-        description=OBVIndicatorsQueryParams().__repr__(),
+        description=repr(OBVIndicatorsQueryParams()),
     )
     rsi: RSIIndicatorsQueryParams = Field(
         default=RSIIndicatorsQueryParams(),
-        description=RSIIndicatorsQueryParams().__repr__(),
+        description=repr(RSIIndicatorsQueryParams()),
     )
     srlines: SRLinesIndicatorsQueryParams = Field(
         default=SRLinesIndicatorsQueryParams(),
-        description=SRLinesIndicatorsQueryParams().__repr__(),
+        description=repr(SRLinesIndicatorsQueryParams()),
     )
     stoch: StochIndicatorsQueryParams = Field(
         default=StochIndicatorsQueryParams(),
-        description=StochIndicatorsQueryParams().__repr__(),
+        description=repr(StochIndicatorsQueryParams()),
     )
 
     def __repr__(self):

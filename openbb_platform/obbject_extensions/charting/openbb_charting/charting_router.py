@@ -1,6 +1,6 @@
 """Charting router."""
 
-# pylint: disable=too-many-arguments, too-many-locals, too-many-branches, too-many-statements, unused-argument
+# pylint: disable=too-many-arguments, too-many-locals, too-many-branches, too-many-statements, unused-argument, too-many-lines
 
 from typing import Any, Dict, Optional, Tuple, Union
 

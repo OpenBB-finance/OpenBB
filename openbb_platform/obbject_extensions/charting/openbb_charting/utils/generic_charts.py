@@ -1,6 +1,6 @@
 """Generic Charts Module."""
 
-# pylint: disable=too-many-arguments,unused-argument,too-many-locals
+# pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks
 
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -352,7 +352,9 @@ def bar_chart(  # noqa: PLR0912
 
     Parameters
     ----------
-    data : Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data]
+    data : Union[
+        list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data
+    ]
         Data to plot.
     x : str
         The x-axis column name.
@@ -482,9 +484,9 @@ def bar_chart(  # noqa: PLR0912
     return figure
 
 
-def bar_increasing_decreasing(
+def bar_increasing_decreasing(  # pylint: disable=W0102
     keys: List[str],
-    values: List[Any],
+    values: List[Union[int, float]],
     title: Optional[str] = None,
     xtitle: Optional[str] = None,
     ytitle: Optional[str] = None,
@@ -492,8 +494,41 @@ def bar_increasing_decreasing(
     orientation: Literal["h", "v"] = "h",
     barmode: Literal["group", "stack", "relative", "overlay"] = "relative",
     layout_kwargs: Optional[Dict[str, Any]] = None,
-):
-    figure = OpenBBFigure()
+) -> Union[OpenBBFigure, Figure]:
+    """Create a bar chart with increasing and decreasing values represented by two colors.
+
+    Parameters
+    ----------
+    keys : List[str]
+        The x-axis keys.
+    values : List[Any]
+        The y-axis values.
+    title : Optional[str], optional
+        The title of the chart, by default None.
+    xtitle : Optional[str], optional
+        The x-axis title, by default None.
+    ytitle : Optional[str], optional
+        The y-axis title, by default None.
+    colors : List[str], optional
+        The colors to use for increasing and decreasing values, by default ["blue", "red"].
+    orientation : Literal["h", "v"], optional
+        The orientation of the bars, by default "h".
+    barmode : Literal["group", "stack", "relative", "overlay"], optional
+        The bar mode, by default "relative".
+    layout_kwargs : Optional[Dict[str, Any]], optional
+        Additional keyword arguments to apply with figure.update_layout(), by default None.
+
+    Returns
+    -------
+    OpenBBFigure
+        The OpenBBFigure object.
+    """
+
+    try:
+        figure = OpenBBFigure()
+    except Exception as _:
+        figure = OpenBBFigure(create_backend=True)
+
     figure = figure.create_subplots(
         1,
         1,
@@ -510,7 +545,7 @@ def bar_increasing_decreasing(
         increasing_data = data[data > 0]  # type: ignore
         decreasing_data = data[data < 0]  # type: ignore
     except Exception as e:
-        raise ValueError(f"Error: {e}")
+        raise ValueError(f"Error: {e}") from e
 
     if not increasing_data.empty:
         figure.add_bar(
