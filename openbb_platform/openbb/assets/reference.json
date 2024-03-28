@@ -782,7 +782,7 @@
                 },
                 {
                     "name": "counter_currencies",
-                    "type": "Union[str, List[str]]",
+                    "type": "Union[List[str], str]",
                     "description": "An optional list of counter currency symbols to filter for. None returns all.",
                     "default": null,
                     "optional": true
@@ -4381,21 +4381,21 @@
                 },
                 {
                     "name": "analyst_ids",
-                    "type": "Union[str, List[str]]",
+                    "type": "Union[List[str], str]",
                     "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "firm_ids",
-                    "type": "Union[str, List[str]]",
+                    "type": "Union[List[str], str]",
                     "description": "Comma-separated list of firm IDs.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "fields",
-                    "type": "Union[str, List[str]]",
+                    "type": "Union[List[str], str]",
                     "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
                     "default": null,
                     "optional": true
@@ -5023,15 +5023,15 @@
             "standard": [
                 {
                     "name": "analyst_name",
-                    "type": "str",
-                    "description": "A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.",
+                    "type": "Union[str, List[str]]",
+                    "description": "Analyst names to return. Omitting will return all available analysts. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "firm_name",
-                    "type": "str",
-                    "description": "A comma separated list of firm names to bring back. Omitting will bring back all available firms.",
+                    "type": "Union[str, List[str]]",
+                    "description": "Firm names to return. Omitting will return all available firms. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
@@ -5047,14 +5047,14 @@
                 {
                     "name": "analyst_ids",
                     "type": "Union[str, List[str]]",
-                    "description": "A comma separated list of analyst IDs to bring back.",
+                    "description": "List of analyst IDs to return. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "firm_ids",
                     "type": "Union[str, List[str]]",
-                    "description": "A comma separated list of firm IDs to bring back.",
+                    "description": "Firm IDs to return. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 },
@@ -5075,7 +5075,7 @@
                 {
                     "name": "fields",
                     "type": "Union[str, List[str]]",
-                    "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
+                    "description": "Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                     "default": null,
                     "optional": true
                 }
@@ -13482,20 +13482,6 @@
                     "optional": false
                 },
                 {
-                    "name": "start_date",
-                    "type": "Union[date, str]",
-                    "description": "Start date of the data, in YYYY-MM-DD format.",
-                    "default": null,
-                    "optional": true
-                },
-                {
-                    "name": "end_date",
-                    "type": "Union[date, str]",
-                    "description": "End date of the data, in YYYY-MM-DD format.",
-                    "default": null,
-                    "optional": true
-                },
-                {
                     "name": "provider",
                     "type": "Literal['fmp']",
                     "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
@@ -13503,7 +13489,15 @@
                     "optional": true
                 }
             ],
-            "fmp": []
+            "fmp": [
+                {
+                    "name": "year",
+                    "type": "int",
+                    "description": "Year of the compensation.",
+                    "default": null,
+                    "optional": true
+                }
+            ]
         },
         "returns": {
             "OBBject": [
@@ -13551,84 +13545,99 @@
                     "optional": true
                 },
                 {
-                    "name": "filing_date",
-                    "type": "date",
-                    "description": "Date of the filing.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "accepted_date",
-                    "type": "datetime",
-                    "description": "Date the filing was accepted.",
-                    "default": "",
-                    "optional": false
-                },
-                {
-                    "name": "name_and_position",
+                    "name": "company_name",
                     "type": "str",
-                    "description": "Name and position of the executive.",
-                    "default": "",
-                    "optional": false
+                    "description": "The name of the company.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "industry",
+                    "type": "str",
+                    "description": "The industry of the company.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "year",
                     "type": "int",
                     "description": "Year of the compensation.",
-                    "default": "",
-                    "optional": false
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "name_and_position",
+                    "type": "str",
+                    "description": "Name and position.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "salary",
-                    "type": "float",
-                    "description": "Salary of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "Salary.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "bonus",
-                    "type": "float",
-                    "description": "Bonus of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "Bonus payments.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "stock_award",
-                    "type": "float",
-                    "description": "Stock award of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "Stock awards.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "incentive_plan_compensation",
-                    "type": "float",
-                    "description": "Incentive plan compensation of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "Incentive plan compensation.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "all_other_compensation",
-                    "type": "float",
-                    "description": "All other compensation of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "All other compensation.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "total",
-                    "type": "float",
-                    "description": "Total compensation of the executive.",
-                    "default": "",
-                    "optional": false
+                    "type": "Annotated[float, Ge(ge=0)]",
+                    "description": "Total compensation.",
+                    "default": null,
+                    "optional": true
+                }
+            ],
+            "fmp": [
+                {
+                    "name": "filing_date",
+                    "type": "date",
+                    "description": "Date of the filing.",
+                    "default": null,
+                    "optional": true
+                },
+                {
+                    "name": "accepted_date",
+                    "type": "datetime",
+                    "description": "Date the filing was accepted.",
+                    "default": null,
+                    "optional": true
                 },
                 {
                     "name": "url",
                     "type": "str",
-                    "description": "URL of the filing data.",
-                    "default": "",
-                    "optional": false
+                    "description": "URL to the filing data.",
+                    "default": null,
+                    "optional": true
                 }
-            ],
-            "fmp": []
+            ]
         },
         "model": "ExecutiveCompensation"
     },
@@ -16612,7 +16621,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                     "default": "",
                     "optional": false
                 },
@@ -25702,7 +25711,7 @@
                 {
                     "name": "symbol",
                     "type": "Union[str, List[str]]",
-                    "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
+                    "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
                     "default": null,
                     "optional": true
                 },

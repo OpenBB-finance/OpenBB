@@ -1,6 +1,6 @@
 ---
 title: Basic Syntax
-sidebar_position: 2
+sidebar_position: 5
 description: This page provides comprehensive information about standardized command
   syntax for an open-source platform. Topics discussed include the structure of command
   syntax, use of standardized parameters, usage of provider and symbol parameters,

@@ -218,10 +218,10 @@ class ProviderInterface(metaclass=SingletonMeta):
             multiple := extra.get("multiple_items_allowed")  # type: ignore
         ):
             if provider_name:
-                additional_description += " Multiple items allowed."
+                additional_description += " Multiple comma separated items allowed."
             else:
                 additional_description += (
-                    " Multiple items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
+                    " Multiple comma separated items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
                 )
 
         provider_field = (
