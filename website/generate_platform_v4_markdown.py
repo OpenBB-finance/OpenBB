@@ -710,6 +710,7 @@ def generate_platform_markdown(
     try:
         with open(REFERENCE_FILE_PATH) as f:
             reference = json.load(f)
+            paths = reference.get("paths", {})
     except FileNotFoundError as exc:
         raise FileNotFoundError(
             "File not found! Please ensure the file exists."
@@ -728,7 +729,7 @@ def generate_platform_markdown(
     )  # noqa: E501
     console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
-    for path, path_data in reference.items():
+    for path, path_data in paths.items():
         reference_markdown_content = ""
         data_markdown_content = ""
 

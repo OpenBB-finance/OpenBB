@@ -45,6 +45,7 @@ from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
+from openbb_core.app.version import VERSION
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
@@ -90,9 +91,11 @@ class PackageBuilder:
     def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(
-                self.directory / "assets" / "extension_map.json"
+            reference = PackageBuilder._read(
+                self.directory / "assets" / "reference.json"
             )
+            ext_map = reference.get("extensions", {})
+            add, remove = PackageBuilder._diff(ext_map)
             if add:
                 a = ", ".join(sorted(add))
                 print(f"Extensions to add: {a}")  # noqa: T201
@@ -113,10 +116,9 @@ class PackageBuilder:
         self.console.log("\nBuilding extensions package...\n")
         self._clean(modules)
         ext_map = self._get_extension_map()
-        self._save_extension_map(ext_map)
         self._save_modules(modules, ext_map)
         self._save_package()
-        self._save_reference_file()
+        self._save_reference_file(ext_map)
         if self.lint:
             self._run_linters()
 
@@ -142,12 +144,6 @@ class PackageBuilder:
                 f"{e.name}@{getattr(e.dist, 'version', '')}" for e in entry_point
             ]
         return ext_map
-
-    def _save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
-        """Save the map of extensions available at build time."""
-        code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
-        self.console.log("Writing extension map...")
-        self._write(code=code, name="extension_map", extension="json", folder="assets")
 
     def _save_modules(
         self,
@@ -185,11 +181,22 @@ class PackageBuilder:
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         self._write(code=code, name="__init__")
 
-    def _save_reference_file(self):
+    def _save_reference_file(self, ext_map: Optional[Dict[str, List[str]]] = None):
         """Save the reference.json file."""
         self.console.log("\nWriting reference file...")
         data = ReferenceGenerator.get_reference_data()
-        code = dumps(obj=data, indent=4)
+        code = dumps(
+            obj={
+                "openbb": VERSION,
+                "info": {
+                    "title": "OpenBB Platform (Python)",
+                    "description": "This is the OpenBB Platform (Python).",
+                },
+                "extensions": ext_map,
+                "paths": data,
+            },
+            indent=4,
+        )
         self._write(code=code, name="reference", extension="json", folder="assets")
 
     def _run_linters(self):
@@ -224,13 +231,28 @@ class PackageBuilder:
         return content
 
     @staticmethod
-    def _diff(path: Path) -> Tuple[Set[str], Set[str]]:
+    def _diff(ext_map: Dict[str, List[str]]) -> Tuple[Set[str], Set[str]]:
         """Check differences between built and installed extensions.
 
         Parameters
         ----------
-        path: Path
-            The path to the folder where the extension map is stored.
+        ext_map: Dict[str, List[str]]
+            Dictionary containing the extensions.
+            Example:
+                {
+                    "openbb_core_extension": [
+                        "commodity@1.0.1",
+                        ...
+                    ],
+                    "openbb_provider_extension": [
+                        "benzinga@1.1.3",
+                        ...
+                    ],
+                    "openbb_obbject_extension": [
+                        "openbb_charting@1.0.0",
+                        ...
+                    ]
+                }
 
         Returns
         -------
@@ -238,8 +260,6 @@ class PackageBuilder:
             First element: set of installed extensions that are not in the package.
             Second element: set of extensions in the package that are not installed.
         """
-        ext_map = PackageBuilder._read(path)
-
         add: Set[str] = set()
         remove: Set[str] = set()
         groups = OpenBBGroups.groups()
