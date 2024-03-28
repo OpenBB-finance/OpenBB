@@ -16,6 +16,7 @@ from typing import (
     get_origin,
     get_type_hints,
 )
+
 from openbb_core.app.model.custom_parameter import (
     OpenBBCustomChoices,
     OpenBBCustomParameter,
@@ -96,7 +97,7 @@ class ReferenceToCustomArgumentsProcessor:
                 type_ = type_.replace("Annotated[", "").replace("]", "")
             type_ = type_.split(",")[0]
 
-        type_ = eval(type_)  # pylint: disable=eval-used
+        type_ = eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
 
         if get_origin(type_) is Literal:
             type_ = type(get_args(type_)[0])
@@ -125,22 +126,17 @@ class ReferenceToCustomArgumentsProcessor:
                 choices = get_args(type_)
                 # param_type = type(choices[0])
 
-        if type_origin is Union:
+        if type_origin is Union and type(None) in get_args(type_):
+            # remove NoneType from the args
+            args = [arg for arg in get_args(type_) if arg != type(None)]
+            # if there is only one arg left, use it
+            if len(args) > 1:
+                raise ValueError("Union with NoneType should have only one type left")
+            type_ = args[0]
 
-            # check if it's an Optional, which would be a Union with NoneType
-            if type(None) in get_args(type_):
-                # remove NoneType from the args
-                args = [arg for arg in get_args(type_) if arg != type(None)]
-                # if there is only one arg left, use it
-                if len(args) > 1:
-                    raise ValueError(
-                        "Union with NoneType should have only one type left"
-                    )
-                type_ = args[0]
-
-                if get_origin(type_) is Literal:
-                    choices = get_args(type_)
-                    # param_type = type(choices[0])
+            if get_origin(type_) is Literal:
+                choices = get_args(type_)
+                # param_type = type(choices[0])
 
         return choices
 
