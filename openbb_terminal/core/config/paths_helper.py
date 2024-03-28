@@ -1,4 +1,4 @@
-# IMPORTATION STANDARD
+from pathlib import Path
 from typing import List
 
 from openbb_terminal.core.config.paths import (
@@ -7,8 +7,6 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.session.current_user import get_platform_user
-
-# pylint: disable=W0603
 
 
 def create_paths(list_dirs: List):
@@ -34,8 +32,8 @@ def create_files(list_files: List):
 
 
 current_user = get_platform_user()
-user_data_directory = current_user.preferences.data_directory
-user_export_directory = current_user.preferences.export_directory
+user_data_directory = Path(current_user.preferences.data_directory)
+user_export_directory = Path(current_user.preferences.export_directory)
 
 dirs_list = [
     SETTINGS_DIRECTORY,
@@ -55,7 +53,7 @@ def init_userdata():
     """
     Initializes the user data folder
     """
-    global initialized  # noqa
+    global initialized  # pylint: disable=global-statement
     if not initialized:
         create_paths(dirs_list)
         create_files(dirs_files)

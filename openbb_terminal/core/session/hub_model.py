@@ -69,7 +69,13 @@ def upload_routine(
             timeout=timeout,
         )
         if response.status_code == 200:
-            username = get_platform_user().profile.hub_session.username
+            username = getattr(
+                get_platform_user().profile.hub_session, "username", None
+            )
+            if not username:
+                console.print("[red]No username found.[/red]")
+                console.print("[red]Failed to upload your routine.[/red]")
+                return None
             console.print("[green]Successfully uploaded your routine.[/]")
 
             run_env = BackendEnvironment.HUB_URL.rstrip("/")
