@@ -67,12 +67,6 @@ class TAIndicator:
     ]
     args: List[Arguments]
 
-    def __post_init__(self):
-        """Post init."""
-        self.args = [
-            arg if isinstance(arg, Arguments) else Arguments(**arg) for arg in self.args
-        ]
-
     def __iter__(self):
         """Return iterator."""
         return iter(self.args)
@@ -99,16 +93,6 @@ class ChartIndicators:
     """Chart technical analysis indicators."""
 
     indicators: Optional[List[TAIndicator]] = None
-
-    def __post_init__(self):
-        """Post init."""
-        if self.indicators:
-            self.indicators = [
-                TAIndicator(**indicator) if isinstance(indicator, dict) else indicator
-                for indicator in self.indicators
-            ]
-        else:
-            self.indicators = []
 
     def get_indicator(self, name: str) -> Union[TAIndicator, None]:
         """Return indicator with given name."""
