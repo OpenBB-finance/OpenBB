@@ -15,9 +15,12 @@ def _get_type_name(t):
     """Get the type name of a type hint."""
     if isinstance(t, str):
         return t
-    elif hasattr(t, "__origin__"):
+    elif hasattr(t, "__origin__") and hasattr(t.__origin__, "__name__"):
         return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
-    return t.__name__
+    elif hasattr(t, "__name__"):
+        return t.__name__
+    else:
+        return str(t)
 
 
 class BaseQueryParams(QueryParams):
@@ -77,6 +80,10 @@ class EquityPricePerformanceChartQueryParams(ChartQueryParams):
         default=None,
         description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
     )
+
+
+class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams):
+    """ETF Price Performance Chart Query Params."""
 
 
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
@@ -307,7 +314,8 @@ class ChartParams:
     economy_fred_series = EconomyFredSeriesChartQueryParams
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     equity_price_performance = EquityPricePerformanceChartQueryParams
-    etf_historical = EquityPriceHistoricalChartQueryParams
+    etf_historical = EtfPricePerformanceChartQueryParams
+    etf_price_performance = EquityPricePerformanceChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
     technical_cones = TechnicalConesChartQueryParams
     technical_sma = TechnicalSMAChartQueryParams

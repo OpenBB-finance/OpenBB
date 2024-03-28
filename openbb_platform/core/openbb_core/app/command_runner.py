@@ -195,7 +195,9 @@ class ParametersBuilder:
         ):
             valid = asdict(annotation())  # type: ignore
             for p in extra_params:
-                if p not in valid or p == "chart_params":
+                if "chart_params" in p:
+                    continue
+                if p not in valid:
                     warn(
                         message=f"Parameter '{p}' not found.",
                         category=OpenBBWarning,

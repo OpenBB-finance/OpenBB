@@ -17,6 +17,7 @@ from openbb_charting.query_params import (
     EconomyFredSeriesChartQueryParams,
     EquityPriceHistoricalChartQueryParams,
     EquityPricePerformanceChartQueryParams,
+    EtfPricePerformanceChartQueryParams,
     TechnicalConesChartQueryParams,
 )
 from openbb_charting.styles.colors import LARGE_CYCLER
@@ -129,7 +130,7 @@ def equity_price_performance(  # noqa: PLR0912
 
 
 def etf_price_performance(
-    **kwargs: Union[Any, EquityPricePerformanceChartQueryParams],
+    **kwargs: Union[Any, EtfPricePerformanceChartQueryParams],
 ) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """ETF Historical Chart."""
     fig, content = equity_price_performance(**kwargs)
