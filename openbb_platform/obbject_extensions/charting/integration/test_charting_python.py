@@ -59,6 +59,7 @@ def test_charting_equity_price_historical(params, obb):
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
 
+
 @parametrize(
     "params",
     [
