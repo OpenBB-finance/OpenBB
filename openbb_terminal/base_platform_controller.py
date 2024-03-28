@@ -108,7 +108,6 @@ class PlatformController(BaseController):
     def _generate_commands(self):
         """Generate commands."""
         for name, translator in self.translators.items():
-
             # Prepare the translator name to create a command call in the controller
             new_name = name.replace(f"{self._name}_", "")
 
@@ -211,7 +210,6 @@ class PlatformController(BaseController):
         if self.CHOICES_COMMANDS:
             mt.add_raw("\nCommands\n\n")
             for command in self.CHOICES_COMMANDS:
-
                 command_description = (
                     obb.coverage.reference.get(f"{self.PATH}{command}", {})
                     .get("description", "")

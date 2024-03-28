@@ -232,7 +232,6 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.timezone:
-
             if is_timezone_valid(ns_parser.timezone):
                 set_and_save_preference("TIMEZONE", ns_parser.timezone)
             else:

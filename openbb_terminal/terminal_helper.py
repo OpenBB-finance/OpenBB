@@ -184,7 +184,6 @@ def reset(queue: Optional[List[str]] = None):
     dev = get_current_settings().DEV_BACKEND
 
     try:
-
         # remove the hub routines
         if not is_local():
             user = get_platform_user()
