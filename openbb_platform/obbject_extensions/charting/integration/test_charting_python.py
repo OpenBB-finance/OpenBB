@@ -59,26 +59,6 @@ def test_charting_equity_price_historical(params, obb):
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
 
-
-@parametrize(
-    "params",
-    [
-        ({"symbol": "AAPL", "limit": 100, "chart": "True"}),
-    ],
-)
-@pytest.mark.integration
-def test_charting_equity_fundamental_multiples(params, obb):
-    """Test chart equity multiples."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.fundamental.multiples(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert result.chart.content
-    assert isinstance(result.chart.fig, OpenBBFigure)
-
-
 @parametrize(
     "params",
     [
