@@ -1,10 +1,6 @@
-import datetime
-import json
-from typing import Any, Dict, List, Literal, Optional
-from uuid import UUID
+from typing import List, Optional
 
 import requests
-from jose import jwt
 
 from openbb_terminal.core.session.constants import (
     CONNECTION_ERROR_MSG,

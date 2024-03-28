@@ -33,8 +33,8 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.core.session import constants
 from openbb_terminal.core.session.current_settings import (
-    set_settings,
     get_current_settings,
+    set_settings,
 )
 from openbb_terminal.core.session.current_user import (
     get_platform_user,

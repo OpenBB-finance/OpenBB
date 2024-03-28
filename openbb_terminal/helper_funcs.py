@@ -14,8 +14,8 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from pytz import all_timezones, timezone
 import requests
+from pytz import all_timezones, timezone
 from rich.table import Table
 
 from openbb_terminal.core.session.current_settings import get_current_settings

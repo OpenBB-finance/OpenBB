@@ -15,14 +15,14 @@ from openbb_terminal.core.session.current_settings import (
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.helper_funcs import (
+    AVAILABLE_FLAIRS,
+    all_timezones,
+    is_timezone_valid,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.helper_funcs import (
-    AVAILABLE_FLAIRS,
-    is_timezone_valid,
-    all_timezones,
-)
 
 
 def set_and_save_preference(name: str, value: Union[bool, Path, str]):

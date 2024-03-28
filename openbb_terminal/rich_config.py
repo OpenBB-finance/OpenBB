@@ -14,7 +14,6 @@ from rich.text import Text
 from openbb_terminal.core.plots.terminal_style import theme
 from openbb_terminal.core.session.current_settings import get_current_settings
 
-
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
 # https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
 

@@ -1,4 +1,5 @@
 from pydantic.dataclasses import dataclass
+
 from openbb_terminal.core.models import BaseModel
 
 
