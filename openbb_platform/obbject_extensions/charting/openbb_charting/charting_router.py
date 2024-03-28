@@ -1,6 +1,7 @@
 """Charting router."""
 
-import json
+# pylint: disable=too-many-arguments, too-many-locals, too-many-branches, too-many-statements, unused-argument
+
 from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
@@ -28,10 +29,6 @@ from openbb_charting.utils.helpers import (
 )
 
 CHART_FORMAT = ChartFormat.plotly
-
-# if TYPE_CHECKING:
-
-# from .core.openbb_figure_table import OpenBBFigureTable
 
 
 def equity_price_performance(  # noqa: PLR0912
@@ -76,7 +73,7 @@ def equity_price_performance(  # noqa: PLR0912
 
     for col in cols:
         if col in data.columns and data[col].notnull().any():
-            df[col.replace("_", " ").title()] = data[col].apply(
+            df[col.replace("_", " ").title() if col !="ytd" else col.upper()] = data[col].apply(
                 lambda x: round(x * 100, 4) if x is not None else None
             )
 
@@ -128,6 +125,20 @@ def equity_price_performance(  # noqa: PLR0912
     fig.update_layout(**layout_kwargs)
     content = fig.show(external=True).to_plotly_json()  # type: ignore
 
+    return fig, content
+
+
+def etf_price_performance(
+    **kwargs: Union[Any, EquityPricePerformanceChartQueryParams],
+) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
+    """ETF Historical Chart."""
+    fig, content = equity_price_performance(**kwargs)
+    if "title" in kwargs and kwargs.get("title") is not None:
+        fig.set_title(kwargs.get("title"))  # type: ignore
+    else:
+        fig.set_title("ETF Price Performance")  # type: ignore
+
+    content = fig.show(external=True).to_plotly_json() # type: ignore
     return fig, content
 
 

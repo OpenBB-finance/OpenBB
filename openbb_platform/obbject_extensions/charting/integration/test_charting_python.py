@@ -498,3 +498,28 @@ def test_charting_equity_price_performance(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+                "chart": True,
+                "provider": "intrinio",
+                "chart_params": {"orientation": "v"},
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_etf_price_performance(params, obb):
+    """Test chart etf price performance."""
+    result = obb.etf.price_performance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
