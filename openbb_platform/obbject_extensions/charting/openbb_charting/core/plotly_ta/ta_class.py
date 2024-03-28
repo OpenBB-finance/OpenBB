@@ -88,7 +88,7 @@ class PlotlyTA(PltTA):
 
     inchart_colors: List[str] = []
     plugins: List[Type[PltTA]] = []
-    df_ta: pd.DataFrame = None
+    df_ta: Optional[pd.DataFrame] = None
     close_column: Optional[str] = "close"
     has_volume: bool = True
     show_volume: bool = True
@@ -112,11 +112,11 @@ class PlotlyTA(PltTA):
             # Creates the instance of the class and loads the plugins
             # We set the global variable to the instance of the class so that
             # the plugins are only loaded once
-            PLOTLY_TA = super().__new__(cls)
-            PLOTLY_TA._locate_plugins(
+            PLOTLY_TA = super().__new__(cls)  # type: ignore[attr-defined, assignment]
+            PLOTLY_TA._locate_plugins(  # type: ignore[attr-defined]
                 getattr(cls.charting_settings, "debug_mode", False)
             )
-            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)
+            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # type: ignore[attr-defined, assignment]
 
         return PLOTLY_TA
 
@@ -180,7 +180,7 @@ class PlotlyTA(PltTA):
             df_stock = df_stock.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
-            indicators = ChartIndicators.from_dict(indicators or dict(dict()))
+            indicators = ChartIndicators.from_dict(indicators or {})
 
         # Apply to_datetime to the index in a way that handles daylight savings.
         df_stock.loc[:, "date"] = df_stock.index  # type: ignore
@@ -289,7 +289,7 @@ class PlotlyTA(PltTA):
     def _clear_data(self):
         """Clear and reset all data to default values."""
         self.df_stock = None
-        self.indicators = {}
+        self.indicators = ChartIndicators.from_dict({})
         self.params = None
         self.intraday = False
         self.show_volume = True

@@ -155,7 +155,7 @@ class PlotlyTA(PltTA):
             df_stock = df_stock.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
-            indicators = ChartIndicators.from_dict(indicators or dict(dict()))
+            indicators = ChartIndicators.from_dict(indicators or {})
 
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
