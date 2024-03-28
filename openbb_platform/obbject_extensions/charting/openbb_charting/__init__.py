@@ -281,6 +281,7 @@ class Charting:
 
         return fig
 
+    # pylint: disable=inconsistent-return-statements
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
 
@@ -327,7 +328,7 @@ class Charting:
                     "Failed to automatically create a generic chart with the data provided."
                 ) from e
 
-    # pylint: disable=too-many-locals
+    # pylint: disable=too-many-locals,inconsistent-return-statements
     def to_chart(
         self,
         data: Optional[

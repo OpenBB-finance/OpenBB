@@ -13,11 +13,10 @@ MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
 
 def _get_type_name(t):
     """Get the type name of a type hint."""
-    if isinstance(t, str):
-        return t
-    elif hasattr(t, "__origin__") and hasattr(t.__origin__, "__name__"):
+
+    if hasattr(t, "__origin__") and hasattr(t.__origin__, "__name__"):
         return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
-    elif hasattr(t, "__name__"):
+    if hasattr(t, "__name__"):
         return t.__name__
     else:
         return str(t)

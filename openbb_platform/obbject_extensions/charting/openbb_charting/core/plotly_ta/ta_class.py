@@ -1,6 +1,6 @@
 """Technical Analysis class for Plotly."""
 
-# pylint: disable=R0902
+# pylint: disable=R0902,R0916,R0912
 import importlib
 import inspect
 import sys
