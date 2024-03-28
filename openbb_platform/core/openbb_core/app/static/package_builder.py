@@ -788,13 +788,18 @@ class MethodDefinition:
             code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
-        extra_info = {}
+        info = {}
 
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
+                fields = param.annotation.__args__[0].__dataclass_fields__
+                values = {k: k for k in fields}
+                for k in values:
+                    if extra := MethodDefinition.get_extra(fields[k]):
+                        info[k] = extra
                 code += f"                {name}=kwargs,\n"
             elif name == "provider_choices":
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
@@ -808,19 +813,18 @@ class MethodDefinition:
                 code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
-                value = {k: k for k in fields}
+                values = {k: k for k in fields}
                 code += f"                {name}={{\n"
-                for k, v in value.items():
+                for k, v in values.items():
                     code += f'                    "{k}": {v},\n'
-                    # TODO: Extend this to extra_params
                     if extra := MethodDefinition.get_extra(fields[k]):
-                        extra_info[k] = extra
+                        info[k] = extra
                 code += "                },\n"
             else:
                 code += f"                {name}={name},\n"
 
-        if extra_info:
-            code += f"                extra_info={extra_info},\n"
+        if info:
+            code += f"                info={info},\n"
 
         if MethodDefinition.is_data_processing_function(path):
             code += "                data_processing=True,\n"

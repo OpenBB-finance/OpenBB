@@ -448,13 +448,13 @@ class ROUTER_fixedincome_corporate(Container):
         maturity: Annotated[
             Union[float, str, List[Union[float, str]]],
             OpenBBCustomParameter(
-                description="Maturities in years. Multiple items allowed for provider(s): fred."
+                description="Maturities in years. Multiple comma separated items allowed for provider(s): fred."
             ),
         ] = 10.0,
         category: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred."
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred."
             ),
             OpenBBCustomChoices(choices=["par_yield", "spot_rate"]),
         ] = "spot_rate",
@@ -481,9 +481,9 @@ class ROUTER_fixedincome_corporate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Union[float, str, List[Union[float, str]]]
-            Maturities in years. Multiple items allowed for provider(s): fred.
+            Maturities in years. Multiple comma separated items allowed for provider(s): fred.
         category : Union[str, List[str]]
-            Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred.
+            Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
@@ -534,7 +534,7 @@ class ROUTER_fixedincome_corporate(Container):
                     "category": category,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "maturity": {"multiple_items_allowed": ["fred"]},
                     "category": {"multiple_items_allowed": ["fred"]},
                 },

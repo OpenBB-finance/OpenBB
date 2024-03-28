@@ -35,7 +35,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -51,7 +51,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.
+            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -96,7 +96,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -107,7 +107,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
+                description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -123,7 +123,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.
+            Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -178,7 +178,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -189,7 +189,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
         ],
         interval: Annotated[
@@ -221,7 +221,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         interval : Optional[str]
             Time interval of the data to return.
         start_date : Union[datetime.date, None, str]
@@ -350,7 +350,7 @@ class ROUTER_etf(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "symbol": {
                         "multiple_items_allowed": [
                             "fmp",
@@ -358,7 +358,9 @@ class ROUTER_etf(Container):
                             "tiingo",
                             "yfinance",
                         ]
-                    }
+                    },
+                    "adjusted": {"deprecated": True},
+                    "prepost": {"deprecated": True},
                 },
             )
         )
@@ -700,7 +702,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -716,7 +718,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -793,7 +795,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -804,7 +806,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, intrinio, yfinance."
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Annotated[
@@ -820,7 +822,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, intrinio, yfinance.
+            Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1181,7 +1183,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "symbol": {
                         "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
                     }
@@ -1196,7 +1198,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
         ],
         provider: Annotated[
@@ -1212,7 +1214,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -1324,7 +1326,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
             )
         )
 
