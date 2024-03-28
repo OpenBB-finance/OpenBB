@@ -180,7 +180,7 @@ class PlotlyTA(PltTA):
             df_stock = df_stock.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
-            indicators = ChartIndicators.from_dict(indicators or dict(dict()))
+            indicators = ChartIndicators.from_dict(indicators or {})
 
         # Apply to_datetime to the index in a way that handles daylight savings.
         df_stock.loc[:, "date"] = df_stock.index  # type: ignore
