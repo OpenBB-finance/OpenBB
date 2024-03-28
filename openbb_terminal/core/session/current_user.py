@@ -6,7 +6,9 @@ from openbb_core.app.model.user_settings import UserSettings
 
 def get_platform_user() -> UserSettings:
     """Get platform user."""
-    return deepcopy(obb.user)
+    if hasattr(obb, "user"):
+        return deepcopy(obb.user)
+    raise AttributeError("The 'obb' object has no attribute 'user'")
 
 
 def is_local() -> bool:
@@ -17,4 +19,6 @@ def is_local() -> bool:
     bool
         True if user is guest, False otherwise.
     """
-    return not bool(obb.user.profile.hub_session)
+    if hasattr(obb, "user") and hasattr(obb.user, "profile"):
+        return not bool(obb.user.profile.hub_session)
+    return True

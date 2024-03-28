@@ -647,7 +647,8 @@ class BaseController(metaclass=ABCMeta):
                             + title_for_local_storage
                         )
                         routine_file = os.path.join(
-                            current_user.preferences.USER_ROUTINES_DIRECTORY,
+                            current_user.preferences.export_directory,
+                            "routines",
                             new_name,
                         )
                         console.print(
@@ -686,8 +687,13 @@ class BaseController(metaclass=ABCMeta):
                 hub_session = current_user.profile.hub_session
 
                 if routine is not None:
+                    auth_header = (
+                        f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}"
+                        if hub_session
+                        else None
+                    )
                     kwargs = {
-                        "auth_header": f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}",
+                        "auth_header": auth_header,
                         "name": SESSION_RECORDED_NAME,
                         "description": SESSION_RECORDED_DESCRIPTION,
                         "routine": routine,
@@ -727,8 +733,12 @@ class BaseController(metaclass=ABCMeta):
             local_user = is_local()
             if not local_user:
                 hub_session = current_user.profile.hub_session
-                console.print(f"[info]email:[/info] {hub_session.email}")
-                console.print(f"[info]uuid:[/info] {hub_session.user_uuid}")
+                console.print(
+                    f"[info]email:[/info] {hub_session.email if hub_session else 'N/A'}"
+                )
+                console.print(
+                    f"[info]uuid:[/info] {hub_session.user_uuid if hub_session else 'N/A'}"
+                )
             else:
                 print_guest_block_msg()
 

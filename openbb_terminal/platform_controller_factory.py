@@ -1,3 +1,5 @@
+from typing import Dict, List, Union
+
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal.base_platform_controller import PlatformController
 
@@ -20,11 +22,11 @@ class PlatformControllerFactory:
     def create(self) -> type:
         ClassName = self.controller_name
         Parents = (PlatformController,)
-        Attributes = {"CHOICES_GENERATION": True}
+        Attributes: Dict[str, Union[bool, List[str]]] = {"CHOICES_GENERATION": True}
 
         # Menu and Command choices generation
-        choices_menus = []
-        choices_commands = []
+        choices_menus: List[str] = []
+        choices_commands: List[str] = []
         translators = self._translated_target.translators
         paths = self._translated_target.paths
         # menus

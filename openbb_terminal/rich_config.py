@@ -2,7 +2,7 @@
 
 __docformat__ = "numpy"
 
-from typing import Iterable, List, Optional, Tuple, Union
+from typing import Dict, Iterable, List, Optional, Tuple, Union
 
 import i18n
 from openbb import obb
@@ -58,7 +58,11 @@ def get_ordered_list_sources(command_path: str) -> List:
     List
         The list of sources for the given command.
     """
-    command_reference = obb.coverage.reference.get(command_path, {})
+    reference: Dict[str, Dict] = {}
+    if coverage := getattr(obb, "coverage", None):
+        reference = getattr(coverage, "reference", {})
+
+    command_reference = reference.get(command_path, {})
     if command_reference:
         providers = list(command_reference["parameters"].keys())
         return [provider for provider in providers if provider != "standard"]
