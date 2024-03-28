@@ -35,8 +35,8 @@ CHART_FORMAT = ChartFormat.plotly
 
 
 def equity_price_performance(  # noqa: PLR0912
-    **kwargs: "EquityPricePerformanceChartQueryParams",
-) -> Tuple[Union["OpenBBFigure", Figure], Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPricePerformanceChartQueryParams],
+) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """Equity Price Performance Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -132,8 +132,8 @@ def equity_price_performance(  # noqa: PLR0912
 
 
 def equity_price_historical(  # noqa: PLR0912
-    **kwargs: "EquityPriceHistoricalChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Equity Price Historical Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -408,29 +408,29 @@ def equity_price_historical(  # noqa: PLR0912
 
 
 def etf_historical(
-    **kwargs: "EquityPriceHistoricalChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """ETF Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def index_price_historical(
-    **kwargs: "EquityPriceHistoricalChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Index Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def currency_price_historical(
-    **kwargs: "EquityPriceHistoricalChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Currency Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def crypto_price_historical(
-    **kwargs: "EquityPriceHistoricalChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Crypto Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
@@ -575,42 +575,42 @@ def _ta_ma(**kwargs):
     return fig, content
 
 
-def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_sma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Plot simple moving average chart."""
     if "ma_type" not in kwargs:
         kwargs["ma_type"] = "sma"
     return _ta_ma(**kwargs)
 
 
-def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_ema(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Exponential moving average chart."""
     if "ma_type" not in kwargs:
         kwargs["ma_type"] = "ema"
     return _ta_ma(**kwargs)
 
 
-def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_hma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Hull moving average chart."""
     if "ma_type" not in kwargs:
         kwargs["ma_type"] = "hma"
     return _ta_ma(**kwargs)
 
 
-def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_wma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Weighted moving average chart."""
     if "ma_type" not in kwargs:
         kwargs["ma_type"] = "wma"
     return _ta_ma(**kwargs)
 
 
-def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_zlma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Zero lag moving average chart."""
     if "ma_type" not in kwargs:
         kwargs["ma_type"] = "zlma"
     return _ta_ma(**kwargs)
 
 
-def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Technical Aroon Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -651,7 +651,7 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     return fig, content
 
 
-def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -690,7 +690,7 @@ def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     return fig, content
 
 
-def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Average directional movement index chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -726,7 +726,7 @@ def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     return fig, content
 
 
-def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Relative strength index chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -763,8 +763,8 @@ def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 
 def technical_cones(
-    **kwargs: "TechnicalConesChartQueryParams",
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, TechnicalConesChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Volatility Cones Chart."""
     data = kwargs.get("data")
 
@@ -870,8 +870,8 @@ def technical_cones(
 
 
 def economy_fred_series(
-    **kwargs: Union[Any, FredSeriesChartQueryParams],
-) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    **kwargs: Union[Any, EconomyFredSeriesChartQueryParams],
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """FRED Series Chart."""
     ytitle_dict = {
         "chg": "Change",
