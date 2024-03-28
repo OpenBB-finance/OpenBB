@@ -91,7 +91,7 @@ class PluginMeta(type):
 class PltTA(metaclass=PluginMeta):
     """The base class that all Plotly plugins must inherit from."""
 
-    indicators: Optional[ChartIndicators] = None
+    indicators: ChartIndicators
     intraday: bool = False
     df_stock: Union[pd.DataFrame, pd.Series]
     df_ta: Optional[pd.DataFrame] = None
