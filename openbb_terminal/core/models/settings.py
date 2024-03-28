@@ -7,7 +7,7 @@ class Settings(BaseModel):
     """Data model for settings."""
 
     # Platform CLI version
-    VERSION: str = "4.0.0"
+    VERSION: str = "1.0.0"
 
     # DEVELOPMENT FLAGS
     TEST_MODE: bool = False

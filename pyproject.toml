@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "openbb-terminal"
-version = "3.2.5"
+name = "openbb-cli"
+version = "1.0.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
