@@ -69,7 +69,7 @@ jobs:
           # Run linters for openbb_platform
           if [ -n "${{ env.platform_files }}" ]; then
             pylint ${{ env.platform_files }}
-            mypy ${{ env.platform_files }}  --ignore-missing-imports  --check-untyped-defs
+            mypy ${{ env.platform_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
           else
             echo "No Python files changed in openbb_platform"
           fi

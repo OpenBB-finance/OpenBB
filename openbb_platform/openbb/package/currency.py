@@ -154,7 +154,7 @@ class ROUTER_currency(Container):
         base: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="The base currency symbol. Multiple items allowed for provider(s): fmp."
+                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ] = "usd",
         quote_type: Annotated[
@@ -164,7 +164,7 @@ class ROUTER_currency(Container):
             ),
         ] = "indirect",
         counter_currencies: Annotated[
-            Union[str, List[str], None],
+            Union[List[str], str, None],
             OpenBBCustomParameter(
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
@@ -182,10 +182,10 @@ class ROUTER_currency(Container):
         Parameters
         ----------
         base : Union[str, List[str]]
-            The base currency symbol. Multiple items allowed for provider(s): fmp.
+            The base currency symbol. Multiple comma separated items allowed for provider(s): fmp.
         quote_type : Literal['direct', 'indirect']
             Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
-        counter_currencies : Union[str, List[str], None]
+        counter_currencies : Union[List[str], str, None]
             An optional list of counter currency symbols to filter for. None returns all.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -265,6 +265,6 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                extra_info={"base": {"multiple_items_allowed": ["fmp"]}},
+                info={"base": {"multiple_items_allowed": ["fmp"]}},
             )
         )

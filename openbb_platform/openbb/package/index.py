@@ -189,7 +189,7 @@ class ROUTER_index(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -221,7 +221,7 @@ class ROUTER_index(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -304,7 +304,7 @@ class ROUTER_index(Container):
                     "interval": interval,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "symbol": {
                         "multiple_items_allowed": [
                             "fmp",

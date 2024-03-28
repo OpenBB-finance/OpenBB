@@ -1,6 +1,7 @@
 """Charting router."""
 
-from typing import Any, Dict, Tuple, Union
+import json
+from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
 from openbb_core.app.model.charts.chart import ChartFormat
@@ -765,7 +766,6 @@ def technical_cones(
     **kwargs: "TechnicalConesChartQueryParams",
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Volatility Cones Chart."""
-
     data = kwargs.get("data")
 
     if isinstance(data, pd.DataFrame) and not data.empty and "window" in data.columns:
@@ -870,10 +870,9 @@ def technical_cones(
 
 
 def economy_fred_series(
-    **kwargs: "EconomyFredSeriesChartQueryParams",
+    **kwargs: Union[Any, FredSeriesChartQueryParams],
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """FRED Series Chart."""
-
     ytitle_dict = {
         "chg": "Change",
         "ch1": "Change From Year Ago",
@@ -951,12 +950,9 @@ def economy_fred_series(
             + " Override this error by setting `allow_unsafe = True`."
         )
 
-    y1_units = y_units[0]
-
+    y1_units = y_units[0] if y_units else None
     y1title = y1_units
-
     y2title = y_units[1] if len(y_units) > 1 else None
-
     xtitle = ""
 
     # If the request was transformed, the y-axis will be shared under these conditions.
@@ -967,8 +963,9 @@ def economy_fred_series(
         y2title = None
 
     # Set the title for the chart.
-    if kwargs.get("title"):
-        title = kwargs.get("title")
+    title: str = ""
+    if isinstance(kwargs, dict) and title in kwargs:
+        title = kwargs["title"]
     else:
         if metadata.get(columns[0]):
             title = metadata.get(columns[0]).get("title") if len(columns) == 1 else "FRED Series"  # type: ignore
@@ -978,7 +975,7 @@ def economy_fred_series(
         title = f"{title} - {transform_title}" if transform_title else title
 
     # Define this to use as a check.
-    y3title = ""
+    y3title: Optional[str] = ""
 
     # Create the figure object with subplots.
     fig = OpenBBFigure().create_subplots(
@@ -1022,14 +1019,14 @@ def economy_fred_series(
     if kwargs.get("y2title") and y2title is not None:
         y2title = kwargs.get("y2title")
     # Set the x-axis title, if suppiled.
-    if kwargs.get("xtitle"):
-        xtitle = kwargs.get("xtitle")
+    if isinstance(kwargs, dict) and "xtitle" in kwargs:
+        xtitle = kwargs["xtitle"]
     # If the data was normalized, set the title to reflect this.
     if normalize:
         y1title = None
         y2title = None
         y3title = None
-        title = f"{title} - Normalized"
+        title = f"{title} - Normalized" if title else "Normalized"
 
     # Now update the layout of the complete figure.
     fig.update_layout(

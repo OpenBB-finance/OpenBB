@@ -221,7 +221,7 @@ class Backend(PyWry):
         self.send_outgoing(outgoing)
 
         if export_image and isinstance(export_image, Path):
-            if self.loop.is_closed():
+            if self.loop.is_closed():  # type: ignore[has-type]
                 # Create a new event loop
                 self.loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(self.loop)
