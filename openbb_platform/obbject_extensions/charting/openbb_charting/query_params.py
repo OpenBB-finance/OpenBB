@@ -18,8 +18,7 @@ def _get_type_name(t):
         return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
     if hasattr(t, "__name__"):
         return t.__name__
-    else:
-        return str(t)
+    return str(t)
 
 
 class BaseQueryParams(QueryParams):
