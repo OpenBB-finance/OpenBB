@@ -697,13 +697,14 @@ def get_openbb_versions() -> Dict[str, VersionConstraint]:
         if p.startswith("openbb"):
             if isinstance(v, str):
                 dep_spec[p] = parse_constraint(v)
-            elif isinstance(v, dict) and not v.get("optional", False):
+            elif isinstance(v, dict):
                 dep_spec[p] = parse_constraint(v["version"])
     return dep_spec
 
 
 def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
     """Check all the openbb packages are installed and have the correct version."""
+    Console.log("\n[INFO] Ensuring all packages installed...")
     pip_list_output = subprocess.run(
         "pip list | grep openbb",  # noqa: S607
         shell=True,  # noqa: S602
@@ -716,41 +717,49 @@ def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
         line.split()[0].lower(): Version.parse(line.split()[1]) for line in result
     }
 
+    failures = set()
     for o, v in openbb_versions.items():
         if o not in installed:
-            raise ValueError(f"Package '{o}' not installed.")
-        if not v.allows(installed[o]):
-            raise ValueError(
-                f"Version '{installed[o]}' of '{o}' not compatible. Expected '{v}'."
+            Console.log(f"[INFO] Package '{o}' not installed.")
+            failures.add(o)
+        elif not v.allows(installed[o]):
+            Console.log(
+                f"[INFO] Version '{installed[o]}' of '{o}' not compatible. Expected '{v}'."
             )
+            failures.add(o)
+
+    if failures:
+        raise ValueError(f"Failures: {failures}")
 
 
 def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) -> None:
     """Check all the openbb packages installed are in the reference file."""
+    Console.log("\n[INFO] Ensuring all packages built...")
     core_version = reference.get("core", {})
     extensions = reference.get("extensions", {})
     built = {}
-    Console.log("\n[INFO] Core:\n")
     built["openbb-core"] = Version.parse(core_version)
-    Console.log(f"    * openbb-core@{core_version}")
-
-    Console.log("\n[INFO] Extensions:\n")
     for value in extensions.values():
         for v in value:
-            Console.log(f"    * {v}")
             name, version = v.split("@")
             if name.startswith("openbb_"):
                 name = name[7:]
             name = "openbb-" + name.replace("_", "-")
             built[name] = Version.parse(version)
 
+    failures = set()
     for o, v in openbb_versions.items():
         if o not in built:
-            raise ValueError(f"Package '{o}' not in reference file.")
-        if not v.allows(built[o]):
-            raise ValueError(
-                f"Version '{built[o]}' of '{o}' not compatible. Expected '{v}'."
+            Console.log(f"[INFO] Package '{o}' not in reference file.")
+            failures.add(o)
+        elif not v.allows(built[o]):
+            Console.log(
+                f"[INFO] Version '{built[o]}' of '{o}' not compatible. Expected '{v}'."
             )
+            failures.add(o)
+
+    if failures:
+        raise ValueError(f"Failures: {failures}")
 
 
 if __name__ == "__main__":
