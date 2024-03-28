@@ -610,7 +610,11 @@ def test_charting_economy_fred_series(params, headers):
 def test_charting_equity_price_performance(params, headers):
     """Test chart equity price performance."""
     params = {p: v for p, v in params.items() if v}
-    body = json.dumps({"extra_params": {"chart_params": {"limit": 4, "orientation": "h"}}}),
+    body = (
+        json.dumps(
+            {"extra_params": {"chart_params": {"limit": 4, "orientation": "h"}}}
+        ),
+    )
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/performance?{query_str}"
     result = requests.get(url, headers=headers, timeout=10, json=body)
