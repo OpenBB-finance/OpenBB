@@ -104,8 +104,8 @@ def equity_price_performance(  # noqa: PLR0912
     xtitle = None
 
     if orientation == "h":
-        xtitle = ytitle
-        ytitle = None
+        xtitle = ytitle  # type: ignore
+        ytitle = None  # type: ignore
 
     fig = bar_chart(
         chart_df.reset_index(),
@@ -378,8 +378,8 @@ def equity_price_historical(  # noqa: PLR0912
                 else:
                     title = title + " - Normalized"
                 data = data.apply(z_score_standardization)
-                y1title = None
-                y2title = None
+                y1title = None  # type: ignore
+                y2title = None  # type: ignore
 
         fig = OpenBBFigure()
 
@@ -417,12 +417,12 @@ def equity_price_historical(  # noqa: PLR0912
             )
 
     if normalize is True or returns is True:
-        y1title = "Percent" if returns is True else None
-        y2title = None
+        y1title = "Percent" if returns is True else None  # type: ignore
+        y2title = None  # type: ignore
 
     if same_axis is True:
-        y1title = None
-        y2title = None
+        y1title = None  # type: ignore
+        y2title = None  # type: ignore
 
     fig.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=16)),
