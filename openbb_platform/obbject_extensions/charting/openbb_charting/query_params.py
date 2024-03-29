@@ -84,6 +84,27 @@ class EtfPricePerformanceChartQueryParams(EquityPricePerformanceChartQueryParams
     """ETF Price Performance Chart Query Params."""
 
 
+class EtfHoldingsChartQueryParams(ChartQueryParams):
+    """ "ETF Holdings Chart Query Params."""
+
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+    orientation: Literal["v", "h"] = Field(
+        default="v",
+        description="Orientation of the bars.",
+    )
+    limit: Optional[int] = Field(
+        default=20,
+        description="Limit the number of bars to plot, ranked by top weighting.",
+    )
+    layout_kwargs: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
+    )
+
+
 class EquityPriceHistoricalChartQueryParams(ChartQueryParams):
     """Equity Historical Price Chart Query Params."""
 
@@ -313,6 +334,7 @@ class ChartParams:
     equity_price_historical = EquityPriceHistoricalChartQueryParams
     equity_price_performance = EquityPricePerformanceChartQueryParams
     etf_historical = EtfPricePerformanceChartQueryParams
+    etf_holdings = EtfHoldingsChartQueryParams
     etf_price_performance = EquityPricePerformanceChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
     technical_cones = TechnicalConesChartQueryParams

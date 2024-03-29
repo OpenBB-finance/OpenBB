@@ -17,6 +17,7 @@ from openbb_charting.query_params import (
     EconomyFredSeriesChartQueryParams,
     EquityPriceHistoricalChartQueryParams,
     EquityPricePerformanceChartQueryParams,
+    EtfHoldingsChartQueryParams,
     EtfPricePerformanceChartQueryParams,
     TechnicalConesChartQueryParams,
 )
@@ -33,7 +34,7 @@ CHART_FORMAT = ChartFormat.plotly
 
 
 def equity_price_performance(  # noqa: PLR0912
-    **kwargs: Union[Any, EquityPricePerformanceChartQueryParams],
+    **kwargs: Union[EquityPricePerformanceChartQueryParams, Any],
 ) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """Equity Price Performance Chart."""
 
@@ -130,7 +131,7 @@ def equity_price_performance(  # noqa: PLR0912
 
 
 def etf_price_performance(
-    **kwargs: Union[Any, EtfPricePerformanceChartQueryParams],
+    **kwargs: Union[EtfPricePerformanceChartQueryParams, Any],
 ) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """ETF Historical Chart."""
     fig, content = equity_price_performance(**kwargs)
@@ -143,8 +144,66 @@ def etf_price_performance(
     return fig, content
 
 
+def etf_holdings(
+    **kwargs: Union[EtfHoldingsChartQueryParams, Any],
+) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
+    """Equity Compare Groups Chart."""
+
+    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+        data = kwargs["data"]
+    elif "data" in kwargs and isinstance(kwargs["data"], list):
+        data = basemodel_to_df(kwargs["data"], index=None)  # type: ignore
+    else:
+        data = basemodel_to_df(kwargs["obbject_item"], index=None)  # type: ignore
+
+    if "weight" not in data.columns:
+        raise ValueError("No 'weight' column found in the data.")
+
+    orientation = kwargs.get("orientation", "h")
+    limit = kwargs.get("limit", 20)
+    symbol = kwargs["standard_params"].get("symbol")  # type: ignore
+    title = kwargs.get("title", f"Top {limit} {symbol} Holdings")
+    layout_kwargs = kwargs.get("layout_kwargs", {})
+
+    data = data.sort_values("weight", ascending=False)
+    limit = min(limit, len(data))  # type: ignore
+    target = data.head(limit)[["symbol", "weight"]].set_index("symbol")
+    target = target.multiply(100)
+    axis_title = "Weight (%)"
+
+    fig = bar_chart(
+        target.reset_index(),
+        "symbol",
+        ["weight"],
+        title=title,  # type: ignore
+        xtitle=axis_title if orientation == "h" else None,
+        ytitle=axis_title if orientation == "v" else None,
+        orientation=orientation,  # type: ignore
+    )
+
+    fig.update_layout(
+        hovermode="x" if orientation == "v" else "y",
+        margin=dict(r=0, l=50) if orientation == "h" else None,
+    )
+
+    fig.update_traces(
+        hovertemplate=(
+            "%{y:.3f}%<extra></extra>"
+            if orientation == "v"
+            else "%{x:.3f}%<extra></extra>"
+        )
+    )
+
+    if layout_kwargs:
+        fig.update_layout(**layout_kwargs)  # type: ignore
+
+    content = fig.show(external=True).to_plotly_json()  # type: ignore
+
+    return fig, content
+
+
 def equity_price_historical(  # noqa: PLR0912
-    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Equity Price Historical Chart."""
 
@@ -420,28 +479,28 @@ def equity_price_historical(  # noqa: PLR0912
 
 
 def etf_historical(
-    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """ETF Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def index_price_historical(
-    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Index Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def currency_price_historical(
-    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Currency Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
 def crypto_price_historical(
-    **kwargs: Union[Any, EquityPriceHistoricalChartQueryParams],
+    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Crypto Price Historical Chart."""
     return equity_price_historical(**kwargs)
@@ -775,7 +834,7 @@ def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 
 def technical_cones(
-    **kwargs: Union[Any, TechnicalConesChartQueryParams],
+    **kwargs: Union[TechnicalConesChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Volatility Cones Chart."""
     data = kwargs.get("data")
@@ -882,7 +941,7 @@ def technical_cones(
 
 
 def economy_fred_series(
-    **kwargs: Union[Any, EconomyFredSeriesChartQueryParams],
+    **kwargs: Union[EconomyFredSeriesChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """FRED Series Chart."""
     ytitle_dict = {

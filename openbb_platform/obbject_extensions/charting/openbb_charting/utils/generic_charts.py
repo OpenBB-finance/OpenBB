@@ -538,7 +538,7 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
         row_width=[1],
         specs=[[{"secondary_y": True}]],
     )
-    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    # figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     try:
         data = pd.Series(data=values, index=keys)
