@@ -17,7 +17,7 @@ class Custom(PltTA):
     @indicator()
     def plot_srlines(self, fig: OpenBBFigure, df_ta: pd.DataFrame):
         """Add support and resistance lines to plotly figure."""
-        window = self.params["srlines"].get_argument_values("window")
+        window = self.params["srlines"].get_argument_values("window")  # type: ignore
         window = window[0] if isinstance(window, list) and len(window) > 0 else 200
 
         def is_far_from_level(value, levels, df_stock):
@@ -51,7 +51,7 @@ class Custom(PltTA):
 
         if interval <= 15:
             cut_days = 1 if interval < 15 else 2
-            dt_unique_days = df_ta2.index.normalize().unique()
+            dt_unique_days = df_ta2.index.normalize().unique()  # type: ignore
             df_ta2 = df_ta2.loc[
                 (df_ta2.index >= pd.to_datetime(dt_unique_days[-cut_days], unit="ns"))
                 & (df_ta2.index < today)
@@ -133,10 +133,10 @@ class Custom(PltTA):
             )
             return fig
 
-        limit = self.params["fib"].get_argument_values("limit") or 120
-        start_date = self.params["fib"].get_argument_values("start_date") or None
-        end_date = self.params["fib"].get_argument_values("end_date") or None
-        close = self.params["fib"].get_argument_values("close") or "close"
+        limit = self.params["fib"].get_argument_values("limit") or 120  # type: ignore
+        start_date = self.params["fib"].get_argument_values("start_date") or None  # type: ignore
+        end_date = self.params["fib"].get_argument_values("end_date") or None  # type: ignore
+        close = self.params["fib"].get_argument_values("close") or "close"  # type: ignore
         (
             df_fib,
             min_date,
@@ -144,7 +144,7 @@ class Custom(PltTA):
             min_pr,
             max_pr,
             lvl_text,
-        ) = calculate_fib_levels(df_ta, close, limit, start_date, end_date)
+        ) = calculate_fib_levels(df_ta, close, limit, start_date, end_date)  # type: ignore
         levels = df_fib.Price
         fibs = [
             "<b>0</b>",
@@ -175,7 +175,7 @@ class Custom(PltTA):
         interval = 1440
         if df_ta2.index[-2].date() == df_ta2.index[-1].date():
             interval = (df_ta2.index[1] - df_ta2.index[0]).seconds / 60
-            dt_unique_days = df_ta2.index.normalize().unique()
+            dt_unique_days = df_ta2.index.normalize().unique()  # type: ignore
 
             if interval not in [15, 30, 60] and len(dt_unique_days) <= 3:
                 df_ta2 = df_ta2.loc[

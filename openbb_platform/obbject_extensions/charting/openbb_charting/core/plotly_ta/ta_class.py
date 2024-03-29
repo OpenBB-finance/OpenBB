@@ -1,6 +1,7 @@
 """Technical Analysis class for Plotly."""
 
-# pylint: disable=R0902,R0916,R0912
+# pylint: disable=R0902,R0916,R0912  # type: ignore[index, assignment]
+
 import importlib
 import inspect
 import sys
@@ -124,7 +125,7 @@ class PlotlyTA(PltTA):
         if not args and not kwargs:
             self._clear_data()
         else:
-            self.df_fib = None
+            self.df_fib = None  # type: ignore
             super().__init__(*args, **kwargs)
 
     @staticmethod
@@ -246,7 +247,7 @@ class PlotlyTA(PltTA):
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
-        return PlotlyTA().__plot__(
+        return PlotlyTA().__plot__(  # type: ignore
             df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
@@ -287,7 +288,7 @@ class PlotlyTA(PltTA):
 
     def _clear_data(self):
         """Clear and reset all data to default values."""
-        self.df_stock = None
+        self.df_stock = None  # type: ignore
         self.indicators = ChartIndicators.from_dict({})
         self.params = None
         self.intraday = False
@@ -295,7 +296,7 @@ class PlotlyTA(PltTA):
 
     def calculate_indicators(self):
         """Return dataframe with all indicators."""
-        return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)
+        return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)  # type: ignore
 
     def get_subplot(self, subplot: str) -> bool:
         """Return True if subplots will be able to be plotted with current data."""
@@ -319,12 +320,12 @@ class PlotlyTA(PltTA):
                 return False
 
             output = self.indicators.get_indicator_data(
-                self.df_stock.copy(),
+                self.df_stock.copy(),  # type: ignore
                 indicator,
                 **self.indicators.get_options_dict(indicator.name) or {},
             )
             if not isinstance(output, bool):
-                output = output.dropna()
+                output = output.dropna()  # type: ignore
 
                 if output is None or output.empty:
                     output = False
@@ -415,7 +416,7 @@ class PlotlyTA(PltTA):
         else:
             fig.add_scatter(
                 x=self.df_stock.index,
-                y=self.df_stock[self.close_column],
+                y=self.df_stock[self.close_column],  # type: ignore
                 name=f"{symbol}",
                 connectgaps=True,
                 row=1,
@@ -456,7 +457,7 @@ class PlotlyTA(PltTA):
         """
         self.df_ta = self.calculate_indicators()
 
-        symbol = (
+        symbol = (  # type: ignore
             self.df_stock.name
             if hasattr(self.df_stock, "name") and not symbol
             else symbol
@@ -533,7 +534,7 @@ class PlotlyTA(PltTA):
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
         if hasattr(figure, "hide_holidays"):
-            figure.hide_holidays(self.prepost)
+            figure.hide_holidays(self.prepost)  # type: ignore
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))
@@ -653,12 +654,12 @@ class PlotlyTA(PltTA):
                     layout
                 ]["domain"]
 
-            fig.layout.update({layout: fig_json[layout]})
-            new_subplot.layout.update({layout: fig.layout[layout]})
+            fig.layout.update({layout: fig_json[layout]})  # type: ignore
+            new_subplot.layout.update({layout: fig.layout[layout]})  # type: ignore
 
         if self.show_volume:
             new_subplot.add_inchart_volume(
-                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x
+                self.df_stock, self.close_column, volume_ticks_x=volume_ticks_x  # type: ignore
             )
 
         return new_subplot

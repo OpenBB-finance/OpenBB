@@ -650,7 +650,7 @@ def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(aroon=dict(length=length, scalar=scalar)),
         title,
@@ -690,7 +690,7 @@ def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     volume = kwargs.get("volume") is True
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(macd=dict(fast=fast, slow=slow, signal=signal)),
         title,
@@ -726,7 +726,7 @@ def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(adx=dict(length=length, scalar=scalar, drift=drift)),
         f"Average Directional Movement Index (ADX) {symbol}",
@@ -762,7 +762,7 @@ def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(rsi=dict(length=window, scalar=scalar, drift=drift)),
         f"{symbol.upper()} RSI {window}",
@@ -977,9 +977,9 @@ def economy_fred_series(
     # Set the title for the chart.
     title: str = ""
     if isinstance(kwargs, dict) and title in kwargs:
-        title = kwargs["title"]
+        title = kwargs["title"]  # type: ignore
     else:
-        if metadata.get(columns[0]):
+        if metadata.get(columns[0]):  # type: ignore
             title = metadata.get(columns[0]).get("title") if len(columns) == 1 else "FRED Series"  # type: ignore
         else:
             title = "FRED Series"
@@ -1000,21 +1000,21 @@ def economy_fred_series(
         # Check if the y-axis should be shared for this series.
         on_y1 = (
             (
-                metadata.get(col).get("units") == y1_units
+                metadata.get(col).get("units") == y1_units  # type: ignore
                 or y2title is None  # type: ignore
                 or kwargs.get("same_axis") is True
             )
-            if metadata.get(col)
+            if metadata.get(col)  # type: ignore
             else False
         )
         if normalize:
             on_y1 = True
 
         yaxes = "y2" if not on_y1 else "y1"
-        on_y3 = not metadata.get(col) and normalize is False
+        on_y3 = not metadata.get(col) and normalize is False  # type: ignore
         if on_y3:
             yaxes = "y3"
-            y3title = df_ta[col].name
+            y3title = df_ta[col].name  # type: ignore
         fig.add_scatter(
             x=df_ta.index,
             y=df_ta[col],

@@ -117,7 +117,7 @@ def line_chart(  # noqa: PLR0912
     except Exception as _:
         fig = OpenBBFigure(create_backend=True)
 
-    # fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     title = f"{title}" if title else ""
     xtitle = xtitle if xtitle else ""
@@ -126,7 +126,7 @@ def line_chart(  # noqa: PLR0912
     y2 = y2 if y2 else []
     yaxis_num = 1
     yaxis = f"y{yaxis_num}"
-    first_y = y[0]
+    first_y = y[0]  # type: ignore[index]
     second_y = None
     third_y = None
     add_scatter = False
@@ -146,7 +146,7 @@ def line_chart(  # noqa: PLR0912
 
         for i, col in enumerate(df.columns):
 
-            if col in y:
+            if col in y:  # type: ignore[operator]
                 hovertemplate = (
                     hovertemplate
                     if hovertemplate
@@ -187,7 +187,7 @@ def line_chart(  # noqa: PLR0912
 
     if auto_layout is False:
         color = 0
-        for i, col in enumerate(y):
+        for i, col in enumerate(y):  # type: ignore[arg-type]
             hovertemplate = (
                 hovertemplate
                 if hovertemplate
