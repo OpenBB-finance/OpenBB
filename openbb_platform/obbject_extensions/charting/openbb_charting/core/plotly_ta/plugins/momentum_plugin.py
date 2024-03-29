@@ -564,7 +564,9 @@ class Momentum(PltTA):
                 + lagging_line.rolling(window=base_period).min()  # type: ignore
             )
             / 2
-        ).shift(displacement)  # type: ignore
+        ).shift(
+            displacement  # type: ignore
+        )
 
         # Plot Tenkan-sen and Kijun-sen
         fig.add_scatter(
