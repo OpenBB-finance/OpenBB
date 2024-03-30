@@ -190,7 +190,9 @@ class YFinanceEtfInfoData(EtfInfoData):
     @classmethod
     def validate_date(cls, v):
         """Validate first stock price date."""
-        return datetime.utcfromtimestamp(v).date().strftime("%Y-%m-%d") if v else None
+        if isinstance(v, datetime):
+            return v.date().strftime("%Y-%m-%d")
+        return datetime.fromtimestamp(v).date().strftime("%Y-%m-%d") if v else None
 
 
 class YFinanceEtfInfoFetcher(
@@ -249,6 +251,7 @@ class YFinanceEtfInfoFetcher(
             "fiveYearAverageReturn",
             "beta3Year",
             "longBusinessSummary",
+            "firstTradeDateEpochUtc",
         ]
 
         async def get_one(symbol):
@@ -262,9 +265,22 @@ class YFinanceEtfInfoFetcher(
             if ticker:
                 quote_type = ticker.pop("quoteType", "")
                 if quote_type == "ETF":
-                    for field in fields:
-                        if field in ticker:
-                            result[field] = ticker.get(field, None)
+                    try:
+                        for field in fields:
+                            if field in ticker and ticker.get(field) is not None:
+                                result[field] = ticker.get(field, None)
+                        if "firstTradeDateEpochUtc" in result:
+                            _first_trade = result.pop("firstTradeDateEpochUtc")
+                            if (
+                                "fundInceptionDate" not in result
+                                and _first_trade is not None
+                            ):
+                                result["fundInceptionDate"] = datetime.fromtimestamp(
+                                    _first_trade
+                                )
+                    except Exception as e:
+                        _warn(f"Error processing data for {symbol}: {e}")
+                        result = {}
                 if quote_type != "ETF":
                     _warn(f"{symbol} is not an ETF.")
                 if result:
