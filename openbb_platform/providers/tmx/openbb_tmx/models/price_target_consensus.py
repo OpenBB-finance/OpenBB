@@ -20,6 +20,13 @@ class TmxPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+    @field_validator("symbol", mode="before", check_fields=False)
+    def check_symbol(cls, value):
+        """Check the symbol."""
+        if not value:
+            raise RuntimeError("Error: Symbol is a required field for TMX.")
+        return value
+
 
 class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     """TMX Price Target Consensus Data."""

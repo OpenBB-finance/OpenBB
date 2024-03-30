@@ -14,6 +14,8 @@ class ROUTER_equity_estimates(Container):
     """/equity/estimates
     analyst_search
     consensus
+    forward_eps
+    forward_sales
     historical
     price_target
     """
@@ -210,13 +212,13 @@ class ROUTER_equity_estimates(Container):
     def consensus(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
-        ],
+        ] = None,
         provider: Annotated[
-            Optional[Literal["fmp", "yfinance"]],
+            Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -227,19 +229,21 @@ class ROUTER_equity_estimates(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance.
-        provider : Optional[Literal['fmp', 'yfinance']]
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        industry_group_number : Optional[int]
+            The Zacks industry group number. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -252,6 +256,8 @@ class ROUTER_equity_estimates(Container):
         --------------------
         symbol : str
             Symbol representing the entity requested in the data.
+        name : Optional[str]
+            The company name
         target_high : Optional[float]
             High target of the price target consensus.
         target_low : Optional[float]
@@ -260,6 +266,18 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
+        standard_deviation : Optional[float]
+            The standard deviation of target price estimates. (provider: intrinio)
+        total_anaylsts : Optional[int]
+            The total number of target price estimates in consensus. (provider: intrinio)
+        raised : Optional[int]
+            The number of analysts that have raised their target price estimates. (provider: intrinio)
+        lowered : Optional[int]
+            The number of analysts that have lowered their target price estimates. (provider: intrinio)
+        most_recent_date : Optional[date]
+            The date of the most recent estimate. (provider: intrinio)
+        industry_group_number : Optional[int]
+            The Zacks industry group number. (provider: intrinio)
         recommendation : Optional[str]
             Recommendation - buy, sell, etc. (provider: yfinance)
         recommendation_mean : Optional[float]
@@ -285,14 +303,260 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/consensus",
-                        ("fmp", "yfinance"),
+                        ("fmp", "intrinio", "yfinance"),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
+                info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def forward_eps(
+        self,
+        symbol: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get forward EPS estimates.
+
+        Parameters
+        ----------
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
+        provider : Optional[Literal['fmp', 'intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        fiscal_period : Optional[Union[Literal['annual', 'quarter'], Literal['fy', 'q1', 'q2', 'q3', 'q4']]]
+            The future fiscal period to retrieve estimates for. (provider: fmp, intrinio)
+        limit : Optional[int]
+            The number of data entries to return. (provider: fmp)
+        include_historical : bool
+            If True, the data will include all past data and the limit will be ignored. (provider: fmp)
+        fiscal_year : Optional[int]
+            The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
+        calendar_year : Optional[int]
+            The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
+        calendar_period : Optional[Literal['q1', 'q2', 'q3', 'q4']]
+            The future calendar period to retrieve estimates for. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : List[ForwardEpsEstimates]
+                Serializable results.
+            provider : Optional[Literal['fmp', 'intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ForwardEpsEstimates
+        -------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the entity.
+        date : date
+            The date of the data.
+        fiscal_year : Optional[int]
+            Fiscal year for the estimate.
+        fiscal_period : Optional[str]
+            Fiscal quarter for the estimate.
+        calendar_year : Optional[int]
+            Calendar year for the estimate.
+        calendar_period : Optional[str]
+            Calendar quarter for the estimate.
+        low : Optional[float]
+            Estimated EPS low for the period.
+        high : Optional[float]
+            Estimated EPS high for the period.
+        mean : Optional[float]
+            Estimated EPS mean for the period.
+        median : Optional[float]
+            Estimated EPS median for the period.
+        standard_deviation : Optional[float]
+            Estimated EPS standard deviation for the period.
+        number_of_analysts : Optional[int]
+            Number of analysts providing estimates for the period.
+        revisions_change_percent : Optional[float]
+            The earnings per share (EPS) percent change in estimate for the period. (provider: intrinio)
+        mean_1w : Optional[float]
+            The mean estimate for the period one week ago. (provider: intrinio)
+        mean_1m : Optional[float]
+            The mean estimate for the period one month ago. (provider: intrinio)
+        mean_2m : Optional[float]
+            The mean estimate for the period two months ago. (provider: intrinio)
+        mean_3m : Optional[float]
+            The mean estimate for the period three months ago. (provider: intrinio)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.estimates.forward_eps(symbol='AAPL', provider='intrinio')
+        >>> obb.equity.estimates.forward_eps(fiscal_year=2025, fiscal_period='fy', provider='intrinio')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/estimates/forward_eps",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/forward_eps",
+                        ("fmp", "intrinio"),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+                info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
+            )
+        )
+
+    @exception_handler
+    @validate
+    def forward_sales(
+        self,
+        symbol: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get forward sales estimates.
+
+        Parameters
+        ----------
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+        fiscal_year : Optional[int]
+            The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
+        fiscal_period : Optional[Literal['fy', 'q1', 'q2', 'q3', 'q4']]
+            The future fiscal period to retrieve estimates for. (provider: intrinio)
+        calendar_year : Optional[int]
+            The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
+        calendar_period : Optional[Literal['q1', 'q2', 'q3', 'q4']]
+            The future calendar period to retrieve estimates for. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : List[ForwardSalesEstimates]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ForwardSalesEstimates
+        ---------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the entity.
+        date : date
+            The date of the data.
+        fiscal_year : Optional[int]
+            Fiscal year for the estimate.
+        fiscal_period : Optional[str]
+            Fiscal quarter for the estimate.
+        calendar_year : Optional[int]
+            Calendar year for the estimate.
+        calendar_period : Optional[str]
+            Calendar quarter for the estimate.
+        low : Optional[int]
+            Estimated sales low for the period.
+        high : Optional[int]
+            Estimated sales high for the period.
+        mean : Optional[int]
+            Estimated sales mean for the period.
+        median : Optional[int]
+            Estimated sales median for the period.
+        standard_deviation : Optional[int]
+            Estimated sales standard deviation for the period.
+        number_of_analysts : Optional[int]
+            Number of analysts providing estimates for the period.
+        revisions_1w_up : Optional[int]
+            Number of revisions up in the last week. (provider: intrinio)
+        revisions_1w_down : Optional[int]
+            Number of revisions down in the last week. (provider: intrinio)
+        revisions_1w_change_percent : Optional[float]
+            The analyst revisions percent change in estimate for the period of 1 week. (provider: intrinio)
+        revisions_1m_up : Optional[int]
+            Number of revisions up in the last month. (provider: intrinio)
+        revisions_1m_down : Optional[int]
+            Number of revisions down in the last month. (provider: intrinio)
+        revisions_1m_change_percent : Optional[float]
+            The analyst revisions percent change in estimate for the period of 1 month. (provider: intrinio)
+        revisions_3m_up : Optional[int]
+            Number of revisions up in the last 3 months. (provider: intrinio)
+        revisions_3m_down : Optional[int]
+            Number of revisions down in the last 3 months. (provider: intrinio)
+        revisions_3m_change_percent : Optional[float]
+            The analyst revisions percent change in estimate for the period of 3 months. (provider: intrinio)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.estimates.forward_sales(symbol='AAPL', provider='intrinio')
+        >>> obb.equity.estimates.forward_sales(fiscal_year=2025, fiscal_period='fy', provider='intrinio')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/estimates/forward_sales",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/forward_sales",
+                        ("intrinio",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+                info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
