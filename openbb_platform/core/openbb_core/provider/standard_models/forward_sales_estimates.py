@@ -47,19 +47,19 @@ class ForwardSalesEstimatesData(Data):
         default=None, description="Calendar quarter for the estimate."
     )
     low: Optional[ForceInt] = Field(
-        default=None, description="Estimated sales low for the period."
+        default=None, description="The sales estimate low for the period."
     )
     high: Optional[ForceInt] = Field(
-        default=None, description="Estimated sales high for the period."
+        default=None, description="The sales estimate high for the period."
     )
     mean: Optional[ForceInt] = Field(
-        default=None, description="Estimated sales mean for the period."
+        default=None, description="The sales estimate mean for the period."
     )
     median: Optional[ForceInt] = Field(
-        default=None, description="Estimated sales median for the period."
+        default=None, description="The sales estimate median for the period."
     )
     standard_deviation: Optional[ForceInt] = Field(
-        default=None, description="Estimated sales standard deviation for the period."
+        default=None, description="The sales estimate standard deviation for the period."
     )
     number_of_analysts: Optional[int] = Field(
         default=None,
