@@ -171,7 +171,7 @@ class IntrinioPriceTargetConsensusFetcher(
                 reverse=True,
             ),
             key=lambda item: (
-                symbols.index(item.get("symbol"))
+                symbols.index(item.get("symbol"))  # type: ignore
                 if item.get("symbol") in symbols
                 else len(symbols)
             ),

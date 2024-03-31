@@ -58,7 +58,7 @@ class FMPPriceTargetConsensusFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.split(",")  # type: ignore
         results = []
 
         async def get_one(symbol):

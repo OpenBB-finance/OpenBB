@@ -85,7 +85,7 @@ class FMPForwardEpsEstimatesFetcher(
 
         symbols = query.symbol.split(",")  # type: ignore
 
-        results = []
+        results: List[Dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
@@ -105,7 +105,7 @@ class FMPForwardEpsEstimatesFetcher(
         if not results:
             raise EmptyDataError("No data returned for the given symbols.")
 
-        return sorted(results, key=lambda x: (x["date"], x["symbol"]), reverse=False)
+        return results
 
     @staticmethod
     def transform_data(
@@ -126,7 +126,7 @@ class FMPForwardEpsEstimatesFetcher(
         results: List[FMPForwardEpsEstimatesData] = []
         for item in sorted(
             data,
-            key=lambda item: (
+            key=lambda item: (  # type: ignore
                 (
                     symbols.index(item.get("symbol")) if item.get("symbol") in symbols else len(symbols),  # type: ignore
                     item.get("date"),

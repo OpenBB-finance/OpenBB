@@ -218,7 +218,7 @@ class IntrinioForwardSalesEstimatesFetcher(
         results: List[IntrinioForwardSalesEstimatesData] = []
         for item in sorted(
             data,
-            key=lambda item: (
+            key=lambda item: (  # type: ignore
                 (
                     symbols.index(item.get("symbol")) if item.get("symbol") in symbols else len(symbols),  # type: ignore
                     item.get("date"),

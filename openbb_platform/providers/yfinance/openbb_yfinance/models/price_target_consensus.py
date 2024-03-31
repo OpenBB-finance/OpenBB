@@ -86,7 +86,7 @@ class YFinancePriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.split(",")  # type: ignore
         results = []
         fields = [
             "symbol",

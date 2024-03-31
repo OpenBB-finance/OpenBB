@@ -96,8 +96,8 @@ class TmxPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def create_task(symbol, results):
             """Create a task for each symbol provided."""
