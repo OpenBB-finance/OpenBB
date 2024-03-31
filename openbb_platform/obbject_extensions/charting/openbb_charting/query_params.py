@@ -191,6 +191,20 @@ class EconomyFredSeriesChartQueryParams(ChartQueryParams):
         description="If True, the method will attempt to pass all supplied data to the chart constructor."
         + " This can result in unexpected behavior.",
     )
+    bar: bool = Field(
+        default=False,
+        description="If True, a bar chart will be plotted instead of a line."
+        + " If multiple units of measure are present, they will be normalized and plotted on the same axis.",
+    )
+    barmode: Literal["stack", "group", "relative"] = Field(
+        default="group",
+        description="The mode to use for the bar chart, by default is 'group'."
+        + " Has no effect if `bar=False`.",
+    )
+    layout_kwargs: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
+    )
 
 
 class TechnicalConesChartQueryParams(ChartQueryParams):

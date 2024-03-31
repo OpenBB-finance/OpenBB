@@ -3,6 +3,7 @@
 # pylint: disable=too-many-arguments, too-many-locals, too-many-branches, too-many-statements, unused-argument, too-many-lines
 
 from typing import Any, Dict, Optional, Tuple, Union
+from warnings import warn
 
 import pandas as pd
 from openbb_core.app.model.charts.chart import ChartFormat
@@ -542,8 +543,6 @@ def _ta_ma(**kwargs):
         if "target" in kwargs and kwargs.get("target") is not None
         else "close"
     )
-    if "target" in kwargs and kwargs.get("target") is not None:
-        target = kwargs.get("target") if kwargs.get("target") != "close" else target
 
     if target not in data.columns and "close" in data.columns:
         target = "close"
@@ -940,7 +939,7 @@ def technical_cones(
     return fig, content
 
 
-def economy_fred_series(
+def economy_fred_series(  # noqa: PLR0912
     **kwargs: Union[EconomyFredSeriesChartQueryParams, Any],
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """FRED Series Chart."""
@@ -994,13 +993,10 @@ def economy_fred_series(
     if df_ta.empty or len(df_ta) < 2:
         raise ValueError(
             "No data is left after dropping NaN values. Try setting `dropnan = False`,"
-            + " or use the `frequency` parameter on request ."
+            + " or use the `frequency` parameter on request."
         )
 
     columns = df_ta.columns.to_list()
-
-    if normalize:
-        df_ta = df_ta.apply(z_score_standardization)
 
     metadata = kwargs.get("metadata", {})
 
@@ -1013,7 +1009,20 @@ def economy_fred_series(
     if has_params is True and not y_units:
         y_units = [ytitle_dict.get(params.transform)]  # type: ignore
 
-    if len(y_units) > 2 and has_params is False and allow_unsafe is True:
+    if normalize or (
+        kwargs.get("bar") is True
+        and len(y_units) > 1
+        and (
+            has_params is False
+            or not any(
+                i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]  # type: ignore
+            )
+        )
+    ):
+        normalize = True
+        df_ta = df_ta.apply(z_score_standardization)
+
+    if len(y_units) > 2 and has_params is False and allow_unsafe is False:
         raise RuntimeError(
             "This method supports up to 2 y-axis units."
             + " Please use the 'transform' parameter, in the data request,"
@@ -1024,7 +1033,7 @@ def economy_fred_series(
     y1_units = y_units[0] if y_units else None
     y1title = y1_units
     y2title = y_units[1] if len(y_units) > 1 else None
-    xtitle = ""
+    xtitle = str(kwargs.get("xtitle", ""))
 
     # If the request was transformed, the y-axis will be shared under these conditions.
     if has_params and any(
@@ -1047,6 +1056,36 @@ def economy_fred_series(
 
     # Define this to use as a check.
     y3title: Optional[str] = ""
+
+    if kwargs.get("bar") is True or len(df_ta.index) < 100:
+        margin = dict(l=10, r=5, b=75 if xtitle else 30)
+        try:
+            if normalize:
+                y1title = None
+                title = f"{title} - Normalized" if title else "Normalized"
+            bar_mode = kwargs["barmode"] if "barmode" in kwargs else "group"
+            fig = bar_chart(
+                df_ta.reset_index(),
+                "date",
+                df_ta.columns.to_list(),
+                title=title,
+                xtitle=xtitle,
+                ytitle=y1title,
+                barmode=bar_mode,  # type: ignore
+                layout_kwargs=dict(margin=margin),  # type: ignore
+            )
+            if kwargs.get("layout_kwargs"):
+                fig.update_layout(kwargs.get("layout_kwargs"))
+
+            if kwargs.get("title"):
+                fig.set_title(str(kwargs.get("title")))  # type: ignore
+
+            content = fig.to_plotly_json()
+
+            return fig, content  # type: ignore
+        except Exception as _:
+            warn("Bar chart failed. Attempting line chart.")
+            pass
 
     # Create the figure object with subplots.
     fig = OpenBBFigure().create_subplots(
@@ -1172,11 +1211,14 @@ def economy_fred_series(
             gridcolor="rgba(128,128,128,0.3)",
             domain=[0.095, 0.95] if y3title else None,
         ),
-        margin=dict(r=25, l=25) if normalize is False else None,
+        margin=dict(r=25, l=25, b=75 if xtitle else 30) if normalize is False else None,
         autosize=True,
         dragmode="pan",
     )
-
+    if kwargs.get("layout_kwargs"):
+        fig.update_layout(kwargs.get("layout_kwargs"))
+    if kwargs.get("title"):
+        fig.set_title(str(kwargs.get("title")))
     content = fig.to_plotly_json()
 
     return fig, content
