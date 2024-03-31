@@ -1,5 +1,7 @@
 """FMP Price Target Consensus Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from typing import Any, Dict, List, Optional
 from warnings import warn
@@ -59,7 +61,7 @@ class FMPPriceTargetConsensusFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         symbols = query.symbol.split(",")  # type: ignore
-        results = []
+        results: List[Dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
