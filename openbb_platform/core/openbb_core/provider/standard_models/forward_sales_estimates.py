@@ -59,7 +59,8 @@ class ForwardSalesEstimatesData(Data):
         default=None, description="The sales estimate median for the period."
     )
     standard_deviation: Optional[ForceInt] = Field(
-        default=None, description="The sales estimate standard deviation for the period."
+        default=None,
+        description="The sales estimate standard deviation for the period.",
     )
     number_of_analysts: Optional[int] = Field(
         default=None,
