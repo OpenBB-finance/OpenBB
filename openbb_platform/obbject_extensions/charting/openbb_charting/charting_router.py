@@ -1057,7 +1057,7 @@ def economy_fred_series(  # noqa: PLR0912
     # Define this to use as a check.
     y3title: Optional[str] = ""
 
-    if kwargs.get("bar") is True or len(df_ta.index) < 100:
+    if kwargs.get("plot_bar") is True or len(df_ta.index) < 100:
         margin = dict(l=10, r=5, b=75 if xtitle else 30)
         try:
             if normalize:
@@ -1085,7 +1085,6 @@ def economy_fred_series(  # noqa: PLR0912
             return fig, content  # type: ignore
         except Exception as _:
             warn("Bar chart failed. Attempting line chart.")
-            pass
 
     # Create the figure object with subplots.
     fig = OpenBBFigure().create_subplots(

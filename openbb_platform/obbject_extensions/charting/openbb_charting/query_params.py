@@ -191,7 +191,7 @@ class EconomyFredSeriesChartQueryParams(ChartQueryParams):
         description="If True, the method will attempt to pass all supplied data to the chart constructor."
         + " This can result in unexpected behavior.",
     )
-    bar: bool = Field(
+    plot_bar: bool = Field(
         default=False,
         description="If True, a bar chart will be plotted instead of a line."
         + " If multiple units of measure are present, they will be normalized and plotted on the same axis.",
