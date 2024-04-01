@@ -958,7 +958,6 @@ class DocstringGenerator:
     def get_OBBject_description(
         results_type: str,
         providers: Optional[str],
-        target: Literal["docstring", "website"] = "docstring",
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
