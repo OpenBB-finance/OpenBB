@@ -14,6 +14,7 @@ from openbb_charting.query_params import (
     FredSeriesChartQueryParams,
     TechnicalConesChartQueryParams,
 )
+from openbb_charting.utils import relative_rotation
 
 CHART_FORMAT = ChartFormat.plotly
 
@@ -536,3 +537,75 @@ def economy_fred_series(
     content = fig.to_plotly_json()
 
     return fig, content
+
+
+def technical_relative_rotation(
+    **kwargs: Any,
+) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Relative Rotation Chart."""
+
+    ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
+    momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
+    benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
+    study = (
+        str(kwargs.get("study"))
+        if "study" in kwargs and kwargs.get("study") is not None
+        else str(kwargs["obbject_item"].study)  # type: ignore
+    )
+    show_tails = True
+    if kwargs.get("show_tails") is not None:
+        show_tails = kwargs.get("show_tails") is True  # type: ignore
+    tail_periods = int(kwargs.get("tail_periods")) if "tail_periods" in kwargs else 16  # type: ignore
+    tail_interval = str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"  # type: ignore
+    date = kwargs.get("date") if "date" in kwargs else None  # type: ignore
+
+    if ratios_df.empty or momentum_df.empty:
+        raise RuntimeError("Error: No data to plot.")
+
+    if show_tails is True:
+        fig = relative_rotation.create_rrg_with_tails(
+            ratios_df, momentum_df, study, benchmark_symbol, tail_periods, tail_interval  # type: ignore
+        )
+
+    if show_tails is False:
+        fig = relative_rotation.create_rrg_without_tails(
+            ratios_df, momentum_df, benchmark_symbol, study, date  # type: ignore
+        )
+
+    figure = OpenBBFigure(fig)
+    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+    figure.update_layout(
+        font=dict(color="black" if ChartStyle().plt_style == "light" else "white"),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,1)",
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            side="left",
+            showline=True,
+            zeroline=True,
+            mirror=True,
+            ticklen=0,
+            tickfont=dict(size=14),
+            titlefont=dict(size=16),
+        ),
+        xaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            showline=True,
+            zeroline=True,
+            mirror=True,
+            ticklen=0,
+            tickfont=dict(size=14),
+            titlefont=dict(size=16),
+            hoverformat="",
+        ),
+        hoverlabel=dict(
+            font_size=12,
+        ),
+        hovermode="x",
+        hoverdistance=50,
+    )
+    content = figure.to_plotly_json()
+
+    return figure, content
