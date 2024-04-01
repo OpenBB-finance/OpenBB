@@ -149,7 +149,7 @@ class ROUTER_etf(Container):
             The symbol of the equity requested.
         etf_symbol : str
             The symbol of the ETF with exposure to the requested equity.
-        shares : Optional[int]
+        shares : Optional[float]
             The number of shares held in the ETF.
         weight : Optional[float]
             The weight of the equity in the ETF, as a normalized percent.
