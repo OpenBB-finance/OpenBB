@@ -20,6 +20,7 @@ class Coverage:
         commands
         command_model
         command_schemas
+        reference
     """
 
     def __init__(self, app: "BaseApp"):

@@ -22876,7 +22876,7 @@
                 },
                 {
                     "name": "shares",
-                    "type": "int",
+                    "type": "float",
                     "description": "The number of shares held in the ETF.",
                     "default": null,
                     "optional": true
