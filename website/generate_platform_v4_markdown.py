@@ -336,7 +336,7 @@ def create_reference_markdown_tabular_section(
     return markdown
 
 
-def create_reference_markdown_returns_section(returns_content: str) -> str:
+def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
     """Create the returns section for the markdown file.
 
     Args
