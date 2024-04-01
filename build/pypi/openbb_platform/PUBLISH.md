@@ -48,9 +48,8 @@
     >
     > Also, sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes before publishing the next package.
 
-2. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
-3. Merge the `release/<package>-<version>` branch to the `main` branch.
-4. Check the `Deploy to GitHub Pages` GitHub action is completed successfully. Go to the [docs](https://docs.openbb.co) website to see the changes.
+2. Merge the `release/<package>-<version>` branch to the `main` branch.
+3. Check the `Deploy to GitHub Pages` GitHub action is completed successfully. Go to the [docs](https://docs.openbb.co) website to see the changes.
 
 ## Post-release procedure
 
