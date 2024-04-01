@@ -1704,6 +1704,7 @@ The accepted branch naming conventions are:
 - `release/2.1.0` or `release/2.1.0rc0`.
 - `bugfix/bugfix-name`
 - `docs/docs-name`
+- `docs/docs-name`
 
 All `feature/feature-name` and `bugfix/bugfix-name` related branches can only have PRs pointing to `develop` branch. `release/*` branches can only have PRs pointing to `main` branch, while `hotfix/hotfix-name` should first be merged to `main` and then into `develop` to sync the hotfix changes.
 
