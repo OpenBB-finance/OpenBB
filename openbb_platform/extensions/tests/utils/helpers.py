@@ -46,7 +46,9 @@ def execute_docstring_examples(module_name: str, path: str) -> List[str]:
             print(f"* Executing example from {path}")  # noqa: T201
             exec(code)  # pylint: disable=exec-used  # noqa: S102
         except Exception as e:
-            error = f"\n\n{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}\n{'_'*136}"
+            error = (
+                f"{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}\n{'_'*136}"
+            )
             print(error)  # noqa: T201
             errors.append(error)
 
