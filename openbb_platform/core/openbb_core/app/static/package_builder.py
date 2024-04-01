@@ -94,7 +94,7 @@ class PackageBuilder:
             reference = PackageBuilder._read(
                 self.directory / "assets" / "reference.json"
             )
-            ext_map = reference.get("extensions", {})
+            ext_map = reference.get("info", {}).get("extensions", {})
             add, remove = PackageBuilder._diff(ext_map)
             if add:
                 a = ", ".join(sorted(add))
@@ -192,8 +192,8 @@ class PackageBuilder:
                     "title": "OpenBB Platform (Python)",
                     "description": "This is the OpenBB Platform (Python).",
                     "core": CORE_VERSION.replace("dev", ""),
+                    "extensions": ext_map,
                 },
-                "extensions": ext_map,
                 "paths": data,
             },
             indent=4,
