@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.recent_performance import (
@@ -86,4 +87,13 @@ class FMPPricePerformanceFetcher(
         **kwargs: Any,
     ) -> List[FMPPricePerformanceData]:
         """Return the transformed data."""
+
+        symbols = query.symbol.split(",")
+        if len(data) != len(symbols):
+            data_symbols = [d["symbol"] for d in data]
+            missing_symbols = [
+                symbol for symbol in symbols if symbol not in data_symbols
+            ]
+            warn(f"Missing data for symbols: {missing_symbols}")
+
         return [FMPPricePerformanceData.model_validate(i) for i in data]

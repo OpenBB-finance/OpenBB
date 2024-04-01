@@ -1705,7 +1705,16 @@ The accepted branch naming conventions are:
 - `bugfix/bugfix-name`
 - `docs/docs-name`
 
-All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/*` branches can only have PRs pointing to `main` branch.
+All `feature/feature-name` and `bugfix/bugfix-name` related branches can only have PRs pointing to `develop` branch. `release/*` branches can only have PRs pointing to `main` branch, while `hotfix/hotfix-name` should first be merged to `main` and then into `develop` to sync the hotfix changes.
+
+When `develop` branch is merged to `main`, a GitHub action will run scripts that generate documentation content (reference sections, data models, etc.) and trigger the website deployment. Those scripts can be found in the following path `website/generate_*.py`.
+
+The `develop` branch is only merged to `main` right before a new release, but sometimes you might need to update the website in-between releases. To do this follow these steps:
+
+1. create `docs/[my-update]` branch from `main`
+2. commit your changes to `docs/[my-update]`
+3. merge `docs/[my-update]` into `main` -> website deployment triggered
+4. merge `docs/[my-update]` into `develop` -> NO website deployment, just to sync branches
 
 The `docs/docs-name` branch is used to update documentation in-between releases, it will trigger the website deployment to GitHub pages.
 

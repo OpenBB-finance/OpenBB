@@ -50,7 +50,7 @@ repos:
         entry: mypy
         language: python
         "types_or": [python, pyi]
-        args: ["--ignore-missing-imports", "--scripts-are-modules"]
+        args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
         require_serial: true
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1
@@ -76,11 +76,3 @@ repos:
             "cassettes/.*|record/.*|website/content/api/.*|openbb_platform/extensions/charting/openbb_charting/infrastructure/assets/.*\\.js|openbb_platform/extensions/charting/openbb_charting/infrastructure/.*\\.html",
           ]
     exclude: package.lock.json
-  - repo: local
-    hooks:
-      - id: reserved_args
-        name: Check validity of reserved arguments
-        entry: python custom_pre_commit/check_reserved_args.py
-        language: system
-        types: [python]
-        files: .*_controller\.py$

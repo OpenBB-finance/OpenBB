@@ -77,7 +77,7 @@ class ROUTER_equity(Container):
     def market_snapshots(
         self,
         provider: Annotated[
-            Optional[Literal["fmp", "polygon"]],
+            Optional[Literal["fmp", "intrinio", "polygon"]],
             OpenBBCustomParameter(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -88,19 +88,21 @@ class ROUTER_equity(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         market : Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']
             The market to fetch data for. (provider: fmp)
+        date : Optional[Union[datetime.date, datetime.datetime, str]]
+            The date of the data. Can be a datetime or an ISO datetime string. Historical data appears to go back to mid-June 2022. Example: '2024-03-08T12:15:00+0400' (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[MarketSnapshots]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -130,7 +132,8 @@ class ROUTER_equity(Container):
         change_percent : Optional[float]
             The change in price from the previous close, as a normalized percent.
         last_price : Optional[float]
-            The last price of the stock. (provider: fmp)
+            The last price of the stock. (provider: fmp);
+            The last trade price. (provider: intrinio)
         last_price_timestamp : Optional[Union[date, datetime]]
             The timestamp of the last price. (provider: fmp)
         ma50 : Optional[float]
@@ -157,6 +160,27 @@ class ROUTER_equity(Container):
             The exchange of the stock. (provider: fmp)
         earnings_date : Optional[Union[date, datetime]]
             The upcoming earnings announcement date. (provider: fmp)
+        last_size : Optional[int]
+            The last trade size. (provider: intrinio)
+        last_volume : Optional[int]
+            The last trade volume. (provider: intrinio)
+        last_trade_timestamp : Optional[datetime]
+            The timestamp of the last trade. (provider: intrinio);
+            The last trade timestamp. (provider: polygon)
+        bid_size : Optional[int]
+            The size of the last bid price. Bid price and size is not always available. (provider: intrinio);
+            The current bid size. (provider: polygon)
+        bid_price : Optional[float]
+            The last bid price. Bid price and size is not always available. (provider: intrinio)
+        ask_price : Optional[float]
+            The last ask price. Ask price and size is not always available. (provider: intrinio)
+        ask_size : Optional[int]
+            The size of the last ask price. Ask price and size is not always available. (provider: intrinio);
+            The current ask size. (provider: polygon)
+        last_bid_timestamp : Optional[datetime]
+            The timestamp of the last bid price. Bid price and size is not always available. (provider: intrinio)
+        last_ask_timestamp : Optional[datetime]
+            The timestamp of the last ask price. Ask price and size is not always available. (provider: intrinio)
         vwap : Optional[float]
             The volume weighted average price of the stock on the current trading day. (provider: polygon)
         prev_open : Optional[float]
@@ -173,10 +197,6 @@ class ROUTER_equity(Container):
             The last time the data was updated. (provider: polygon)
         bid : Optional[float]
             The current bid price. (provider: polygon)
-        bid_size : Optional[int]
-            The current bid size. (provider: polygon)
-        ask_size : Optional[int]
-            The current ask size. (provider: polygon)
         ask : Optional[float]
             The current ask price. (provider: polygon)
         quote_timestamp : Optional[datetime]
@@ -189,8 +209,6 @@ class ROUTER_equity(Container):
             The last trade condition codes. (provider: polygon)
         last_trade_exchange : Optional[int]
             The last trade exchange ID code. (provider: polygon)
-        last_trade_timestamp : Optional[datetime]
-            The last trade timestamp. (provider: polygon)
 
         Examples
         --------
@@ -205,7 +223,7 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/market_snapshots",
-                        ("fmp", "polygon"),
+                        ("fmp", "intrinio", "polygon"),
                     )
                 },
                 standard_params={},
@@ -236,7 +254,7 @@ class ROUTER_equity(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Annotated[
@@ -252,7 +270,7 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -416,7 +434,7 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "symbol": {
                         "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
                     }

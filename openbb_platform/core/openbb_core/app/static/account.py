@@ -42,10 +42,11 @@ class Account:
     def _log_account_command(func):  # pylint: disable=E0213
         """Log account command."""
 
-        @wraps(func)
+        @wraps(func)  # type: ignore[arg-type]
         def wrapped(self, *args, **kwargs):
             try:
-                result = func(self, *args, **kwargs)  # pylint: disable=E1102
+                # pylint: disable=E1102
+                result = func(self, *args, **kwargs)  # type: ignore[operator]
             except Exception as e:
                 raise OpenBBError(e) from e
             finally:
@@ -57,8 +58,9 @@ class Account:
                 ls.log(
                     user_settings=user_settings,
                     system_settings=system_settings,
-                    route=f"/account/{func.__name__}",  # pylint: disable=E1101
-                    func=func,
+                    # pylint: disable=E1101
+                    route=f"/account/{func.__name__}",  # type: ignore[attr-defined]
+                    func=func,  # type: ignore[arg-type]
                     kwargs={},  # don't want any credentials being logged by accident
                     exec_info=exc_info(),
                 )

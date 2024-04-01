@@ -45,6 +45,7 @@ openbb_terminal/core/plots/assets/plotly*.js
 .dccache
 *rome.json
 **/node_modules/*
+.cursorignore
 # pyinstaller artifacts
 *.pyo
 **/dist/*

@@ -51,22 +51,12 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-root
 
-      - name: Install packages
-        run: poetry install --no-interaction -E forecast -E doc -E optimization
-
-      - name: Generate SDK v3 Markdown
-        run: |
-          source .venv/bin/activate
-          pip uninstall Brotli -y
-          pytest tests/website --autodoc
-          poetry run python website/generate_sdk_v3_markdown.py
-          poetry run python website/generate_terminal_v3_markdown.py
-
       - name: Generate Platform Markdown
         run: |
           source .venv/bin/activate
           pip install -U poetry
           poetry run python openbb_platform/dev_install.py -e all
+          poetry run python -c "import openbb; openbb.build()"
           pip uninstall nbmake -y
           poetry run python website/generate_platform_v4_markdown.py
 

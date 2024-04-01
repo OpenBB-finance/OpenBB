@@ -900,7 +900,7 @@ def test_technical_cg(params, data_type):
                 "index": "date",
                 "lower_q": "0.3",
                 "upper_q": "0.7",
-                "model": "Parkinson",
+                "model": "parkinson",
                 "is_crypto": "True",
                 "trading_periods": "",
             },

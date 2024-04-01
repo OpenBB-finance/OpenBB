@@ -16,35 +16,6 @@ permissions:
   actions: write
 
 jobs:
-  trigger-windows-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Windows Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: windows10_build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 3h
-
-  trigger-macos-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger M1 & Intel MacOs Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: macos-build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          wait-for-completion-timeout: 2h
-
-  trigger-docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Docker Build
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          workflow: docker-build.yml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   trigger-pypi-build:
     runs-on: ubuntu-latest
     steps:

@@ -77,29 +77,6 @@ def test_charting_equity_price_historical(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 100, "chart": True})],
-)
-@pytest.mark.integration
-def test_charting_equity_fundamental_multiples(params, headers):
-    """Test chart equity multiples."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-    chart = result.json()["chart"]
-    fig = chart.pop("fig", {})
-
-    assert chart
-    assert not fig
-    assert list(chart.keys()) == ["content", "format"]
-
-
-@parametrize(
-    "params",
     [
         (
             {
@@ -393,6 +370,71 @@ def test_charting_technical_zlma(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/technical/zlma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "model": "yang_zhang",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_technical_cones(params, headers):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+    body = json.dumps(get_equity_data())
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/technical/cones?{query_str}"
+    result = requests.post(url, headers=headers, timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "DGS10",
+                "transform": "pc1",
+                "chart": True,
+                "provider": "fred",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_fred_series(params, headers):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

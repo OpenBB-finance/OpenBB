@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.analyst_search import (
@@ -23,18 +23,25 @@ class BenzingaAnalystSearchQueryParams(AnalystSearchQueryParams):
     """
 
     __alias_dict__ = {
-        "analyst_ids": "id",
+        "analyst_ids": "analyst",
         "firm_ids": "firm",
         "limit": "pageSize",
     }
+    __json_schema_extra__ = {
+        "analyst_name": ["multiple_items_allowed"],
+        "firm_name": ["multiple_items_allowed"],
+        "analyst_ids": ["multiple_items_allowed"],
+        "firm_ids": ["multiple_items_allowed"],
+        "fields": ["multiple_items_allowed"],
+    }
 
-    analyst_ids: Optional[Union[str, List[str]]] = Field(
+    analyst_ids: Optional[str] = Field(
         default=None,
-        description="A comma separated list of analyst IDs to bring back.",
+        description="List of analyst IDs to return.",
     )
-    firm_ids: Optional[Union[str, List[str]]] = Field(
+    firm_ids: Optional[str] = Field(
         default=None,
-        description="A comma separated list of firm IDs to bring back.",
+        description="Firm IDs to return.",
     )
     limit: Optional[int] = Field(
         default=100,
@@ -47,36 +54,11 @@ class BenzingaAnalystSearchQueryParams(AnalystSearchQueryParams):
         + " are limited from 0 - 100000."
         + " Limit the query results by other parameters such as date.",
     )
-    fields: Optional[Union[List[str], str]] = Field(
+    fields: Optional[str] = Field(
         default=None,
-        description="Comma-separated list of fields to include in the response."
+        description="Fields to include in the response."
         " See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
     )
-
-    @field_validator(
-        "fields", "firm_ids", "analyst_ids", mode="before", check_fields=False
-    )
-    @classmethod
-    def convert_list(cls, v: Union[str, List[str]]):
-        """Convert a List[str] to a string list."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
-
-    @field_validator(
-        "analyst_ids",
-        "firm_ids",
-        "analyst_name",
-        "firm_name",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_list(cls, v: Union[str, List[str], None]):
-        """Validate list."""
-        if isinstance(v, str):
-            return v
-        return ",".join(v) if v else None
 
 
 class BenzingaAnalystSearchData(AnalystSearchData):

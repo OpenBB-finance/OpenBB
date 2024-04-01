@@ -70,7 +70,7 @@ class ROUTER_economy(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         country : Optional[str]
-            Country of the event. Multiple items allowed. (provider: tradingeconomics)
+            Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
@@ -152,6 +152,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"country": {"multiple_items_allowed": ["tradingeconomics"]}},
             )
         )
 
@@ -252,7 +253,7 @@ class ROUTER_economy(Container):
         country: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="The country to get data. Multiple items allowed for provider(s): fred."
+                description="The country to get data. Multiple comma separated items allowed for provider(s): fred."
             ),
             OpenBBCustomChoices(
                 choices=[
@@ -351,7 +352,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple items allowed for provider(s): fred.
+            The country to get data. Multiple comma separated items allowed for provider(s): fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -420,7 +421,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                extra_info={"country": {"multiple_items_allowed": ["fred"]}},
+                info={"country": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
@@ -429,10 +430,7 @@ class ROUTER_economy(Container):
     def fred_regional(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -464,8 +462,8 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fred.
+        symbol : str
+            Symbol to get data for.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -579,7 +577,6 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
@@ -717,7 +714,7 @@ class ROUTER_economy(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
@@ -749,7 +746,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fred.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -853,7 +850,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
+                info={"symbol": {"multiple_items_allowed": ["fred"]}},
             )
         )
 

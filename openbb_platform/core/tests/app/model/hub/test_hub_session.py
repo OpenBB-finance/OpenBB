@@ -1,11 +1,12 @@
 from openbb_core.app.model.hub.hub_session import HubSession
+from pydantic import SecretStr
 
 # ruff: noqa: S105 S106
 
 
 def test_hub_session():
     session = HubSession(
-        access_token="mock_access_token",
+        access_token=SecretStr("mock_access_token"),
         token_type="mock_token_type",
         email="mock_email",
         user_uuid="mock_user_uuid",
@@ -21,7 +22,7 @@ def test_hub_session():
 
 
 def test_fields():
-    fields = HubSession.__fields__
+    fields = HubSession.model_fields
     fields_keys = fields.keys()
 
     assert "access_token" in fields_keys

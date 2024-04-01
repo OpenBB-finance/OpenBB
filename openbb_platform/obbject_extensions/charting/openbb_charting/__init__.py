@@ -6,7 +6,6 @@ from typing import (
     Dict,
     List,
     Optional,
-    Tuple,
     Union,
 )
 
@@ -18,7 +17,7 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
-from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
+from openbb_charting.core.to_chart import ChartIndicators, to_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
 ext = Extension(name="charting")
@@ -49,8 +48,8 @@ class Charting:
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
-            user_settings=self._obbject._user_settings,
-            system_settings=self._obbject._system_settings,
+            user_settings=self._obbject._user_settings,  # type: ignore
+            system_settings=self._obbject._system_settings,  # type: ignore
         )
         self._handle_backend()
 
@@ -91,7 +90,9 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
-
+        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT
@@ -185,17 +186,29 @@ class Charting:
             if has_data
             else self._obbject.to_dataframe()
         )
-        fig, content = to_chart(
-            data_as_df,
-            indicators=indicators,
-            symbol=symbol,
-            candles=candles,
-            volume=volume,
-            prepost=prepost,
-            volume_ticks_x=volume_ticks_x,
-        )
-        self._obbject.chart = Chart(
-            fig=fig, content=content, format=charting_router.CHART_FORMAT
-        )
-        if render:
-            fig.show(**kwargs)
+        if "date" in data_as_df.columns:
+            data_as_df = data_as_df.set_index("date")
+        try:
+            fig, content = to_chart(
+                data_as_df,
+                indicators=indicators,
+                symbol=symbol,
+                candles=candles,
+                volume=volume,
+                prepost=prepost,
+                volume_ticks_x=volume_ticks_x,
+            )
+            self._obbject.chart = Chart(
+                fig=fig, content=content, format=charting_router.CHART_FORMAT
+            )
+            if render:
+                fig.show(**kwargs)
+
+        except Exception:
+            try:
+                if has_data:
+                    self.show(data=data_as_df, symbol=symbol, render=render, **kwargs)
+                else:
+                    self.show(**kwargs)
+            except Exception as e:
+                raise RuntimeError("Could not create chart from the OBBject.") from e

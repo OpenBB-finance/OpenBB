@@ -67,10 +67,6 @@ class TAIndicator:
     ]
     args: List[Arguments]
 
-    def __post_init__(self):
-        """Post init."""
-        self.args = [Arguments(**arg) for arg in self.args]
-
     def __iter__(self):
         """Return iterator."""
         return iter(self.args)
@@ -97,14 +93,6 @@ class ChartIndicators:
     """Chart technical analysis indicators."""
 
     indicators: Optional[List[TAIndicator]] = None
-
-    def __post_init__(self):
-        """Post init."""
-        self.indicators = (
-            [TAIndicator(**indicator) for indicator in self.indicators]
-            if self.indicators
-            else []
-        )
 
     def get_indicator(self, name: str) -> Union[TAIndicator, None]:
         """Return indicator with given name."""
@@ -165,21 +153,43 @@ class ChartIndicators:
     @staticmethod
     def get_available_indicators() -> Tuple[str, ...]:
         """Return tuple of available indicators."""
-        return list(
+        return tuple(
             TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
         )
 
     @classmethod
-    def from_dict(cls, indicators: Dict[str, Dict[str, Any]]) -> "ChartIndicators":
-        """Return ChartIndicators from dictionary."""
-        data = []
-        for indicator in indicators:
-            args = []
-            for arg in indicators[indicator]:
-                args.append({"label": arg, "values": indicators[indicator][arg]})
-            data.append({"name": indicator, "args": args})
+    def from_dict(
+        cls, indicators: Dict[str, Dict[str, List[Dict[str, Any]]]]
+    ) -> "ChartIndicators":
+        """Return ChartIndicators from dictionary.
 
-        return cls(indicators=data)  # type: ignore
+        Example
+        -------
+        ChartIndicators.from_dict(
+            {
+                "ad": {
+                    "args": [
+                        {
+                            "label": "AD_LABEL",
+                            "values": [1, 2, 3],
+                        }
+                    ]
+                }
+            }
+        )
+        """
+        return cls(
+            indicators=[
+                TAIndicator(
+                    name=name,  # type: ignore[arg-type]
+                    args=[
+                        Arguments(label=label, values=values)
+                        for label, values in args.items()
+                    ],
+                )
+                for name, args in indicators.items()
+            ]
+        )
 
     def to_dataframe(
         self, df_ta: pd.DataFrame, ma_mode: Optional[List[str]] = None
