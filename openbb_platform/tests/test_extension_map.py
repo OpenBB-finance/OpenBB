@@ -36,7 +36,7 @@ def test_extension_map():
     this_dir = Path(__file__).parent
     with open(Path(this_dir, "..", "openbb", "assets", "reference.json")) as f:
         reference = json.load(f)
-    ext_map = create_ext_map(reference.get("extensions", {}))
+    ext_map = create_ext_map(reference.get("info", {}).get("extensions", {}))
     req_ext = load_req_ext(Path(this_dir, "..", "pyproject.toml"))
 
     for ext in req_ext:
