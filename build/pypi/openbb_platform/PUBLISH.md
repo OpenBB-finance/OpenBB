@@ -38,6 +38,7 @@
          - Bump the dependency package versions
          - Re-build the static assets that are bundled with the package
          - Run unit tests to validate the existence of deprecated endpoints
+         - Run `poetry publish --build` from `openbb_platform`
 
     > [!TIP]
     > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies:
