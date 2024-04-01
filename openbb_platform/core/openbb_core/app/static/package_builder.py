@@ -191,8 +191,8 @@ class PackageBuilder:
                 "info": {
                     "title": "OpenBB Platform (Python)",
                     "description": "This is the OpenBB Platform (Python).",
+                    "core": CORE_VERSION.replace("dev", ""),
                 },
-                "core": CORE_VERSION.replace("dev", ""),
                 "extensions": ext_map,
                 "paths": data,
             },

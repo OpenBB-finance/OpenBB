@@ -1,10 +1,10 @@
 {
-    "openbb": "4.1.5dev",
+    "openbb": "4.1.5",
     "info": {
         "title": "OpenBB Platform (Python)",
-        "description": "This is the OpenBB Platform (Python)."
+        "description": "This is the OpenBB Platform (Python).",
+        "core": "1.1.4"
     },
-    "core": "1.1.4",
     "extensions": {
         "openbb_core_extension": [
             "commodity@1.0.1",

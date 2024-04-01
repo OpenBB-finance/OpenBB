@@ -738,7 +738,7 @@ def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
 def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) -> None:
     """Check all the openbb packages installed are in the reference file."""
     console.log("\n[INFO] Ensuring all packages built...")
-    core_version = reference.get("core", {})
+    core_version = reference.get("info", {}).get("core", "")
     extensions = reference.get("extensions", {})
     built = {}
     built["openbb-core"] = Version.parse(core_version)
