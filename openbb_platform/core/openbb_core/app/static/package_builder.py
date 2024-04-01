@@ -187,7 +187,7 @@ class PackageBuilder:
         data = ReferenceGenerator.get_reference_data()
         code = dumps(
             obj={
-                "openbb": VERSION,
+                "openbb": VERSION.replace("dev", ""),
                 "info": {
                     "title": "OpenBB Platform (Python)",
                     "description": "This is the OpenBB Platform (Python).",
