@@ -7,7 +7,6 @@ from unittest.mock import patch
 import pytest
 
 # pylint: disable=redefined-outer-name, unused-import, import-outside-toplevel
-#
 
 
 @pytest.fixture(autouse=True)
@@ -28,6 +27,7 @@ def openbb_module(setup_mocks):
     return setup_mocks
 
 
+@pytest.mark.integration
 def test_autobuild_called(openbb_module):
     """
     Test that auto_build is called upon importing openbb.
