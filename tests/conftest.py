@@ -8,7 +8,6 @@ from typing import Any, Dict, List, Optional, Type
 import importlib_metadata
 
 # IMPORTS THIRD-PARTY
-import matplotlib
 import pandas as pd
 import pytest
 from _pytest.capture import MultiCapture, SysCapture
@@ -358,11 +357,6 @@ def disable_rich():
     helper_funcs.print_rich_table = effect
 
 
-def disable_matplotlib():
-    # We add this to avoid multiple figures being opened
-    matplotlib.use("Agg")
-
-
 def enable_debug():
     set_settings("DEBUG_MODE", True)
 
@@ -373,18 +367,12 @@ def pytest_configure(config: Config) -> None:
     brotli_check()
     enable_debug()
     disable_rich()
-    disable_matplotlib()
 
 
 @pytest.fixture(scope="session")  # type: ignore
 def rewrite_expected(request: SubRequest) -> bool:
     """Force rewriting of all expected data by : `record_stdout` and `recorder`."""
     return request.config.getoption("--rewrite-expected")
-
-
-@pytest.fixture(autouse=True)
-def mock_matplotlib(mocker):
-    mocker.patch("matplotlib.pyplot.show")
 
 
 @pytest.fixture(autouse=True)

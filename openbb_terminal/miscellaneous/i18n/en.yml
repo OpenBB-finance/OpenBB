@@ -24,7 +24,6 @@ en:
   settings/rcontext: remember contexts loaded params during session
   settings/rich: colorful rich CLI
   settings/richpanel: colorful rich CLI panel
-  settings/ion: interactive matplotlib mode
   settings/watermark: watermark in figures
   settings/cmdloc: command location displayed in figures
   settings/overwrite: whether to overwrite Excel files if they already exists
