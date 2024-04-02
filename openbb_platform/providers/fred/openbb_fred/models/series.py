@@ -142,9 +142,18 @@ class FredSeriesFetcher(
                 f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
                 timeout=5,
             )
-            _metadata = metadata_response.get("seriess", [{}])[0]
 
-            observations = observations_response.get("observations")
+            # seriess is not a typo, it's the actual key in the response
+            _metadata = (
+                metadata_response.get("seriess", [{}])[0]
+                if isinstance(metadata_response, dict)
+                else {}
+            ) or {}
+            observations = (
+                observations_response.get("observations")
+                if isinstance(observations_response, dict)
+                else []
+            ) or []
             try:
                 for d in observations:
                     d.pop("realtime_start")
