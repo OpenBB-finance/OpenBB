@@ -13,6 +13,7 @@ from typing import (
     get_origin,
 )
 
+from openbb_core.provider.abstract.annotated_data import AnnotatedData
 from pandas import DataFrame
 
 from openbb_core.provider.abstract.data import Data
@@ -184,10 +185,12 @@ class Fetcher(Generic[Q, R]):
         assert len(data) > 0, "Data must not be empty."
 
         # Transformed Data Assertions
+        if isinstance(transformed_data, AnnotatedData):
+            transformed_data = transformed_data.data
+
         assert transformed_data, "Transformed data must not be None."
 
-        is_list = isinstance(transformed_data, list)
-        if is_list:
+        if isinstance(transformed_data, list):
             return_type_args = cls.return_type.__args__[0]
             return_type_is_dict = (
                 hasattr(return_type_args, "__origin__")
