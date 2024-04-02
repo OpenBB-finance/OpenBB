@@ -85,6 +85,7 @@ class MenuText:
         self.menu_text = ""
         self.menu_path = path
         self.col_src = column_sources
+        self.warnings: List[Dict[str, str]] = []
 
     def add_raw(self, raw_text: str):
         """Append raw text (no translation) to a menu
@@ -136,6 +137,69 @@ class MenuText:
         )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
+    def _adjust_command_length(self, key_command: str) -> str:
+        """Adjust the length of the command if it is too long
+
+        Parameters
+        ----------
+        key_command : str
+            command to be adjusted
+
+        Returns
+        -------
+        str
+            adjusted command
+        """
+        if len(key_command) > 18:
+            new_key_command = key_command[:18]  # Default to trimming to 18 characters
+
+            if "_" in key_command:
+                key_command_split = key_command.split("_")
+
+                new_key_command = (
+                    "_".join(key_command_split[:2])
+                    if len(key_command_split) > 2
+                    else key_command_split[0]
+                )
+
+                if len(new_key_command) > 18:
+                    new_key_command = new_key_command[:18]
+
+            if new_key_command != key_command:
+                self.warnings.append(
+                    {"command": key_command, "trimmed_command": new_key_command}
+                )
+                key_command = new_key_command
+
+        return key_command
+
+    def _handle_command_description(
+        self, key_command: str, command_description: str
+    ) -> str:
+        """Handle the command description
+
+        Parameters
+        ----------
+        key_command : str
+            command to be adjusted
+        command_description : str
+            description of the command
+
+        Returns
+        -------
+        str
+            adjusted command description
+        """
+        if not command_description:
+            command_description = i18n.t(self.menu_path + key_command)
+            if command_description == self.menu_path + key_command:
+                command_description = ""
+        return (
+            command_description[:88] + "..."
+            if len(command_description) > 91
+            else command_description
+        )
+
     def add_cmd(
         self, key_command: str, condition: bool = True, command_description: str = ""
     ):
@@ -149,15 +213,13 @@ class MenuText:
             condition in which command is available to user. I.e. displays command and description.
             If condition is false, the command line is greyed out.
         """
+        key_command = self._adjust_command_length(key_command)
+        command_description = self._handle_command_description(
+            key_command, command_description
+        )
         spacing = (23 - (len(key_command) + 4)) * " "
 
-        if command_description:
-            cmd = f"{key_command}{spacing}{command_description}"
-        else:
-            command_description = i18n.t(self.menu_path + key_command)
-            if command_description == self.menu_path + key_command:
-                command_description = ""
-            cmd = f"{key_command}{spacing}{command_description}"
+        cmd = f"{key_command}{spacing}{command_description}"
         cmd = f"[cmds]    {cmd}[/cmds]" if condition else f"[unvl]    {cmd}[/unvl]"
 
         sources = get_ordered_list_sources(f"{self.menu_path}{key_command}")
