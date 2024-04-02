@@ -209,12 +209,11 @@ class PlatformController(BaseController):
         mt = MenuText(self.PATH)
 
         if self.CHOICES_MENUS:
-            mt.add_raw("Menus\n\n")
             for menu in self.CHOICES_MENUS:
                 mt.add_menu(menu)
 
         if self.CHOICES_COMMANDS:
-            mt.add_raw("\nCommands\n\n")
+            mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = (
                     obb.coverage.reference.get(f"{self.PATH}{command}", {})
@@ -229,3 +228,12 @@ class PlatformController(BaseController):
                 )
 
         console.print(text=mt.menu_text, menu=self._name)
+
+        settings = get_current_settings()
+        dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
+        if mt.warnings and dev_mode:
+            console.print("")
+            for w in mt.warnings:
+                w_str = str(w).replace("{", "").replace("}", "").replace("'", "")
+                console.print(f"[yellow]{w_str}[/yellow]")
+            console.print("")
