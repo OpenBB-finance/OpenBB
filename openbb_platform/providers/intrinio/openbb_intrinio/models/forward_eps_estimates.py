@@ -162,8 +162,8 @@ class IntrinioForwardEpsEstimatesFetcher(
         async def fetch_callback(response, session):
             """Callback for pagination."""
             data = await response.json()
-            if data.get("messages"):  # type: ignore
-                messages = data.get("messages")  # type: ignore
+            messages = data.get("messages", None)
+            if messages:
                 raise RuntimeError(str(messages))
             if data.get("estimates") and len(data.get("estimates")) > 0:  # type: ignore
                 results.extend(data.get("estimates"))  # type: ignore

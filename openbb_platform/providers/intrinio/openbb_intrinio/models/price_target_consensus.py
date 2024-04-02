@@ -130,11 +130,12 @@ class IntrinioPriceTargetConsensusFetcher(
         async def fetch_callback(response, session):
             """Callback for pagination."""
             data = await response.json()
-            if data.get("messages"):  # type: ignore
-                messages = data.get("messages")  # type: ignore
+            messages = data.get("messages")
+            if messages:
                 raise RuntimeError(str(messages))
-            if data.get("target_price_consensuses") and len(data.get("target_price_consensuses")) > 0:  # type: ignore
-                results.extend(data.get("target_price_consensuses"))  # type: ignore
+            _data = data.get("target_price_consensuses")
+            if _data and len(_data) > 0:
+                results.extend(_data)  # type: ignore
                 while data.get("next_page"):  # type: ignore
                     next_page = data["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
