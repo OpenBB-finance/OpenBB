@@ -911,7 +911,7 @@ def test_technical_ema(params, data_type, obb):
                 "short_period": 21,
                 "window": 21,
                 "trading_periods": 252,
-                "chart_params": {"show_tails": False}
+                "chart_params": {"show_tails": False},
             }
         ),
     ],
