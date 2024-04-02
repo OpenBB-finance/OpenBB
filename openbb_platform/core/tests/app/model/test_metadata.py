@@ -21,7 +21,7 @@ def test_Metadata():
 
 def test_fields():
     "Smoke test"
-    fields = Metadata.__fields__.keys()
+    fields = Metadata.model_fields.keys()
     assert "arguments" in fields
     assert "duration" in fields
     assert "route" in fields

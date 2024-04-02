@@ -26,42 +26,47 @@ class ROUTER_equity_estimates(Container):
     def analyst_search(
         self,
         analyst_name: Annotated[
-            Optional[str],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts."
+                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         firm_name: Annotated[
-            Optional[str],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
+                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
-        provider: Optional[Literal["benzinga"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for specific analysts and get their forecast track record.
 
         Parameters
         ----------
-        analyst_name : Optional[str]
-            A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.
-        firm_name : Optional[str]
-            A comma separated list of firm names to bring back. Omitting will bring back all available firms.
+        analyst_name : Union[str, None, List[Optional[str]]]
+            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
+        firm_name : Union[str, None, List[Optional[str]]]
+            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
         provider : Optional[Literal['benzinga']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
-        analyst_ids : Optional[Union[str, List[str]]]
-            A comma separated list of analyst IDs to bring back. (provider: benzinga)
-        firm_ids : Optional[Union[str, List[str]]]
-            A comma separated list of firm IDs to bring back. (provider: benzinga)
+        analyst_ids : Optional[str]
+            List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
+        firm_ids : Optional[str]
+            Firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         limit : Optional[int]
             Number of results returned. Limit 1000. (provider: benzinga)
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. (provider: benzinga)
-        fields : Optional[Union[str, List[str]]]
-            Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
+        fields : Optional[str]
+            Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
 
         Returns
         -------
@@ -168,10 +173,11 @@ class ROUTER_equity_estimates(Container):
         std_dev_3y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years (provider: benzinga)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.analyst_search(firm_name="Wedbush", provider="benzinga").to_df()
+        >>> obb.equity.estimates.analyst_search(provider='benzinga')
+        >>> obb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')
         """  # noqa: E501
 
         return self._run(
@@ -189,6 +195,13 @@ class ROUTER_equity_estimates(Container):
                     "firm_name": firm_name,
                 },
                 extra_params=kwargs,
+                info={
+                    "analyst_name": {"multiple_items_allowed": ["benzinga"]},
+                    "firm_name": {"multiple_items_allowed": ["benzinga"]},
+                    "analyst_ids": {"multiple_items_allowed": ["benzinga"]},
+                    "firm_ids": {"multiple_items_allowed": ["benzinga"]},
+                    "fields": {"multiple_items_allowed": ["benzinga"]},
+                },
             )
         )
 
@@ -199,10 +212,15 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance."
             ),
         ],
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "yfinance"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get consensus price target and recommendation.
@@ -210,7 +228,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -219,7 +237,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
+            results : List[PriceTargetConsensus]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -253,10 +271,11 @@ class ROUTER_equity_estimates(Container):
         currency : Optional[str]
             Currency the stock is priced in. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.consensus("AAPL,MSFT", provider="yfinance").to_df()
+        >>> obb.equity.estimates.consensus(symbol='AAPL', provider='fmp')
+        >>> obb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -273,7 +292,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
+                info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
             )
         )
 
@@ -282,33 +301,33 @@ class ROUTER_equity_estimates(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            ),
         ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 30,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical analyst estimates for earnings and revenue.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        period : Literal['quarter', 'annual']
-            Time period of the data to return.
-        limit : int
-            The number of data entries to return.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        period : Literal['quarter', 'annual']
+            Time period of the data to return. (provider: fmp)
+        limit : Optional[int]
+            The number of data entries to return. (provider: fmp)
 
         Returns
         -------
@@ -330,51 +349,51 @@ class ROUTER_equity_estimates(Container):
             Symbol representing the entity requested in the data.
         date : date
             The date of the data.
-        estimated_revenue_low : int
+        estimated_revenue_low : Optional[int]
             Estimated revenue low.
-        estimated_revenue_high : int
+        estimated_revenue_high : Optional[int]
             Estimated revenue high.
-        estimated_revenue_avg : int
+        estimated_revenue_avg : Optional[int]
             Estimated revenue average.
-        estimated_ebitda_low : int
-            Estimated EBITDA low.
-        estimated_ebitda_high : int
-            Estimated EBITDA high.
-        estimated_ebitda_avg : int
-            Estimated EBITDA average.
-        estimated_ebit_low : int
-            Estimated EBIT low.
-        estimated_ebit_high : int
-            Estimated EBIT high.
-        estimated_ebit_avg : int
-            Estimated EBIT average.
-        estimated_net_income_low : int
-            Estimated net income low.
-        estimated_net_income_high : int
-            Estimated net income high.
-        estimated_net_income_avg : int
-            Estimated net income average.
-        estimated_sga_expense_low : int
+        estimated_sga_expense_low : Optional[int]
             Estimated SGA expense low.
-        estimated_sga_expense_high : int
+        estimated_sga_expense_high : Optional[int]
             Estimated SGA expense high.
-        estimated_sga_expense_avg : int
+        estimated_sga_expense_avg : Optional[int]
             Estimated SGA expense average.
-        estimated_eps_avg : float
+        estimated_ebitda_low : Optional[int]
+            Estimated EBITDA low.
+        estimated_ebitda_high : Optional[int]
+            Estimated EBITDA high.
+        estimated_ebitda_avg : Optional[int]
+            Estimated EBITDA average.
+        estimated_ebit_low : Optional[int]
+            Estimated EBIT low.
+        estimated_ebit_high : Optional[int]
+            Estimated EBIT high.
+        estimated_ebit_avg : Optional[int]
+            Estimated EBIT average.
+        estimated_net_income_low : Optional[int]
+            Estimated net income low.
+        estimated_net_income_high : Optional[int]
+            Estimated net income high.
+        estimated_net_income_avg : Optional[int]
+            Estimated net income average.
+        estimated_eps_avg : Optional[float]
             Estimated EPS average.
-        estimated_eps_high : float
+        estimated_eps_high : Optional[float]
             Estimated EPS high.
-        estimated_eps_low : float
+        estimated_eps_low : Optional[float]
             Estimated EPS low.
-        number_analyst_estimated_revenue : int
+        number_analyst_estimated_revenue : Optional[int]
             Number of analysts who estimated revenue.
-        number_analysts_estimated_eps : int
+        number_analysts_estimated_eps : Optional[int]
             Number of analysts who estimated EPS.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.historical("AAPL", period="quarter", provider="fmp").to_df()
+        >>> obb.equity.estimates.historical(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -389,10 +408,9 @@ class ROUTER_equity_estimates(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "period": period,
-                    "limit": limit,
                 },
                 extra_params=kwargs,
+                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -403,14 +421,19 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp."
             ),
         ] = None,
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
-        provider: Optional[Literal["benzinga", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["benzinga", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get analyst price targets by company.
@@ -418,7 +441,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple items allowed for provider(s): benzinga.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp']]
@@ -439,11 +462,11 @@ class ROUTER_equity_estimates(Container):
             Importance level to filter by. Uses Greater Than or Equal To the importance indicated (provider: benzinga)
         action : Optional[Literal['downgrades', 'maintains', 'reinstates', 'reiterates', 'upgrades', 'assumes', 'initiates', 'terminates', 'removes', 'suspends', 'firm_dissolved']]
             Filter by a specific action_company. (provider: benzinga)
-        analyst_ids : Optional[Union[str, List[str]]]
+        analyst_ids : Optional[Union[List[str], str]]
             Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. (provider: benzinga)
-        firm_ids : Optional[Union[str, List[str]]]
+        firm_ids : Optional[Union[List[str], str]]
             Comma-separated list of firm IDs. (provider: benzinga)
-        fields : Optional[Union[str, List[str]]]
+        fields : Optional[Union[List[str], str]]
             Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
@@ -521,10 +544,12 @@ class ROUTER_equity_estimates(Container):
         news_base_url : Optional[str]
             News base URL of the price target. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()
+        >>> obb.equity.estimates.price_target(provider='benzinga')
+        >>> # Get price targets for Microsoft using 'benzinga' as provider.
+        >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action='downgrades')
         """  # noqa: E501
 
         return self._run(
@@ -542,6 +567,6 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["benzinga"]}},
+                info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
             )
         )

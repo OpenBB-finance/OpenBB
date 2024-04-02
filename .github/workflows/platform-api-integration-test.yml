@@ -71,6 +71,11 @@ jobs:
             }
           }' > ~/.openbb_platform/user_settings.json
 
+      - name: Build openbb
+        run: |
+          source runner_env/bin/activate
+          python -c "import openbb; openbb.build()"
+
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate

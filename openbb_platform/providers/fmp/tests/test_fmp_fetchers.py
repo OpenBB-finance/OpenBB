@@ -343,7 +343,7 @@ def test_fmp_price_target_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 30}
 
     fetcher = FMPAnalystEstimatesFetcher()
     result = fetcher.test(params, credentials)

@@ -63,25 +63,6 @@ def test_charting_equity_price_historical(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 100, "chart": "True"}),
-    ],
-)
-@pytest.mark.integration
-def test_charting_equity_fundamental_multiples(params, obb):
-    """Test chart equity multiples."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.fundamental.multiples(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert result.chart.content
-    assert isinstance(result.chart.fig, OpenBBFigure)
-
-
-@parametrize(
-    "params",
-    [
         (
             {
                 "data": "",
@@ -343,6 +324,58 @@ def test_charting_technical_zlma(params, obb):
     params["data"] = get_equity_data()
 
     result = obb.technical.zlma(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "model": "yang_zhang",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_technical_cones(params, obb):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_equity_data()
+
+    result = obb.technical.cones(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "DGS10",
+                "transform": "pc1",
+                "chart": True,
+                "provider": "fred",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_fred_series(params, obb):
+    """Test chart economy fred series."""
+    result = obb.economy.fred_series(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

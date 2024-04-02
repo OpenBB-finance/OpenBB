@@ -83,8 +83,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         + " Uses Greater Than or Equal To the importance indicated",
         alias="parameters[importance]",
     )
-    action: Union[
-        None,
+    action: Optional[
         Literal[
             "downgrades",
             "maintains",
@@ -97,7 +96,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
             "removes",
             "suspends",
             "firm_dissolved",
-        ],
+        ]
     ] = Field(
         default=None,
         description="Filter by a specific action_company.",
@@ -166,8 +165,7 @@ class BenzingaPriceTargetData(PriceTargetData):
         "url_analyst": "url",
     }
 
-    action: Union[
-        None,
+    action: Optional[
         Literal[
             "Downgrades",
             "Maintains",
@@ -180,22 +178,21 @@ class BenzingaPriceTargetData(PriceTargetData):
             "Removes",
             "Suspends",
             "Firm Dissolved",
-        ],
+        ]
     ] = Field(
         default=None,
         description="Description of the change in rating from firm's last rating."
         "Note that all of these terms are precisely defined.",
         alias="action_company",
     )
-    action_change: Union[
-        None,
-        Literal["Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts"],
+    action_change: Optional[
+        Literal["Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts"]
     ] = Field(
         default=None,
         description="Description of the change in price target from firm's last price target.",
         alias="action_pt",
     )
-    importance: Union[None, Literal[0, 1, 2, 3, 4, 5]] = Field(
+    importance: Optional[Literal[0, 1, 2, 3, 4, 5]] = Field(
         default=None,
         description="Subjective Basis of How Important Event is to Market. 5 = High",
     )

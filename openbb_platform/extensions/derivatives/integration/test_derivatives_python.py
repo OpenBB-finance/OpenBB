@@ -22,6 +22,7 @@ def obb(pytestconfig):
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
+        ({"provider": "tradier", "symbol": "AAPL"}),
         (
             {
                 "provider": "tmx",
@@ -43,9 +44,20 @@ def test_derivatives_options_chains(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"provider": "intrinio", "source": "delayed", "symbol": "AAPL"}),
-        ({"provider": "intrinio", "symbol": "PLTR", "source": "delayed"}),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "intrinio",
+                "start_date": "2023-11-20",
+                "end_date": None,
+                "min_value": None,
+                "max_value": None,
+                "trade_type": None,
+                "sentiment": "neutral",
+                "limit": 1000,
+                "source": "delayed",
+            }
+        )
     ],
 )
 @pytest.mark.integration

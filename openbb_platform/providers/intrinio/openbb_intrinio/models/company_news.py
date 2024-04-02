@@ -79,11 +79,13 @@ class IntrinioCompanyNewsFetcher(
             symbol = response.url.parts[-2]
             data = await response.json()
 
-            return [{**d, "symbol": symbol} for d in data.get("news", [])]
+            if isinstance(data, dict):
+                return [{**d, "symbol": symbol} for d in data.get("news", [])]
+            return []
 
         urls = [
             f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}"
-            for symbol in [s.strip() for s in query.symbol.split(",")]
+            for symbol in [s.strip() for s in getattr(query, "symbol", "").split(",")]
         ]
 
         return await amake_requests(urls, callback, **kwargs)
@@ -95,4 +97,4 @@ class IntrinioCompanyNewsFetcher(
     ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
         modeled_data = [IntrinioCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(modeled_data, query.start_date, query.end_date)  # type: ignore
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

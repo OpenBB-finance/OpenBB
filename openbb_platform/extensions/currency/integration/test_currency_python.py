@@ -59,7 +59,7 @@ def test_currency_search(params, obb):
         (
             {
                 "symbol": "EURUSD",
-                "interval": "1day",
+                "interval": "1d",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "provider": "fmp",
@@ -67,11 +67,11 @@ def test_currency_search(params, obb):
         ),
         (
             {
-                "interval": "1min",
+                "interval": "1h",
                 "provider": "fmp",
-                "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "symbol": "EURUSD,USDJPY",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -82,7 +82,7 @@ def test_currency_search(params, obb):
                 "provider": "polygon",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-10",
             }
         ),
         (
@@ -99,26 +99,24 @@ def test_currency_search(params, obb):
         (
             {
                 "interval": "1d",
-                "period": "max",
                 "provider": "yfinance",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-10",
             }
         ),
         (
             {
-                "interval": "1d",
-                "period": "max",
+                "interval": "1m",
                 "provider": "yfinance",
                 "symbol": "EURUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
-                "interval": "1hour",
+                "interval": "1h",
                 "provider": "tiingo",
                 "symbol": "EURUSD",
                 "start_date": "2023-05-21",
@@ -127,7 +125,7 @@ def test_currency_search(params, obb):
         ),
         (
             {
-                "interval": "1day",
+                "interval": "1d",
                 "provider": "tiingo",
                 "symbol": "EURUSD",
                 "start_date": "2023-05-21",

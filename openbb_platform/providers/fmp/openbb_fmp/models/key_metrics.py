@@ -1,10 +1,12 @@
 """FMP Key Metrics Model."""
 
+import asyncio
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,11 +15,9 @@ from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-)
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import response_callback
 from pydantic import Field
 
 
@@ -227,35 +227,48 @@ class FMPKeyMetricsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         base_url = "https://financialmodelingprep.com/api/v3"
 
-        async def response_callback(
-            response: ClientResponse, session: ClientSession
-        ) -> List[Dict]:
-            results = await response.json()
-            symbol = response.url.parts[-1]
+        symbols = query.symbol.split(",")
 
-            # TTM data
-            ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (metrics_ttm := await session.get_one(ttm_url)):
-                results.insert(
-                    0,
-                    {
-                        "symbol": symbol,
-                        "period": "TTM",
-                        "date": datetime.now().strftime("%Y-%m-%d"),
-                        "calendar_year": datetime.now().year,
-                        **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},
-                    },
-                )
+        results = []
 
-            return results
+        async def get_one(symbol):
+            """Get data for one symbol."""
 
-        urls = [
-            f"{base_url}/key-metrics/{symbol}?"
-            f"period={query.period}&limit={query.limit}&apikey={api_key}"
-            for symbol in query.symbol.split(",")
-        ]
+            url = f"{base_url}/key-metrics/{symbol}?period={query.period}&limit={query.limit}&apikey={api_key}"
 
-        return await amake_requests(urls, response_callback=response_callback, **kwargs)
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+
+            if not result:
+                warn(f"Symbol Error: No data found for {symbol}.")
+
+            if result:
+
+                ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
+                if query.with_ttm and (
+                    metrics_ttm := await amake_request(
+                        ttm_url, response_callback=response_callback, **kwargs
+                    )
+                ):
+                    result.insert(  # type: ignore
+                        0,
+                        {
+                            "symbol": symbol,
+                            "period": "TTM",
+                            "date": datetime.now().strftime("%Y-%m-%d"),
+                            "calendar_year": datetime.now().year,
+                            **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},  # type: ignore
+                        },
+                    )
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError("No data found for given symbols.")
+
+        return results
 
     @staticmethod
     def transform_data(

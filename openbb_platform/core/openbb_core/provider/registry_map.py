@@ -1,6 +1,7 @@
 """Provider registry map."""
 
 import sys
+from copy import deepcopy
 from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
@@ -82,9 +83,10 @@ class RegistryMap:
                 standard_data, extra_data = self.extract_info(fetcher, "data")
                 if model_name not in map_:
                     map_[model_name] = {}
+                    # The deepcopy avoids modifications from one model to affect another
                     map_[model_name]["openbb"] = {
-                        "QueryParams": standard_query,
-                        "Data": standard_data,
+                        "QueryParams": deepcopy(standard_query),
+                        "Data": deepcopy(standard_data),
                     }
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
@@ -98,7 +100,7 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
-                self._merge_json_schema_extra(p, fetcher, standard_query, extra_query)
+                self._merge_json_schema_extra(p, fetcher, map_[model_name])
 
         return map_, return_schemas
 
@@ -106,17 +108,18 @@ class RegistryMap:
         self,
         provider: str,
         fetcher: Fetcher,
-        standard_query: dict,
-        extra_query: dict,
+        model_map: dict,
     ):
         """Merge json schema extra for different providers"""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
+        std_fields = model_map["openbb"]["QueryParams"]["fields"]
+        extra_fields = model_map[provider]["QueryParams"]["fields"]
         for f, props in getattr(model, "__json_schema_extra__", {}).items():
             for p in props:
-                if f in standard_query["fields"]:
-                    model_field = standard_query["fields"][f]
-                elif f in extra_query["fields"]:
-                    model_field = extra_query["fields"][f]
+                if f in std_fields:
+                    model_field = std_fields[f]
+                elif f in extra_fields:
+                    model_field = extra_fields[f]
                 else:
                     continue
 
@@ -143,7 +146,7 @@ class RegistryMap:
     def extract_data_model(fetcher: Fetcher, provider_str: str) -> BaseModel:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, "data")
-
+        model_name = getattr(model, "__name__", "")
         fields = {}
         for field_name, field in model.model_fields.items():
             field.serialization_alias = field_name
@@ -158,8 +161,8 @@ class RegistryMap:
             ),
         )
 
-        provider_model = create_model(
-            model.__name__.replace("Data", ""),
+        provider_model = create_model(  # type: ignore[call-overload]
+            model_name.replace("Data", ""),
             __base__=model,
             __doc__=model.__doc__,
             __module__=model.__module__,
@@ -168,7 +171,11 @@ class RegistryMap:
 
         # Replace the provider models in the modules with the new models we created
         # To make sure provider field is defined to be the provider string
-        setattr(sys.modules[model.__module__], model.__name__, provider_model)
+        # This is hacky, but we need to have `provider: Literal['provider_name']`
+        # in the model to serve as union discriminator for the API validation
+        # the alternative would be to specify it manually in all the models
+        if model_name:
+            setattr(sys.modules[model.__module__], model_name, provider_model)
 
         return provider_model
 

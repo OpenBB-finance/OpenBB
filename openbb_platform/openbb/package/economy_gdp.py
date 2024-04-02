@@ -49,7 +49,12 @@ class ROUTER_economy_gdp(Container):
                 description="Type of GDP to get forecast of. Either nominal or real."
             ),
         ] = "real",
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Forecasted GDP Data.
@@ -92,10 +97,11 @@ class ROUTER_economy_gdp(Container):
         value : Optional[float]
             Nominal GDP value on the date.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.forecast(period="annual", type="real")
+        >>> obb.economy.gdp.forecast(provider='oecd')
+        >>> obb.economy.gdp.forecast(period='annual', type='real', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -140,7 +146,12 @@ class ROUTER_economy_gdp(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Nominal GDP Data.
@@ -181,10 +192,11 @@ class ROUTER_economy_gdp(Container):
         value : Optional[float]
             Nominal GDP value on the date.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.nominal(units="usd")
+        >>> obb.economy.gdp.nominal(provider='oecd')
+        >>> obb.economy.gdp.nominal(units='usd', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -228,7 +240,12 @@ class ROUTER_economy_gdp(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["oecd"]] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Real GDP Data.
@@ -269,10 +286,11 @@ class ROUTER_economy_gdp(Container):
         value : Optional[float]
             Nominal GDP value on the date.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.economy.gdp.real(units="yoy")
+        >>> obb.economy.gdp.real(provider='oecd')
+        >>> obb.economy.gdp.real(units='yoy', provider='oecd')
         """  # noqa: E501
 
         return self._run(

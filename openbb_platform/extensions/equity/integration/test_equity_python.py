@@ -1,6 +1,6 @@
 """Python interface integration tests for the equity extension."""
 
-from datetime import date, time, timedelta
+from datetime import date, timedelta
 
 import pytest
 from extensions.tests.conftest import parametrize
@@ -217,8 +217,7 @@ def test_equity_fundamental_cash_growth(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "start_date": "2020-01-01",
-                "end_date": "2021-01-01",
+                "year": 2022,
                 "provider": "fmp",
             }
         ),
@@ -226,12 +225,14 @@ def test_equity_fundamental_cash_growth(params, obb):
             {
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "year": None,
             }
         ),
         (
             {
                 "symbol": "AAPL,MSFT",
                 "provider": "fmp",
+                "year": None,
             }
         ),
     ],
@@ -423,7 +424,7 @@ def test_equity_fundamental_income_growth(params, obb):
             {
                 "symbol": "RY",
                 "provider": "tmx",
-                "limit": None,
+                "limit": 0,
             }
         ),
         (
@@ -840,36 +841,13 @@ def test_equity_compare_groups(params, obb):
     [
         (
             {
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-            }
-        ),
-        (
-            {
-                "adjusted": True,
+                "adjustment": "unadjusted",
                 "extended_hours": True,
-                "month": "2023-01",
-                "output_size": "full",
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "adjusted": True,
-                "extended_hours": False,
-                "output_size": "full",
-                "month": "2023-01",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "interval": "1d",
+                "interval": "15m",
             }
         ),
         (
@@ -894,17 +872,6 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
-                "limit": "30",
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-02",
-                "end_date": "2023-01-03",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
@@ -914,10 +881,19 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
                 "timezone": "UTC",
                 "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
+                "start_time": None,
+                "end_time": None,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2023-06-01",
@@ -927,10 +903,10 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
-                "timezone": "UTC",
-                "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
+                "timezone": None,
+                "source": "delayed",
+                "start_time": None,
+                "end_time": None,
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
@@ -942,50 +918,54 @@ def test_equity_compare_groups(params, obb):
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "True",
+                "adjustment": "unadjusted",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-03",
                 "interval": "1m",
+                "extended_hours": False,
             }
         ),
         (
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "True",
+                "adjustment": "splits_only",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "extended_hours": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": False,
+                "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
+                "adjusted": True,
+                "prepost": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": True,
+                "adjustment": "splits_only",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
@@ -1008,6 +988,26 @@ def test_equity_compare_groups(params, obb):
         ),
         (
             {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
                 "provider": "tmx",
                 "symbol": "AAPL:US",
                 "start_date": "2023-01-01",
@@ -1020,9 +1020,6 @@ def test_equity_compare_groups(params, obb):
 )
 @pytest.mark.integration
 def test_equity_price_historical(params, obb):
-    if params.get("provider") == "alpha_vantage":
-        pytest.skip("skipping alpha_vantage")
-
     result = obb.equity.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -1200,6 +1197,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
+        ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
             {
                 "query": "gold",
@@ -1263,6 +1261,7 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
         ({"symbol": "AAPL", "provider": "yfinance"}),
         ({"symbol": "AAPL:US", "provider": "tmx"}),
+        ({"symbol": "AAPL,MSFT", "provider": "tradier"}),
     ],
 )
 @pytest.mark.integration
@@ -1570,7 +1569,8 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        # ({"provider": "polygon"}),  # premium endpoint
+        ({"provider": "polygon"}),
+        ({"provider": "intrinio", "date": "2022-06-30"}),
     ],
 )
 @pytest.mark.integration

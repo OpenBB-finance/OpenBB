@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -18,10 +19,20 @@ router = Router(prefix="/price")
 @router.command(
     model="CurrencyHistorical",
     examples=[
-        "# Filter historical data with specific start and end date.",
-        "obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='20213-12-31')",
-        "# Get data with different granularity.",
-        "obb.currency.price.historical(symbol='EURUSD', interval='15m', provider='polygon')",
+        APIEx(parameters={"symbol": "EURUSD", "provider": "fmp"}),
+        APIEx(
+            description="Filter historical data with specific start and end date.",
+            parameters={
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "provider": "fmp",
+            },
+        ),
+        APIEx(
+            description="Get data with different granularity.",
+            parameters={"symbol": "EURUSD", "provider": "polygon", "interval": "15m"},
+        ),
     ],
 )
 async def historical(

@@ -77,3 +77,19 @@ This notebook demonstrates how to calculate the implied earnings move using opti
 - Get the last price of the underlying stock.
 - Find the nearest call and put strikes to the last price of the stock.
 - Calculate the implied daily move using the price of a straddle.
+
+### streamlit/news
+
+This is an example Streamlit dashboard for news headlines with data from Biztoc, Benzinga, FMP, Intrinio, and Tiingo.
+
+:::warning
+At least one API key is required. You can get a free Biztoc API key [here](https://rapidapi.com/thma/api/biztoc)
+:::
+
+To run, copy the file to your system, open a terminal, navigate to where the file is, and with your `obb` Python environment active, enter:
+
+```
+pip install streamlit
+pip install openbb-biztoc
+streamlit run news.py
+```

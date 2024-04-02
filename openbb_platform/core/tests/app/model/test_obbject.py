@@ -14,7 +14,7 @@ from pydantic import Field
 
 def test_OBBject():
     """Smoke test."""
-    co = OBBject()
+    co: OBBject = OBBject()
     assert isinstance(co, OBBject)
 
 
@@ -31,7 +31,7 @@ def test_fields():
 
 def test_to_dataframe_no_results():
     """Test helper."""
-    co = OBBject()
+    co: OBBject = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
 
@@ -232,7 +232,7 @@ class MockDataModel(Data):
 def test_to_dataframe(results, expected_df):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
@@ -271,7 +271,7 @@ def test_to_dataframe(results, expected_df):
 def test_to_dataframe_w_args(results, index, sort_by):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     result = co.to_dataframe(index=index, sort_by=sort_by)
@@ -299,7 +299,7 @@ def test_to_dataframe_w_args(results, index, sort_by):
 def test_to_df_daylight_savings(results):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     expected_df = basemodel_to_df(results, index="date")
@@ -360,7 +360,7 @@ def test_to_df_daylight_savings(results):
 def test_to_dict(results, expected_dict):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_dict, (list, dict)):
@@ -375,7 +375,7 @@ def test_to_dict(results, expected_dict):
 
 def test_show_chart_exists():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
     mock_instance.chart.fig = MagicMock()
@@ -390,7 +390,7 @@ def test_show_chart_exists():
 
 def test_show_chart_no_chart():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
 
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
@@ -399,7 +399,7 @@ def test_show_chart_no_chart():
 
 def test_show_chart_no_fig():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
     # Arrange
     mock_instance.chart = Chart()
 

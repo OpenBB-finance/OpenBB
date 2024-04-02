@@ -46,11 +46,6 @@ def test_package_builder_build(package_builder):
     package_builder.build()
 
 
-def test_save_module_map(package_builder):
-    """Test save module map."""
-    package_builder._save_module_map()
-
-
 def test_save_modules(package_builder):
     """Test save module."""
     package_builder._save_modules()
@@ -211,17 +206,57 @@ def test_is_annotated_dc_annotated(method_definition):
     assert result
 
 
-def test_reorder_params(method_definition):
-    """Test reorder params."""
-    params = {
-        "provider": Parameter.empty,
-        "extra_params": Parameter.empty,
-        "param1": Parameter.empty,
-        "param2": Parameter.empty,
-    }
-    result = method_definition.reorder_params(params=params)
+@pytest.mark.parametrize(
+    "params, var_kw, expected",
+    [
+        (
+            {
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            None,
+            ["extra_params", "param1", "param2", "provider"],
+        ),
+        (
+            {
+                "param1": Parameter.empty,
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["extra_params"],
+            ["param1", "param2", "provider", "extra_params"],
+        ),
+        (
+            {
+                "param2": Parameter.empty,
+                "any_kwargs": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+            },
+            ["any_kwargs"],
+            ["param2", "param1", "provider", "any_kwargs"],
+        ),
+        (
+            {
+                "any_kwargs": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["any_kwargs", "extra_params"],
+            ["param1", "param2", "provider", "any_kwargs", "extra_params"],
+        ),
+    ],
+)
+def test_reorder_params(method_definition, params, var_kw, expected):
+    """Test reorder params, ensure var_kw are last after 'provider'."""
+    result = method_definition.reorder_params(params, var_kw)
     assert result
-    assert list(result.keys()) == ["param1", "param2", "provider", "extra_params"]
+    assert list(result.keys()) == expected
 
 
 def test_build_func_params(method_definition):
@@ -311,7 +346,7 @@ def test_build_command_method_doc(method_definition):
     }
 
     output = method_definition.build_command_method_doc(
-        func=some_func, formatted_params=formatted_params
+        path="/menu/submenu/command", func=some_func, formatted_params=formatted_params
     )
     assert output
     assert isinstance(output, str)
@@ -499,7 +534,7 @@ def test_generate_model_docstring(docstring_generator):
     summary = "This is a summary."
 
     pi = docstring_generator.provider_interface
-    params = pi.params[model_name]
+    kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
     return_schema = pi.return_schema[model_name]
     returns = return_schema.model_fields
 
@@ -513,7 +548,7 @@ def test_generate_model_docstring(docstring_generator):
         model_name=model_name,
         summary=summary,
         explicit_params=explicit_dict,
-        params=params,
+        kwarg_params=kwarg_params,
         returns=returns,
         results_type="List[WorldNews]",
     )
@@ -537,7 +572,10 @@ def test_generate(docstring_generator):
     }
 
     doc = docstring_generator.generate(
-        func=some_func, formatted_params=formatted_params, model_name="WorldNews"
+        path="/menu/submenu/command",
+        func=some_func,
+        formatted_params=formatted_params,
+        model_name="WorldNews",
     )
     assert doc
     assert "Parameters" in doc

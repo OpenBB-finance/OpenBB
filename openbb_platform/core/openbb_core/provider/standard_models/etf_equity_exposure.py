@@ -16,8 +16,8 @@ class EtfEquityExposureQueryParams(QueryParams):
 
     @field_validator("symbol")
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
         return v.upper()
 
 
@@ -28,7 +28,7 @@ class EtfEquityExposureData(Data):
     etf_symbol: str = Field(
         description="The symbol of the ETF with exposure to the requested equity."
     )
-    shares: Optional[int] = Field(
+    shares: Optional[float] = Field(
         default=None,
         description="The number of shares held in the ETF.",
     )

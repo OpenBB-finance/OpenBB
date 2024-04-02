@@ -30,7 +30,14 @@ class ROUTER_currency(Container):
     @exception_handler
     @validate
     def search(
-        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio", "polygon"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """Currency Search.
 
@@ -113,16 +120,16 @@ class ROUTER_currency(Container):
         delisted_utc : Optional[datetime]
             The delisted timestamp in UTC. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.currency.search()
-        >>> # Search for 'EURUSD' currency pair using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', symbol='EURUSD')
-        >>> # Search for terms  using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', search='Euro zone')
+        >>> obb.currency.search(provider='intrinio')
+        >>> # Search for 'EURUSD' currency pair using 'intrinio' as provider.
+        >>> obb.currency.search(provider='intrinio', symbol='EURUSD')
         >>> # Search for actively traded currency pairs on the queried date using 'polygon' as provider.
         >>> obb.currency.search(provider='polygon', date='2024-01-02', active=True)
+        >>> # Search for terms  using 'polygon' as provider.
+        >>> obb.currency.search(provider='polygon', search='Euro zone')
         """  # noqa: E501
 
         return self._run(
@@ -147,7 +154,7 @@ class ROUTER_currency(Container):
         base: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="The base currency symbol. Multiple items allowed for provider(s): fmp."
+                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ] = "usd",
         quote_type: Annotated[
@@ -157,12 +164,17 @@ class ROUTER_currency(Container):
             ),
         ] = "indirect",
         counter_currencies: Annotated[
-            Union[str, List[str], None],
+            Union[List[str], str, None],
             OpenBBCustomParameter(
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.
@@ -170,10 +182,10 @@ class ROUTER_currency(Container):
         Parameters
         ----------
         base : Union[str, List[str]]
-            The base currency symbol. Multiple items allowed for provider(s): fmp.
+            The base currency symbol. Multiple comma separated items allowed for provider(s): fmp.
         quote_type : Literal['direct', 'indirect']
             Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
-        counter_currencies : Union[str, List[str], None]
+        counter_currencies : Union[List[str], str, None]
             An optional list of counter currency symbols to filter for. None returns all.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -229,12 +241,12 @@ class ROUTER_currency(Container):
         last_rate_timestamp : Optional[datetime]
             The timestamp of the last rate. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.currency.snapshots(
-        >>> provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"
-        >>> )
+        >>> obb.currency.snapshots(provider='fmp')
+        >>> # Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.
+        >>> obb.currency.snapshots(provider='fmp', base='USD,XAU', counter_currencies='EUR,JPY,GBP', quote_type='indirect')
         """  # noqa: E501
 
         return self._run(
@@ -253,6 +265,6 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                extra_info={"base": {"multiple_items_allowed": ["fmp"]}},
+                info={"base": {"multiple_items_allowed": ["fmp"]}},
             )
         )
