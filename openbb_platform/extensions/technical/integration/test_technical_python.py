@@ -911,7 +911,6 @@ def test_technical_ema(params, data_type, obb):
                 "short_period": 21,
                 "window": 21,
                 "trading_periods": 252,
-                "normalize_method": "z",
             }
         ),
     ],
@@ -932,7 +931,6 @@ def test_technical_relative_rotation(params, obb):
         short_period=params["short_period"],
         window=params["window"],
         trading_periods=params["trading_periods"],
-        normalize_method=params["normalize_method"],
     )
     assert result
     assert isinstance(result, OBBject)

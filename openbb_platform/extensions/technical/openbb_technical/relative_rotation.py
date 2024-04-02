@@ -246,7 +246,6 @@ class RelativeRotation:
         short_period: Optional[int] = 21,
         window: Optional[int] = 21,
         trading_periods: Optional[int] = 252,
-        normalize_method: Optional[Literal["z", "m", "a"]] = "z",
     ):
 
         benchmark = benchmark.upper()
@@ -285,13 +284,13 @@ class RelativeRotation:
 
         if len(symbols_data) <= 252 and study in ["price", "volume"]:  # type: ignore
             raise ValueError(
-                "Supplied data must have more than one year of back data to calculate"
+                "Supplied data must be daily intervals and have more than one year of back data to calculate"
                 " the most recent day in the time series."
             )
 
         if study == "volatility" and len(symbols_data) <= 504:  # type: ignore
             raise ValueError(
-                "Supplied data must have more than two years of back data to calculate"
+                "Supplied data must be daily intervals and have more than two years of back data to calculate"
                 " the most recent day in the time series as a volatility study."
             )
         self.symbols = df.columns.to_list()
@@ -301,7 +300,6 @@ class RelativeRotation:
         self.short_period = short_period
         self.window = window
         self.trading_periods = trading_periods
-        self.normalize_method = normalize_method
         self.symbols_data = symbols_data  # type: ignore
         self.benchmark_data = benchmark_data  # type: ignore
         self._process_data()  # type: ignore
@@ -314,19 +312,18 @@ class RelativeRotation:
             self.symbols_data = standard_deviation(
                 self.symbols_data,  # type: ignore
                 window=self.window,  # type: ignore
-                trading_periods=self.trading_periods,
+                trading_periods=self.trading_periods,  # type: ignore
             )
             self.benchmark_data = standard_deviation(
                 self.benchmark_data,  # type: ignore
                 window=self.window,  # type: ignore
-                trading_periods=self.trading_periods,
+                trading_periods=self.trading_periods,  # type: ignore
             )
         ratios, momentum = process_data(
             self.symbols_data,  # type: ignore
             self.benchmark_data,  # type: ignore
             long_period=self.long_period,  # type: ignore
             short_period=self.short_period,  # type: ignore
-            normalize_method=self.normalize_method,  # type: ignore
         )
         # Re-index rs_ratios using the new index
         index_after_dropping_nans = momentum.dropna().index
@@ -353,7 +350,7 @@ class RelativeRotationQueryParams(QueryParams):
     data: List[Data] = Field(
         description="The data to be used for the relative rotation calculations."
         + " This should be the multi-symbol output from the"
-        + " 'equity.price.historical' endpoint, or similar."
+        + " 'equity.price.historical' endpoint, or similar, at a daily interval."
         + " Or a pivot table with the 'date' column as the index, the symbols as the columns,"
         + " and the 'study' as the values."
         + " It is recommended to use the 'equity.price.historical' endpoint to get the data,"
@@ -371,31 +368,23 @@ class RelativeRotationQueryParams(QueryParams):
     long_period: Optional[int] = Field(
         default=252,
         description="The length of the long period for momentum calculation, by default is 252."
-        + " Adjust this value when supplying a time series with an interval that is not daily."
-        + " For example, if the data is monthly, the long period should be 12.",
+        + " Adjust this value, to 365, when supplying assets such as crypto.",
     )
     short_period: Optional[int] = Field(
         default=21,
         description="The length of the short period for momentum calculation, by default is 21."
-        + " Adjust this value when supplying a time series with an interval that is not daily.",
+        + " Adjust this value, to 30, when supplying assets such as crypto.",
     )
     window: Optional[int] = Field(
         default=21,
         description="The length of window for the standard deviation calculation, by default is 21."
-        + " Adjust this value when supplying a time series with an interval that is not daily.",
+        + " Adjust this value, to 30, when supplying assets such as crypto.",
     )
     trading_periods: Optional[int] = Field(
         default=252,
         description="The number of trading periods per year,"
         + " for the standard deviation calculation, by default is 252."
-        + " Adjust this value when supplying a time series with an interval that is not daily.",
-    )
-    normalize_method: Literal["z", "m", "a"] = Field(
-        default="z",
-        description="The normalization method selected."
-        + "\n            Z: Z-Score Standardization"
-        + "\n            M: Min/Max Scaling"
-        + "\n            A: Absolute Maximum Scale",
+        + " Adjust this value, to 365, when supplying assets such as crypto.",
     )
     chart_params: Optional[Dict[str, Any]] = Field(
         default=None,
@@ -482,12 +471,6 @@ class RelativeRotationData(Data):
         description="The number of trading periods per year,"
         + " for the standard deviation calculation, as entered by the user."
     )
-    normalize_method: Literal["z", "m", "a"] = Field(
-        description="The normalization method selected."
-        + "\n            Z: Z-Score Standardization"
-        + "\n            M: Min/Max Scaling"
-        + "\n            A: Absolute Maximum Scale"
-    )
     start_date: str = Field(
         description="The start date of the data after adjusting"
         + " the length of the data for the calculations."
@@ -551,7 +534,6 @@ class RelativeRotationFetcher(
             short_period=query.short_period,
             window=query.window,
             trading_periods=query.trading_periods,
-            normalize_method=query.normalize_method,
         ).__dict__
 
     @staticmethod

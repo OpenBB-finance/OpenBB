@@ -971,7 +971,6 @@ def test_technical_ema(params, data_type):
                 "short_period": 21,
                 "window": 21,
                 "trading_periods": 252,
-                "normalize_method": "z",
             }
         ),
     ],

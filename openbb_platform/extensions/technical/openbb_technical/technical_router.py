@@ -35,6 +35,34 @@ router = Router(prefix="")
 
 @router.command(
     methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Calculate the Relative Strength Ratio and Relative Strength Momentum"
+            + " for a group of symbols against a benchmark.",
+            code=[
+                "stock_data = obb.equity.price.historical("
+                + "symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')",
+                "rr_data = obb.technical.relative_rotation(data=stock_data.results, benchmark='SPY')",
+                "rs_ratios = rr_data.results.rs_ratios",
+                "rs_momentum = rr_data.results.rs_momentum",
+            ],
+        ),
+        PythonEx(
+            description="When the assets are not traded 252 days per year,"
+            + " or the data supplied is a custom interval, adjust the momentum and volatility periods accordingly.",
+            code=[
+                "crypto_data = obb.crypto.price.historical("
+                + " symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')",
+                "rr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTCUSD',"
+                + " long_period=365, short_period=30, window=30, trading_periods=365)",
+            ],
+        ),
+        APIEx(
+            description="Note that the mock data displayed here is insufficient."
+            + " It must contain multiple symbols, with the benchmark, and be at least 1 year long.",
+            parameters={"benchmark": "SPY", "data": APIEx.mock_data("timeseries")},
+        ),
+    ],
 )
 async def relative_rotation(
     data: List[Data],
@@ -44,7 +72,6 @@ async def relative_rotation(
     short_period: Optional[int] = 21,
     window: Optional[int] = 21,
     trading_periods: Optional[int] = 252,
-    normalize_method: Literal["z", "m", "a"] = "z",
     chart_params: Optional[Dict[str, Any]] = None,
 ) -> OBBject[RelativeRotationData]:
     """
@@ -76,11 +103,6 @@ async def relative_rotation(
     trading_periods : int, optional
         The number of trading periods per year, for the standard deviation calculation, by default 252.
         Adjust this value when supplying a time series with an interval that is not daily.
-    normalize_method : Literal[z, m, a], optional
-        The normalization method selected, by default 'z'.
-        Z: Z-Score Standardization
-        M: Min/Max Scaling
-        A: Absolute Maximum Scale
     chart_params : dict[str, Any], optional
         Additional parameters to pass when `chart=True` and the `openbb-charting` extension is installed.
         Parameters can be passed again to redraw the chart using the charting.to_chart() method of the response.
@@ -116,11 +138,6 @@ async def relative_rotation(
                 The length of window for the standard deviation calculation.
             trading_periods : int
                 The number of trading periods per year, for the standard deviation calculation.
-            normalize_method : Literal[z, m, a]
-                The normalization method selected.
-                Z: Z-Score Standardization
-                M: Min/Max Scaling
-                A: Absolute Maximum Scale
             start_date : str
                 The start date of the data after adjusting the length of the data for the calculations.
             end_date : str
@@ -143,7 +160,6 @@ async def relative_rotation(
         short_period=short_period,
         window=window,
         trading_periods=trading_periods,
-        normalize_method=normalize_method,
         chart_params=chart_params,
     )
 
