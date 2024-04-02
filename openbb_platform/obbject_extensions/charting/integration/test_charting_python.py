@@ -402,7 +402,7 @@ def test_charting_economy_fred_series(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_technical_relative_rotation(params, obb):
+def test_charting_technical_relative_rotation(params, obb):
     params["data"] = obb.equity.price.historical(
         "AAPL,MSFT,GOOGL,AMZN,SPY",
         provider="yfinance",

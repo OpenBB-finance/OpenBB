@@ -464,7 +464,7 @@ def test_charting_economy_fred_series(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_technical_relative_rotation(params):
+def test_charting_technical_relative_rotation(params):
     params = {p: v for p, v in params.items() if v}
     data_params = dict(
         symbol="AAPL,MSFT,GOOGL,AMZN,SPY",
