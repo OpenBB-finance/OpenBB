@@ -26,7 +26,7 @@ from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.utils import basemodel_to_df
-from openbb_core.provider.abstract.annotated_data import AnnotatedData
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
@@ -301,8 +301,8 @@ class OBBject(Tagged, Generic[T]):
             OBBject with results.
         """
         results = await query.execute()
-        if isinstance(results, AnnotatedData):
+        if isinstance(results, AnnotatedResult):
             return cls(
-                results=results.data, extra={"results_metadata": results.metadata}
+                results=results.result, extra={"results_metadata": results.metadata}
             )
         return cls(results=results)

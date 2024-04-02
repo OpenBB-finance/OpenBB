@@ -16,7 +16,7 @@ from typing import (
 
 from pandas import DataFrame
 
-from openbb_core.provider.abstract.annotated_data import AnnotatedData
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
@@ -58,7 +58,7 @@ class Fetcher(Generic[Q, R]):
         """Extract the data from the provider."""
 
     @staticmethod
-    def transform_data(query: Q, data: Any, **kwargs) -> Union[R, AnnotatedData[R]]:
+    def transform_data(query: Q, data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -81,7 +81,7 @@ class Fetcher(Generic[Q, R]):
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs,
-    ) -> Union[R, AnnotatedData[R]]:
+    ) -> Union[R, AnnotatedResult[R]]:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = await maybe_coroutine(
@@ -186,7 +186,9 @@ class Fetcher(Generic[Q, R]):
         assert len(data) > 0, "Data must not be empty."
 
         # Transformed Data Assertions
-        transformed_data = result.data if isinstance(result, AnnotatedData) else result
+        transformed_data = (
+            result.result if isinstance(result, AnnotatedResult) else result
+        )
 
         assert transformed_data, "Transformed data must not be None."
 

@@ -1,3 +1,5 @@
+"""Annotated result."""
+
 from typing import Generic, Optional, TypeVar
 
 from pydantic import BaseModel, Field
@@ -5,10 +7,10 @@ from pydantic import BaseModel, Field
 T = TypeVar("T")
 
 
-class AnnotatedData(BaseModel, Generic[T]):
-    """Annotated data allows fetchers to return metadata along with the data."""
+class AnnotatedResult(BaseModel, Generic[T]):
+    """Annotated result allows fetchers to return metadata along with the data."""
 
-    data: Optional[T] = Field(
+    result: Optional[T] = Field(
         default=None,
         description="Serializable results.",
     )

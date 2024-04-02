@@ -3,7 +3,7 @@
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
-from openbb_core.provider.abstract.annotated_data import AnnotatedData
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
@@ -180,7 +180,7 @@ class FredSeriesFetcher(
     @staticmethod
     def transform_data(
         query: FredSeriesQueryParams, data: List[Dict[str, Any]], **kwargs: Any
-    ) -> AnnotatedData[List[FredSeriesData]]:
+    ) -> AnnotatedResult[List[FredSeriesData]]:
         """Transform data."""
         series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
         metadata = {_id: m for d in data for _id, m in d.items()}
@@ -194,4 +194,4 @@ class FredSeriesFetcher(
             .to_dict("records")
         )
         validated = [FredSeriesData.model_validate(r) for r in records]
-        return AnnotatedData(data=validated, metadata=metadata)
+        return AnnotatedResult(result=validated, metadata=metadata)
