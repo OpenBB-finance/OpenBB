@@ -40,7 +40,7 @@ def equity_price_historical(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     symbol = standard_params.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         indicators=dict(**handle_indicators(ma)),
         symbol=f"{symbol} historical data",
@@ -59,7 +59,7 @@ def _ta_ma(ma_type: str, **kwargs):
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         {f"{ma_type.lower()}": dict(length=window, offset=offset)},
         f"{symbol.upper()} {ma_type.upper()}",
@@ -86,7 +86,7 @@ def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(aroon=dict(length=length, scalar=scalar)),
         f"Aroon on {symbol}",
@@ -113,7 +113,7 @@ def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(macd=dict(fast=fast, slow=slow, signal=signal)),
         f"{symbol.upper()} MACD",
@@ -140,7 +140,7 @@ def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(adx=dict(length=length, scalar=scalar, drift=drift)),
         f"Average Directional Movement Index (ADX) {symbol}",
@@ -167,7 +167,7 @@ def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     symbol = kwargs.get("symbol", "")
 
     ta = PlotlyTA()
-    fig = ta.plot(
+    fig = ta.plot(  # type: ignore
         data,
         dict(rsi=dict(length=window, scalar=scalar, drift=drift)),
         f"{symbol.upper()} RSI {window}",
@@ -399,7 +399,7 @@ def economy_fred_series(
     # Set the title for the chart.
     title: str = ""
     if isinstance(kwargs, dict) and title in kwargs:
-        title = kwargs["title"]
+        title = kwargs["title"]  # type: ignore
     else:
         if metadata.get(columns[0]):
             title = metadata.get(columns[0]).get("title") if len(columns) == 1 else "FRED Series"  # type: ignore
@@ -424,7 +424,7 @@ def economy_fred_series(
         # Check if the y-axis should be shared for this series.
         on_y1 = (
             (
-                metadata.get(col).get("units") == y1_units
+                metadata.get(col).get("units") == y1_units  # type: ignore
                 or y2title is None  # type: ignore
             )
             if metadata.get(col)
@@ -436,7 +436,7 @@ def economy_fred_series(
         on_y3 = not metadata.get(col) and normalize is False
         if on_y3:
             yaxes = "y3"
-            y3title = df_ta[col].name
+            y3title = df_ta[col].name  # type: ignore
         fig.add_scatter(
             x=df_ta.index,
             y=df_ta[col],
@@ -606,6 +606,8 @@ def technical_relative_rotation(
         hovermode="x",
         hoverdistance=50,
     )
+    if kwargs.get("title") is not None:
+        figure.set_title(str(kwargs.get("title")))
     content = figure.to_plotly_json()
 
     return figure, content

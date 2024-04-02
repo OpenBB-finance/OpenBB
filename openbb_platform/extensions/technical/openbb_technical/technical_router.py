@@ -74,7 +74,7 @@ async def relative_rotation(
     trading_periods: Optional[int] = 252,
     chart_params: Optional[Dict[str, Any]] = None,
 ) -> OBBject[RelativeRotationData]:
-    """
+    """Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
 
     Parameters
     ----------
