@@ -9,13 +9,14 @@ from typing import (
     Generic,
     Optional,
     TypeVar,
+    Union,
     get_args,
     get_origin,
 )
 
-from openbb_core.provider.abstract.annotated_data import AnnotatedData
 from pandas import DataFrame
 
+from openbb_core.provider.abstract.annotated_data import AnnotatedData
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
@@ -57,7 +58,7 @@ class Fetcher(Generic[Q, R]):
         """Extract the data from the provider."""
 
     @staticmethod
-    def transform_data(query: Q, data: Any, **kwargs) -> R:
+    def transform_data(query: Q, data: Any, **kwargs) -> Union[R, AnnotatedData[R]]:
         """Transform the provider-specific data."""
         raise NotImplementedError
 
@@ -80,7 +81,7 @@ class Fetcher(Generic[Q, R]):
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs,
-    ) -> R:
+    ) -> Union[R, AnnotatedData[R]]:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = await maybe_coroutine(
@@ -140,7 +141,7 @@ class Fetcher(Generic[Q, R]):
         data = run_async(
             cls.extract_data, query=query, credentials=credentials, **kwargs
         )
-        transformed_data = cls.transform_data(query=query, data=data, **kwargs)
+        result = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions
         assert isinstance(
@@ -185,8 +186,7 @@ class Fetcher(Generic[Q, R]):
         assert len(data) > 0, "Data must not be empty."
 
         # Transformed Data Assertions
-        if isinstance(transformed_data, AnnotatedData):
-            transformed_data = transformed_data.data
+        transformed_data = result.data if isinstance(result, AnnotatedData) else result
 
         assert transformed_data, "Transformed data must not be None."
 
