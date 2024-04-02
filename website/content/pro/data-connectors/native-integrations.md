@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Using OpenBB Native Integrations
 
-The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from our terminal.
+The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from our Pro Terminal.
 
-1. **Install our Client**: Reach out to us [here](mailto:colin.delahunty@openbb.finance?subject=Data%20Connector) to receive your free client.
+1. **Install our Client**: Reach out to us [here](mailto:andrew.kenreich@openbb.finance?subject=Data%20Connector) to receive your free client.
 
 2. **Run the Client**: Simply click on our app and type in the port you would like to use. If you are unsure of a good port, feel free to select `Recommend Port`.
 
