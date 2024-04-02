@@ -167,7 +167,11 @@ class MenuText:
 
             if new_key_command != key_command:
                 self.warnings.append(
-                    {"command": key_command, "trimmed_command": new_key_command}
+                    {
+                        "warning": "Command name too long",
+                        "command": key_command,
+                        "trimmed_command": new_key_command,
+                    }
                 )
                 key_command = new_key_command
 
