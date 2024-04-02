@@ -110,7 +110,7 @@ class RegistryMap:
         fetcher: Fetcher,
         model_map: dict,
     ):
-        """Merge json schema extra for different providers"""
+        """Merge json schema extra for different providers."""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
         std_fields = model_map["openbb"]["QueryParams"]["fields"]
         extra_fields = model_map[provider]["QueryParams"]["fields"]
@@ -157,7 +157,6 @@ class RegistryMap:
             Field(
                 default=provider_str,
                 description="The data provider for the data.",
-                exclude=True,
             ),
         )
 
