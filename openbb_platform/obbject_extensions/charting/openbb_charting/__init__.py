@@ -66,7 +66,7 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """Returns an instance of the IndicatorsParams class, containing all available indicators and their parameteres.
+        """Returns an instance of the IndicatorsParams class, containing all available indicators and their parameters.
         Without assigning to a variable, it will print the the information to the console.
         """
         return IndicatorsParams()
