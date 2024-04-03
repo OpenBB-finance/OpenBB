@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from openbb_charting.core.to_chart import ChartIndicators
 
@@ -38,7 +38,7 @@ class BaseQueryParams(QueryParams):
             + "    ----------\n"
             + "\n".join(
                 [
-                    f"\n    {k} ({_get_type_name(v.annotation)}):\n        {v.description}".replace(
+                    f"\n    {k} : {_get_type_name(v.annotation)}\n        {v.description}".replace(
                         ". ", ".\n        "
                     )
                     for k, v in fields.items()
@@ -759,3 +759,13 @@ class IndicatorsParams(QueryParams):
             ]
         )
         return repr_str
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_model(cls, values):
+        """Validate the model."""
+        indicators = list(ChartIndicators.get_available_indicators())
+        for k, v in values.items():
+            if k not in indicators:
+                raise ValueError(f"{k} is not a valid indicator.")
+        return values

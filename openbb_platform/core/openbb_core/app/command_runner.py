@@ -291,7 +291,6 @@ class StaticCommandRunner:
         show_warnings: bool = True,  # pylint: disable=unused-argument   # type: ignore
     ) -> OBBject:
         """Run a command and return the output."""
-
         obbject = await maybe_coroutine(func, **kwargs)
         obbject.provider = getattr(
             kwargs.get("provider_choices", None), "provider", None
@@ -311,13 +310,16 @@ class StaticCommandRunner:
                 "Charting is not installed. Please install `openbb-charting`."
             )
         chart_params = {}
-        if "extra_params" in kwargs:
-            try:
-                chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
-            except AttributeError:
-                chart_params = kwargs["extra_params"].get("chart_params")
+        extra_params = kwargs.get("extra_params", {})
+
+        if hasattr(extra_params, "__dict__") and hasattr(extra_params, "chart_params"):
+            chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
+        elif isinstance(extra_params, dict) and "chart_params" in extra_params:
+            chart_params = kwargs["extra_params"].get("chart_params", {})
+
         if "chart_params" in kwargs:
             chart_params.update(kwargs.pop("chart_params", {}))
+
         if "kwargs" in kwargs:
             _kwargs = kwargs.pop("kwargs", {})
             chart_params.update(_kwargs.get("chart_params", {}))

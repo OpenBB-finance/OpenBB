@@ -66,8 +66,9 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """Returns a list of the available indicators."""
-        # return ChartIndicators.get_available_indicators()
+        """Returns an instance of the IndicatorsParams class, containing all available indicators and their parameteres.
+        Without assigning to a variable, it will print the the information to the console.
+        """
         return IndicatorsParams()
 
     @classmethod
@@ -345,7 +346,7 @@ class Charting:
         ] = None,
         target: Optional[str] = None,
         index: Optional[str] = None,
-        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
+        indicators: Optional[Dict[str, Dict[str, Any]]] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
@@ -363,8 +364,8 @@ class Charting:
         Parameters
         ----------
         data : Union[Data, pd.DataFrame, pd.Series]
-            Data to be plotted (OHLCV data).
-        indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
+            Data to be plotted.
+        indicators : Dict[str, Dict[str, Any]], optional
             Indicators to be plotted, by default None
         symbol : str, optional
             Symbol to be plotted. This is used for labels and titles, by default ""
@@ -381,26 +382,26 @@ class Charting:
 
         Examples
         --------
-        1) Plotting a time series with TA indicators
-        > from openbb import obb
-        > res = obb.equity.price.historical("AAPL")
-        > indicators = dict(
-        >    sma=dict(length=[20,30,50]),
-        >    adx=dict(length=14),
-        >    rsi=dict(length=14),
-        >    macd=dict(fast=12, slow=26, signal=9),
-        >    bbands=dict(length=20, std=2),
-        >    stoch=dict(length=14),
-        >    ema=dict(length=[20,30,50]),
-        > )
-        > res.charting.to_chart(**{"indicators": indicators})
+        Plotting a time series with TA indicators
 
-        2) Get all the available indicators
-        > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
-        > ChartIndicators.get_available_indicators()
-        or
-        > from openbb_charting import Charting
-        > Charting.indicators()
+        >>> from openbb import obb
+        >>> res = obb.equity.price.historical("AAPL")
+        >>> indicators = dict(
+        >>>    sma=dict(length=[20,30,50]),
+        >>>    adx=dict(length=14),
+        >>>    rsi=dict(length=14),
+        >>>    macd=dict(fast=12, slow=26, signal=9),
+        >>>    bbands=dict(length=20, std=2),
+        >>>    stoch=dict(length=14),
+        >>>    ema=dict(length=[20,30,50]),
+        >>> )
+        >>> res.charting.to_chart(**{"indicators": indicators})
+
+        Get all the available indicators
+
+        >>> res = obb.equity.price.historical("AAPL")
+        >>> indicators = res.charting.indicators()
+        >>> indicators?
         """
         has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
             data
