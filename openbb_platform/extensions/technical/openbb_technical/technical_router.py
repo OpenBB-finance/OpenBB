@@ -49,7 +49,7 @@ router = Router(prefix="")
         ),
         PythonEx(
             description="When the assets are not traded 252 days per year,"
-            + " or the data supplied is a custom interval, adjust the momentum and volatility periods accordingly.",
+            + "adjust the momentum and volatility periods accordingly.",
             code=[
                 "crypto_data = obb.crypto.price.historical("
                 + " symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')",
@@ -59,7 +59,7 @@ router = Router(prefix="")
         ),
         APIEx(
             description="Note that the mock data displayed here is insufficient."
-            + " It must contain multiple symbols, with the benchmark, and be at least 1 year long.",
+            + " It must contain multiple symbols, with the benchmark, and be daily data at least 1 year in length.",
             parameters={"benchmark": "SPY", "data": APIEx.mock_data("timeseries")},
         ),
     ],
