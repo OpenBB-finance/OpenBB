@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB native integrations allows you to connect to Snowflake, MySQL, or SQLite databases directly. You can run any query against your database directly from our Pro Terminal.
 
-1. **Install our Client**: Download our free client from [Mac](https://openbb-installers.s3.amazonaws.com/data_connector_0.0.2.dmg) or [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB+Data+Connector_0.0.2_x64_en-US.msi) to get started.
+1. **Install our Client**: Download our free client for [Mac](https://openbb-installers.s3.amazonaws.com/data_connector_0.0.2.dmg) or [Windows](https://openbb-installers.s3.amazonaws.com/OpenBB+Data+Connector_0.0.2_x64_en-US.msi) to get started.
 
 2. **Run the Client**: Once installed, Simply open our app and type in the port you would like to use. If you are unsure of a good port, feel free to select `Recommend Port`.
 
