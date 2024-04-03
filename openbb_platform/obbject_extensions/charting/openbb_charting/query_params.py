@@ -1,5 +1,7 @@
 """Charting Extension Query Params."""
 
+# pylint: disable=unused-variable,unused-argument
+
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.data import Data
