@@ -46,10 +46,10 @@ class ForwardEpsEstimatesData(Data):
     calendar_period: Optional[str] = Field(
         default=None, description="Calendar quarter for the estimate."
     )
-    low: Optional[float] = Field(
+    low_estimate: Optional[float] = Field(
         default=None, description="Estimated EPS low for the period."
     )
-    high: Optional[float] = Field(
+    high_estimate: Optional[float] = Field(
         default=None, description="Estimated EPS high for the period."
     )
     mean: Optional[float] = Field(

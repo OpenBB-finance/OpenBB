@@ -63,6 +63,8 @@ class IntrinioForwardSalesEstimatesData(ForwardSalesEstimatesData):
     """Intrinio Forward Sales Estimates Data."""
 
     __alias_dict__ = {
+        "low_estimate": "low",
+        "high_estimate": "high",
         "number_of_analysts": "count",
         "mean": "estimated_sales_mean",
         "revisions_1w_up": "analyst_revisions_up_1w",

@@ -389,9 +389,9 @@ class ROUTER_equity_estimates(Container):
             Calendar year for the estimate.
         calendar_period : Optional[str]
             Calendar quarter for the estimate.
-        low : Optional[float]
+        low_estimate : Optional[float]
             Estimated EPS low for the period.
-        high : Optional[float]
+        high_estimate : Optional[float]
             Estimated EPS high for the period.
         mean : Optional[float]
             Estimated EPS mean for the period.
@@ -504,16 +504,16 @@ class ROUTER_equity_estimates(Container):
             Calendar year for the estimate.
         calendar_period : Optional[str]
             Calendar quarter for the estimate.
-        low : Optional[int]
-            Estimated sales low for the period.
-        high : Optional[int]
-            Estimated sales high for the period.
+        low_estimate : Optional[int]
+            The sales estimate low for the period.
+        high_estimate : Optional[int]
+            The sales estimate high for the period.
         mean : Optional[int]
-            Estimated sales mean for the period.
+            The sales estimate mean for the period.
         median : Optional[int]
-            Estimated sales median for the period.
+            The sales estimate median for the period.
         standard_deviation : Optional[int]
-            Estimated sales standard deviation for the period.
+            The sales estimate standard deviation for the period.
         number_of_analysts : Optional[int]
             Number of analysts providing estimates for the period.
         revisions_1w_up : Optional[int]

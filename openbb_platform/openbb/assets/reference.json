@@ -5622,37 +5622,37 @@
                     "optional": true
                 },
                 {
-                    "name": "low",
+                    "name": "low_estimate",
                     "type": "int",
-                    "description": "Estimated sales low for the period.",
+                    "description": "The sales estimate low for the period.",
                     "default": null,
                     "optional": true
                 },
                 {
-                    "name": "high",
+                    "name": "high_estimate",
                     "type": "int",
-                    "description": "Estimated sales high for the period.",
+                    "description": "The sales estimate high for the period.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "mean",
                     "type": "int",
-                    "description": "Estimated sales mean for the period.",
+                    "description": "The sales estimate mean for the period.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "median",
                     "type": "int",
-                    "description": "Estimated sales median for the period.",
+                    "description": "The sales estimate median for the period.",
                     "default": null,
                     "optional": true
                 },
                 {
                     "name": "standard_deviation",
                     "type": "int",
-                    "description": "Estimated sales standard deviation for the period.",
+                    "description": "The sales estimate standard deviation for the period.",
                     "default": null,
                     "optional": true
                 },
@@ -5891,14 +5891,14 @@
                     "optional": true
                 },
                 {
-                    "name": "low",
+                    "name": "low_estimate",
                     "type": "float",
                     "description": "Estimated EPS low for the period.",
                     "default": null,
                     "optional": true
                 },
                 {
-                    "name": "high",
+                    "name": "high_estimate",
                     "type": "float",
                     "description": "Estimated EPS high for the period.",
                     "default": null,

@@ -46,10 +46,10 @@ class ForwardSalesEstimatesData(Data):
     calendar_period: Optional[str] = Field(
         default=None, description="Calendar quarter for the estimate."
     )
-    low: Optional[ForceInt] = Field(
+    low_estimate: Optional[ForceInt] = Field(
         default=None, description="The sales estimate low for the period."
     )
-    high: Optional[ForceInt] = Field(
+    high_estimate: Optional[ForceInt] = Field(
         default=None, description="The sales estimate high for the period."
     )
     mean: Optional[ForceInt] = Field(

@@ -55,8 +55,8 @@ class FMPForwardEpsEstimatesData(ForwardEpsEstimatesData):
 
     __alias_dict__ = {
         "number_of_analysts": "numberAnalystsEstimatedEps",
-        "high": "estimatedEpsHigh",
-        "low": "estimatedEpsLow",
+        "high_estimate": "estimatedEpsHigh",
+        "low_estimate": "estimatedEpsLow",
         "mean": "estimatedEpsAvg",
     }
 
