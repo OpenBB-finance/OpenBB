@@ -301,7 +301,6 @@ class StaticCommandRunner:
     def _chart(
         cls,
         obbject: OBBject,
-        metadata: Optional[Any] = None,
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
@@ -321,23 +320,12 @@ class StaticCommandRunner:
             chart_params.update(kwargs.pop("chart_params", {}))
 
         if "kwargs" in kwargs:
-            _kwargs = kwargs.pop("kwargs", {})
-            chart_params.update(_kwargs.get("chart_params", {}))
+            chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
-        # TODO: Update when a proper metadata transmission solution is implemented.  # pylint: disable=W0511
-        try:
-            message = (
-                getattr(metadata[0], "message", "{}")
-                if metadata and isinstance(metadata, list) and len(metadata) > 0
-                else "{}"
-            )
-            metadata = json.loads(str(message)) if message else {}
-        except json.JSONDecodeError:
-            metadata = {}
+        if chart_params:
+            kwargs.update(chart_params)
 
-        obbject.charting.show(  # type: ignore
-            render=False, metadata=metadata, **chart_params, **kwargs
-        )
+        obbject.charting.show(render=False, **kwargs)
 
     # pylint: disable=R0913, R0914
     @classmethod
@@ -388,7 +376,7 @@ class StaticCommandRunner:
                 obbject._standard_params = kwargs.get("standard_params", None)
 
                 if chart and obbject.results:
-                    cls._chart(obbject, warning_list, **kwargs)
+                    cls._chart(obbject, **kwargs)
 
             except Exception as e:
                 raise OpenBBError(e) from e

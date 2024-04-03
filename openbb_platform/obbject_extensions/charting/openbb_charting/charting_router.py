@@ -998,7 +998,7 @@ def economy_fred_series(  # noqa: PLR0912
 
     columns = df_ta.columns.to_list()
 
-    metadata = kwargs.get("metadata", {})
+    metadata = kwargs["extra"].get("results_metadata", {})  # type: ignore
 
     # Check if the request was transformed by the FRED API.
     params = kwargs["extra_params"] if kwargs.get("extra_params") else {}
