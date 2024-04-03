@@ -2,7 +2,6 @@
 
 # pylint: disable=R0903
 
-import json
 from copy import deepcopy
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
