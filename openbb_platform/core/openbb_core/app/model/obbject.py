@@ -226,6 +226,9 @@ class OBBject(Tagged, Generic[T]):
         except Exception as ex:
             raise OpenBBError(f"An unexpected error occurred: {ex}") from ex
 
+        if "provider" in df.columns:
+            df.drop(columns=["provider"], inplace=True)
+
         return df
 
     def to_polars(self) -> "PolarsDataFrame":

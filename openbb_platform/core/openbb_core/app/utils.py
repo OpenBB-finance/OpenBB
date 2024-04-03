@@ -46,6 +46,9 @@ def basemodel_to_df(
         else:
             df = df.set_index(index) if index and index in df.columns else df
 
+    if "provider" in df.columns:
+        df.drop(columns=["provider"], inplace=True)
+
     return df
 
 
