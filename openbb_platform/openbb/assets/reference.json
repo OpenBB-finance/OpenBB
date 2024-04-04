@@ -2487,7 +2487,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Search for FRED series or economic releases by ID or string.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+            "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_search(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3149,7 +3149,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The composite leading indicator (CLI) is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "description": "The composite leading indicator (CLI) is designed to provide early signals of turning points in business cycles.\n\nIt shows fluctuation of the economic activity around its long term potential level.\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3247,7 +3247,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Short-term interest rates are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
+            "description": "Short-term borrowings rates practiced between financial institutions or paid by the government.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3352,7 +3352,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Long-term interest rates refer to government bonds maturing in ten years.\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
+            "description": "Long-term interest rates refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3457,7 +3457,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Query the Geo Fred API for regional economic data by series group.\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+            "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')\n# With a date, time series data is returned.\nobb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -18168,7 +18168,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Screen for companies meeting various criteria. These criteria include\nmarket cap, price, beta, volume, and dividend yield.",
+            "description": "Screen for companies meeting various criteria.\n\nThese criteria include market cap, price, beta, volume, and dividend yield.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.screener(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -26619,11 +26619,32 @@
         }
     },
     "routers": {
+        "/crypto": {
+            "description": "Crypto data"
+        },
+        "/currency": {
+            "description": "Currency data"
+        },
+        "/economy": {
+            "description": "Economy data"
+        },
         "/equity/price": {
             "description": "Equity price router"
         },
         "/equity": {
-            "description": "Equity router"
+            "description": "Equity data"
+        },
+        "/etf": {
+            "description": "ETF data"
+        },
+        "/fixedincome": {
+            "description": "Fixed Income data"
+        },
+        "/index": {
+            "description": "Index data"
+        },
+        "/news": {
+            "description": "News data"
         }
     }
 }
