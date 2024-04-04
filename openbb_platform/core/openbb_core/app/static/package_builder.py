@@ -1156,6 +1156,12 @@ class PathHandler:
     """Handle the paths for the Platform."""
 
     @staticmethod
+    def get_description(path: str) -> str:
+        """Get the description."""
+        root = RouterLoader.from_extensions()
+        return root.get_attr(path, "description")
+
+    @staticmethod
     def build_route_map() -> Dict[str, BaseRoute]:
         """Build the route map."""
         router = RouterLoader.from_extensions()
