@@ -204,6 +204,21 @@ class PlatformController(BaseController):
         )
         setattr(self, f"call_{name}", bound_method)
 
+    def _get_command_description(self, command: str) -> str:
+        """Get command description."""
+        command_description = obb.coverage.reference.get(
+            f"{self.PATH}{command}", {}
+        ).get("description", "")
+
+        if not command_description:
+            trl = self.translators.get(
+                f"{self._name}_{command}"
+            ) or self.translators.get(command)
+            if trl and hasattr(trl, "parser"):
+                command_description = trl.parser.description
+
+        return command_description.split(".")[0].lower()
+
     def print_help(self):
         """Print help."""
         mt = MenuText(self.PATH)
@@ -215,11 +230,7 @@ class PlatformController(BaseController):
         if self.CHOICES_COMMANDS:
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
-                command_description = (
-                    (self.translators[f"{self._name}_{command}"].parser.description)
-                    .split(".")[0]
-                    .lower()
-                )
+                command_description = self._get_command_description(command)
 
                 mt.add_cmd(
                     key_command=command.replace(f"{self._name}_", ""),
