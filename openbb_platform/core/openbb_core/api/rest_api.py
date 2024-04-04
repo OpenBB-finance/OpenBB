@@ -73,7 +73,7 @@ app.add_middleware(
     allow_methods=system.api_settings.cors.allow_methods,
     allow_headers=system.api_settings.cors.allow_headers,
 )
-app.openapi_tags = AppLoader.get_openapi_tags(router_commands)
+app.openapi_tags = AppLoader.get_openapi_tags()
 AppLoader.from_routers(
     app=app,
     routers=(

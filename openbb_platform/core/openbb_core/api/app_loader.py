@@ -1,3 +1,5 @@
+"""App loader module."""
+
 from typing import List, Optional
 
 from fastapi import APIRouter, FastAPI
@@ -8,21 +10,20 @@ class AppLoader:
     """App loader."""
 
     @staticmethod
-    def get_openapi_tags(router: APIRouter) -> List[dict]:
+    def get_openapi_tags() -> List[dict]:
         """Get openapi tags."""
-        root = RouterLoader.from_extensions()
-
+        main_router = RouterLoader.from_extensions()
         openapi_tags = []
         added = set()
-        for route in router.routes:
-            path = getattr(route, "path", "")
-            name = path.replace(getattr(route, "name", ""), "").strip("/")
-            if name not in added:
-                added.add(name)
+        # Add tag data for each router in the main router
+        for r in main_router.routers:
+            path = getattr(r, "path", "").split("/")[1]
+            if path not in added:
+                added.add(path)
                 openapi_tags.append(
                     {
-                        "name": name,
-                        "description": root.get_attr(path, "description"),
+                        "name": path,
+                        "description": main_router.get_attr(path, "description"),
                     }
                 )
         return openapi_tags

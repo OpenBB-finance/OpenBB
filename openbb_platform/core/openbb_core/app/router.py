@@ -316,16 +316,30 @@ class Router:
         self._routers[name.strip("/")] = router
 
     def get_attr(self, path: str, attr: str) -> Any:
-        """Get attribute."""
-        return self._get_router_attr(self, path, attr)
+        """Get router attribute from path.
+
+        Parameters
+        ----------
+        path : str
+            Path to the router or nested router.
+            E.g. "/equity" or "/equity/price".
+        attr : str
+            Attribute to get.
+
+        Returns
+        -------
+        Any
+            Attribute value.
+        """
+        return self._search_attr(self, path, attr)
 
     @staticmethod
-    def _get_router_attr(router: "Router", path: str, attr: str) -> Any:
-        """Get router attribute."""
+    def _search_attr(router: "Router", path: str, attr: str) -> Any:
+        """Recursively search router attribute from path."""
         path = path.strip("/")
         first = path.split("/")[0]
         if first in router.routers:
-            return Router._get_router_attr(
+            return Router._search_attr(
                 router.routers[first], "/".join(path.split("/")[1:]), attr
             )
         return getattr(router, attr, None)

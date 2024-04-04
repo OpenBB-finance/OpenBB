@@ -26617,5 +26617,13 @@
             },
             "model": "SicSearch"
         }
+    },
+    "routers": {
+        "/equity/price": {
+            "description": "Equity price router"
+        },
+        "/equity": {
+            "description": "Equity router"
+        }
     }
 }
