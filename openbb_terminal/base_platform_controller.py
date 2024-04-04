@@ -216,8 +216,7 @@ class PlatformController(BaseController):
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = (
-                    obb.coverage.reference.get(f"{self.PATH}{command}", {})
-                    .get("description", "")
+                    (self.translators[f"{self._name}_{command}"].parser.description)
                     .split(".")[0]
                     .lower()
                 )
