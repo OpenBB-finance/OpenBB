@@ -215,7 +215,7 @@ class Router:
 
     @property
     def routers(self) -> Dict[str, "Router"]:
-        """Routers."""
+        """Routers nested within the Router, i.e. sub-routers."""
         return self._routers
 
     def __init__(
