@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_etf.discovery.discovery_router import router as discovery_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="ETF data")
 router.include_router(discovery_router)
 
 # pylint: disable=unused-argument

@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_crypto.price.price_router import router as price_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Crypto data")
 router.include_router(price_router)
 
 
