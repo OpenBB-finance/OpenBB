@@ -145,7 +145,7 @@ class TerminalController(BaseController):
 
             if value == "menu":
                 pcf = PlatformControllerFactory(
-                    target, reference=obb.coverage.reference
+                    target, reference=obb.reference["paths"]
                 )
                 DynamicController = pcf.create()
 

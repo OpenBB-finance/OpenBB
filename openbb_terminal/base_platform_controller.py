@@ -206,9 +206,11 @@ class PlatformController(BaseController):
 
     def _get_command_description(self, command: str) -> str:
         """Get command description."""
-        command_description = obb.coverage.reference.get(
-            f"{self.PATH}{command}", {}
-        ).get("description", "")
+        command_description = (
+            obb.reference["paths"]
+            .get(f"{self.PATH}{command}", {})
+            .get("description", "")
+        )
 
         if not command_description:
             trl = self.translators.get(
