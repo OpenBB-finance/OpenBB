@@ -371,7 +371,7 @@ def test_equity_fundamental_employee_count(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "limit": 30})],
+    [({"symbol": "AAPL,MSFT", "period": "annual", "limit": 30})],
 )
 @pytest.mark.integration
 def test_equity_estimates_historical(params, headers):
@@ -380,6 +380,67 @@ def test_equity_estimates_historical(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/estimates/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_sales(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/forward_sales?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "annual",
+                "limit": None,
+                "include_historical": False,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_eps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/forward_eps?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -742,6 +803,13 @@ def test_equity_estimates_analyst_search(params, headers):
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
         ({"symbol": "TD:US", "provider": "tmx"}),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "industry_group_number": None,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

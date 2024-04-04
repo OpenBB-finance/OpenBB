@@ -20,6 +20,12 @@ from openbb_intrinio.models.etf_price_performance import (
 )
 from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
+from openbb_intrinio.models.forward_eps_estimates import (
+    IntrinioForwardEpsEstimatesFetcher,
+)
+from openbb_intrinio.models.forward_sales_estimates import (
+    IntrinioForwardSalesEstimatesFetcher,
+)
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -40,6 +46,9 @@ from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.price_target_consensus import (
+    IntrinioPriceTargetConsensusFetcher,
+)
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
@@ -418,5 +427,32 @@ def test_intrinio_market_snapshots_fetcher(credentials=test_credentials):
     params = {"date": date(2022, 6, 30)}
 
     fetcher = IntrinioMarketSnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_forward_eps_estimates_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioForwardEpsEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_forward_sales_estimates_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioForwardSalesEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_price_target_consensus_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioPriceTargetConsensusFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
