@@ -67,6 +67,7 @@ PLATFORM_ROUTERS = {
     for d in dir(obb)
     if "_" not in d
 }
+NON_DATA_ROUTERS = ["coverage", "account", "reference", "system", "user"]
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
@@ -241,7 +242,20 @@ class TerminalController(BaseController):
         mt.add_cmd("exe")
         mt.add_raw("\n")
         mt.add_info("Platform CLI")
+
+        mt.add_raw("\n    data\n")
         for router, value in PLATFORM_ROUTERS.items():
+            if router in NON_DATA_ROUTERS:
+                continue
+            if value == "menu":
+                mt.add_menu(router)
+            else:
+                mt.add_cmd(router)
+
+        mt.add_raw("\n    configuration\n")
+        for router, value in PLATFORM_ROUTERS.items():
+            if router not in NON_DATA_ROUTERS:
+                continue
             if value == "menu":
                 mt.add_menu(router)
             else:
