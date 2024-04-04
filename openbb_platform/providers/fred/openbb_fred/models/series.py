@@ -1,10 +1,9 @@
 """FRED Series Model."""
 
-import json
-import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
@@ -18,8 +17,6 @@ from openbb_core.provider.utils.helpers import (
     get_querystring,
 )
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FredSeriesQueryParams(SeriesQueryParams):
@@ -145,9 +142,18 @@ class FredSeriesFetcher(
                 f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
                 timeout=5,
             )
-            _metadata = metadata_response.get("seriess", [{}])[0]
 
-            observations = observations_response.get("observations")
+            # seriess is not a typo, it's the actual key in the response
+            _metadata = (
+                metadata_response.get("seriess", [{}])[0]
+                if isinstance(metadata_response, dict)
+                else {}
+            ) or {}
+            observations = (
+                observations_response.get("observations")
+                if isinstance(observations_response, dict)
+                else []
+            ) or []
             try:
                 for d in observations:
                     d.pop("realtime_start")
@@ -177,24 +183,18 @@ class FredSeriesFetcher(
 
         results = await amake_requests(urls, callback, timeout=5, **kwargs)
 
-        metadata, data = {}, {}
-        for item in results:
-            for series_id, result in item.items():
-                data[series_id] = result.pop("data")
-                metadata[series_id] = result
-
-        _warn(json.dumps(metadata))
-
-        return data
+        return results
 
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: FredSeriesQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FredSeriesData]:
+        query: FredSeriesQueryParams, data: List[Dict[str, Any]], **kwargs: Any
+    ) -> AnnotatedResult[List[FredSeriesData]]:
         """Transform data."""
-        results = (
-            pd.DataFrame(data)
+        series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
+        metadata = {_id: m for d in data for _id, m in d.items()}
+        records = (
+            pd.DataFrame(series)
             .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})
@@ -202,4 +202,5 @@ class FredSeriesFetcher(
             .replace("N/A", None)
             .to_dict("records")
         )
-        return [FredSeriesData.model_validate(d) for d in results]
+        validated = [FredSeriesData.model_validate(r) for r in records]
+        return AnnotatedResult(result=validated, metadata=metadata)
