@@ -368,20 +368,33 @@ def get_flair() -> str:
     """Get a flair icon."""
     current_flair = str(get_current_settings().FLAIR)
     flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
+    return flair
 
+
+def get_dtime() -> str:
+    """Get a datetime string."""
+    dtime = ""
     if (
         get_current_settings().USE_DATETIME
         and get_user_timezone_or_invalid() != "INVALID"
     ):
         dtime = datetime.now(timezone(get_user_timezone())).strftime("%Y %b %d, %H:%M")
+    return dtime
 
-        # if there is no flair, don't add an extra space after the time
-        if flair == "":
-            return f"{dtime}"
 
-        return f"{dtime} {flair}"
+def get_flair_and_username() -> str:
+    """Get a flair icon and username."""
+    flair = get_flair()
+    dtime = get_dtime()
 
-    return flair
+    if dtime:
+        dtime = f"{dtime} "
+
+    username = getattr(get_platform_user().profile.hub_session, "username", "")
+    if username:
+        username = f"[{username}] "
+
+    return f"{dtime}{username}{flair}"
 
 
 def is_timezone_valid(user_tz: str) -> bool:

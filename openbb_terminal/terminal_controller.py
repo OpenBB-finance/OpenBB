@@ -41,7 +41,7 @@ from openbb_terminal.core.session.current_user import (
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
-    get_flair,
+    get_flair_and_username,
     parse_and_split_input,
     print_rich_table,
 )
@@ -470,6 +470,7 @@ def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     return jobs_cmds
 
 
+# pylint: disable=unused-argument
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
     ret_code = 1
@@ -508,7 +509,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
-                console.print(f"{get_flair()} / $ {an_input}")
+                console.print(f"{get_flair_and_username()} / $ {an_input}")
 
         # Get input command from user
         else:
@@ -518,7 +519,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                     # Check if toolbar hint was enabled
                     if get_current_settings().TOOLBAR_HINT:
                         an_input = session.prompt(
-                            f"{get_flair()} / $ ",
+                            f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                             bottom_toolbar=HTML(
@@ -537,14 +538,14 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                         )
                     else:
                         an_input = session.prompt(
-                            f"{get_flair()} / $ ",
+                            f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                         )
 
                 # Get input from user without auto-completion
                 else:
-                    an_input = input(f"{get_flair()} / $ ")
+                    an_input = input(f"{get_flair_and_username()} / $ ")
 
             except (KeyboardInterrupt, EOFError):
                 print_goodbye()
@@ -740,6 +741,7 @@ def run_routine(file: str, routines_args=Optional[str]):
         )
 
 
+# pylint: disable=unused-argument
 def main(
     debug: bool,
     dev: bool,

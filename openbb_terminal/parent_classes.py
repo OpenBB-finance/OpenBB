@@ -35,7 +35,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
-    get_flair,
+    get_flair_and_username,
     parse_and_split_input,
     system_clear,
 )
@@ -954,7 +954,9 @@ class BaseController(metaclass=ABCMeta):
                     and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
-                    console.print(f"{get_flair()} {self.PATH} $ {an_input}")
+                    console.print(
+                        f"{get_flair_and_username()} {self.PATH} $ {an_input}"
+                    )
 
             # Get input command from user
             else:
@@ -968,7 +970,7 @@ class BaseController(metaclass=ABCMeta):
                         # Check if toolbar hint was enabled
                         if settings.TOOLBAR_HINT:
                             an_input = session.prompt(
-                                f"{get_flair()} {self.PATH} $ ",
+                                f"{get_flair_and_username()} {self.PATH} $ ",
                                 completer=self.completer,
                                 search_ignore_case=True,
                                 bottom_toolbar=HTML(
@@ -986,13 +988,13 @@ class BaseController(metaclass=ABCMeta):
                             )
                         else:
                             an_input = session.prompt(
-                                f"{get_flair()} {self.PATH} $ ",
+                                f"{get_flair_and_username()} {self.PATH} $ ",
                                 completer=self.completer,
                                 search_ignore_case=True,
                             )
                     # Get input from user without auto-completion
                     else:
-                        an_input = input(f"{get_flair()} {self.PATH} $ ")
+                        an_input = input(f"{get_flair_and_username()} {self.PATH} $ ")
 
                 except (KeyboardInterrupt, EOFError):
                     # Exit in case of keyboard interrupt
