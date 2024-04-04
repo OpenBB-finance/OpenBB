@@ -323,6 +323,7 @@ def test_quantitative_rolling_quantile(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_summary(params, data_type, obb):
+    """Test summary."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 

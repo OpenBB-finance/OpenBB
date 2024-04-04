@@ -1,3 +1,5 @@
+"""Test News API."""
+
 import base64
 
 import pytest
