@@ -14,18 +14,14 @@ class AppLoader:
         """Get openapi tags."""
         main_router = RouterLoader.from_extensions()
         openapi_tags = []
-        added = set()
         # Add tag data for each router in the main router
         for r in main_router.routers:
-            path = getattr(r, "path", "").split("/")[1]
-            if path not in added:
-                added.add(path)
-                openapi_tags.append(
-                    {
-                        "name": path,
-                        "description": main_router.get_attr(path, "description"),
-                    }
-                )
+            openapi_tags.append(
+                {
+                    "name": r,
+                    "description": main_router.get_attr(r, "description"),
+                }
+            )
         return openapi_tags
 
     @staticmethod
