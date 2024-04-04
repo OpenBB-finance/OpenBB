@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/eps_estimates?api_key=MOCK_API_KEY&identifier=AAPL&page_size=10000
+  response:
+    body:
+      string: !!binary |
+        H4sIAKuXCGYAA+yYXU/bMBSG/8qU6zby8WfcO3YBm/YBTENjmqYoajOIaNOKhm0M9b9jpyR22uOl
+        XIEoXMVvQgx99NpPfRfly6qYZVW+jEY/7qLxfLbIyttodBcVk2hkx+nnc3n07zgaRFUxvsqvTXpw
+        cPLRjMtsltvRYjHN37wvx7HJpnlhonffzk4+fCGfTo7PksOj87dfmebm5ri4MjeJ+WGUgGbRahBN
+        zNwmpISqIdFDRsxzv4rlOJumt3lmZrN32miRXxdz+4cdfrfvy6Z5OcmuO0+2YfvsKbPPzm/KKhrB
+        IJrlWRmNVKwTez0p3OiyuLhsrqfzP83lssrsCyfpJP9dZFUxN79Q3kyng8hMMc7LKh1fZuWF+Td4
+        zMV6glSlk+x2mWYX8+bhOmYEz2Ug15v5avC0lGSQktymdMpRSrKPEm0oQZxIR2k9WlOCWMMDJRMD
+        TonERBG1zcn7gF85hdvUy4m7Nknut0kS4epkoT3UiesQKBD2DZugVLwHfZK794k9ghNF+ySF8AtV
+        D5tGKd02StAgKE30vjaKDRnsSIo+ghSgpCwNB8qOGk5Ji0kFtiez8AGHvcQkhkB3xwQoJoFi4ggm
+        GjNHqR6sIdGYqwdKNAYWokQ5QVa9vaAU2p7EzhqBU/K2J+mViTDWqRP11r2E7rLuQZK8oupDFTCJ
+        XlRAnEqAVTbnEsCdSohmh5KxUsFSKYU4XxILzCXM+wEj5eVyI08wUiZ/BqACKoF1ClcJHBRFO8UV
+        KL9TPHGVErKtFAvvUUrubaUCKoGRwlUCJwUoKUm70sccKOk5nwyC4oCASowLvnBQPCgTGChcJnif
+        TCgnE1RT3fEJ8IRCtKR0+GsU12yblHCL1sslFdql+M5CgZPydqnEVUrQbqcE8YRCuqMJHi6V3Y+2
+        T5DoK6l+n+glBe1Bn4wFV577mXFbKmMRvBUKFhQKYFYLN1HJ+thpC5V0ntFB5eVyI0eFwuTyGaAK
+        GAVWKtwocFQULRWDTqfqYdMp3laKBh2dCIp86eU12i1Q5v0UA+XlciMXGCibPwNQAaHAQOFCgYPy
+        hMI5ul3uaEf9tEdKOFT8P+cTCSLpQ8B3KojRTkHdZQyV0DgqoZ8aFQsqBYYKVwrWpxTSKQXRwjcK
+        TyhAtCcUJHhCQThH1r6Ao9vZME4mTzBOXq43crX6aT76/G+VLrJmxtU9AAAA//8DAEWpGNevGgAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 30 Mar 2024 22:52:27 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
