@@ -184,7 +184,6 @@ class PackageBuilder:
     def _save_reference_file(self, ext_map: Optional[Dict[str, List[str]]] = None):
         """Save the reference.json file."""
         self.console.log("\nWriting reference file...")
-        paths = ReferenceGenerator.get_paths(self.route_map)
         code = dumps(
             obj={
                 "openbb": VERSION.replace("dev", ""),
@@ -194,7 +193,7 @@ class PackageBuilder:
                     "core": CORE_VERSION.replace("dev", ""),
                     "extensions": ext_map,
                 },
-                "paths": paths,
+                "paths": ReferenceGenerator.get_paths(self.route_map),
                 "routers": ReferenceGenerator.get_routers(self.route_map),
             },
             indent=4,
