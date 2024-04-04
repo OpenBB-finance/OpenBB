@@ -1,4 +1,4 @@
-"""TMX Equity Profile fetcher"""
+"""TMX Equity Profile fetcher."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -84,7 +84,6 @@ class TmxEquityProfileFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
@@ -94,8 +93,7 @@ class TmxEquityProfileFetcher(
         url = "https://app-money.tmx.com/graphql"
 
         async def create_task(symbol: str, results) -> None:
-            """Makes a POST request to the TMX GraphQL endpoint for a single symbol."""
-
+            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
             symbol = (
                 symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
             )
@@ -133,7 +131,6 @@ class TmxEquityProfileFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityProfileData]:
         """Return the transformed data."""
-
         # Get only the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",

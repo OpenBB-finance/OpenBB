@@ -1,4 +1,4 @@
-"""TMX Index Snapshots Model"""
+"""TMX Index Snapshots Model."""
 
 # pylint: disable=unused-argument
 import json
@@ -151,6 +151,8 @@ class TmxIndexSnapshotsFetcher(
         List[TmxIndexSnapshotsData],
     ]
 ):
+    """TMX Index Snapshots Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxIndexSnapshotsQueryParams:
         """Transform the query."""

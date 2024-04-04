@@ -57,7 +57,7 @@ class IntrinioLatestAttributesFetcher(
         base_url = "https://api-v2.intrinio.com/companies"
 
         def generate_url(symbol: str, tag: str) -> str:
-            """Returns the url for the given symbol and tag."""
+            """Return the url for the given symbol and tag."""
             return f"{base_url}/{symbol}/data_point/{tag}?api_key={api_key}"
 
         async def callback(response: ClientResponse, _: Any) -> Dict:

@@ -402,6 +402,7 @@ def test_equity_estimates_historical(params, headers):
 )
 @pytest.mark.integration
 def test_equity_estimates_forward_sales(params, headers):
+    """Test the equity estimates forward sales endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -437,6 +438,7 @@ def test_equity_estimates_forward_sales(params, headers):
 )
 @pytest.mark.integration
 def test_equity_estimates_forward_eps(params, headers):
+    """Test the equity estimates forward EPS endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

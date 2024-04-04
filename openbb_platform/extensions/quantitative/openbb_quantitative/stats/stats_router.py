@@ -308,7 +308,7 @@ def mean(
     data: List[Data],
     target: str,
 ) -> OBBject[List[Data]]:
-    """Calculate the  mean (average) of a target column.
+    """Calculate the average of a target column.
 
     The rolling mean is a simple moving average that calculates the average of a target variable.
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends

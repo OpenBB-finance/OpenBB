@@ -73,7 +73,7 @@ class IntrinioHistoricalAttributesFetcher(
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
 
         def generate_url(symbol: str, tag: str) -> str:
-            """Returns the url for the given symbol and tag."""
+            """Return the url for the given symbol and tag."""
             url_params = f"{symbol}/{tag}?{query_str}&api_key={api_key}"
             url = f"{base_url}/historical_data/{url_params}"
             return url

@@ -11,7 +11,7 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def setup_mocks():
-    """Setup mocks for the test."""
+    """Set up mocks for the test."""
     with patch(
         "openbb_core.app.static.package_builder.PackageBuilder.auto_build"
     ) as mock_auto_build:

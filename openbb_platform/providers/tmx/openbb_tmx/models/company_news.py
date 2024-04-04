@@ -28,7 +28,7 @@ class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
 
 
 class TmxCompanyNewsData(CompanyNewsData):
-    """TMX Stock News Data"""
+    """TMX Stock News Data."""
 
     __alias_dict__ = {
         "date": "datetime",
@@ -67,8 +67,7 @@ class TmxCompanyNewsFetcher(
         results = []
 
         async def create_task(symbol, results):
-            """Makes a POST request to the TMX GraphQL endpoint for a single symbol."""
-
+            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
             symbol = (
                 symbol.upper().replace(".TO", "").replace(".TSX", "").replace("-", ".")
             )

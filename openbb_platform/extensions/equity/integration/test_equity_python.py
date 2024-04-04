@@ -710,6 +710,7 @@ def test_equity_estimates_consensus(params, obb):
 )
 @pytest.mark.integration
 def test_equity_estimates_forward_sales(params, obb):
+    """Test the equity estimates forward sales endpoint."""
     result = obb.equity.estimates.forward_sales(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -742,6 +743,7 @@ def test_equity_estimates_forward_sales(params, obb):
 )
 @pytest.mark.integration
 def test_equity_estimates_forward_eps(params, obb):
+    """Test the equity estimates forward EPS endpoint."""
     result = obb.equity.estimates.forward_eps(**params)
     assert result
     assert isinstance(result, OBBject)

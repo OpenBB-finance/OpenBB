@@ -265,7 +265,7 @@ NASDAQ_GIDS = {
 
 
 async def response_callback(response, _: Any):
-    """Callback for HTTP Client Response."""
+    """Use callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
         return await response.json()
@@ -296,7 +296,6 @@ async def get_data_from_url(
 
 async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
     """Make an asynchronous GraphQL request."""
-
     response = await amake_request(
         url=url,
         method="POST",
@@ -310,7 +309,7 @@ async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
 
 
 def replace_values_in_list_of_dicts(data):
-    """Helper function to replace "NA" and "-" with None in a list of dictionaries."""
+    """Replace "NA" and "-" with None in a list of dictionaries."""
     for d in data:
         for k, v in d.items():
             if isinstance(v, dict):
@@ -329,7 +328,7 @@ def replace_values_in_list_of_dicts(data):
 
 
 def check_weekday(date) -> str:
-    """Helper function to check if the input date is a weekday, and if not, returns the next weekday.
+    """Check if the input date is a weekday, and if not, returns the next weekday.
 
     Parameters
     ----------
@@ -341,22 +340,19 @@ def check_weekday(date) -> str:
     str
         Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
     """
-
     if pd.to_datetime(date).weekday() > 4:
         return next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
     return date
 
 
 async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
-    """
-    Gets a summary of the TMX ETF universe.
+    """Get a summary of the TMX ETF universe.
 
     Returns
     -------
     Dict
         Dictionary with all TMX-listed ETFs.
     """
-
     url = "https://dgr53wu9i7rmp.cloudfront.net/etfs/etfs.json"
 
     response = await get_data_from_url(
@@ -403,8 +399,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 async def get_tmx_tickers(
     exchange: Literal["tsx", "tsxv"] = "tsx", use_cache: bool = True
 ) -> Dict:
-    """Gets a dictionary of either TSX or TSX-V symbols and names."""
-
+    """Get a dictionary of either TSX or TSX-V symbols and names."""
     tsx_json_url = "https://www.tsx.com/json/company-directory/search"
     url = f"{tsx_json_url}/{exchange}/*"
     response = await get_data_from_url(
@@ -420,7 +415,7 @@ async def get_tmx_tickers(
 
 
 async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
-    """Merges TSX and TSX-V listings into a single dictionary."""
+    """Merge TSX and TSX-V listings into a single dictionary."""
     all_tmx = {}
     tsx_tickers = await get_tmx_tickers(use_cache=use_cache)
     tsxv_tickers = await get_tmx_tickers("tsxv", use_cache=use_cache)
@@ -430,8 +425,7 @@ async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
 
 
 async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
-    """Returns a DataFrame with all valid ticker symbols."""
-
+    """Return a DataFrame with all valid ticker symbols."""
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
@@ -456,8 +450,7 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
 
 
 async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFrame:
-    """Gets the current quotes for the complete options chain."""
-
+    """Get the current quotes for the complete options chain."""
     SYMBOLS = await get_all_options_tickers(use_cache=use_cache)
     data = pd.DataFrame()
     symbol = symbol.upper()
@@ -558,8 +551,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
 async def download_eod_chains(
     symbol: str, date: Optional[dateType] = None, use_cache: bool = False
 ) -> pd.DataFrame:
-    """Downloads EOD chains data for a given symbol and date."""
-
+    """Download EOD chains data for a given symbol and date."""
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
     # Remove echange  identifiers from the symbol.
@@ -1039,8 +1031,10 @@ async def get_intraday_price_history(
 
 
 async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
-    """Gets all bonds reference data published by CIRO. The complete list is approximately 70-100K securities."""
+    """Get all bonds reference data published by CIRO.
 
+    The complete list is approximately 70-100K securities.
+    """
     url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
     response = await get_data_from_url(
         url, use_cache=use_cache, timeout=30, backend=tmx_bonds_backend
