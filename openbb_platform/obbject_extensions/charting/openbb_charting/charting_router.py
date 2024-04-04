@@ -14,14 +14,6 @@ from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_charting.core.to_chart import to_chart
-from openbb_charting.query_params import (
-    EconomyFredSeriesChartQueryParams,
-    EquityPriceHistoricalChartQueryParams,
-    EquityPricePerformanceChartQueryParams,
-    EtfHoldingsChartQueryParams,
-    EtfPricePerformanceChartQueryParams,
-    TechnicalConesChartQueryParams,
-)
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.helpers import (
@@ -34,9 +26,9 @@ from openbb_charting.utils.helpers import (
 CHART_FORMAT = ChartFormat.plotly
 
 
-def equity_price_performance(  # noqa: PLR0912
-    **kwargs: Union[EquityPricePerformanceChartQueryParams, Any],
-) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
+def equity_price_performance(
+    **kwargs,
+) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Performance Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -132,7 +124,7 @@ def equity_price_performance(  # noqa: PLR0912
 
 
 def etf_price_performance(
-    **kwargs: Union[EtfPricePerformanceChartQueryParams, Any],
+    **kwargs,
 ) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """ETF Historical Chart."""
     fig, content = equity_price_performance(**kwargs)
@@ -145,9 +137,7 @@ def etf_price_performance(
     return fig, content
 
 
-def etf_holdings(
-    **kwargs: Union[EtfHoldingsChartQueryParams, Any],
-) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
+def etf_holdings(**kwargs) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """Equity Compare Groups Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -203,9 +193,9 @@ def etf_holdings(
     return fig, content
 
 
-def equity_price_historical(  # noqa: PLR0912
-    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def equity_price_historical(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Historical Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -479,30 +469,22 @@ def equity_price_historical(  # noqa: PLR0912
     return fig, content
 
 
-def etf_historical(
-    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def etf_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """ETF Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
-def index_price_historical(
-    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def index_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Index Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
-def currency_price_historical(
-    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def currency_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Currency Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
 
-def crypto_price_historical(
-    **kwargs: Union[EquityPriceHistoricalChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def crypto_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Crypto Price Historical Chart."""
     return equity_price_historical(**kwargs)
 
@@ -832,9 +814,7 @@ def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def technical_cones(
-    **kwargs: Union[TechnicalConesChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Volatility Cones Chart."""
     data = kwargs.get("data")
 
@@ -939,9 +919,9 @@ def technical_cones(
     return fig, content
 
 
-def economy_fred_series(  # noqa: PLR0912
-    **kwargs: Union[EconomyFredSeriesChartQueryParams, Any],
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+def economy_fred_series(
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:  # noqa: PLR0912
     """FRED Series Chart."""
     ytitle_dict = {
         "chg": "Change",
