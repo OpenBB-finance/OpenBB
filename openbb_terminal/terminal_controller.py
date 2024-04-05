@@ -248,7 +248,15 @@ class TerminalController(BaseController):
             if router in NON_DATA_ROUTERS:
                 continue
             if value == "menu":
-                mt.add_menu(router)
+                menu_description = (
+                    obb.reference["routers"]
+                    .get(f"{self.PATH}{router}", {})
+                    .get("description")
+                ) or ""
+                mt.add_menu(
+                    key_menu=router,
+                    menu_description=menu_description.split(".")[0].lower(),
+                )
             else:
                 mt.add_cmd(router)
 
