@@ -25,7 +25,7 @@ from .helpers import (
 )
 
 # TODO: Split this into multiple files
-router = Router(prefix="")
+router = Router(prefix="", description="Technical Analysis tools.")
 
 
 @router.command(

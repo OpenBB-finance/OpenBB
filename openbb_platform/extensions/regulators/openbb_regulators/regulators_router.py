@@ -11,6 +11,6 @@ from .cftc.cftc_router import (
 )
 from .sec.sec_router import router as sec_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Financial market regulators data.")
 router.include_router(sec_router)
 router.include_router(cftc_router)
