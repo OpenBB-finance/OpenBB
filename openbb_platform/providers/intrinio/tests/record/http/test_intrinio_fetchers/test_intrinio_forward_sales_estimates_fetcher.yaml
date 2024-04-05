@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/sales_estimates?api_key=MOCK_API_KEY&identifier=AAPL&page_size=10000
+  response:
+    body:
+      string: !!binary |
+        H4sIAKuXCGYAA+SaTW/bRhCG/0rBs0XszOzOzvqWHpIW/YhTNGiKohAIibWJ6AuWXNc1/N8ztB3a
+        Wi4pRRdboG6cXXEWwoN35p3VbVauN9W82JTr7PSv22yynK+KxU12eptV0+y0fh7/+onf/f8+O8k2
+        1eRzeanRN2/OftbnRTEv66fValZ+9+NikmtsVlYa+uGPj2c//WZ+OXv/Ud6++/T97xSsLk6qz7po
+        9ENoIFB2d5JNNbcG0aAfmTAio/v+qdaTYja+KQvNVq80oVV5WS3rg739s35fMSsX0+Jya2cTbPZ+
+        oHrv8mqxyU7hJJuXxSI7tcbrEcz9Jzd1dFql4hfV+UU7Oltet4PrTVEnno6n5b9VsamW+rr7hWJR
+        zG7Wm/GlxtcaXtdnm5SLzXhyUSzOyzFcd+68Wj2sptamy+tF92qcY96bY96bo2s1ykG9Oag3x/3q
+        3cnLMsidDHKbwQ82ySDvYhC/MhiCQ2e9ixCMwg8EggEiiggM3oMPrg9AdI4R+XHHoEgccc6EB8MI
+        RwVjhyDuhNE2gogEwDa0BBEsChkXCSI7ZBLG5zhSECbuF0QMYJVIGCSQLg8WDgYSXwGQvL860jcA
+        iSl1BPTecUsdt8MPOAZrXCDZEkcRG5zvFUcKZE3zrWGxaHMX5KjFkUYEe7KI38AipFj0JFawxeJ2
+        +JHFWhWt3y7UDDaA9LEI3nrbYD0sFn3OTMfLohsB7s8iJFl0SRZtgkXQbk47xJZzieOPfSOy4wdl
+        fMIRUEswc2+hZkZvhimNmEsIx4xjV9/o9jYxaRyf9Y3cSKNY8IAxjcEbtrGNBuMBXGxiNJ24Xhad
+        12bT+EHCSDnw4T2jPSoYO0zMThjlaaqjPR8bDq2pjoojxThaArSMTrZNjDEeqZdH0KKvOYbpqinX
+        H+1gIN0rALLDxKTUMW1i0kBiQh1F1U1sq1ZLEAIX4RjQAUfiKGSd0tZrYixhwDBQFsHYoxbHDhOT
+        YjFtYtIsQqpSs9EzOIhYVJP8vP4240axxm/DGIxShr3KSIIW7DDbRpcTH+6oXxxG2+liUjCmXYzd
+        5WL8k4uxVoKR2FJrXGzr/gUw1HPD2MVoBfb940Zib56mlMPiEfLAh4vjixdq29k52r1tTJrHZ51j
+        aMQRnaXEhEdfAm0bY9hLXKkVsx13MaS4BhhmpcbcuT5PnbQ4DYz+qGDssDH7w0jiHIjhuFSTEJKP
+        caQgX031MxujLAL1iyMbp93pMK9iMDfm8BmPvAIeO1xMShzTLibNIyZ4FCJ03tjYxRDalqkW9uBj
+        bTQYdhRqROFwD+wQWQxy3Cx2uJgUi2kXk2YRUoXakBjvfMSiVlXhmMWgx4/HjSJuF4tg63mjDJJF
+        p4768OnOi7NInSYmxWLaxNAuE9OwCOC59jESwahxSpgYPS1yfBUD7PwOHgMADfNm0OTIvofG5L97
+        Ghrp7m8FrPxvM14V5wrI4mo2u/sCAAD//wMA/IR93/MoAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 30 Mar 2024 22:52:27 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
