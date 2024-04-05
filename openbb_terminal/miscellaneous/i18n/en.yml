@@ -33,3 +33,5 @@ en:
   settings/flair: choose flair icon
   settings/timezone: pick timezone
   settings/language: translation language
+  settings/n_rows: number of rows to show on non interactive tables
+  settings/n_cols: number of columns to show on non interactive tables

@@ -61,6 +61,8 @@ class FeatureFlagsController(BaseController):
         "flair",
         "timezone",
         "language",
+        "n_rows",
+        "n_cols",
     ]
     PATH = "/settings/"
 
@@ -96,6 +98,8 @@ class FeatureFlagsController(BaseController):
         mt.add_cmd("flair")
         mt.add_cmd("timezone")
         mt.add_cmd("language")
+        mt.add_cmd("n_rows")
+        mt.add_cmd("n_cols")
 
         console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -263,3 +267,55 @@ class FeatureFlagsController(BaseController):
 
         elif not other_args:
             console.print(f"Current language: {get_current_settings().USE_LANGUAGE}")
+
+    def call_n_rows(self, other_args: List[str]) -> None:
+        """Process n_rows command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="n_rows",
+            description="Number of rows to show (when not using interactive tables).",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-r",
+            "--rows",
+            dest="rows",
+            action="store",
+            required=False,
+            type=int,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser and ns_parser.rows:
+            set_and_save_preference("ALLOWED_NUMBER_OF_ROWS", ns_parser.rows)
+
+        elif not other_args:
+            console.print(
+                f"Current number of rows: {get_current_settings().ALLOWED_NUMBER_OF_ROWS}"
+            )
+
+    def call_n_cols(self, other_args: List[str]) -> None:
+        """Process n_cols command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="n_cols",
+            description="Number of columns to show (when not using interactive tables).",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-c",
+            "--columns",
+            dest="columns",
+            action="store",
+            required=False,
+            type=int,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser and ns_parser.columns:
+            set_and_save_preference("ALLOWED_NUMBER_OF_COLUMNS", ns_parser.columns)
+
+        elif not other_args:
+            console.print(
+                f"Current number of columns: {get_current_settings().ALLOWED_NUMBER_OF_COLUMNS}"
+            )
