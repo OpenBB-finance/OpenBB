@@ -27,7 +27,7 @@ from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: i
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
-router = Router(prefix="")
+router = Router(prefix="", description="Econometrics analysis tools.")
 
 
 @router.command(

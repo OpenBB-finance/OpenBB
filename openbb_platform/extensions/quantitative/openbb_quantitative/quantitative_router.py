@@ -30,7 +30,7 @@ from .models import (
     UnitRootModel,
 )
 
-router = Router(prefix="")
+router = Router(prefix="", description="Quantitative analysis tools.")
 router.include_router(rolling_router)
 router.include_router(stats_router)
 router.include_router(performance_router)
