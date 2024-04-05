@@ -27167,23 +27167,14 @@
         }
     },
     "routers": {
-        "/crypto/price": {
-            "description": "Price data."
-        },
         "/crypto": {
             "description": "Cryptocurrency market data."
-        },
-        "/currency/price": {
-            "description": "Price data."
         },
         "/currency": {
             "description": "Foreign exchange (FX) market data."
         },
         "/economy": {
             "description": "Economic data."
-        },
-        "/equity/price": {
-            "description": "Price data."
         },
         "/equity": {
             "description": "Equity market data."
@@ -27193,9 +27184,6 @@
         },
         "/fixedincome": {
             "description": "Fixed Income market data."
-        },
-        "/index/price": {
-            "description": "Price data."
         },
         "/index": {
             "description": "Indices data."
