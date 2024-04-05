@@ -36,5 +36,9 @@ class Settings(BaseModel):
     # STYLE
     RICH_STYLE: str = "dark"
 
+    # OUTPUT
+    ALLOWED_NUMBER_OF_ROWS: int = 366
+    ALLOWED_NUMBER_OF_COLUMNS: int = 15
+
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
         return super().__repr__()

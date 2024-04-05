@@ -206,9 +206,11 @@ class PlatformController(BaseController):
 
     def _get_command_description(self, command: str) -> str:
         """Get command description."""
-        command_description = obb.coverage.reference.get(
-            f"{self.PATH}{command}", {}
-        ).get("description", "")
+        command_description = (
+            obb.reference["paths"]
+            .get(f"{self.PATH}{command}", {})
+            .get("description", "")
+        )
 
         if not command_description:
             trl = self.translators.get(
@@ -219,19 +221,29 @@ class PlatformController(BaseController):
 
         return command_description.split(".")[0].lower()
 
+    def _get_menu_description(self, menu: str) -> str:
+        """Get menu description."""
+        menu_description = (
+            obb.reference["routers"]
+            .get(f"{self.PATH}{menu}", {})
+            .get("description", "")
+        ) or ""
+
+        return menu_description.split(".")[0].lower()
+
     def print_help(self):
         """Print help."""
         mt = MenuText(self.PATH)
 
         if self.CHOICES_MENUS:
             for menu in self.CHOICES_MENUS:
-                mt.add_menu(menu)
+                menu_description = self._get_menu_description(menu)
+                mt.add_menu(key_menu=menu, menu_description=menu_description)
 
         if self.CHOICES_COMMANDS:
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
-
                 mt.add_cmd(
                     key_command=command.replace(f"{self._name}_", ""),
                     command_description=command_description,

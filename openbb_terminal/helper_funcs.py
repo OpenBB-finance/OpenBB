@@ -15,15 +15,15 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import requests
+from openbb import obb
+from openbb_charting.core.backend import create_backend, get_backend
+from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from pytz import all_timezones, timezone
 from rich.table import Table
 
 from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.core.session.current_user import get_platform_user
 from openbb_terminal.rich_config import console
-
-ALLOWED_NUMBER_OF_ROWS = 366
-ALLOWED_NUMBER_OF_COLUMNS = 15
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -129,6 +129,20 @@ def return_colored_value(value: str):
     return f"{value}"
 
 
+def _get_backend():
+    """Get the Platform charting backend."""
+    try:
+        return get_backend()
+    except ValueError:
+        # backend might not be created yet
+        charting_settings = ChartingSettings(
+            system_settings=obb.system, user_settings=obb.user
+        )
+        create_backend(charting_settings)
+        get_backend().start(debug=charting_settings.debug_mode)
+        return get_backend()
+
+
 # pylint: disable=too-many-arguments
 def print_rich_table(  # noqa: PLR0912
     df: pd.DataFrame,
@@ -207,6 +221,29 @@ def print_rich_table(  # noqa: PLR0912
             raise ValueError("Length of headers does not match length of DataFrame.")
         return output
 
+    if get_current_settings().USE_INTERACTIVE_DF:
+        df_outgoing = df.copy()
+        # If headers are provided, use them
+        if headers is not None:
+            # We check if headers are valid
+            df_outgoing.columns = _get_headers(headers)
+
+        if show_index and index_name not in df_outgoing.columns:
+            # If index name is provided, we use it
+            df_outgoing.index.name = index_name or "Index"
+            df_outgoing = df_outgoing.reset_index()
+
+        for col in df_outgoing.columns:
+            if col == "":
+                df_outgoing = df_outgoing.rename(columns={col: "  "})
+
+        _get_backend().send_table(
+            df_table=df_outgoing,
+            title=title,
+            theme=get_platform_user().preferences.table_style,
+        )
+        return
+
     df = df.copy() if not limit else df.copy().iloc[:limit]
     if automatic_coloring:
         if columns_to_auto_color:
@@ -225,12 +262,16 @@ def print_rich_table(  # noqa: PLR0912
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
-    exceeds_allowed_columns = len(df.columns) > ALLOWED_NUMBER_OF_COLUMNS
-    exceeds_allowed_rows = len(df) > ALLOWED_NUMBER_OF_ROWS
+    exceeds_allowed_columns = (
+        len(df.columns) > get_current_settings().ALLOWED_NUMBER_OF_COLUMNS
+    )
+    exceeds_allowed_rows = len(df) > get_current_settings().ALLOWED_NUMBER_OF_ROWS
 
     if exceeds_allowed_columns:
         original_columns = df.columns.tolist()
-        trimmed_columns = df.columns.tolist()[:ALLOWED_NUMBER_OF_COLUMNS]
+        trimmed_columns = df.columns.tolist()[
+            : get_current_settings().ALLOWED_NUMBER_OF_COLUMNS
+        ]
         df = df[trimmed_columns]
         trimmed_columns = [
             col for col in original_columns if col not in trimmed_columns
@@ -238,9 +279,11 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_rows:
         n_rows = len(df.index)
-        trimmed_rows = df.index.tolist()[:ALLOWED_NUMBER_OF_ROWS]
+        trimmed_rows = df.index.tolist()[
+            : get_current_settings().ALLOWED_NUMBER_OF_ROWS
+        ]
         df = df.loc[trimmed_rows]
-        trimmed_rows_count = n_rows - ALLOWED_NUMBER_OF_ROWS
+        trimmed_rows_count = n_rows - get_current_settings().ALLOWED_NUMBER_OF_ROWS
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
@@ -291,13 +334,13 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_columns:
         console.print(
-            f"[yellow]\nAllowed number of columns exceeded ({ALLOWED_NUMBER_OF_COLUMNS}).\n"
+            f"[yellow]\nAllowed number of columns exceeded ({get_current_settings().ALLOWED_NUMBER_OF_COLUMNS}).\n"
             f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
         )
 
     if exceeds_allowed_rows:
         console.print(
-            f"[yellow]\nAllowed number of rows exceeded ({ALLOWED_NUMBER_OF_ROWS}).\n"
+            f"[yellow]\nAllowed number of rows exceeded ({get_current_settings().ALLOWED_NUMBER_OF_ROWS}).\n"
             f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
         )
 
