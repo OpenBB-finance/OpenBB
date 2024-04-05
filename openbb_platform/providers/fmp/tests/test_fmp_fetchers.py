@@ -44,6 +44,7 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
+from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
@@ -666,5 +667,19 @@ def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
     }
 
     fetcher = FMPCurrencySnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_forward_eps_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "MSFT,AAPL",
+        "fiscal_period": "annual",
+        "include_historical": False,
+        "limit": None,
+    }
+
+    fetcher = FMPForwardEpsEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

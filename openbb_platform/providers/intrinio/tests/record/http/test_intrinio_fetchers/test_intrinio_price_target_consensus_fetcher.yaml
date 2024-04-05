@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/target_price_consensuses?api_key=MOCK_API_KEY&identifier=AAPL&page_size=10000
+  response:
+    body:
+      string: !!binary |
+        H4sIAKuXCGYAA1yQYU/CMBCG/wq5z2PpOgZs39AoEhEWI5HEmKaul9GwdUvbqUj4795AY2I/9d6n
+        9/beO4KXtkQvWqsLFEVjHBrXOXSQvRzB62KPFjKYzfIlBFA0dSvNQRhZY6/m+fJmsFhdE9JGdc7b
+        gyht07XCdPXbuTNKU6I7Xe4g4wkLWQBV8wFZlEz7e43SEGCTcJJMAnBeGiWtEgrftfS6IRilYcID
+        8I2XFT0dU1PjvLBYoPFCSd+PwhkfDVk85Bx6U6UvtjxMArBSO1SQma6qzr+j/St/IkF2BE1iX4vV
+        djz/WpPR//y/udu2wsHCFCFpFWqS7p43+f0je8jXm+ntfHv1FKejfmF6T5DRiTmL0hhOp1eywU/a
+        uCzxMsTpGwAA//8DAKUTUfuGAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 30 Mar 2024 22:52:27 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

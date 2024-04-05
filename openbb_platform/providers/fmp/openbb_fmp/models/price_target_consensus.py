@@ -1,5 +1,7 @@
 """FMP Price Target Consensus Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from typing import Any, Dict, List, Optional
 from warnings import warn
@@ -12,6 +14,7 @@ from openbb_core.provider.standard_models.price_target_consensus import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_fmp.utils.helpers import create_url, response_callback
+from pydantic import field_validator
 
 
 class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
@@ -21,6 +24,14 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_symbol(cls, value):
+        """Check the symbol."""
+        if not value:
+            raise RuntimeError("Error: Symbol is a required field for FMP.")
+        return value
 
 
 class FMPPriceTargetConsensusData(PriceTargetConsensusData):
@@ -49,8 +60,8 @@ class FMPPriceTargetConsensusFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
