@@ -7,6 +7,14 @@ from openbb_core.app.model.user_settings import UserSettings
 from pydantic import BaseModel
 
 
+class MockDataframe:
+    def __init__(self):
+        self.columns = ["column1", "column2"]
+
+
+mock_dataframe = MockDataframe()
+
+
 @pytest.fixture()
 def obbject():
     class MockStdParams(BaseModel):
@@ -23,8 +31,12 @@ def obbject():
             )
             self.results = "mock_results"
 
+            self.provider = "mock_provider"
+            self.extra = "mock_extra"
+            self.warnings = "mock_warnings"
+
         def to_dataframe(self):
-            return "mock_dataframe"
+            return mock_dataframe
 
     return MockOOBject()
 
@@ -121,7 +133,7 @@ def test_to_chart(mock_to_chart, obbject):
     # Assert
     assert obj._obbject.chart.fig == mock_fig
     mock_to_chart.assert_called_once_with(
-        "mock_dataframe",
+        mock_dataframe,
         indicators=None,
         symbol="",
         candles=True,

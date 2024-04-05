@@ -7,7 +7,7 @@ from openbb_core.app.utils import check_single_item, convert_to_basemodel
 
 def filter_inputs(
     data_processing: bool = False,
-    extra_info: Optional[Dict[str, Dict[str, List[str]]]] = None,
+    info: Optional[Dict[str, Dict[str, List[str]]]] = None,
     **kwargs,
 ) -> dict:
     """Filter command inputs."""
@@ -15,13 +15,13 @@ def filter_inputs(
         if data_processing and key == "data":
             kwargs[key] = convert_to_basemodel(value)
 
-    if extra_info:
+    if info:
         PROPERTY = "multiple_items_allowed"
 
         # Here we check if list items are passed and multiple items allowed for
         # the given provider/input combination. In that case we transform the list
         # into a comma-separated string
-        for field, props in extra_info.items():
+        for field, props in info.items():
             if PROPERTY in props and (
                 provider := kwargs.get("provider_choices", {}).get("provider")
             ):

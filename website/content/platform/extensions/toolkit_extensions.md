@@ -47,7 +47,7 @@ Functions with charting enabled return figures to a field (`chart`) in the `OBBj
 > Additional Python libraries are installed with this extension: `aiohttp`, `nbformat`, `pandas-ta`, `plotly`, `pywry`, `reportlab`, `scipy`, `statsmodels`, and `svglib`.
 
 :::tip
-The `openbb-charting` is in fact an [`OBBject` extension](/website/content/platform/development/developer-guidelines/obbject_extensions.md) which means you'll have the functionality it exposes on every command result.
+The `openbb-charting` is in fact an [`OBBject` extension](platform/development/how-to/add_obbject_extension.md) which means you'll have the functionality it exposes on every command result.
 :::
 
 The following packages are dependencies of the `openbb-charting` extension:

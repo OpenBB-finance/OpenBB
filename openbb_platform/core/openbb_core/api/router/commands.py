@@ -122,7 +122,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
     )
 
 
-def validate_output(c_out: OBBject) -> OBBject:
+def validate_output(c_out: OBBject) -> Dict:
     """
     Validate OBBject object.
 
@@ -137,8 +137,8 @@ def validate_output(c_out: OBBject) -> OBBject:
 
     Returns
     -------
-    OBBject
-        Validated OBBject object.
+    Dict
+        Serialized OBBject.
     """
 
     def is_model(type_):
@@ -175,7 +175,7 @@ def validate_output(c_out: OBBject) -> OBBject:
     for k, v in c_out.model_copy():
         exclude_fields_from_api(k, v)
 
-    return c_out
+    return c_out.model_dump()
 
 
 def build_api_wrapper(
@@ -193,7 +193,7 @@ def build_api_wrapper(
     func.__annotations__ = new_annotations_map
 
     @wraps(wrapped=func)
-    async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]):
+    async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> Dict:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -203,8 +203,7 @@ def build_api_wrapper(
         execute = partial(command_runner.run, path, user_settings)
         output: OBBject = await execute(*args, **kwargs)
 
-        output = validate_output(output)
-        return output
+        return validate_output(output)
 
     return wrapper
 
