@@ -54,8 +54,7 @@ class Charting:
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._backend: Optional[Backend] = None
-        self._handle_backend()
+        self._backend: Backend = self._handle_backend()
 
     @classmethod
     def indicators(cls):
@@ -67,12 +66,12 @@ class Charting:
         """Returns a list of the available functions."""
         return get_charting_functions()
 
-    def _handle_backend(self):
+    def _handle_backend(self) -> Backend:
         """Handles backend initialization."""
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
-        self._backend = backend
+        return backend
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
@@ -108,7 +107,7 @@ class Charting:
         self, data: Optional[Union[pd.DataFrame, pd.Series]]
     ) -> Tuple[pd.DataFrame, bool]:
         has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
-            data
+            bool(data)
         )
         index = (
             data.index.name
