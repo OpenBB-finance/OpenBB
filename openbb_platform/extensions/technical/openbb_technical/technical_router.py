@@ -30,7 +30,7 @@ from openbb_technical.relative_rotation import (
 )
 
 # TODO: Split this into multiple files
-router = Router(prefix="")
+router = Router(prefix="", description="Technical Analysis tools.")
 
 
 @router.command(
