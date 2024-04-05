@@ -21,7 +21,7 @@ from openbb_equity.ownership.ownership_router import router as ownership_router
 from openbb_equity.price.price_router import router as price_router
 from openbb_equity.shorts.shorts_router import router as shorts_router
 
-router = Router(prefix="", description="Equity Data")
+router = Router(prefix="", description="Equity market data.")
 router.include_router(calendar_router)
 router.include_router(compare_router)
 router.include_router(estimates_router)

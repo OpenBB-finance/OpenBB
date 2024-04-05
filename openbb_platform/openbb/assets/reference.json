@@ -4925,19 +4925,28 @@
                     {
                         "name": "symbol",
                         "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, yfinance.",
-                        "default": "",
-                        "optional": false
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
+                        "default": null,
+                        "optional": true
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fmp', 'yfinance']",
+                        "type": "Literal['fmp', 'intrinio', 'yfinance']",
                         "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                         "default": "fmp",
                         "optional": true
                     }
                 ],
                 "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "industry_group_number",
+                        "type": "int",
+                        "description": "The Zacks industry group number.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "yfinance": []
             },
             "returns": {
@@ -4949,7 +4958,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp', 'yfinance']]",
+                        "type": "Optional[Literal['fmp', 'intrinio', 'yfinance']]",
                         "description": "Provider name."
                     },
                     {
@@ -4977,6 +4986,13 @@
                         "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The company name",
+                        "default": null,
+                        "optional": true
                     },
                     {
                         "name": "target_high",
@@ -5008,6 +5024,50 @@
                     }
                 ],
                 "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "standard_deviation",
+                        "type": "float",
+                        "description": "The standard deviation of target price estimates.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "total_anaylsts",
+                        "type": "int",
+                        "description": "The total number of target price estimates in consensus.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "raised",
+                        "type": "int",
+                        "description": "The number of analysts that have raised their target price estimates.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "lowered",
+                        "type": "int",
+                        "description": "The number of analysts that have lowered their target price estimates.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "most_recent_date",
+                        "type": "date",
+                        "description": "The date of the most recent estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "industry_group_number",
+                        "type": "int",
+                        "description": "The Zacks industry group number.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "yfinance": [
                     {
                         "name": "recommendation",
@@ -5461,6 +5521,494 @@
                 ]
             },
             "model": "AnalystSearch"
+        },
+        "/equity/estimates/forward_sales": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward sales estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_sales(symbol='AAPL', provider='intrinio')\nobb.equity.estimates.forward_sales(fiscal_year=2025, fiscal_period=fy, provider='intrinio')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'intrinio' if there is no default.",
+                        "default": "intrinio",
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['fy', 'q1', 'q2', 'q3', 'q4']",
+                        "description": "The future fiscal period to retrieve estimates for.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "Literal['q1', 'q2', 'q3', 'q4']",
+                        "description": "The future calendar period to retrieve estimates for.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardSalesEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "Fiscal year for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "str",
+                        "description": "Fiscal quarter for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "str",
+                        "description": "Calendar quarter for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "low_estimate",
+                        "type": "int",
+                        "description": "The sales estimate low for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "high_estimate",
+                        "type": "int",
+                        "description": "The sales estimate high for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean",
+                        "type": "int",
+                        "description": "The sales estimate mean for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "median",
+                        "type": "int",
+                        "description": "The sales estimate median for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "int",
+                        "description": "The sales estimate standard deviation for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "number_of_analysts",
+                        "type": "int",
+                        "description": "Number of analysts providing estimates for the period.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "revisions_1w_up",
+                        "type": "int",
+                        "description": "Number of revisions up in the last week.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_1w_down",
+                        "type": "int",
+                        "description": "Number of revisions down in the last week.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_1w_change_percent",
+                        "type": "float",
+                        "description": "The analyst revisions percent change in estimate for the period of 1 week.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_1m_up",
+                        "type": "int",
+                        "description": "Number of revisions up in the last month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_1m_down",
+                        "type": "int",
+                        "description": "Number of revisions down in the last month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_1m_change_percent",
+                        "type": "float",
+                        "description": "The analyst revisions percent change in estimate for the period of 1 month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_3m_up",
+                        "type": "int",
+                        "description": "Number of revisions up in the last 3 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_3m_down",
+                        "type": "int",
+                        "description": "Number of revisions down in the last 3 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revisions_3m_change_percent",
+                        "type": "float",
+                        "description": "The analyst revisions percent change in estimate for the period of 3 months.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "ForwardSalesEstimates"
+        },
+        "/equity/estimates/forward_eps": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward EPS estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_eps(symbol='AAPL', provider='intrinio')\nobb.equity.estimates.forward_eps(fiscal_year=2025, fiscal_period=fy, provider='intrinio')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fmp', 'intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
+                        "default": "fmp",
+                        "optional": true
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "The future fiscal period to retrieve estimates for.",
+                        "default": "annual",
+                        "optional": true
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "include_historical",
+                        "type": "bool",
+                        "description": "If True, the data will include all past data and the limit will be ignored.",
+                        "default": false,
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['fy', 'q1', 'q2', 'q3', 'q4']",
+                        "description": "The future fiscal period to retrieve estimates for.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "The future calendar year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "Literal['q1', 'q2', 'q3', 'q4']",
+                        "description": "The future calendar period to retrieve estimates for.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardEpsEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "Fiscal year for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "str",
+                        "description": "Fiscal quarter for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "str",
+                        "description": "Calendar quarter for the estimate.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "low_estimate",
+                        "type": "float",
+                        "description": "Estimated EPS low for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "high_estimate",
+                        "type": "float",
+                        "description": "Estimated EPS high for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean",
+                        "type": "float",
+                        "description": "Estimated EPS mean for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "median",
+                        "type": "float",
+                        "description": "Estimated EPS median for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "float",
+                        "description": "Estimated EPS standard deviation for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "number_of_analysts",
+                        "type": "int",
+                        "description": "Number of analysts providing estimates for the period.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "revisions_change_percent",
+                        "type": "float",
+                        "description": "The earnings per share (EPS) percent change in estimate for the period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean_1w",
+                        "type": "float",
+                        "description": "The mean estimate for the period one week ago.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean_1m",
+                        "type": "float",
+                        "description": "The mean estimate for the period one month ago.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean_2m",
+                        "type": "float",
+                        "description": "The mean estimate for the period two months ago.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "mean_3m",
+                        "type": "float",
+                        "description": "The mean estimate for the period three months ago.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "ForwardEpsEstimates"
         },
         "/equity/discovery/gainers": {
             "deprecated": {
@@ -26619,32 +27167,41 @@
         }
     },
     "routers": {
+        "/crypto/price": {
+            "description": "Price data."
+        },
         "/crypto": {
-            "description": "Crypto data"
+            "description": "Cryptocurrency market data."
+        },
+        "/currency/price": {
+            "description": "Price data."
         },
         "/currency": {
-            "description": "Currency data"
+            "description": "Foreign exchange (FX) market data."
         },
         "/economy": {
-            "description": "Economy Data"
+            "description": "Economic data."
         },
         "/equity/price": {
-            "description": "Equity price router"
+            "description": "Price data."
         },
         "/equity": {
-            "description": "Equity Data"
+            "description": "Equity market data."
         },
         "/etf": {
-            "description": "ETF data"
+            "description": "Exchange Traded Funds market data."
         },
         "/fixedincome": {
-            "description": "Fixed Income data"
+            "description": "Fixed Income market data."
+        },
+        "/index/price": {
+            "description": "Price data."
         },
         "/index": {
-            "description": "Index data"
+            "description": "Indices data."
         },
         "/news": {
-            "description": "News data"
+            "description": "Financial market news data."
         }
     }
 }
