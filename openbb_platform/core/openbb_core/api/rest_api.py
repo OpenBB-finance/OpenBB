@@ -67,13 +67,13 @@ app = FastAPI(
     ],
     lifespan=lifespan,
 )
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=system.api_settings.cors.allow_origins,
     allow_methods=system.api_settings.cors.allow_methods,
     allow_headers=system.api_settings.cors.allow_headers,
 )
+app.openapi_tags = AppLoader.get_openapi_tags()
 AppLoader.from_routers(
     app=app,
     routers=(
