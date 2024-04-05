@@ -193,9 +193,9 @@ def etf_holdings(**kwargs) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]
     return fig, content
 
 
-def equity_price_historical(
+def equity_price_historical(  # noqa: PLR0912
     **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:  # noqa: PLR0912
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Equity Price Historical Chart."""
 
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
@@ -919,9 +919,9 @@ def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def economy_fred_series(
+def economy_fred_series(  # noqa: PLR0912
     **kwargs,
-) -> Tuple[OpenBBFigure, Dict[str, Any]]:  # noqa: PLR0912
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """FRED Series Chart."""
     ytitle_dict = {
         "chg": "Change",
