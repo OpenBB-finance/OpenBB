@@ -334,7 +334,7 @@ def test_equity_fundamental_employee_count(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "period": "annual", "limit": 30}),
+        ({"symbol": "AAPL,MSFT", "period": "annual", "limit": 30}),
     ],
 )
 @pytest.mark.integration
@@ -652,6 +652,13 @@ def test_equity_estimates_analyst_search(params, obb):
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
         ({"symbol": "TD:US", "provider": "tmx"}),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "industry_group_number": None,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -660,6 +667,61 @@ def test_equity_estimates_consensus(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert result.results is not None
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_sales(params, obb):
+    result = obb.equity.estimates.forward_sales(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "annual",
+                "limit": None,
+                "include_historical": False,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_eps(params, obb):
+    result = obb.equity.estimates.forward_eps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
 
 
 @parametrize(

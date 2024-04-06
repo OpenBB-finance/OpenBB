@@ -14,7 +14,7 @@ from openbb_core.app.router import Router
 
 from openbb_index.price.price_router import router as price_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Indices data.")
 router.include_router(price_router)
 
 # pylint: disable=unused-argument
