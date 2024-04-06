@@ -31,16 +31,17 @@ class BasicResponse:
 
 
 def request(url: str) -> BasicResponse:
-    """
-    Request function for PyScript. Pass in Method and make sure to await.
+    """Request function for PyScript.
 
-    Parameters:
-    -----------
+    Pass in Method and make sure to await.
+
+    Parameters
+    ----------
     url: str
         URL to make request to
 
-    Return:
-    -------
+    Return
+    ------
     response: BasicRequest
         BasicRequest object with status_code and text attributes
     """
@@ -54,7 +55,7 @@ def request(url: str) -> BasicResponse:
 async def response_callback(
     response: ClientResponse, _: ClientSession
 ) -> Union[dict, List[dict]]:
-    """Callback for make_request."""
+    """Use callback for make_request."""
     data: dict = await response.json()
 
     if response.status != 200:
@@ -79,15 +80,15 @@ async def get_data_many(
 ) -> List[dict]:
     """Get data from Polygon endpoint and convert to list of schemas.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         The URL to get the data from.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
-    Returns:
-    --------
+    Returns
+    -------
     List[dict]
         Dictionary of data.
     """

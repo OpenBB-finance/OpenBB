@@ -46,7 +46,7 @@ def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
 
 
 async def complete_submission_callback(response, _):
-    """Callback function for processing the response object."""
+    """Use callback function for processing the response object."""
     if response.status == 200:
         return await response.text()
     raise RuntimeError(f"Request failed with status code {response.status}")
@@ -106,7 +106,7 @@ def get_period_ending(filing_str: str):
 
 
 async def parse_13f_hr(filing: str):
-    """Parses a 13F-HR filing from the Complete Submission TXT file string."""
+    """Parse a 13F-HR filing from the Complete Submission TXT file string."""
     data = DataFrame()
 
     # Check if the input string is a URL

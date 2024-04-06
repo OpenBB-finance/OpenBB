@@ -1,4 +1,4 @@
-"""Biztoc Helpers"""
+"""Biztoc Helpers."""
 
 from datetime import timedelta
 from typing import Dict, List, Literal
@@ -18,8 +18,7 @@ biztoc_session_sources = requests_cache.CachedSession(
 
 
 def get_sources(api_key: str) -> List[Dict]:
-    """Valid sources for Biztoc queries."""
-
+    """Get valid sources for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -34,8 +33,7 @@ def get_sources(api_key: str) -> List[Dict]:
 
 
 def get_pages(api_key: str) -> List[str]:
-    """Valid pages for Biztoc queries."""
-
+    """Get valid pages for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -50,8 +48,7 @@ def get_pages(api_key: str) -> List[str]:
 
 
 def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
-    """Valid tags required for Biztoc queries."""
-
+    """Get valid tags required for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -66,6 +63,7 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
 
 
 def get_all_tags(api_key) -> Dict[str, List[str]]:
+    """Get all tags for all pages."""
     tags: Dict[str, List[str]] = {}
 
     pages = get_pages(api_key)
@@ -85,8 +83,7 @@ def get_news(
     tag: str = "",
     term: str = "",
 ) -> List[Dict]:
-    """Calls the BizToc API and returns the data."""
-
+    """Call the BizToc API and returns the data."""
     results = []
     term = term.replace(" ", "%20") if term else ""
     _tags = get_all_tags(api_key)

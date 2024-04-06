@@ -145,7 +145,7 @@ class SecCompanyFilingsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extracts the data from the SEC endpoint."""
+        """Extract the data from the SEC endpoint."""
         filings = pd.DataFrame()
 
         if query.symbol and not query.cik:
@@ -236,5 +236,5 @@ class SecCompanyFilingsFetcher(
     def transform_data(
         query: SecCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[SecCompanyFilingsData]:
-        """Transforms the data."""
+        """Transform the data."""
         return [SecCompanyFilingsData.model_validate(d) for d in data]

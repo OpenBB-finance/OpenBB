@@ -31,6 +31,7 @@ class NasdaqCotSearchFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCotSearchQueryParams:
+        """Transform the query params."""
         return NasdaqCotSearchQueryParams(**params)
 
     @staticmethod
@@ -60,4 +61,5 @@ class NasdaqCotSearchFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[NasdaqCotSearchData]:
+        """Transform the data."""
         return [NasdaqCotSearchData.model_validate(d) for d in data]
