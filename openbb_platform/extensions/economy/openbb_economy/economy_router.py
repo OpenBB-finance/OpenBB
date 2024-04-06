@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_economy.gdp.gdp_router import router as gdp_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Economic data.")
 router.include_router(gdp_router)
 
 # pylint: disable=unused-argument
