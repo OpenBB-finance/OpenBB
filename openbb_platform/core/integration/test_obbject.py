@@ -89,3 +89,13 @@ def test_show(obb):
     stocks_data = obb.equity.price.historical("AAPL", provider="fmp", chart=True)
     assert isinstance(stocks_data.chart.fig, OpenBBFigure)
     assert stocks_data.chart.fig.show() is None
+
+
+@pytest.mark.integration
+def test_get_field_descriptions(obb):
+    """Test obbject get field descriptions."""
+
+    obb_data = obb.equity.profile("MSFT", provider="yfinance")
+    descriptions = obb_data.get_field_descriptions()
+    assert isinstance(descriptions, dict)
+    assert len(obb_data.to_df(index=None).columns) == len(descriptions)

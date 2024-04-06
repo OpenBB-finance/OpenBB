@@ -116,6 +116,37 @@ class OBBject(Tagged, Generic[T]):
         """Return the model name with the parameters."""
         return f"OBBject[{cls.results_type_repr(params)}]"
 
+    def get_field_descriptions(self) -> Dict[str, str]:
+        """
+        Get a dictionary of the returned field keys with their descriptions.
+
+        Fields automatically created by `alias_generator` will not have descriptions.
+        """
+        descriptions = {}
+        model = None
+        if isinstance(self.results, list):
+            model = self.results[0].model_json_schema(by_alias=False).get("properties", None)  # type: ignore
+            columns = self.to_df(index=None).columns.to_list()  # type: ignore
+            if columns[0] == 0:
+                columns = self.to_df(index=None).iloc[:, 0].to_list()
+        else:
+            model = self.results.model_json_schema(by_alias=False).get("properties", None)  # type: ignore
+            columns = list(self.results.model_dump(exclude_none=True).keys())  # type: ignore
+        if model is None:
+            raise OpenBBError(
+                "Could not extract model property definitions from OBBject."
+            )
+        for i in columns:
+            if i in model:
+                descriptions[i] = (
+                    str(model[i].get("description", None))
+                    .replace("  ", "")
+                    .replace("\n", " ")
+                    .strip()
+                )
+
+        return descriptions
+
     def to_df(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
