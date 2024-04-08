@@ -255,10 +255,8 @@ class HubService:
         settings = self._hub_user_settings or HubUserSettings()
         # Update the current credentials, ensures we don't lose v3 keys
         for k, v in current_credentials.items():
-            if k in self.V4TOV3:
-                settings.features_keys[self.V4TOV3[k]] = v
-            else:
-                settings.features_keys[k] = v
+            updated_key = self.V4TOV3.get(k, k)
+            settings.features_keys[updated_key] = v
         return settings
 
     @staticmethod
