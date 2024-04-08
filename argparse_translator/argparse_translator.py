@@ -79,12 +79,15 @@ class CustomArgumentGroup(BaseModel):
 
 class ReferenceToCustomArgumentsProcessor:
     def __init__(self, reference: Dict[str, Dict]):
+        """Initializes the ReferenceToCustomArgumentsProcessor."""
         self.reference = reference
         self.custom_groups: Dict[str, List[CustomArgumentGroup]] = {}
 
         self.build_custom_groups()
 
-    def _parse_type(self, type_: str) -> type:
+    @staticmethod
+    def _make_type_parsable(type_: str) -> type:
+        """Make the type parsable by removing the annotations."""
         if "Union" in type_ and "str" in type_:
             return str
         if "Union" in type_ and "int" in type_:
@@ -97,7 +100,11 @@ class ReferenceToCustomArgumentsProcessor:
                 type_ = type_.replace("Annotated[", "").replace("]", "")
             type_ = type_.split(",")[0]
 
-        type_ = eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
+        return eval(type_)  # noqa: S307, E501 pylint: disable=eval-used
+
+    def _parse_type(self, type_: str) -> type:
+        """Parse the type from the string representation."""
+        type_ = self._make_type_parsable(type_)
 
         if get_origin(type_) is Literal:
             type_ = type(get_args(type_)[0])
@@ -105,12 +112,14 @@ class ReferenceToCustomArgumentsProcessor:
         return type_
 
     def _get_nargs(self, type_: type) -> Union[int, str]:
+        """Get the nargs for the given type."""
         if get_origin(type_) is list:
             return "+"
         return None
 
-    def _get_choices(self, type_: type) -> Tuple:
-
+    def _get_choices(self, type_: str) -> Tuple:
+        """Get the choices for the given type."""
+        type_ = self._make_type_parsable(type_)
         type_origin = get_origin(type_)
 
         choices = ()
@@ -141,6 +150,7 @@ class ReferenceToCustomArgumentsProcessor:
         return choices
 
     def build_custom_groups(self):
+        """Build the custom groups from the reference."""
         for route, v in self.reference.items():
 
             for provider, args in v["parameters"].items():
@@ -164,7 +174,7 @@ class ReferenceToCustomArgumentsProcessor:
                             action="store" if type_ != bool else "store_true",
                             help=arg["description"],
                             nargs=self._get_nargs(type_),
-                            choices=self._get_choices(type_),
+                            choices=self._get_choices(arg["type"]),
                         )
                     )
 
