@@ -78,7 +78,7 @@ class ArgparseClassProcessor:
         if not reference:
             return {}
         rp = ReferenceToCustomArgumentsProcessor(reference)
-        return rp.custom_groups[route]
+        return rp.custom_groups.get(route, {})
 
     @classmethod
     def _process_class(
