@@ -1690,7 +1690,6 @@ class ReferenceGenerator:
             p = "/".join(path_parts[:i])
             while p != path:
                 if p not in routers:
-                    p = "/".join(path_parts[:i])
                     description = main_router.get_attr(p, "description")
                     if description is not None:
                         routers[p] = {"description": description}
