@@ -27167,15 +27167,35 @@
         }
     },
     "routers": {
-        "/crypto": "Cryptocurrency market data.",
-        "/currency": "Foreign exchange (FX) market data.",
-        "/derivatives": "Derivatives market data.",
-        "/economy": "Economic data.",
-        "/equity": "Equity market data.",
-        "/etf": "Exchange Traded Funds market data.",
-        "/fixedincome": "Fixed Income market data.",
-        "/index": "Indices data.",
-        "/news": "Financial market news data.",
-        "/regulators": "Financial market regulators data."
+        "/crypto": {
+            "description": "Cryptocurrency market data."
+        },
+        "/currency": {
+            "description": "Foreign exchange (FX) market data."
+        },
+        "/derivatives": {
+            "description": "Derivatives market data."
+        },
+        "/economy": {
+            "description": "Economic data."
+        },
+        "/equity": {
+            "description": "Equity market data."
+        },
+        "/etf": {
+            "description": "Exchange Traded Funds market data."
+        },
+        "/fixedincome": {
+            "description": "Fixed Income market data."
+        },
+        "/index": {
+            "description": "Indices data."
+        },
+        "/news": {
+            "description": "Financial market news data."
+        },
+        "/regulators": {
+            "description": "Financial market regulators data."
+        }
     }
 }
