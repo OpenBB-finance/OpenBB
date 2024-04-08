@@ -213,6 +213,7 @@ class HubService:
 
     def hub2platform(self, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
+        # Mapping of V3 keys to V4 keys for backward compatibility
         V3TOV4 = {
             "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
             "API_BIZTOC_TOKEN": "biztoc_api_key",
