@@ -68,7 +68,7 @@ class IntrinioLatestAttributesFetcher(
                 "error" in response_data or "message" in response_data
             ):
                 warnings.warn(
-                    message=response_data.get("error") or response_data.get("message"),
+                    message=str(response_data.get("error")) or str(response_data.get("message")),
                     category=OpenBBWarning,
                 )
                 return {}

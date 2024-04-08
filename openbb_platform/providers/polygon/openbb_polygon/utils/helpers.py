@@ -2,7 +2,7 @@
 
 import json
 from io import StringIO
-from typing import Any, List, Optional, Tuple, TypeVar, Union
+from typing import Any, Dict, List, Optional, Tuple, TypeVar, Union
 
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
@@ -56,7 +56,7 @@ async def response_callback(
     response: ClientResponse, _: ClientSession
 ) -> Union[dict, List[dict]]:
     """Use callback for make_request."""
-    data: dict = await response.json()
+    data: Dict = await response.json()  # type: ignore
 
     if response.status != 200:
         message = data.get("error", None) or data.get("message", None)

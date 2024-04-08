@@ -1,6 +1,6 @@
 """Utility functions for parsing SEC Form 13F-HR."""
 
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 import xmltodict
 from bs4 import BeautifulSoup
@@ -22,7 +22,7 @@ def date_to_quarter_end(date: str) -> str:
 def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
     """Get the 13F-HR filings for a given symbol or CIK."""
     fetcher = SecCompanyFilingsFetcher()
-    params = {}
+    params: Dict[str, Any] = {}
     if cik is not None:
         params["cik"] = str(cik)
     if symbol is not None:
