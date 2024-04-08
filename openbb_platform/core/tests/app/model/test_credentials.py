@@ -1,8 +1,11 @@
+"""Test the Credentials model."""
+
 import typing
 from unittest.mock import patch
 
 
 def test_credentials():
+    """Test the Credentials model."""
     with patch(
         target="openbb_core.app.model.credentials.ProviderInterface"
     ) as mock_provider_interface:
@@ -10,7 +13,9 @@ def test_credentials():
             "benzinga_api_key": (typing.Optional[str], None),
             "polygon_api_key": (typing.Optional[str], None),
         }
-        from openbb_core.app.model.credentials import Credentials
+        from openbb_core.app.model.credentials import (  # pylint: disable=import-outside-toplevel
+            Credentials,
+        )
 
         creds = Credentials(
             benzinga_api_key="mock_benzinga_api_key",

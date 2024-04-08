@@ -27,6 +27,7 @@ from typing_extensions import Annotated
 
 @pytest.fixture(scope="module")
 def tmp_openbb_dir(tmp_path_factory):
+    """Return a temporary openbb directory."""
     return tmp_path_factory.mktemp("openbb")
 
 
@@ -564,7 +565,7 @@ def test_generate(docstring_generator):
     """Test generate docstring."""
 
     def some_func():
-        """Some func docstring."""
+        """Define Some func docstring."""
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -655,6 +656,7 @@ def test_package_diff(
     """Test package differences."""
 
     def mock_entry_points(group):
+        """Mock entry points."""
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."
