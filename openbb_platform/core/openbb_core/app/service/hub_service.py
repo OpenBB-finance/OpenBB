@@ -1,6 +1,7 @@
 """Hub manager class."""
 
 from typing import Optional
+from warnings import warn
 
 from fastapi import HTTPException
 from jose import JWTError
@@ -224,6 +225,19 @@ class HubService:
             "API_KEY_QUANDL": "nasdaq_api_key",
             "API_ULTIMA_KEY": "ultima_api_key",
         }
+
+        if any(k in settings.features_keys for k in V3TOV4):
+            deprecated_keys = {
+                k: v for k, v in V3TOV4.items() if k in settings.features_keys
+            }
+            msg = ""
+            for k, v in deprecated_keys.items():
+                msg += f"\n'{k}' -> '{v}', "
+            msg = msg.strip(", ")
+            warn(
+                message=f"\nDeprecated v3 credentials found.\n{msg}"
+                "\n\nYou can remove them at https://my.openbb.co/app/platform/credentials.",
+            )
         # We give priority to V4 keys over V3 keys if both are present
         hub_credentials = {
             V3TOV4.get(k, k): settings.features_keys.get(V3TOV4.get(k, k), v)
