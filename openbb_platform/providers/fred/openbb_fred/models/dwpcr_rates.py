@@ -22,9 +22,9 @@ DWPCR_PARAMETER_TO_FRED_ID = {
 class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateParams):
     """FRED Discount Window Primary Credit Rate Query."""
 
-    parameter: Literal[
-        "daily_excl_weekend", "monthly", "weekly", "daily", "annual"
-    ] = Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
+    parameter: Literal["daily_excl_weekend", "monthly", "weekly", "daily", "annual"] = (
+        Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
+    )
 
 
 class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateData):
@@ -78,9 +78,10 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any
     ) -> List[FREDDiscountWindowPrimaryCreditRateData]:
-        """Transform data"""
+        """Transform data."""
         return [FREDDiscountWindowPrimaryCreditRateData.model_validate(d) for d in data]

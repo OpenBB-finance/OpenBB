@@ -12,7 +12,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Installation | OpenBB Add-in for Excel Docs" />
 
 ## Requirements
-- The OpenBB Excel Add-in is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.
+- The OpenBB Add-in for Excel is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.
 - Access to the OpenBB Terminal Pro. If you don't have access you can sign up for the waitlist [here](https://my.openbb.co/app/pro).
 
 ## Installation
@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
     />
 </div>
 
-The OpenBB Excel Add-in is available on the [Microsoft AppSource](https://appsource.microsoft.com/pt-pt/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
+The OpenBB Add-in for Excel is available on the [Microsoft AppSource](https://appsource.microsoft.com/pt-pt/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
 
 ### Individual user
 

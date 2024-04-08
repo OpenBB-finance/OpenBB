@@ -1,12 +1,14 @@
 import sys
 from dataclasses import dataclass
-from typing import Optional
+from typing import Dict, Optional
+
+from typing_extensions import LiteralString
 
 # `slots` is available on Python >= 3.10
 if sys.version_info >= (3, 10):
     slots_true = {"slots": True}
 else:
-    slots_true = {}
+    slots_true: Dict[str, bool] = {}
 
 
 class BaseMetadata:
@@ -24,3 +26,10 @@ class OpenBBCustomParameter(BaseMetadata):
     """Custom parameter for OpenBB."""
 
     description: Optional[str] = None
+
+
+@dataclass(frozen=True, **slots_true)
+class OpenBBCustomChoices(BaseMetadata):
+    """Custom choices for OpenBB."""
+
+    choices: Optional[LiteralString] = None

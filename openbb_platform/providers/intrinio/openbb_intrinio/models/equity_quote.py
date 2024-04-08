@@ -1,5 +1,7 @@
 """Intrinio Equity Quote Model."""
+
 # pylint: disable=unused-argument
+import re
 import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -24,6 +26,8 @@ class IntrinioEquityQuoteQueryParams(EquityQuoteQueryParams):
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_realtime_price_v2
     """
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
@@ -73,12 +77,11 @@ class IntrinioEquityQuoteData(EquityQuoteData):
     @classmethod
     def validate_sales_conditions(cls, v):
         """Validate sales conditions and remove empty strings."""
-        if v == "\u0017   ":
-            return None
-        if v == "" or v is None:
-            return None
-        v = v.strip()
-        return v
+        if v:
+            control_char_re = re.compile(r"[\x00-\x1f\x7f-\x9f]")
+            v = control_char_re.sub("", v).strip()
+            v = None if v == "" else v
+        return v if v else None
 
     @field_validator("exchange", "market_center", mode="before", check_fields=False)
     @classmethod

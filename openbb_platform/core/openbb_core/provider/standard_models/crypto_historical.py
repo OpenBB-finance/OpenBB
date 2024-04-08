@@ -1,6 +1,5 @@
 """Crypto Historical Price Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,
@@ -37,7 +36,7 @@ class CryptoHistoricalQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def validate_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase and remove '-'."""
+        """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
         return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
@@ -46,7 +45,9 @@ class CryptoHistoricalQueryParams(QueryParams):
 class CryptoHistoricalData(Data):
     """Crypto Historical Price Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
@@ -60,4 +61,6 @@ class CryptoHistoricalData(Data):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        return parser.isoparse(str(v))
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

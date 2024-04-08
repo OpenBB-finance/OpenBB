@@ -1,14 +1,27 @@
 """Provider helpers."""
+
 import asyncio
 import re
+from datetime import date, datetime
+from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
+from typing import (
+    Awaitable,
+    Callable,
+    List,
+    Literal,
+    Optional,
+    TypeVar,
+    Union,
+    cast,
+)
 
 import requests
 from anyio import start_blocking_portal
 from typing_extensions import ParamSpec
 
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
@@ -17,6 +30,34 @@ from openbb_core.provider.utils.client import (
 
 T = TypeVar("T")
 P = ParamSpec("P")
+D = TypeVar("D", bound="Data")
+
+
+def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
+    """Check if an item is in a list of allowed items and raise an error if not.
+
+    Parameters
+    ----------
+    item : str
+        The item to check.
+    allowed : List[str]
+        The list of allowed items.
+    threshold : float, optional
+        The similarity threshold for the error message, by default 0.75
+
+    Raises
+    ------
+    ValueError
+        If the item is not in the allowed list.
+    """
+    if item not in allowed:
+        similarities = map(
+            lambda c: (c, SequenceMatcher(None, item, c).ratio()), allowed
+        )
+        similar, score = max(similarities, key=lambda x: x[1])
+        if score > threshold:
+            raise ValueError(f"'{item}' is not available. Did you mean '{similar}'?")
+        raise ValueError(f"'{item}' is not available.")
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
@@ -62,8 +103,8 @@ async def amake_request(
     ] = None,
     **kwargs,
 ) -> Union[dict, List[dict]]:
-    """Abstract helper to make requests from a url with potential headers and params.
-
+    """
+    Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
     ----------
@@ -146,13 +187,13 @@ async def amake_requests(
             is_exception = isinstance(result, Exception)
 
             if is_exception and kwargs.get("raise_for_status", False):
-                raise result
+                raise result  # type: ignore[misc]
 
             if is_exception or not result:
                 continue
 
-            results.extend(  # type: ignore
-                result if isinstance(result, list) else [result]
+            results.extend(
+                result if isinstance(result, list) else [result]  # type: ignore[list-item]
             )
 
         return results
@@ -231,7 +272,6 @@ async def maybe_coroutine(
     func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -242,7 +282,6 @@ def run_async(
     func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Run a coroutine function in a blocking context."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -251,3 +290,26 @@ def run_async(
             return portal.call(partial(func, *args, **kwargs))
         finally:
             portal.call(portal.stop)
+
+
+def filter_by_dates(
+    data: List[D], start_date: Optional[date] = None, end_date: Optional[date] = None
+) -> List[D]:
+    """Filter data by dates."""
+    if start_date is None and end_date is None:
+        return data
+
+    def _filter(d: Data) -> bool:
+        _date = getattr(d, "date", None)
+        dt = _date.date() if _date and isinstance(_date, datetime) else _date
+        if dt:
+            if start_date and end_date:
+                return start_date <= dt <= end_date
+            if start_date:
+                return dt >= start_date
+            if end_date:
+                return dt <= end_date
+            return True
+        return False
+
+    return list(filter(_filter, data))

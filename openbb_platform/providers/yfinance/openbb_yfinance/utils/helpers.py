@@ -1,4 +1,5 @@
 """Yahoo Finance helpers module."""
+
 # pylint: disable=unused-argument
 from datetime import (
     date as dateType,
@@ -11,7 +12,7 @@ import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.references import MONTHS
+from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
 
 
 def get_futures_data() -> pd.DataFrame:
@@ -83,8 +84,8 @@ def yf_download(
     symbol: str,
     start_date: Optional[Union[str, dateType]] = None,
     end_date: Optional[Union[str, dateType]] = None,
-    interval: str = "1d",
-    period: str = "max",
+    interval: INTERVALS = "1d",
+    period: PERIODS = "max",
     prepost: bool = False,
     actions: bool = False,
     progress: bool = False,
@@ -92,7 +93,7 @@ def yf_download(
     keepna: bool = False,
     repair: bool = False,
     rounding: bool = False,
-    group_by: Literal["symbol", "column"] = "symbol",
+    group_by: Literal["ticker", "column"] = "ticker",
     adjusted: bool = False,
     **kwargs: Any,
 ) -> pd.DataFrame:
@@ -142,29 +143,32 @@ def yf_download(
         _data = pd.DataFrame()
         for ticker in tickers:
             temp = data[ticker].copy().dropna(how="all")
-            for i in temp.index:
-                temp.loc[i, "symbol"] = ticker
-            temp = temp.reset_index().rename(
-                columns={"Date": "date", "Datetime": "date"}
-            )
-            _data = pd.concat([_data, temp])
-        index_keys = ["date", "symbol"] if "symbol" in _data.columns else ["date"]
-        _data = _data.set_index(index_keys).sort_index()
-        data = _data
+            if len(temp) > 0:
+                temp.loc[:, "symbol"] = ticker
+                temp = temp.reset_index().rename(
+                    columns={"Date": "date", "Datetime": "date", "index": "date"}
+                )
+                _data = pd.concat([_data, temp])
+        if not _data.empty:
+            index_keys = ["date", "symbol"] if "symbol" in _data.columns else "date"
+            _data = _data.set_index(index_keys).sort_index()
+            data = _data
     if not data.empty:
         data = data.reset_index()
         data = data.rename(columns={"Date": "date", "Datetime": "date"})
-        data["date"] = pd.to_datetime(data["date"])
+        data["date"] = data["date"].apply(pd.to_datetime)
         data = data[data["Open"] > 0]
 
         if start_date is not None:
             data = data[data["date"] >= pd.to_datetime(start_date)]
-            if end_date is not None and pd.to_datetime(end_date) > pd.to_datetime(
-                start_date
-            ):
-                data = data[
-                    data["date"] <= (pd.to_datetime(end_date) + relativedelta(days=1))
-                ]
+        if (
+            end_date is not None
+            and start_date is not None
+            and pd.to_datetime(end_date) > pd.to_datetime(start_date)
+        ):
+            data = data[
+                data["date"] <= (pd.to_datetime(end_date) + relativedelta(days=1))
+            ]
 
         if period not in [
             "max",
@@ -187,5 +191,22 @@ def yf_download(
             data = data.drop(columns=["Adj Close"])
 
         data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()
+
+    return data
+
+
+def df_transform_numbers(data: pd.DataFrame, columns: list) -> pd.DataFrame:
+    """Replace abbreviations of numbers with actual numbers."""
+    multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
+
+    def replace_suffix(x, suffix, multiplier):
+        return float(str(x).replace(suffix, "")) * multiplier if suffix in str(x) else x
+
+    for col in columns:
+        if col == "% Change":
+            data[col] = data[col].astype(str).str.replace("%", "").astype(float)
+        else:
+            for suffix, multiplier in multipliers.items():
+                data[col] = data[col].apply(replace_suffix, args=(suffix, multiplier))
 
     return data

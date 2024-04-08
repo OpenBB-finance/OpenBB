@@ -1,4 +1,5 @@
 """Polygon Income Statement Model."""
+
 # pylint: disable=unused-argument
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
@@ -218,11 +219,11 @@ class PolygonIncomeStatementData(IncomeStatementData):
         default=None,
         description="Participating Securities Distributed And Undistributed Earnings Loss Basic",
     )
-    undistributed_earnings_allocated_to_participating_securities: Optional[
-        float
-    ] = Field(
-        default=None,
-        description="Undistributed Earnings Allocated To Participating Securities",
+    undistributed_earnings_allocated_to_participating_securities: Optional[float] = (
+        Field(
+            default=None,
+            description="Undistributed Earnings Allocated To Participating Securities",
+        )
     )
     common_stock_dividends: Optional[float] = Field(
         default=None, description="Common Stock Dividends"
@@ -247,7 +248,11 @@ class PolygonIncomeStatementData(IncomeStatementData):
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Check for zero values and replace with None."""
-        return {k: None if v == 0 else v for k, v in values.items()}
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class PolygonIncomeStatementFetcher(

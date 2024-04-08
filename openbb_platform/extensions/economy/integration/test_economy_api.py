@@ -63,7 +63,7 @@ def test_economy_calendar(params, headers):
     [
         (
             {
-                "countries": "spain",
+                "country": "spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
@@ -74,7 +74,7 @@ def test_economy_calendar(params, headers):
         ),
         (
             {
-                "countries": ["portugal", "spain"],
+                "country": "portugal,spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
@@ -266,6 +266,7 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": "Monthly",
                 "tag_names": "nsa",
                 "exclude_tag_names": None,
+                "series_id": None,
                 "provider": "fred",
             }
         ),
@@ -280,6 +281,7 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": None,
                 "tag_names": None,
                 "exclude_tag_names": None,
+                "series_id": None,
                 "provider": "fred",
             }
         ),
@@ -294,6 +296,22 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": None,
                 "tag_names": None,
                 "exclude_tag_names": None,
+                "series_id": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "query": None,
+                "is_release": False,
+                "release_id": None,
+                "offset": None,
+                "limit": None,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
+                "exclude_tag_names": None,
+                "series_id": "NYICLAIMS",
                 "provider": "fred",
             }
         ),
@@ -369,6 +387,160 @@ def test_economy_money_measures(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/money_measures?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
+        (
+            {
+                "country": "united_states",
+                "sex": "total",
+                "frequency": "monthly",
+                "age": "total",
+                "seasonal_adjustment": True,
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_unemployment(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/unemployment?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_composite_leading_indicator(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/composite_leading_indicator?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
+        (
+            {
+                "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_short_term_interest_rate(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/short_term_interest_rate?{query_str}"
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
+        (
+            {
+                "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_long_term_interest_rate(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/long_term_interest_rate?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    argnames="params",
+    argvalues=[
+        (
+            {
+                "symbol": "156241",
+                "is_series_group": True,
+                "start_date": "2000-01-01",
+                "end_date": None,
+                "frequency": "w",
+                "units": "Number",
+                "region_type": "state",
+                "season": "NSA",
+                "aggregation_method": "eop",
+                "transform": "ch1",
+                "provider": "fred",
+                "limit": None,
+            }
+        ),
+        (
+            {
+                "symbol": "CAICLAIMS",
+                "is_series_group": False,
+                "start_date": "1990-01-01",
+                "end_date": "2010-01-01",
+                "frequency": None,
+                "units": None,
+                "region_type": None,
+                "season": None,
+                "aggregation_method": None,
+                "transform": None,
+                "provider": "fred",
+                "limit": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_regional(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_regional?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

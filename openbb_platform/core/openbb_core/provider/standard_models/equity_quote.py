@@ -1,7 +1,7 @@
 """Equity Quote Standard Model."""
 
 from datetime import datetime
-from typing import List, Optional, Set, Union
+from typing import List, Optional, Union
 
 from pydantic import Field, field_validator
 
@@ -16,18 +16,13 @@ from openbb_core.provider.utils.descriptions import (
 class EquityQuoteQueryParams(QueryParams):
     """Equity Quote Query."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " This endpoint will accept multiple symbols separated by commas."
-    )
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EquityQuoteData(Data):

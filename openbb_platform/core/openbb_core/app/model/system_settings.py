@@ -1,4 +1,5 @@
 """The OpenBB Platform System Settings."""
+
 import json
 import platform as pl  # I do this so that the import doesn't conflict with the variable name
 from pathlib import Path
@@ -14,7 +15,7 @@ from openbb_core.app.constants import (
 )
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.fast_api_settings import FastAPISettings
-from openbb_core.app.version import VERSION
+from openbb_core.app.version import CORE_VERSION, VERSION
 
 
 class SystemSettings(Tagged):
@@ -27,6 +28,7 @@ class SystemSettings(Tagged):
 
     # OpenBB section
     version: str = VERSION
+    core: str = CORE_VERSION
     home_directory: str = str(HOME_DIRECTORY)
     openbb_directory: str = str(OPENBB_DIRECTORY)
     user_settings_path: str = str(USER_SETTINGS_PATH)
@@ -47,6 +49,7 @@ class SystemSettings(Tagged):
     api_settings: FastAPISettings = Field(default_factory=FastAPISettings)
 
     # Others
+    debug_mode: bool = False
     test_mode: bool = False
     headless: bool = False
 
@@ -86,7 +89,7 @@ class SystemSettings(Tagged):
     def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
         """If the user has enabled log collection, then we need to add the Posthog."""
         if (
-            not any([values.test_mode, values.logging_suppress])
+            not any([values.test_mode, values.debug_mode, values.logging_suppress])
             and values.log_collect
             and "posthog" not in values.logging_handlers
         ):

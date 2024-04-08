@@ -1,9 +1,11 @@
 """Yahoo Finance Crypto Historical Price Model."""
+
+# pylint: disable=unused-argument
 # ruff: noqa: SIM105
 
 
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,9 +16,8 @@ from openbb_core.provider.standard_models.crypto_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import yf_download
-from openbb_yfinance.utils.references import INTERVALS, PERIODS
-from pandas import to_datetime
-from pydantic import Field, field_validator
+from openbb_yfinance.utils.references import INTERVALS_DICT
+from pydantic import Field
 
 
 class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
@@ -25,22 +26,30 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
-    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
-    period: Optional[PERIODS] = Field(
-        default="max", description=QUERY_DESCRIPTIONS.get("period", "")
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+    interval: Literal[
+        "1m",
+        "2m",
+        "5m",
+        "15m",
+        "30m",
+        "60m",
+        "90m",
+        "1h",
+        "1d",
+        "5d",
+        "1W",
+        "1M",
+        "1Q",
+    ] = Field(
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
 
 
 class YFinanceCryptoHistoricalData(CryptoHistoricalData):
     """Yahoo Finance Crypto Historical Price Data."""
-
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):
-        """Return datetime object from string."""
-        if isinstance(v, str):
-            return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S")
-        return v
 
 
 class YFinanceCryptoHistoricalFetcher(
@@ -67,7 +76,7 @@ class YFinanceCryptoHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceCryptoHistoricalQueryParams,  # pylint: disable=unused-argument
+        query: YFinanceCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -86,34 +95,16 @@ class YFinanceCryptoHistoricalFetcher(
 
         data = yf_download(
             symbols,
-            start=query.start_date,
-            end=query.end_date,
-            interval=query.interval,
-            period=query.period,
+            start_date=query.start_date,
+            end_date=query.end_date,
+            interval=INTERVALS_DICT.get(query.interval, "1d"),  # type: ignore
             auto_adjust=False,
             actions=False,
+            prepost=True,
         )
 
         if data.empty:
             raise EmptyDataError()
-
-        days = (
-            1
-            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
-            else 0
-        )
-        if query.start_date:
-            if "date" in data.columns:
-                data.set_index("date", inplace=True)
-                data.index = to_datetime(data.index)
-
-            data = data[
-                (data.index >= to_datetime(query.start_date))
-                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
-            ]
-
-        data.reset_index(inplace=True)
-        data.rename(columns={"index": "date"}, inplace=True)
 
         return data.to_dict("records")
 

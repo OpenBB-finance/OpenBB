@@ -21,7 +21,11 @@ def headers():
 
 @parametrize(
     "params",
-    [({"index": "dowjones", "provider": "fmp"})],
+    [
+        ({"symbol": "dowjones", "provider": "fmp"}),
+        ({"symbol": "^TX60", "provider": "tmx", "use_cache": False}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
+    ],
 )
 @pytest.mark.integration
 def test_index_constituents(params, headers):
@@ -39,73 +43,37 @@ def test_index_constituents(params, headers):
     [
         (
             {
-                "symbol": "^DJI",
+                "interval": "1d",
+                "provider": "cboe",
+                "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "interval": "1d",
                 "provider": "fmp",
-                "sort": "desc",
+                "symbol": "^DJI",
+                "start_date": "2024-01-01",
+                "end_date": "2024-02-05",
+            }
+        ),
+        (
+            {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "^DJI,^NDX",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "interval": "1m",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1min",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-            }
-        ),
-        (
-            {
-                "interval": "1day",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-            }
-        ),
-        (
-            {
-                "timespan": "minute",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
-                "provider": "polygon",
-                "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "timespan": "day",
-                "sort": "desc",
-                "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
@@ -115,9 +83,17 @@ def test_index_constituents(params, headers):
         (
             {
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
+                "sort": "desc",
+                "limit": 49999,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
                 "provider": "yfinance",
                 "symbol": "DJI",
                 "start_date": "2023-01-01",
@@ -126,129 +102,12 @@ def test_index_constituents(params, headers):
         ),
         (
             {
+                "interval": "1d",
                 "provider": "intrinio",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "symbol": "$DJI",
-                "tag": "level",
-                "sort": "desc",
-                "limit": 100,
-                "type": None,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_market(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/market?{query_str}"
-    result = requests.get(url, headers=headers, timeout=20)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "fmp",
-                "sort": "desc",
-            }
-        ),
-        (
-            {
-                "interval": "1m",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1min",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-            }
-        ),
-        (
-            {
-                "interval": "1day",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-            }
-        ),
-        (
-            {
-                "timespan": "minute",
-                "sort": "desc",
-                "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
-                "provider": "polygon",
-                "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "timespan": "day",
-                "sort": "desc",
-                "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
-                "provider": "polygon",
-                "symbol": "NDX",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
-                "provider": "yfinance",
                 "symbol": "DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "provider": "intrinio",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "symbol": "$DJI",
-                "tag": "level",
-                "sort": "desc",
                 "limit": 100,
-                "type": None,
             }
         ),
     ],
@@ -269,17 +128,30 @@ def test_index_price_historical(params, headers):
     [
         (
             {
-                "symbol": "BUKBUS",
+                "interval": "1d",
+                "provider": "cboe",
+                "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "provider": "cboe",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": "2024-01-01",
+                "end_date": "2024-02-05",
             }
         ),
         (
             {
                 "interval": "1m",
-                "provider": "cboe",
-                "symbol": "BUKBUS",
+                "sort": "desc",
+                "limit": 49999,
+                "provider": "polygon",
+                "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
             }
@@ -287,36 +159,43 @@ def test_index_price_historical(params, headers):
         (
             {
                 "interval": "1d",
-                "provider": "cboe",
-                "symbol": "BUKBUS",
+                "sort": "desc",
+                "limit": 49999,
+                "provider": "polygon",
+                "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "provider": "yfinance",
+                "symbol": "DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "DJI",
+                "limit": 100,
             }
         ),
     ],
 )
 @pytest.mark.integration
-def test_index_european(params, headers):
+@pytest.mark.skip(reason="Deprecating this endpoint")
+def test_index_market(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [({"symbol": "BUKBUS", "provider": "cboe"})],
-)
-@pytest.mark.integration
-def test_index_european_constituents(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european_constituents?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    url = f"http://0.0.0.0:8000/api/v1/index/market?{query_str}"
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -324,9 +203,10 @@ def test_index_european_constituents(params, headers):
 @parametrize(
     "params",
     [
-        ({"europe": True, "provider": "cboe"}),
+        ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
+        ({"provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -343,8 +223,7 @@ def test_index_available(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "D", "is_symbol": True, "provider": "cboe"}),
-        ({"europe": True, "provider": "cboe", "query": "A", "is_symbol": False}),
+        ({"query": "D", "is_symbol": True, "provider": "cboe", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -360,7 +239,10 @@ def test_index_search(params, headers):
 
 @parametrize(
     "params",
-    [({"provider": "cboe", "region": "US"})],
+    [
+        ({"provider": "cboe", "region": "us"}),
+        ({"provider": "tmx", "region": "ca", "use_cache": False}),
+    ],
 )
 @pytest.mark.integration
 def test_index_snapshots(params, headers):
@@ -378,7 +260,7 @@ def test_index_snapshots(params, headers):
     [
         (
             {
-                "series_name": "PE Ratio by Month",
+                "series_name": "pe_month",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "collapse": "monthly",
@@ -395,5 +277,22 @@ def test_index_sp500_multiples(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/index/sp500_multiples?{query_str}"
     result = requests.get(url, headers=headers, timeout=20)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "tmx", "symbol": "^TX60", "use_cache": False}),
+    ],
+)
+@pytest.mark.integration
+def test_index_sectors(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/index/sectors?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -68,7 +68,7 @@ We will be adding a function to get price targets from the Financial Modeling Pr
 ### Select Feature
 
 - Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](https://openbb.co/discord).
   - This ensures someone from the team can help you and there isn't duplicated work.
 
 Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep API, and the data will look like this:
@@ -1370,7 +1370,6 @@ The convention is as follows:
     "news": [
       "Feedparser",
       "NewsApi",
-      "Ultima"
     ],
             ...
 ```
@@ -1381,7 +1380,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 - `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
 - `stocks/load` relies on `YahooFinance`, `AlphaVantage`, `Polygon` or `EODHD`.
   - **The order is important as the first data source is the one utilized by default.**
-- `stoks/options/unu` relies on `FDScanner`.
+- `stocks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
 > Note: The default data sources can be changed directly in the [OpenBB Hub](https://my.openbb.co/) by the user and automatically synchronized with the terminal on login.
@@ -1497,7 +1496,6 @@ class ForexController(BaseController):
     CHOICES_MENUS = [
         "forecast",
         "qa",
-        "oanda",
         "ta",
     ]
     RESOLUTION = ["i", "d", "w", "m"]
@@ -1704,8 +1702,19 @@ The accepted branch naming conventions are:
 - `feature/feature-name`
 - `hotfix/hotfix-name`
 - `release/2.1.0` or `release/2.1.0rc0`.
+- `bugfix/bugfix-name`
+- `docs/docs-name`
 
-All `feature/feature-name` related branches can only have PRs pointing to `develop` branch. `hotfix/hotfix-name` and `release/2.1.0` or `release/2.1.0rc0` branches can only have PRs pointing to `main` branch.
+All `feature/feature-name` and `bugfix/bugfix-name` related branches can only have PRs pointing to `develop` branch. `release/*` branches can only have PRs pointing to `main` branch, while `hotfix/hotfix-name` should first be merged to `main` and then into `develop` to sync the hotfix changes.
+
+When `develop` branch is merged to `main`, a GitHub action will run scripts that generate documentation content (reference sections, data models, etc.) and trigger the website deployment. Those scripts can be found in the following path `website/generate_*.py`.
+
+The `develop` branch is only merged to `main` right before a new release, but sometimes you might need to update the website in-between releases. To do this follow these steps:
+
+1. create `docs/[my-update]` branch from `main`
+2. commit your changes to `docs/[my-update]`
+3. merge `docs/[my-update]` into `main` -> website deployment triggered
+4. merge `docs/[my-update]` into `develop` -> NO website deployment, just to sync branches
 
 ## Installers
 

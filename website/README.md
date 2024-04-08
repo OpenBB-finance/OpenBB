@@ -131,7 +131,7 @@ pytest tests/website --autodoc
 
 ### iFrame
 
-We are detecting whether the website is loaded inside an iframe. If it is, we are hiding the header and footer. This is done to have a better integration with out [hub website](https://my.openbb.co).
+We are detecting whether the website is loaded inside an iframe. If it is, we are hiding the header and footer. This is done to have a better integration with our [hub website](https://my.openbb.co).
 
 ## Contributing
 

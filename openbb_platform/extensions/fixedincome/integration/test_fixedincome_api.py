@@ -155,7 +155,6 @@ def test_fixedincome_rate_ameribor(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "parameter": "weekly",
@@ -342,10 +341,26 @@ def test_fixedincome_corporate_commercial_paper(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "maturity": [10.0],
-                "category": ["spot_rate"],
+                "category": "spot_rate",
                 "provider": "fred",
             }
-        )
+        ),
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "maturity": 5.5,
+                "category": ["spot_rate"],
+            }
+        ),
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "maturity": "1,5.5,10",
+                "category": "spot_rate,par_yield",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -379,11 +394,11 @@ def test_fixedincome_corporate_hqm(params, headers):
     [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc(params, headers):
+def test_fixedincome_spreads_tcm(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tmc?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tcm?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -403,11 +418,11 @@ def test_fixedincome_spreads_tmc(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc_effr(params, headers):
+def test_fixedincome_spreads_tcm_effr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tmc_effr?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tcm_effr?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -440,10 +455,9 @@ def test_fixedincome_spreads_treasury_effr(params, headers):
 @parametrize(
     "params",
     [
-        ({"date": "2023-01-01", "yield_curve_type": "spot_rate"}),
         (
             {
-                "rating": "A",
+                "rating": "aaa",
                 "provider": "ecb",
                 "date": "2023-01-01",
                 "yield_curve_type": "spot_rate",
@@ -515,10 +529,23 @@ def test_fixedincome_government_treasury_auctions(params, headers):
         ),
         (
             {
-                "date": "2023-11-16",
+                "date": "2023-12-28",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "date": None,
+                "provider": "tmx",
+                "govt_type": "federal",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "use_cache": True,
             }
         ),
     ],
@@ -531,6 +558,42 @@ def test_fixedincome_government_treasury_prices(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/fixedincome/government/treasury_prices?{query_str}"
     )
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "tmx",
+                "issuer_name": "federal",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "coupon_min": 3,
+                "coupon_max": None,
+                "currency": None,
+                "issued_amount_min": None,
+                "issued_amount_max": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "isin": None,
+                "lei": None,
+                "country": None,
+                "use_cache": False,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_corporate_bond_prices(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/corporate/bond_prices?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

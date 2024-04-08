@@ -1,11 +1,10 @@
 """Nasdaq Economic Calendar Model."""
 
-
 import html
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from itertools import repeat
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional
 
 import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,7 +12,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_nasdaq.utils.helpers import HEADERS, date_range, remove_html_tags
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range, remove_html_tags
 from pydantic import Field, field_validator
 
 
@@ -23,18 +22,18 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     Source: https://www.nasdaq.com/market-activity/economic-calendar
     """
 
-    country: Optional[Union[str, List[str]]] = Field(
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
+    country: Optional[str] = Field(
         default=None,
         description="Country of the event",
     )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
-    def validate_country(cls, v: Union[str, List[str], Set[str]]):
-        """Validate the country input."""
-        if isinstance(v, str):
-            return v.lower().replace(" ", "_")
-        return ",".join([country.lower().replace(" ", "_") for country in list(v)])
+    def validate_country(cls, c: str):  # pylint: disable=E0213
+        """Validate country."""
+        return ",".join([v.lower() for v in c.replace(" ", "_").split(",")])
 
 
 class NasdaqEconomicCalendarData(EconomicCalendarData):
@@ -92,6 +91,7 @@ class NasdaqEconomicCalendarFetcher(
 
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: NasdaqEconomicCalendarQueryParams,
@@ -107,18 +107,20 @@ class NasdaqEconomicCalendarFetcher(
 
         def get_calendar_data(date: str, data: List[Dict]) -> None:
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r = requests.get(url, headers=HEADERS, timeout=5)
+            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
             r_json = r.json()
             if "data" in r_json and "rows" in r_json["data"]:
                 response = r_json["data"]["rows"]
             response = [
                 {
                     **{k: v for k, v in item.items() if k != "gmt"},
-                    "date": f"{date} 00:00"
-                    if item.get("gmt") == "All Day"
-                    else f"{date} {item.get('gmt', '')}".replace(
-                        "Tentative", "00:00"
-                    ).replace("24H", "00:00"),
+                    "date": (
+                        f"{date} 00:00"
+                        if item.get("gmt") == "All Day"
+                        else f"{date} {item.get('gmt', '')}".replace(
+                            "Tentative", "00:00"
+                        ).replace("24H", "00:00")
+                    ),
                 }
                 for item in response
             ]
@@ -141,11 +143,12 @@ class NasdaqEconomicCalendarFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: NasdaqEconomicCalendarQueryParams,  # pylint: disable=unused-argument
+        query: NasdaqEconomicCalendarQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[NasdaqEconomicCalendarData]:
         """Return the transformed data."""
         return [NasdaqEconomicCalendarData.model_validate(d) for d in data]

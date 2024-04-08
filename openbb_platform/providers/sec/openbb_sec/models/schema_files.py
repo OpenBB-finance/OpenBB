@@ -1,6 +1,5 @@
 """SEC Schema Files List Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.data import Data
@@ -24,7 +23,7 @@ class SecSchemaFilesQueryParams(CotSearchQueryParams):
 class SecSchemaFilesData(Data):
     """SEC Schema Files List Data."""
 
-    files: List = Field(description="Dictionary of URLs to SEC Schema Files")
+    files: List[str] = Field(description="Dictionary of URLs to SEC Schema Files")
 
 
 class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesData]):
@@ -35,6 +34,7 @@ class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesDat
         """Transform the query."""
         return SecSchemaFilesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: SecSchemaFilesQueryParams,
@@ -48,7 +48,10 @@ class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesDat
 
         return {"files": results}
 
+    # pylint: disable=unused-argument
     @staticmethod
-    def transform_data(data: Dict, **kwargs: Any) -> SecSchemaFilesData:
+    def transform_data(
+        query: SecSchemaFilesQueryParams, data: Dict, **kwargs: Any
+    ) -> SecSchemaFilesData:
         """Transform the data to the standard format."""
         return SecSchemaFilesData.model_validate(data)

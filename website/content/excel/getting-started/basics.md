@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Basics | OpenBB Add-in for Excel Docs" />
 
-The OpenBB Excel Add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
+The OpenBB Add-in for Excel provides direct access to the OpenBB platform, where each function implements the following pattern:
 
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
@@ -39,11 +39,11 @@ Examples:
 3. Getting the earnings calendar:
 
     ```excel
-    =OBB.EQUITY.CALENDAR.IPO(;"2023-11-20")
+    =OBB.EQUITY.CALENDAR.IPO(,"2023-11-20")
     ```
 
 :::tip
-If you want to skip a parameter use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
+If you want to skip a parameter use comma (or semi-colon depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
 :::
 
 ## Advanced

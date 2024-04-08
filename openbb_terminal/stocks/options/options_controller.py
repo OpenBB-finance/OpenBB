@@ -1,4 +1,5 @@
 """ Options Controller Module """
+
 __docformat__ = "numpy"
 
 import argparse
@@ -35,7 +36,6 @@ from openbb_terminal.stocks.options import (
     yfinance_model,
     yfinance_view,
 )
-from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.options_view import (
     display_chains,
     display_expiry_dates,
@@ -80,7 +80,6 @@ class OptionsController(BaseController):
     ]
     CHOICES_MENUS = [
         "pricing",
-        "hedge",
     ]
 
     grhist_greeks_choices = [
@@ -275,7 +274,6 @@ class OptionsController(BaseController):
         mt.add_cmd("greeks", self.ticker and self.selected_date)
         mt.add_cmd("eodchain", self.ticker and self.selected_date)
         mt.add_raw("\n")
-        mt.add_menu("hedge", self.ticker and self.selected_date)
         console.print(text=mt.menu_text, menu="Stocks - Options")
 
     def custom_reset(self):
@@ -431,9 +429,9 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     ascend=ns_parser.reverse,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
@@ -474,9 +472,9 @@ class OptionsController(BaseController):
                     window=ns_parser.length,
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded. First use `load <ticker>`")
@@ -497,9 +495,9 @@ class OptionsController(BaseController):
                 barchart_view.print_options_data(
                     symbol=self.ticker,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -599,9 +597,11 @@ class OptionsController(BaseController):
                     ):
                         intrinio_view.view_historical_greeks(
                             symbol=self.ticker,
-                            expiry=ns_parser.expiration
-                            if ns_parser.expiration
-                            else self.selected_date,
+                            expiry=(
+                                ns_parser.expiration
+                                if ns_parser.expiration
+                                else self.selected_date
+                            ),
                             strike=ns_parser.strike,
                             greek=ns_parser.greek,
                             chain_id=ns_parser.chain_id,
@@ -609,9 +609,11 @@ class OptionsController(BaseController):
                             raw=ns_parser.raw,
                             limit=ns_parser.limit,
                             export=ns_parser.export,
-                            sheet_name=" ".join(ns_parser.sheet_name)
-                            if ns_parser.sheet_name
-                            else None,
+                            sheet_name=(
+                                " ".join(ns_parser.sheet_name)
+                                if ns_parser.sheet_name
+                                else None
+                            ),
                         )
                     else:
                         console.print("No correct strike input")
@@ -803,9 +805,9 @@ class OptionsController(BaseController):
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                     chain_id=ns_parser.chain_id,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             if ns_parser.source == "Intrinio":
                 intrinio_view.display_historical(
@@ -816,9 +818,9 @@ class OptionsController(BaseController):
                     raw=ns_parser.raw,
                     chain_id=ns_parser.chain_id,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
             if ns_parser.source == "Tradier":  # nosec
@@ -830,9 +832,9 @@ class OptionsController(BaseController):
                     raw=ns_parser.raw,
                     chain_id=ns_parser.chain_id,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -931,9 +933,11 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         current_price=self.current_price,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 else:
                     console.print(
@@ -1023,9 +1027,11 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                         raw=ns_parser.raw,
                     )
                 else:
@@ -1104,9 +1110,11 @@ class OptionsController(BaseController):
                         max_sp=ns_parser.max_sp,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 else:
                     console.print(
@@ -1197,9 +1205,11 @@ class OptionsController(BaseController):
                         calls_only=ns_parser.calls,
                         puts_only=ns_parser.puts,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                         raw=ns_parser.raw,
                     )
                 else:
@@ -1391,23 +1401,6 @@ class OptionsController(BaseController):
                     maxi=ns_parser.max,
                     show_all=ns_parser.all,
                 )
-
-    @log_start_end(log=logger)
-    def call_hedge(self, _):
-        """Process hedge command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    hedge_controller.HedgeController,
-                    self.ticker,
-                    self.selected_date,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_eodchain(self, other_args: List[str]):

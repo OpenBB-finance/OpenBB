@@ -20,9 +20,17 @@ def obb(pytestconfig):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
+        ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
+        ({"provider": "tradier", "symbol": "AAPL"}),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SHOP",
+                "date": "2022-12-28",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -36,9 +44,20 @@ def test_derivatives_options_chains(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"provider": "intrinio", "source": "delayed", "symbol": "AAPL"}),
-        ({"provider": "intrinio", "symbol": "PLTR", "source": "delayed"}),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "intrinio",
+                "start_date": "2023-11-20",
+                "end_date": None,
+                "min_value": None,
+                "max_value": None,
+                "trade_type": None,
+                "sentiment": "neutral",
+                "limit": 1000,
+                "source": "delayed",
+            }
+        )
     ],
 )
 @pytest.mark.integration
@@ -75,7 +94,7 @@ def test_derivatives_futures_historical(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "VX", "date": "2023-01-25", "provider": "cboe"}),
+        ({"symbol": "VX", "provider": "cboe", "date": None}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )

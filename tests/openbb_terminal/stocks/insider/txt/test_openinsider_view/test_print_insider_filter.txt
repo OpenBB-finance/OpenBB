@@ -1,7 +1,0 @@
-  X Trading Date Ticker               Insider                           Title Trade Type    Price Quantity    Owned Delta Own        Value
-0     2022-02-22     PM     De Wilde Frederic     Pres, European Union Region   S - Sale  $108.49  -29,941  178,160      -14%  -$3,248,338
-1     2022-02-18     PM          Barth Werner  Pr.Combusibles, GlobalComb.Mkt   S - Sale  $111.70  -12,000   75,178      -14%  -$1,340,400
-2     2022-02-17     PM          Olczak Jacek                             CEO   S - Sale  $111.31  -40,000  326,907      -11%  -$4,452,308
-3     2022-02-17     PM  Calantzopoulos Andre                       Exec. COB   S - Sale  $110.69  -75,000  935,380       -7%  -$8,301,750
-4     2021-07-27     PM        King Martin G.                CEO, PMI America   S - Sale  $100.18  -21,725  128,484      -14%  -$2,176,482
-[red]S - Sale: Sale of securities on an exchange or to another person[/red]

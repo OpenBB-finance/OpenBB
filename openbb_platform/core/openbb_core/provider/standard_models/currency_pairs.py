@@ -1,6 +1,5 @@
 """Currency Available Pairs Standard Model."""
 
-
 from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data

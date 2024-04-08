@@ -1,4 +1,5 @@
 """NASDAQ DataLink Model"""
+
 __docformat__ = "numpy"
 
 import logging

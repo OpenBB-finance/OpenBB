@@ -1,11 +1,11 @@
 """Provider Interface."""
+
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from pydantic import (
-    AliasChoices,
     BaseModel,
     ConfigDict,
     Field,
@@ -18,7 +18,7 @@ from openbb_core.provider.query_executor import QueryExecutor
 from openbb_core.provider.registry_map import MapType, RegistryMap
 from openbb_core.provider.utils.helpers import to_snake_case
 
-TupleFieldType = Tuple[str, type, Any]
+TupleFieldType = Tuple[str, Optional[Type], Optional[Any]]
 
 
 @dataclass
@@ -26,8 +26,8 @@ class DataclassField:
     """Dataclass field."""
 
     name: str
-    type_: type
-    default: Any
+    annotation: Optional[Type]
+    default: Optional[Any]
 
 
 @dataclass
@@ -154,20 +154,19 @@ class ProviderInterface(metaclass=SingletonMeta):
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
-        return self._query_executor(self._registry_map.registry)  # type: ignore
+        return self._query_executor(self._registry_map.registry)  # type: ignore[operator]
 
     @staticmethod
     def _merge_fields(
         current: DataclassField, incoming: DataclassField, query: bool = False
     ) -> DataclassField:
-        current_name = current.name
-        current_type = current.type_
-        current_desc = getattr(current.default, "description", "")
+        """Merge 2 dataclass fields."""
+        curr_name = current.name
+        curr_type: Optional[Type] = current.annotation
+        curr_desc = getattr(current.default, "description", "")
 
-        incoming_type = incoming.type_
-        incoming_desc = getattr(incoming.default, "description", "")
-
-        F: Union[Callable, object] = Query if query else FieldInfo
+        inc_type: Optional[Type] = incoming.annotation
+        inc_desc = getattr(incoming.default, "description", "")
 
         def split_desc(desc: str) -> str:
             """Split field description."""
@@ -175,34 +174,33 @@ class ProviderInterface(metaclass=SingletonMeta):
             detail = item[0] if item else ""
             return detail
 
-        curr_detail = split_desc(current_desc)
-        inc_detail = split_desc(incoming_desc)
+        curr_detail = split_desc(curr_desc)
+        inc_detail = split_desc(inc_desc)
 
-        providers = f"{current.default.title},{incoming.default.title}"
+        curr_title = getattr(current.default, "title", "")
+        inc_title = getattr(incoming.default, "title", "")
+        providers = ",".join([curr_title, inc_title])
         formatted_prov = providers.replace(",", ", ")
 
         if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
             new_desc = f"{curr_detail} (provider: {formatted_prov})"
         else:
-            new_desc = f"{current_desc};\n    {incoming_desc}"
+            new_desc = f"{curr_desc};\n    {inc_desc}"
 
-        merged_default = F(  # type: ignore
-            default=current.default.default,
+        QF: Callable = Query if query else FieldInfo  # type: ignore[assignment]
+        merged_default = QF(
+            default=getattr(current.default, "default", None),
             title=providers,
             description=new_desc,
         )
 
-        merged_type = (
-            Union[current_type, incoming_type]
-            if current_type != incoming_type
-            else current_type
+        merged_type: Optional[Type] = (
+            Union[curr_type, inc_type]  # type: ignore[assignment]
+            if curr_type != inc_type
+            else curr_type
         )
 
-        return DataclassField(
-            name=current_name,
-            type_=merged_type,  # type: ignore
-            default=merged_default,
-        )
+        return DataclassField(curr_name, merged_type, merged_default)
 
     @staticmethod
     def _create_field(
@@ -211,26 +209,33 @@ class ProviderInterface(metaclass=SingletonMeta):
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
-        alias_dict: Optional[Dict[str, List[str]]] = None,
     ) -> DataclassField:
-        alias_dict = alias_dict or {}
         new_name = name.replace(".", "_")
-        # field.type_ don't work for nested types
-        # field.outer_type_ don't work for Optional nested types
-        type_ = field.annotation
+        annotation = field.annotation
+
+        additional_description = ""
+        if (extra := field.json_schema_extra) and (
+            multiple := extra.get("multiple_items_allowed")  # type: ignore
+        ):
+            if provider_name:
+                additional_description += " Multiple comma separated items allowed."
+            else:
+                additional_description += (
+                    " Multiple comma separated items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
+                )
 
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
         )
         description = (
-            f"{field.description} {provider_field}"
+            f"{field.description}{additional_description} {provider_field}"
             if provider_name and field.description
-            else f"{field.description}"
+            else f"{field.description}{additional_description}"
         )
 
         if field.is_required():
             if force_optional:
-                type_ = Optional[type_]  # type: ignore
+                annotation = Optional[annotation]  # type: ignore
                 default = None
             else:
                 default = ...
@@ -238,30 +243,32 @@ class ProviderInterface(metaclass=SingletonMeta):
             default = field.default
 
         if query:
-            # We need to use query if we want the field description to show up in the
-            # swagger, it's a fastapi limitation
-            default = Query(
-                default=default,
-                title=provider_name,
-                description=description,
-                alias=field.alias or None,
-                json_schema_extra=field.json_schema_extra,
+            # We need to use query if we want the field description to show
+            # up in the swagger, it's a fastapi limitation
+            return DataclassField(
+                new_name,
+                annotation,
+                Query(
+                    default=default,
+                    title=provider_name,
+                    description=description,
+                    alias=field.alias or None,
+                    json_schema_extra=getattr(field, "json_schema_extra", None),
+                ),
             )
-        elif provider_name:
-            default: FieldInfo = Field(
-                default=default or None,
-                title=provider_name,
-                description=description,
-                validation_alias=AliasChoices(
-                    field.alias,
-                    *list(set(alias_dict.get(name, []))),
-                )
-                if alias_dict.get(name, [])
-                else None,
-                json_schema_extra=field.json_schema_extra,
+        if provider_name:
+            return DataclassField(
+                new_name,
+                annotation,
+                Field(
+                    default=default or None,
+                    title=provider_name,
+                    description=description,
+                    json_schema_extra=field.json_schema_extra,
+                ),
             )
 
-        return DataclassField(new_name, type_, default)
+        return DataclassField(new_name, annotation, default)
 
     @classmethod
     def _extract_params(
@@ -279,7 +286,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                     standard[incoming.name] = (
                         incoming.name,
-                        incoming.type_,
+                        incoming.annotation,
                         incoming.default,
                     )
             else:
@@ -302,7 +309,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                         extra[updated.name] = (
                             updated.name,
-                            updated.type_,
+                            updated.annotation,
                             updated.default,
                         )
 
@@ -319,23 +326,31 @@ class ProviderInterface(metaclass=SingletonMeta):
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
                 for name, field in model_details["Data"]["fields"].items():
+                    if (
+                        name == "provider"
+                        and field.description == "The data provider for the data."
+                    ):  # noqa
+                        continue
                     incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
                         incoming.name,
-                        incoming.type_,
+                        incoming.annotation,
                         incoming.default,
                     )
             else:
-                alias_dict = model_details.get("Data", {}).get("alias_dict", {})
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
+                        if (
+                            name == "provider"
+                            and field.description == "The data provider for the data."
+                        ):  # noqa
+                            continue
                         incoming = cls._create_field(
                             to_snake_case(name),
                             field,
                             provider_name,
                             force_optional=True,
-                            alias_dict=alias_dict,
                         )
 
                         if incoming.name in extra:
@@ -346,7 +361,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
                         extra[updated.name] = (
                             updated.name,
-                            updated.type_,
+                            updated.annotation,
                             updated.default,
                         )
 
@@ -382,14 +397,14 @@ class ProviderInterface(metaclass=SingletonMeta):
             standard, extra = self._extract_params(providers)
 
             result[model_name] = {
-                "standard": make_dataclass(  # type: ignore
+                "standard": make_dataclass(
                     cls_name=model_name,
-                    fields=list(standard.values()),
+                    fields=list(standard.values()),  # type: ignore[arg-type]
                     bases=(StandardParams,),
                 ),
-                "extra": make_dataclass(  # type: ignore
+                "extra": make_dataclass(
                     cls_name=model_name,
-                    fields=list(extra.values()),
+                    fields=list(extra.values()),  # type: ignore[arg-type]
                     bases=(ExtraParams,),
                 ),
             }
@@ -453,14 +468,14 @@ class ProviderInterface(metaclass=SingletonMeta):
             extra: dict
             standard, extra = self._extract_data(providers)
             result[model_name] = {
-                "standard": make_dataclass(  # type: ignore
+                "standard": make_dataclass(
                     cls_name=model_name,
-                    fields=list(standard.values()),
+                    fields=list(standard.values()),  # type: ignore[arg-type]
                     bases=(StandardData,),
                 ),
-                "extra": make_dataclass(  # type: ignore
+                "extra": make_dataclass(
                     cls_name=model_name,
-                    fields=list(extra.values()),
+                    fields=list(extra.values()),  # type: ignore[arg-type]
                     bases=(ExtraData,),
                 ),
             }
@@ -490,7 +505,6 @@ class ProviderInterface(metaclass=SingletonMeta):
                         title=field.title,
                         description=field.description,
                         alias=field.alias,
-                        validation_alias=field.validation_alias,
                         json_schema_extra=field.json_schema_extra,
                     ),
                 )

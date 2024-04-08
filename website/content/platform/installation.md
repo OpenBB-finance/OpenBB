@@ -89,6 +89,12 @@ To install all extensions and providers (both officially supported and community
 pip install openbb[all]
 ```
 
+:::tip
+In a macOS `zsh` Terminal shell, add quotation marks around the library name.
+
+`"openbb[all]"`
+:::
+
 To install a single extension:
 
 ```console
@@ -247,6 +253,17 @@ obb.account.login(pat='my_pat_here')
 ## Documentation
 
 The documentation and packages are kept in the `/website` folder, at the base of the repository. Navigate there to install the dependencies and start the development server.
+
+### Generate Markdown Files
+
+Markdown files for the Reference and Data Models pages need to be generated.
+This will generate content based on what is actually installed and contained locally, so it may appear different than what is on this website.
+
+Open a terminal command line to the `/OpenBBTerminal/website` folder, then enter:
+
+```bash
+python generate_platform_v4_markdown.py
+```
 
 ### Node.js
 

@@ -1,6 +1,6 @@
 ---
 title: Basic Syntax
-sidebar_position: 2
+sidebar_position: 5
 description: This page provides comprehensive information about standardized command
   syntax for an open-source platform. Topics discussed include the structure of command
   syntax, use of standardized parameters, usage of provider and symbol parameters,
@@ -225,7 +225,7 @@ This example will use Python and the Requests library, so the syntax will vary a
 ```python
 import requests
 
-get_url = "http://127.0.0.1:8000/api/v1/index/market?provider=cboe&symbol=vix&interval=1d"
+get_url = "http://127.0.0.1:8000/api/v1/index/price/historical?provider=cboe&symbol=vix&interval=1d"
 get_response = requests.get(get_url)
 data_results = get_response.json()["results"]
 

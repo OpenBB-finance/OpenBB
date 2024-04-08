@@ -1,4 +1,5 @@
 """REST API for the OpenBB Platform."""
+
 import logging
 from contextlib import asynccontextmanager
 
@@ -66,18 +67,20 @@ app = FastAPI(
     ],
     lifespan=lifespan,
 )
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=system.api_settings.cors.allow_origins,
     allow_methods=system.api_settings.cors.allow_methods,
     allow_headers=system.api_settings.cors.allow_headers,
 )
+app.openapi_tags = AppLoader.get_openapi_tags()
 AppLoader.from_routers(
     app=app,
-    routers=[AuthService().router, router_system, router_coverage, router_commands]
-    if Env().DEV_MODE
-    else [router_commands],
+    routers=(
+        [AuthService().router, router_system, router_coverage, router_commands]
+        if Env().DEV_MODE
+        else [router_commands]
+    ),
     prefix=system.api_settings.prefix,
 )
 
@@ -85,6 +88,9 @@ AppLoader.from_routers(
 @app.exception_handler(Exception)
 async def api_exception_handler(_: Request, exc: Exception):
     """Exception handler for all other exceptions."""
+    if Env().DEBUG_MODE:
+        raise exc
+    logger.error(exc)
     return JSONResponse(
         status_code=404,
         content={
@@ -97,6 +103,9 @@ async def api_exception_handler(_: Request, exc: Exception):
 @app.exception_handler(OpenBBError)
 async def openbb_exception_handler(_: Request, exc: OpenBBError):
     """Exception handler for OpenBB errors."""
+    if Env().DEBUG_MODE:
+        raise exc
+    logger.error(exc.original)
     openbb_error = exc.original
     status_code = 400 if "No results" in str(openbb_error) else 500
     return JSONResponse(

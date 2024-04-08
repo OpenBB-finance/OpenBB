@@ -1,5 +1,7 @@
 """Alpha Vantage Provider module."""
+
 from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
+from openbb_alpha_vantage.models.historical_eps import AVHistoricalEpsFetcher
 from openbb_core.provider.abstract.provider import Provider
 
 alpha_vantage_provider = Provider(
@@ -15,5 +17,7 @@ alpha_vantage_provider = Provider(
     credentials=["api_key"],
     fetcher_dict={
         "EquityHistorical": AVEquityHistoricalFetcher,
+        "HistoricalEps": AVHistoricalEpsFetcher,
+        "EtfHistorical": AVEquityHistoricalFetcher,
     },
 )

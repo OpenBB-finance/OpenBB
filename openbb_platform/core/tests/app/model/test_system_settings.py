@@ -28,12 +28,12 @@ def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
     )
 
     # Act
-    SystemSettings.create_openbb_directory(values)
+    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
 
     # Assert
-    assert os.path.exists(values.openbb_directory)
-    assert os.path.exists(values.user_settings_path)
-    assert os.path.exists(values.system_settings_path)
+    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
+    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
 
 
 def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
@@ -47,15 +47,15 @@ def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
     )
 
     # Create the openbb directory
-    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)
+    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)  # type: ignore[attr-defined]
 
     # Act
-    SystemSettings.create_openbb_directory(values)
+    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
 
     # Assert
-    assert os.path.exists(values.openbb_directory)
-    assert os.path.exists(values.user_settings_path)
-    assert os.path.exists(values.system_settings_path)
+    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
+    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
 
 
 def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir):
@@ -69,19 +69,19 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
     )
 
     # Create the openbb directory
-    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)
+    Path(values.openbb_directory).mkdir(parents=True, exist_ok=True)  # type: ignore[attr-defined]
 
     # Create the user_settings.json file
-    with open(values.user_settings_path, "w") as f:
+    with open(values.user_settings_path, "w") as f:  # type: ignore[attr-defined]
         f.write("{}")
 
     # Act
-    SystemSettings.create_openbb_directory(values)
+    SystemSettings.create_openbb_directory(values)  # type: ignore[operator]
 
     # Assert
-    assert os.path.exists(values.openbb_directory)
-    assert os.path.exists(values.user_settings_path)
-    assert os.path.exists(values.system_settings_path)
+    assert os.path.exists(values.openbb_directory)  # type: ignore[attr-defined]
+    assert os.path.exists(values.user_settings_path)  # type: ignore[attr-defined]
+    assert os.path.exists(values.system_settings_path)  # type: ignore[attr-defined]
 
 
 @pytest.mark.parametrize(
@@ -90,6 +90,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # Test case: test_mode is True, logging_suppress is True
         (
             {
+                "debug_mode": True,
                 "test_mode": True,
                 "logging_suppress": True,
                 "log_collect": True,
@@ -100,6 +101,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # Test case: test_mode is False, logging_suppress is True
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": True,
                 "log_collect": True,
@@ -111,6 +113,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # and "posthog" handler is not present in logging_handlers
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": False,
                 "log_collect": True,
@@ -122,6 +125,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # and "posthog" handler is already present in logging_handlers
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": False,
                 "log_collect": True,
@@ -134,7 +138,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
 def test_validate_posthog_handler(values, expected_handlers):
     values = MockSystemSettings(**values)
     # Act
-    result = SystemSettings.validate_posthog_handler(values)
+    result = SystemSettings.validate_posthog_handler(values)  # type: ignore[operator]
 
     # Assert
     assert result.logging_handlers == expected_handlers
@@ -156,7 +160,7 @@ def test_validate_posthog_handler(values, expected_handlers):
 def test_validate_logging_handlers(handlers, valid):
     # Act and Assert
     if valid:
-        assert SystemSettings.validate_logging_handlers(handlers) == handlers
+        assert SystemSettings.validate_logging_handlers(handlers) == handlers  # type: ignore[call-arg]
     else:
         with pytest.raises(ValueError, match="Invalid logging handler"):
-            SystemSettings.validate_logging_handlers(handlers)
+            SystemSettings.validate_logging_handlers(handlers)  # type: ignore[call-arg]

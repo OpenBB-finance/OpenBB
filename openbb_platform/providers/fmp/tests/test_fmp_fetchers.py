@@ -21,18 +21,21 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
 from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
+from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
 from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
+from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
@@ -41,6 +44,7 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
+from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
 from openbb_fmp.models.historical_eps import FMPHistoricalEpsFetcher
@@ -169,7 +173,7 @@ def test_fmp_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = FMPCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -340,7 +344,7 @@ def test_fmp_price_target_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_analyst_estimates_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 30}
 
     fetcher = FMPAnalystEstimatesFetcher()
     result = fetcher.test(params, credentials)
@@ -520,7 +524,7 @@ def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_market_snapshots_fetcher(credentials=test_credentials):
-    params = {"market": "LSE"}
+    params = {"market": "lse"}
 
     fetcher = FMPMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
@@ -632,5 +636,50 @@ def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
         "end_date": date(2023, 1, 10),
     }
     fetcher = FMPCalendarEarningsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_profile_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FMPEquityProfileFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_equity_exposure_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,MSFT"}
+
+    fetcher = FMPEtfEquityExposureFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
+    params = {
+        "base": "XAU",
+        "quote_type": "indirect",
+        "counter_currencies": "USD,EUR,GBP,JPY,HKD,AUD,CAD,CHF,SEK,NZD,SGD",
+    }
+
+    fetcher = FMPCurrencySnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_forward_eps_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "MSFT,AAPL",
+        "fiscal_period": "annual",
+        "include_historical": False,
+        "limit": None,
+    }
+
+    fetcher = FMPForwardEpsEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

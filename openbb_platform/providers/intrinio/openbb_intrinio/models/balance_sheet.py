@@ -1,7 +1,9 @@
 """Intrinio Balance Sheet Model."""
+
 # pylint: disable=unused-argument
-import warnings
+
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
@@ -11,8 +13,6 @@ from openbb_core.provider.standard_models.balance_sheet import (
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
-
-_warn = warnings.warn
 
 
 class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -399,7 +399,11 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Check for zero values and replace with None."""
-        return {k: None if v == 0 else v for k, v in values.items()}
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class IntrinioBalanceSheetFetcher(
@@ -424,16 +428,16 @@ class IntrinioBalanceSheetFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "balance_sheet_statement"
-
+        period = "FY" if query.period == "annual" else "QTR"
         fundamentals_data: Dict = {}
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={query.period}"
+            f"statement_code={statement_code}&type={period}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
-                _warn("Financials data is only available from 2008 and later.")
+                warn("Financials data is only available from 2008 and later.")
                 query.fiscal_year = 2008
             fundamentals_url = fundamentals_url + f"&fiscal_year={query.fiscal_year}"
         fundamentals_url = fundamentals_url + f"&api_key={api_key}"
@@ -477,7 +481,7 @@ class IntrinioBalanceSheetFetcher(
             for sub_item in item["financials"]:
                 field_name = sub_item["data_tag"]["tag"]
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit:
+                if unit and len(unit) == 3:
                     units.append(unit)
                 sub_dict[field_name] = (
                     float(sub_item["value"])

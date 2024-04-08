@@ -19,7 +19,7 @@ jobs:
           count: 0
           labels: "do not merge"
       
-      - name: Label OpenBB Platform PRs
+      - name: 🏷️ Label OpenBB Platform PRs
         uses: srvaroa/labeler@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

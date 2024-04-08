@@ -1,4 +1,5 @@
 """Extension class for OBBject extensions."""
+
 import warnings
 from typing import Callable, List, Optional
 
@@ -51,7 +52,7 @@ class Extension:
                 )
             setattr(cls, name, CachedAccessor(name, accessor))
             # pylint: disable=protected-access
-            cls._accessors.add(name)
+            cls.accessors.add(name)
             return accessor
 
         return decorator

@@ -1,5 +1,7 @@
 """Intrinio Income Statement Model."""
+
 # pylint: disable=unused-argument
+
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -225,11 +227,11 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     deposits_interest_expense: Optional[float] = Field(
         default=None, description="Deposits interest expense"
     )
-    federal_funds_purchased_and_securities_sold_interest_expense: Optional[
-        float
-    ] = Field(
-        default=None,
-        description="Federal funds purchased and securities sold interest expense",
+    federal_funds_purchased_and_securities_sold_interest_expense: Optional[float] = (
+        Field(
+            default=None,
+            description="Federal funds purchased and securities sold interest expense",
+        )
     )
     other_interest_expense: Optional[float] = Field(
         default=None, description="Other interest expense"
@@ -471,7 +473,7 @@ class IntrinioIncomeStatementFetcher(
 
             for sub_item in item["financials"]:
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit:
+                if unit and len(unit) == 3:
                     units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (

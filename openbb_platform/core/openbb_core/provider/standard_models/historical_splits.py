@@ -1,8 +1,7 @@
 """Historical Splits Standard Model."""
 
-
 from datetime import date as dateType
-from typing import List, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -21,19 +20,24 @@ class HistoricalSplitsQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class HistoricalSplitsData(Data):
     """Historical Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    label: str = Field(description="Label of the historical stock splits.")
-    numerator: float = Field(description="Numerator of the historical stock splits.")
-    denominator: float = Field(
-        description="Denominator of the historical stock splits."
+    numerator: Optional[float] = Field(
+        default=None,
+        description="Numerator of the split.",
+    )
+    denominator: Optional[float] = Field(
+        default=None,
+        description="Denominator of the split.",
+    )
+    split_ratio: Optional[str] = Field(
+        default=None,
+        description="Split ratio.",
     )

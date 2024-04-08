@@ -11,7 +11,19 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.etf_holdings import IntrinioEtfHoldingsFetcher
+from openbb_intrinio.models.etf_info import IntrinioEtfInfoFetcher
+from openbb_intrinio.models.etf_price_performance import (
+    IntrinioEtfPricePerformanceFetcher,
+)
+from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
+from openbb_intrinio.models.forward_eps_estimates import (
+    IntrinioForwardEpsEstimatesFetcher,
+)
+from openbb_intrinio.models.forward_sales_estimates import (
+    IntrinioForwardSalesEstimatesFetcher,
+)
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -22,14 +34,18 @@ from openbb_intrinio.models.historical_dividends import (
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
-from openbb_intrinio.models.institutional_ownership import (
-    IntrinioInstitutionalOwnershipFetcher,
-)
+
+# from openbb_intrinio.models.institutional_ownership import (
+#     IntrinioInstitutionalOwnershipFetcher,
+# )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
-from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
+from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.price_target_consensus import (
+    IntrinioPriceTargetConsensusFetcher,
+)
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
@@ -54,19 +70,28 @@ intrinio_provider = Provider(
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "EquitySearch": IntrinioEquitySearchFetcher,
+        "EtfHistorical": IntrinioEquityHistoricalFetcher,
+        "EtfHoldings": IntrinioEtfHoldingsFetcher,
+        "EtfInfo": IntrinioEtfInfoFetcher,
+        "EtfPricePerformance": IntrinioEtfPricePerformanceFetcher,
+        "EtfSearch": IntrinioEtfSearchFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
+        "ForwardEpsEstimates": IntrinioForwardEpsEstimatesFetcher,
+        "ForwardSalesEstimates": IntrinioForwardSalesEstimatesFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
         "HistoricalDividends": IntrinioHistoricalDividendsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "IndexHistorical": IntrinioIndexHistoricalFetcher,
         "InsiderTrading": IntrinioInsiderTradingFetcher,
-        "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
+        # "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher, # Disabled due to unreliable Intrinio endpoint
         "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
-        "MarketIndices": IntrinioMarketIndicesFetcher,
+        "MarketIndices": IntrinioIndexHistoricalFetcher,
+        "MarketSnapshots": IntrinioMarketSnapshotsFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
+        "PriceTargetConsensus": IntrinioPriceTargetConsensusFetcher,
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,
         "SearchAttributes": IntrinioSearchAttributesFetcher,
         "ShareStatistics": IntrinioShareStatisticsFetcher,

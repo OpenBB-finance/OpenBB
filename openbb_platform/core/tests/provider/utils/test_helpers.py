@@ -108,7 +108,7 @@ async def test_amake_request(monkeypatch):
         )
 
     with pytest.raises(ValueError):
-        await amake_request("http://mock.url", method="PUT")
+        await amake_request("http://mock.url", method="PUT")  # type: ignore[arg-type]
 
 
 @pytest.mark.asyncio
