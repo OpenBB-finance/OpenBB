@@ -48,7 +48,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     interval: Union[
         Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
-    ] = Field(
+    ] = Field(  # type: ignore
         description=QUERY_DESCRIPTIONS.get("interval", "")
         + " Or, any integer (entered as a string) representing the number of minutes."
         + " Default is daily data."

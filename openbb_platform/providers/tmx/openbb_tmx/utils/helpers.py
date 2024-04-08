@@ -12,7 +12,7 @@ from datetime import (
     timedelta,
 )
 from io import StringIO
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import exchange_calendars as xcals
 import pandas as pd
@@ -359,10 +359,12 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
         url, use_cache=use_cache, backend=tmx_etfs_backend
     )
 
-    if response is None:
+    if response.status_code != 200:
         raise RuntimeError(
             f"There was a problem with the request. Could not get ETFs.  -> {response.status_code}"  # mypy: ignore
         )
+    if not response:
+        raise RuntimeError("The response was returned empty.")
 
     response = replace_values_in_list_of_dicts(response)
 
@@ -430,8 +432,10 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
 
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
 
-    if r is None:
+    if r.status_code != 200:
         raise RuntimeError(f"Error with the request:  {r.status_code}")  # mypy: ignore
+    if not r:
+        raise RuntimeError("The response was returned empty.")
 
     options_listings = pd.read_html(StringIO(r))
     listings = pd.concat(options_listings)
@@ -574,10 +578,10 @@ async def download_eod_chains(
         EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
     if date is not None:
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date) is False:
+        if cal.is_session(date) is False:  # type: ignore
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date=date) is False:
+        if cal.is_session(date=date) is False:  # type: ignore
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = (
@@ -709,8 +713,8 @@ async def get_company_filings(
 
 async def get_daily_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     adjustment: Literal[
         "splits_only", "unadjusted", "splits_and_dividends"
     ] = "splits_only",
@@ -826,8 +830,8 @@ async def get_daily_price_history(
 
 async def get_weekly_or_monthly_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
@@ -862,8 +866,14 @@ async def get_weekly_or_monthly_price_history(
         payload["variables"].pop("endDateTime")
     payload["variables"]["symbol"] = symbol
     payload["variables"]["freq"] = interval
-    payload["variables"]["end"] = end_date.strftime("%Y-%m-%d")
-    payload["variables"]["start"] = start_date.strftime("%Y-%m-%d")
+    payload["variables"]["end"] = (
+        end_date.strftime("%Y-%m-%d") if isinstance(end_date, dateType) else end_date
+    )
+    payload["variables"]["start"] = (
+        start_date.strftime("%Y-%m-%d")
+        if isinstance(start_date, dateType)
+        else start_date
+    )
     url = "https://app-money.tmx.com/graphql"
     data = await get_data_from_gql(
         method="POST",
@@ -908,8 +918,8 @@ async def get_weekly_or_monthly_price_history(
 
 async def get_intraday_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: Optional[int] = 1,
 ):
     """Get historical price data."""
@@ -937,11 +947,11 @@ async def get_intraday_price_history(
     # This is the first date of available intraday data.
     date_check = datetime(2022, 4, 12).date()
     start_date = max(start_date, date_check)
-    if end_date < date_check:
+    if end_date < date_check:  # type: ignore
         end_date = datetime.now().date()
     # Generate a list of dates from start_date to end_date with a frequency of 3 weeks
     dates = list(
-        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)
+        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)  # type: ignore
     )
 
     if dates[-1] != end_date:

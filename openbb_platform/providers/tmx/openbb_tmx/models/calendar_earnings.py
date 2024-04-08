@@ -85,8 +85,7 @@ class TmxCalendarEarningsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        results = []
-        dates = []
+        results: List[Dict] = []
         user_agent = get_random_agent()
         dates = date_range(query.start_date, end=query.end_date)
 

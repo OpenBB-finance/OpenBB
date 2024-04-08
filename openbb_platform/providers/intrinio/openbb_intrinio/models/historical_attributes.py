@@ -1,5 +1,7 @@
 """Intrinio Historical Attributes Model."""
 
+# pylint: disable = unused-argument
+
 import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -62,7 +64,7 @@ class IntrinioHistoricalAttributesFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioHistoricalAttributesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioHistoricalAttributesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -84,43 +86,43 @@ class IntrinioHistoricalAttributesFetcher(
             """Return the response."""
             init_response = await response.json()
 
-            if message := init_response.get(  # mypy: ignore
+            if message := init_response.get(  # type: ignore
                 "error"
-            ) or init_response.get(  # mypy: ignore
+            ) or init_response.get(  # type: ignore
                 "message"
             ):
-                warnings.warn(message=message, category=OpenBBWarning)
+                warnings.warn(message=str(message), category=OpenBBWarning)
                 return []
 
-            symbol = response.url.parts[-2]  # mypy: ignore
-            tag = response.url.parts[-1]  # mypy: ignore
+            symbol = response.url.parts[-2]  # type: ignore
+            tag = response.url.parts[-1]  # type: ignore
 
-            all_data: list = init_response.get("historical_data", [])  # mypy: ignore
+            all_data: List = init_response.get("historical_data", [])  # type: ignore
             all_data = [{**item, "symbol": symbol, "tag": tag} for item in all_data]
 
-            next_page = init_response.get("next_page", None)  # mypy: ignore
+            next_page = init_response.get("next_page", None)  # type: ignore
             while next_page:
-                url = response.url.update_query(  # mypy: ignore
+                url = response.url.update_query(  # type: ignore
                     next_page=next_page
                 ).human_repr()
                 response_data = await session.get_json(url)
 
-                if message := response_data.get("error") or response_data.get(
+                if message := response_data.get("error") or response_data.get(  # type: ignore
                     "message"
                 ):
                     warnings.warn(message=message, category=OpenBBWarning)
                     return []
 
-                symbol = response.url.parts[-2]  # mypy: ignore
-                tag = response_data.url.parts[-1]  # mypy: ignore
+                symbol = response.url.parts[-2]  # type: ignore
+                tag = response_data.url.parts[-1]  # type: ignore
 
-                response_data = response_data.get("historical_data", [])
+                response_data = response_data.get("historical_data", [])  # type: ignore
                 response_data = [
                     {**item, "symbol": symbol, "tag": tag} for item in response_data
                 ]
 
                 all_data.extend(response_data)
-                next_page = response_data.get("next_page", None)
+                next_page = response_data.get("next_page", None)  # type: ignore
 
             return all_data
 
@@ -134,7 +136,7 @@ class IntrinioHistoricalAttributesFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioHistoricalAttributesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioHistoricalAttributesQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[IntrinioHistoricalAttributesData]:

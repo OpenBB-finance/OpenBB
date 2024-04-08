@@ -26,6 +26,14 @@ class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
         default=1, description="The page number to start from. Use with limit."
     )
 
+    @field_validator("symbol", mode="before")
+    @classmethod
+    def symbols_validate(cls, v):
+        """Validate the symbols."""
+        if v is None:
+            raise ValueError("Symbol is a required field for TMX.")
+        return v
+
 
 class TmxCompanyNewsData(CompanyNewsData):
     """TMX Stock News Data."""
@@ -63,8 +71,8 @@ class TmxCompanyNewsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
         user_agent = get_random_agent()
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def create_task(symbol, results):
             """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
@@ -77,7 +85,7 @@ class TmxCompanyNewsFetcher(
             payload["variables"]["limit"] = query.limit
             payload["variables"]["locale"] = "en"
             url = "https://app-money.tmx.com/graphql"
-            data = {}
+            data: Dict = {}
             response = await get_data_from_gql(
                 method="POST",
                 url=url,

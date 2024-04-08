@@ -87,7 +87,7 @@ class TmxEquityProfileFetcher(
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
-        results = []
+        results: List[Dict] = []
         user_agent = get_random_agent()
 
         url = "https://app-money.tmx.com/graphql"

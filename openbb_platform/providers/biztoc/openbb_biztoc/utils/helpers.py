@@ -71,7 +71,7 @@ def get_all_tags(api_key) -> Dict[str, List[str]]:
     pages = get_pages(api_key)
     for page in pages:
         page_tags = get_tags_by_page(page, api_key)
-        tags.update({page: [x["tag"] for x in page_tags]})
+        tags.update({page: [x["tag"] for x in page_tags]})  # type: ignore
 
     return tags
 
