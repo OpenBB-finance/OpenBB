@@ -228,7 +228,9 @@ def get_possibly_cached_data(
     DataFrame
         A Pandas DataFrame containing the fetched or cached data.
     """
-    base_cache = f"{cache}/{function}_{query_dict_to_path(query_dict if query_dict else {})}"
+    base_cache = (
+        f"{cache}/{function}_{query_dict_to_path(query_dict if query_dict else {})}"
+    )
     if cache_method == "parquet":
         cache_path = base_cache + ".parquet"
     elif cache_method == "csv":
