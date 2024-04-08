@@ -233,6 +233,7 @@ class HubService:
 
     def platform2hub(self, credentials: Credentials) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
+        # Dump mode json ensures SecretStr values are serialized as strings
         feature_keys = credentials.model_dump(mode="json", exclude_none=True)
         # We update the previously fetched feature keys with the existing
         # credentials to avoid losing any keys from providers that are not installed
