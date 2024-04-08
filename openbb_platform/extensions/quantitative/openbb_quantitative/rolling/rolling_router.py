@@ -1,5 +1,7 @@
 """Rolling submenu of quantitative models for rolling statistics."""
 
+# pylint: disable=unused-argument
+
 from typing import List
 
 import pandas as pd
@@ -49,7 +51,11 @@ router = Router(prefix="/rolling")
     ],
 )
 def skew(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+    data: List[Data],
+    target: str,
+    window: PositiveInt = 21,
+    index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """Get Rolling Skew.
 
@@ -69,6 +75,9 @@ def skew(
         Window size.
     index : str, optional
         Index column name, by default "date"
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -112,7 +121,11 @@ def skew(
     ],
 )
 def variance(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+    data: List[Data],
+    target: str,
+    window: PositiveInt = 21,
+    index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the rolling variance of a target column within a given window size.
@@ -130,6 +143,9 @@ def variance(
         The number of observations used for calculating the rolling measure.
     index: str, optional
         The name of the index column, default is "date".
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -170,7 +186,11 @@ def variance(
     ],
 )
 def stdev(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+    data: List[Data],
+    target: str,
+    window: PositiveInt = 21,
+    index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the rolling standard deviation of a target column within a given window size.
@@ -189,6 +209,9 @@ def stdev(
         The number of observations used for calculating the rolling measure.
     index: str, optional
         The name of the index column, default is "date".
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -231,7 +254,11 @@ def stdev(
     ],
 )
 def kurtosis(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+    data: List[Data],
+    target: str,
+    window: PositiveInt = 21,
+    index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the rolling kurtosis of a target column within a given window size.
@@ -252,6 +279,9 @@ def kurtosis(
         The number of observations used for calculating the rolling measure.
     index: str, optional
         The name of the index column, default is "date".
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -300,6 +330,7 @@ def quantile(
     window: PositiveInt = 21,
     quantile_pct: NonNegativeFloat = 0.5,
     index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the rolling quantile of a target column within a given window size at a specified quantile percentage.
@@ -320,6 +351,9 @@ def quantile(
         The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
     index: str, optional
         The name of the index column, default is "date".
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
@@ -374,7 +408,11 @@ def quantile(
     ],
 )
 def mean(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+    data: List[Data],
+    target: str,
+    window: PositiveInt = 21,
+    index: str = "date",
+    **extra_params,
 ) -> OBBject[List[Data]]:
     """
     Calculate the rolling mean (average) of a target column within a given window size.
@@ -393,6 +431,9 @@ def mean(
         The number of observations used for calculating the rolling measure.
     index: str, optional
         The name of the index column, default is "date".
+    **extra_params : Optional[Dict[str, Any]]
+        Extra parameters to be passed to the command execution.
+        API POST requests are sent in the body with data.
 
     Returns
     -------
