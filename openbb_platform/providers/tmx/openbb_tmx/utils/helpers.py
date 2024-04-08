@@ -360,9 +360,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
     )
 
     if not response or response is None:
-        raise RuntimeError(
-            "There was a problem with the request. Could not get ETFs."
-        )
+        raise RuntimeError("There was a problem with the request. Could not get ETFs.")
 
     response = replace_values_in_list_of_dicts(response)
 
