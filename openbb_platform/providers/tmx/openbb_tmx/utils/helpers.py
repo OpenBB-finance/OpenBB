@@ -359,12 +359,10 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
         url, use_cache=use_cache, backend=tmx_etfs_backend
     )
 
-    if response.status_code != 200:
+    if not response or response is None:
         raise RuntimeError(
-            f"There was a problem with the request. Could not get ETFs.  -> {response.status_code}"  # mypy: ignore
+            "There was a problem with the request. Could not get ETFs."
         )
-    if not response:
-        raise RuntimeError("The response was returned empty.")
 
     response = replace_values_in_list_of_dicts(response)
 
