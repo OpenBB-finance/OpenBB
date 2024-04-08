@@ -240,8 +240,9 @@ class Charting:
         if self._backend.isatty:
             try:
                 self._backend.send_table(
-                    df_table=data_as_df,
-                    title=title,
+                    df_table=data_as_df.reset_index(),
+                    title=title
+                    or self._obbject._route,  # pylint: disable=protected-access
                     theme=self._charting_settings.table_style,
                 )
             except Exception as e:
