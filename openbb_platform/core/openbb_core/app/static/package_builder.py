@@ -1684,8 +1684,15 @@ class ReferenceGenerator:
         main_router = RouterLoader.from_extensions()
         routers = {}
         for path in route_map:
-            # Strip the command name from the path
-            _path = "/".join(path.split("/")[:-1])
-            if description := main_router.get_attr(_path, "description"):
-                routers[_path] = {"description": description}
+            path_parts = path.split("/")
+            # We start at 2: ["/", "some_router"] "/some_router"
+            i = 2
+            _path = "/".join(path_parts[:i])
+            while _path not in routers and _path != path:
+                description = main_router.get_attr(_path, "description")
+                if description is not None:
+                    routers[_path] = description
+                # We go down the path to include sub-routers
+                i += 1
+                _path = "/".join(path_parts[:i])
         return routers
