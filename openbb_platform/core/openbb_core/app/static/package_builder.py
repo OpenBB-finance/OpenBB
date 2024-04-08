@@ -1689,15 +1689,11 @@ class ReferenceGenerator:
             i = 2
             p = "/".join(path_parts[:i])
             while p != path:
-                if p in routers:
-                    i += 1
+                if p not in routers:
                     p = "/".join(path_parts[:i])
-                    # No need to add the same router again
-                    continue
-                p = "/".join(path_parts[:i])
-                description = main_router.get_attr(p, "description")
-                if description is not None:
-                    routers[p] = {"description": description}
+                    description = main_router.get_attr(p, "description")
+                    if description is not None:
+                        routers[p] = {"description": description}
                 # We go down the path to include sub-routers
                 i += 1
                 p = "/".join(path_parts[:i])
