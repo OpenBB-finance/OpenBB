@@ -235,6 +235,7 @@ class HubService:
         """Convert Platform models to Hub user settings."""
         feature_keys = credentials.model_dump(mode="json", exclude_none=True)
         # We update the fetched feature keys with the existing credentials
+        # to avoid losing any keys from providers that are not installed
         settings = self._hub_user_settings or HubUserSettings()
         settings.features_keys.update(feature_keys)
         return settings
