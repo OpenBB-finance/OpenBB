@@ -21,6 +21,19 @@ class HubService:
     """Hub service class."""
 
     TIMEOUT = 10
+    # Mapping of V3 keys to V4 keys for backward compatibility
+    V3TOV4 = {
+        "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
+        "API_BIZTOC_TOKEN": "biztoc_api_key",
+        "API_FRED_KEY": "fred_api_key",
+        "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key",
+        "API_INTRINIO_KEY": "intrinio_api_key",
+        "API_POLYGON_KEY": "polygon_api_key",
+        "API_KEY_QUANDL": "nasdaq_api_key",
+        "API_TRADIER_TOKEN": "tradier_api_key",
+        "API_ULTIMA_KEY": "ultima_api_key",
+    }
+    V4TOV3 = {v: k for k, v in V3TOV4.items()}
 
     def __init__(
         self,
@@ -214,22 +227,9 @@ class HubService:
 
     def hub2platform(self, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
-        # Mapping of V3 keys to V4 keys for backward compatibility
-        V3TOV4 = {
-            "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
-            "API_BIZTOC_TOKEN": "biztoc_api_key",
-            "API_FRED_KEY": "fred_api_key",
-            "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key",
-            "API_INTRINIO_KEY": "intrinio_api_key",
-            "API_POLYGON_KEY": "polygon_api_key",
-            "API_KEY_QUANDL": "nasdaq_api_key",
-            "API_TRADIER_TOKEN": "tradier_api_key",
-            "API_ULTIMA_KEY": "ultima_api_key",
-        }
-
-        if any(k in settings.features_keys for k in V3TOV4):
+        if any(k in settings.features_keys for k in self.V3TOV4):
             deprecated_keys = {
-                k: v for k, v in V3TOV4.items() if k in settings.features_keys
+                k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
             }
             msg = ""
             for k, v in deprecated_keys.items():
@@ -237,11 +237,11 @@ class HubService:
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
-                "\n\nYou can remove them at https://my.openbb.co/app/platform/credentials.",
+                "\n\nYou can update them at https://my.openbb.co/app/platform/credentials.",
             )
         # We give priority to V4 keys over V3 keys if both are present
         hub_credentials = {
-            V3TOV4.get(k, k): settings.features_keys.get(V3TOV4.get(k, k), v)
+            self.V3TOV4.get(k, k): settings.features_keys.get(self.V3TOV4.get(k, k), v)
             for k, v in settings.features_keys.items()
         }
         return Credentials(**hub_credentials)
@@ -249,11 +249,16 @@ class HubService:
     def platform2hub(self, credentials: Credentials) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
         # Dump mode json ensures SecretStr values are serialized as strings
-        feature_keys = credentials.model_dump(mode="json", exclude_none=True)
-        # We update the previously fetched feature keys with the existing
+        current_credentials = credentials.model_dump(mode="json", exclude_none=True)
+        # We update the previously fetched feature keys with the current
         # credentials to avoid losing any keys from providers that are not installed
         settings = self._hub_user_settings or HubUserSettings()
-        settings.features_keys.update(feature_keys)
+        # Update the current credentials, ensures we don't lose v3 keys
+        for k, v in current_credentials.items():
+            if k in self.V4TOV3:
+                settings.features_keys[self.V4TOV3[k]] = v
+            else:
+                settings.features_keys[k] = v
         return settings
 
     @staticmethod
