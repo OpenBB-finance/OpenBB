@@ -84,19 +84,25 @@ class IntrinioHistoricalAttributesFetcher(
             """Return the response."""
             init_response = await response.json()
 
-            if message := init_response.get("error") or init_response.get("message"):
+            if message := init_response.get(  # mypy: ignore
+                "error"
+            ) or init_response.get(  # mypy: ignore
+                "message"
+            ):
                 warnings.warn(message=message, category=OpenBBWarning)
                 return []
 
-            symbol = response.url.parts[-2]
-            tag = response.url.parts[-1]
+            symbol = response.url.parts[-2]  # mypy: ignore
+            tag = response.url.parts[-1]  # mypy: ignore
 
-            all_data: list = init_response.get("historical_data", [])
+            all_data: list = init_response.get("historical_data", [])  # mypy: ignore
             all_data = [{**item, "symbol": symbol, "tag": tag} for item in all_data]
 
-            next_page = init_response.get("next_page", None)
+            next_page = init_response.get("next_page", None)  # mypy: ignore
             while next_page:
-                url = response.url.update_query(next_page=next_page).human_repr()
+                url = response.url.update_query(  # mypy: ignore
+                    next_page=next_page
+                ).human_repr()
                 response_data = await session.get_json(url)
 
                 if message := response_data.get("error") or response_data.get(
@@ -105,8 +111,8 @@ class IntrinioHistoricalAttributesFetcher(
                     warnings.warn(message=message, category=OpenBBWarning)
                     return []
 
-                symbol = response.url.parts[-2]
-                tag = response_data.url.parts[-1]
+                symbol = response.url.parts[-2]  # mypy: ignore
+                tag = response_data.url.parts[-1]  # mypy: ignore
 
                 response_data = response_data.get("historical_data", [])
                 response_data = [

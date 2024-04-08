@@ -361,7 +361,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 
     if response is None:
         raise RuntimeError(
-            f"There was a problem with the request. Could not get ETFs.  -> {response.status_code}"
+            f"There was a problem with the request. Could not get ETFs.  -> {response.status_code}"  # mypy: ignore
         )
 
     response = replace_values_in_list_of_dicts(response)
@@ -431,7 +431,7 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
 
     if r is None:
-        raise RuntimeError(f"Error with the request:  {r.status_code}")
+        raise RuntimeError(f"Error with the request:  {r.status_code}")  # mypy: ignore
 
     options_listings = pd.read_html(StringIO(r))
     listings = pd.concat(options_listings)
@@ -831,16 +831,18 @@ async def get_weekly_or_monthly_price_history(
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
-    start_date = (
-        datetime.strptime(start_date, "%Y-%m-%d")
-        if isinstance(start_date, str)
-        else start_date
-    )
-    end_date = (
-        datetime.strptime(end_date, "%Y-%m-%d")
-        if isinstance(end_date, str)
-        else end_date
-    )
+    if start_date:
+        start_date = (
+            datetime.strptime(start_date, "%Y-%m-%d")
+            if isinstance(start_date, str)
+            else start_date
+        )
+    if end_date:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d")
+            if isinstance(end_date, str)
+            else end_date
+        )
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
@@ -911,16 +913,18 @@ async def get_intraday_price_history(
     interval: Optional[int] = 1,
 ):
     """Get historical price data."""
-    start_date = (
-        datetime.strptime(start_date, "%Y-%m-%d")
-        if isinstance(start_date, str)
-        else start_date
-    )
-    end_date = (
-        datetime.strptime(end_date, "%Y-%m-%d")
-        if isinstance(end_date, str)
-        else end_date
-    )
+    if start_date:
+        start_date = (
+            datetime.strptime(start_date, "%Y-%m-%d")
+            if isinstance(start_date, str)
+            else start_date
+        )
+    if end_date:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d")
+            if isinstance(end_date, str)
+            else end_date
+        )
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
