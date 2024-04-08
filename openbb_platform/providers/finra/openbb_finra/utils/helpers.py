@@ -5,6 +5,8 @@ from typing import List
 
 import requests
 
+# pylint: disable=W0621
+
 
 def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
     """Fetch the available weeks from FINRA that can be used."""

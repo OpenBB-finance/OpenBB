@@ -10,6 +10,8 @@ from openbb_core.provider.standard_models.cot_search import (
 )
 from openbb_nasdaq.utils.series_ids import CFTC
 
+# pylint: disable=W0613
+
 
 class NasdaqCotSearchQueryParams(CotSearchQueryParams):
     """Nasdaq CFTC Commitment of Traders Reports Search Query.

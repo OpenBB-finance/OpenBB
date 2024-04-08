@@ -7,6 +7,8 @@ import requests
 import requests_cache
 from openbb_core.app.utils import get_user_cache_directory
 
+# pylint: disable=C0325
+
 cache_dir = get_user_cache_directory()
 
 biztoc_session_tags = requests_cache.CachedSession(
