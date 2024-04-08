@@ -121,6 +121,8 @@ class Charting:
         )
         if "date" in data_as_df.columns:
             data_as_df = data_as_df.set_index("date")
+        if "provider" in data_as_df.columns:
+            data_as_df.drop(columns="provider", inplace=True)
         return data_as_df, has_data
 
     # pylint: disable=too-many-arguments
@@ -237,10 +239,16 @@ class Charting:
             If no data is provided the OBBject results will be used.
         """
         data_as_df, _ = self._prepare_data_as_df(data)
+        data_as_df.reset_index(inplace=True)
+        for col in data_as_df.columns.copy():
+            if "index" in col:
+                data_as_df.drop(columns=col, inplace=True)
+            if "year" in col.lower():
+                data_as_df[col] = data_as_df[col].astype(str)
         if self._backend.isatty:
             try:
                 self._backend.send_table(
-                    df_table=data_as_df.reset_index(),
+                    df_table=data_as_df,
                     title=title
                     or self._obbject._route,  # pylint: disable=protected-access
                     theme=self._charting_settings.table_style,
