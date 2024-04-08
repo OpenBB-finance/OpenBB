@@ -58,11 +58,7 @@ def get_ordered_list_sources(command_path: str) -> List:
     List
         The list of sources for the given command.
     """
-    reference: Dict[str, Dict] = {}
-    if coverage := getattr(obb, "coverage", None):
-        reference = getattr(coverage, "reference", {})
-
-    command_reference = reference.get(command_path, {})
+    command_reference = obb.reference.get("paths", {}).get(command_path, {})
     if command_reference:
         providers = list(command_reference["parameters"].keys())
         return [provider for provider in providers if provider != "standard"]

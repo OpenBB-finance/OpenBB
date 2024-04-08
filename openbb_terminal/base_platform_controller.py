@@ -50,12 +50,10 @@ class PlatformController(BaseController):
         if not (platform_target or translators):
             raise ValueError("Either platform_target or translators must be provided.")
 
-        reference: Dict[str, Dict] = {}
-        if coverage := getattr(obb, "coverage", None):
-            reference = getattr(coverage, "reference", {})
-
         self._translated_target = (
-            ArgparseClassProcessor(target_class=platform_target, reference=reference)
+            ArgparseClassProcessor(
+                target_class=platform_target, reference=obb.reference["paths"]
+            )
             if platform_target
             else DummyTranslation()
         )
