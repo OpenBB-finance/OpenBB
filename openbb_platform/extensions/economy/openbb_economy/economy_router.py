@@ -294,3 +294,25 @@ async def fred_regional(
     The series group ID is found by using `fred_search` and the `series_id` parameter.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CountryProfile",
+    examples=[
+        APIEx(parameters={"provider": "econdb"}),
+        APIEx(
+            description="Enter the country as the full name, or iso code."
+            + " If `latest` is False, the complete history for each series is returned.",
+            parameters={"country": "united_states,jp", "latest": False, "provider": "econdb"}
+        ),
+    ],
+)
+async def country_profile(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a profile of country statistics and economic indicators."""
+    return await OBBject.from_query(Query(**locals()))
+
