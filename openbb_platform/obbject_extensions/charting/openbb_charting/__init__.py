@@ -239,12 +239,10 @@ class Charting:
             If no data is provided the OBBject results will be used.
         """
         data_as_df, _ = self._prepare_data_as_df(data)
-        data_as_df.reset_index(inplace=True)
-        for col in data_as_df.columns.copy():
-            if "index" in col:
-                data_as_df.drop(columns=col, inplace=True)
-            if "year" in col.lower():
-                data_as_df[col] = data_as_df[col].astype(str)
+        if isinstance(data_as_df.index, pd.RangeIndex):
+            data_as_df.reset_index(inplace=True, drop=True)
+        else:
+            data_as_df.reset_index(inplace=True)
         if self._backend.isatty:
             try:
                 self._backend.send_table(
