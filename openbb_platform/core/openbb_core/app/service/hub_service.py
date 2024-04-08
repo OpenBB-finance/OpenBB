@@ -223,6 +223,7 @@ class HubService:
             "API_INTRINIO_KEY": "intrinio_api_key",
             "API_POLYGON_KEY": "polygon_api_key",
             "API_KEY_QUANDL": "nasdaq_api_key",
+            "API_TRADIER_TOKEN": "tradier_api_key",
             "API_ULTIMA_KEY": "ultima_api_key",
         }
 
