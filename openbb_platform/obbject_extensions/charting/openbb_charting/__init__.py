@@ -55,15 +55,16 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """Returns a list of the available indicators."""
+        """Return a list of the available indicators."""
         return ChartIndicators.get_available_indicators()
 
     @classmethod
     def functions(cls):
-        """Returns a list of the available functions."""
+        """Return a list of the available functions."""
         return get_charting_functions()
 
     def _handle_backend(self):
+        """Create and start the backend."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.backend import create_backend, get_backend
 
@@ -124,8 +125,7 @@ class Charting:
         render: bool = True,
         **kwargs,
     ):
-        """
-        Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        """Create a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
 
         This function is used so it can be called at the module level and used out of the box,
         which allows some more flexibility, ease of use and doesn't require the user to know

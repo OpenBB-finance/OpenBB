@@ -1,3 +1,5 @@
+"""Dummy backend for charting to avoid import errors."""
+
 import asyncio
 import warnings
 from queue import Queue
@@ -52,7 +54,7 @@ class DummyBackend:
         return cls.instance
 
     def __init__(self, daemon: bool = True, max_retries: int = 30):
-        """Dummy init to avoid import errors."""
+        """Use cummy init to avoid import errors."""
         self.daemon = daemon
         self.max_retries = max_retries
         try:
@@ -66,14 +68,14 @@ class DummyBackend:
         dotenv.set_key(SETTINGS_ENV_FILE, "PLOT_ENABLE_PYWRY", "0")
 
     def close(self, reset: bool = False):  # pylint: disable=W0613
-        pass
+        """Close the backend."""
 
     def start(self, debug: bool = False):  # pylint: disable=W0613
-        pass
+        """Start the backend."""
 
     def send_outgoing(self, outgoing: dict):
-        pass
+        """Send outgoing data to the backend."""
 
     async def check_backend(self):
-        """Dummy check backend method to avoid errors and revert to browser."""
+        """Check backend method to avoid errors and revert to browser."""
         raise Exception
