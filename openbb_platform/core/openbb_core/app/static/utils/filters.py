@@ -42,5 +42,16 @@ def filter_inputs(
 
                         kwargs[p][field] = new
                         break
+    else:
+        provider = kwargs.get("provider_choices", {}).get("provider")
+        for param_category in ("standard_params", "extra_params"):
+            if param_category in kwargs:
+                for field, value in kwargs[param_category].items():
+                    if isinstance(value, list):
+                        kwargs[param_category][field] = ",".join(map(str, value))
+                    check_single_item(
+                        kwargs[param_category][field],
+                        f"{field} -> multiple items not allowed for '{provider}'",
+                    )
 
     return kwargs

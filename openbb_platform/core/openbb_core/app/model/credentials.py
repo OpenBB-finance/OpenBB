@@ -100,7 +100,7 @@ class Credentials(_Credentials):  # type: ignore
     """Credentials model used to store provider credentials."""
 
     def __repr__(self) -> str:
-        """String representation of the credentials."""
+        """Define the string representation of the credentials."""
         return (
             self.__class__.__name__
             + "\n\n"

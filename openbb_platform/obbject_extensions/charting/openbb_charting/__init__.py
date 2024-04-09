@@ -10,8 +10,10 @@ from typing import (
     List,
     Literal,
     Optional,
+    Tuple,
     Union,
 )
+from warnings import warn
 
 import numpy as np
 import pandas as pd
@@ -23,6 +25,7 @@ from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
 from openbb_charting import charting_router
+from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.query_params import ChartParams, IndicatorsParams
@@ -73,15 +76,21 @@ class Charting:
 
     @classmethod
     def functions(cls):
-        """Returns a list of the available functions."""
+        """Return a list of the available functions."""
         return get_charting_functions()
 
     def _handle_backend(self):
+        """Create and start the backend."""
         # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.backend import create_backend, get_backend
+        from openbb_charting.core.backend import (  # pylint: disable=W0621, W0404
+            create_backend,  # noqa
+            get_backend,  # noqa
+        )
 
         create_backend(self._charting_settings)
-        get_backend().start(debug=self._charting_settings.debug_mode)
+        backend = get_backend()
+        backend.start(debug=self._charting_settings.debug_mode)
+        return backend
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
@@ -96,7 +105,6 @@ class Charting:
         """Returns the ChartQueryParams class for the function the OBBject was created from.
         Without assigning to a variable, it will print the docstring to the console.
         """
-
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
         charting_function = (
@@ -107,6 +115,29 @@ class Charting:
         raise ValueError(
             f"Error: No chart parameters are defined for the route: {charting_function}"
         )
+
+    def _prepare_data_as_df(
+        self, data: Optional[Union[pd.DataFrame, pd.Series]]
+    ) -> Tuple[pd.DataFrame, bool]:
+        """Convert supplied data to a DataFrame."""
+        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
+            bool(data)
+        )
+        index = (
+            data.index.name
+            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
+            else None
+        )
+        data_as_df: pd.DataFrame = (
+            basemodel_to_df(convert_to_basemodel(data), index=index)
+            if has_data
+            else self._obbject.to_dataframe(index=index)
+        )
+        if "date" in data_as_df.columns:
+            data_as_df = data_as_df.set_index("date")
+        if "provider" in data_as_df.columns:
+            data_as_df.drop(columns="provider", inplace=True)
+        return data_as_df, has_data
 
     # pylint: disable=too-many-locals
     def create_line_chart(
@@ -231,7 +262,7 @@ class Charting:
         render: bool = True,
         **kwargs,
     ) -> Union[OpenBBFigure, Figure, None]:
-        """Create a vertical bar chart on a single x-axis with one or more values for the y-axis.
+        """Create a bar chart on a single x-axis with one or more values for the y-axis.
 
         Parameters
         ----------
@@ -356,12 +387,11 @@ class Charting:
         render: bool = True,
         **kwargs,
     ):
-        """
-        Creates an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        """Creates an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        This function is used to populate, or re-populate, the OBBject with a chart using the data within
+        the OBBject or external data supplied via the `data` parameter.
 
-        This function is used so it can be called at the module level and used out of the box,
-        which allows some more flexibility, ease of use and doesn't require the user to know
-        about the PlotlyTA class.
+        This function modifies the original OBBject by overwriting the existing chart.
 
         Parameters
         ----------
@@ -405,29 +435,9 @@ class Charting:
         >>> indicators = res.charting.indicators()
         >>> indicators?
         """
-        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
-            data
-        )
-
-        index = (
-            data.index.name
-            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
-            else index
-        )
-        data_as_df: pd.DataFrame = (
-            basemodel_to_df(convert_to_basemodel(data), index=index)
-            if has_data
-            else self._obbject.to_dataframe()
-        )
-        if "date" in data_as_df.columns:
-            data_as_df = data_as_df.set_index("date")
-
-        if index is not None and index in data_as_df.columns:
-            data_as_df = data_as_df.set_index(index)
-
+        data_as_df, has_data = self._prepare_data_as_df(data)  # type: ignore
         if target is not None:
             data_as_df = data_as_df[[target]]
-
         if (
             hasattr(self._obbject, "_standard_params")
             and self._obbject._standard_params  # pylint: disable=protected-access
@@ -435,7 +445,6 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
-
         kwargs["candles"] = candles
         kwargs["volume"] = volume
         kwargs["volume_ticks_x"] = volume_ticks_x
@@ -446,7 +455,6 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-
         try:
             if has_data:
                 self.show(data=data_as_df, render=render, **kwargs)
@@ -465,3 +473,45 @@ class Charting:
                 raise RuntimeError(
                     "Failed to automatically create a generic chart with the data provided."
                 ) from e
+
+    def table(
+        self,
+        data: Optional[Union[pd.DataFrame, pd.Series]] = None,
+        title: str = "",
+    ):
+        """
+        Display an interactive table.
+
+        Parameters
+        ----------
+        data : Optional[Union[pd.DataFrame, pd.Series]], optional
+            Data to be plotted, by default None.
+            If no data is provided the OBBject results will be used.
+        title : str, optional
+            Title of the table, by default "".
+        """
+        data_as_df, _ = self._prepare_data_as_df(data)
+        if isinstance(data_as_df.index, pd.RangeIndex):
+            data_as_df.reset_index(inplace=True, drop=True)
+        else:
+            data_as_df.reset_index(inplace=True)
+        if self._backend.isatty:
+            try:
+                self._backend.send_table(
+                    df_table=data_as_df,
+                    title=title
+                    or self._obbject._route,  # pylint: disable=protected-access
+                    theme=self._charting_settings.table_style,
+                )
+            except Exception as e:
+                warn(f"Failed to show figure with backend. {e}")
+
+        else:
+            from plotly import (  # pylint:disable=import-outside-toplevel
+                optional_imports,
+            )
+            ipython_display = optional_imports.get_module("IPython.display")
+            if ipython_display:
+                ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
+            else:
+                warn("IPython.display is not available.")

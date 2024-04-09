@@ -1,3 +1,5 @@
+"""Volume technical indicators."""
+
 import pandas as pd
 
 from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -21,7 +23,7 @@ class Volume(PltTA):
 
     @indicator()
     def plot_ad(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
-        """Adds ad to plotly figure"""
+        """Add ad to plotly figure."""
         ad_col = columns_regex(df_ta, "AD")[0]
         fig.add_scatter(
             name="AD",
@@ -63,7 +65,7 @@ class Volume(PltTA):
 
     @indicator()
     def plot_adosc(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
-        """Adds adosc to plotly figure"""
+        """Add adosc to plotly figure."""
         ad_col = columns_regex(df_ta, "ADOSC")[0]
         fig.add_scatter(
             name="ADOSC",
@@ -93,7 +95,7 @@ class Volume(PltTA):
 
     @indicator()
     def plot_obv(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
-        """Adds obv to plotly figure"""
+        """Add obv to plotly figure."""
         obv_col = columns_regex(df_ta, "OBV")[0]
         fig.add_scatter(
             name="OBV",

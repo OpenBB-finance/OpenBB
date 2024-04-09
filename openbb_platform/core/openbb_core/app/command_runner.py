@@ -39,6 +39,7 @@ class ExecutionContext:
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> None:
+        """Initialize the execution context."""
         self.command_map = command_map
         self.route = route
         self.system_settings = system_settings

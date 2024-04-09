@@ -29,7 +29,7 @@ def validate(
     """Validate function calls."""
 
     def decorated(f: Callable[P, R]):
-        """Decorated function."""
+        """Use for decorating functions."""
 
         @wraps(f)
         def wrapper(*f_args, **f_kwargs):

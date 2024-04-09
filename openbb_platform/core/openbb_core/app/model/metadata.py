@@ -1,3 +1,5 @@
+"""Metadata model."""
+
 from datetime import datetime
 from inspect import isclass
 from typing import Any, Dict, Optional, Sequence, Union
@@ -10,6 +12,8 @@ from openbb_core.provider.abstract.data import Data
 
 
 class Metadata(BaseModel):
+    """Metadata of a command execution."""
+
     arguments: Dict[str, Any] = Field(
         default_factory=dict,
         description="Arguments of the command.",
@@ -21,6 +25,7 @@ class Metadata(BaseModel):
     timestamp: datetime = Field(description="Execution starting timestamp.")
 
     def __repr__(self) -> str:
+        """Return string representation."""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
@@ -29,6 +34,7 @@ class Metadata(BaseModel):
     @classmethod
     def scale_arguments(cls, v):
         """Scale arguments.
+
         This function is meant to limit the size of the input arguments of a command.
         If the type is one of the following: `Data`, `List[Data]`, `DataFrame`, `List[DataFrame]`,
         `Series`, `List[Series]` or `ndarray`, the value of the argument is swapped by a dictionary

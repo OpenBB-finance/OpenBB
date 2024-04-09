@@ -1,4 +1,4 @@
-"""TMX Insider Trading Model"""
+"""TMX Insider Trading Model."""
 
 # pylint: disable=unused-argument
 import json
@@ -17,7 +17,7 @@ from pydantic import Field, field_validator
 
 
 class TmxInsiderTradingQueryParams(InsiderTradingQueryParams):
-    """TMX Insider Trading Query Params"""
+    """TMX Insider Trading Query Params."""
 
     summary: bool = Field(
         default=False,
@@ -26,7 +26,7 @@ class TmxInsiderTradingQueryParams(InsiderTradingQueryParams):
 
 
 class TmxInsiderTradingData(InsiderTradingData):
-    """TMX Insider Trading Data"""
+    """TMX Insider Trading Data."""
 
     period: str = Field(
         description="The period of the activity. Bucketed by three, six, and twelve months."
@@ -66,6 +66,7 @@ class TmxInsiderTradingData(InsiderTradingData):
     @field_validator("period", mode="before", check_fields=False)
     @classmethod
     def period_to_snake_case(cls, v):
+        """Convert the period to snake case."""
         return to_snake_case(v) if v else None
 
 
@@ -89,7 +90,6 @@ class TmxInsiderTradingFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         results = []
         user_agent = get_random_agent()
         symbol = (

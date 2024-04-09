@@ -49,6 +49,7 @@ test_data = [
 def test_filter_inputs(
     input_data,
 ):
+    """Test the filter_inputs function."""
     result = filter_inputs(data=input_data, data_processing=True)
 
     # Assert that the result is a dictionary

@@ -1,3 +1,5 @@
+"""Overlap technical indicators plugin for Plotly TA."""
+
 import warnings
 
 import pandas as pd
@@ -13,14 +15,14 @@ from openbb_charting.core.plotly_ta.data_classes import (
 
 
 class Overlap(PltTA):
-    """Overlap technical indicators"""
+    """Overlap technical indicators."""
 
     __inchart__ = ["vwap"]
     __ma_mode__ = ["sma", "ema", "wma", "hma", "zlma", "rma"]
 
     @indicator()
     def plot_ma(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds moving average to plotly figure"""
+        """Add moving average to plotly figure."""
         check_ma = [ma for ma in self.ma_mode if ma in self.indicators.get_active_ids()]
         if check_ma:
             for ma in check_ma:
@@ -66,7 +68,7 @@ class Overlap(PltTA):
 
     @indicator()
     def plot_vwap(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds vwap to plotly figure"""
+        """Add vwap to plotly figure."""
         fig.add_scatter(
             name=columns_regex(df_ta, "VWAP_")[0],
             mode="lines",
