@@ -23,6 +23,8 @@ class FinvizPriceTargetQueryParams(PriceTargetQueryParams):
     Source: https://finviz.com/quote.ashx?
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FinvizPriceTargetData(PriceTargetData):
     """Finviz Price Target Data."""

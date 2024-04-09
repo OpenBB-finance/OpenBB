@@ -29,6 +29,7 @@ openbb-tiingo = { path = "./providers/tiingo", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
 openbb-yfinance = { path = "./providers/yfinance", develop = true }
 
+openbb-commodity = { path = "./extensions/commodity", develop = true }
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-derivatives = { path = "./extensions/derivatives", develop = true }
@@ -51,9 +52,10 @@ openbb-government-us = { path = "./providers/government_us", optional = true, de
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
+openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
-openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
+openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }

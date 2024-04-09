@@ -1,7 +1,7 @@
 """Equity Ownership Standard Model."""
 
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -15,6 +15,8 @@ from openbb_core.provider.utils.descriptions import (
 
 class EquityOwnershipQueryParams(QueryParams):
     """Equity Ownership Query."""
+
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
@@ -33,11 +35,9 @@ class EquityOwnershipQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def upper_symbol(cls, v: str) -> str:
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return v.upper()
 
 
 class EquityOwnershipData(Data):

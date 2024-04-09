@@ -24,12 +24,10 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
-    ibkr_view,
     quandl_view,
     sec_view,
     shortinterest_view,
     stockgrid_view,
-    stocksera_view,
     yahoofinance_view,
 )
 
@@ -42,7 +40,6 @@ class DarkPoolShortsController(StockBaseController):
     CHOICES_COMMANDS = [
         "load",
         "shorted",
-        "ctb",
         "hsi",
         "prom",
         "pos",
@@ -88,7 +85,6 @@ class DarkPoolShortsController(StockBaseController):
         mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_cmd("shorted")
-        mt.add_cmd("ctb")
         mt.add_cmd("hsi")
         mt.add_cmd("prom")
         mt.add_cmd("pos")
@@ -133,48 +129,6 @@ class DarkPoolShortsController(StockBaseController):
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
                 ),
             )
-
-    @log_start_end(log=logger)
-    def call_ctb(self, other_args: List[str]):
-        """Process CTB command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ctb",
-            description="Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]",
-        )
-        parser.add_argument(
-            "-n",
-            "--number",
-            action="store",
-            dest="number",
-            type=check_int_range(1, 10000),
-            default=20,
-            help="Number of records to retrieve.",
-        )
-        parser.add_argument(
-            "--raw",
-            action="store_true",
-            default=False,
-            dest="raw",
-            help="Print raw data.",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            if ns_parser.source == "InteractiveBrokers":
-                ibkr_view.display_cost_to_borrow(
-                    limit=ns_parser.number,
-                    export=ns_parser.export,
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
-            elif ns_parser.source == "Stocksera":
-                stocksera_view.cost_to_borrow(
-                    self.ticker, limit=ns_parser.number, raw=ns_parser.raw
-                )
 
     @log_start_end(log=logger)
     def call_hsi(self, other_args: List[str]):

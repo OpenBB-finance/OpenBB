@@ -25,7 +25,7 @@ class ROUTER_crypto_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: fmp, polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -43,15 +43,15 @@ class ROUTER_crypto_price(Container):
         provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Historical Price. Cryptocurrency historical price data.
+        """Get historical price data for cryptocurrency pair(s) within a provider.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: fmp, polygon, yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
             The provider to use for the query, by default None.
@@ -59,18 +59,12 @@ class ROUTER_crypto_price(Container):
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: fmp, tiingo, yfinance)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Data granularity. (provider: fmp, polygon, tiingo, yfinance)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
         limit : int
             The number of data entries to return. (provider: polygon)
-        adjusted : bool
-            Whether the data is adjusted. (provider: polygon)
         exchanges : Optional[List[str]]
             To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)
         period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
@@ -127,19 +121,30 @@ class ROUTER_crypto_price(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.price.historical(symbol="BTCUSD")
+        >>> obb.crypto.price.historical("BTCUSD", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")
+        >>> obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical(["BTCUSD", "ETH-USD"], start_date="2024-01-01", end_date="2024-01-31")
         """  # noqa: E501
 
         return self._run(
             "/crypto/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/crypto/price/historical",
+                        ("fmp", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["fmp", "polygon", "yfinance"]}
+                },
             )
         )

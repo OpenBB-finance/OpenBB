@@ -1,7 +1,8 @@
 """Nasdaq CFTC Commitment of Traders Reports Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
-    date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Literal, Optional
@@ -11,11 +12,12 @@ import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot import COTData, COTQueryParams
 from openbb_core.provider.utils.helpers import to_snake_case
+from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import CFTC
 from pydantic import Field, field_validator
 
 
-class NasdaqCotQueryParams(COTQueryParams):
+class NasdaqCotQueryParams(COTQueryParams, DataLinkQueryParams):
     """Get CFTC Commitment of Traders Report.
 
     Source: https://data.nasdaq.com/data/CFTC-commodity-futures-trading-commission-reports/documentation
@@ -74,17 +76,6 @@ class NasdaqCotQueryParams(COTQueryParams):
 
             CHG = Change in Positions. Only valid when data_type is "CITS".
             """,
-        default=None,
-    )
-    start_date: Optional[dateType] = Field(
-        description="The start date of the time series. Defaults to all.", default=None
-    )
-    end_date: Optional[dateType] = Field(
-        description="The end date of the time series. Defaults to the most recent data.",
-        default=None,
-    )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
-        description="Transform the data as w/w difference, percent change, cumulative, or normalize.",
         default=None,
     )
 
@@ -175,7 +166,7 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
             return data.to_dict("records")
 
         except Exception as e:
-            raise RuntimeError(e)
+            raise RuntimeError(e) from e
 
     @staticmethod
     def transform_data(

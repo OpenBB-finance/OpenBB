@@ -62,9 +62,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
                 The maturity.
@@ -101,14 +101,18 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.commercial_paper(maturity="30d", category="financial", grade="aa")
+            >>> obb.fixedincome.corporate.commercial_paper(maturity="15d")
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/corporate/commercial_paper",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/corporate/commercial_paper",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -125,7 +129,7 @@ class ROUTER_fixedincome_corporate(Container):
     def hqm(
         self,
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         yield_curve: Annotated[
@@ -145,7 +149,7 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            date : Optional[datetime.date]
+            date : Union[datetime.date, None, str]
                 A specific date to get data for.
             yield_curve : Literal['spot', 'par']
                 The yield curve type.
@@ -184,14 +188,18 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.hqm(yield_curve="spot")
+            >>> obb.fixedincome.corporate.hqm(yield_curve="par")
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/corporate/hqm",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/corporate/hqm",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "date": date,
@@ -234,9 +242,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
                 The type of series.
@@ -277,14 +285,18 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.ice_bofa(index_type="yield")
+            >>> obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/corporate/ice_bofa",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/corporate/ice_bofa",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -327,9 +339,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             index_type : Literal['aaa', 'baa']
                 The type of series.
@@ -364,14 +376,18 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.moody(index_type="aaa")
+            >>> obb.fixedincome.corporate.moody(index_type="baa")
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/corporate/moody",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/corporate/moody",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -417,9 +433,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : List[float]
                 The maturities in years.
@@ -454,14 +470,18 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.spot_rates(maturity=[10.0], category=['spot_rate'])
+            >>> obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/corporate/spot_rates",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/corporate/spot_rates",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

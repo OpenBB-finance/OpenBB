@@ -20,7 +20,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, SerializeAsAny, Tag, create_model
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
@@ -186,7 +186,7 @@ class CommandValidator:
                 "    provider_choices: ProviderChoices,\n"
                 "    standard_params: StandardParams,\n"
                 "    extra_params: ExtraParams,\n"
-                ") -> OBBject[BaseModel]:\n"
+                ") -> OBBject:\n"
                 '    """World News. Global news data."""\n'
                 "    return await OBBject.from_query(Query(**locals()))\033[0m"
             )
@@ -357,9 +357,10 @@ class SignatureInspector:
 
             func = cls.inject_return_type(
                 func=func,
-                inner_type=provider_interface.return_schema[model],
-                outer_type=provider_interface.return_map[model],
+                return_map=provider_interface.return_map.get(model),
+                model=model,
             )
+
         else:
             func = cls.polish_return_schema(func)
             if (
@@ -376,24 +377,58 @@ class SignatureInspector:
 
     @staticmethod
     def inject_return_type(
-        func: Callable[P, OBBject], inner_type: Any, outer_type: Any
+        func: Callable[P, OBBject],
+        return_map: Dict[str, dict],
+        model: str,
     ) -> Callable[P, OBBject]:
         """
         Inject full return model into the function.
-
         Also updates __name__ and __doc__ for API schemas.
         """
-        ReturnModel = inner_type
-        outer_type_origin = get_origin(outer_type)
 
-        if outer_type_origin == list:
-            ReturnModel = List[inner_type]  # type: ignore
-        elif outer_type_origin == Union:
-            ReturnModel = Union[List[inner_type], inner_type]  # type: ignore
+        results: Dict[str, Any] = {"list_type": [], "dict_type": []}
 
-        return_type = OBBject[ReturnModel]  # type: ignore
-        return_type.__name__ = f"OBBject[{inner_type.__name__}]"
-        return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
+        for provider, return_data in return_map.items():
+            if return_data["is_list"]:
+                results["list_type"].append(
+                    Annotated[return_data["model"], Tag(provider)]
+                )
+                continue
+
+            results["dict_type"].append(Annotated[return_data["model"], Tag(provider)])
+
+        list_models, union_models = results.values()
+
+        return_types = []
+        for t, v in results.items():
+            if not v:
+                continue
+
+            inner_type = SerializeAsAny[
+                Annotated[
+                    Union[tuple(v)],  # type: ignore
+                    Field(discriminator="provider"),
+                ]
+            ]
+            return_types.append(List[inner_type] if t == "list_type" else inner_type)
+
+        return_type = create_model(
+            f"OBBject_{model}",
+            __base__=OBBject,
+            __doc__=f"OBBject with results of type {model}",
+            results=(
+                Optional[Union[tuple(return_types)]],  # type: ignore
+                Field(
+                    None,
+                    description="Serializable results.",
+                    json_schema_extra={
+                        "model": model,
+                        "has_list": bool(len(list_models) > 0),
+                        "is_union": bool(list_models and union_models),
+                    },
+                ),
+            ),
+        )
 
         func.__annotations__["return"] = return_type
         return func

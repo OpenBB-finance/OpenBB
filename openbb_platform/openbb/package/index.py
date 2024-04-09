@@ -4,7 +4,7 @@ import datetime
 from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
-from openbb_core.app.deprecation import OpenBBDeprecatedSince41
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -28,7 +28,7 @@ class ROUTER_index(Container):
     def available(
         self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
-        """Available Indices. Available indices for a given provider.
+        """All indices available from a given provider.
 
         Parameters
         ----------
@@ -69,14 +69,18 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.available()
+        >>> obb.index.available(provider="yfinance").to_df()
         """  # noqa: E501
 
         return self._run(
             "/index/available",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/available",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -93,7 +97,7 @@ class ROUTER_index(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents. Constituents of an index.
+        """Index Constituents.
 
         Parameters
         ----------
@@ -140,14 +144,20 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="^IBEX")
+        >>> obb.index.constituents("dowjones", provider="fmp").to_df()
+        >>> #### Providers other than FMP will use the ticker symbol. ####
+        >>> obb.index.constituents("BEP50P", provider="cboe").to_df()
         """  # noqa: E501
 
         return self._run(
             "/index/constituents",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/constituents",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "index": index,
@@ -158,14 +168,16 @@ class ROUTER_index(Container):
 
     @validate
     @deprecated(
-        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.5.",
-        category=OpenBBDeprecatedSince41,
+        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
     )
     def market(
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: yfinance."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -186,11 +198,11 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -274,7 +286,7 @@ class ROUTER_index(Container):
 
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint is deprecated since v4.1 and will be removed in v4.3; Use `/index/price/historical` instead.",
+            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
             category=DeprecationWarning,
             stacklevel=2,
         )
@@ -283,14 +295,19 @@ class ROUTER_index(Container):
             "/index/market",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/market",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )
 

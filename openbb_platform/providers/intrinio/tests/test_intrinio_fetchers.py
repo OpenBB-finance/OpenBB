@@ -88,7 +88,7 @@ def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL"}
+    params = {"symbol": "AAPL"}
 
     fetcher = IntrinioCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -192,11 +192,11 @@ def test_intrinio_search_attributes(credentials=test_credentials):
 def test_intrinio_historical_attributes(credentials=test_credentials):
     params = {
         "provider": "intrinio",
-        "symbol": "AAPL",
-        "tag": "ebit",
+        "symbol": "AAPL,MSFT",
+        "tag": "ebit,marketcap",
         "frequency": "yearly",
         "limit": 1000,
-        "type": None,
+        "tag_type": None,
         "start_date": date(2013, 1, 1),
         "end_date": date(2023, 1, 1),
         "sort": "desc",
@@ -211,8 +211,8 @@ def test_intrinio_historical_attributes(credentials=test_credentials):
 def test_intrinio_latest_attributes(credentials=test_credentials):
     params = {
         "provider": "intrinio",
-        "symbol": "AAPL",
-        "tag": "ceo",
+        "symbol": "AAPL,MSFT",
+        "tag": "ceo,marketcap",
     }
 
     fetcher = IntrinioLatestAttributesFetcher()
@@ -247,8 +247,8 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
 def test_intrinio_index_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "DJI",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 6, 6),
+        "start_date": date(2024, 1, 1),
+        "end_date": date(2024, 2, 5),
     }
 
     fetcher = IntrinioIndexHistoricalFetcher()

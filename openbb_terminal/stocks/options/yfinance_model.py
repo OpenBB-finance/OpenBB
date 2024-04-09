@@ -91,7 +91,7 @@ def get_option_chain(symbol: str, expiry: str):
 
     yf_ticker = yf.Ticker(symbol)
     try:
-        chain = yf_ticker.option_chain(expiry)
+        chain = yf_ticker.option_chain(expiry)[0]
     except Exception:
         console.print(f"[red]Error: Expiration {expiry} cannot be found.[/red]")
         chain = pd.DataFrame()

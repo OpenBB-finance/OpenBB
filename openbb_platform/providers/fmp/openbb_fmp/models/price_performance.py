@@ -18,6 +18,8 @@ class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPPricePerformanceData(RecentPerformanceData):
     """FMP Price Performance Data."""
@@ -40,9 +42,10 @@ class FMPPricePerformanceData(RecentPerformanceData):
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Replace zero with None and convert percents to normalized values."""
-        for k, v in values.items():
-            if k != "symbol":
-                values[k] = None if v == 0 else float(v) / 100
+        if isinstance(values, dict):
+            for k, v in values.items():
+                if k != "symbol":
+                    values[k] = None if v == 0 else float(v) / 100
         return values
 
 

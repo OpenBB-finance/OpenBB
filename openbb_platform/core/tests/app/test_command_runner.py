@@ -1,6 +1,6 @@
 from inspect import Parameter
 from typing import Dict, List
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 from openbb_core.app.command_runner import (
@@ -361,30 +361,15 @@ async def test_static_command_runner_execute_func(
     assert mock_chart.called_once()
 
 
-@patch("openbb_core.app.command_runner.ChartingService.chart")
-def test_static_command_runner_chart(mock_charting_service_chart, execution_context):
-    """Test chart."""
+def test_static_command_runner_chart():
+    """Test _chart method when charting is in obbject.accessors."""
+    mock_obbject = Mock()
+    mock_obbject.accessors = ["charting"]
+    mock_obbject.charting.show = Mock()
 
-    class MockOBBject:
-        """Mock OBBject"""
+    StaticCommandRunner._chart(mock_obbject)  # pylint: disable=protected-access
 
-        def __init__(self, results):
-            self.results = results
-            self.chart = {}
-
-    mock_charting_service_chart.return_value = {"mock": "chart"}
-    mock_obbject = MockOBBject(results=[1, 2, 3, 4])
-
-    StaticCommandRunner._chart(
-        obbject=mock_obbject,
-        user_settings=execution_context.user_settings,
-        system_settings=execution_context.system_settings,
-        route="mock/route",
-    )
-
-    assert mock_charting_service_chart.called_once()
-    assert mock_obbject.results == [1, 2, 3, 4]
-    assert mock_obbject.chart == {"mock": "chart"}
+    mock_obbject.charting.show.assert_called_once()
 
 
 @pytest.mark.asyncio

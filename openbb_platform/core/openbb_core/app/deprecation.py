@@ -6,6 +6,8 @@ This implementation was inspired from Pydantic's specific warnings and modified 
 
 from typing import Optional, Tuple
 
+from openbb_core.app.version import VERSION, get_major_minor
+
 
 class DeprecationSummary(str):
     """A string subclass that can be used to store deprecation metadata."""
@@ -45,13 +47,13 @@ class OpenBBDeprecationWarning(DeprecationWarning):
         self,
         message: str,
         *args: object,
-        since: Tuple[int, int],
+        since: Optional[Tuple[int, int]] = None,
         expected_removal: Optional[Tuple[int, int]] = None,
     ) -> None:
         super().__init__(message, *args)
         self.message = message.rstrip(".")
-        self.since = since
-        self.expected_removal = expected_removal or (since[0] + 1, 0)
+        self.since = since or get_major_minor(VERSION)
+        self.expected_removal = expected_removal or (self.since[0] + 1, 0)
         self.long_message = (
             f"{self.message}. Deprecated in OpenBB Platform V{self.since[0]}.{self.since[1]}"
             f" to be removed in V{self.expected_removal[0]}.{self.expected_removal[1]}."

@@ -10,9 +10,8 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field, field_validator
-
-from ..utils.helpers import get_data_many
 
 
 class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
@@ -21,6 +20,13 @@ class TiingoWorldNewsQueryParams(WorldNewsQueryParams):
     Source: https://www.tiingo.com/documentation/news
     """
 
+    __alias_dict__ = {
+        "start_date": "startDate",
+        "end_date": "endDate",
+    }
+    offset: Optional[int] = Field(
+        default=0, description="Page offset, used in conjunction with limit."
+    )
     source: Optional[str] = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
@@ -89,6 +95,7 @@ class TiingoWorldNewsFetcher(
 
         return get_data_many(url)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any

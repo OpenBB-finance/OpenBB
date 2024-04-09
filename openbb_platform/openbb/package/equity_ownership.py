@@ -26,8 +26,7 @@ class ROUTER_equity_ownership(Container):
     def insider_trading(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -144,10 +143,14 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/insider_trading",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/insider_trading",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -158,8 +161,7 @@ class ROUTER_equity_ownership(Container):
     def institutional(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
@@ -298,10 +300,14 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/institutional",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/institutional",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -311,11 +317,10 @@ class ROUTER_equity_ownership(Container):
     def major_holders(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         page: Annotated[
@@ -331,7 +336,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None, str]
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.
@@ -445,10 +450,14 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/major_holders",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/major_holders",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "date": date,
                     "page": page,
                 },
@@ -461,18 +470,20 @@ class ROUTER_equity_ownership(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: yfinance."
+            ),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Share Statistics. Share statistics for a given company.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: yfinance.
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -482,7 +493,7 @@ class ROUTER_equity_ownership(Container):
         OBBject
             results : List[ShareStatistics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -509,6 +520,26 @@ class ROUTER_equity_ownership(Container):
             Total number of shares of a publicly-traded company, adjusted for splits. (provider: intrinio)
         public_float : Optional[float]
             Aggregate market value of the shares of a publicly-traded company. (provider: intrinio)
+        implied_shares_outstanding : Optional[int]
+            Implied Shares Outstanding of common equity, assuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
+        short_interest : Optional[int]
+            Number of shares that are reported short. (provider: yfinance)
+        short_percent_of_float : Optional[float]
+            Percentage of shares that are reported short, as a normalized percent. (provider: yfinance)
+        days_to_cover : Optional[float]
+            Number of days to repurchase the shares as a ratio of average daily volume (provider: yfinance)
+        short_interest_prev_month : Optional[int]
+            Number of shares that were reported short in the previous month. (provider: yfinance)
+        short_interest_prev_date : Optional[date]
+            Date of the previous month's report. (provider: yfinance)
+        insider_ownership : Optional[float]
+            Percentage of shares held by insiders, as a normalized percent. (provider: yfinance)
+        institution_ownership : Optional[float]
+            Percentage of shares held by institutions, as a normalized percent. (provider: yfinance)
+        institution_float_ownership : Optional[float]
+            Percentage of float held by institutions, as a normalized percent. (provider: yfinance)
+        institutions_count : Optional[int]
+            Number of institutions holding shares. (provider: yfinance)
 
         Example
         -------
@@ -520,11 +551,16 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/share_statistics",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/share_statistics",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )

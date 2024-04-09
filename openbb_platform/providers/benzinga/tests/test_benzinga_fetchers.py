@@ -1,4 +1,5 @@
 import pytest
+from openbb_benzinga.models.analyst_search import BenzingaAnalystSearchFetcher
 from openbb_benzinga.models.company_news import BenzingaCompanyNewsFetcher
 from openbb_benzinga.models.price_target import BenzingaPriceTargetFetcher
 from openbb_benzinga.models.world_news import BenzingaWorldNewsFetcher
@@ -21,7 +22,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_benzinga_world_news_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"limit": 20}
 
     fetcher = BenzingaWorldNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -30,7 +31,7 @@ def test_benzinga_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_benzinga_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = BenzingaCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -42,5 +43,14 @@ def test_benzinga_price_target_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = BenzingaPriceTargetFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_benzinga_analyst_search_fetcher(credentials=test_credentials):
+    params = {"firm_name": "Barclays"}
+
+    fetcher = BenzingaAnalystSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

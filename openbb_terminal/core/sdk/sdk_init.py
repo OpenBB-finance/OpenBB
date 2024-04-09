@@ -20,8 +20,6 @@ import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
 import openbb_terminal.forex.oanda.oanda_model as forex_oanda_model
 import openbb_terminal.forex.oanda.oanda_view as forex_oanda_view
-import openbb_terminal.stocks.options.hedge.hedge_model as stocks_options_hedge_model
-import openbb_terminal.stocks.options.hedge.hedge_view as stocks_options_hedge_view
 import openbb_terminal.stocks.quantitative_analysis.beta_model as stocks_qa_beta_model
 import openbb_terminal.stocks.quantitative_analysis.beta_view as stocks_qa_beta_view
 
@@ -31,10 +29,6 @@ import openbb_terminal.stocks.quantitative_analysis.factors_view as stocks_qa_fa
 
 # Keys
 from openbb_terminal import keys_model
-from openbb_terminal.alternative.covid import (
-    covid_model as alt_covid_model,
-    covid_view as alt_covid_view,
-)
 
 # Common
 from openbb_terminal.common import (
@@ -305,7 +299,6 @@ from openbb_terminal.stocks.comparison_analysis import (
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_model as stocks_dps_finra_model,
     finra_view as stocks_dps_finra_view,
-    ibkr_model as stocks_dps_ibkr_model,
     quandl_model as stocks_dps_quandl_model,
     quandl_view as stocks_dps_quandl_view,
     sec_model as stocks_dps_sec_model,
@@ -313,8 +306,6 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     shortinterest_model as stocks_dps_shortinterest_model,
     stockgrid_model as stocks_dps_stockgrid_model,
     stockgrid_view as stocks_dps_stockgrid_view,
-    stocksera_model as stocks_dps_stocksera_model,
-    stocksera_view as stocks_dps_stocksera_view,
     yahoofinance_model as stocks_dps_yahoofinance_model,
 )
 

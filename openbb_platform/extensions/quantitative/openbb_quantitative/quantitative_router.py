@@ -15,7 +15,7 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from .helpers import get_fama_raw
+from .helpers import get_fama_raw, validate_window
 from .models import (
     ADFTestModel,
     CAPMModel,
@@ -30,7 +30,13 @@ from .models import (
 router = Router(prefix="")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.normality(data=stock_data, target='close')",
+    ],
+)
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
@@ -74,9 +80,32 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     return OBBject(results=norm_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.capm(data=stock_data, target='close')",
+    ],
+)
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
-    """Get Capital Asset Pricing Model."""
+    """Get Capital Asset Pricing Model (CAPM).
+
+    CAPM offers a streamlined way to assess the expected return on an investment while accounting for its risk relative
+    to the market. It's a cornerstone of modern financial theory that helps investors understand the trade-off between
+    risk and return, guiding more informed investment choices.
+
+    Parameters
+    ----------
+    data : List[Data]
+        Time series data.
+    target : str
+        Target column name.
+
+    Returns
+    -------
+    OBBject[CAPMModel]
+        CAPM model summary.
+    """
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
@@ -108,7 +137,13 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.omega_ratio(data=stock_data, target='close')",
+    ],
+)
 def omega_ratio(
     data: List[Data],
     target: str,
@@ -116,6 +151,10 @@ def omega_ratio(
     threshold_end: float = 1.5,
 ) -> OBBject[List[OmegaModel]]:
     """Calculate the Omega Ratio.
+
+    The Omega Ratio is a sophisticated metric that goes beyond traditional performance measures by considering the
+    probability of achieving returns above a given threshold. It offers a more nuanced view of risk and reward,
+    focusing on the likelihood of success rather than just average outcomes.
 
     Parameters
     ----------
@@ -156,9 +195,24 @@ def omega_ratio(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
-def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get the Kurtosis.
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.kurtosis(data=stock_data, target='close', window=252)",
+    ],
+)
+def kurtosis(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get the rolling Kurtosis.
+
+    Kurtosis provides insights into the shape of the data's distribution, particularly the heaviness of its tails.
+    Kurtosis is a statistical measure that reveals whether the data points tend to cluster around the mean or if
+    outliers are more common than a normal distribution would suggest. A higher kurtosis indicates more data points are
+    found in the tails, suggesting potential volatility or risk.
+    This analysis is crucial for understanding the underlying characteristics of your data, helping to anticipate
+    extreme events or anomalies over a specified window of time.
 
     Parameters
     ----------
@@ -168,6 +222,8 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
+    index : str, optional
+        Index column name, by default "date"
 
     Returns
     -------
@@ -176,15 +232,25 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.kurtosis(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.kurtosis(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.unitroot_test(data=stock_data, target='close')",
+        'obb.quantitative.unitroot_test(data=stock_data, target="close", fuller_reg="ct", kpss_reg="ct")',
+    ],
+)
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -193,8 +259,13 @@ def unitroot_test(
 ) -> OBBject[UnitRootModel]:
     """Get Unit Root Test.
 
-    Augmented Dickey-Fuller test for unit root.
-    Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
+    This function applies two renowned tests to assess whether your data series is stationary or if it contains a unit
+    root, indicating it may be influenced by time-based trends or seasonality. The Augmented Dickey-Fuller (ADF) test
+    helps identify the presence of a unit root, suggesting that the series could be non-stationary and potentially
+    unpredictable over time. On the other hand, the Kwiatkowski-Phillips-Schmidt-Shin (KPSS) test checks for the
+    stationarity of the series, where failing to reject the null hypothesis indicates a stable, stationary series.
+    Together, these tests provide a comprehensive view of your data's time series properties, essential for
+    accurate modeling and forecasting.
 
     Parameters
     ----------
@@ -238,11 +309,29 @@ def unitroot_test(
     return OBBject(results=unitroot_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.sharpe_ratio(data=stock_data, target='close')",
+        "obb.quantitative.sharpe_ratio(data=stock_data, target='close', rfr=0.01, window=126)",
+    ],
+)
 def sharpe_ratio(
-    data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
+    data: List[Data],
+    target: str,
+    rfr: float = 0.0,
+    window: PositiveInt = 252,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sharpe Ratio.
+    """Get Rolling Sharpe Ratio.
+
+    This function calculates the Sharpe Ratio, a metric used to assess the return of an investment compared to its risk.
+    By factoring in the risk-free rate, it helps you understand how much extra return you're getting for the extra
+    volatility that you endure by holding a riskier asset. The Sharpe Ratio is essential for investors looking to
+    compare the efficiency of different investments, providing a clear picture of potential rewards in relation to their
+    risks over a specified period. Ideal for gauging the effectiveness of investment strategies, it offers insights into
+    optimizing your portfolio for maximum return on risk.
 
     Parameters
     ----------
@@ -254,33 +343,52 @@ def sharpe_ratio(
         Risk-free rate, by default 0.0
     window : PositiveInt, optional
         Window size, by default 252
+    index : str, optional
 
     Returns
     -------
     OBBject[List[Data]]
         Sharpe ratio.
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
+    series_target.name = f"sharpe_{window}"
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
-    results = ((returns - rfr) / std).dropna()
+    results = ((returns - rfr) / std).dropna().reset_index(drop=False)
 
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.sortino_ratio(data=stock_data, target='close')",
+        "obb.quantitative.sortino_ratio(data=stock_data, target='close', target_return=0.01, window=126, adjusted=True)",
+    ],
+)
 def sortino_ratio(
     data: List[Data],
     target: str,
     target_return: float = 0.0,
     window: PositiveInt = 252,
     adjusted: bool = False,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sortino Ratio.
+    """Get rolling Sortino Ratio.
+
+    The Sortino Ratio enhances the evaluation of investment returns by distinguishing harmful volatility
+    from total volatility. Unlike other metrics that treat all volatility as risk, this command specifically assesses
+    the volatility of negative returns relative to a target or desired return.
+    It's particularly useful for investors who are more concerned with downside risk than with overall volatility.
+    By calculating the Sortino Ratio, investors can better understand the risk-adjusted return of their investments,
+    focusing on the likelihood and impact of negative returns.
+    This approach offers a more nuanced tool for portfolio optimization, especially in strategies aiming
+    to minimize the downside.
 
     For method & terminology see:
     http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
@@ -297,20 +405,25 @@ def sortino_ratio(
         Window size, by default 252
     adjusted : bool, optional
         Adjust sortino ratio to compare it to sharpe ratio, by default False
-
+    index:str
+        Index column for input data
     Returns
     -------
     OBBject[List[Data]]
         Sortino ratio.
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     returns = series_target.pct_change().dropna().rolling(window).sum()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
-    results = ((returns - target_return) / downside_deviation).dropna()
+    results = (
+        ((returns - target_return) / downside_deviation)
+        .dropna()
+        .reset_index(drop=False)
+    )
 
     if adjusted:
         results = results / np.sqrt(2)
@@ -320,9 +433,23 @@ def sortino_ratio(
     return OBBject(results=results_)
 
 
-@router.command(methods=["POST"])
-def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get Skewness.
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.skewness(data=stock_data, target='close', window=252)",
+    ],
+)
+def skewness(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get Rolling Skewness.
+
+    Skewness is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
+    Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
+    that stretches left. Understanding skewness can provide insights into potential biases in data and help anticipate
+    the nature of future data points. It's particularly useful for identifying the likelihood of extreme outcomes in
+    financial returns, enabling more informed decision-making based on the distribution's shape over a specified period.
 
     Parameters
     ----------
@@ -332,7 +459,8 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
-
+    index : str, optional
+        Index column name, by default "date"
     Returns
     -------
     OBBject[List[Data]]
@@ -340,22 +468,40 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.skew(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.skew(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.25)',
+        "obb.quantitative.quantile(data=stock_data, target='close', window=252, quantile_pct=0.75)",
+    ],
+)
 def quantile(
     data: List[Data],
     target: str,
-    window: PositiveInt,
+    window: PositiveInt = 21,
     quantile_pct: NonNegativeFloat = 0.5,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Quantile.
+    """Get Rolling Quantile.
+
+    Quantile is a statistical measure that identifies the value below which a given percentage of observations in a
+    group of data falls. By setting the quantile percentage, you can determine any point in the distribution, not just
+    the median. Whether you're interested in the median, quartiles, or any other position within your data's range,
+    this tool offers a precise way to understand the distribution's characteristics.
+    It's especially useful for identifying outliers, understanding dispersion, and setting thresholds for
+    decision-making based on the distribution of data over a specified period.
 
     Parameters
     ----------
@@ -366,7 +512,7 @@ def quantile(
     window : PositiveInt
         Window size.
     quantile_pct : NonNegativeFloat, optional
-
+        Quantile to get
     Returns
     -------
     OBBject[List[Data]]
@@ -374,21 +520,36 @@ def quantile(
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    results = pd.concat([df_median, df_quantile], axis=1).dropna()
+    results = (
+        pd.concat([df_median, df_quantile], axis=1).dropna().reset_index(drop=False)
+    )
 
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.volatility(data=stock_data, target='close')",
+    ],
+)
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
+
+    The summary that offers a snapshot of its central tendencies, variability, and distribution.
+    This command calculates essential statistics, including mean, standard deviation, variance,
+    and specific percentiles, to provide a detailed profile of your target column. B
+    y examining these metrics, you gain insights into the data's overall behavior, helping to identify patterns,
+    outliers, or anomalies. The summary table is an invaluable tool for initial data exploration,
+    ensuring you have a solid foundation for further analysis or reporting.
 
     Parameters
     ----------

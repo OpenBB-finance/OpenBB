@@ -5,6 +5,7 @@ import builtins
 import inspect
 import shutil
 import sys
+from dataclasses import Field
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -34,7 +35,6 @@ from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
@@ -43,6 +43,13 @@ from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
+
+try:
+    from openbb_charting import Charting  # type: ignore
+
+    CHARTING_INSTALLED = True
+except ImportError:
+    CHARTING_INSTALLED = False
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
@@ -345,6 +352,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
+        code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -352,15 +360,6 @@ class ImportDefinition:
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
-
-        specific_imports = {
-            hint_type.__module__: hint_type.__name__
-            for hint_type in hint_type_list
-            if getattr(hint_type, "__name__", None) is not None
-        }
-        code += "\n"
-        for module, name in specific_imports.items():
-            code += f"from {module} import {name}\n"
 
         code += "\n"
         for module in module_list:
@@ -438,6 +437,18 @@ class ClassDefinition:
 class MethodDefinition:
     """Build the method definition for the Platform."""
 
+    # These are types we want to expand.
+    # For example, start_date is always a 'date', but we also accept 'str' as input.
+    # Be careful, if the type is not coercible by pydantic to the original type, you
+    # will need to add some conversion code in the input filter.
+    TYPE_EXPANSION = {
+        "data": DataProcessingSupportedTypes,
+        "start_date": str,
+        "end_date": str,
+        "date": str,
+        "provider": None,
+    }
+
     @staticmethod
     def build_class_loader_method(path: str) -> str:
         """Build the class loader method."""
@@ -479,6 +490,14 @@ class MethodDefinition:
             return Parameter.empty
 
         return default_default
+
+    @staticmethod
+    def get_extra(field: FieldInfo) -> dict:
+        """Get json schema extra."""
+        field_default = getattr(field, "default", None)
+        if field_default:
+            return getattr(field_default, "json_schema_extra", {})
+        return {}
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
@@ -523,28 +542,13 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
-        # These are types we want to expand.
-        # For example, start_date is always a 'date', but we also accept 'str' as input.
-        # Be careful, if the type is not coercible by pydantic to the original type, you
-        # will need to add some conversion code in the input filter.
-        TYPE_EXPANSION = {
-            "symbol": List[str],
-            "data": DataProcessingSupportedTypes,
-            "start_date": str,
-            "end_date": str,
-            "provider": None,
-        }
-
         DEFAULT_REPLACEMENT = {
             "provider": None,
         }
 
         parameter_map.pop("cc", None)
         # we need to add the chart parameter here bc of the docstring generation
-        if (
-            path.replace("/", "_")[1:]
-            in ChartingService.get_implemented_charting_functions()
-        ):
+        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -562,8 +566,8 @@ class MethodDefinition:
                 for field_name, field in fields.items():
                     type_ = MethodDefinition.get_type(field)
                     default = MethodDefinition.get_default(field)
-
-                    new_type = TYPE_EXPANSION.get(field_name, ...)
+                    extra = MethodDefinition.get_extra(field)
+                    new_type = MethodDefinition.get_expanded_type(field_name, extra)
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
 
                     formatted[field_name] = Parameter(
@@ -573,8 +577,7 @@ class MethodDefinition:
                         default=DEFAULT_REPLACEMENT.get(field_name, default),
                     )
             else:
-                new_type = TYPE_EXPANSION.get(name, ...)
-
+                new_type = MethodDefinition.get_expanded_type(name)
                 if hasattr(new_type, "__constraints__"):
                     types = new_type.__constraints__ + (param.annotation,)
                     updated_type = Union[types]  # type: ignore
@@ -600,9 +603,9 @@ class MethodDefinition:
     ):
         """Add the field description to the param signature."""
         if model_name:
-            available_fields: Dict[str, FieldInfo] = ProviderInterface().map[
-                model_name
-            ]["openbb"]["QueryParams"]["fields"]
+            available_fields: Dict[str, Field] = (
+                ProviderInterface().params[model_name]["standard"].__dataclass_fields__
+            )
 
             for param, value in od.items():
                 if param not in available_fields:
@@ -613,7 +616,9 @@ class MethodDefinition:
                 new_value = value.replace(
                     annotation=Annotated[
                         value.annotation,
-                        OpenBBCustomParameter(description=field.description),
+                        OpenBBCustomParameter(
+                            description=getattr(field.default, "description", "")
+                        ),
                     ],
                 )
 
@@ -695,13 +700,12 @@ class MethodDefinition:
     ):
         """Build the command method docstring."""
         doc = func.__doc__
-        if model_name:
-            doc = DocstringGenerator.generate(
-                func=func,
-                formatted_params=formatted_params,
-                model_name=model_name,
-                examples=examples,
-            )
+        doc = DocstringGenerator.generate(
+            func=func,
+            formatted_params=formatted_params,
+            model_name=model_name,
+            examples=examples,
+        )
         code = f'        """{doc}        """  # noqa: E501\n\n' if doc else ""
 
         return code
@@ -714,10 +718,7 @@ class MethodDefinition:
         parameter_map.pop("cc", None)
         code = ""
 
-        if (
-            path.replace("/", "_")[1:]
-            in ChartingService.get_implemented_charting_functions()
-        ):
+        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -730,24 +731,39 @@ class MethodDefinition:
             code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
+        extra_info = {}
+
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"                {name}=kwargs,\n"
+            elif name == "provider_choices":
+                field = param.annotation.__args__[0].__dataclass_fields__["provider"]
+                available = field.type.__args__
+                code += "                provider_choices={\n"
+                code += '                    "provider": self._get_provider(\n'
+                code += "                       provider,\n"
+                code += f'                       "{path}",\n'
+                code += f"                       {available},\n"
+                code += "                    )\n"
+                code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}
                 code += f"                {name}={{\n"
                 for k, v in value.items():
-                    if k == "symbol":
-                        code += f'                    "{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, \n'
-                        continue
                     code += f'                    "{k}": {v},\n'
+                    # TODO: Extend this to extra_params
+                    if extra := MethodDefinition.get_extra(fields[k]):
+                        extra_info[k] = extra
                 code += "                },\n"
             else:
                 code += f"                {name}={name},\n"
+
+        if extra_info:
+            code += f"                extra_info={extra_info},\n"
 
         if MethodDefinition.is_data_processing_function(path):
             code += "                data_processing=True,\n"
@@ -756,6 +772,13 @@ class MethodDefinition:
         code += "        )\n"
 
         return code
+
+    @classmethod
+    def get_expanded_type(cls, field_name: str, extra: Optional[dict] = None) -> object:
+        """Expand the original field type."""
+        if extra and "multiple_items_allowed" in extra:
+            return List[str]
+        return cls.TYPE_EXPANSION.get(field_name, ...)
 
     @classmethod
     def build_command_method(
@@ -850,10 +873,6 @@ class DocstringGenerator:
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
-        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
-            "openbb"
-        ]["QueryParams"]["fields"]
-
         if examples:
             example_docstring = "\n        Example\n        -------\n"
             example_docstring += "        >>> from openbb import obb\n"
@@ -869,9 +888,11 @@ class DocstringGenerator:
         for param_name, param in explicit_params.items():
             if param_name in standard_dict:
                 # pylint: disable=W0212
-                p_type = obb_query_fields[param_name].annotation
+                p_type = param._annotation.__args__[0]
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                description = getattr(obb_query_fields[param_name], "description", "")
+                description = getattr(
+                    param._annotation.__metadata__[0], "description", ""
+                )
             elif param_name == "provider":
                 # pylint: disable=W0212
                 type_ = param._annotation
@@ -985,6 +1006,12 @@ class DocstringGenerator:
                     examples=examples,
                 )
             return doc
+        if examples and examples != [""] and doc:
+            doc += "\n    Examples\n    --------\n"
+            doc += "    >>> from openbb import obb\n"
+            for example in examples:
+                if example != "":
+                    doc += f"    >>> {example}\n"
         return doc
 
     @staticmethod

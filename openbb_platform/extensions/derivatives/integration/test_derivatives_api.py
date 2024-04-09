@@ -25,6 +25,14 @@ def headers():
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SHOP",
+                "date": "2022-12-28",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -96,6 +104,6 @@ def test_derivatives_futures_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -9,19 +9,26 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/price")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="IndexHistorical")
+@router.command(
+    model="IndexHistorical",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.index.price.historical("^GSPC", provider="fmp").to_df()',
+        "#### Not all providers have the same symbols. ####",
+        'obb.index.price.historical("SPX", provider="intrinio").to_df()',
+    ],
+)
 async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Index Historical Price. Load stock data for a specific index."""
+) -> OBBject:
+    """Historical Index Levels."""
     return await OBBject.from_query(Query(**locals()))

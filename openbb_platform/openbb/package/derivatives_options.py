@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -23,8 +23,7 @@ class ROUTER_derivatives_options(Container):
     def chains(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -150,17 +149,23 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.chains(symbol="AAPL")
+        >>> chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()
+        >>> #### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####
+        >>> eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()
         """  # noqa: E501
 
         return self._run(
             "/derivatives/options/chains",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/chains",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -170,7 +175,7 @@ class ROUTER_derivatives_options(Container):
     def unusual(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Optional[str],
             OpenBBCustomParameter(
                 description="Symbol to get data for. (the underlying symbol)"
             ),
@@ -233,17 +238,23 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual()
+        >>> options = obb.derivatives.options.unusual().to_df()
+        >>> #### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####
+        >>> options = obb.derivatives.options.unusual(symbol="TSLA").to_df()
         """  # noqa: E501
 
         return self._run(
             "/derivatives/options/unusual",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/unusual",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

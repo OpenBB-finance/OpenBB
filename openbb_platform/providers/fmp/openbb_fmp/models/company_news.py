@@ -7,6 +7,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field
 
@@ -17,7 +18,7 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
     """
 
-    __alias_dict__ = {"symbols": "tickers"}
+    __alias_dict__ = {"symbol": "tickers"}
     page: Optional[int] = Field(
         default=0,
         description="Page number of the results. Use in combination with limit.",
@@ -62,7 +63,7 @@ class FMPCompanyNewsFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3/stock_news"
         data = []
-        url = f"{base_url}?page={query.page}&tickers={query.symbols}&limit={query.limit}&apikey={api_key}"
+        url = f"{base_url}?page={query.page}&tickers={query.symbol}&limit={query.limit}&apikey={api_key}"
         response = await get_data_many(url, **kwargs)
 
         if len(response) > 0:
@@ -70,9 +71,11 @@ class FMPCompanyNewsFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCompanyNewsData]:
         """Return the transformed data."""
-        return [FMPCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [FMPCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

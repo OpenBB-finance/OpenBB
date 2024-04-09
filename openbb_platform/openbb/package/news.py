@@ -1,6 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+import datetime
+from typing import List, Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -23,16 +24,28 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbols: Annotated[
-            str,
+        symbol: Annotated[
+            Union[str, List[str]],
             OpenBBCustomParameter(
-                description=" Here it is a separated list of symbols."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio."
             ),
         ],
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
         ] = None,
@@ -42,22 +55,22 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbols : str
-             Here it is a separated list of symbols.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiing...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        date : Optional[datetime.date]
+            A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Optional[str]
-            Date of the news to retrieve. (provider: benzinga)
-        start_date : Optional[str]
-            Start date of the news to retrieve. (provider: benzinga)
-        end_date : Optional[str]
-            End date of the news to retrieve. (provider: benzinga)
         updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Optional[int]
@@ -68,9 +81,9 @@ class ROUTER_news(Container):
             Order to sort the news by. (provider: benzinga);
             Sort order of the articles. (provider: polygon)
         isin : Optional[str]
-            The ISIN of the news to retrieve. (provider: benzinga)
+            The company's ISIN. (provider: benzinga)
         cusip : Optional[str]
-            The CUSIP of the news to retrieve. (provider: benzinga)
+            The company's CUSIP. (provider: benzinga)
         channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
         topics : Optional[str]
@@ -155,20 +168,44 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
+        >>> obb.news.company(symbol="AAPL", limit=20)
+        >>> # Get news on the specified dates.
+        >>> obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07')
+        >>> # Display the headlines of the news.
+        >>> obb.news.company(symbol='AAPL', display='headline', provider='benzinga')
+        >>> # Get news for multiple symbols.
+        >>> obb.news.company(symbol='aapl,tsla')
+        >>> # Get news company's ISIN.
+        >>> obb.news.company(symbol='NVDA', isin='US0378331005')
         """  # noqa: E501
 
         return self._run(
             "/news/company",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/news/company",
+                        (
+                            "benzinga",
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ),
+                    )
                 },
                 standard_params={
-                    "symbols": symbols,
+                    "symbol": symbol,
                     "limit": limit,
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["benzinga", "intrinio"]}
+                },
             )
         )
 
@@ -178,9 +215,21 @@ class ROUTER_news(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(
-                description="The number of data entries to return. Here its the no. of articles to return."
+                description="The number of data entries to return. The number of articles to return."
             ),
-        ] = 20,
+        ] = 2500,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:
@@ -189,19 +238,19 @@ class ROUTER_news(Container):
         Parameters
         ----------
         limit : int
-            The number of data entries to return. Here its the no. of articles to return.
+            The number of data entries to return. The number of articles to return.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        date : Optional[datetime.date]
+            A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
-        date : Optional[str]
-            Date of the news to retrieve. (provider: benzinga)
-        start_date : Optional[str]
-            Start date of the news to retrieve. (provider: benzinga)
-        end_date : Optional[str]
-            End date of the news to retrieve. (provider: benzinga)
         updated_since : Optional[int]
             Number of seconds since the news was updated. (provider: benzinga)
         published_since : Optional[int]
@@ -222,6 +271,8 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        offset : Optional[int]
+            Page offset, used in conjunction with limit. (provider: tiingo)
         source : Optional[str]
             A comma-separated list of the domains requested. (provider: tiingo)
 
@@ -242,15 +293,15 @@ class ROUTER_news(Container):
         WorldNews
         ---------
         date : datetime
-            The date of the data. Here it is the published date of the news.
+            The date of the data. The published date of the article.
         title : str
-            Title of the news.
+            Title of the article.
         images : Optional[List[Dict[str, str]]]
-            Images associated with the news.
+            Images associated with the article.
         text : Optional[str]
-            Text/body of the news.
+            Text/body of the article.
         url : Optional[str]
-            URL of the news.
+            URL to the article.
         id : Optional[str]
             Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
@@ -279,17 +330,33 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.world(limit=20)
+        >>> obb.news.world(limit=2500)
+        >>> # Get news on the specified dates.
+        >>> obb.news.world(start_date='2024-02-01', end_date='2024-02-07')
+        >>> # Display the headlines of the news.
+        >>> obb.news.world(display='headline', provider='benzinga')
+        >>> # Get news by topics.
+        >>> obb.news.world(topics='finance', provider='benzinga')
+        >>> # Get news by source using 'tingo' as provider.
+        >>> obb.news.world(provider='tiingo', source='bloomberg')
+        >>> # Filter aticles by term using 'biztoc' as provider.
+        >>> obb.news.world(provider='biztoc', term='apple')
         """  # noqa: E501
 
         return self._run(
             "/news/world",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/news/world",
+                        ("benzinga", "fmp", "intrinio", "tiingo"),
+                    )
                 },
                 standard_params={
                     "limit": limit,
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )

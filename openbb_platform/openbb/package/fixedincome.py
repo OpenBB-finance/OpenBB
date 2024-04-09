@@ -76,9 +76,9 @@ class ROUTER_fixedincome(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -111,14 +111,18 @@ class ROUTER_fixedincome(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.sofr()
+            >>> obb.fixedincome.fixedincome.sofr(period="overnight")
         """  # noqa: E501
 
         return self._run(
             "/fixedincome/sofr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/sofr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
