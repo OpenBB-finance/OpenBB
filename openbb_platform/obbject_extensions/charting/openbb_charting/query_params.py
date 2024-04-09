@@ -27,10 +27,12 @@ class BaseQueryParams(QueryParams):
     """Base Query Parmams Base Model."""
 
     def __init__(self, **data):
+        """Initialize the BaseQueryParams."""
         super().__init__(**data)
         self.__doc__ = self.__repr__()
 
     def __repr__(self):
+        """Return the string representation of the model."""
         fields = self.__class__.model_fields
         repr_str = (
             "\n"
@@ -51,6 +53,7 @@ class BaseQueryParams(QueryParams):
 
 
 class ChartQueryParams(BaseQueryParams):
+    """ChartParams."""
 
     data: Optional[Union[Data, List[Data]]] = Field(
         default=None,
@@ -753,6 +756,7 @@ class IndicatorsParams(QueryParams):
     )
 
     def __repr__(self):
+        """Return the string representation of the model."""
         fields = self.__class__.model_fields
         repr_str = "\n" + "\n".join(
             [

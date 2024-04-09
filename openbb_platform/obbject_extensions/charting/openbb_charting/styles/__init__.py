@@ -1,0 +1,1 @@
+"""Charting Extension Styles"""
