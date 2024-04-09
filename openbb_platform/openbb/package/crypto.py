@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -26,13 +26,19 @@ class ROUTER_crypto(Container):
 
         return crypto_price.ROUTER_crypto_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def search(
         self,
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search available cryptocurrency pairs within a provider.
@@ -57,7 +63,7 @@ class ROUTER_crypto(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CryptoSearch
@@ -73,12 +79,11 @@ class ROUTER_crypto(Container):
         exchange_name : Optional[str]
             The short name of the exchange the crypto trades on. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.crypto.search()
-        >>> obb.crypto.search("BTCUSD")
-        >>> obb.crypto.search("ETH-USD")
+        >>> obb.crypto.search(provider='fmp')
+        >>> obb.crypto.search(query='BTCUSD', provider='fmp')
         """  # noqa: E501
 
         return self._run(

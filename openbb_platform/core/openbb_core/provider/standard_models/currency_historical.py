@@ -37,7 +37,7 @@ class CurrencyHistoricalQueryParams(QueryParams):
     def validate_symbol(
         cls, v: Union[str, List[str], Set[str]]
     ):  # pylint: disable=E0213
-        """Convert symbol to uppercase and remove '-'."""
+        """Convert field to uppercase and remove '-'."""
         if isinstance(v, str):
             return v.upper().replace("-", "")
         return ",".join([symbol.upper().replace("-", "") for symbol in list(v)])
@@ -46,7 +46,9 @@ class CurrencyHistoricalQueryParams(QueryParams):
 class CurrencyHistoricalData(Data):
     """Currency Historical Price Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
     high: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: PositiveFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
@@ -61,4 +63,6 @@ class CurrencyHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        return parser.isoparse(str(v))
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

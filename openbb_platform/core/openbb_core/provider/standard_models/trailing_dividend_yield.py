@@ -16,7 +16,7 @@ from openbb_core.provider.utils.descriptions import (
 class TrailingDivYieldQueryParams(QueryParams):
     """Trailing Dividend Yield Query."""
 
-    symbol: str = Field(default=None, description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: Optional[int] = Field(
         default=252,
         description=f"{QUERY_DESCRIPTIONS.get('limit', '')}"

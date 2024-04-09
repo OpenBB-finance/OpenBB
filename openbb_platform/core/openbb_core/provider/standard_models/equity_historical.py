@@ -36,8 +36,8 @@ class EquityHistoricalQueryParams(QueryParams):
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
         return v.upper()
 
 
@@ -61,7 +61,6 @@ class EquityHistoricalData(Data):
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
-        v = parser.isoparse(str(v))
-        if v.hour == 0 and v.minute == 0:
-            return v.date()
-        return v
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

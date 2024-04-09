@@ -1,11 +1,11 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -23,24 +23,27 @@ class ROUTER_regulators_sec(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def cik_map(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Map a ticker symbol to a CIK number.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -57,19 +60,18 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CikMap
         ------
-        cik : Optional[Union[str, int]]
-            Central Index Key (provider: sec)
+        cik : Optional[Union[int, str]]
+            Central Index Key (CIK) for the requested entity.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.cik_map(symbol="MSFT").results.cik
-        >>>     0000789019
+        >>> obb.regulators.sec.cik_map(symbol='MSFT', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -86,12 +88,10 @@ class ROUTER_regulators_sec(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
-                },
             )
         )
 
+    @exception_handler
     @validate
     def institutions_search(
         self,
@@ -102,7 +102,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search SEC-regulated institutions by name and return a list of results with CIK numbers.
@@ -129,20 +134,21 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         InstitutionsSearch
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[str, int]]
+        cik : Optional[Union[int, str]]
             Central Index Key (CIK) (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()
+        >>> obb.regulators.sec.institutions_search(provider='sec')
+        >>> obb.regulators.sec.institutions_search(query='blackstone real estate', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -163,9 +169,17 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def rss_litigation(
-        self, provider: Optional[Literal["sec"]] = None, **kwargs
+        self,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
     ) -> OBBject:
         """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
@@ -187,7 +201,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         RssLitigation
@@ -203,10 +217,10 @@ class ROUTER_regulators_sec(Container):
         link : Optional[str]
             URL to the release. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.rss_litigation().to_dict("records")[0]
+        >>> obb.regulators.sec.rss_litigation(provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -224,6 +238,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def schema_files(
         self,
@@ -234,7 +249,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """A tool for navigating the directory of SEC XML schema files by year.
@@ -263,34 +283,36 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SchemaFiles
         -----------
-        files : Optional[List]
+        files : Optional[List[str]]
             Dictionary of URLs to SEC Schema Files (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> data = obb.regulators.sec.schema_files()
+        >>> obb.regulators.sec.schema_files(provider='sec')
+        >>> # Get a list of schema files.
+        >>> data = obb.regulators.sec.schema_files().results
         >>> data.files[0]
-        >>>     https://xbrl.fasb.org/us-gaap/
-        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
+        >>> 'https://xbrl.fasb.org/us-gaap/'
+        >>> # The directory structure can be navigated by constructing a URL from the 'results' list.
         >>> url = data.files[0]+data.files[-1]
-        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
+        >>> # The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
-        >>>     'USGAAP2024FileList.xml'
-        >>>     'dis/'
-        >>>     'dqcrules/'
-        >>>     'ebp/'
-        >>>     'elts/'
-        >>>     'entire/'
-        >>>     'meta/'
-        >>>     'stm/'
-        >>>     'us-gaap-2024.zip']
+        >>> ['https://xbrl.fasb.org/us-gaap/2024/'
+        >>> 'USGAAP2024FileList.xml'
+        >>> 'dis/'
+        >>> 'dqcrules/'
+        >>> 'ebp/'
+        >>> 'elts/'
+        >>> 'entire/'
+        >>> 'meta/'
+        >>> 'stm/'
+        >>> 'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
@@ -311,6 +333,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def sic_search(
         self,
@@ -321,7 +344,12 @@ class ROUTER_regulators_sec(Container):
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.
@@ -348,7 +376,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SicSearch
@@ -360,10 +388,11 @@ class ROUTER_regulators_sec(Container):
         office : Optional[str]
             Reporting office within the Corporate Finance Office (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search("real estate investment trusts").results
+        >>> obb.regulators.sec.sic_search(provider='sec')
+        >>> obb.regulators.sec.sic_search(query='real estate investment trusts', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -384,17 +413,23 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def symbol_map(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
         use_cache: Annotated[
             Optional[bool],
             OpenBBCustomParameter(
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
-        provider: Optional[Literal["sec"]] = None,
+        provider: Annotated[
+            Optional[Literal["sec"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Map a CIK number to a ticker symbol, leading 0s can be omitted or included.
@@ -421,7 +456,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SymbolMap
@@ -429,11 +464,10 @@ class ROUTER_regulators_sec(Container):
         symbol : Optional[str]
             Symbol representing the entity requested in the data. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map("0000789019").results.symbol
-        >>>     MSFT
+        >>> obb.regulators.sec.symbol_map(query='0000789019', provider='sec')
         """  # noqa: E501
 
         return self._run(

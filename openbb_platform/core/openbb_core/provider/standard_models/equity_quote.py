@@ -16,15 +16,12 @@ from openbb_core.provider.utils.descriptions import (
 class EquityQuoteQueryParams(QueryParams):
     """Equity Quote Query."""
 
-    symbol: str = Field(
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " This endpoint will accept multiple symbols separated by commas."
-    )
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: str) -> str:
-        """Convert symbol to uppercase."""
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
         return v.upper()
 
 

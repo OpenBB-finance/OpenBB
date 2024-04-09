@@ -1,6 +1,6 @@
 ---
 title: Data slicer
-sidebar_position: 5
+sidebar_position: 2
 description: Slice Excel ranges by label or index
 keywords:
 - Microsoft Excel
@@ -49,6 +49,10 @@ When passing date labels make sure to use the format `YYYY/MM/DD` or refer to a 
 ```excel
 =OBB.GET(A1:D3,2,3)
 ```
+
+:::tip
+To slice the from the last row use negative numbers. For example, `=OBB.GET(A1:D3,-1,-2)` will return the last row and the second to last column.
+:::
 
 - Slicing multiple rows and columns:
 

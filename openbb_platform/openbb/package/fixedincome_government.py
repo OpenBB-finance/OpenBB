@@ -6,7 +6,7 @@ from typing import Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -20,6 +20,7 @@ class ROUTER_fixedincome_government(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def treasury_rates(
         self,
@@ -35,7 +36,12 @@ class ROUTER_fixedincome_government(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["federal_reserve", "fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Government Treasury Rates.
@@ -62,42 +68,44 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         TreasuryRates
         -------------
         date : date
             The date of the data.
+        week_4 : Optional[float]
+            4 week Treasury bills rate (secondary market).
         month_1 : Optional[float]
-            1 month treasury rate.
+            1 month Treasury rate.
         month_2 : Optional[float]
-            2 month treasury rate.
+            2 month Treasury rate.
         month_3 : Optional[float]
-            3 month treasury rate.
+            3 month Treasury rate.
         month_6 : Optional[float]
-            6 month treasury rate.
+            6 month Treasury rate.
         year_1 : Optional[float]
-            1 year treasury rate.
+            1 year Treasury rate.
         year_2 : Optional[float]
-            2 year treasury rate.
+            2 year Treasury rate.
         year_3 : Optional[float]
-            3 year treasury rate.
+            3 year Treasury rate.
         year_5 : Optional[float]
-            5 year treasury rate.
+            5 year Treasury rate.
         year_7 : Optional[float]
-            7 year treasury rate.
+            7 year Treasury rate.
         year_10 : Optional[float]
-            10 year treasury rate.
+            10 year Treasury rate.
         year_20 : Optional[float]
-            20 year treasury rate.
+            20 year Treasury rate.
         year_30 : Optional[float]
-            30 year treasury rate.
+            30 year Treasury rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
+        >>> obb.fixedincome.government.treasury_rates(provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -118,6 +126,7 @@ class ROUTER_fixedincome_government(Container):
             )
         )
 
+    @exception_handler
     @validate
     def us_yield_curve(
         self,
@@ -131,7 +140,12 @@ class ROUTER_fixedincome_government(Container):
             Optional[bool],
             OpenBBCustomParameter(description="Get inflation adjusted rates."),
         ] = False,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
         """US Yield Curve. Get United States yield curve.
@@ -158,7 +172,7 @@ class ROUTER_fixedincome_government(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         USYieldCurve
@@ -168,10 +182,11 @@ class ROUTER_fixedincome_government(Container):
         rate : float
             Associated rate given in decimal form (0.05 is 5%)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
+        >>> obb.fixedincome.government.us_yield_curve(provider='fred')
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')
         """  # noqa: E501
 
         return self._run(

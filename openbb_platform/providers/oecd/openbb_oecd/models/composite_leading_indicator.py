@@ -10,34 +10,11 @@ from openbb_core.provider.standard_models.composite_leading_indicator import (
     CLIQueryParams,
 )
 from openbb_oecd.utils import helpers
+from openbb_oecd.utils.constants import CODE_TO_COUNTRY_CLI, COUNTRY_TO_CODE_CLI
 from pydantic import Field, field_validator
 
-cli_mapping = {
-    "USA": "united_states",
-    "GBR": "united_kingdom",
-    "JPN": "japan",
-    "MEX": "mexico",
-    "IDN": "indonesia",
-    "AUS": "australia",
-    "BRA": "brazil",
-    "CAN": "canada",
-    "ITA": "italy",
-    "DEU": "germany",
-    "TUR": "turkey",
-    "FRA": "france",
-    "ZAF": "south_africa",
-    "KOR": "south_korea",
-    "ESP": "spain",
-    "IND": "india",
-    "CHN": "china",
-    "G7": "g7",
-    "G20": "g20",
-}
-
-
-countries = tuple(cli_mapping.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_CLI.values()) + ("all",)
 CountriesLiteral = Literal[countries]  # type: ignore
-country_to_code = {v: k for k, v in cli_mapping.items()}
 
 
 class OECDCLIQueryParams(CLIQueryParams):
@@ -70,10 +47,10 @@ class OECDCLIData(CLIData):
                     return date(_year, 12, 31)
             # Now match if it is monthly, i.e 2022-01
             elif re.match(r"\d{4}-\d{2}$", in_date):
-                year, month = map(int, in_date.split("-"))
+                year, month = map(int, in_date.split("-"))  # type: ignore
                 if month == 12:
-                    return date(year, month, 31)
-                next_month = date(year, month + 1, 1)
+                    return date(year, month, 31)  # type: ignore
+                next_month = date(year, month + 1, 1)  # type: ignore
                 return date(next_month.year, next_month.month, 1) - timedelta(days=1)
             # Now match if it is yearly, i.e 2022
             elif re.match(r"\d{4}$", in_date):
@@ -99,32 +76,50 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
 
         return OECDCLIQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
-        query: OECDCLIQueryParams,  # pylint: disable=W0613
+        query: OECDCLIQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..LI...."
+        country = "" if query.country == "all" else COUNTRY_TO_CODE_CLI[query.country]
+
+        # Note this is only available monthly from OECD
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.M.LI...."
+
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
         data = helpers.get_possibly_cached_data(
-            url, function="economy_composite_leading_indicator"
+            url, function="economy_composite_leading_indicator", query_dict=query_dict
         )
 
         if query.country != "all":
-            data = data.query(f"REF_AREA == '{country_to_code[query.country]}'")
+            data = data.query(f"REF_AREA == '{country}'")
 
         # Filter down
         data = data.reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE"]].rename(
             columns={"REF_AREA": "country", "TIME_PERIOD": "date", "VALUE": "value"}
         )
-        data["country"] = data["country"].map(cli_mapping)
+        data["country"] = data["country"].map(CODE_TO_COUNTRY_CLI)
 
-        return data.to_dict(orient="records")
+        data = data.to_dict(orient="records")
+        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
+        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
+        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
 
+        return data
+
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: OECDCLIQueryParams, data: Dict, **kwargs: Any
+        query: OECDCLIQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[OECDCLIData]:
         """Transform the data from the OECD endpoint."""
         return [OECDCLIData.model_validate(d) for d in data]

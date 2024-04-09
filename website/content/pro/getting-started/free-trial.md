@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 There are 3 main ways to get started:
 
-1. Join the wait list at <https://my.openbb.co/app/pro/early-access>
+1. Join the waitlist at <https://my.openbb.co/app/pro/early-access>
 
 2. Get invited by a colleague who already has access
 

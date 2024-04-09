@@ -45,6 +45,7 @@ openbb_terminal/core/plots/assets/plotly*.js
 .dccache
 *rome.json
 **/node_modules/*
+.cursorignore
 # pyinstaller artifacts
 *.pyo
 **/dist/*
@@ -88,3 +89,5 @@ openbb_platform/openbb/package/*
 # Reference files
 website/content/excel/reference/*
 website/content/excel/reference/*/*
+website/content/platform/data_models/*
+website/content/platform/reference/*

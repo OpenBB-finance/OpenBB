@@ -13,15 +13,17 @@ commands = list(cm.map.keys())
 # ruff: noqa: SIM114
 
 
-def parametrize(argnames: str, argvalues: List[Dict], **kwargs):
+def parametrize(argnames: str, argvalues: List, **kwargs):
     """Custom parametrize decorator that filters test cases based on the environment."""
 
-    extensions, providers = list_openbb_extensions()
+    routers, providers, obbject_ext = list_openbb_extensions()
 
     def decorator(function):
         """Patch the pytest.mark.parametrize decorator."""
         filtered_argvalues: List[Dict] = []
-        extension_name = function.__name__.split("_")[1]
+        name = function.__name__.split("_")[1]
+        # This is a patch to handle the charting extension name
+        extension_name = "openbb_" + name if name == "charting" else name
         function_name = "/" + "/".join(function.__name__.split("_")[1:])
         # this handles edge cases where the function name has an underscore
         function_name_v2 = (
@@ -34,7 +36,7 @@ def parametrize(argnames: str, argvalues: List[Dict], **kwargs):
             + "_"
             + function_name.rsplit("/", 1)[1].replace("/", "_")
         )
-        if extension_name in extensions:
+        if extension_name in routers | obbject_ext:
             for args in argvalues:
                 if "provider" in args and args["provider"] in providers:
                     filtered_argvalues.append(args)
@@ -47,6 +49,10 @@ def parametrize(argnames: str, argvalues: List[Dict], **kwargs):
                 elif "provider" not in args and function_name_v3 in commands:
                     # Handle edge case
                     filtered_argvalues.append(args)
+                elif extension_name in obbject_ext:
+                    filtered_argvalues.append(args)
+
+            # If filtered_argvalues is empty, pytest will skip the test!
             return pytest.mark.parametrize(argnames, filtered_argvalues, **kwargs)(
                 function
             )

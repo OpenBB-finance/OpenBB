@@ -3,132 +3,113 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.tiingo.com/tiingo/news?limit=20&offset=0&token=MOCK_TOKEN
+    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":59591461,\"publishedDate\":\"2023-11-16T08:38:56Z\",\"title\":\"How
-        to navigate higher education finances for a transformative journey? MintGenie
-        explains\",\"url\":\"https://www.livemint.com/money/personal-finance/how-to-navigate-higher-education-finances-for-a-transformative-journey-mintgenie-explains-11699517017204.html\",\"description\":\"Navigating
-        higher education finances requires careful planning and a personal approach.
-        Prioritize, stay informed, budget effectively, seek scholarships, explore
-        investments, and manage loans wisely to establish a robust foundation for
-        a successful educational journey.\",\"source\":\"livemint.com\",\"tags\":[\"Budgeting\",\"Cost
-        Of Education\",\"Educational Goals\",\"Expert Speak\",\"Financial Goals\",\"Financial
-        Planning\",\"Financial Resources\",\"Higher Education\",\"Inflation\",\"Investing\",\"Loans\",\"Mutual
-        Funds\",\"Personal Finance\",\"Scholarships\",\"Stocks\",\"Tax Benefits\"],\"crawlDate\":\"2023-11-16T08:39:15.354554Z\",\"tickers\":[]},{\"id\":59591464,\"publishedDate\":\"2023-11-16T08:38:22Z\",\"title\":\"Broome
-        financial counsellor Sen Amaratunga recognised for service to community\",\"url\":\"https://thewest.com.au/news/broome-advertiser/broome-financial-counsellor-sen-amaratunga-recognised-for-service-to-community--c-12574080\",\"description\":\"A
-        Broome financial counsellor has been honoured with an award for his dedication
-        to servicing the community.\_\",\"source\":\"thewest.com.au\",\"tags\":[\"Broome-Advertiser\",\"Kimberley\"],\"crawlDate\":\"2023-11-16T08:39:32.545512Z\",\"tickers\":[]},{\"id\":59591466,\"publishedDate\":\"2023-11-16T08:38:00Z\",\"title\":\"NetEase
-        Announces Third Quarter 2023 Unaudited Financial Results\",\"url\":\"https://www.prnewswire.com/news-releases/netease-announces-third-quarter-2023-unaudited-financial-results-301990338.html\",\"description\":\"/PRNewswire/
-        -- NetEase, Inc. (NASDAQ: NTES and HKEX: 9999, \\\"NetEase\\\" or the \\\"Company\\\"),
-        a leading internet and game services provider, today announced its...\",\"source\":\"prnewswire.com\",\"tags\":[\"Banking
-        & Financial Services\",\"Computer & Electronics\",\"Computer Software\",\"Earnings\",\"Earnings
-        Forecasts & Projections\",\"Electronic Gaming\",\"Entertainment\",\"Internet
-        Technology\",\"Mobile Entertainment\",\"Multimedia & Internet\",\"Telecommunications
-        Industry\",\"Web Site\"],\"crawlDate\":\"2023-11-16T08:39:47.836668Z\",\"tickers\":[]},{\"id\":59591465,\"publishedDate\":\"2023-11-16T08:37:46Z\",\"title\":\"UK's
-        Cameron makes first official visit to Ukraine\",\"url\":\"https://thewest.com.au/news/conflict/uks-cameron-makes-first-official-visit-to-ukraine-c-12578128\",\"description\":\"David
-        Cameron has met President Volodymyr Zelenskiy to underscore Britain's support
-        for Ukraine on his first official trip as foreign secretary.\",\"source\":\"thewest.com.au\",\"tags\":[\"Conflict\",\"Ukraine\"],\"crawlDate\":\"2023-11-16T08:39:33.544746Z\",\"tickers\":[]},{\"id\":59591382,\"publishedDate\":\"2023-11-16T08:37:25.324087Z\",\"title\":\"Retail,
-        institutional investors to be subject to same rules for short selling for
-        fairness\",\"url\":\"https://koreatimes.co.kr/www/nation/2023/11/488_363360.html?utm_source=fl\",\"description\":\"The
-        ruling People Power Party and financial authorities have announced plans to
-        apply the same conditions for the local short selling system for both retail
-        and institutional investors. \",\"source\":\"koreatimes.co.kr\",\"tags\":[\"Fsc\",\"Fss\",\"Korea\",\"Korea
-        Times\",\"Korean In English\",\"Koreatimes\",\"Short Selling\",\"South Korea\",\"The
-        Korea Times\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-16T08:37:26.483241Z\",\"tickers\":[]},{\"id\":59591420,\"publishedDate\":\"2023-11-16T08:37:24Z\",\"title\":\"Bill
-        Director buys stock worth $1M (NYSE:BILL)\",\"url\":\"https://seekingalpha.com/news/4037421-bill-director-buys-stock-worth-1m\",\"description\":\"Bill
-        Holdings director David Hornik purchased $1M worth of shares at $56.49 each.
-        The stock price is up 1.9% to $60.75 pre-market.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:38:21.175265Z\",\"tickers\":[\"bill\"]},{\"id\":59591429,\"publishedDate\":\"2023-11-16T08:37:11.873000Z\",\"title\":\"New
-        Delhi smog grows more intense as farm fires rage\",\"url\":\"https://www.reuters.com/world/india/new-delhi-smog-grows-more-intense-farm-fires-rage-2023-11-16/\",\"description\":\"Toxic
-        smog gripping New Delhi grew more intense on Thursday as farm fires raged
-        in nearby fields despite a court-ordered ban, making India's capital the world's
-        most polluted city again.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0Iw\",\"2023:Ml_Kbn32B0Iw:1\",\"2023:Ml_L1N3Ch0Kv\",\"2023:Ml_L1N3Ch0Kv:1327319944\",\"2023:Ml_M1L1N3Ch0Kv\",\"2023:Ml_M1L1N3Ch0Kv:1327319944\",\"Guid:Tag:Reuters.Com\",\"India\",\"Usn:Kbn32B0Iw\",\"Usn:L1N3Ch0Kv\",\"Usn:M1L1N3Ch0Kv\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:28.349029Z\",\"tickers\":[]},{\"id\":59591435,\"publishedDate\":\"2023-11-16T08:37:09Z\",\"title\":\"Fans
-        to miss Coldplay after flight cancellation\",\"url\":\"https://www.smh.com.au/national/fans-to-miss-coldplay-after-flight-cancellation-20231116-p5eko8.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Coldplay
-        and Robbie Williams fans are devastated to miss their concerts after flights
-        were cancelled from Adelaide Airport.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:38:31.298558Z\",\"tickers\":[]},{\"id\":59591380,\"publishedDate\":\"2023-11-16T08:37:05Z\",\"title\":\"Bitcoin\u2019s
-        Price is Pumping in the Past 24 Hours: Here\u2019s Why\",\"url\":\"https://cryptopotato.com/bitcoins-price-is-pumping-in-the-past-24-hours-heres-why/\",\"description\":\"BTC
-        rose to almost $38K following the SEC's latest delay on crypto ETF applications.\",\"source\":\"cryptopotato.com\",\"tags\":[\"Bitcoin\",\"Bitcoin
-        (Btc) Price\",\"Crypto Bits\",\"Crypto News\",\"CryptoCurrency\",\"ETF\",\"Financial
-        Services\",\"Real Estate\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-16T08:37:20.616538Z\",\"tickers\":[\"bcf\",\"bgio\",\"blk\",\"ihit\",\"ivr\",\"ivz\"]},{\"id\":59591430,\"publishedDate\":\"2023-11-16T08:37:00Z\",\"title\":\"ATP
-        Finals LIVE: Novak Djokovic given stark warning as Nick Kyrgios makes X-rated
-        error\",\"url\":\"https://www.express.co.uk/sport/tennis/1835605/ATP-Finals-LIVE-Novak-Djokovic-Nick-Kyrgios-tennis-scores-results-highlights\",\"description\":\"Express
-        Sport is on hand to provide the latest news from the ATP Finals.\",\"source\":\"express.co.uk\",\"tags\":[\"Andrey
-        Rublev\",\"Atp Finals\",\"Atp Finals Highlights\",\"Atp Finals Results\",\"Atp
-        Finals Scores\",\"Nick Kyrgios\",\"Novak Djokovic\",\"Rafael Nadal\",\"Tennis\",\"Tennis
-        Scores\"],\"crawlDate\":\"2023-11-16T08:38:28.605087Z\",\"tickers\":[]},{\"id\":59591426,\"publishedDate\":\"2023-11-16T08:36:48Z\",\"title\":\"Royal
-        Mail blames strikes and slump in letter sending as losses deepen\",\"url\":\"https://www.telegraph.co.uk/business/2023/11/16/royal-mail-blames-strikes-slump-letter-sending-losses/\",\"description\":\"Postal
-        company suffers \xA3319m hit as boss reiterates calls to scrap Saturday letter
-        deliveries\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Business\",\"Ofcom\",\"Royal
-        Mail\",\"Royal Mail Strikes\",\"Standard\",\"Stock\",\"Tiingo Top\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:38:27.571781Z\",\"tickers\":[\"roymf\"]},{\"id\":59591434,\"publishedDate\":\"2023-11-16T08:36:05Z\",\"title\":\"Car
-        rams barricade near Israel embassy in Tokyo, driver detained\",\"url\":\"https://nypost.com/2023/11/16/news/car-rams-barricade-near-israel-embassy-in-tokyo-man-detained/\",\"description\":\"A
-        man crashed a car into a barricade near the entrance of the Israeli embassy
-        in Tokyo on Thursday, injuring a police officer.\",\"source\":\"nypost.com\",\"tags\":[\"Hamas\",\"Israel\",\"Israel
-        War 2023\",\"Tokyo\"],\"crawlDate\":\"2023-11-16T08:38:31.314583Z\",\"tickers\":[]},{\"id\":59591371,\"publishedDate\":\"2023-11-16T08:36:03Z\",\"title\":\"Monet
-        in Paris: The French Impressionists Alive multi-sensory experience arrives
-        at Crown Perth\",\"url\":\"https://thewest.com.au/genwest/arts/monet-in-paris-the-french-impressionists-alive-multi-sensory-experience-arrives-at-crown-perth-c-12566259\",\"description\":\"All
-        the charm of Parisian neighbourhood Montmartre has been transported to Perth
-        with multi-sensory experience, Monet in Paris \u2013 The French Impressionists
-        Alive.\",\"source\":\"thewest.com.au\",\"tags\":[\"Arts\"],\"crawlDate\":\"2023-11-16T08:36:41.491701Z\",\"tickers\":[]},{\"id\":59591356,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Synagogue
-        in Armenia set alight in latest attack on Jewish diaspora\",\"url\":\"https://www.jpost.com/diaspora/antisemitism/article-773485\",\"description\":\"A
-        similar attack occurred in October by ASALA, which targeted the World Jewish
-        Center in Yerevan.\",\"source\":\"jpost.com\",\"tags\":[\"Antisemitism\",\"Armenia\",\"Attack\",\"Azerbaijan\",\"Diaspora
-        Jews\"],\"crawlDate\":\"2023-11-16T08:36:14.626883Z\",\"tickers\":[]},{\"id\":59591377,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Nationwide
-        protests add to Panama woes\",\"url\":\"https://splash247.com/nationwide-protests-add-to-panama-woes/\",\"description\":\"It\u2019s
-        not just drought in Panama that is giving supply chain planners pause for
-        reflection, the Central American nation is also reeling from the largest protests
-        in the western hemisphere, action that has affected rail, roads and ports
-        over the past month. Protests that began over a mining contract with a Canadian
-        company have rocked \u2026\",\"source\":\"splash247.com\",\"tags\":[\"Central
-        America\",\"Panama\"],\"crawlDate\":\"2023-11-16T08:37:15.350030Z\",\"tickers\":[]},{\"id\":59591358,\"publishedDate\":\"2023-11-16T08:35:03Z\",\"title\":\"Police
-        investigate after woman\u2019s body found\",\"url\":\"https://www.smh.com.au/national/police-investigate-after-woman-s-body-found-20231116-p5eko7.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Detectives
-        are investigating after a woman's body was found in a block of units in Adelaide\u2019s
-        east.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:36:19.777723Z\",\"tickers\":[]},{\"id\":59591440,\"publishedDate\":\"2023-11-16T08:35:02.359000Z\",\"title\":\"Macquarie
-        invests $190 mln in green aviation fuel supplier SkyNRG\",\"url\":\"https://www.reuters.com/sustainability/climate-energy/macquarie-invests-190-mln-green-aviation-fuel-supplier-skynrg-2023-11-16/\",\"description\":\"Australia's
-        Macquarie Group Ltd said on Thursday its asset management arm will make an
-        initial investment of up to 175 million euros (about $190 million) in Netherlands-based
-        sustainable aviation fuel (SAF) supplier SkyNRG.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0In\",\"2023:Ml_Kbn32B0In:1\",\"2023:Ml_Kbn32B0Io\",\"2023:Ml_Kbn32B0Io:1\",\"2023:Ml_L4N3Ch1Um\",\"2023:Ml_L4N3Ch1Va\",\"2023:Ml_L4N3Ch1Va:722089037\",\"Australia\",\"Guid:Tag:Reuters.Com\",\"Netherlands\",\"Netherlands
-        Antilles\",\"Stock\",\"Unknown Sector\",\"Usn:Kbn32B0In\",\"Usn:Kbn32B0Io\",\"Usn:L4N3Ch1Um\",\"Usn:L4N3Ch1Va\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:39.691757Z\",\"tickers\":[\"mqg\"]},{\"id\":59591353,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"US-Cannabis
-        Market is to grow by USD 46.90 billion between 2022 - 2027 | Aurora Cannabis
-        Inc., Canopy Growth Corp., Charlottes Web Holdings Inc. and more among the
-        key companies\",\"url\":\"https://www.prnewswire.com/news-releases/us-cannabis-market-is-to-grow-by-usd-46-90-billion-between-2022---2027--aurora-cannabis-inc-canopy-growth-corp-charlottes-web-holdings-inc-and-more-among-the-key-companies-301989972.html\",\"description\":\"/PRNewswire/
-        -- The US-Cannabis Market is projected to witness a surge at a Compound Annual
-        Growth Rate (CAGR) of 24.03% with USD 46.90 b illion from 2022 to...\",\"source\":\"prnewswire.com\",\"tags\":[\"Cannabis\",\"CryptoCurrency\",\"ETF\",\"FX\",\"Health
-        Care & Hospitals\",\"Healthcare\",\"Market Research Reports\",\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:35:37.725202Z\",\"tickers\":[\"acb\",\"twmjf\",\"usd\"]},{\"id\":59591354,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"North
-        America - The Maintenance, Repair, and Overhaul (MRO) Distribution Market
-        size to grow at a CAGR of 2.43% from 2022 to 2027| A.R. Thomson Group, Applied
-        Industrial Technologies Inc., AWC Inc. and more among the key companies in
-        the market -Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/north-america---the-maintenance-repair-and-overhaul-mro-distribution-market-size-to-grow-at-a-cagr-of-2-43-from-2022-to-2027-ar-thomson-group-applied-industrial-technologies-inc-awc-inc-and-more-among-the-key-companies-301989958.html\",\"description\":\"/PRNewswire/
-        -- The MRO distribution market in North America is estimated to grow at a
-        CAGR of 2.43% between 2022 and 2027 and the size of the market is...\",\"source\":\"prnewswire.com\",\"tags\":[\"Energy\",\"Industrials\",\"Market
-        Research Reports\",\"North America\",\"Oil & Energy\",\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:35:38.520380Z\",\"tickers\":[\"ait\",\"awc\",\"cagr\",\"mro\"]},{\"id\":59591355,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"Smartphone
-        Screen Protector Market is driven by the growing awareness of the importance
-        of device protection - Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/smartphone-screen-protector-market-is-driven-by-the-growing-awareness-of-the-importance-of-device-protection---technavio-301990019.html\",\"description\":\"/PRNewswire/
-        -- In a recent analysis conducted by Technavio, titled \\\"Smartphone Screen
-        Protector Market Analysis - APAC, North America, Europe, South America,...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
-        & Electronics\",\"Consumer Electronics\",\"Market Research Reports\",\"Mobile
-        Entertainment\",\"North America\",\"South America\"],\"crawlDate\":\"2023-11-16T08:35:39.717934Z\",\"tickers\":[]}]"
+      string: "[{\"id\":62543755,\"publishedDate\":\"2024-02-22T18:00:26Z\",\"title\":\"15
+        Hot Penny Stocks On the Move\",\"url\":\"https://www.insidermonkey.com/blog/15-hot-penny-stocks-on-the-move-1260788/\",\"description\":\"Strong
+        inflation data from January and the Fed\",\"source\":\"insidermonkey.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T18:00:41.711533Z\",\"tickers\":[]},{\"id\":62543748,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"The
+        U.S. Finally Started to Crack Down on Crypto Emissions in 2023\",\"url\":\"https://oilprice.com/Finance/the-Markets/The-US-Finally-Started-to-Crack-Down-on-Crypto-Emissions-in-2023.html\",\"description\":\"The
+        global push for comprehensive crypto regulations intensified in 2023 as the
+        U.S. cracked down on major firms, addressing environmental and security issues.\",\"source\":\"oilprice.com\",\"tags\":[\"Bitcoin\",\"Crime\",\"CryptoCurrency\",\"Cryptocurrency\",\"Energy\",\"Environment\",\"Mining\",\"Regulation\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T18:00:27.430093Z\",\"tickers\":[]},{\"id\":62543750,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"VeChain:
+        Will This Important Update Take VET To 50 Cents?\",\"url\":\"https://watcher.guru/news/vechain-will-this-important-update-take-vet-to-50-cents\",\"description\":\"VeChain
+        (VET) has been gaining momentum in the cryptocurrency market, showcasing impressive
+        performance amid........\",\"source\":\"watcher.guru\",\"tags\":[\"CryptoCurrency\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T18:00:29.216257Z\",\"tickers\":[]},{\"id\":62543717,\"publishedDate\":\"2024-02-22T17:59:28Z\",\"title\":\"Mercedes-Benz
+        rallies after backing off 50% EV target, unveiling new buybacks\",\"url\":\"https://seekingalpha.com/news/4070483-mercedes-benz-rallies-after-backing-off-50-ev-target-unveiling-new-buybacks\",\"description\":\"Mercedes-Benz
+        delays electrification target by 5 years to 2030, announces stock buyback
+        program. Read more.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Consumer
+        Discretionary\",\"Stock\"],\"crawlDate\":\"2024-02-22T18:00:00.801505Z\",\"tickers\":[\"mbgaf\"]},{\"id\":62543699,\"publishedDate\":\"2024-02-22T17:59:27.191176Z\",\"title\":\"Understanding
+        the Waves of Bitcoin Buying\",\"url\":\"https://www.cryptoglobe.com/latest/2024/02/understanding-the-waves-of-bitcoin-buying/\",\"description\":\"Have
+        you ever found yourself at the edge of the digital currency ocean, wondering
+        how to dive into the swirling currents of Bitcoin? It's a common place to
+        be as cryptocurrency becomes a staple of modern financial discussions. Just
+        like any other form of trading, there's a need to grasp the essentials before
+        you make the plunge. Whether it's setting up a digital wallet to store your
+        coins or finding the right platform for exchange, each step lays the foundation
+        for a seamless experience. For many, dipping a toe in begins with a simple
+        google of Bitcoin buy to survey the expanse of buying options and educational
+        resources available.\",\"source\":\"cryptoglobe.com\",\"tags\":[\"CryptoCurrency\"],\"crawlDate\":\"2024-02-22T17:59:38.864060Z\",\"tickers\":[]},{\"id\":62543694,\"publishedDate\":\"2024-02-22T17:58:32Z\",\"title\":\"PCH
+        Reopens After Mudslides, Malibu Canyon Remains Closed\",\"url\":\"https://patch.com/california/malibu/pch-reopens-after-mudslides-malibu-canyon-remains-closed\",\"description\":\"Crews
+        are working to clear mudslides that have hampered travel in and around Malibu
+        this week.\",\"source\":\"patch.com\",\"tags\":[\"California\",\"Canyon\",\"Closed\",\"Malibu\",\"Mudslides\",\"Remains\",\"Reopens\",\"Traffic\",\"Transit\"],\"crawlDate\":\"2024-02-22T17:59:34.787354Z\",\"tickers\":[]},{\"id\":62543754,\"publishedDate\":\"2024-02-22T17:58:23Z\",\"title\":\"Hora
+        de hablar de una nueva solucin para el conflicto israel-palestino\",\"url\":\"https://www.jpost.com/spanish/opinion/article-788420\",\"description\":\"Despu\xE9s
+        del 7 de octubre, es momento de que pol\xEDticos, expertos en seguridad y
+        grupos de reflexi\xF3n ofrezcan nuevas y creativas sugerencias, ya que las
+        que han circulado hasta ahora han fracasado.\\r\\n\",\"source\":\"jpost.com\",\"tags\":[\"Es-Israel\",\"Ham\xE1s\",\"Israel\",\"Palestina\",\"Palestinian
+        Territories\",\"Soluci\xF3n De Dos Estados\"],\"crawlDate\":\"2024-02-22T18:00:40.855387Z\",\"tickers\":[]},{\"id\":62543573,\"publishedDate\":\"2024-02-22T17:58:19.939191Z\",\"title\":\"Illuminating
+        the source-sink balancing act of photosynthetic 'tiny green bacteria'\",\"url\":\"https://phys.org/news/2024-02-illuminating-source-photosynthetic-tiny-green.html\",\"description\":\"Cyanobacteria
+        are little green microorganisms that photosynthesize, like plants and algae
+        do, but with stark differences in how they function.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Cell
+        & Microbiology\"],\"crawlDate\":\"2024-02-22T17:58:23.064214Z\",\"tickers\":[]},{\"id\":62543644,\"publishedDate\":\"2024-02-22T17:57:08Z\",\"title\":\"2024
+        NFL Draft odds, predictions: Who will go after Caleb Williams?\",\"url\":\"https://nypost.com/2024/02/22/sports/2024-nfl-draft-odds-predictions-who-will-go-after-caleb-williams/\",\"description\":\"The
+        Washington Commanders\u2019 pick at No. 2 is a bit unclear.\",\"source\":\"nypost.com\",\"tags\":[\"Drake
+        Maye\",\"Nfl Betting\",\"Nfl Draft\",\"Nfl Draft 2024\",\"Sports Betting\",\"Sports
+        Picks\"],\"crawlDate\":\"2024-02-22T17:58:37.005962Z\",\"tickers\":[]},{\"id\":62543580,\"publishedDate\":\"2024-02-22T17:56:52Z\",\"title\":\"Is
+        Amazon shutting down Freevee? Here's what we know so far\",\"url\":\"https://www.tomsguide.com/entertainment/prime-video/is-amazon-shutting-down-freevee-heres-what-we-know-so-far\",\"description\":\"Prime
+        Video with ads may render Freevee redundant\",\"source\":\"tomsguide.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T17:58:24.495914Z\",\"tickers\":[]},{\"id\":62543753,\"publishedDate\":\"2024-02-22T17:56:50Z\",\"title\":\"Gemini
+        - Google's New AI, Offers Users Free Image Creation And More\",\"url\":\"https://www.ndtv.com/world-news/gemini-googles-new-ai-offers-users-free-image-creation-and-more-5105962\",\"description\":\"Gemini,
+        released on December 6, 2023, and powered by the Imagen 2 model, allows users
+        to generate high-quality images with text prompts.\",\"source\":\"ndtv.com\",\"tags\":[\"Gemini\",\"Google
+        Ai\",\"Healthcare\",\"Industrials\",\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T18:00:37.930340Z\",\"tickers\":[\"goog\",\"googl\",\"vrtx\",\"vtnr\"]},{\"id\":62543565,\"publishedDate\":\"2024-02-22T17:56:49Z\",\"title\":\"Municipal
+        Elections \u2013 a Basic Guide\",\"url\":\"https://www.jpost.com/israel-news/article-788422\",\"description\":\"Elections
+        for local authorities, first scheduled for October 31, were postponed twice
+        due to the October 7 massacre and subsequent nation-wide draft of hundreds
+        of thousands of reservists.\",\"source\":\"jpost.com\",\"tags\":[\"Israel
+        Elections\",\"Israel-Hamas War 2024\",\"Israeli\",\"Municipal Elections\"],\"crawlDate\":\"2024-02-22T17:58:17.440229Z\",\"tickers\":[]},{\"id\":62543688,\"publishedDate\":\"2024-02-22T17:56:39Z\",\"title\":\"Does
+        Fubo\u2019s antitrust lawsuit against ESPN, Fox, and WBD stand a chance?\",\"url\":\"https://arstechnica.com/tech-policy/2024/02/does-fubos-antitrust-lawsuit-against-espn-fox-and-wbd-stand-a-chance/\",\"description\":\"Fubo:
+        Media giants' anticompetitive tactics already killed PS Vue, other streamers.\",\"source\":\"arstechnica.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Tiingo Top\"],\"crawlDate\":\"2024-02-22T17:59:25.401501Z\",\"tickers\":[\"dis\"]},{\"id\":62543696,\"publishedDate\":\"2024-02-22T17:56:28Z\",\"title\":\"Jan
+        6 Capitol Riot Participation Lands Charges For Philly Man: Feds\",\"url\":\"https://patch.com/pennsylvania/ardmore/philly-man-charged-jan-6-capitol-riot-participation-feds\",\"description\":\"A
+        67-year-old Philadelphia man is accused of illegally entering the United States
+        Capitol building on Jan. 6, 2021.\",\"source\":\"patch.com\",\"tags\":[\"Capitol\",\"Charges\",\"Crime\",\"Participation\",\"Pennsylvania\",\"Philadelphia\",\"Philly\",\"Safety\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T17:59:36.085142Z\",\"tickers\":[]},{\"id\":62543627,\"publishedDate\":\"2024-02-22T17:56:24Z\",\"title\":\"5
+        Hot Penny Stock On the Move\",\"url\":\"https://www.insidermonkey.com/blog/5-hot-penny-stock-on-the-move-1260790/\",\"description\":\"Applied
+        Therapeutics Inc (NASDAQ:APLT) shares jumped about 79% over the past five
+        days through February 22.\",\"source\":\"insidermonkey.com\",\"tags\":[\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T17:58:33.379918Z\",\"tickers\":[\"aplt\"]},{\"id\":62543702,\"publishedDate\":\"2024-02-22T17:56:11Z\",\"title\":\"Police
+        special constable sacked for watching footage of stabbed Nottingham attack
+        victims\",\"url\":\"https://www.independent.co.uk/news/uk/crime/nottingham-valdo-calocane-police-sacked-grace-omalley-b2500862.html\",\"description\":\"Almost
+        180 police staff accessed material relating to the knife rampage \u2013 although
+        11 had no legitimate policing reason to do so\",\"source\":\"independent.co.uk\",\"tags\":[\"Nottingham\",\"Police\"],\"crawlDate\":\"2024-02-22T17:59:40.275499Z\",\"tickers\":[]},{\"id\":62543438,\"publishedDate\":\"2024-02-22T17:56:10Z\",\"title\":\"Putin
+        smiles when asked about 'crude' Biden remark\",\"url\":\"https://thewest.com.au/politics/putin-smiles-when-asked-about-crude-biden-remark-c-13695777\",\"description\":\"Russian
+        President Vladimir Putin has told media the US president's remark calling
+        him a \\\"crazy SOB\\\" shows why the Kremlin prefers Joe Biden to Donald
+        Trump.\",\"source\":\"thewest.com.au\",\"tags\":[\"Politics\",\"Russian Federation\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T17:56:21.908531Z\",\"tickers\":[]},{\"id\":62543751,\"publishedDate\":\"2024-02-22T17:55:48Z\",\"title\":\"Almadex
+        Samples 0.59% copper and 0.18 g/t gold in Outcrop at Newly-Acquired Porphyry
+        Target in Nevada, USA\",\"url\":\"https://www.globenewswire.com/news-release/2024/02/22/2833982/0/en/Almadex-Samples-0-59-copper-and-0-18-g-t-gold-in-Outcrop-at-Newly-Acquired-Porphyry-Target-in-Nevada-USA.html?f=22&fvtc=2&fvtv=1\",\"description\":\"VANCOUVER,
+        British Columbia, Feb.  22, 2024  (GLOBE NEWSWIRE) -- Almadex Minerals Ltd.
+        (\",\"source\":\"globenewswire.com\",\"tags\":[\"#Criticalminerals\",\"#Prospectgenerator\",\"Almadex
+        Minerals Ltd.\",\"Tsx Venture Exchange:Dex\"],\"crawlDate\":\"2024-02-22T18:00:31.672332Z\",\"tickers\":[]},{\"id\":62543490,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Wi-Fi
+        software found in many major laptops and smartphones has a major security
+        flaw \u2014 here's what you need to know\",\"url\":\"https://www.techradar.com/pro/security/wi-fi-software-found-in-many-major-laptops-and-smartphones-has-a-major-security-flaw-heres-what-you-need-to-know\",\"description\":\"Do
+        you know which SSID you're connecting to?\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T17:57:20.899177Z\",\"tickers\":[\"rht\"]},{\"id\":62543752,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Delhi
+        Police Issues Traffic Advisory In View Of Farmers' Protest\",\"url\":\"https://www.ndtv.com/india-news/delhi-police-issues-traffic-advisory-in-view-of-farmers-protest-5108716\",\"description\":\"The
+        Delhi Police on Thursday issued a traffic advisory in view of the farmers'
+        protest, saying vehicular movement will be affected on city borders due to
+        pickets and checkpoints and asked commuters to plan accordingly.\",\"source\":\"ndtv.com\",\"tags\":[\"Delhi
+        Police Advisory Farmers Protest\",\"Delhi Police Traffic Advisory\",\"Farmers
+        Protest Traffic Advisory\"],\"crawlDate\":\"2024-02-22T18:00:35.439403Z\",\"tickers\":[]}]"
     headers:
-      allow:
+      Allow:
       - GET, HEAD, OPTIONS
-      content-length:
-      - '13244'
-      content-type:
+      Content-Length:
+      - '10951'
+      Content-Type:
       - application/json
-      date:
-      - Thu, 16 Nov 2023 08:40:09 GMT
-      server:
+      Date:
+      - Thu, 22 Feb 2024 18:01:11 GMT
+      Server:
       - nginx/1.18.0 (Ubuntu)
-      vary:
+      Vary:
       - Cookie, Origin
       x-frame-options:
       - SAMEORIGIN

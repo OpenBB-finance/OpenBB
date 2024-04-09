@@ -12,7 +12,6 @@ from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistorica
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
-from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -62,7 +61,7 @@ yfinance_provider = Provider(
         "EquityQuote": YFinanceEquityQuoteFetcher,
         "EquityUndervaluedGrowth": YFUndervaluedGrowthEquitiesFetcher,
         "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
-        "EtfHistorical": YFinanceEtfHistoricalFetcher,
+        "EtfHistorical": YFinanceEquityHistoricalFetcher,
         "EtfInfo": YFinanceEtfInfoFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
@@ -72,7 +71,7 @@ yfinance_provider = Provider(
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
         "KeyMetrics": YFinanceKeyMetricsFetcher,
-        "MarketIndices": YFinanceMarketIndicesFetcher,
+        "MarketIndices": YFinanceIndexHistoricalFetcher,
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },

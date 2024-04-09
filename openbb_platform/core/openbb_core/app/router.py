@@ -25,10 +25,10 @@ from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
-from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import filter_list
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -203,15 +203,33 @@ class Router:
         """API Router."""
         return self._api_router
 
+    @property
+    def prefix(self) -> str:
+        """Prefix."""
+        return self._api_router.prefix
+
+    @property
+    def description(self) -> Optional[str]:
+        """Description."""
+        return self._description
+
+    @property
+    def routers(self) -> Dict[str, "Router"]:
+        """Routers nested within the Router, i.e. sub-routers."""
+        return self._routers
+
     def __init__(
         self,
         prefix: str = "",
+        description: Optional[str] = None,
     ) -> None:
         """Initialize Router."""
         self._api_router = APIRouter(
             prefix=prefix,
             responses={404: {"description": "Not found"}},
         )
+        self._description = description
+        self._routers: Dict[str, Router] = {}
 
     @overload
     def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
@@ -233,23 +251,16 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-        examples = kwargs.pop("examples", [])
-        exclude_auto_examples = kwargs.pop("exclude_auto_examples", False)
 
         if func := SignatureInspector.complete(func, model):
-            if not exclude_auto_examples:
-                examples.insert(
-                    0,
-                    ExampleGenerator.generate(
-                        route=SignatureInspector.get_operation_id(func, sep="."),
-                        model=model,
-                    ),
-                )
 
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["examples"] = examples
+            kwargs["openapi_extra"]["examples"] = filter_list(
+                examples=kwargs.pop("examples", []),
+                providers=ProviderInterface().available_providers,
+            )
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -297,10 +308,41 @@ class Router:
         prefix: str = "",
     ):
         """Include router."""
-        tags = [prefix[1:]] if prefix else None
+        tags = [prefix.strip("/")] if prefix else None
         self._api_router.include_router(
             router=router.api_router, prefix=prefix, tags=tags  # type: ignore
         )
+        name = prefix if prefix else router.prefix
+        self._routers[name.strip("/")] = router
+
+    def get_attr(self, path: str, attr: str) -> Any:
+        """Get router attribute from path.
+
+        Parameters
+        ----------
+        path : str
+            Path to the router or nested router.
+            E.g. "/equity" or "/equity/price".
+        attr : str
+            Attribute to get.
+
+        Returns
+        -------
+        Any
+            Attribute value.
+        """
+        return self._search_attr(self, path, attr)
+
+    @staticmethod
+    def _search_attr(router: "Router", path: str, attr: str) -> Any:
+        """Recursively search router attribute from path."""
+        path = path.strip("/")
+        first = path.split("/")[0]
+        if first in router.routers:
+            return Router._search_attr(
+                router.routers[first], "/".join(path.split("/")[1:]), attr
+            )
+        return getattr(router, attr, None)
 
 
 class SignatureInspector:
@@ -357,7 +399,7 @@ class SignatureInspector:
 
             func = cls.inject_return_type(
                 func=func,
-                return_map=provider_interface.return_map.get(model),
+                return_map=provider_interface.return_map.get(model, {}),
                 model=model,
             )
 
@@ -381,11 +423,7 @@ class SignatureInspector:
         return_map: Dict[str, dict],
         model: str,
     ) -> Callable[P, OBBject]:
-        """
-        Inject full return model into the function.
-        Also updates __name__ and __doc__ for API schemas.
-        """
-
+        """Inject full return model into the function. Also updates __name__ and __doc__ for API schemas."""
         results: Dict[str, Any] = {"list_type": [], "dict_type": []}
 
         for provider, return_data in return_map.items():
@@ -404,7 +442,7 @@ class SignatureInspector:
             if not v:
                 continue
 
-            inner_type = SerializeAsAny[
+            inner_type: Any = SerializeAsAny[  # type: ignore[misc,valid-type]
                 Annotated[
                     Union[tuple(v)],  # type: ignore
                     Field(discriminator="provider"),
@@ -486,7 +524,7 @@ class SignatureInspector:
         if doc:
             description = doc.split("    Parameters\n    ----------")[0]
             description = description.split("    Returns\n    -------")[0]
-            description = description.split("    Example\n    -------")[0]
+            description = description.split("    Examples\n    -------")[0]
             description = "\n".join([line.strip() for line in description.split("\n")])
 
             return description

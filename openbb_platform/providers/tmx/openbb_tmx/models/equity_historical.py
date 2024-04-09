@@ -2,9 +2,12 @@
 
 # pylint: disable=unused-argument
 import asyncio
-import warnings
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 import pytz
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -23,8 +26,6 @@ from openbb_tmx.utils.helpers import (
 )
 from pandas import DataFrame, to_datetime
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -112,6 +113,8 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
+        if isinstance(v, (datetime, dateType)):
+            return v if v.hour != 0 and v.minute != 0 and v.second != 0 else v.date()  # type: ignore
         try:
             dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S%z")
             return dt.astimezone(pytz.timezone("America/New_York"))
@@ -133,7 +136,7 @@ class TmxEquityHistoricalFetcher(
             and adjustment != "splits_only"
             and params.get("interval") not in ["day", "1d"]
         ):
-            _warn("Adjustment parameter is only available for daily data.")
+            warn("Adjustment parameter is only available for daily data.")
         return TmxEquityHistoricalQueryParams(**params)
 
     @staticmethod
@@ -179,7 +182,7 @@ class TmxEquityHistoricalFetcher(
                 results.extend(data)
 
             if data == []:
-                _warn(f"No data found for {symbol}.")
+                warn(f"No data found for {symbol}.")
 
             return results
 

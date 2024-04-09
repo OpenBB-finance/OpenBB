@@ -1,5 +1,6 @@
 """SEC Helpers module"""
 
+# pylint: skip-file
 from datetime import timedelta
 from io import BytesIO
 from typing import Dict, List, Optional

@@ -8,12 +8,17 @@ from openbb_core.provider.standard_models.spot import (
     SpotRateQueryParams,
 )
 from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import get_spot_series_id
+from openbb_fred.utils.fred_helpers import comma_to_float_list, get_spot_series_id
 from pydantic import field_validator
 
 
 class FREDSpotRateQueryParams(SpotRateQueryParams):
     """FRED Spot Rate Query."""
+
+    __json_schema_extra__ = {
+        "maturity": ["multiple_items_allowed"],
+        "category": ["multiple_items_allowed"],
+    }
 
 
 class FREDSpotRateData(SpotRateData):
@@ -56,9 +61,17 @@ class FREDSpotRateFetcher(
         key = credentials.get("fred_api_key") if credentials else ""
         fred = Fred(key)
 
+        maturity = (
+            comma_to_float_list(query.maturity)
+            if isinstance(query.maturity, str)
+            else [query.maturity]
+        )
+        if any(1 > m > 100 for m in maturity):
+            raise ValueError("Maturity must be between 1 and 100")
+
         series = get_spot_series_id(
-            maturity=query.maturity,
-            category=query.category,
+            maturity=maturity,
+            category=query.category.split(","),
         )
 
         data = []

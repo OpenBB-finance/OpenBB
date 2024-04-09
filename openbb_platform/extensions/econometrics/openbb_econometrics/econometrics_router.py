@@ -15,6 +15,7 @@ from linearmodels.panel import (
     PooledOLS,
     RandomEffects,
 )
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
@@ -26,14 +27,20 @@ from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: i
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
-router = Router(prefix="")
+router = Router(prefix="", description="Econometrics analysis tools.")
 
 
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        "obb.econometrics.correlation_matrix(data=stock_data)",
+        PythonEx(
+            description="Get the correlation matrix of a dataset.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                "obb.econometrics.correlation_matrix(data=stock_data)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
     ],
 )
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
@@ -51,7 +58,7 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
     Returns
     -------
-    OBBject[List[Data]]:
+    OBBject[List[Data]]
         Correlation matrix.
     """
     df = basemodel_to_df(data)
@@ -74,8 +81,20 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     methods=["POST"],
     include_in_schema=False,
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+        PythonEx(
+            description="Perform Ordinary Least Squares (OLS) regression.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def ols_regression(
@@ -101,7 +120,7 @@ def ols_regression(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the results being model and results objects.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -114,8 +133,20 @@ def ols_regression(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+        PythonEx(
+            description="Perform Ordinary Least Squares (OLS) regression and return the summary.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501  pylint: disable=line-too-long
+                'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501  pylint: disable=line-too-long
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def ols_regression_summary(
@@ -138,7 +169,7 @@ def ols_regression_summary(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being summary object.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -187,8 +218,20 @@ def ols_regression_summary(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+        PythonEx(
+            description="Perform Durbin-Watson test for autocorrelation.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def autocorrelation(
@@ -217,7 +260,7 @@ def autocorrelation(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -229,8 +272,20 @@ def autocorrelation(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+        PythonEx(
+            description="Perform Breusch-Godfrey Lagrange Multiplier tests for residual autocorrelation.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',  # noqa: E501  pylint: disable=line-too-long
+            ],
+        ),
+        APIEx(
+            parameters={
+                "y_column": "close",
+                "x_columns": ["open", "high", "low"],
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def residual_autocorrelation(
@@ -262,7 +317,7 @@ def residual_autocorrelation(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -284,8 +339,13 @@ def residual_autocorrelation(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
+        PythonEx(
+            description="Perform co-integration test between two timeseries.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
+            ],
+        ),
     ],
 )
 def cointegration(
@@ -314,7 +374,7 @@ def cointegration(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     pairs = list(combinations(columns, 2))
@@ -343,8 +403,22 @@ def cointegration(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
+        PythonEx(
+            description="Perform Granger causality test to determine if X 'causes' y.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
+            ],
+        ),
+        APIEx(
+            description="Example with mock data.",
+            parameters={
+                "y_column": "close",
+                "x_column": "open",
+                "lag": 1,
+                "data": APIEx.mock_data("timeseries"),
+            },
+        ),
     ],
 )
 def causality(
@@ -353,10 +427,10 @@ def causality(
     x_column: str,
     lag: PositiveInt = 3,
 ) -> OBBject[Data]:
-    """Perform Granger causality test to determine if X "causes" y.
+    """Perform Granger causality test to determine if X 'causes' y.
 
     The Granger causality test is a statistical hypothesis test to determine if one time series is useful in
-    forecasting another. While "causality" in this context does not imply a cause-and-effect relationship in
+    forecasting another. While 'causality' in this context does not imply a cause-and-effect relationship in
     the philosophical sense, it does test whether changes in one variable are systematically followed by changes
     in another variable, suggesting a predictive relationship. By specifying a lag, you set the number of periods to
     look back in the time series to assess this relationship. This test is particularly useful in economic and
@@ -376,7 +450,7 @@ def causality(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     X = get_target_column(basemodel_to_df(data), x_column)
@@ -400,9 +474,20 @@ def causality(
 @router.command(
     methods=["POST"],
     examples=[
-        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-        'obb.econometrics.unit_root(data=stock_data, column="close")',
-        'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',
+        PythonEx(
+            description="Perform Augmented Dickey-Fuller (ADF) unit root test.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",  # noqa: E501
+                'obb.econometrics.unit_root(data=stock_data, column="close")',
+                'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',
+            ],
+        ),
+        APIEx(
+            parameters={
+                "column": "close",
+                "data": APIEx.mock_data("timeseries"),
+            }
+        ),
     ],
 )
 def unit_root(
@@ -433,7 +518,7 @@ def unit_root(
 
     Returns
     -------
-    OBBject[Data]:
+    OBBject[Data]
         OBBject with the results being the score from the test.
     """
     dataset = get_target_column(basemodel_to_df(data), column)
@@ -448,7 +533,18 @@ def unit_root(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_random_effects(
     data: List[Data],
     y_column: str,
@@ -472,17 +568,30 @@ def panel_random_effects(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
+    if len(X) < 3:
+        raise ValueError("This analysis requires at least 3 items in the dataset.")
     y = get_target_column(basemodel_to_df(data), y_column)
     exogenous = sm.add_constant(X)
     results = RandomEffects(y, exogenous).fit()
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_between(
     data: List[Data],
     y_column: str,
@@ -506,7 +615,7 @@ def panel_between(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -516,7 +625,18 @@ def panel_between(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_pooled(
     data: List[Data],
     y_column: str,
@@ -541,7 +661,7 @@ def panel_pooled(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -551,7 +671,18 @@ def panel_pooled(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_fixed(
     data: List[Data],
     y_column: str,
@@ -575,7 +706,7 @@ def panel_fixed(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -585,7 +716,18 @@ def panel_fixed(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_first_difference(
     data: List[Data],
     y_column: str,
@@ -609,7 +751,7 @@ def panel_first_difference(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -619,7 +761,18 @@ def panel_first_difference(
     return OBBject(results={"results": results})
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    examples=[
+        APIEx(
+            parameters={
+                "y_column": "portfolio_value",
+                "x_columns": ["risk_free_rate"],
+                "data": APIEx.mock_data("panel"),
+            }
+        ),
+    ],
+)
 def panel_fmac(
     data: List[Data],
     y_column: str,
@@ -644,7 +797,7 @@ def panel_fmac(
 
     Returns
     -------
-    OBBject[Dict]:
+    OBBject[Dict]
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)

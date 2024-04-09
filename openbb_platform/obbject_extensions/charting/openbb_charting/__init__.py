@@ -9,6 +9,7 @@ from typing import (
     Tuple,
     Union,
 )
+from warnings import warn
 
 import numpy as np
 import pandas as pd
@@ -18,7 +19,8 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
-from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
+from openbb_charting.core.backend import Backend, create_backend, get_backend
+from openbb_charting.core.to_chart import ChartIndicators, to_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
 ext = Extension(name="charting")
@@ -49,10 +51,10 @@ class Charting:
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
-            user_settings=self._obbject._user_settings,
-            system_settings=self._obbject._system_settings,
+            user_settings=self._obbject._user_settings,  # type: ignore
+            system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._handle_backend()
+        self._backend: Backend = self._handle_backend()
 
     @classmethod
     def indicators(cls):
@@ -64,12 +66,12 @@ class Charting:
         """Returns a list of the available functions."""
         return get_charting_functions()
 
-    def _handle_backend(self):
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.backend import create_backend, get_backend
-
+    def _handle_backend(self) -> Backend:
+        """Handles backend initialization."""
         create_backend(self._charting_settings)
-        get_backend().start(debug=self._charting_settings.debug_mode)
+        backend = get_backend()
+        backend.start(debug=self._charting_settings.debug_mode)
+        return backend
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
@@ -91,13 +93,37 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
-
+        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT
         )
         if render:
             fig.show(**kwargs)
+
+    def _prepare_data_as_df(
+        self, data: Optional[Union[pd.DataFrame, pd.Series]]
+    ) -> Tuple[pd.DataFrame, bool]:
+        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
+            bool(data)
+        )
+        index = (
+            data.index.name
+            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
+            else None
+        )
+        data_as_df: pd.DataFrame = (
+            basemodel_to_df(convert_to_basemodel(data), index=index)
+            if has_data
+            else self._obbject.to_dataframe()
+        )
+        if "date" in data_as_df.columns:
+            data_as_df = data_as_df.set_index("date")
+        if "provider" in data_as_df.columns:
+            data_as_df.drop(columns="provider", inplace=True)
+        return data_as_df, has_data
 
     # pylint: disable=too-many-arguments
     def to_chart(
@@ -172,30 +198,69 @@ class Charting:
         > from openbb_charting import Charting
         > Charting.indicators()
         """
-        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
-            data
-        )
-        index = (
-            data.index.name
-            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
-            else ""
-        )
-        data_as_df: pd.DataFrame = (
-            basemodel_to_df(convert_to_basemodel(data), index=index)
-            if has_data
-            else self._obbject.to_dataframe()
-        )
-        fig, content = to_chart(
-            data_as_df,
-            indicators=indicators,
-            symbol=symbol,
-            candles=candles,
-            volume=volume,
-            prepost=prepost,
-            volume_ticks_x=volume_ticks_x,
-        )
-        self._obbject.chart = Chart(
-            fig=fig, content=content, format=charting_router.CHART_FORMAT
-        )
-        if render:
-            fig.show(**kwargs)
+        data_as_df, has_data = self._prepare_data_as_df(data)
+        try:
+            fig, content = to_chart(
+                data_as_df,
+                indicators=indicators,
+                symbol=symbol,
+                candles=candles,
+                volume=volume,
+                prepost=prepost,
+                volume_ticks_x=volume_ticks_x,
+            )
+            self._obbject.chart = Chart(
+                fig=fig, content=content, format=charting_router.CHART_FORMAT
+            )
+            if render:
+                fig.show(**kwargs)
+
+        except Exception:
+            try:
+                if has_data:
+                    self.show(data=data_as_df, symbol=symbol, render=render, **kwargs)
+                else:
+                    self.show(**kwargs)
+            except Exception as e:
+                raise RuntimeError("Could not create chart from the OBBject.") from e
+
+    def table(
+        self,
+        data: Optional[Union[pd.DataFrame, pd.Series]] = None,
+        title: str = "",
+    ):
+        """
+        Display an interactive table.
+
+        Parameters
+        ----------
+        data : Optional[Union[pd.DataFrame, pd.Series]], optional
+            Data to be plotted, by default None.
+            If no data is provided the OBBject results will be used.
+        """
+        data_as_df, _ = self._prepare_data_as_df(data)
+        if isinstance(data_as_df.index, pd.RangeIndex):
+            data_as_df.reset_index(inplace=True, drop=True)
+        else:
+            data_as_df.reset_index(inplace=True)
+        if self._backend.isatty:
+            try:
+                self._backend.send_table(
+                    df_table=data_as_df,
+                    title=title
+                    or self._obbject._route,  # pylint: disable=protected-access
+                    theme=self._charting_settings.table_style,
+                )
+            except Exception as e:
+                warn(f"Failed to show figure with backend. {e}")
+
+        else:
+            from plotly import (  # pylint:disable=import-outside-toplevel
+                optional_imports,
+            )
+
+            ipython_display = optional_imports.get_module("IPython.display")
+            if ipython_display:
+                ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
+            else:
+                warn("IPython.display is not available.")

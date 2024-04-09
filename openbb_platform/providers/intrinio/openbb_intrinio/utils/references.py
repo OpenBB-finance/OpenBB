@@ -40,6 +40,63 @@ VENUES = {
 }
 
 
+ETF_EXCHANGES = Literal[
+    "xnas",
+    "arcx",
+    "bats",
+    "xnys",
+    "bvmf",
+    "xshg",
+    "xshe",
+    "xhkg",
+    "xbom",
+    "xnse",
+    "xidx",
+    "tase",
+    "xkrx",
+    "xkls",
+    "xmex",
+    "xses",
+    "roco",
+    "xtai",
+    "xbkk",
+    "xist",
+]
+
+
+ETF_PERFORMANCE_MAP = {
+    "trailing_one_month_return_split_and_dividend": "one_month",
+    "trailing_one_month_return_split_only": "one_month",
+    "trailing_one_year_return_split_and_dividend": "one_year",
+    "trailing_one_year_return_split_only": "one_year",
+    "trailing_one_year_volatility_annualized": "volatility_one_year",
+    "trailing_three_year_annualized_return_split_and_dividend": "three_year",
+    "trailing_three_year_annualized_return_split_only": "three_year",
+    "trailing_three_year_volatility_annualized": "volatility_three_year",
+    "trailing_five_year_annualized_return_split_and_dividend": "five_year",
+    "trailing_five_year_annualized_return_split_only": "five_year",
+    "trailing_five_year_volatility_annualized": "volatility_five_year",
+    "trailing_ten_year_annualized_return_split_and_dividend": "ten_year",
+    "trailing_ten_year_annualized_return_split_only": "ten_year",
+    "inception_annualized_return_split_and_dividend": "max_annualized",
+    "inception_annualized_return_split_only": "max_annualized",
+    "calendar_year_5_return_split_and_dividend": "five_year",
+    "calendar_year_5_return_split_only": "five_year",
+    "calendar_year_4_return_split_and_dividend": "four_year",
+    "calendar_year_4_return_split_only": "four_year",
+    "calendar_year_3_return_split_and_dividend": "three_year",
+    "calendar_year_3_return_split_only": "three_year",
+    "calendar_year_2_return_split_and_dividend": "two_year",
+    "calendar_year_2_return_split_only": "two_year",
+    "calendar_year_1_return_split_and_dividend": "one_year",
+    "calendar_year_1_return_split_only": "one_year",
+    "calendar_year_to_date_return_split_and_dividend": "ytd",
+    "calendar_year_to_date_return_split_only": "ytd",
+    "net_asset_value": "nav",
+    "beta_vs_spy": "beta",
+}
+
+
 class IntrinioCompany(Data):
     """Intrinio Company Data."""
 

@@ -50,28 +50,9 @@ def get_equity_data():
     ],
 )
 @pytest.mark.integration
-def test_chart_equity_price_historical(params, obb):
+def test_charting_equity_price_historical(params, obb):
     """Test chart equity price historical."""
     result = obb.equity.price.historical(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert result.chart.content
-    assert isinstance(result.chart.fig, OpenBBFigure)
-
-
-@parametrize(
-    "params",
-    [
-        ({"symbol": "AAPL", "limit": 100, "chart": "True"}),
-    ],
-)
-@pytest.mark.integration
-def test_chart_equity_fundamental_multiples(params, obb):
-    """Test chart equity multiples."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.fundamental.multiples(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -95,7 +76,7 @@ def test_chart_equity_fundamental_multiples(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_adx(params, obb):
+def test_charting_technical_adx(params, obb):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
 
@@ -124,7 +105,7 @@ def test_chart_technical_adx(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_aroon(params, obb):
+def test_charting_technical_aroon(params, obb):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
 
@@ -154,7 +135,7 @@ def test_chart_technical_aroon(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_ema(params, obb):
+def test_charting_technical_ema(params, obb):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
 
@@ -184,7 +165,7 @@ def test_chart_technical_ema(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_hma(params, obb):
+def test_charting_technical_hma(params, obb):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -215,7 +196,7 @@ def test_chart_technical_hma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_macd(params, obb):
+def test_charting_technical_macd(params, obb):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
 
@@ -246,7 +227,7 @@ def test_chart_technical_macd(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_rsi(params, obb):
+def test_charting_technical_rsi(params, obb):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
 
@@ -276,7 +257,7 @@ def test_chart_technical_rsi(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_sma(params, obb):
+def test_charting_technical_sma(params, obb):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -306,7 +287,7 @@ def test_chart_technical_sma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_wma(params, obb):
+def test_charting_technical_wma(params, obb):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
 
@@ -336,13 +317,65 @@ def test_chart_technical_wma(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_zlma(params, obb):
+def test_charting_technical_zlma(params, obb):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_equity_data()
 
     result = obb.technical.zlma(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "model": "yang_zhang",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_technical_cones(params, obb):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_equity_data()
+
+    result = obb.technical.cones(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "DGS10",
+                "transform": "pc1",
+                "chart": True,
+                "provider": "fred",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_fred_series(params, obb):
+    """Test chart economy fred series."""
+    result = obb.economy.fred_series(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

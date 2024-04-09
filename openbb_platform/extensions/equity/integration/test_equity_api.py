@@ -1,7 +1,6 @@
 """API integration tests for equity extension."""
 
 import base64
-from datetime import time
 
 import pytest
 import requests
@@ -236,8 +235,7 @@ def test_equity_fundamental_cash_growth(params, headers):
         (
             {
                 "symbol": "AAPL",
-                "start_date": "2020-01-01",
-                "end_date": "2021-01-01",
+                "year": 2022,
                 "provider": "fmp",
             }
         ),
@@ -245,12 +243,14 @@ def test_equity_fundamental_cash_growth(params, headers):
             {
                 "symbol": "AAPL",
                 "provider": "fmp",
+                "year": None,
             }
         ),
         (
             {
                 "symbol": "AAPL,MSFT",
                 "provider": "fmp",
+                "year": None,
             }
         ),
     ],
@@ -359,7 +359,7 @@ def test_equity_fundamental_employee_count(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "limit": 30})],
+    [({"symbol": "AAPL,MSFT", "period": "annual", "limit": 30})],
 )
 @pytest.mark.integration
 def test_equity_estimates_historical(params, headers):
@@ -367,6 +367,67 @@ def test_equity_estimates_historical(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/estimates/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_sales(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/forward_sales?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "fy",
+                "fiscal_year": None,
+                "calendar_year": None,
+                "calendar_period": None,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "annual",
+                "limit": None,
+                "include_historical": False,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_eps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/forward_eps?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -457,7 +518,7 @@ def test_equity_fundamental_income_growth(params, headers):
             {
                 "symbol": "RY",
                 "provider": "tmx",
-                "limit": None,
+                "limit": 0,
             }
         ),
         (
@@ -503,13 +564,14 @@ def test_equity_ownership_insider_trading(params, headers):
                 "provider": "fmp",
             }
         ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "limit": 100,
-            }
-        ),
+        # Disabled due to unreliable Intrinio endpoint
+        # (
+        #     {
+        #         "provider": "intrinio",
+        #         "symbol": "AAPL",
+        #         "limit": 100,
+        #     }
+        # ),
     ],
 )
 @pytest.mark.integration
@@ -682,6 +744,20 @@ def test_equity_estimates_price_target(params, headers):
                 "firm_ids": None,
                 "firm_name": "Barclays",
                 "analyst_name": None,
+                "page": 0,
+            }
+        ),
+        (
+            {
+                "limit": 3,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "analyst_ids": None,
+                "firm_ids": None,
+                "firm_name": "Barclays,Credit Suisse",
+                "analyst_name": None,
+                "page": 1,
             }
         ),
     ],
@@ -703,6 +779,13 @@ def test_equity_estimates_analyst_search(params, headers):
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
         ({"symbol": "TD:US", "provider": "tmx"}),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "industry_group_number": None,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -901,153 +984,131 @@ def test_equity_compare_groups(params, headers):
     [
         (
             {
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-                "provider": "yfinance",
-            }
-        ),
-        (
-            {
-                "adjusted": True,
+                "adjustment": "unadjusted",
                 "extended_hours": True,
-                "month": "2023-01",
-                "output_size": "full",
                 "provider": "alpha_vantage",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
+                "end_date": "2023-06-06",
+                "interval": "15m",
             }
         ),
         (
             {
-                "adjusted": True,
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": None,
+                "end_date": None,
+                "interval": "1m",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+            }
+        ),
+        (
+            {
+                "timezone": "UTC",
+                "source": "realtime",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+            }
+        ),
+        (
+            {
+                "timezone": None,
+                "source": "delayed",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "unadjusted",
+                "provider": "polygon",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-03",
+                "interval": "1m",
                 "extended_hours": False,
-                "output_size": "full",
-                "month": "2023-01",
-                "provider": "alpha_vantage",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-            }
-        ),
-        (
-            {
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2024-02-19",
-                "end_date": "2024-02-20",
-                "interval": "1m",
-                "use_cache": False,
-            }
-        ),
-        (
-            {
-                "provider": "cboe",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-                "use_cache": False,
-            }
-        ),
-        (
-            {
-                "limit": "30",
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "limit": "30",
-                "provider": "fmp",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
-            }
-        ),
-        (
-            {
-                "timezone": "UTC",
-                "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-06-01",
-                "end_date": "2023-06-03",
-                "interval": "1h",
-            }
-        ),
-        (
-            {
-                "timezone": "UTC",
-                "source": "realtime",
-                "start_time": time(5, 30, 0),
-                "end_time": time(12, 0, 0),
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "interval": "1d",
             }
         ),
         (
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "True",
-                "provider": "polygon",
-                "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-04",
-                "interval": "1m",
-            }
-        ),
-        (
-            {
-                "sort": "desc",
-                "limit": "49999",
-                "adjusted": "True",
+                "adjustment": "splits_only",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "extended_hours": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": False,
+                "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-06-01",
                 "end_date": "2023-06-03",
                 "interval": "1h",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
             {
-                "prepost": False,
-                "include": True,
-                "adjusted": False,
-                "ignore_tz": True,
+                "extended_hours": False,
+                "include_actions": True,
+                "adjustment": "splits_only",
                 "provider": "yfinance",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "adjusted": False,
+                "prepost": False,
             }
         ),
         (
@@ -1070,6 +1131,26 @@ def test_equity_compare_groups(params, headers):
         ),
         (
             {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "AAPL,MSFT",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
                 "provider": "tmx",
                 "symbol": "AAPL:US",
                 "start_date": "2023-01-01",
@@ -1082,8 +1163,6 @@ def test_equity_compare_groups(params, headers):
 )
 @pytest.mark.integration
 def test_equity_price_historical(params, headers):
-    if params.get("provider") == "alpha_vantage":
-        pytest.skip("Alpha Vantage is premium.")
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -1272,6 +1351,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "tmx", "use_cache": False}),
+        ({"query": "gold", "provider": "tradier", "is_symbol": False}),
         (
             {
                 "query": "gold",
@@ -1340,6 +1420,7 @@ def test_equity_screener(params, headers):
         ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
         ({"symbol": "AAPL", "provider": "yfinance"}),
         ({"symbol": "AAPL:US", "provider": "tmx"}),
+        ({"symbol": "AAPL,MSFT", "provider": "tradier"}),
     ],
 )
 @pytest.mark.integration
@@ -1673,8 +1754,9 @@ def test_equity_darkpool_otc(params, headers):
 @parametrize(
     "params",
     [
-        ({"provider": "fmp", "market": "EURONEXT"}),
-        ({"provider": "polygon"}),  # premium endpoint
+        ({"provider": "fmp", "market": "euronext"}),
+        ({"provider": "polygon"}),
+        ({"provider": "intrinio", "date": "2022-06-30"}),
     ],
 )
 @pytest.mark.integration
@@ -1692,6 +1774,14 @@ def test_equity_market_snapshots(params, headers):
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "quarter",
+                "limit": 5,
+                "provider": "alpha_vantage",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1763,6 +1853,30 @@ def test_equity_fundamental_reported_financials(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/equity/fundamental/reported_financials?{query_str}"
     )
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 1,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_form_13f(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/ownership/form_13f?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

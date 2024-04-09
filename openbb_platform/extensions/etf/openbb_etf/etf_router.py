@@ -1,6 +1,7 @@
 """ETF Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -12,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_etf.discovery.discovery_router import router as discovery_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Exchange Traded Funds market data.")
 router.include_router(discovery_router)
 
 # pylint: disable=unused-argument
@@ -20,12 +21,15 @@ router.include_router(discovery_router)
 
 @router.command(
     model="EtfSearch",
-    exclude_auto_examples=True,
     examples=[
-        "### An empty query returns the full list of ETFs from the provider. ###",
-        'obb.etf.search("", provider="fmp")',
-        "#### The query will return results from text-based fields containing the term. ####"
-        'obb.etf.search("commercial real estate", provider="fmp")',
+        APIEx(
+            description="An empty query returns the full list of ETFs from the provider.",
+            parameters={"provider": "fmp"},
+        ),
+        APIEx(
+            description="The query will return results from text-based fields containing the term.",
+            parameters={"query": "commercial real estate", "provider": "fmp"},
+        ),
     ],
 )
 async def search(
@@ -45,9 +49,12 @@ async def search(
     model="EtfHistorical",
     operation_id="etf_historical",
     examples=[
-        'obb.etf.historical("SPY", provider="yfinance")',
-        "#### This function accepts multiple tickers. ####",
-        'obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")',
+        APIEx(parameters={"symbol": "SPY", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "SPY", "provider": "yfinance"}),
+        APIEx(
+            description="This function accepts multiple tickers.",
+            parameters={"symbol": "SPY,IWM,QQQ,DJIA", "provider": "yfinance"},
+        ),
     ],
 )
 async def historical(
@@ -62,11 +69,12 @@ async def historical(
 
 @router.command(
     model="EtfInfo",
-    exclude_auto_examples=True,
     examples=[
-        'obb.etf.info("SPY", provider="fmp")',
-        "#### This function accepts multiple tickers. ####",
-        'obb.etf.info("SPY,IWM,QQQ,DJIA", provider="fmp")',
+        APIEx(parameters={"symbol": "SPY", "provider": "fmp"}),
+        APIEx(
+            description="This function accepts multiple tickers.",
+            parameters={"symbol": "SPY,IWM,QQQ,DJIA", "provider": "fmp"},
+        ),
     ],
 )
 async def info(
@@ -81,10 +89,7 @@ async def info(
 
 @router.command(
     model="EtfSectors",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.etf.sectors("SPY", provider="fmp")',
-    ],
+    examples=[APIEx(parameters={"symbol": "SPY", "provider": "fmp"})],
 )
 async def sectors(
     cc: CommandContext,
@@ -98,10 +103,7 @@ async def sectors(
 
 @router.command(
     model="EtfCountries",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.etf.countries("VT", provider="fmp")',
-    ],
+    examples=[APIEx(parameters={"symbol": "VT", "provider": "fmp"})],
 )
 async def countries(
     cc: CommandContext,
@@ -114,10 +116,10 @@ async def countries(
 
 
 @router.command(
-    model="PricePerformance",
-    exclude_auto_examples=True,
+    model="EtfPricePerformance",
     examples=[
-        'obb.etf.price_performance("SPY,QQQ,IWM,DJIA", provider="fmp")',
+        APIEx(parameters={"symbol": "QQQ", "provider": "fmp"}),
+        APIEx(parameters={"symbol": "SPY,QQQ,IWM,DJIA", "provider": "fmp"}),
     ],
 )
 async def price_performance(
@@ -126,19 +128,22 @@ async def price_performance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`."""
+    """Price performance as a return, over different periods."""
     return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(
     model="EtfHoldings",
-    exclude_auto_examples=True,
     examples=[
-        'obb.etf.holdings("XLK", provider="fmp").to_df()',
-        "#### Including a date (FMP, SEC) will return the holdings as per NPORT-P filings. ####",
-        'obb.etf.holdings("XLK", date="2022-03-31",provider="fmp").to_df()',
-        "#### The same data can be returned from the SEC directly. ####",
-        'obb.etf.holdings("XLK", date="2022-03-31",provider="sec").to_df()',
+        APIEx(parameters={"symbol": "XLK", "provider": "fmp"}),
+        APIEx(
+            description="Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.",
+            parameters={"symbol": "XLK", "date": "2022-03-31", "provider": "fmp"},
+        ),
+        APIEx(
+            description="The same data can be returned from the SEC directly.",
+            parameters={"symbol": "XLK", "date": "2022-03-31", "provider": "sec"},
+        ),
     ],
 )
 async def holdings(
@@ -153,10 +158,7 @@ async def holdings(
 
 @router.command(
     model="EtfHoldingsDate",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.etf.holdings_date("XLK", provider="fmp").results',
-    ],
+    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_date(
     cc: CommandContext,
@@ -170,10 +172,7 @@ async def holdings_date(
 
 @router.command(
     model="EtfHoldingsPerformance",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.etf.holdings_performance("XLK", provider="fmp")',
-    ],
+    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_performance(
     cc: CommandContext,
@@ -187,11 +186,12 @@ async def holdings_performance(
 
 @router.command(
     model="EtfEquityExposure",
-    exclude_auto_examples=True,
     examples=[
-        'obb.etf.equity_exposure("MSFT", provider="fmp")',
-        "#### This function accepts multiple tickers. ####",
-        'obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")',
+        APIEx(parameters={"symbol": "MSFT", "provider": "fmp"}),
+        APIEx(
+            description="This function accepts multiple tickers.",
+            parameters={"symbol": "MSFT,AAPL", "provider": "fmp"},
+        ),
     ],
 )
 async def equity_exposure(

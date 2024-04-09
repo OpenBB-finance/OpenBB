@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -18,16 +18,25 @@ class ROUTER_equity_compare(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def peers(
         self,
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Annotated[
+            Optional[Literal["fmp"]],
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Peers. Company peers.
+        """Get the closest peers for a given company.
+
+        Peers consist of companies trading on the same exchange, operating within the same sector
+        and with comparable market capitalizations.
 
         Parameters
         ----------
@@ -49,7 +58,7 @@ class ROUTER_equity_compare(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityPeers
@@ -57,10 +66,10 @@ class ROUTER_equity_compare(Container):
         peers_list : List[str]
             A list of equity peers based on sector, exchange and market cap.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.equity.compare.peers(symbol="AAPL")
+        >>> obb.equity.compare.peers(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(

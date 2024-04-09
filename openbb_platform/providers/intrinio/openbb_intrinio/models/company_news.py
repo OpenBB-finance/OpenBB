@@ -23,7 +23,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
 
-    __alias_dict__ = {"symbol": "symbols", "page": "next_page", "limit": "page_size"}
+    __alias_dict__ = {"symbol": "symbols", "limit": "page_size"}
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
@@ -67,7 +67,9 @@ class IntrinioCompanyNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbols", "page"]
+        )
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             """Return the response."""
@@ -77,11 +79,13 @@ class IntrinioCompanyNewsFetcher(
             symbol = response.url.parts[-2]
             data = await response.json()
 
-            return [{**d, "symbol": symbol} for d in data.get("news", [])]
+            if isinstance(data, dict):
+                return [{**d, "symbol": symbol} for d in data.get("news", [])]
+            return []
 
         urls = [
             f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}"
-            for symbol in [s.strip() for s in query.symbol.split(",")]
+            for symbol in [s.strip() for s in getattr(query, "symbol", "").split(",")]
         ]
 
         return await amake_requests(urls, callback, **kwargs)

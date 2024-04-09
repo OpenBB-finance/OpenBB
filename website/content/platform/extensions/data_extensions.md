@@ -71,7 +71,6 @@ These packages are what will be installed when `pip install openbb` is run
 | openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | None |
 | openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
-| openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector | pip install openbb-ultima | Paid |
 | openbb-yfinance | [Yahoo Finance](https://finance.yahoo.com/) data connector | pip install openbb-yfinance | None |
 
 ### Community Providers
@@ -84,12 +83,15 @@ These packages are not installed when `pip install openbb` is run.  They are ava
 | openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
 | openbb-cboe | [Cboe](https://www.cboe.com/delayed_quotes/) data connector | pip install openbb-cboe | None |
 | openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None |
+| openbb-federal-reserve | [Federal Reserve](https://www.federalreserve.gov/) data connector | pip install openbb-federal-reserve | None |
 | openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free |
 | openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finviz | None |
 | openbb-government-us | [US Government](https://data.gov) data connector | pip install openbb-us-government | None |
 | openbb-nasdaq | [Nasdaq Data Link](https://data.nasdaq.com/) connector | pip install openbb-nasdaq | None / Free |
 | openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector | pip install openbb-seeking-alpha | None |
 | openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector | pip install openbb-stockgrid | None |
+| openbb-tmx | [TMX](https://money.tmx.com) data connector | pip install openbb-tmx | None |
+| openbb-tradier | [Tradier](https://tradier.com) data connector | pip install openbb-tradier | None |
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector | pip install openbb-wsj | None |
 
 Have you published a data provider extension and want it featured on this list? Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion. Code contributions, for new and existing, data providers are always welcome.

@@ -26,9 +26,11 @@ def get_headers():
     return data["headers"]
 
 
-def request_data(menu: str, symbol: str, provider: str):
+def request_data(
+    menu: str, symbol: str, provider: str, start_date: str = "", end_date: str = ""
+):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}"
+    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}&start_date={start_date}&end_date={end_date}"
     result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
 
@@ -40,7 +42,13 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = request_data("equity", symbol=symbol, provider=provider)
+    data["stocks_data"] = request_data(
+        menu="equity",
+        symbol=symbol,
+        provider=provider,
+        start_date="2023-01-01",
+        end_date="2023-12-31",
+    )
     return data["stocks_data"]
 
 
@@ -49,13 +57,15 @@ def get_crypto_data():
         return data["crypto_data"]
 
     # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTC"])  # noqa: S311
+    symbol = random.choice(["BTCUSD"])  # noqa: S311
     provider = random.choice(["fmp"])  # noqa: S311
 
     data["crypto_data"] = request_data(
         menu="crypto",
         symbol=symbol,
         provider=provider,
+        start_date="2023-01-01",
+        end_date="2023-12-31",
     )
     return data["crypto_data"]
 
@@ -127,12 +137,12 @@ def test_quantitative_capm(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_omega_ratio(params, data_type):
+def test_quantitative_performance_omega_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/omega_ratio?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/performance/omega_ratio?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -146,12 +156,12 @@ def test_quantitative_omega_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_kurtosis(params, data_type):
+def test_quantitative_rolling_kurtosis(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/kurtosis?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/kurtosis?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -196,7 +206,13 @@ def test_quantitative_unitroot_test(params, data_type):
     "params, data_type",
     [
         (
-            {"data": "", "target": "close", "rfr": "", "window": "", "index": "date"},
+            {
+                "data": "",
+                "target": "close",
+                "rfr": "",
+                "window": "100",
+                "index": "date",
+            },
             "equity",
         ),
         (
@@ -204,7 +220,7 @@ def test_quantitative_unitroot_test(params, data_type):
                 "data": "",
                 "target": "high",
                 "rfr": "0.5",
-                "window": "250",
+                "window": "150",
                 "index": "date",
             },
             "crypto",
@@ -212,12 +228,14 @@ def test_quantitative_unitroot_test(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sharpe_ratio(params, data_type):
+def test_quantitative_performance_sharpe_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/sharpe_ratio?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/quantitative/performance/sharpe_ratio?{query_str}"
+    )
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -231,7 +249,7 @@ def test_quantitative_sharpe_ratio(params, data_type):
                 "data": "",
                 "target": "close",
                 "target_return": "",
-                "window": "",
+                "window": "100",
                 "adjusted": "",
                 "index": "date",
             },
@@ -242,7 +260,7 @@ def test_quantitative_sharpe_ratio(params, data_type):
                 "data": "",
                 "target": "close",
                 "target_return": "0.5",
-                "window": "275",
+                "window": "150",
                 "adjusted": "true",
                 "index": "date",
             },
@@ -251,12 +269,14 @@ def test_quantitative_sharpe_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sortino_ratio(params, data_type):
+def test_quantitative_performance_sortino_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/sortino_ratio?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/quantitative/performance/sortino_ratio?{query_str}"
+    )
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -269,12 +289,66 @@ def test_quantitative_sortino_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skewness(params, data_type):
+def test_quantitative_rolling_skew(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/skewness?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/skew?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "window": "220", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_variance(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/variance?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "window": "220", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_stdev(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/stdev?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "window": "220", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_mean(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/mean?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -306,12 +380,12 @@ def test_quantitative_skewness(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_quantile(params, data_type):
+def test_quantitative_rolling_quantile(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/quantile?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/quantile?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -331,6 +405,136 @@ def test_quantitative_summary(params, data_type):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/quantitative/summary?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=10, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+############
+# quantitative/stats
+############
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_skew(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/skew?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_kurtosis(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/kurtosis?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_mean(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/mean?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_stdev(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/stdev?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close", "index": "date"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_variance(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/variance?{query_str}"
+    result = requests.post(url, headers=get_headers(), timeout=60, data=data)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params, data_type",
+    [
+        (
+            {
+                "data": "",
+                "target": "close",
+                "quantile_pct": "",
+                "index": "date",
+            },
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "quantile_pct": "0.6",
+                "index": "date",
+            },
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_quantile(params, data_type):
+    params = {p: v for p, v in params.items() if v}
+    data = json.dumps(get_data(data_type))
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/stats/quantile?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import hashlib
 import logging
 import os
-import subprocess  # nosec
 import sys
 import webbrowser
 
@@ -59,32 +58,18 @@ def print_goodbye():
     # "We like the terminal."
     # "...when offered a flight to the moon, nobody asks about what seat."
 
-    console.print(
-        "[param]The OpenBB Terminal is the result of a strong community building an "
-        "investment research platform for everyone, anywhere.[/param]\n"
-    )
+    text = """
+[param]Thank you for using the OpenBB Terminal and being part of this journey.[/param]
 
-    console.print(
-        "We are always eager to welcome new contributors and you can find our open jobs here:\n"
-        "[cmds]https://www.openbb.co/company/careers#open-roles[/cmds]\n"
-    )
+We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
 
-    console.print(
-        "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
-        "Follow us         : [cmds]https://openbb.co/twitter[/cmds]\n"
-        "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
-        "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
-    )
+In the meantime, check out our other products:
 
-    console.print(
-        "[bold]Fill in our 2-minute survey so we better understand how we can improve the OpenBB Terminal "
-        "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
-    )
-
-    console.print(
-        "[param]In the meantime access investment research from your chatting platform using the OpenBB Bot[/param]\n"
-        "Try it today, for FREE: [cmds]https://openbb.co/products/bot[/cmds]\n"
-    )
+[bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
+[bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
+[bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
+    """
+    console.print(text)
     logger.info("END")
 
 
@@ -96,40 +81,6 @@ def sha256sum(filename):
         for n in iter(lambda: f.readinto(mv), 0):
             h.update(mv[:n])
     return h.hexdigest()
-
-
-def update_terminal():
-    """Updates the terminal by running git pull in the directory.
-    Runs poetry install if needed.
-    """
-    if not WITH_GIT or get_current_system().LOGGING_COMMIT_HASH != "REPLACE_ME":
-        console.print("This feature is not available: Git dependencies not installed.")
-        return 0
-
-    poetry_hash = sha256sum("poetry.lock")
-
-    completed_process = subprocess.run(  # nosec
-        "git pull", shell=True, check=False  # noqa: S607,S602
-    )
-    if completed_process.returncode != 0:
-        return completed_process.returncode
-
-    new_poetry_hash = sha256sum("poetry.lock")
-
-    if poetry_hash == new_poetry_hash:
-        console.print("Great, seems like poetry hasn't been updated!")
-        return completed_process.returncode
-    console.print(
-        "Seems like more modules have been added, grab a coke, this may take a while."
-    )
-
-    completed_process = subprocess.run(  # nosec
-        "poetry install", shell=True, check=False  # noqa: S607,S602
-    )
-    if completed_process.returncode != 0:
-        return completed_process.returncode
-
-    return 0
 
 
 def open_openbb_documentation(  # noqa: PLR0912

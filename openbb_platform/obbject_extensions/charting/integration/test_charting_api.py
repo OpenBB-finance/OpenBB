@@ -57,36 +57,13 @@ def get_equity_data():
     ],
 )
 @pytest.mark.integration
-def test_chart_equity_price_historical(params, headers):
+def test_charting_equity_price_historical(params, headers):
     """Test chart equity load."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{query_str}"
     result = requests.get(url, headers=headers, timeout=40)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-    chart = result.json()["chart"]
-    fig = chart.pop("fig", {})
-
-    assert chart
-    assert not fig
-    assert list(chart.keys()) == ["content", "format"]
-
-
-@parametrize(
-    "params",
-    [({"symbol": "AAPL", "limit": 100, "chart": True})],
-)
-@pytest.mark.integration
-def test_chart_equity_fundamental_multiples(params, headers):
-    """Test chart equity multiples."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -114,7 +91,7 @@ def test_chart_equity_fundamental_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_adx(params, headers):
+def test_charting_technical_adx(params, headers):
     """Test chart ta adx."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -138,7 +115,7 @@ def test_chart_technical_adx(params, headers):
     [({"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True})],
 )
 @pytest.mark.integration
-def test_chart_technical_aroon(params, headers):
+def test_charting_technical_aroon(params, headers):
     """Test chart ta aroon."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -173,7 +150,7 @@ def test_chart_technical_aroon(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_ema(params, headers):
+def test_charting_technical_ema(params, headers):
     """Test chart ta ema."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -208,7 +185,7 @@ def test_chart_technical_ema(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_hma(params, headers):
+def test_charting_technical_hma(params, headers):
     """Test chart ta hma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -244,7 +221,7 @@ def test_chart_technical_hma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_macd(params, headers):
+def test_charting_technical_macd(params, headers):
     """Test chart ta macd."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -280,7 +257,7 @@ def test_chart_technical_macd(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_rsi(params, headers):
+def test_charting_technical_rsi(params, headers):
     """Test chart ta rsi."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -315,7 +292,7 @@ def test_chart_technical_rsi(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_sma(params, headers):
+def test_charting_technical_sma(params, headers):
     """Test chart ta sma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -350,7 +327,7 @@ def test_chart_technical_sma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_wma(params, headers):
+def test_charting_technical_wma(params, headers):
     """Test chart ta wma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -385,7 +362,7 @@ def test_chart_technical_wma(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_chart_technical_zlma(params, headers):
+def test_charting_technical_zlma(params, headers):
     """Test chart ta zlma."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_equity_data())
@@ -393,6 +370,71 @@ def test_chart_technical_zlma(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/technical/zlma?{query_str}"
     result = requests.post(url, headers=headers, timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "model": "yang_zhang",
+                "chart": True,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_technical_cones(params, headers):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+    body = json.dumps(get_equity_data())
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/technical/cones?{query_str}"
+    result = requests.post(url, headers=headers, timeout=10, data=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "DGS10",
+                "transform": "pc1",
+                "chart": True,
+                "provider": "fred",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_economy_fred_series(params, headers):
+    """Test chart ta cones."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

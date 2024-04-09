@@ -32,6 +32,13 @@ def headers():
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "query": "vanguard",
+                "provider": "intrinio",
+                "exchange": "arcx",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -50,18 +57,170 @@ def test_etf_search(params, headers):
     [
         (
             {
-                "symbol": "IOO",
+                "adjustment": "unadjusted",
+                "extended_hours": True,
+                "provider": "alpha_vantage",
+                "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "provider": "yfinance",
+                "interval": "15m",
             }
         ),
         (
             {
-                "symbol": "MISL",
+                "provider": "cboe",
+                "symbol": "SPY",
+                "start_date": None,
+                "end_date": None,
+                "interval": "1m",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "cboe",
+                "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": "1d",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "timezone": "UTC",
+                "source": "realtime",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "SPY",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+            }
+        ),
+        (
+            {
+                "timezone": None,
+                "source": "delayed",
+                "start_time": None,
+                "end_time": None,
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "unadjusted",
+                "provider": "polygon",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-01-03",
+                "interval": "1m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "sort": "desc",
+                "limit": "49999",
+                "adjustment": "splits_only",
+                "provider": "polygon",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "extended_hours": False,
+                "include_actions": False,
+                "adjustment": "splits_and_dividends",
                 "provider": "yfinance",
+                "symbol": "SPY",
+                "start_date": "2023-06-01",
+                "end_date": "2023-06-03",
+                "interval": "1h",
+                "adjusted": True,
+                "prepost": False,
+            }
+        ),
+        (
+            {
+                "extended_hours": False,
+                "include_actions": True,
+                "adjustment": "splits_only",
+                "provider": "yfinance",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+                "adjusted": False,
+                "prepost": False,
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1d",
+            }
+        ),
+        (
+            {
+                "provider": "tiingo",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "SPY",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "interval": "1M",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tradier",
+                "symbol": "SPY,DJIA",
+                "start_date": None,
+                "end_date": None,
+                "interval": "15m",
+                "extended_hours": False,
+            }
+        ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SPY:US",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "interval": "1d",
+                "adjustment": "splits_only",
             }
         ),
     ],
@@ -83,6 +242,7 @@ def test_etf_historical(params, headers):
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
         ({"symbol": "QQQ", "provider": "yfinance"}),
+        ({"symbol": "IOO,QQQ", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
@@ -173,6 +333,12 @@ def test_etf_holdings_date(params, headers):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "DJIA",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -191,6 +357,14 @@ def test_etf_holdings(params, headers):
     [
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}),
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}),
+        (
+            {
+                "symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK",
+                "return_type": "trailing",
+                "adjustment": "splits_and_dividends",
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

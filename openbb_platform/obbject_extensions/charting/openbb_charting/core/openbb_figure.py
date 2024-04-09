@@ -923,11 +923,7 @@ class OpenBBFigure(go.Figure):
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
 
-                if getattr(self._charting_settings, "debug_mode", False):
-                    warn(f"Failed to show figure with backend: {e}")
-                warn(
-                    f"Failed to show figure with backend: {e}"
-                )  # remove this line when the above lines are figured out
+                warn(f"Failed to show figure with backend. {e}")
 
                 # We check if any figures were initialized before the backend failed
                 # If so, we show them with the default plotly backend

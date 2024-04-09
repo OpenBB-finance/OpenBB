@@ -3,6 +3,7 @@
 # pylint: disable=W0613:unused-argument
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,7 +18,7 @@ from openbb_fixedincome.government.government_router import router as government
 from openbb_fixedincome.rate.rate_router import router as rate_router
 from openbb_fixedincome.spreads.spreads_router import router as spreads_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Fixed Income market data.")
 router.include_router(rate_router)
 router.include_router(spreads_router)
 router.include_router(government_router)
@@ -26,9 +27,9 @@ router.include_router(corporate_router)
 
 @router.command(
     model="SOFR",
-    exclude_auto_examples=True,
     examples=[
-        'obb.fixedincome.fixedincome.sofr(period="overnight")',
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"period": "overnight", "provider": "fred"}),
     ],
 )
 async def sofr(

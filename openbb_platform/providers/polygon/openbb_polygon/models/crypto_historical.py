@@ -39,10 +39,16 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: str = Field(
-        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", "")
+        + " The numeric portion of the interval can be any positive integer."
+        + " The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
     )
     sort: Literal["asc", "desc"] = Field(
-        default="desc", description="Sort order of the data."
+        default="asc",
+        description="Sort order of the data."
+        + " This impacts the results in combination with the 'limit' parameter."
+        + " The results are always returned in ascending order by date.",
     )
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
@@ -152,7 +158,7 @@ class PolygonCryptoHistoricalFetcher(
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
@@ -172,4 +178,7 @@ class PolygonCryptoHistoricalFetcher(
         """Transform the data."""
         if not data:
             raise EmptyDataError()
-        return [PolygonCryptoHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonCryptoHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]

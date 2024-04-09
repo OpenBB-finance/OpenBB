@@ -11,10 +11,11 @@ from openbb_core.provider.standard_models.gdp_real import (
 from openbb_oecd.utils import constants, helpers
 from pydantic import Field, field_validator
 
-rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys())
+rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys()) + ("all",)
 RGDPCountriesLiteral = Literal[rgdp_countries]  # type: ignore
 
 
+# pylint: disable=unused-argument
 class OECDGdpRealQueryParams(GdpRealQueryParams):
     """OECD Real GDP Query."""
 
@@ -83,8 +84,14 @@ class OECDGdpRealFetcher(Fetcher[OECDGdpRealQueryParams, List[OECDGdpRealData]])
             }
         )
         data_df["country"] = data_df["country"].map(constants.CODE_TO_COUNTRY_RGDP)
-        data_df = data_df[data_df["country"] == query.country]
+        if query.country != "all":
+            data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
+
+        data_df["date"] = data_df["date"].apply(helpers.oecd_date_to_python_date)
+        data_df = data_df[
+            (data_df["date"] <= query.end_date) & (data_df["date"] >= query.start_date)
+        ]
         return data_df.to_dict(orient="records")
 
     @staticmethod

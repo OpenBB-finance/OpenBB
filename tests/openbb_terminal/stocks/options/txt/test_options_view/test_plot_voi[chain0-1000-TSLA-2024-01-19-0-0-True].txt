@@ -1,6 +1,0 @@
-        contractSymbol  strike  lastPrice    bid    ask  volume  openInterest  impliedVolatility  delta
-0  TSLA211231C00200000   200.0     878.02  884.5  887.0    30.0            36           9.468754    0.0
-1  TSLA211231C00250000   250.0     744.20  834.5  837.0    11.0            12           8.238286    0.0
-        contractSymbol  strike  lastPrice  bid   ask  volume  openInterest  impliedVolatility  delta
-0  TSLA211231P00200000   200.0       0.01  0.0  0.01    22.0          1892           6.125002   -0.2
-1  TSLA211231P00250000   250.0       0.01  0.0  0.01     1.0           513           5.375003   -0.3

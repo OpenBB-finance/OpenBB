@@ -1,6 +1,6 @@
 ---
 title: Dependency Management
-sidebar_position: 3
+sidebar_position: 9
 description: Dealing with dependencies when developing with the OpenBB Platform. Learn
   how to add new dependencies to the OpenBB Platform and how to add new dependencies
   to your custom extension.
@@ -17,15 +17,24 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## High-Level Overview
 
-- **Core**: Serves as the main infrastructural package.
+- **Core**: Serves as the main infrastructure. All extensions and providers have `openbb-core` as a dependency.
 - **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
 - **Providers**: Utility packages extending functionality to different providers, where each provider is its own package.
+
+> This page assumes that the OpenBB GitHub repo has been cloned.
 
 ## Core Dependency Management
 
 ### Installation
 
+:::warning
+Do not run these commands in an already-installed OpenBB Platform environment. Do not run both `pip` and `poetry`.
+:::
+
 - **pip**: `pip install -e OpenBBTerminal/openbb_platform/platform/core`
+
+or
+
 - **poetry**: `poetry install OpenBBTerminal/openbb_platform/platform/core`
 
 ### Using Poetry

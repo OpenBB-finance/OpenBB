@@ -5,13 +5,14 @@ from unittest.mock import MagicMock
 import pandas as pd
 import pytest
 from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
+from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 from pandas.testing import assert_frame_equal
 
 
 def test_OBBject():
     """Smoke test."""
-    co = OBBject()
+    co: OBBject = OBBject()
     assert isinstance(co, OBBject)
 
 
@@ -28,7 +29,7 @@ def test_fields():
 
 def test_to_dataframe_no_results():
     """Test helper."""
-    co = OBBject()
+    co: OBBject = OBBject()
     with pytest.raises(Exception):
         co.to_dataframe()
 
@@ -45,6 +46,13 @@ class MockMultiData(Data):
 
     date: str
     another_date: str
+    value: float
+
+
+class MockDataFrame(Data):
+    """Test helper."""
+
+    date: str
     value: float
 
 
@@ -171,27 +179,27 @@ class MockMultiData(Data):
                     "df1": pd.DataFrame(
                         {
                             "date": [
-                                pd.to_datetime("1956-01-01"),
-                                pd.to_datetime("1956-02-01"),
-                                pd.to_datetime("1956-03-01"),
+                                pd.to_datetime("1956-01-01").date(),
+                                pd.to_datetime("1956-02-01").date(),
+                                pd.to_datetime("1956-03-01").date(),
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         },
                         columns=["date", "another_date", "value"],
-                    ).set_index("date"),
+                    ),
                     "df2": pd.DataFrame(
                         {
                             "date": [
-                                pd.to_datetime("1955-03-01"),
-                                pd.to_datetime("1955-04-01"),
-                                pd.to_datetime("1955-05-01"),
+                                pd.to_datetime("1955-03-01").date(),
+                                pd.to_datetime("1955-04-01").date(),
+                                pd.to_datetime("1955-05-01").date(),
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         },
                         columns=["date", "another_date", "value"],
-                    ).set_index("date"),
+                    ),
                 },
                 axis=1,
                 sort=True,
@@ -206,15 +214,15 @@ class MockMultiData(Data):
 def test_to_dataframe(results, expected_df):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
-        result = co.to_dataframe()
+        result = co.to_dataframe(index=None)
         assert_frame_equal(result, expected_df)
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
-            co.to_dataframe()
+            co.to_dataframe(index=None)
 
         assert str(exc_info.value) == str(expected_df)
 
@@ -245,7 +253,7 @@ def test_to_dataframe(results, expected_df):
 def test_to_dataframe_w_args(results, index, sort_by):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     result = co.to_dataframe(index=index, sort_by=sort_by)
@@ -254,6 +262,32 @@ def test_to_dataframe_w_args(results, index, sort_by):
 
     # check if dataframe is properly sorted
     assert result[sort_by].is_monotonic_increasing
+
+
+@pytest.mark.parametrize(
+    "results",
+    # Test case 1: List of models with daylight savings crossover.
+    (
+        [
+            MockDataFrame(date="2023-11-03 00:00:00-04:00", value=10),
+            MockDataFrame(date="2023-11-03 08:00:00-04:00", value=9),
+            MockDataFrame(date="2023-11-03 16:00:00-04:00", value=8),
+            MockDataFrame(date="2023-11-06 00:00:00-05:00", value=11),
+            MockDataFrame(date="2023-11-06 08:00:00-05:00", value=7),
+            MockDataFrame(date="2023-11-06 16:00:00-05:00", value=12),
+        ],
+    ),
+)
+def test_to_df_daylight_savings(results):
+    """Test helper."""
+    # Arrange
+    co: OBBject = OBBject(results=results)
+
+    # Act and Assert
+    expected_df = basemodel_to_df(results, index="date")
+    result = co.to_dataframe(index="date")
+    assert isinstance(result, pd.DataFrame)
+    assert_frame_equal(expected_df, result)
 
 
 @pytest.mark.parametrize(
@@ -308,7 +342,7 @@ def test_to_dataframe_w_args(results, index, sort_by):
 def test_to_dict(results, expected_dict):
     """Test helper."""
     # Arrange
-    co = OBBject(results=results)
+    co: OBBject = OBBject(results=results)
 
     # Act and Assert
     if isinstance(expected_dict, (list, dict)):
@@ -323,7 +357,7 @@ def test_to_dict(results, expected_dict):
 
 def test_show_chart_exists():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
     # Arrange
     mock_instance.chart = MagicMock(spec=Chart)
     mock_instance.chart.fig = MagicMock()
@@ -338,7 +372,7 @@ def test_show_chart_exists():
 
 def test_show_chart_no_chart():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
 
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
@@ -347,7 +381,7 @@ def test_show_chart_no_chart():
 
 def test_show_chart_no_fig():
     """Test helper."""
-    mock_instance = OBBject()
+    mock_instance: OBBject = OBBject()
     # Arrange
     mock_instance.chart = Chart()
 

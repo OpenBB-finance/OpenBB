@@ -1,1 +1,0 @@
-Loading Daily data for TSLA with starting period 2021-12-06.
