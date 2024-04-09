@@ -6,6 +6,7 @@ from urllib.parse import quote, urlencode
 
 
 def check_args(query_args: Dict, to_include: List[str]):
+    """Check if all fields in to_include are present in query_args."""
     available_args = ["country", "start_date", "end_date", "importance", "group"]
 
     # Check if all fields in to_include are present in query_args
@@ -16,9 +17,10 @@ def check_args(query_args: Dict, to_include: List[str]):
 
 
 def generate_url(in_query):
-    """
-    Generate the url for trading economimcs.  There is not a single api endpoint to hit so these are
-    generated based on the combinations.  There are also some combinations that return no data so that will return ""
+    """Generate the url for trading economimcs.
+
+    There is not a single api endpoint to hit so these are generated based on the combinations.
+    There are also some combinations that return no data so that will return an empty string.
     """
     # Converting the input query to a dict of params that are not None
     query = {k: v for k, v in in_query.dict().items() if v is not None}

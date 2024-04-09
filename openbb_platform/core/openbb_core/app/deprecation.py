@@ -50,6 +50,7 @@ class OpenBBDeprecationWarning(DeprecationWarning):
         since: Optional[Tuple[int, int]] = None,
         expected_removal: Optional[Tuple[int, int]] = None,
     ) -> None:
+        """Initialize the warning."""
         super().__init__(message, *args)
         self.message = message.rstrip(".")
         self.since = since or get_major_minor(VERSION)

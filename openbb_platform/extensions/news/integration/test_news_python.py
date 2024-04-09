@@ -82,6 +82,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 )
 @pytest.mark.integration
 def test_news_world(params, obb):
+    """Test the news world endpoint."""
     result = obb.news.world(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -172,6 +173,7 @@ def test_news_world(params, obb):
 )
 @pytest.mark.integration
 def test_news_company(params, obb):
+    """Test the news company endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.news.company(**params)

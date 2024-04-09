@@ -293,6 +293,7 @@ class BenzingaAnalystSearchData(AnalystSearchData):
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
     def validate_date(cls, v):
+        """Validate date."""
         if v:
             dt = datetime.fromtimestamp(v, UTC)
             return dt.date() if dt.time() == dt.min.time() else dt
@@ -340,7 +341,6 @@ class BenzingaAnalystSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         token = credentials.get("benzinga_api_key") if credentials else ""
         querystring = get_querystring(query.model_dump(), [])
         url = f"https://api.benzinga.com/api/v2.1/calendar/ratings/analysts?{querystring}&token={token}"

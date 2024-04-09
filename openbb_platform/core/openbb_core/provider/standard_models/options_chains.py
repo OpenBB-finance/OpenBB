@@ -24,6 +24,7 @@ class OptionsChainsQueryParams(QueryParams):
     @classmethod
     @field_validator("symbol", mode="before", check_fields=False)
     def to_upper(cls, v: str) -> str:
+        """Return the symbol in uppercase."""
         return v.upper()
 
 
@@ -151,7 +152,7 @@ class OptionsChainsData(Data):
     @field_validator("expiration", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
+        """Return the datetime object from the date string."""
         if isinstance(v, datetime):
             return datetime.strftime(v, "%Y-%m-%d")
         if isinstance(v, str):

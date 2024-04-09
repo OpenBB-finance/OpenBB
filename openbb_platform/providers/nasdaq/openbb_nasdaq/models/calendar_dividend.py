@@ -50,6 +50,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
     )
     @classmethod
     def validate_date(cls, v: str):
+        """Validate the date."""
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
 

@@ -1,9 +1,13 @@
+"""Model for API keys for various providers."""
+
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
 
 class FeaturesKeys(BaseModel):
+    """API keys for various providers."""
+
     API_BITQUERY_KEY: Optional[str] = Field(default=None)
     API_BIZTOC_TOKEN: Optional[str] = Field(default=None)
     API_CMC_KEY: Optional[str] = Field(default=None)
