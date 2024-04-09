@@ -86,6 +86,7 @@ class Charting:
             create_backend,  # noqa
             get_backend,  # noqa
         )
+
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
@@ -510,6 +511,7 @@ class Charting:
             from plotly import (  # pylint:disable=import-outside-toplevel
                 optional_imports,
             )
+
             ipython_display = optional_imports.get_module("IPython.display")
             if ipython_display:
                 ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
