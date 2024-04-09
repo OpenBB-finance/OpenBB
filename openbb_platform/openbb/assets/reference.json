@@ -27173,6 +27173,9 @@
         "/currency": {
             "description": "Foreign exchange (FX) market data."
         },
+        "/derivatives": {
+            "description": "Derivatives market data."
+        },
         "/economy": {
             "description": "Economic data."
         },
@@ -27190,6 +27193,9 @@
         },
         "/news": {
             "description": "Financial market news data."
+        },
+        "/regulators": {
+            "description": "Financial market regulators data."
         }
     }
 }
