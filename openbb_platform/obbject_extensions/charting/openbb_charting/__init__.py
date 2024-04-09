@@ -66,6 +66,7 @@ class Charting:
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
+        self._backend: Backend = self._handle_backend()
 
     @classmethod
     def indicators(cls):
@@ -79,13 +80,13 @@ class Charting:
         """Return a list of the available functions."""
         return get_charting_functions()
 
-    def _handle_backend(self):
+    def _handle_backend(self) -> Backend:
         """Create and start the backend."""
 
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
-        self._backend: Backend = backend  # pylint: disable=attribute-defined-outside-init
+        return backend
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
@@ -206,7 +207,6 @@ class Charting:
         **kwargs: Dict[str, Any]
             Extra parameters to be passed to `figure.show()`
         """
-        self._handle_backend()
         fig = line_chart(
             data=data,
             index=index,
@@ -290,7 +290,6 @@ class Charting:
             The OpenBBFigure object.
         """
 
-        self._handle_backend()
         fig = bar_chart(
             data=data,
             x=x,
@@ -335,7 +334,6 @@ class Charting:
             if "kwargs" in kwargs:
                 _kwargs = kwargs.pop("kwargs")
                 kwargs.update(_kwargs.get("chart_params", {}))
-            self._handle_backend()
 
             fig, content = charting_function(**kwargs)
             self._obbject.chart = Chart(
@@ -485,7 +483,6 @@ class Charting:
         title : str, optional
             Title of the table, by default "".
         """
-        self._handle_backend()
         data_as_df, _ = self._prepare_data_as_df(data)
         if isinstance(data_as_df.index, pd.RangeIndex):
             data_as_df.reset_index(inplace=True, drop=True)
