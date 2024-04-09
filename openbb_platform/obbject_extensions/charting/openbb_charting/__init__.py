@@ -90,7 +90,7 @@ class Charting:
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
-        self._backend = backend
+        self._backend: Backend = backend  # pylint: disable=attribute-defined-outside-init
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
