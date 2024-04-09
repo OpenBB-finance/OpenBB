@@ -49,11 +49,19 @@ class Charting:
     show
         Display chart and save it to the OBBject.
     to_chart
-        Redraws the chart and saves it to the OBBject, with an optional entry point for Data.
+        Redraw the chart and save it to the OBBject, with an optional entry point for Data.
     functions
-        Returns a list of Platform commands with charting functions.
+        Return a list of Platform commands with charting functions.
+    get_params
+        Return the charting parameters for the function the OBBject was created from.
     indicators
-        Returns a list of the available indicators to use with the `to_chart` method.
+        Return the list of the available technical indicators to use with the `to_chart` method and OHLC+V data.
+    table
+        Display an interactive table.
+    create_line_chart
+        Create a line chart from external data.
+    create_bar_chart
+        Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
     """
 
     def __init__(self, obbject):
@@ -383,7 +391,7 @@ class Charting:
         **kwargs,
     ):
         """
-        Create an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        Create an OpenBBFigure with user customizations (if any) and save it to the OBBject.
         This function is used to populate, or re-populate, the OBBject with a chart using the data within
         the OBBject or external data supplied via the `data` parameter.
 
