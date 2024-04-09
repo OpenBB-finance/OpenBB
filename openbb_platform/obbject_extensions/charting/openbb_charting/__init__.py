@@ -33,7 +33,7 @@ from openbb_charting.utils.generic_charts import bar_chart, line_chart
 from openbb_charting.utils.helpers import get_charting_functions
 
 warnings.filterwarnings(
-    "ignore", category=UserWarning, module="openbb_core.app.model.extension", lineno=49
+    "ignore", category=UserWarning, module="openbb_core.app.model.extension", lineno=47
 )
 
 ext = Extension(name="charting")
