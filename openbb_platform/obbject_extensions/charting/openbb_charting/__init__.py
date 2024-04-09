@@ -81,11 +81,6 @@ class Charting:
 
     def _handle_backend(self):
         """Create and start the backend."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.backend import (  # pylint: disable=W0621, W0404
-            create_backend,  # noqa
-            get_backend,  # noqa
-        )
 
         create_backend(self._charting_settings)
         backend = get_backend()
