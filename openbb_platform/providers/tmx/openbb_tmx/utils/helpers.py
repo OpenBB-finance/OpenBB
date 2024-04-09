@@ -429,7 +429,7 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
 
     if r is None or r == []:
-        raise RuntimeError(f"Error with the request")  # mypy: ignore
+        raise RuntimeError("Error with the request")  # mypy: ignore
 
     options_listings = pd.read_html(StringIO(r))
     listings = pd.concat(options_listings)
