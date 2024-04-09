@@ -239,7 +239,7 @@ class HubService:
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
                 "\n\nYou can update them at https://my.openbb.co/app/platform/credentials.",
             )
-        # We give priority to V4 keys over V3 keys if both are present
+        # We give priority to v4 keys over v3 keys if both are present
         hub_credentials = {
             self.V3TOV4.get(k, k): settings.features_keys.get(self.V3TOV4.get(k, k), v)
             for k, v in settings.features_keys.items()
