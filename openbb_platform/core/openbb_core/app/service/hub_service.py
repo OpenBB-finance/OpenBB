@@ -249,11 +249,13 @@ class HubService:
     def platform2hub(self, credentials: Credentials) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
         # Dump mode json ensures SecretStr values are serialized as strings
-        current_credentials = credentials.model_dump(mode="json", exclude_none=True)
+        credentials = credentials.model_dump(mode="json", exclude_none=True)
         settings = self._hub_user_settings or HubUserSettings()
-        # Update _hub_user_settings with the current credentials, ensures we don't lose v3 keys
-        for k, v in current_credentials.items():
-            settings.features_keys[self.V4TOV3.get(k, k)] = v
+        for v4_k, v in credentials.items():
+            v3_k = self.V4TOV3.get(v4_k, None)
+            # If v3 key was there, we keep it
+            k = v3_k if v3_k in settings.features_keys else v4_k
+            settings.features_keys[k] = v
         return settings
 
     @staticmethod

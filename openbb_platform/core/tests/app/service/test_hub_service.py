@@ -223,28 +223,27 @@ def test_hub2platform_v3v4():
 
 def test_platform2hub():
     """Test platform2hub."""
-    mock_credentials = Credentials(
+    mock_user_settings = MagicMock(spec=HubUserSettings)
+    mock_user_settings.features_keys = {  # Received from Hub
+        "API_KEY_FINANCIALMODELINGPREP": "abc",
+        "fmp_api_key": "other_key",
+        "API_FRED_KEY": "ghi",
+    }
+    mock_hub_service = HubService()
+    mock_hub_service._hub_user_settings = mock_user_settings
+    mock_credentials = Credentials(  # Current credentials
         fmp_api_key=SecretStr("fmp"),
         polygon_api_key=SecretStr("polygon"),
         fred_api_key=SecretStr("fred"),
         benzinga_api_key=SecretStr("benzinga"),
         some_api_key=SecretStr("some"),
     )
-    mock_user_settings = MagicMock(spec=HubUserSettings)
-    mock_user_settings.features_keys = {
-        "API_KEY_FINANCIALMODELINGPREP": "abc",
-        "fmp_api_key": "other_key",
-        "API_POLYGON_KEY": "def",
-        "API_FRED_KEY": "ghi",
-    }
-    mock_hub_service = HubService()
-    mock_hub_service._hub_user_settings = mock_user_settings
     user_settings = mock_hub_service.platform2hub(mock_credentials)
 
     assert isinstance(user_settings, HubUserSettings)
     assert user_settings.features_keys["API_KEY_FINANCIALMODELINGPREP"] == "fmp"
     assert user_settings.features_keys["fmp_api_key"] == "other_key"
-    assert user_settings.features_keys["API_POLYGON_KEY"] == "polygon"
+    assert user_settings.features_keys["polygon_api_key"] == "polygon"
     assert user_settings.features_keys["API_FRED_KEY"] == "fred"
     assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
     assert "some_api_key" not in user_settings.features_keys
