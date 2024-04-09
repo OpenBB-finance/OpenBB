@@ -233,7 +233,6 @@ def equity_price_historical(  # noqa: PLR0912
             and bool(data.columns.isin(["open", "high", "low", "close"]).all())
         )
     )
-
     target = "close" if target is None or target == "None" or target == "" else target
 
     if multi_symbol is True:
@@ -263,7 +262,6 @@ def equity_price_historical(  # noqa: PLR0912
         multi_symbol = True
         candles = False
         volume = False
-
     if (
         multi_symbol is False
         and normalize is False
@@ -277,20 +275,19 @@ def equity_price_historical(  # noqa: PLR0912
         if "atr" in indicators:  # type: ignore
             _volume = volume
             volume = False
-
         ta = PlotlyTA()
         fig = ta.plot(  # type: ignore
             data,
             indicators=indicators,  # type: ignore
-            symbol=title,
+            symbol="",
             candles=candles,
             volume=volume,  # type: ignore
         )
-        fig.update_traces(selector=dict(type="scatter", mode="lines"), connectgaps=True)
-        if _volume is True and "atr" in indicators:  # type: ignore
+        content = fig.to_plotly_json()
+        if heikin_ashi is False and _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
+        fig.set_title(title)
         fig.update_layout(
-            title=dict(text=title, x=0.5, font=dict(size=16)),
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
@@ -341,7 +338,7 @@ def equity_price_historical(  # noqa: PLR0912
             hovermode="x",
         )
 
-        content = fig.show(external=True).to_plotly_json()
+        content = fig.to_plotly_json()
 
         return fig, content
 
