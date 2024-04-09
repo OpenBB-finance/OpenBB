@@ -69,7 +69,10 @@ class Charting:
     def _handle_backend(self):
         """Create and start the backend."""
         # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.backend import create_backend, get_backend  # noqa
+        from openbb_charting.core.backend import (  # pylint: disable=W0621, W0404
+            create_backend,  # noqa
+            get_backend,  # noqa
+        )
 
         create_backend(self._charting_settings)
         backend = get_backend()
@@ -200,7 +203,7 @@ class Charting:
         > from openbb_charting import Charting
         > Charting.indicators()
         """
-        data_as_df, has_data = self._prepare_data_as_df(data)
+        data_as_df, has_data = self._prepare_data_as_df(data)  # type: ignore
         try:
             fig, content = to_chart(
                 data_as_df,
