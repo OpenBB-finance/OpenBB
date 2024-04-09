@@ -337,6 +337,14 @@ def test_etf_holdings_date(params, headers):
             {
                 "symbol": "DJIA",
                 "provider": "intrinio",
+                "date": None,
+            }
+        ),
+        (
+            {
+                "symbol": "DJIA",
+                "provider": "intrinio",
+                "date": "2020-04-03",
             }
         ),
     ],
