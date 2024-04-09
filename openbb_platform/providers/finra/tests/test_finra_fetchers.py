@@ -1,3 +1,5 @@
+"""Tests for the Finra fetchers."""
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_finra.models.equity_short_interest import FinraShortInterestFetcher
@@ -10,6 +12,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -20,6 +23,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_finra_otc_aggregate_fetcher(credentials=test_credentials):
+    """Test the Finra OTC Aggregate fetcher."""
     params = {"symbol": "AAPL", "tier": "T1", "is_ats": True}
 
     fetcher = FinraOTCAggregateFetcher()
@@ -30,6 +34,7 @@ def test_finra_otc_aggregate_fetcher(credentials=test_credentials):
 @pytest.mark.freeze_time("2021-10-21")
 @pytest.mark.record_http
 def test_finra_short_interest_fetcher(credentials=test_credentials):
+    """Test the Finra Short Interest fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = FinraShortInterestFetcher()

@@ -97,7 +97,10 @@ class PlotlyTA(PltTA):
     theme: Optional[ChartStyle] = None
 
     def __new__(cls, *args, **kwargs):
-        """Method is overridden to create a singleton instance of the class."""
+        """Create a new instance of the class.
+
+        Method is overridden to create a singleton instance of the class.
+        """
         cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
         cls.theme = cls.setup_theme(
             chart_style=getattr(cls.charting_settings, "chart_style", ""),
@@ -121,7 +124,10 @@ class PlotlyTA(PltTA):
         return PLOTLY_TA
 
     def __init__(self, *args, **kwargs):
-        """Method is overridden to do nothing, except to clear the internal data structures."""
+        """Initialize the class.
+
+        Method is overridden to do nothing, except to clear the internal data structures.
+        """
         if not args and not kwargs:
             self._clear_data()
         else:
@@ -130,7 +136,7 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def setup_theme(chart_style, user_styles_directory) -> ChartStyle:
-        """Setup theme for charting."""
+        """Set up theme for charting."""
         return ChartStyle(chart_style, user_styles_directory)
 
     @property
@@ -175,7 +181,10 @@ class PlotlyTA(PltTA):
         fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
-        """Method should not be called directly. Use the PlotlyTA.plot() static method instead."""
+        """Do not call this directly.
+
+        Use the PlotlyTA.plot() static method instead.
+        """
         if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 

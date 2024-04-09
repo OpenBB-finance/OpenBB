@@ -242,7 +242,7 @@ def find_missing_router_function_models(
 
 
 def parse_example_string(example_string: str) -> Dict[str, Any]:
-    """Parses a string of examples into nested dictionaries.
+    """Parse a string of examples into nested dictionaries.
 
     This is capturing all instances of PythonEx and APIEx, including their "parameters", "code", and "description".
     """

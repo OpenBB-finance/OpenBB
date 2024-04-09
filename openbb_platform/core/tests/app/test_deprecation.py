@@ -1,3 +1,5 @@
+"""Test deprecated commands."""
+
 import unittest
 
 from openbb_core.app.static.package_builder import PathHandler

@@ -1,3 +1,5 @@
+"""Custom parameter and choices for OpenBB."""
+
 import sys
 from dataclasses import dataclass
 from typing import Dict, Optional

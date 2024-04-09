@@ -16,6 +16,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [
             ("User-Agent", None),
@@ -27,6 +28,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_tradier_equity_historical_fetcher(credentials=test_credentials):
+    """Test the Tradier Equity Historical fetcher."""
     params = {
         "start_date": datetime(2024, 2, 1).date(),
         "end_date": datetime(2024, 2, 29).date(),
@@ -41,6 +43,7 @@ def test_tradier_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tradier_equity_search_fetcher(credentials=test_credentials):
+    """Test the Tradier Equity Search fetcher."""
     params = {
         "query": "brookfield",
         "is_symbol": False,
@@ -53,6 +56,7 @@ def test_tradier_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tradier_equity_quote_fetcher(credentials=test_credentials):
+    """Test the Tradier Equity Quote fetcher."""
     params = {"symbol": "SPY,SPY251219P00450000"}
 
     fetcher = TradierEquityQuoteFetcher()
@@ -62,6 +66,7 @@ def test_tradier_equity_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tradier_derivatives_options_chains_fetcher(credentials=test_credentials):
+    """Test the Tradier Derivatives Options Chains fetcher."""
     params = {"symbol": "PLTR"}
 
     fetcher = TradierOptionsChainsFetcher()

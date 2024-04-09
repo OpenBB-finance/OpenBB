@@ -162,7 +162,7 @@ class IntrinioForwardEpsEstimatesFetcher(
             return results
 
         async def fetch_callback(response, session):
-            """Callback for pagination."""
+            """Use callback for pagination."""
             data = await response.json()
             messages = data.get("messages", None)
             if messages:
@@ -196,7 +196,6 @@ class IntrinioForwardEpsEstimatesFetcher(
         **kwargs: Any,
     ) -> List[IntrinioForwardEpsEstimatesData]:
         """Transform the raw data into the standard format."""
-
         symbols = query.symbol.split(",") if query.symbol else []
         results: List[IntrinioForwardEpsEstimatesData] = []
         for item in sorted(

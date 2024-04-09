@@ -1,3 +1,5 @@
+"""Test the Trading Economics fetchers."""
+
 from datetime import date
 
 import pytest
@@ -11,6 +13,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -21,6 +24,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_tradingeconomics_economic_calendar_fetcher(credentials=test_credentials):
+    """Test the Trading Economics economic calendar fetcher."""
     params = {
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),

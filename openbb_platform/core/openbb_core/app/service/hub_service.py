@@ -40,6 +40,7 @@ class HubService:
         session: Optional[HubSession] = None,
         base_url: Optional[str] = None,
     ):
+        """Initialize Hub service."""
         self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
         self._hub_user_settings: Optional[HubUserSettings] = None

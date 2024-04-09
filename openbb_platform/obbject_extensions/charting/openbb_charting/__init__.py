@@ -58,16 +58,22 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """Returns a list of the available indicators."""
+        """Return a list of the available indicators."""
         return ChartIndicators.get_available_indicators()
 
     @classmethod
     def functions(cls):
-        """Returns a list of the available functions."""
+        """Return a list of the available functions."""
         return get_charting_functions()
 
-    def _handle_backend(self) -> Backend:
-        """Handles backend initialization."""
+    def _handle_backend(self):
+        """Create and start the backend."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.backend import (  # pylint: disable=W0621, W0404
+            create_backend,  # noqa
+            get_backend,  # noqa
+        )
+
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
@@ -149,8 +155,7 @@ class Charting:
         render: bool = True,
         **kwargs,
     ):
-        """
-        Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        """Create a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
 
         This function is used so it can be called at the module level and used out of the box,
         which allows some more flexibility, ease of use and doesn't require the user to know
@@ -198,7 +203,7 @@ class Charting:
         > from openbb_charting import Charting
         > Charting.indicators()
         """
-        data_as_df, has_data = self._prepare_data_as_df(data)
+        data_as_df, has_data = self._prepare_data_as_df(data)  # type: ignore
         try:
             fig, content = to_chart(
                 data_as_df,
