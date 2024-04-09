@@ -71,7 +71,7 @@ class Charting:
     @classmethod
     def indicators(cls):
         """
-        Returns an instance of the IndicatorsParams class, containing all available indicators and their parameters.
+        Return an instance of the IndicatorsParams class, containing all available indicators and their parameters.
         Without assigning to a variable, it will print the the information to the console.
         """
         return IndicatorsParams()
@@ -100,7 +100,7 @@ class Charting:
 
     def get_params(self) -> ChartParams:
         """
-        Returns the ChartQueryParams class for the function the OBBject was created from.
+        Return the ChartQueryParams class for the function the OBBject was created from.
         Without assigning to a variable, it will print the docstring to the console.
         """
         if self._obbject._route is None:  # pylint: disable=protected-access
@@ -383,7 +383,7 @@ class Charting:
         **kwargs,
     ):
         """
-        Creates an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
+        Create an OpenBBFigure with user customizations (if any) and saves it to the OBBject.
         This function is used to populate, or re-populate, the OBBject with a chart using the data within
         the OBBject or external data supplied via the `data` parameter.
 
