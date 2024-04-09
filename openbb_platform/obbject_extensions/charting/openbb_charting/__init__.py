@@ -86,11 +86,10 @@ class Charting:
             create_backend,  # noqa
             get_backend,  # noqa
         )
-
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
-        return backend
+        self._backend = backend
 
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
@@ -490,6 +489,7 @@ class Charting:
         title : str, optional
             Title of the table, by default "".
         """
+        self._handle_backend()
         data_as_df, _ = self._prepare_data_as_df(data)
         if isinstance(data_as_df.index, pd.RangeIndex):
             data_as_df.reset_index(inplace=True, drop=True)
