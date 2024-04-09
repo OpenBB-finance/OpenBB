@@ -1,3 +1,5 @@
+"""OpenBB Charting Styles."""
+
 from typing import Any, List, Optional
 
 import pandas as pd
@@ -153,8 +155,9 @@ def de_increasing_color_list(
     increasing_color: str = PLT_STYLE_INCREASING,
     decreasing_color: str = PLT_STYLE_DECREASING,
 ) -> List[str]:
-    """Makes a colorlist for decrease/increase if value in df_column
-    contains "{contains_str}" default is "-"
+    """Make a colorlist for decrease/increase if value in df_column.
+
+    Contains "{contains_str}" default is "-"
 
     Parameters
     ----------

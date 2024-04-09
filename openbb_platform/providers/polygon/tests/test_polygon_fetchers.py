@@ -1,3 +1,5 @@
+"""Test the Polygon fetchers."""
+
 from datetime import date
 
 import pytest
@@ -26,6 +28,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -36,6 +39,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_polygon_equity_historical_fetcher(credentials=test_credentials):
+    """Test the Polygon Equity Historical fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -50,6 +54,7 @@ def test_polygon_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_market_indices_fetcher(credentials=test_credentials):
+    """Test the Polygon Market Indices fetcher."""
     params = {
         "symbol": "NDX",
         "start_date": date(2023, 1, 1),
@@ -63,6 +68,7 @@ def test_polygon_market_indices_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_index_historical_fetcher(credentials=test_credentials):
+    """Test the Polygon Index Historical fetcher."""
     params = {
         "symbol": "NDX",
         "start_date": date(2023, 1, 1),
@@ -76,6 +82,7 @@ def test_polygon_index_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_company_news_fetcher(credentials=test_credentials):
+    """Test the Polygon Company News fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = PolygonCompanyNewsFetcher()
@@ -85,6 +92,7 @@ def test_polygon_company_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_balance_sheet_fetcher(credentials=test_credentials):
+    """Test the Polygon Balance Sheet fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = PolygonBalanceSheetFetcher()
@@ -94,6 +102,7 @@ def test_polygon_balance_sheet_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_income_statement_fetcher(credentials=test_credentials):
+    """Test the Polygon Income Statement fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = PolygonIncomeStatementFetcher()
@@ -103,6 +112,7 @@ def test_polygon_income_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_cash_flow_statement_fetcher(credentials=test_credentials):
+    """Test the Polygon Cash Flow Statement fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = PolygonCashFlowStatementFetcher()
@@ -112,6 +122,7 @@ def test_polygon_cash_flow_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
+    """Test the Polygon Crypto Historical fetcher."""
     params = {
         "symbol": "BTCUSD",
         "start_date": date(2023, 1, 1),
@@ -125,6 +136,7 @@ def test_polygon_crypto_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_currency_historical_fetcher(credentials=test_credentials):
+    """Test the Polygon Currency Historical fetcher."""
     params = {
         "symbol": "EURUSD",
         "start_date": date(2023, 1, 1),
@@ -138,6 +150,7 @@ def test_polygon_currency_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_currency_pairs_fetcher(credentials=test_credentials):
+    """Test the Polygon Currency Pairs fetcher."""
     params = {"date": date(2023, 1, 1)}
 
     fetcher = PolygonCurrencyPairsFetcher()
@@ -147,6 +160,7 @@ def test_polygon_currency_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_equity_nbbo_fetcher(credentials=test_credentials):
+    """Test the Polygon Equity NBBO fetcher."""
     params = {"symbol": "SPY", "limit": 1000}
 
     fetcher = PolygonEquityNBBOFetcher()
@@ -156,6 +170,7 @@ def test_polygon_equity_nbbo_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_market_snapshots_fetcher(credentials=test_credentials):
+    """Test the Polygon Market Snapshots fetcher."""
     params = {}
 
     fetcher = PolygonMarketSnapshotsFetcher()

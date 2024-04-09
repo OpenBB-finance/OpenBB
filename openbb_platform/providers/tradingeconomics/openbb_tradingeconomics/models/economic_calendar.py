@@ -62,6 +62,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     @field_validator("importance")
     @classmethod
     def importance_to_number(cls, v):
+        """Convert importance to number."""
         string_to_value = {"Low": 1, "Medium": 2, "High": 3}
         return string_to_value.get(v, None)
 
@@ -93,6 +94,7 @@ class TEEconomicCalendarData(EconomicCalendarData):
     @field_validator("date", mode="before")
     @classmethod
     def validate_date(cls, v: str) -> datetime:
+        """Validate the date."""
         return to_datetime(v, utc=True)
 
 

@@ -1,4 +1,4 @@
-"""SEC Helpers module"""
+"""SEC Helpers module."""
 
 # pylint: skip-file
 from datetime import timedelta
@@ -30,7 +30,8 @@ sec_session_company_filings = requests_cache.CachedSession(
 
 
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
-    """Gets all company names, tickers, and CIK numbers registered with the SEC.
+    """Get all company names, tickers, and CIK numbers registered with the SEC.
+
     Companies are sorted by market cap.
 
     Returns
@@ -41,7 +42,6 @@ def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     -------
     >>> tickers = get_all_companies()
     """
-
     url = "https://www.sec.gov/files/company_tickers.json"
 
     r = (
@@ -56,8 +56,7 @@ def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
 
 
 def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
-    """Gets a list of entity names and their CIK number."""
-
+    """Get a list of entity names and their CIK number."""
     HEADERS = {
         "User-Agent": "my real company name definitelynot@fakecompany.com",
         "Accept-Encoding": "gzip, deflate",
@@ -86,8 +85,7 @@ def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
 
 
 def get_mf_and_etf_map(use_cache: bool = True) -> pd.DataFrame:
-    """Returns the CIK number of a ticker symbol for querying the SEC API."""
-
+    """Return the CIK number of a ticker symbol for querying the SEC API."""
     symbols = pd.DataFrame()
 
     url = "https://www.sec.gov/files/company_tickers_mf.json"
@@ -110,8 +108,7 @@ def search_institutions(keyword: str, use_cache: bool = True) -> pd.DataFrame:
 
 
 def symbol_map(symbol: str, use_cache: bool = True) -> str:
-    """Returns the CIK number of a ticker symbol for querying the SEC API."""
-
+    """Return the CIK number of a ticker symbol for querying the SEC API."""
     symbol = symbol.upper().replace(".", "-")
     symbols = get_all_companies(use_cache=use_cache)
 
@@ -130,8 +127,7 @@ def symbol_map(symbol: str, use_cache: bool = True) -> str:
 
 
 def cik_map(cik: int, use_cache: bool = True) -> str:
-    """
-    Converts a CIK number to a ticker symbol.  Enter CIK as an integer with no leading zeros.
+    """Convert a CIK number to a ticker symbol.  Enter CIK as an integer with no leading zeros.
 
     Function is not meant for funds.
 
@@ -164,7 +160,8 @@ def get_frame(
     instantaneous: bool = False,
     use_cache: bool = True,
 ) -> Dict:
-    """
+    """Get a frame of data for a given fact.
+
     The xbrl/frames API aggregates one fact for each reporting entity
     that is last filed that most closely fits the calendrical period requested.
 
@@ -197,7 +194,6 @@ def get_frame(
     Facts where units are, "shares":
     WeightedAverageNumberOfDilutedSharesOutstanding
     """
-
     if fact in ["WeightedAverageNumberOfDilutedSharesOutstanding"]:
         units = "shares"
 
@@ -237,6 +233,7 @@ def get_frame(
 
 
 def get_schema_filelist(query: str = "", url: str = "") -> List:
+    """Get a list of schema files from the SEC website."""
     results: List = []
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
@@ -300,7 +297,6 @@ def download_zip_file(url, symbol: Optional[str] = None) -> List[Dict]:
 
 def get_ftd_urls() -> Dict:
     """Get Fails-to-Deliver Data URLs."""
-
     results = {}
     position = None
     key = "title"
@@ -330,8 +326,8 @@ def get_ftd_urls() -> Dict:
 def get_series_id(
     symbol: Optional[str] = None, cik: Optional[str] = None, use_cache: bool = True
 ):
-    """
-    This function maps the fund to the series and class IDs for validating the correct filing.
+    """Map the fund to the series and class IDs for validating the correct filing.
+
     For an exact match, use a symbol.
     """
     symbol = symbol if symbol else ""
@@ -359,8 +355,7 @@ def get_series_id(
 
 
 def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
-    """Gets a list of all NPORT-P filings for a given fund's symbol."""
-
+    """Get a list of all NPORT-P filings for a given fund's symbol."""
     results = []
     _series_id = get_series_id(symbol, use_cache=use_cache)
     try:

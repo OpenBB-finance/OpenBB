@@ -1,4 +1,4 @@
-"""Biztoc Helpers"""
+"""Biztoc Helpers."""
 
 from datetime import timedelta
 from typing import Dict, List, Literal
@@ -6,6 +6,8 @@ from typing import Dict, List, Literal
 import requests
 import requests_cache
 from openbb_core.app.utils import get_user_cache_directory
+
+# pylint: disable=C0325
 
 cache_dir = get_user_cache_directory()
 
@@ -18,8 +20,7 @@ biztoc_session_sources = requests_cache.CachedSession(
 
 
 def get_sources(api_key: str) -> List[Dict]:
-    """Valid sources for Biztoc queries."""
-
+    """Get valid sources for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -34,8 +35,7 @@ def get_sources(api_key: str) -> List[Dict]:
 
 
 def get_pages(api_key: str) -> List[str]:
-    """Valid pages for Biztoc queries."""
-
+    """Get valid pages for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -50,8 +50,7 @@ def get_pages(api_key: str) -> List[str]:
 
 
 def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
-    """Valid tags required for Biztoc queries."""
-
+    """Get valid tags required for Biztoc queries."""
     headers = {
         "X-RapidAPI-Key": f"{api_key}",
         "X-RapidAPI-Host": "biztoc.p.rapidapi.com",
@@ -66,12 +65,13 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
 
 
 def get_all_tags(api_key) -> Dict[str, List[str]]:
+    """Get all tags for all pages."""
     tags: Dict[str, List[str]] = {}
 
     pages = get_pages(api_key)
     for page in pages:
         page_tags = get_tags_by_page(page, api_key)
-        tags.update({page: [x["tag"] for x in page_tags]})
+        tags.update({page: [x["tag"] for x in page_tags]})  # type: ignore
 
     return tags
 
@@ -85,8 +85,7 @@ def get_news(
     tag: str = "",
     term: str = "",
 ) -> List[Dict]:
-    """Calls the BizToc API and returns the data."""
-
+    """Call the BizToc API and returns the data."""
     results = []
     term = term.replace(" ", "%20") if term else ""
     _tags = get_all_tags(api_key)

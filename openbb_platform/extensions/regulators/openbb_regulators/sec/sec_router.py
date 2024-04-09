@@ -80,7 +80,7 @@ async def schema_files(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """A tool for navigating the directory of SEC XML schema files by year."""
+    """Use tool for navigating the directory of SEC XML schema files by year."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -108,7 +108,7 @@ async def rss_litigation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501 pylint: disable=C0301
+    """Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501 pylint: disable=C0301
     return await OBBject.from_query(Query(**locals()))
 
 

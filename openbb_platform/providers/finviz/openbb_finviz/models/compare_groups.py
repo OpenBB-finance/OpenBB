@@ -191,7 +191,7 @@ class FinvizCompareGroupsData(CompareGroupsData):
     @field_validator("market_cap", "volume", mode="before", check_fields=False)
     @classmethod
     def validate_abbreviated_numbers(cls, v):
-        """Checks for abbreviated string values."""
+        """Check for abbreviated string values."""
         if v is not None and isinstance(v, str):
             v = (
                 v.replace("M", "e+6")

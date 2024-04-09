@@ -1,3 +1,5 @@
+"""Test the HubSession class."""
+
 from openbb_core.app.model.hub.hub_session import HubSession
 from pydantic import SecretStr
 
@@ -5,6 +7,7 @@ from pydantic import SecretStr
 
 
 def test_hub_session():
+    """Test the HubSession class."""
     session = HubSession(
         access_token=SecretStr("mock_access_token"),
         token_type="mock_token_type",
@@ -22,6 +25,7 @@ def test_hub_session():
 
 
 def test_fields():
+    """Test the HubSession fields."""
     fields = HubSession.model_fields
     fields_keys = fields.keys()
 
