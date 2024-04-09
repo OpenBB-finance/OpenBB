@@ -209,7 +209,7 @@ class Router:
         return self._api_router.prefix
 
     @property
-    def description(self) -> str:
+    def description(self) -> Optional[str]:
         """Description."""
         return self._description
 
@@ -221,7 +221,7 @@ class Router:
     def __init__(
         self,
         prefix: str = "",
-        description: str = "",
+        description: Optional[str] = None,
     ) -> None:
         """Initialize Router."""
         self._api_router = APIRouter(
