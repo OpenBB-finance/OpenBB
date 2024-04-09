@@ -251,7 +251,7 @@ class HubService:
         # Dump mode json ensures SecretStr values are serialized as strings
         credentials = credentials.model_dump(mode="json", exclude_none=True)
         settings = self._hub_user_settings or HubUserSettings()
-        for v4_k, v in credentials.items():
+        for v4_k, v in sorted(credentials.items()):
             v3_k = self.V4TOV3.get(v4_k, None)
             # If v3 key was there, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
