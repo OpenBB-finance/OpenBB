@@ -251,6 +251,8 @@ class Charting:
             The x-axis title, by default None.
         ytitle : Optional[str], optional
             The y-axis title, by default None.
+        orientation : Literal["h", "v"], optional
+            The orientation of the chart, by default "v".
         colors: Optional[List[str]], optional
             Manually set the colors to cycle through for each column in 'y', by default None.
         layout_kwargs : Optional[Dict[str, Any]], optional
