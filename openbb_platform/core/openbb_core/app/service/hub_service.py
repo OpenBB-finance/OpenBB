@@ -228,11 +228,11 @@ class HubService:
     def hub2platform(self, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
         if any(k in settings.features_keys for k in self.V3TOV4):
-            deprecated_keys = {
+            deprecated = {
                 k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
             }
             msg = ""
-            for k, v in deprecated_keys.items():
+            for k, v in deprecated.items():
                 msg += f"\n'{k}' -> '{v}', "
             msg = msg.strip(", ")
             warn(
@@ -250,13 +250,10 @@ class HubService:
         """Convert Platform models to Hub user settings."""
         # Dump mode json ensures SecretStr values are serialized as strings
         current_credentials = credentials.model_dump(mode="json", exclude_none=True)
-        # We update the previously fetched feature keys with the current
-        # credentials to avoid losing any keys from providers that are not installed
         settings = self._hub_user_settings or HubUserSettings()
-        # Update the current credentials, ensures we don't lose v3 keys
+        # Update _hub_user_settings with the current credentials, ensures we don't lose v3 keys
         for k, v in current_credentials.items():
-            updated_key = self.V4TOV3.get(k, k)
-            settings.features_keys[updated_key] = v
+            settings.features_keys[self.V4TOV3.get(k, k)] = v
         return settings
 
     @staticmethod
