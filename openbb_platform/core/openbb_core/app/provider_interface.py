@@ -580,7 +580,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         """
 
         def get_provider(v: Type[BaseModel]):
-            return getattr(v, "provider", None)
+            return getattr(v, "_provider", None)
 
         annotations = {}
         for name, models in original_models.items():
@@ -591,7 +591,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                 outer.add(model["results_type"])
                 args.add(Annotated[data, Tag(provider)])
                 # We set the provider to use it in discriminator function
-                setattr(data, "provider", provider)
+                setattr(data, "_provider", provider)
             meta = Discriminator(get_provider) if len(args) > 1 else None
             inner = SerializeAsAny[Annotated[Union[tuple(args)], meta]]  # type: ignore[misc,valid-type]
             full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
