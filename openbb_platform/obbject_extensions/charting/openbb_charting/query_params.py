@@ -534,8 +534,8 @@ class KCIndicatorsQueryParams(IndicatorsQueryParams):
         description="Window length for the Keltner Channel, by default is 20.",
     )
     scalar: float = Field(
-        default=20,
-        description="Scalar to multiply the ATR, by default is 20.",
+        default=2,
+        description="Scalar to multiply the ATR, by default is 2.",
     )
     mamode: MAMODES = Field(
         default="rma",
