@@ -377,7 +377,6 @@ class StaticCommandRunner:
                 # pylint: disable=protected-access
                 obbject._route = route
                 obbject._standard_params = kwargs.get("standard_params", {})
-                print(kwargs.keys())
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
 
