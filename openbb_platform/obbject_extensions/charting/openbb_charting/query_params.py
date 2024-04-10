@@ -547,6 +547,27 @@ class KCIndicatorsQueryParams(IndicatorsQueryParams):
     )
 
 
+class MACDIndicatorsQueryParams(IndicatorsQueryParams):
+    """MACD Indicators Query Params."""
+
+    fast: Optional[int] = Field(
+        default=12,
+        description="Window length for the fast EMA, by default is 12.",
+    )
+    slow: Optional[int] = Field(
+        default=26,
+        description="Window length for the slow EMA, by default is 26.",
+    )
+    signal: Optional[int] = Field(
+        default=9,
+        description="Window length for the signal line, by default is 9.",
+    )
+    scalar: Optional[float] = Field(
+        default=100,
+        description="Scalar to multiply the MACD by, default is 100.",
+    )
+
+
 class OBVIndicatorsQueryParams(IndicatorsQueryParams):
     """On Balance Volume Indicators Query Params."""
 
@@ -737,6 +758,10 @@ class IndicatorsParams(QueryParams):
     kc: KCIndicatorsQueryParams = Field(
         default=KCIndicatorsQueryParams(),
         description=repr(KCIndicatorsQueryParams()),
+    )
+    macd: MACDIndicatorsQueryParams = Field(
+        default=MACDIndicatorsQueryParams(),
+        description=repr(MACDIndicatorsQueryParams()),
     )
     obv: OBVIndicatorsQueryParams = Field(
         default=OBVIndicatorsQueryParams(),
