@@ -164,15 +164,35 @@ class ProviderInterface(metaclass=SingletonMeta):
         curr_name = current.name
         curr_type: Optional[Type] = current.annotation
         curr_desc = getattr(current.default, "description", "")
+        curr_json_schema_extra = getattr(current.default, "json_schema_extra", {})
 
         inc_type: Optional[Type] = incoming.annotation
         inc_desc = getattr(incoming.default, "description", "")
+        inc_json_schema_extra = getattr(incoming.default, "json_schema_extra", {})
 
         def split_desc(desc: str) -> str:
             """Split field description."""
             item = desc.split(" (provider: ")
             detail = item[0] if item else ""
             return detail
+
+        def merge_json_schema_extra(curr: dict, inc: dict) -> dict:
+            """Merge json schema extra."""
+            for key in curr.keys() & inc.keys():
+                # Merge keys that are in both dictionaries if both are lists
+                curr_value = curr[key]
+                inc_value = inc[key]
+                if isinstance(curr_value, list) and isinstance(inc_value, list):
+                    curr[key] = list(set(curr.get(key, []) + inc.get(key, [])))
+                    inc.pop(key)
+
+            # Add any remaining keys from inc to curr
+            curr.update(inc)
+            return curr
+
+        json_schema_extra: dict = merge_json_schema_extra(
+            curr=curr_json_schema_extra or {}, inc=inc_json_schema_extra or {}
+        )
 
         curr_detail = split_desc(curr_desc)
         inc_detail = split_desc(inc_desc)
@@ -192,6 +212,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             default=getattr(current.default, "default", None),
             title=providers,
             description=new_desc,
+            json_schema_extra=json_schema_extra,
         )
 
         merged_type: Optional[Type] = (
@@ -220,9 +241,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             if provider_name:
                 additional_description += " Multiple comma separated items allowed."
             else:
-                additional_description += (
-                    " Multiple comma separated items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
-                )
+                multiple_desc = ", ".join(multiple)  # type: ignore
+                additional_description += f" Multiple comma separated items allowed for provider(s): {multiple_desc}."
 
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
