@@ -584,19 +584,17 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         return_annotations = {}
         for model_name, details in original_models.items():
-            args = set()
             outer = set()
+            args = set()
             for provider, d in details.items():
                 data = d["data"]
                 outer.add(d["results_type"])
                 args.add(Annotated[data, Tag(provider)])
                 # We set the provider to use it in discriminator function
                 setattr(data, "provider", provider)
-
             metadata = Discriminator(get_provider) if len(args) > 1 else None
             inner = SerializeAsAny[Annotated[Union[tuple(args)], metadata]]  # type: ignore[valid-type]
             full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
-
             return_annotations[model_name] = create_model(
                 f"OBBject_{model_name}",
                 __base__=OBBject[full],
