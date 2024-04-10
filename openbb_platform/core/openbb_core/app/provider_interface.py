@@ -241,8 +241,9 @@ class ProviderInterface(metaclass=SingletonMeta):
             if provider_name:
                 additional_description += " Multiple comma separated items allowed."
             else:
-                multiple_desc = ", ".join(multiple)  # type: ignore
-                additional_description += f" Multiple comma separated items allowed for provider(s): {multiple_desc}."
+                additional_description += (
+                    " Multiple comma separated items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
+                )
 
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""
