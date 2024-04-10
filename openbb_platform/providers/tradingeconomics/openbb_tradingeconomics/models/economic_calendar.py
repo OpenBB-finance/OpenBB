@@ -143,6 +143,7 @@ class TEEconomicCalendarFetcher(
 
         return await amake_request(url, response_callback=callback, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: TEEconomicCalendarQueryParams, data: List[Dict], **kwargs: Any
