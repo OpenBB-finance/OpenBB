@@ -262,7 +262,7 @@ def equity_price_historical(  # noqa: PLR0912
         multi_symbol = True
         candles = False
         volume = False
-    if (
+    if (  # pylint: disable = R0916
         multi_symbol is False
         and normalize is False
         and returns is False
