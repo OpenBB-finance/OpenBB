@@ -582,7 +582,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         def get_provider(v: Type[BaseModel]):
             return getattr(v, "provider", None)
 
-        return_annotations = {}
+        annotations = {}
         for model_name, details in original_models.items():
             outer = set()
             args = set()
@@ -595,9 +595,9 @@ class ProviderInterface(metaclass=SingletonMeta):
             metadata = Discriminator(get_provider) if len(args) > 1 else None
             inner = SerializeAsAny[Annotated[Union[tuple(args)], metadata]]  # type: ignore[misc,valid-type]
             full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
-            return_annotations[model_name] = create_model(
+            annotations[model_name] = create_model(
                 f"OBBject_{model_name}",
                 __base__=OBBject[full],
                 __doc__=f"OBBject with results of type {model_name}",
             )
-        return return_annotations
+        return annotations
