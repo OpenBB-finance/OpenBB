@@ -18,6 +18,7 @@ from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
     amake_requests,
+    safe_fromtimestamp,
 )
 from pydantic import (
     Field,
@@ -153,9 +154,8 @@ class PolygonIndexHistoricalFetcher(
                 next_url = data.get("next_url", None)
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(
-                    r["t"] / 1000, tz=timezone("America/New_York")
-                )
+                v = r["t"] / 1000  # milliseconds to seconds
+                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
