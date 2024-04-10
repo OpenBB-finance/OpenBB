@@ -320,5 +320,4 @@ def safe_fromtimestamp(timestamp: float, tz: Optional[timezone] = None) -> datet
     """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
     if os.name == "nt" and timestamp < 0:
         return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)
-    else:
-        return datetime.fromtimestamp(timestamp, tz)
+    return datetime.fromtimestamp(timestamp, tz)
