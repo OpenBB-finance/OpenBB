@@ -70,8 +70,6 @@ def standard_deviation(
     trading_periods: int = 252,
 ) -> DataFrame:
     """
-    Standard deviation.
-
     Measures how widely returns are dispersed from the average return.
     It is the most common (and biased) estimator of volatility.
 
@@ -247,7 +245,7 @@ class RelativeRotation:
         window: Optional[int] = 21,
         trading_periods: Optional[int] = 252,
     ):
-
+        """Initialize the class."""
         benchmark = benchmark.upper()
         df = DataFrame()
 
@@ -426,6 +424,7 @@ class RelativeRotationQueryParams(QueryParams):
         return v
 
     def __init__(self, **data):
+        """Initialize the class."""
         super().__init__(**data)
         fields = self.__class__.model_fields
         doc_str = (
@@ -490,6 +489,7 @@ class RelativeRotationData(Data):
     )
 
     def __init__(self, **data):
+        """Initialize the class."""
         super().__init__(**data)
         fields = self.__class__.model_fields
         doc_str = (

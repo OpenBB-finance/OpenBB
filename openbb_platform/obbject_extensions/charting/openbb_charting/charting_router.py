@@ -375,7 +375,7 @@ def equity_price_historical(  # noqa: PLR0912
 
         fig = OpenBBFigure()
 
-        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
+        #fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
         for i, col in enumerate(data.columns):
 
@@ -428,12 +428,16 @@ def equity_price_historical(  # noqa: PLR0912
             y=1.02,
             x=1,
             bgcolor="rgba(0,0,0,0)",
+            font=dict(size=12),
         ),
         yaxis1=(
             dict(
                 side="right",
                 ticklen=0,
                 showgrid=True,
+                showline=True,
+                mirror=True,
+                gridcolor="rgba(128,128,128,0.3)",
                 title=dict(
                     text=y1title if y1title else None, standoff=20, font=dict(size=20)
                 ),
@@ -459,6 +463,9 @@ def equity_price_historical(  # noqa: PLR0912
         xaxis=dict(
             ticklen=0,
             showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            showline=True,
+            mirror=True,
         ),
         margin=dict(l=20, r=20, b=20),
         dragmode="pan",
