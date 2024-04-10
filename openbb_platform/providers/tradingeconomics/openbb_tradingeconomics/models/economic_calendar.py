@@ -31,6 +31,7 @@ GROUPS = Literal[
     "trade",
     "business",
 ]
+TE_COUNTRY_LIMIT = 32
 
 
 class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
@@ -58,7 +59,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
             check_item(v.lower(), COUNTRIES)
             result.append(v.lower())
 
-            if len(result) > 32:
+            if len(result) > TE_COUNTRY_LIMIT:
                 raise ValueError(
                     "Too many countries. "
                     "Trading Economics API allows a maximum of 32 countries."
