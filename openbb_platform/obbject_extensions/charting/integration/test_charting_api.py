@@ -1,3 +1,5 @@
+"""Integration tests for charting API."""
+
 import base64
 import json
 

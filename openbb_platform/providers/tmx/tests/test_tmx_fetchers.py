@@ -33,6 +33,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump()
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -43,6 +44,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_tmx_equity_profile_fetcher(credentials=test_credentials):
+    """Test equity profile fetcher."""
     params = {"symbol": "RY,NTR"}
 
     fetcher = TmxEquityProfileFetcher()
@@ -52,6 +54,7 @@ def test_tmx_equity_profile_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_equity_search_fetcher(credentials=test_credentials):
+    """Test equity search fetcher."""
     params = {"query": "gold", "use_cache": False}
 
     fetcher = TmxEquitySearchFetcher()
@@ -61,6 +64,7 @@ def test_tmx_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_available_indices_fetcher(credentials=test_credentials):
+    """Test available indices fetcher."""
     params = {"use_cache": False}
 
     fetcher = TmxAvailableIndicesFetcher()
@@ -70,6 +74,7 @@ def test_tmx_available_indices_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_calendar_earnings_fetcher(credentials=test_credentials):
+    """Test calendar earnings fetcher."""
     params = {"start_date": date(2023, 1, 2), "end_date": date(2023, 1, 31)}
 
     fetcher = TmxCalendarEarningsFetcher()
@@ -79,6 +84,7 @@ def test_tmx_calendar_earnings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_company_filings_fetcher(credentials=test_credentials):
+    """Test company filings fetcher."""
     params = {
         "symbol": "SHOP",
         "start_date": date(2023, 6, 30),
@@ -92,6 +98,7 @@ def test_tmx_company_filings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_company_news_fetcher(credentials=test_credentials):
+    """Test company news fetcher."""
     params = {"symbol": "SHOP", "limit": 5}
 
     fetcher = TmxCompanyNewsFetcher()
@@ -101,6 +108,7 @@ def test_tmx_company_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_equity_historical_fetcher(credentials=test_credentials):
+    """Test equity historical fetcher."""
     params = {
         "symbol": "SHOP",
         "start_date": date(2022, 1, 1),
@@ -114,6 +122,7 @@ def test_tmx_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_equity_quote_fetcher(credentials=test_credentials):
+    """Test equity quote fetcher."""
     params = {"symbol": "SHOP"}
 
     fetcher = TmxEquityQuoteFetcher()
@@ -123,6 +132,7 @@ def test_tmx_equity_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_etf_countries_fetcher(credentials=test_credentials):
+    """Test ETF countries fetcher."""
     params = {"symbol": "HXX", "use_cache": False}
 
     fetcher = TmxEtfCountriesFetcher()
@@ -132,6 +142,7 @@ def test_tmx_etf_countries_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_etf_holdings_fetcher(credentials=test_credentials):
+    """Test ETF holdings fetcher."""
     params = {"symbol": "XIU", "use_cache": False}
 
     fetcher = TmxEtfHoldingsFetcher()
@@ -141,6 +152,7 @@ def test_tmx_etf_holdings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_etf_info_fetcher(credentials=test_credentials):
+    """Test ETF info fetcher."""
     params = {"symbol": "XIU", "use_cache": False}
 
     fetcher = TmxEtfInfoFetcher()
@@ -150,6 +162,7 @@ def test_tmx_etf_info_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_etf_search_fetcher(credentials=test_credentials):
+    """Test ETF search fetcher."""
     params = {"query": "sector", "use_cache": False}
 
     fetcher = TmxEtfSearchFetcher()
@@ -159,6 +172,7 @@ def test_tmx_etf_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_etf_sectors_fetcher(credentials=test_credentials):
+    """Test ETF sectors fetcher."""
     params = {"symbol": "XIU", "use_cache": False}
 
     fetcher = TmxEtfSectorsFetcher()
@@ -168,6 +182,7 @@ def test_tmx_etf_sectors_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_gainers_fetcher(credentials=test_credentials):
+    """Test gainers fetcher."""
     params = {}
 
     fetcher = TmxGainersFetcher()
@@ -177,6 +192,7 @@ def test_tmx_gainers_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_historical_dividends_fetcher(credentials=test_credentials):
+    """Test historical dividends fetcher."""
     params = {"symbol": "TD"}
 
     fetcher = TmxHistoricalDividendsFetcher()
@@ -186,6 +202,7 @@ def test_tmx_historical_dividends_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_index_constituents_fetcher(credentials=test_credentials):
+    """Test index constituents fetcher."""
     params = {"symbol": "^TX60", "use_cache": False}
 
     fetcher = TmxIndexConstituentsFetcher()
@@ -195,6 +212,7 @@ def test_tmx_index_constituents_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_index_sectors_fetcher(credentials=test_credentials):
+    """Test index sectors fetcher."""
     params = {"symbol": "^TSX", "use_cache": False}
 
     fetcher = TmxIndexSectorsFetcher()
@@ -204,6 +222,7 @@ def test_tmx_index_sectors_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_index_snapshots_fetcher(credentials=test_credentials):
+    """Test index snapshots fetcher."""
     params = {"use_cache": False}
 
     fetcher = TmxIndexSnapshotsFetcher()
@@ -213,6 +232,7 @@ def test_tmx_index_snapshots_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_insider_trading_fetcher(credentials=test_credentials):
+    """Test insider trading fetcher."""
     params = {"symbol": "SHOP", "summary": False}
 
     fetcher = TmxInsiderTradingFetcher()
@@ -222,6 +242,7 @@ def test_tmx_insider_trading_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_options_chains_fetcher(credentials=test_credentials):
+    """Test options chains fetcher."""
     params = {"symbol": "SHOP", "use_cache": False}
 
     fetcher = TmxOptionsChainsFetcher()
@@ -231,6 +252,7 @@ def test_tmx_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_price_target_consensus_fetcher(credentials=test_credentials):
+    """Test price target consensus fetcher."""
     params = {"symbol": "SHOP"}
 
     fetcher = TmxPriceTargetConsensusFetcher()
@@ -240,6 +262,7 @@ def test_tmx_price_target_consensus_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_treasury_prices_fetcher(credentials=test_credentials):
+    """Test treasury prices fetcher."""
     params = {"govt_type": "federal", "use_cache": False}
 
     fetcher = TmxTreasuryPricesFetcher()
@@ -249,6 +272,7 @@ def test_tmx_treasury_prices_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_bond_prices_fetcher(credentials=test_credentials):
+    """Test bond prices fetcher."""
     params = {"use_cache": False, "coupon_rate_min": 4}
 
     fetcher = TmxBondPricesFetcher()

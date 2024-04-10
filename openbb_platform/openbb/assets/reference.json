@@ -22279,7 +22279,15 @@
                         "optional": true
                     }
                 ],
-                "intrinio": [],
+                "intrinio": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "A specific date to get data for.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "sec": [
                     {
                         "name": "date",
@@ -27173,6 +27181,9 @@
         "/currency": {
             "description": "Foreign exchange (FX) market data."
         },
+        "/derivatives": {
+            "description": "Derivatives market data."
+        },
         "/economy": {
             "description": "Economic data."
         },
@@ -27190,6 +27201,9 @@
         },
         "/news": {
             "description": "Financial market news data."
+        },
+        "/regulators": {
+            "description": "Financial market regulators data."
         }
     }
 }

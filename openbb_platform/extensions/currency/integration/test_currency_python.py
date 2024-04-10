@@ -47,6 +47,7 @@ def obb(pytestconfig):
 )
 @pytest.mark.integration
 def test_currency_search(params, obb):
+    """Test the currency search endpoint."""
     result = obb.currency.search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -136,6 +137,7 @@ def test_currency_search(params, obb):
 )
 @pytest.mark.integration
 def test_currency_price_historical(params, obb):
+    """Test the currency historical price endpoint."""
     result = obb.currency.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -148,6 +150,7 @@ def test_currency_price_historical(params, obb):
 )
 @pytest.mark.integration
 def test_currency_reference_rates(params, obb):
+    """Test the currency reference rates endpoint."""
     result = obb.currency.reference_rates(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -169,6 +172,7 @@ def test_currency_reference_rates(params, obb):
 )
 @pytest.mark.integration
 def test_currency_snapshots(params, obb):
+    """Test the currency snapshots endpoint."""
     result = obb.currency.snapshots(**params)
     assert result
     assert isinstance(result, OBBject)

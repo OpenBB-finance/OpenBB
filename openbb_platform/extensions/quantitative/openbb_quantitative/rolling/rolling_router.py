@@ -376,8 +376,7 @@ def quantile(
 def mean(
     data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
 ) -> OBBject[List[Data]]:
-    """
-    Calculate the rolling mean (average) of a target column within a given window size.
+    """Calculate the rolling average of a target column within a given window size.
 
     The rolling mean is a simple moving average that calculates the average of a target variable over a specified window.
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends

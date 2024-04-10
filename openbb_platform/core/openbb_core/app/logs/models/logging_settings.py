@@ -1,3 +1,5 @@
+"""Logging settings."""
+
 from pathlib import Path
 from typing import List, Optional
 
@@ -8,11 +10,14 @@ from openbb_core.app.model.user_settings import UserSettings
 
 # pylint: disable=too-many-instance-attributes
 class LoggingSettings:
+    """Logging settings."""
+
     def __init__(
         self,
         user_settings: Optional[UserSettings] = None,
         system_settings: Optional[SystemSettings] = None,
     ):
+        """Initialize the logging settings."""
         user_settings = user_settings or UserSettings()
         system_settings = system_settings or SystemSettings()
 

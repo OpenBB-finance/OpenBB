@@ -1,3 +1,5 @@
+"""User authentication."""
+
 import secrets
 from typing import Optional
 
@@ -15,7 +17,6 @@ async def authenticate_user(
     credentials: Annotated[Optional[HTTPBasicCredentials], Depends(security)]
 ):
     """Authenticate the user."""
-
     if credentials:
         username = Env().API_USERNAME
         password = Env().API_PASSWORD

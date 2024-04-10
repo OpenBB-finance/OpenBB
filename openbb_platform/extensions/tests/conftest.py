@@ -14,7 +14,7 @@ commands = list(cm.map.keys())
 
 
 def parametrize(argnames: str, argvalues: List, **kwargs):
-    """Custom parametrize decorator that filters test cases based on the environment."""
+    """Apply a custom parametrize decorator that filters test cases based on the environment."""
 
     routers, providers, obbject_ext = list_openbb_extensions()
 

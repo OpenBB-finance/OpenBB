@@ -1,3 +1,5 @@
+"""Test Economy API."""
+
 import base64
 
 import pytest
@@ -9,6 +11,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -49,6 +52,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_economy_calendar(params, headers):
+    """Test the economy calendar endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -87,6 +91,7 @@ def test_economy_calendar(params, headers):
 )
 @pytest.mark.integration
 def test_economy_cpi(params, headers):
+    """Test the economy CPI endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -102,6 +107,7 @@ def test_economy_cpi(params, headers):
 )
 @pytest.mark.integration
 def test_economy_risk_premium(params, headers):
+    """Test the economy risk premium endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -137,6 +143,7 @@ def test_economy_risk_premium(params, headers):
 )
 @pytest.mark.integration
 def test_economy_gdp_forecast(params, headers):
+    """Test the economy GDP forecast endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -170,6 +177,7 @@ def test_economy_gdp_forecast(params, headers):
 )
 @pytest.mark.integration
 def test_economy_gdp_nominal(params, headers):
+    """Test the economy GDP nominal endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -203,6 +211,7 @@ def test_economy_gdp_nominal(params, headers):
 )
 @pytest.mark.integration
 def test_economy_gdp_real(params, headers):
+    """Test the economy GDP real endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -243,6 +252,7 @@ def test_economy_gdp_real(params, headers):
 )
 @pytest.mark.integration
 def test_economy_balance_of_payments(params, headers):
+    """Test the economy balance of payments endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -319,6 +329,7 @@ def test_economy_balance_of_payments(params, headers):
 )
 @pytest.mark.integration
 def test_economy_fred_search(params, headers):
+    """Test the economy FRED search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -358,6 +369,7 @@ def test_economy_fred_search(params, headers):
 )
 @pytest.mark.integration
 def test_economy_fred_series(params, headers):
+    """Test the economy FRED series endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -383,6 +395,7 @@ def test_economy_fred_series(params, headers):
 )
 @pytest.mark.integration
 def test_economy_money_measures(params, headers):
+    """Test the economy money measures endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -412,6 +425,7 @@ def test_economy_money_measures(params, headers):
 )
 @pytest.mark.integration
 def test_economy_unemployment(params, headers):
+    """Test the economy unemployment endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -437,6 +451,7 @@ def test_economy_unemployment(params, headers):
 )
 @pytest.mark.integration
 def test_economy_composite_leading_indicator(params, headers):
+    """Test the economy composite leading indicator endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -463,6 +478,7 @@ def test_economy_composite_leading_indicator(params, headers):
 )
 @pytest.mark.integration
 def test_economy_short_term_interest_rate(params, headers):
+    """Test the economy short term interest rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -489,6 +505,7 @@ def test_economy_short_term_interest_rate(params, headers):
 )
 @pytest.mark.integration
 def test_economy_long_term_interest_rate(params, headers):
+    """Test the economy long term interest rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -537,6 +554,7 @@ def test_economy_long_term_interest_rate(params, headers):
 )
 @pytest.mark.integration
 def test_economy_fred_regional(params, headers):
+    """Test the economy FRED regional endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

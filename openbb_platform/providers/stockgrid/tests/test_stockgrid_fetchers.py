@@ -1,3 +1,5 @@
+"""Test stockgrid fetchers."""
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_stockgrid.models.short_volume import StockgridShortVolumeFetcher
@@ -9,6 +11,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -20,6 +23,7 @@ def vcr_config():
 @pytest.mark.freeze_time("2023-11-08")
 @pytest.mark.record_http
 def test_stockgrid_short_volume_fetcher(credentials=test_credentials):
+    """Test short volume fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = StockgridShortVolumeFetcher()
