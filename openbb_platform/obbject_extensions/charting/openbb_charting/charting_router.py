@@ -375,8 +375,6 @@ def equity_price_historical(  # noqa: PLR0912
 
         fig = OpenBBFigure()
 
-        #fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
-
         for i, col in enumerate(data.columns):
 
             hovertemplate = f"{data[col].name}: %{{y}}<extra></extra>"
