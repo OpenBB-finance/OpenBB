@@ -57,6 +57,13 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         for v in values:
             check_item(v.lower(), COUNTRIES)
             result.append(v.lower())
+
+            if len(result) > 32:
+                raise ValueError(
+                    "Too many countries. "
+                    "Trading Economics API allows a maximum of 32 countries."
+                )
+
         return ",".join(result)
 
     @field_validator("importance")
