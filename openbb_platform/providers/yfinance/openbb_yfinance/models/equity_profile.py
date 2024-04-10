@@ -3,7 +3,10 @@
 # pylint: disable=unused-argument
 import asyncio
 import warnings
-from datetime import timezone, date as dateType
+from datetime import (
+    date as dateType,
+    timezone,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
