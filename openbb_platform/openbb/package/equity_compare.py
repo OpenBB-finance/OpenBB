@@ -38,6 +38,7 @@ class ROUTER_equity_compare(Container):
         Peers consist of companies trading on the same exchange, operating within the same sector
         and with comparable market capitalizations.
 
+
         Parameters
         ----------
         symbol : str
@@ -50,7 +51,7 @@ class ROUTER_equity_compare(Container):
         Returns
         -------
         OBBject
-            results : EquityPeers
+            results : Optional[Annotated[openbb_fmp.models.equity_peers.FMPEquityPeersData, Tag(tag='fmp'), None, SerializeAsAny()]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

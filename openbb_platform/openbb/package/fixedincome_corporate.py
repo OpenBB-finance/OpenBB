@@ -89,7 +89,7 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[CommercialPaper]
+            results : Optional[list[Annotated[openbb_fred.models.cp.FREDCommercialPaperData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -177,7 +177,7 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[HighQualityMarketCorporateBond]
+            results : Optional[list[Annotated[openbb_fred.models.hqm.FREDHighQualityMarketCorporateBondData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -287,7 +287,7 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[ICEBofA]
+            results : Optional[list[Annotated[openbb_fred.models.ice_bofa.FREDICEBofAData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -385,7 +385,7 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[MoodyCorporateBondIndex]
+            results : Optional[list[Annotated[openbb_fred.models.moody.FREDMoodyCorporateBondIndexData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -492,7 +492,7 @@ class ROUTER_fixedincome_corporate(Container):
         Returns
         -------
         OBBject
-            results : List[SpotRate]
+            results : Optional[list[Annotated[openbb_fred.models.spot.FREDSpotRateData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.

@@ -1147,17 +1147,17 @@ class DocstringGenerator:
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
 
-                returns = return_schema.model_fields
-                results_type = func.__annotations__.get("return", model_name)
-                if hasattr(results_type, "results_type_repr"):
-                    results_type = results_type.results_type_repr()
+                # Format the annotation to hide the metadata, tags, etc.
+                results_type = (
+                    func.__annotations__["return"].model_fields["results"].annotation
+                )
 
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=returns,
+                    returns=return_schema.model_fields,
                     results_type=results_type,
                 )
         else:
@@ -1362,7 +1362,7 @@ class ReferenceGenerator:
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
-        model_map = cls.pi._map[model]  # pylint: disable=protected-access
+        model_map = cls.pi.map[model]
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
@@ -1605,7 +1605,7 @@ class ReferenceGenerator:
                     route, "description", "No description available."
                 )
                 # Access model map from the ProviderInterface
-                model_map = cls.pi._map[
+                model_map = cls.pi.map[
                     standard_model
                 ]  # pylint: disable=protected-access
 

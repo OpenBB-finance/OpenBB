@@ -74,7 +74,7 @@ class ROUTER_currency(Container):
         Returns
         -------
         OBBject
-            results : List[CurrencyPairs]
+            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.currency_pairs.FMPCurrencyPairsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.currency_pairs.IntrinioCurrencyPairsData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.currency_pairs.PolygonCurrencyPairsData, Tag(tag='polygon')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
@@ -195,7 +195,7 @@ class ROUTER_currency(Container):
         Returns
         -------
         OBBject
-            results : List[CurrencySnapshots]
+            results : Optional[list[Annotated[openbb_fmp.models.currency_snapshots.FMPCurrencySnapshotsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

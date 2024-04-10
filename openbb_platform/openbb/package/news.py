@@ -108,7 +108,7 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : List[CompanyNews]
+            results : Optional[list[Annotated[Union[Annotated[openbb_benzinga.models.company_news.BenzingaCompanyNewsData, Tag(tag='benzinga')], Annotated[openbb_fmp.models.company_news.FMPCompanyNewsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.company_news.IntrinioCompanyNewsData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.company_news.PolygonCompanyNewsData, Tag(tag='polygon')], Annotated[openbb_tiingo.models.company_news.TiingoCompanyNewsData, Tag(tag='tiingo')], Annotated[openbb_yfinance.models.company_news.YFinanceCompanyNewsData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -291,7 +291,7 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : List[WorldNews]
+            results : Optional[list[Annotated[Union[Annotated[openbb_benzinga.models.world_news.BenzingaWorldNewsData, Tag(tag='benzinga')], Annotated[openbb_fmp.models.world_news.FMPWorldNewsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.world_news.IntrinioWorldNewsData, Tag(tag='intrinio')], Annotated[openbb_tiingo.models.world_news.TiingoWorldNewsData, Tag(tag='tiingo')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
                 Provider name.

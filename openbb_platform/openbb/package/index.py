@@ -48,7 +48,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[AvailableIndices]
+            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.available_indices.FMPAvailableIndicesData, Tag(tag='fmp')], Annotated[openbb_yfinance.models.available_indices.YFinanceAvailableIndicesData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -111,7 +111,7 @@ class ROUTER_index(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents.
+        """Get Index Constituents.
 
         Parameters
         ----------
@@ -125,7 +125,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[IndexConstituents]
+            results : Optional[list[Annotated[openbb_fmp.models.index_constituents.FMPIndexConstituentsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -216,7 +216,7 @@ class ROUTER_index(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Historical Market Indices.
+        """Get Historical Market Indices.
 
         Parameters
         ----------
@@ -240,7 +240,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[MarketIndices]
+            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.index_historical.FMPIndexHistoricalData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.index_historical.IntrinioIndexHistoricalData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.index_historical.PolygonIndexHistoricalData, Tag(tag='polygon')], Annotated[openbb_yfinance.models.index_historical.YFinanceIndexHistoricalData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.

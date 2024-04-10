@@ -75,7 +75,7 @@ class ROUTER_crypto_price(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoHistorical]
+            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.crypto_historical.FMPCryptoHistoricalData, Tag(tag='fmp')], Annotated[openbb_polygon.models.crypto_historical.PolygonCryptoHistoricalData, Tag(tag='polygon')], Annotated[openbb_tiingo.models.crypto_historical.TiingoCryptoHistoricalData, Tag(tag='tiingo')], Annotated[openbb_yfinance.models.crypto_historical.YFinanceCryptoHistoricalData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.

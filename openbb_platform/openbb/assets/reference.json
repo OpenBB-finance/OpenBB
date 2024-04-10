@@ -1779,7 +1779,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Forecasted GDP Data.",
+            "description": "Get Forecasted GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(period='annual', type='real', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -1884,7 +1884,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Nominal GDP Data.",
+            "description": "Get Nominal GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units='usd', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -1982,7 +1982,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Real GDP Data.",
+            "description": "Get Real GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(units='yoy', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2300,7 +2300,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
+            "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `units` parameter to define the reference period for the change in values.\nobb.economy.cpi(country='united_states,united_kingdom', units='growth_previous', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2404,7 +2404,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Market Risk Premium by country.",
+            "description": "Get Market Risk Premium by country.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.risk_premium(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2487,7 +2487,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Search for FRED series or economic releases by ID or string.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+            "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_search(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2891,7 +2891,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.",
+            "description": "Get Money Measures (M1/M2 and components).\n\nThe Federal Reserve publishes as part of the H.6 Release.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.money_measures(provider='federal_reserve')\nobb.economy.money_measures(adjusted=False, provider='federal_reserve')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3023,7 +3023,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Global unemployment data.",
+            "description": "Get global unemployment data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country=all, frequency=quarterly, provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country=all, frequency=quarterly, age=25-54, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3149,7 +3149,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The composite leading indicator (CLI) is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "description": "Use the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3247,7 +3247,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Short-term interest rates are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
+            "description": "Get Short-term interest rates.\n\nThey are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3352,7 +3352,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Long-term interest rates refer to government bonds maturing in ten years.\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
+            "description": "Get Long-term interest rates that refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3457,7 +3457,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Query the Geo Fred API for regional economic data by series group.\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+            "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')\n# With a date, time series data is returned.\nobb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -6897,7 +6897,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC\nfilings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
+            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.\n\nSEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.filings(provider='fmp')\n# Get filings for the year 2023, limited to 100 results\nobb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -17037,7 +17037,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
+            "description": "Get the form 13F.\n\nThe Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.form_13f(symbol='NVDA', provider='sec')\n# Enter a date (calendar quarter ending) for a specific report.\nobb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')\n# Example finding Michael Burry's filings.\ncik = obb.regulators.sec.institutions_search(\"Scion Asset Management\").results[0].cik\n# Use the `limit` parameter to return N number of reports from the most recent.\nobb.equity.ownership.form_13f(cik, limit=2).to_df()\n```\n\n",
             "parameters": {
                 "standard": [
@@ -18716,7 +18716,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Screen for companies meeting various criteria. These criteria include\nmarket cap, price, beta, volume, and dividend yield.",
+            "description": "Screen for companies meeting various criteria.\n\nThese criteria include market cap, price, beta, volume, and dividend yield.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.screener(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -25566,7 +25566,7 @@
                 "flag": true,
                 "message": "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
             },
-            "description": "Historical Market Indices.",
+            "description": "Get Historical Market Indices.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.market(symbol='^IBEX', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -25750,7 +25750,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Index Constituents.",
+            "description": "Get Index Constituents.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.constituents(symbol='dowjones', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -26838,7 +26838,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "A tool for navigating the directory of SEC XML schema files by year.",
+            "description": "Use tool for navigating the directory of SEC XML schema files by year.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.schema_files(provider='sec')\n# Get a list of schema files.\ndata = obb.regulators.sec.schema_files().results\ndata.files[0]\n'https://xbrl.fasb.org/us-gaap/'\n# The directory structure can be navigated by constructing a URL from the 'results' list.\nurl = data.files[0]+data.files[-1]\n# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.\nobb.regulators.sec.schema_files(url=url).results.files\n['https://xbrl.fasb.org/us-gaap/2024/'\n'USGAAP2024FileList.xml'\n'dis/'\n'dqcrules/'\n'ebp/'\n'elts/'\n'entire/'\n'meta/'\n'stm/'\n'us-gaap-2024.zip']\n```\n\n",
             "parameters": {
                 "standard": [
@@ -26998,7 +26998,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+            "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.rss_litigation(provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [

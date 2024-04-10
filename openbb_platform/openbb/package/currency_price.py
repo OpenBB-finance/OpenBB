@@ -80,7 +80,7 @@ class ROUTER_currency_price(Container):
         Returns
         -------
         OBBject
-            results : List[CurrencyHistorical]
+            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.currency_historical.FMPCurrencyHistoricalData, Tag(tag='fmp')], Annotated[openbb_polygon.models.currency_historical.PolygonCurrencyHistoricalData, Tag(tag='polygon')], Annotated[openbb_tiingo.models.currency_historical.TiingoCurrencyHistoricalData, Tag(tag='tiingo')], Annotated[openbb_yfinance.models.currency_historical.YFinanceCurrencyHistoricalData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.

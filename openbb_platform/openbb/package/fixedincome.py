@@ -96,7 +96,7 @@ class ROUTER_fixedincome(Container):
         Returns
         -------
         OBBject
-            results : List[SOFR]
+            results : Optional[list[Annotated[openbb_fred.models.sofr_rates.FREDSOFRData, Tag(tag='fred'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.

@@ -2,18 +2,33 @@
 
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
-from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
+from typing import (
+    Annotated,
+    Any,
+    Callable,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+)
 
 from fastapi import Query
 from pydantic import (
     BaseModel,
     ConfigDict,
+    Discriminator,
     Field,
+    SerializeAsAny,
+    Tag,
     create_model,
 )
 from pydantic.fields import FieldInfo
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.query_executor import QueryExecutor
 from openbb_core.provider.registry_map import MapType, RegistryMap
 from openbb_core.provider.utils.helpers import to_snake_case
@@ -92,12 +107,17 @@ class ProviderInterface(metaclass=SingletonMeta):
         self._registry_map = registry_map or RegistryMap()
         self._query_executor = query_executor or QueryExecutor
 
-        self._map = self._registry_map.map
+        self._standard_extra = self._registry_map.standard_extra
         # TODO: Try these 4 methods in a single iteration
-        self._model_providers_map = self._generate_model_providers_dc(self._map)
-        self._params = self._generate_params_dc(self._map)
-        self._data = self._generate_data_dc(self._map)
+        self._model_providers_map = self._generate_model_providers_dc(
+            self._standard_extra
+        )
+        self._params = self._generate_params_dc(self._standard_extra)
+        self._data = self._generate_data_dc(self._standard_extra)
         self._return_schema = self._generate_return_schema(self._data)
+        self._return_annotations = self._generate_return_annotations(
+            self._registry_map.original_models
+        )
 
         self._available_providers = self._registry_map.available_providers
         self._provider_choices = self._get_provider_choices(self._available_providers)
@@ -105,7 +125,7 @@ class ProviderInterface(metaclass=SingletonMeta):
     @property
     def map(self) -> MapType:
         """Dictionary of provider information."""
-        return self._map
+        return self._standard_extra
 
     @property
     def credentials(self) -> List[str]:
@@ -148,9 +168,9 @@ class ProviderInterface(metaclass=SingletonMeta):
         return self._registry_map.models
 
     @property
-    def return_map(self) -> Dict[str, Dict[str, Any]]:
+    def return_annotations(self) -> Dict[str, Type[OBBject]]:
         """Return map."""
-        return self._registry_map.return_map
+        return self._return_annotations
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
@@ -375,7 +395,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         This creates a dictionary of dataclasses that can be injected as a FastAPI
         dependency.
 
-        Example:
+        Example
         -------
         @dataclass
         class CompanyNews(StandardParams):
@@ -416,7 +436,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         This creates a dictionary that maps model names to dataclasses that can be
         injected as a FastAPI dependency.
 
-        Example:
+        Example
         -------
         @dataclass
         class CompanyNews(ProviderChoices):
@@ -450,7 +470,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         This creates a dictionary of dataclasses.
 
-        Example:
+        Example
         -------
         class EquityHistoricalData(StandardData):
             date: date
@@ -525,3 +545,61 @@ class ProviderInterface(metaclass=SingletonMeta):
             fields=[("provider", Literal[tuple(available_providers)])],  # type: ignore
             bases=(ProviderChoices,),
         )
+
+    def _generate_return_annotations(
+        self, original_models: Dict[str, Dict[str, Any]]
+    ) -> Dict[str, Type[OBBject]]:
+        """Generate return annotations for FastAPI.
+
+        Example
+        -------
+        class Data(BaseModel):
+            ...
+
+        class EquityData(Data):
+            price: float
+
+        class YFEquityData(Data):
+            yf_field: str
+
+        class AVEquityData(Data):
+            av_field: str
+
+        class OBBject(BaseModel):
+            results: List[
+                SerializeAsAny[
+                    Annotated[
+                        Union[
+                            Annotated[YFData, Tag('yf')],
+                            Annotated[AVData, Tag('av')],
+                        ],
+                        Discriminator(get_provider),
+                    ]
+                ]
+            ]
+        """
+
+        def get_provider(v: Type[BaseModel]):
+            return getattr(v, "provider", None)
+
+        return_annotations = {}
+        for model_name, details in original_models.items():
+            args = set()
+            outer = set()
+            for provider, d in details.items():
+                data = d["data"]
+                outer.add(d["results_type"])
+                args.add(Annotated[data, Tag(provider)])
+                # We set the provider to use it in discriminator function
+                setattr(data, "provider", provider)
+
+            metadata = Discriminator(get_provider) if len(args) > 1 else None
+            inner = SerializeAsAny[Annotated[Union[tuple(args)], metadata]]  # type: ignore[valid-type]
+            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
+
+            return_annotations[model_name] = create_model(
+                f"OBBject_{model_name}",
+                __base__=OBBject[full],
+                __doc__=f"OBBject with results of type {model_name}",
+            )
+        return return_annotations

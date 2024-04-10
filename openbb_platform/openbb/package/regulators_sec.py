@@ -52,7 +52,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : CikMap
+            results : Optional[Annotated[openbb_sec.models.cik_map.SecCikMapData, Tag(tag='sec'), None, SerializeAsAny()]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -126,7 +126,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : List[InstitutionsSearch]
+            results : Optional[list[Annotated[openbb_sec.models.institutions_search.SecInstitutionsSearchData, Tag(tag='sec'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -181,7 +181,7 @@ class ROUTER_regulators_sec(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
+        """Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
         Parameters
         ----------
@@ -193,7 +193,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : List[RssLitigation]
+            results : Optional[list[Annotated[openbb_sec.models.rss_litigation.SecRssLitigationData, Tag(tag='sec'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -257,7 +257,7 @@ class ROUTER_regulators_sec(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """A tool for navigating the directory of SEC XML schema files by year.
+        """Use tool for navigating the directory of SEC XML schema files by year.
 
         Parameters
         ----------
@@ -275,7 +275,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : SchemaFiles
+            results : Optional[Annotated[openbb_sec.models.schema_files.SecSchemaFilesData, Tag(tag='sec'), None, SerializeAsAny()]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -368,7 +368,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : List[SicSearch]
+            results : Optional[list[Annotated[openbb_sec.models.sic_search.SecSicSearchData, Tag(tag='sec'), None, SerializeAsAny()]]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -448,7 +448,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : SymbolMap
+            results : Optional[Annotated[openbb_sec.models.symbol_map.SecSymbolMapData, Tag(tag='sec'), None, SerializeAsAny()]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
