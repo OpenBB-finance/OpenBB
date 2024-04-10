@@ -157,6 +157,7 @@ class RegistryMap:
             Field(
                 default=provider_str,
                 description="The data provider for the data.",
+                exclude=True,
             ),
         )
 
