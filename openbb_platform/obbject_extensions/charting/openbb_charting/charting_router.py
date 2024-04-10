@@ -15,6 +15,7 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_charting.core.to_chart import to_chart
 from openbb_charting.styles.colors import LARGE_CYCLER
+from openbb_charting.utils import relative_rotation
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.helpers import (
     calculate_returns,
@@ -22,7 +23,6 @@ from openbb_charting.utils.helpers import (
     should_share_axis,
     z_score_standardization,
 )
-from openbb_charting.utils import relative_rotation
 
 CHART_FORMAT = ChartFormat.plotly
 
@@ -1223,7 +1223,7 @@ def technical_relative_rotation(
     tail_periods = int(kwargs.get("tail_periods")) if "tail_periods" in kwargs else 16  # type: ignore
     tail_interval = str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"  # type: ignore
     date = kwargs.get("date") if "date" in kwargs else None  # type: ignore
-
+    show_tails = False if date is not None else show_tails
     if ratios_df.empty or momentum_df.empty:
         raise RuntimeError("Error: No data to plot.")
 

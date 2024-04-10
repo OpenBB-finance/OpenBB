@@ -344,6 +344,31 @@ class TechnicalRSIChartQueryParams(ChartQueryParams):
     )
 
 
+class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
+    """Technical Relative Rotation Chart Query Params."""
+
+    date: Optional[str] = Field(
+        default=None,
+        description="A target end date within the data to use for the chart, by default is the last date in the data.",
+    )
+    show_tails: bool = Field(
+        default=True,
+        description="Show the tails on the chart, by default True.",
+    )
+    tail_periods: Optional[int] = Field(
+        default=16,
+        description="Number of periods to show in the tails, by default 16.",
+    )
+    tail_interval: Literal["day", "week", "month"] = Field(
+        default="week",
+        description="The interval to show the tails, by default 'week'.",
+    )
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+
+
 class ChartParams:
     """Chart Query Params."""
 
@@ -356,16 +381,17 @@ class ChartParams:
     etf_holdings = EtfHoldingsChartQueryParams
     etf_price_performance = EquityPricePerformanceChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
-    technical_cones = TechnicalConesChartQueryParams
-    technical_sma = TechnicalSMAChartQueryParams
-    technical_ema = TechnicalEMAChartQueryParams
-    technical_hma = TechnicalHMAChartQueryParams
-    technical_wma = TechnicalWMAChartQueryParams
-    technical_zlma = TechnicalZLMAChartQueryParams
     technical_adx = TechnicalADXChartQueryParams
     technical_aroon = TechnicalArooonChartQueryParams
+    technical_cones = TechnicalConesChartQueryParams
+    technical_ema = TechnicalEMAChartQueryParams
+    technical_hma = TechnicalHMAChartQueryParams
     technical_macd = TechnicalMACDChartQueryParams
+    technical_relative_rotation = TechnicalRelativeRotationChartQueryParams
     technical_rsi = TechnicalRSIChartQueryParams
+    technical_sma = TechnicalSMAChartQueryParams
+    technical_wma = TechnicalWMAChartQueryParams
+    technical_zlma = TechnicalZLMAChartQueryParams
 
 
 class IndicatorsQueryParams(BaseQueryParams):
