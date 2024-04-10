@@ -126,9 +126,9 @@ class Charting:
         self, data: Optional[Union[pd.DataFrame, pd.Series]]
     ) -> Tuple[pd.DataFrame, bool]:
         """Convert supplied data to a DataFrame."""
-        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
-            bool(data)
-        )
+        has_data = (
+            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty
+        ) or (bool(data))
         index = (
             data.index.name
             if has_data and isinstance(data, (pd.DataFrame, pd.Series))
@@ -344,7 +344,6 @@ class Charting:
             if "kwargs" in kwargs:
                 _kwargs = kwargs.pop("kwargs")
                 kwargs.update(_kwargs.get("chart_params", {}))
-
             fig, content = charting_function(**kwargs)
             self._obbject.chart = Chart(
                 fig=fig, content=content, format=charting_router.CHART_FORMAT
@@ -442,6 +441,15 @@ class Charting:
         data_as_df, has_data = self._prepare_data_as_df(data)  # type: ignore
         if target is not None:
             data_as_df = data_as_df[[target]]
+        kwargs["candles"] = candles
+        kwargs["volume"] = volume
+        kwargs["volume_ticks_x"] = volume_ticks_x
+        kwargs["indicators"] = indicators if indicators else {}
+        kwargs["symbol"] = symbol
+        kwargs["target"] = target
+        kwargs["index"] = index
+        kwargs["obbject_item"] = self._obbject.results
+        kwargs["charting_settings"] = self._charting_settings
         if (
             hasattr(self._obbject, "_standard_params")
             and self._obbject._standard_params  # pylint: disable=protected-access
@@ -449,16 +457,11 @@ class Charting:
             kwargs["standard_params"] = (
                 self._obbject._standard_params.__dict__  # pylint: disable=protected-access
             )
-        kwargs["candles"] = candles
-        kwargs["volume"] = volume
-        kwargs["volume_ticks_x"] = volume_ticks_x
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
-        kwargs["warnings"] = self._obbject.warnings  # pylint: disable=protected-access
-        kwargs["indicators"] = indicators
-        kwargs["symbol"] = symbol
-        kwargs["target"] = target
-        kwargs["index"] = index
+        if "kwargs" in kwargs:
+            _kwargs = kwargs.pop("kwargs")
+            kwargs.update(_kwargs.get("chart_params", {}))
         try:
             if has_data:
                 self.show(data=data_as_df, render=render, **kwargs)

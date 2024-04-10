@@ -282,12 +282,11 @@ def equity_price_historical(  # noqa: PLR0912
         ta = PlotlyTA()
         fig = ta.plot(  # type: ignore
             data,
-            indicators=indicators,  # type: ignore
+            indicators=indicators if indicators else {},  # type: ignore
             symbol=target if candles is False else "",
             candles=candles,
             volume=volume,  # type: ignore
         )
-        content = fig.to_plotly_json()
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.set_title(title)
