@@ -559,10 +559,10 @@ class ProviderInterface(metaclass=SingletonMeta):
         class EquityData(Data):
             price: float
 
-        class YFEquityData(Data):
+        class YFEquityData(EquityData):
             yf_field: str
 
-        class AVEquityData(Data):
+        class AVEquityData(EquityData):
             av_field: str
 
         class OBBject(BaseModel):
@@ -570,8 +570,8 @@ class ProviderInterface(metaclass=SingletonMeta):
                 SerializeAsAny[
                     Annotated[
                         Union[
-                            Annotated[YFData, Tag('yf')],
-                            Annotated[AVData, Tag('av')],
+                            Annotated[YFEquityData, Tag('yf')],
+                            Annotated[AVEquityData, Tag('av')],
                         ],
                         Discriminator(get_provider),
                     ]
