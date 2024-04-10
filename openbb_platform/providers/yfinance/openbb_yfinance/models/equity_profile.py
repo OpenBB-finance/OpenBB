@@ -17,11 +17,6 @@ from openbb_core.provider.standard_models.equity_info import (
 from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
 from yfinance import Ticker
-from datetime import (
-    date as dateType,
-    timezone,
-)
-from openbb_core.provider.utils.helpers import safe_fromtimestamp
 
 _warn = warnings.warn
 
