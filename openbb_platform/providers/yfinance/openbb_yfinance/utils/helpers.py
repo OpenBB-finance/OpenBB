@@ -172,7 +172,7 @@ def yf_download(
                 data["date"]
                 <= (
                     pd.to_datetime(end_date)
-                    + relativedelta(days=1 if intraday is True else 0)
+                    + relativedelta(minutes=719 if intraday is True else 0)
                 )
             ]
         if intraday is True:
