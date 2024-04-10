@@ -1243,9 +1243,7 @@ def technical_relative_rotation(
         )
 
     figure = OpenBBFigure(fig)
-    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
     figure.update_layout(
-        font=dict(color="black" if ChartStyle().plt_style == "light" else "white"),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(255,255,255,1)",
         yaxis=dict(
