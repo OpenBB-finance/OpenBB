@@ -7,6 +7,7 @@ import gzip
 from datetime import (
     date as dateType,
     datetime,
+    timezone,
 )
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Union
@@ -16,10 +17,9 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from pandas import DataFrame, notna, read_csv, to_datetime
 from pydantic import Field
-from pytz import timezone
 
 
 class IntrinioMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -143,7 +143,6 @@ class IntrinioMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         # This gets the URL to the actual file.
@@ -216,7 +215,7 @@ class IntrinioMarketSnapshotsFetcher(
                     to_datetime(
                         df[col].apply(
                             lambda x: (
-                                datetime.fromtimestamp(x, tz=timezone("UTC"))
+                                safe_fromtimestamp(x, tz=timezone.utc)
                                 if notna(x)
                                 else x
                             )

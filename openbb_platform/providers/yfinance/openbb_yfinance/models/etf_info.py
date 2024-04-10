@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -275,7 +276,7 @@ class YFinanceEtfInfoFetcher(
                                 "fundInceptionDate" not in result
                                 and _first_trade is not None
                             ):
-                                result["fundInceptionDate"] = datetime.fromtimestamp(
+                                result["fundInceptionDate"] = safe_fromtimestamp(
                                     _first_trade
                                 )
                     except Exception as e:

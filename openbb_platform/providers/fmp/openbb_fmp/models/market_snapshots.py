@@ -13,6 +13,7 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from openbb_fmp.utils.definitions import EXCHANGES
 from openbb_fmp.utils.helpers import get_data
 from pydantic import Field, field_validator
@@ -87,11 +88,17 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
 
     @field_validator("last_price_timestamp", mode="before", check_fields=False)
     @classmethod
-    def validate_timestamp(cls, v):
+    def validate_timestamp(cls, v: Union[str, int, float]) -> Optional[dateType]:
         """Validate the timestamp."""
+        if isinstance(v, str):
+            try:
+                v = float(v)
+            except ValueError:
+                return None
+
         if isinstance(v, (int, float)) and v != 0:
             try:
-                v = datetime.fromtimestamp(v)
+                v = safe_fromtimestamp(v)
                 if v.hour == 0 and v.minute == 0 and v.second == 0:
                     v = v.date()
                 return v
