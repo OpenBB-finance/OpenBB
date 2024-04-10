@@ -267,8 +267,12 @@ def equity_price_historical(  # noqa: PLR0912
         and normalize is False
         and returns is False
         and candles is True
-    ):
-        if "heikin_ashi" in kwargs and kwargs["heikin_ashi"] is True:
+    ) or (indicators and multi_symbol is False):
+        if (
+            "heikin_ashi" in kwargs
+            and kwargs["heikin_ashi"] is True
+            and candles is True
+        ):
             data = heikin_ashi(data)
             title = f"{title} - Heikin Ashi"
         _volume = False
@@ -279,12 +283,12 @@ def equity_price_historical(  # noqa: PLR0912
         fig = ta.plot(  # type: ignore
             data,
             indicators=indicators,  # type: ignore
-            symbol="",
+            symbol=target if candles is False else "",
             candles=candles,
             volume=volume,  # type: ignore
         )
         content = fig.to_plotly_json()
-        if heikin_ashi is False and _volume is True and "atr" in indicators:  # type: ignore
+        if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.set_title(title)
         fig.update_layout(
