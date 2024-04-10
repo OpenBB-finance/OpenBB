@@ -1,6 +1,7 @@
 """Volatility technical indicators plugin for Plotly TA."""
 
 import pandas as pd
+
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,

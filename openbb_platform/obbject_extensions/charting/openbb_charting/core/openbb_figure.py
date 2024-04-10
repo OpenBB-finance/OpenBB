@@ -743,15 +743,18 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.7,
+            opacity=0.5,
             secondary_y=True,
+            showlegend=False,
+            hovertemplate="%{y}<extra></extra>",
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis2=dict(
-                fixedrange=True,
+                fixedrange=False,
                 side="left",
-                nticks=10,
+                nticks=8,
+                autorange=False,
                 range=vol_scale["range"],
                 tickvals=vol_scale["ticks"],
                 showgrid=False,
