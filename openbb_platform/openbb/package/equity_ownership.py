@@ -53,9 +53,7 @@ class ROUTER_equity_ownership(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get the form 13F.
-
-        The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
+        """The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
         that is required to be filed by all institutional investment managers with at least
         $100 million in assets under management.
         Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
@@ -79,7 +77,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_sec.models.form_13FHR.SecForm13FHRData, Tag(tag='sec'), None, SerializeAsAny()]]]
+            results : List[Form13FHR]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -193,7 +191,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.insider_trading.FMPInsiderTradingData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.insider_trading.IntrinioInsiderTradingData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[InsiderTrading]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -323,7 +321,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.institutional_ownership.FMPInstitutionalOwnershipData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[InstitutionalOwnership]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -473,7 +471,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.equity_ownership.FMPEquityOwnershipData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EquityOwnership]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -623,7 +621,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.share_statistics.FMPShareStatisticsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.share_statistics.IntrinioShareStatisticsData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.share_statistics.YFinanceShareStatisticsData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[ShareStatistics]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.

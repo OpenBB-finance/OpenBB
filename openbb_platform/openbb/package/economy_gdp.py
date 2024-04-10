@@ -57,7 +57,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Forecasted GDP Data.
+        """Forecasted GDP Data.
 
         Parameters
         ----------
@@ -79,7 +79,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.gdp_forecast.OECDGdpForecastData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[GdpForecast]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -154,7 +154,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Nominal GDP Data.
+        """Nominal GDP Data.
 
         Parameters
         ----------
@@ -174,7 +174,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.gdp_nominal.OECDGdpNominalData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[GdpNominal]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -248,7 +248,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Real GDP Data.
+        """Real GDP Data.
 
         Parameters
         ----------
@@ -268,7 +268,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.gdp_real.OECDGdpRealData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[GdpReal]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.

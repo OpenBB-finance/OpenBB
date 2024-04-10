@@ -98,7 +98,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.equity_historical.FMPEquityHistoricalData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.equity_historical.IntrinioEquityHistoricalData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.equity_historical.PolygonEquityHistoricalData, Tag(tag='polygon')], Annotated[openbb_tiingo.models.equity_historical.TiingoEquityHistoricalData, Tag(tag='tiingo')], Annotated[openbb_yfinance.models.equity_historical.YFinanceEquityHistoricalData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EquityHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -244,7 +244,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_polygon.models.equity_nbbo.PolygonEquityNBBOData, Tag(tag='polygon'), None, SerializeAsAny()]]]
+            results : List[EquityNBBO]
                 Serializable results.
             provider : Optional[Literal['polygon']]
                 Provider name.
@@ -343,7 +343,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.price_performance.FMPPricePerformanceData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[PricePerformance]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -449,7 +449,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.equity_quote.FMPEquityQuoteData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.equity_quote.IntrinioEquityQuoteData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.equity_quote.YFinanceEquityQuoteData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EquityQuote]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.

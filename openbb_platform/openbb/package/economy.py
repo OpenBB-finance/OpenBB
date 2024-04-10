@@ -79,7 +79,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.economic_calendar.FMPEconomicCalendarData, Tag(tag='fmp')], Annotated[openbb_tradingeconomics.models.economic_calendar.TEEconomicCalendarData, Tag(tag='tradingeconomics')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -180,11 +180,8 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Use the composite leading indicator (CLI).
-
-        It is designed to provide early signals of turning points
+        """The composite leading indicator (CLI) is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
-
         CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
@@ -204,7 +201,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.composite_leading_indicator.OECDCLIData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[CLI]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -350,10 +347,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Consumer Price Index (CPI).
-
-        Returns either the rescaled index value, or a rate of change (inflation).
-
+        """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
 
         Parameters
         ----------
@@ -384,7 +378,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.cpi.FREDConsumerPriceIndexData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[ConsumerPriceIndex]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -463,7 +457,6 @@ class ROUTER_economy(Container):
         **kwargs
     ) -> OBBject:
         """Query the Geo Fred API for regional economic data by series group.
-
         The series group ID is found by using `fred_search` and the `series_id` parameter.
 
 
@@ -535,7 +528,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.regional.FredRegionalData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[FredRegional]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -603,7 +596,6 @@ class ROUTER_economy(Container):
         **kwargs
     ) -> OBBject:
         """Search for FRED series or economic releases by ID or string.
-
         This does not return the observation values, only the metadata.
         Use this function to find series IDs for `fred_series()`.
 
@@ -638,7 +630,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.search.FredSearchData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[FredSearch]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -813,7 +805,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fred.models.series.FredSeriesData, Tag(tag='fred')], Annotated[openbb_intrinio.models.fred_series.IntrinioFredSeriesData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[FredSeries]
                 Serializable results.
             provider : Optional[Literal['fred', 'intrinio']]
                 Provider name.
@@ -893,8 +885,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Long-term interest rates that refer to government bonds maturing in ten years.
-
+        """Long-term interest rates refer to government bonds maturing in ten years.
         Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
         fall in the capital value. Long-term interest rates are generally averages of daily rates,
         measured as a percentage. These interest rates are implied by the prices at which the government bonds are
@@ -903,7 +894,6 @@ class ROUTER_economy(Container):
         Long-term interest rates are one of the determinants of business investment.
         Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
         Investment is, in turn, a major source of economic growth.
-
 
         Parameters
         ----------
@@ -923,7 +913,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.long_term_interest_rate.OECDLTIRData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[LTIR]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -998,10 +988,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Money Measures (M1/M2 and components).
-
-        The Federal Reserve publishes as part of the H.6 Release.
-
+        """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.
 
         Parameters
         ----------
@@ -1019,7 +1006,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_federal_reserve.models.money_measures.FederalReserveMoneyMeasuresData, Tag(tag='federal_reserve'), None, SerializeAsAny()]]]
+            results : List[MoneyMeasures]
                 Serializable results.
             provider : Optional[Literal['federal_reserve']]
                 Provider name.
@@ -1087,7 +1074,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Market Risk Premium by country.
+        """Market Risk Premium by country.
 
         Parameters
         ----------
@@ -1099,7 +1086,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.risk_premium.FMPRiskPremiumData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[RiskPremium]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1166,11 +1153,8 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get Short-term interest rates.
-
-        They are the rates at which short-term borrowings are effected between
+        """Short-term interest rates are the rates at which short-term borrowings are effected between
         financial institutions or the rate at which short-term government paper is issued or traded in the market.
-
         Short-term interest rates are generally averages of daily rates, measured as a percentage.
         Short-term interest rates are based on three-month money market rates where available.
         Typical standardised names are "money market rate" and "treasury bill rate".
@@ -1194,7 +1178,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.short_term_interest_rate.OECDSTIRData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[STIR]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -1263,7 +1247,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get global unemployment data.
+        """Global unemployment data.
 
         Parameters
         ----------
@@ -1289,7 +1273,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_oecd.models.unemployment.OECDUnemploymentData, Tag(tag='oecd'), None, SerializeAsAny()]]]
+            results : List[Unemployment]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.

@@ -100,7 +100,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.market_snapshots.FMPMarketSnapshotsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.market_snapshots.IntrinioMarketSnapshotsData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.market_snapshots.PolygonMarketSnapshotsData, Tag(tag='polygon')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[MarketSnapshots]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
@@ -279,7 +279,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.equity_profile.FMPEquityProfileData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.equity_info.IntrinioEquityInfoData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.equity_profile.YFinanceEquityProfileData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EquityInfo]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -454,10 +454,8 @@ class ROUTER_equity(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Screen for companies meeting various criteria.
-
-        These criteria include market cap, price, beta, volume, and dividend yield.
-
+        """Screen for companies meeting various criteria. These criteria include
+        market cap, price, beta, volume, and dividend yield.
 
         Parameters
         ----------
@@ -503,7 +501,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.equity_screener.FMPEquityScreenerData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EquityScreener]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -611,7 +609,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_intrinio.models.equity_search.IntrinioEquitySearchData, Tag(tag='intrinio')], Annotated[openbb_sec.models.equity_search.SecEquitySearchData, Tag(tag='sec')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EquitySearch]
                 Serializable results.
             provider : Optional[Literal['intrinio', 'sec']]
                 Provider name.

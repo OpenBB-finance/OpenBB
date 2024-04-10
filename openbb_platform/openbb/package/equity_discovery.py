@@ -58,7 +58,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.active.YFActiveData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityActive]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -146,7 +146,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.aggressive_small_caps.YFAggressiveSmallCapsData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityAggressiveSmallCaps]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -236,9 +236,8 @@ class ROUTER_equity_discovery(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.
-
-        SEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
         Foreign Investment Disclosures and others. The annual 10-K report is required to be
         filed annually and includes the company's financial statements, management discussion and analysis,
         and audited financial statements.
@@ -264,7 +263,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.discovery_filings.FMPDiscoveryFilingsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[DiscoveryFilings]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -350,7 +349,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.gainers.YFGainersData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityGainers]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -438,7 +437,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.growth_tech_equities.YFGrowthTechEquitiesData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[GrowthTechEquities]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -526,7 +525,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.losers.YFLosersData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityLosers]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -614,7 +613,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.undervalued_growth_equities.YFUndervaluedGrowthEquitiesData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityUndervaluedGrowth]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -702,7 +701,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_yfinance.models.undervalued_large_caps.YFUndervaluedLargeCapsData, Tag(tag='yfinance'), None, SerializeAsAny()]]]
+            results : List[EquityUndervaluedLargeCaps]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.

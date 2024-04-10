@@ -73,7 +73,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.ameribor_rates.FREDAMERIBORData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[AMERIBOR]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -164,7 +164,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.dwpcr_rates.FREDDiscountWindowPrimaryCreditRateData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[DiscountWindowPrimaryCreditRate]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -261,7 +261,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.ecb_interest_rates.FREDEuropeanCentralBankInterestRatesData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[EuropeanCentralBankInterestRates]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -352,7 +352,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_federal_reserve.models.fed_rates.FederalReserveFEDData, Tag(tag='federal_reserve')], Annotated[openbb_fred.models.fed_rates.FREDFEDData, Tag(tag='fred')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[FEDFUNDS]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fred']]
                 Provider name.
@@ -427,7 +427,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.fed_projections.FREDPROJECTIONData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[PROJECTIONS]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -527,7 +527,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.estr_rates.FREDESTRData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[ESTR]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -615,7 +615,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.iorb_rates.FREDIORBData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[IORB]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -704,7 +704,7 @@ class ROUTER_fixedincome_rate(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.sonia_rates.FREDSONIAData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[SONIA]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.

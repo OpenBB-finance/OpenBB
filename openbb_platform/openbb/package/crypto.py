@@ -55,7 +55,7 @@ class ROUTER_crypto(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.crypto_search.FMPCryptoSearchData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[CryptoSearch]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

@@ -50,7 +50,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.options_chains.IntrinioOptionsChainsData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[OptionsChains]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -225,7 +225,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.options_unusual.IntrinioOptionsUnusualData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[OptionsUnusual]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.

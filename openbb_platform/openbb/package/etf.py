@@ -60,7 +60,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.etf_countries.FMPEtfCountriesData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EtfCountries]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -132,7 +132,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.etf_equity_exposure.FMPEtfEquityExposureData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EtfEquityExposure]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -258,7 +258,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.equity_historical.FMPEquityHistoricalData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.equity_historical.IntrinioEquityHistoricalData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.equity_historical.PolygonEquityHistoricalData, Tag(tag='polygon')], Annotated[openbb_tiingo.models.equity_historical.TiingoEquityHistoricalData, Tag(tag='tiingo')], Annotated[openbb_yfinance.models.equity_historical.YFinanceEquityHistoricalData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EtfHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -402,7 +402,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.etf_holdings.FMPEtfHoldingsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.etf_holdings.IntrinioEtfHoldingsData, Tag(tag='intrinio')], Annotated[openbb_sec.models.etf_holdings.SecEtfHoldingsData, Tag(tag='sec')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EtfHoldings]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'sec']]
                 Provider name.
@@ -657,7 +657,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.etf_holdings_date.FMPEtfHoldingsDateData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EtfHoldingsDate]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -728,7 +728,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.etf_holdings_performance.FMPEtfHoldingsPerformanceData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EtfHoldingsPerformance]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -832,7 +832,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.etf_info.FMPEtfInfoData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.etf_info.IntrinioEtfInfoData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.etf_info.YFinanceEtfInfoData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EtfInfo]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -1228,7 +1228,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.price_performance.FMPPricePerformanceData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.etf_price_performance.IntrinioEtfPricePerformanceData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EtfPricePerformance]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -1368,7 +1368,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.etf_search.FMPEtfSearchData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.etf_search.IntrinioEtfSearchData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[EtfSearch]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -1474,7 +1474,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.etf_sectors.FMPEtfSectorsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EtfSectors]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

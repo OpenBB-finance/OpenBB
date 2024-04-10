@@ -56,7 +56,7 @@ class ROUTER_equity_shorts(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_sec.models.equity_ftd.SecEquityFtdData, Tag(tag='sec'), None, SerializeAsAny()]]]
+            results : List[EquityFTD]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.

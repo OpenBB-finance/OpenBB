@@ -73,7 +73,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_benzinga.models.analyst_search.BenzingaAnalystSearchData, Tag(tag='benzinga'), None, SerializeAsAny()]]]
+            results : List[AnalystSearch]
                 Serializable results.
             provider : Optional[Literal['benzinga']]
                 Provider name.
@@ -241,7 +241,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.price_target_consensus.FMPPriceTargetConsensusData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.price_target_consensus.IntrinioPriceTargetConsensusData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.price_target_consensus.YFinancePriceTargetConsensusData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[PriceTargetConsensus]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -362,7 +362,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.forward_eps_estimates.FMPForwardEpsEstimatesData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.forward_eps_estimates.IntrinioForwardEpsEstimatesData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[ForwardEpsEstimates]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -477,7 +477,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.forward_sales_estimates.IntrinioForwardSalesEstimatesData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[ForwardSalesEstimates]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -596,7 +596,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.analyst_estimates.FMPAnalystEstimatesData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[AnalystEstimates]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -738,7 +738,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_benzinga.models.price_target.BenzingaPriceTargetData, Tag(tag='benzinga')], Annotated[openbb_fmp.models.price_target.FMPPriceTargetData, Tag(tag='fmp')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[PriceTarget]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.

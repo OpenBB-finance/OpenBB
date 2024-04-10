@@ -60,7 +60,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_federal_reserve.models.treasury_rates.FederalReserveTreasuryRatesData, Tag(tag='federal_reserve')], Annotated[openbb_fmp.models.treasury_rates.FMPTreasuryRatesData, Tag(tag='fmp')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[TreasuryRates]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fmp']]
                 Provider name.
@@ -164,7 +164,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fred.models.us_yield_curve.FREDYieldCurveData, Tag(tag='fred'), None, SerializeAsAny()]]]
+            results : List[USYieldCurve]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.

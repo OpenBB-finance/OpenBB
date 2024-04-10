@@ -114,7 +114,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.balance_sheet.FMPBalanceSheetData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.balance_sheet.IntrinioBalanceSheetData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.balance_sheet.PolygonBalanceSheetData, Tag(tag='polygon')], Annotated[openbb_yfinance.models.balance_sheet.YFinanceBalanceSheetData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[BalanceSheet]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -443,7 +443,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.balance_sheet_growth.FMPBalanceSheetGrowthData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[BalanceSheetGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -634,7 +634,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.cash_flow.FMPCashFlowStatementData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.cash_flow.IntrinioCashFlowStatementData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.cash_flow.PolygonCashFlowStatementData, Tag(tag='polygon')], Annotated[openbb_yfinance.models.cash_flow.YFinanceCashFlowStatementData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[CashFlowStatement]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -871,7 +871,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.cash_flow_growth.FMPCashFlowStatementGrowthData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[CashFlowStatementGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1023,7 +1023,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.historical_dividends.FMPHistoricalDividendsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.historical_dividends.IntrinioHistoricalDividendsData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.historical_dividends.YFinanceHistoricalDividendsData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[HistoricalDividends]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -1111,7 +1111,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.historical_employees.FMPHistoricalEmployeesData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[HistoricalEmployees]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1226,7 +1226,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.company_filings.FMPCompanyFilingsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.company_filings.IntrinioCompanyFilingsData, Tag(tag='intrinio')], Annotated[openbb_sec.models.company_filings.SecCompanyFilingsData, Tag(tag='sec')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[CompanyFilings]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'sec']]
                 Provider name.
@@ -1398,7 +1398,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.historical_attributes.IntrinioHistoricalAttributesData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[HistoricalAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -1485,7 +1485,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.historical_eps.FMPHistoricalEpsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[HistoricalEps]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1571,7 +1571,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.historical_splits.FMPHistoricalSplitsData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[HistoricalSplits]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1684,7 +1684,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.income_statement.FMPIncomeStatementData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.income_statement.IntrinioIncomeStatementData, Tag(tag='intrinio')], Annotated[openbb_polygon.models.income_statement.PolygonIncomeStatementData, Tag(tag='polygon')], Annotated[openbb_yfinance.models.income_statement.YFinanceIncomeStatementData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[IncomeStatement]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -2021,7 +2021,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.income_statement_growth.FMPIncomeStatementGrowthData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[IncomeStatementGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2159,7 +2159,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.latest_attributes.IntrinioLatestAttributesData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[LatestAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -2236,7 +2236,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.key_executives.FMPKeyExecutivesData, Tag(tag='fmp')], Annotated[openbb_yfinance.models.key_executives.YFinanceKeyExecutivesData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[KeyExecutives]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -2325,7 +2325,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.executive_compensation.FMPExecutiveCompensationData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[ExecutiveCompensation]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2439,7 +2439,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.key_metrics.FMPKeyMetricsData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.key_metrics.IntrinioKeyMetricsData, Tag(tag='intrinio')], Annotated[openbb_yfinance.models.key_metrics.YFinanceKeyMetricsData, Tag(tag='yfinance')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[KeyMetrics]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -2746,7 +2746,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.equity_valuation_multiples.FMPEquityValuationMultiplesData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EquityValuationMultiples]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2939,7 +2939,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[Annotated[openbb_fmp.models.company_overview.FMPCompanyOverviewData, Tag(tag='fmp'), None, SerializeAsAny()]]
+            results : CompanyOverview
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3097,7 +3097,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[Union[Annotated[openbb_fmp.models.financial_ratios.FMPFinancialRatiosData, Tag(tag='fmp')], Annotated[openbb_intrinio.models.financial_ratios.IntrinioFinancialRatiosData, Tag(tag='intrinio')]], Discriminator(discriminator=<function ProviderInterface._generate_return_annotations.<locals>.get_provider at 0x7fa181f00ee0>, custom_error_type=None, custom_error_message=None, custom_error_context=None), SerializeAsAny()]]]
+            results : List[FinancialRatios]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -3307,7 +3307,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.reported_financials.IntrinioReportedFinancialsData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[ReportedFinancials]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -3400,7 +3400,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.revenue_geographic.FMPRevenueGeographicData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[RevenueGeographic]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3491,7 +3491,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.revenue_business_line.FMPRevenueBusinessLineData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[RevenueBusinessLine]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3576,7 +3576,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_intrinio.models.search_attributes.IntrinioSearchAttributesData, Tag(tag='intrinio'), None, SerializeAsAny()]]]
+            results : List[SearchAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -3673,7 +3673,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_tiingo.models.trailing_dividend_yield.TiingoTrailingDivYieldData, Tag(tag='tiingo'), None, SerializeAsAny()]]]
+            results : List[TrailingDividendYield]
                 Serializable results.
             provider : Optional[Literal['tiingo']]
                 Provider name.
@@ -3751,7 +3751,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Optional[list[Annotated[openbb_fmp.models.earnings_call_transcript.FMPEarningsCallTranscriptData, Tag(tag='fmp'), None, SerializeAsAny()]]]
+            results : List[EarningsCallTranscript]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
