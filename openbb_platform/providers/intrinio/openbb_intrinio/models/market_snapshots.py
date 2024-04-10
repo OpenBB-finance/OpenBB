@@ -7,7 +7,7 @@ import gzip
 from datetime import (
     date as dateType,
     datetime,
-    timezone,
+    timezone as datetime_timezone,
 )
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Union
@@ -20,6 +20,7 @@ from openbb_core.provider.standard_models.market_snapshots import (
 from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from pandas import DataFrame, notna, read_csv, to_datetime
 from pydantic import Field
+from pytz import timezone
 
 
 class IntrinioMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -215,7 +216,7 @@ class IntrinioMarketSnapshotsFetcher(
                     to_datetime(
                         df[col].apply(
                             lambda x: (
-                                safe_fromtimestamp(x, tz=timezone.utc)
+                                safe_fromtimestamp(x, tz=datetime_timezone.utc)
                                 if notna(x)
                                 else x
                             )
