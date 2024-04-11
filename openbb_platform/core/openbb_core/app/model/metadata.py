@@ -44,7 +44,7 @@ class Metadata(BaseModel):
         arguments: Dict[str, Any] = {}
         for item in ["provider_choices", "standard_params", "extra_params"]:
             arguments[item] = {}
-            for arg, arg_val in v.items():
+            for arg, arg_val in v[item].items():
                 new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
 
                 # Data
@@ -132,4 +132,4 @@ class Metadata(BaseModel):
 
                 arguments[item][arg] = new_arg_val or arg_val
 
-        return v
+        return arguments
