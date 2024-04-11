@@ -78,7 +78,11 @@ def test_v3tov4_map():
 
     for provider in providers:
         if provider in v3_keys:
-            assert v3_keys[provider] in HubService.V3TOV4
+            k = v3_keys[provider]
+            if not isinstance(k, list):
+                k = [k]
+            for key in k:
+                assert key in HubService.V3TOV4
 
 
 def test_connect_with_email_password():
