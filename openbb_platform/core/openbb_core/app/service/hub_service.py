@@ -31,7 +31,6 @@ class HubService:
         "API_POLYGON_KEY": "polygon_api_key",
         "API_KEY_QUANDL": "nasdaq_api_key",
         "API_TRADIER_TOKEN": "tradier_api_key",
-        "API_ULTIMA_KEY": "ultima_api_key",
     }
     V4TOV3 = {v: k for k, v in V3TOV4.items()}
 
