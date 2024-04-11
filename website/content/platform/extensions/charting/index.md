@@ -39,7 +39,7 @@ It works by extending the `OBBject` class with a new attribute, `charting`. When
 
 For functions that have pre-defined views, it serves as an intermediary between the user request and the response, activated when `chart=True`. When a chart is created, it will populate the existing, `chart`, attribute of the `OBBject`. This is where it is served by the FAST API from the function request. In the Python Interface, charts can be generated post-request, regardless of `chart=True`.
 
-The `chart` attribute in the OBBject contains three items, respones from the API have two:
+The `chart` attribute in the OBBject contains three items, responses from the API have two:
 
 - `fig`: The OpenBBFigure object - an extended Plotly GraphObjects class. Not included in the API response.
 - `content`: The Plotly JSON representation of the chart - Returned to the API.
