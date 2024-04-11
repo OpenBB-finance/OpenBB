@@ -4,6 +4,7 @@
 # ruff: noqa: S105 S106
 
 
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -22,6 +23,62 @@ def mocker():
     """Fixture for mocker."""
     with patch("openbb_core.app.service.hub_service.HubService") as mock:
         yield mock
+
+
+def test_v3tov4_map():
+    """Test v3 to v4 map."""
+
+    v3_keys = {
+        "databento": "API_DATABENTO_KEY",
+        "alpha_vantage": "API_KEY_ALPHAVANTAGE",
+        "fmp": "API_KEY_FINANCIALMODELINGPREP",
+        "nasdaq": "API_KEY_QUANDL",
+        "polygon": "API_POLYGON_KEY",
+        "fred": "API_FRED_KEY",
+        "news_api": "API_NEWS_TOKEN",
+        "biztoc": "API_BIZTOC_TOKEN",
+        "cmc": "API_CMC_KEY",
+        "finnhub": "API_FINNHUB_KEY",
+        "whale_alert": "API_WHALE_ALERT_KEY",
+        "glassnode": "API_GLASSNODE_KEY",
+        "coinglass": "API_COINGLASS_KEY",
+        "ethplorer": "API_ETHPLORER_KEY",
+        "cryptopanic": "API_CRYPTO_PANIC_KEY",
+        "crypto_panic": "API_CRYPTO_PANIC_KEY",  # If dev choses to use this name
+        "bitquery": "API_BITQUERY_KEY",
+        "smartstake": ["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"],
+        "messari": "API_MESSARI_KEY",
+        "shroom": "API_SHROOM_KEY",
+        "santiment": "API_SANTIMENT_KEY",
+        "eodhd": "API_EODHD_KEY",
+        "tokenterminal": "API_TOKEN_TERMINAL_KEY",
+        "token_terminal": "API_TOKEN_TERMINAL_KEY",  # If dev choses to use this name
+        "intrinio": "API_INTRINIO_KEY",
+        "github": "API_GITHUB_KEY",
+        "reddit": [
+            "API_REDDIT_CLIENT_ID",
+            "API_REDDIT_CLIENT_SECRET",
+            "API_REDDIT_USERNAME",
+            "API_REDDIT_USER_AGENT",
+            "API_REDDIT_PASSWORD",
+        ],
+        "companies_house": "API_COMPANIESHOUSE_KEY",
+        "companieshouse": "API_COMPANIESHOUSE_KEY",  # If dev choses to use this name
+        "dappradar": "API_DAPPRADAR_KEY",
+        "nixtla": "API_KEY_NIXTLA",
+    }
+
+    providers = sorted(
+        [
+            p.stem
+            for p in Path("openbb_platform", "providers").glob("*")
+            if p.is_dir() and p.name not in ("__pycache__", "tests")
+        ]
+    )
+
+    for provider in providers:
+        if provider in v3_keys:
+            assert v3_keys[provider] in HubService.V3TOV4
 
 
 def test_connect_with_email_password():
