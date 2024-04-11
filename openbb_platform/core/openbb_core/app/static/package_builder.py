@@ -2,12 +2,12 @@
 
 # pylint: disable=too-many-lines
 import builtins
-from functools import partial
 import inspect
 import re
 import shutil
 import sys
 from dataclasses import Field
+from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -1179,7 +1179,7 @@ class DocstringGenerator:
         return doc
 
     @classmethod
-    def _get_generic_types(cls, type_: type, items: list) -> list:
+    def _get_generic_types(cls, type_: type, items: list) -> List[str]:
         """Unpack generic types recursively.
 
         Parameters
@@ -1191,31 +1191,34 @@ class DocstringGenerator:
 
         Returns
         -------
-        list
-            List of unpacked types.
+        List[str]
+            List of unpacked type names.
 
         Examples
         --------
-        Union[List[str], Dict[str, str], Tuple[str]] -> [List, Dict, Tuple]
+        Union[List[str], Dict[str, str], Tuple[str]] -> ["List", "Dict", "Tuple"]
         """
         if hasattr(type_, "__args__"):
             origin = get_origin(type_)
             # pylint: disable=unidiomatic-typecheck
-            if type(origin) is type and origin is not Annotated:
-                if name := getattr(type_, "_name", getattr(type_, "__name__", None)):
-                    items.append(name.title())
+            if (
+                type(origin) is type
+                and origin is not Annotated
+                and (name := getattr(type_, "_name", getattr(type_, "__name__", None)))
+            ):
+                items.append(name.title())
             func = partial(cls._get_generic_types, items=items)
             set().union(*map(func, type_.__args__), items)
         return items
 
     @staticmethod
-    def _get_repr(items: list, model: str) -> str:
-        """Get the string representation of the unpacked types list.
+    def _get_repr(items: List[str], model: str) -> str:
+        """Get the string representation of the types list with the model name.
 
         Parameters
         ----------
-        items : list
-            List of unpacked types.
+        items : List[str]
+            List of type names.
         model : str
             Model name to access the model providers.
 
