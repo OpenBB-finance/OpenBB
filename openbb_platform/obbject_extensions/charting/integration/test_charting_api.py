@@ -51,7 +51,7 @@ def get_equity_data():
     [
         (
             {
-                "provider": "fmp",
+                "provider": "yfinance",
                 "symbol": "AAPL",
                 "chart": True,
             }
@@ -60,11 +60,135 @@ def get_equity_data():
 )
 @pytest.mark.integration
 def test_charting_equity_price_historical(params, headers):
-    """Test chart equity load."""
+    """Test chart equity price historical.."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=40)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "USDGBP",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_currency_price_historical(params, headers):
+    """Test chart currency price historical."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/currency/price/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=40)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "QQQ",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_etf_historical(params, headers):
+    """Test chart etf historical."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=40)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "NDX",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_index_price_historical(params, headers):
+    """Test chart index price historical."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/index/price/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=40)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "yfinance",
+                "symbol": "BTCUSD",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_crypto_price_historical(params, headers):
+    """Test chart crypto price historical."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/crypto/price/historical?{query_str}"
     result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -437,6 +561,110 @@ def test_charting_economy_fred_series(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fred_series?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+                "chart": True,
+                "provider": "finviz",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_equity_price_performance(params, headers):
+    """Test chart equity price performance."""
+    params = {p: v for p, v in params.items() if v}
+    body = (
+        json.dumps(
+            {"extra_params": {"chart_params": {"limit": 4, "orientation": "h"}}}
+        ),
+    )
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/price/performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10, json=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
+                "chart": True,
+                "provider": "intrinio",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_etf_price_performance(params, headers):
+    """Test chart equity price performance."""
+    params = {p: v for p, v in params.items() if v}
+    body = (json.dumps({"extra_params": {"chart_params": {"orientation": "v"}}}),)
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/price_performance?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10, json=body)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+    chart = result.json()["chart"]
+    fig = chart.pop("fig", {})
+
+    assert chart
+    assert not fig
+    assert list(chart.keys()) == ["content", "format"]
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": None,
+                "symbol": "XRT",
+                "chart": True,
+                "provider": "fmp",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_charting_etf_holdings(params, headers):
+    """Test chart etf holdings."""
+    params = {p: v for p, v in params.items() if v}
+    body = (
+        json.dumps(
+            {"extra_params": {"chart_params": {"orientation": "v", "limit": 10}}}
+        ),
+    )
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/etf/holdings?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10, json=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
