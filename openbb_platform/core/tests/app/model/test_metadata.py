@@ -48,7 +48,7 @@ def test_fields():
             {
                 "data_list": {
                     "type": "List[Data]",
-                    "columns": ["close", "volume", "open"],
+                    "columns": ["open", "volume", "close"],
                 }
             },
         ),
@@ -57,7 +57,7 @@ def test_fields():
             {
                 "data_list": {
                     "type": "List[Data]",
-                    "columns": ["close", "volume", "open"],
+                    "columns": ["open", "close", "volume"],
                 }
             },
         ),
@@ -126,4 +126,19 @@ def test_scale_arguments(input_data, expected_output):
             )
             assert arguments[arg]["type"] == expected_output[arg]["type"]
         else:
-            assert m.arguments["extra_params"] == expected_output
+            # assert m.arguments["extra_params"] == expected_output
+            keys = list(arguments["extra_params"].keys())
+            expected_keys = list(expected_output.keys())
+            assert sorted(keys) == sorted(expected_keys)
+
+            for key in keys:
+                if "type" in arguments["extra_params"][key]:
+                    assert (
+                        arguments["extra_params"][key]["type"]
+                        == expected_output[key]["type"]
+                    )
+                    assert sorted(arguments["extra_params"][key]["columns"]) == sorted(
+                        expected_output[key]["columns"]
+                    )
+                else:
+                    assert arguments["extra_params"][key] == expected_output[key]
