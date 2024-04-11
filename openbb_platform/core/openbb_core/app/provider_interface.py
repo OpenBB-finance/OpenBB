@@ -570,8 +570,8 @@ class ProviderInterface(metaclass=SingletonMeta):
                 SerializeAsAny[
                     Annotated[
                         Union[
-                            Annotated[YFEquityData, Tag('yf')],
-                            Annotated[AVEquityData, Tag('av')],
+                            Annotated[YFEquityData, Tag("yf")],
+                            Annotated[AVEquityData, Tag("av")],
                         ],
                         Discriminator(get_provider),
                     ]
@@ -580,6 +580,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         """
 
         def get_provider(v: Type[BaseModel]):
+            """Callable to discriminate which BaseModel to use."""
             return getattr(v, "_provider", None)
 
         annotations = {}
@@ -597,7 +598,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore[valid-type]
             annotations[name] = create_model(
                 f"OBBject_{name}",
-                __base__=OBBject[full],
+                __base__=OBBject[full],  # type: ignore[valid-type]
                 __doc__=f"OBBject with results of type {name}",
             )
         return annotations

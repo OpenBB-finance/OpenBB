@@ -2,6 +2,7 @@
 
 # pylint: disable=too-many-lines
 import builtins
+from functools import partial
 import inspect
 import re
 import shutil
@@ -24,6 +25,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -1146,12 +1148,16 @@ class DocstringGenerator:
                 # Parameters passed as **kwargs
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
-
                 # Format the annotation to hide the metadata, tags, etc.
-                results_type = (
-                    func.__annotations__["return"].model_fields["results"].annotation
+                results_type = cls._get_repr(
+                    cls._get_generic_types(
+                        func.__annotations__["return"]
+                        .model_fields["results"]
+                        .annotation,
+                        [],
+                    ),
+                    model_name,
                 )
-
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
@@ -1171,6 +1177,67 @@ class DocstringGenerator:
             )
 
         return doc
+
+    @classmethod
+    def _get_generic_types(cls, type_: type, items: list) -> list:
+        """Unpack generic types recursively.
+
+        Parameters
+        ----------
+        type_ : type
+            Type to unpack.
+        items : list
+            List to store the unpacked types.
+
+        Returns
+        -------
+        list
+            List of unpacked types.
+
+        Examples
+        --------
+        Union[List[str], Dict[str, str], Tuple[str]] -> [List, Dict, Tuple]
+        """
+        if hasattr(type_, "__args__"):
+            origin = get_origin(type_)
+            # pylint: disable=unidiomatic-typecheck
+            if type(origin) is type and origin is not Annotated:
+                if name := getattr(type_, "_name", getattr(type_, "__name__", None)):
+                    items.append(name.title())
+            func = partial(cls._get_generic_types, items=items)
+            set().union(*map(func, type_.__args__), items)
+        return items
+
+    @staticmethod
+    def _get_repr(items: list, model: str) -> str:
+        """Get the string representation of the unpacked types list.
+
+        Parameters
+        ----------
+        items : list
+            List of unpacked types.
+        model : str
+            Model name to access the model providers.
+
+        Returns
+        -------
+        str
+            String representation of the unpacked types list.
+
+        Examples
+        --------
+        [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
+        """
+        s = []
+        for i in items:
+            if i == "Dict":
+                s.append(f"Dict[str, {model}]")
+            else:
+                s.append(f"{i}[{model}]")
+
+        if s:
+            return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
+        return model
 
 
 class PathHandler:
