@@ -43,6 +43,7 @@ from openbb_core.app.model.custom_parameter import (
     OpenBBCustomParameter,
 )
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console
@@ -1149,14 +1150,17 @@ class DocstringGenerator:
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
                 # Format the annotation to hide the metadata, tags, etc.
-                results_type = cls._get_repr(
-                    cls._get_generic_types(
-                        func.__annotations__["return"]
-                        .model_fields["results"]
-                        .annotation,
-                        [],
-                    ),
-                    model_name,
+                annotation = func.__annotations__.get("return")
+                results_type = (
+                    cls._get_repr(
+                        cls._get_generic_types(
+                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr]
+                            [],
+                        ),
+                        model_name,
+                    )
+                    if issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    else model_name
                 )
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
