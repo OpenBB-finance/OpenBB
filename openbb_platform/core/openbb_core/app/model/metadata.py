@@ -41,90 +41,95 @@ class Metadata(BaseModel):
         containing the type and the columns. If the type is not one of the previous, the
         value is kept or trimmed to 80 characters.
         """
-        for arg, arg_val in v.items():
-            new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
+        arguments: Dict[str, Any] = {}
+        for item in ["provider_choices", "standard_params", "extra_params"]:
+            arguments[item] = {}
+            for arg, arg_val in v[item].items():
+                new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
 
-            # Data
-            if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
-                new_arg_val = {
-                    "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.model_dump().keys()),
-                }
+                # Data
+                if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
+                    new_arg_val = {
+                        "type": f"{type(arg_val).__name__}",
+                        "columns": list(arg_val.model_dump().keys()),
+                    }
 
-            # List[Data]
-            if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
-                _columns = [list(d.model_dump().keys()) for d in arg_val]
-                ld_columns = (
-                    item for sublist in _columns for item in sublist
-                )  # flatten
-                new_arg_val = {
-                    "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": list(set(ld_columns)),
-                }
+                # List[Data]
+                if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
+                    _columns = [list(d.model_dump().keys()) for d in arg_val]
+                    ld_columns = (
+                        item for sublist in _columns for item in sublist
+                    )  # flatten
+                    new_arg_val = {
+                        "type": f"List[{type(arg_val[0]).__name__}]",
+                        "columns": list(set(ld_columns)),
+                    }
 
-            # DataFrame
-            elif isinstance(arg_val, pd.DataFrame):
-                df_columns = (
-                    list(arg_val.index.names) + arg_val.columns.tolist()
-                    if any(index is not None for index in list(arg_val.index.names))
-                    else arg_val.columns.tolist()
-                )
-                new_arg_val = {
-                    "type": f"{type(arg_val).__name__}",
-                    "columns": df_columns,
-                }
-
-            # List[DataFrame]
-            elif isinstance(arg_val, list) and issubclass(
-                type(arg_val[0]), pd.DataFrame
-            ):
-                ldf_columns = [
-                    (
-                        list(df.index.names) + df.columns.tolist()
-                        if any(index is not None for index in list(df.index.names))
-                        else df.columns.tolist()
+                # DataFrame
+                elif isinstance(arg_val, pd.DataFrame):
+                    df_columns = (
+                        list(arg_val.index.names) + arg_val.columns.tolist()
+                        if any(index is not None for index in list(arg_val.index.names))
+                        else arg_val.columns.tolist()
                     )
-                    for df in arg_val
-                ]
-                new_arg_val = {
-                    "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": ldf_columns,
-                }
+                    new_arg_val = {
+                        "type": f"{type(arg_val).__name__}",
+                        "columns": df_columns,
+                    }
 
-            # Series
-            elif isinstance(arg_val, pd.Series):
-                new_arg_val = {
-                    "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.index.names) + [arg_val.name],
-                }
+                # List[DataFrame]
+                elif isinstance(arg_val, list) and issubclass(
+                    type(arg_val[0]), pd.DataFrame
+                ):
+                    ldf_columns = [
+                        (
+                            list(df.index.names) + df.columns.tolist()
+                            if any(index is not None for index in list(df.index.names))
+                            else df.columns.tolist()
+                        )
+                        for df in arg_val
+                    ]
+                    new_arg_val = {
+                        "type": f"List[{type(arg_val[0]).__name__}]",
+                        "columns": ldf_columns,
+                    }
 
-            # List[Series]
-            elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
-                ls_columns = [
-                    (
-                        list(series.index.names) + [series.name]
-                        if any(index is not None for index in list(series.index.names))
-                        else series.name
-                    )
-                    for series in arg_val
-                ]
-                new_arg_val = {
-                    "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": ls_columns,
-                }
+                # Series
+                elif isinstance(arg_val, pd.Series):
+                    new_arg_val = {
+                        "type": f"{type(arg_val).__name__}",
+                        "columns": list(arg_val.index.names) + [arg_val.name],
+                    }
 
-            # ndarray
-            elif isinstance(arg_val, np.ndarray):
-                new_arg_val = {
-                    "type": f"{type(arg_val).__name__}",
-                    "columns": list(arg_val.dtype.names or []),
-                }
+                # List[Series]
+                elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
+                    ls_columns = [
+                        (
+                            list(series.index.names) + [series.name]
+                            if any(
+                                index is not None for index in list(series.index.names)
+                            )
+                            else series.name
+                        )
+                        for series in arg_val
+                    ]
+                    new_arg_val = {
+                        "type": f"List[{type(arg_val[0]).__name__}]",
+                        "columns": ls_columns,
+                    }
 
-            else:
-                str_repr_arg_val = str(arg_val)
-                if len(str_repr_arg_val) > 80:
-                    new_arg_val = str_repr_arg_val[:80]
+                # ndarray
+                elif isinstance(arg_val, np.ndarray):
+                    new_arg_val = {
+                        "type": f"{type(arg_val).__name__}",
+                        "columns": list(arg_val.dtype.names or []),
+                    }
 
-            v[arg] = new_arg_val or arg_val
+                else:
+                    str_repr_arg_val = str(arg_val)
+                    if len(str_repr_arg_val) > 80:
+                        new_arg_val = str_repr_arg_val[:80]
 
-        return v
+                arguments[item][arg] = new_arg_val or arg_val
+
+        return arguments
