@@ -278,6 +278,24 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
+    def to_llm(self) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+        """Convert results field to an LLM compatible output.
+
+        Returns
+        -------
+        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
+            Dictionary of lists or list of dictionaries if orient is "records".
+        """
+        df = self.to_dataframe(index=None)
+
+        results = df.to_json(
+            orient="records",
+            date_format="iso",
+            date_unit="s",
+        )
+
+        return results
+
     def show(self, **kwargs: Any) -> None:
         """Display chart."""
         # pylint: disable=no-member
