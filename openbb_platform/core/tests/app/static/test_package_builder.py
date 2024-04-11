@@ -5,7 +5,7 @@
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
@@ -565,6 +565,7 @@ def test_generate_model_docstring(docstring_generator):
 @pytest.mark.parametrize(
     "type_, expected",
     [
+        (Any, []),
         (List[str], ["List"]),
         (Dict[str, str], ["Dict"]),
         (Tuple[str], ["Tuple"]),
@@ -580,6 +581,7 @@ def test__get_generic_types(docstring_generator, type_, expected):
 @pytest.mark.parametrize(
     "items, model, expected",
     [
+        ([], "test_model", "test_model"),
         (["List"], "test_model", "List[test_model]"),
         (["Dict"], "test_model", "Dict[str, test_model]"),
         (["Tuple"], "test_model", "Tuple[test_model]"),
