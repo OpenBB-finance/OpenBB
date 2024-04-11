@@ -107,13 +107,11 @@ class ProviderInterface(metaclass=SingletonMeta):
         self._registry_map = registry_map or RegistryMap()
         self._query_executor = query_executor or QueryExecutor
 
-        self._standard_extra = self._registry_map.standard_extra
+        self._map = self._registry_map.standard_extra
         # TODO: Try these 4 methods in a single iteration
-        self._model_providers_map = self._generate_model_providers_dc(
-            self._standard_extra
-        )
-        self._params = self._generate_params_dc(self._standard_extra)
-        self._data = self._generate_data_dc(self._standard_extra)
+        self._model_providers_map = self._generate_model_providers_dc(self._map)
+        self._params = self._generate_params_dc(self._map)
+        self._data = self._generate_data_dc(self._map)
         self._return_schema = self._generate_return_schema(self._data)
         self._return_annotations = self._generate_return_annotations(
             self._registry_map.original_models
@@ -125,7 +123,7 @@ class ProviderInterface(metaclass=SingletonMeta):
     @property
     def map(self) -> MapType:
         """Dictionary of provider information."""
-        return self._standard_extra
+        return self._map
 
     @property
     def credentials(self) -> List[str]:
@@ -241,7 +239,9 @@ class ProviderInterface(metaclass=SingletonMeta):
                 additional_description += " Multiple comma separated items allowed."
             else:
                 additional_description += (
-                    " Multiple comma separated items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
+                    " Multiple comma separated items allowed for provider(s): "
+                    + ", ".join(multiple)  # type: ignore[arg-type]
+                    + "."
                 )
 
         provider_field = (
