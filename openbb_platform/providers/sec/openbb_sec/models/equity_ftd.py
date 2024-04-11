@@ -56,7 +56,7 @@ class SecEquityFtdFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extracts the data from the SEC website."""
+        """Extract the data from the SEC website."""
         results = []
         limit = query.limit if query.limit is not None and query.limit > 0 else 0
         symbol = query.symbol.upper()
@@ -83,5 +83,5 @@ class SecEquityFtdFetcher(
     def transform_data(
         query: SecEquityFtdQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[SecEquityFtdData]:
-        """Transforms the data to the standard format."""
+        """Transform the data to the standard format."""
         return [SecEquityFtdData.model_validate(d) for d in data]

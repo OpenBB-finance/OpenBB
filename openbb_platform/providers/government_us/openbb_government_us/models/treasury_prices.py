@@ -1,4 +1,4 @@
-"""US Government Treasury Prices"""
+"""US Government Treasury Prices."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -38,12 +38,13 @@ class GovernmentUSTreasuryPricesFetcher(
         List[GovernmentUSTreasuryPricesData],
     ]
 ):
+    """US Government Treasury Prices Fetcher."""
+
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
-
         if params.get("date") is None:
             _date = datetime.now().date()
         else:
@@ -66,7 +67,6 @@ class GovernmentUSTreasuryPricesFetcher(
         **kwargs: Any,
     ) -> str:
         """Extract the raw data from US Treasury website."""
-
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
 
         HEADERS = {
@@ -110,7 +110,6 @@ class GovernmentUSTreasuryPricesFetcher(
         **kwargs: Any,
     ) -> List[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
-
         try:
             if not data:
                 raise EmptyDataError("Data not found")

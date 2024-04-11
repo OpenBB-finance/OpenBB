@@ -102,7 +102,8 @@ async def form_13f(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """
+    """Get the form 13F.
+
     The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
     that is required to be filed by all institutional investment managers with at least
     $100 million in assets under management.

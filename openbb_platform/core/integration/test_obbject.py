@@ -1,3 +1,5 @@
+"""Test the OBBject."""
+
 import contextlib
 import sys
 

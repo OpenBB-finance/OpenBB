@@ -14,6 +14,7 @@ data: Dict = {}
 
 
 def get_headers():
+    """Get the headers for the API request."""
     if "headers" in data:
         return data["headers"]
 
@@ -33,6 +34,7 @@ def request_data(menu: str, symbol: str, provider: str):
 
 
 def get_equity_data():
+    """Get equity data."""
     if "equity_data" in data:
         return data["equity_data"]
 
@@ -44,6 +46,7 @@ def get_equity_data():
 
 
 def get_crypto_data():
+    """Get crypto data."""
     if "crypto_data" in data:
         return data["crypto_data"]
 
@@ -60,6 +63,7 @@ def get_crypto_data():
 
 
 def get_data(menu: Literal["equity", "crypto"]):
+    """Get data based on the selected menu."""
     funcs = {"equity": get_equity_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
@@ -73,6 +77,7 @@ def get_data(menu: Literal["equity", "crypto"]):
 )
 @pytest.mark.integration
 def test_econometrics_correlation_matrix(params, data_type):
+    """Test the correlation matrix endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     body = json.dumps(get_data(data_type))
@@ -99,6 +104,7 @@ def test_econometrics_correlation_matrix(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_ols_regression_summary(params, data_type):
+    """Test the OLS regression summary endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     body = json.dumps(
@@ -130,6 +136,7 @@ def test_econometrics_ols_regression_summary(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_autocorrelation(params, data_type):
+    """Test the autocorrelation endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     body = json.dumps(
@@ -171,6 +178,7 @@ def test_econometrics_autocorrelation(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_residual_autocorrelation(params, data_type):
+    """Test the residual autocorrelation endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     body = json.dumps(
@@ -210,6 +218,7 @@ def test_econometrics_residual_autocorrelation(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_cointegration(params, data_type):
+    """Test the cointegration endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     body = json.dumps(
@@ -241,6 +250,7 @@ def test_econometrics_cointegration(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_causality(params, data_type):
+    """Test the causality endpoint."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 
@@ -257,6 +267,7 @@ def test_econometrics_causality(params, data_type):
 )
 @pytest.mark.integration
 def test_econometrics_unit_root(params, data_type):
+    """Test the unit root endpoint."""
     params = {p: v for p, v in params.items() if v}
     body = json.dumps(get_data(data_type))
 

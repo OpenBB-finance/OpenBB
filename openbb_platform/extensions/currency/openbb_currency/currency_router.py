@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_currency.price.price_router import router as price_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Foreign exchange (FX) market data.")
 router.include_router(price_router)
 
 
@@ -65,7 +65,7 @@ async def reference_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current, official, currency reference rates.
+    """Get current, official, currency reference rates.
 
     Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
     serving as a benchmark for the value of currencies around the world.

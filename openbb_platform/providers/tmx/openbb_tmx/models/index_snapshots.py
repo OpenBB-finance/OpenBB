@@ -1,4 +1,4 @@
-"""TMX Index Snapshots Model"""
+"""TMX Index Snapshots Model."""
 
 # pylint: disable=unused-argument
 import json
@@ -24,7 +24,7 @@ from pydantic import Field, field_validator
 class TmxIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     """TMX Index Snapshots Query Params."""
 
-    region: Literal[None, "ca", "us"] = Field(default="ca")
+    region: Literal[None, "ca", "us"] = Field(default="ca")  # type: ignore
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request."
@@ -151,6 +151,8 @@ class TmxIndexSnapshotsFetcher(
         List[TmxIndexSnapshotsData],
     ]
 ):
+    """TMX Index Snapshots Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxIndexSnapshotsQueryParams:
         """Transform the query."""

@@ -95,6 +95,32 @@ def query_instance():
     )
 
 
+def test_filter_extra_params(query):
+    """Test filter_extra_params."""
+    extra_params = create_mock_extra_params()
+    extra_params = query.filter_extra_params(extra_params, "fmp")
+
+    assert isinstance(extra_params, dict)
+    assert len(extra_params) == 0
+
+
+def test_filter_extra_params_wrong_param(query):
+    """Test filter_extra_params."""
+
+    @dataclass
+    class EquityHistorical:
+        """Mock ExtraParams dataclass."""
+
+        sort: str = "desc"
+        limit: int = 4
+
+    extra_params = EquityHistorical()
+
+    extra = query.filter_extra_params(extra_params, "fmp")
+    assert isinstance(extra, dict)
+    assert len(extra) == 0
+
+
 @pytest.mark.asyncio
 async def test_execute_method_fake_credentials(query_instance: Query, mock_registry):
     """Test execute method without setting credentials."""

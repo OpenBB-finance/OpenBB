@@ -1,6 +1,6 @@
 """Custom pytest configuration for the extensions."""
 
-from typing import Any, Dict, List, Tuple
+from typing import Dict, List
 
 import pytest
 from openbb_core.app.router import CommandMap
@@ -13,8 +13,8 @@ commands = list(cm.map.keys())
 # ruff: noqa: SIM114
 
 
-def parametrize(argnames: str, argvalues: List[Tuple[Any, ...]], **kwargs):
-    """Custom parametrize decorator that filters test cases based on the environment."""
+def parametrize(argnames: str, argvalues: List, **kwargs):
+    """Apply a custom parametrize decorator that filters test cases based on the environment."""
 
     routers, providers, obbject_ext = list_openbb_extensions()
 
@@ -49,6 +49,10 @@ def parametrize(argnames: str, argvalues: List[Tuple[Any, ...]], **kwargs):
                 elif "provider" not in args and function_name_v3 in commands:
                     # Handle edge case
                     filtered_argvalues.append(args)
+                elif extension_name in obbject_ext:
+                    filtered_argvalues.append(args)
+
+            # If filtered_argvalues is empty, pytest will skip the test!
             return pytest.mark.parametrize(argnames, filtered_argvalues, **kwargs)(
                 function
             )

@@ -48,7 +48,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     interval: Union[
         Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
-    ] = Field(
+    ] = Field(  # type: ignore
         description=QUERY_DESCRIPTIONS.get("interval", "")
         + " Or, any integer (entered as a string) representing the number of minutes."
         + " Default is daily data."
@@ -146,12 +146,11 @@ class TmxEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         results: List[Dict] = []
         symbols = query.symbol.split(",")
 
         async def create_task(symbol, results):
-            """Makes a POST request to the TMX GraphQL endpoint for a single ticker."""
+            """Make a POST request to the TMX GraphQL endpoint for a single ticker."""
             data: List[Dict] = []
             # A different request is used for each type of interval.
             if query.interval == "day":
@@ -199,7 +198,6 @@ class TmxEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityHistoricalData]:
         """Return the transformed data."""
-
         results = DataFrame(data)
         if results.empty or len(results) == 0:
             raise EmptyDataError()

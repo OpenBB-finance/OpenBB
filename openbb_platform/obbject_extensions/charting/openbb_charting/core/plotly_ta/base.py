@@ -1,4 +1,6 @@
-from typing import Any, Callable, Dict, Iterator, List, Optional, Type
+"""Base class for charting plugins."""
+
+from typing import Any, Callable, Dict, Iterator, List, Optional, Type, Union
 
 import pandas as pd
 
@@ -6,7 +8,7 @@ from .data_classes import ChartIndicators, TAIndicator
 
 
 def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
-    """Return columns that match regex name"""
+    """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
     return column_name
@@ -21,11 +23,13 @@ class Indicator:
         name: str = "",
         **attrs: Any,
     ) -> None:
+        """Initialize the indicator."""
         self.func = func
         self.name = name
         self.attrs = attrs
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        """Call the indicator function."""
         return self.func(*args, **kwargs)
 
 
@@ -39,6 +43,7 @@ class PluginMeta(type):
     __subplots__: List[str] = []
 
     def __new__(mcs: Type["PluginMeta"], *args: Any, **kwargs: Any) -> "PluginMeta":
+        """Create a new instance of the class."""
         name, bases, attrs = args
         indicators: Dict[str, Indicator] = {}
         cls_attrs: Dict[str, list] = {
@@ -76,10 +81,12 @@ class PluginMeta(type):
         return new_cls
 
     def __iter__(cls: Type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
+        """Iterate over the indicators."""
         return iter(cls.__indicators__)
 
     # pylint: disable=unused-argument
     def __init__(cls, *args: Any, **kwargs: Any) -> None:
+        """Initialize the class."""
         super().__init__(*args, **kwargs)
 
 
@@ -88,11 +95,11 @@ class PltTA(metaclass=PluginMeta):
 
     indicators: ChartIndicators
     intraday: bool = False
-    df_stock: pd.DataFrame
-    df_ta: pd.DataFrame
+    df_stock: Union[pd.DataFrame, pd.Series]
+    df_ta: Optional[pd.DataFrame] = None
     df_fib: pd.DataFrame
     close_column: Optional[str] = "close"
-    params: Dict[str, TAIndicator] = {}
+    params: Optional[Dict[str, TAIndicator]] = {}
     inchart_colors: List[str] = []
     show_volume: bool = True
 
@@ -104,6 +111,7 @@ class PltTA(metaclass=PluginMeta):
 
     # pylint: disable=unused-argument
     def __new__(cls, *args: Any, **kwargs: Any) -> "PltTA":
+        """Create a new instance of the class."""
         if cls is PltTA:
             raise TypeError("Can't instantiate abstract class Plugin directly")
         self = super().__new__(cls)
@@ -132,6 +140,7 @@ class PltTA(metaclass=PluginMeta):
 
     @property
     def ma_mode(self) -> List[str]:
+        """Moving average mode."""
         return list(set(self.__ma_mode__))
 
     @ma_mode.setter
@@ -139,7 +148,7 @@ class PltTA(metaclass=PluginMeta):
         self.__ma_mode__ = value
 
     def add_plugins(self, plugins: List["PltTA"]) -> None:
-        """Add plugins to current instance"""
+        """Add plugins to current instance."""
         for plugin in plugins:
             for item in plugin.__indicators__:
                 # pylint: disable=unnecessary-dunder-call
@@ -161,7 +170,7 @@ class PltTA(metaclass=PluginMeta):
                     getattr(self, attr).extend(value)
 
     def remove_plugins(self, plugins: List["PltTA"]) -> None:
-        """Remove plugins from current instance"""
+        """Remove plugins from current instance."""
         for plugin in plugins:
             for item in plugin.__indicators__:
                 delattr(self, item.name)
@@ -171,10 +180,11 @@ class PltTA(metaclass=PluginMeta):
                 delattr(self, static_method)
 
     def __iter__(self) -> Iterator[Indicator]:
+        """Iterate over the indicators."""
         return iter(self.__indicators__)
 
     def get_float_precision(self) -> str:
-        """Returns f-string precision format"""
+        """Return f-string precision format."""
         price = self.df_stock[self.close_column].tail(1).values[0]
         float_precision = (
             ",.2f" if price > 1.10 else "" if len(str(price)) < 8 else ".6f"
@@ -186,7 +196,7 @@ def indicator(
     name: str = "",
     **attrs: Any,
 ) -> Callable:
-    """Decorator for adding indicators to a plugin class."""
+    """Use this decorator for adding indicators to a plugin class."""
     attrs["name"] = name
 
     def decorator(func: Callable) -> Indicator:

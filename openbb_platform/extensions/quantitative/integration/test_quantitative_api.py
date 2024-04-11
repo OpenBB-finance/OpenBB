@@ -1,3 +1,5 @@
+"""Integration tests for the quantitative extension."""
+
 import base64
 import json
 import random
@@ -15,6 +17,7 @@ data: dict = {}
 
 
 def get_headers():
+    """Get the headers for the API request."""
     if "headers" in data:
         return data["headers"]
 
@@ -30,12 +33,13 @@ def request_data(
     menu: str, symbol: str, provider: str, start_date: str = "", end_date: str = ""
 ):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}&start_date={start_date}&end_date={end_date}"
+    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}&start_date={start_date}&end_date={end_date}"  # pylint: disable=line-too-long # noqa: E501
     result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
 
 
 def get_stocks_data():
+    """Get stocks data."""
     if "stocks_data" in data:
         return data["stocks_data"]
 
@@ -53,6 +57,7 @@ def get_stocks_data():
 
 
 def get_crypto_data():
+    """Get crypto data."""
     if "crypto_data" in data:
         return data["crypto_data"]
 
@@ -71,6 +76,7 @@ def get_crypto_data():
 
 
 def get_data(menu: Literal["equity", "crypto"]):
+    """Get data based on the selected menu."""
     funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
@@ -84,6 +90,7 @@ def get_data(menu: Literal["equity", "crypto"]):
 )
 @pytest.mark.integration
 def test_quantitative_normality(params, data_type):
+    """Test the normality endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -103,6 +110,7 @@ def test_quantitative_normality(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_capm(params, data_type):
+    """Test the CAPM endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -138,6 +146,7 @@ def test_quantitative_capm(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_performance_omega_ratio(params, data_type):
+    """Test the Omega Ratio endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -157,6 +166,7 @@ def test_quantitative_performance_omega_ratio(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_kurtosis(params, data_type):
+    """Test the rolling kurtosis endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -192,6 +202,7 @@ def test_quantitative_rolling_kurtosis(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_unitroot_test(params, data_type):
+    """Test the unit root test endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -229,6 +240,7 @@ def test_quantitative_unitroot_test(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_performance_sharpe_ratio(params, data_type):
+    """Test the Sharpe Ratio endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -270,6 +282,7 @@ def test_quantitative_performance_sharpe_ratio(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_performance_sortino_ratio(params, data_type):
+    """Test the Sortino Ratio endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -290,6 +303,7 @@ def test_quantitative_performance_sortino_ratio(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_skew(params, data_type):
+    """Test the rolling skew endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -308,6 +322,7 @@ def test_quantitative_rolling_skew(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_variance(params, data_type):
+    """Test the rolling variance endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -326,6 +341,7 @@ def test_quantitative_rolling_variance(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_stdev(params, data_type):
+    """Test the rolling standard deviation endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -344,6 +360,7 @@ def test_quantitative_rolling_stdev(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_mean(params, data_type):
+    """Test the rolling mean endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -381,6 +398,7 @@ def test_quantitative_rolling_mean(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_quantile(params, data_type):
+    """Test the rolling quantile endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -400,6 +418,7 @@ def test_quantitative_rolling_quantile(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_summary(params, data_type):
+    """Test the summary endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -423,6 +442,7 @@ def test_quantitative_summary(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_skew(params, data_type):
+    """Test the skew endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -441,6 +461,7 @@ def test_quantitative_stats_skew(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_kurtosis(params, data_type):
+    """Test the kurtosis endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -459,6 +480,7 @@ def test_quantitative_stats_kurtosis(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_mean(params, data_type):
+    """Test the mean endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -477,6 +499,7 @@ def test_quantitative_stats_mean(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_stdev(params, data_type):
+    """Test the standard deviation endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -495,6 +518,7 @@ def test_quantitative_stats_stdev(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_variance(params, data_type):
+    """Test the variance endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -530,6 +554,7 @@ def test_quantitative_stats_variance(params, data_type):
 )
 @pytest.mark.integration
 def test_quantitative_stats_quantile(params, data_type):
+    """Test the quantile endpoint."""
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 

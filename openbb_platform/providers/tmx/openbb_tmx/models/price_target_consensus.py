@@ -20,6 +20,14 @@ class TmxPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_symbol(cls, value):
+        """Check the symbol."""
+        if not value:
+            raise RuntimeError("Error: Symbol is a required field for TMX.")
+        return value
+
 
 class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     """TMX Price Target Consensus Data."""
@@ -88,8 +96,8 @@ class TmxPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def create_task(symbol, results):
             """Create a task for each symbol provided."""

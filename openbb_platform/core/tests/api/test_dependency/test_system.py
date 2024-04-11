@@ -14,6 +14,6 @@ def test_get_system_settings(mock_system_service):
     """Test get_system_settings."""
     mock_system_service.return_value.system_settings = SystemSettings()
 
-    response = asyncio.run(get_system_settings(MagicMock(), mock_system_service))
+    response = asyncio.run(get_system_settings(MagicMock(), mock_system_service))  # type: ignore[arg-type]
 
     assert response

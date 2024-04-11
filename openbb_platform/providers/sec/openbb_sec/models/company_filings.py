@@ -145,7 +145,7 @@ class SecCompanyFilingsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extracts the data from the SEC endpoint."""
+        """Extract the data from the SEC endpoint."""
         filings = pd.DataFrame()
 
         if query.symbol and not query.cik:
@@ -156,12 +156,12 @@ class SecCompanyFilingsFetcher(
             return []
 
         # The leading 0s need to be inserted but are typically removed from the data to store as an integer.
-        if len(query.cik) != 10:
+        if len(query.cik) != 10:  # type: ignore
             cik_: str = ""
-            temp = 10 - len(query.cik)
+            temp = 10 - len(query.cik)  # type: ignore
             for i in range(temp):
                 cik_ = cik_ + "0"
-            query.cik = cik_ + query.cik
+            query.cik = cik_ + str(query.cik)  # type: ignore
 
         url = f"https://data.sec.gov/submissions/CIK{query.cik}.json"
         r = (
@@ -236,5 +236,5 @@ class SecCompanyFilingsFetcher(
     def transform_data(
         query: SecCompanyFilingsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[SecCompanyFilingsData]:
-        """Transforms the data."""
+        """Transform the data."""
         return [SecCompanyFilingsData.model_validate(d) for d in data]

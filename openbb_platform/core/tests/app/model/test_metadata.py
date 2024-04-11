@@ -1,3 +1,5 @@
+"""Test the Metadata model."""
+
 from datetime import datetime
 
 import numpy as np
@@ -8,7 +10,7 @@ from openbb_core.provider.abstract.data import Data
 
 
 def test_Metadata():
-    "Smoke test"
+    """Run Smoke test."""
     m = Metadata(
         arguments={"test": "test"},
         route="test",
@@ -20,8 +22,8 @@ def test_Metadata():
 
 
 def test_fields():
-    "Smoke test"
-    fields = Metadata.__fields__.keys()
+    """Run Smoke test."""
+    fields = Metadata.model_fields.keys()
     assert "arguments" in fields
     assert "duration" in fields
     assert "route" in fields
@@ -98,6 +100,7 @@ def test_fields():
     ],
 )
 def test_scale_arguments(input_data, expected_output):
+    """Test the scale_arguments method."""
     m = Metadata(
         arguments=input_data,
         route="test",
@@ -106,7 +109,7 @@ def test_scale_arguments(input_data, expected_output):
     )
     arguments = m.arguments
 
-    for arg in arguments:
+    for arg in arguments:  # pylint: disable=E1133
         if "columns" in arguments[arg]:
             # compare the column names disregarding the order with the expected output
             assert sorted(arguments[arg]["columns"]) == sorted(

@@ -1,3 +1,5 @@
+"""Test LoggingService class."""
+
 import json
 from typing import Optional
 from unittest.mock import MagicMock, Mock, patch
@@ -8,25 +10,30 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from pydantic import BaseModel
 
 # ruff: noqa: S106
+# pylint: disable=redefined-outer-name, protected-access
 
 
 class MockLoggingSettings:
+    """Mock logging settings."""
+
     def __init__(self, system_settings, user_settings):
+        """Initialize the mock logging settings."""
         self.system_settings = system_settings
         self.user_settings = user_settings
 
 
 class MockOBBject(BaseModel):
+    """Mock object for testing."""
+
     output: Optional[str] = None
     error: Optional[str] = None
 
 
 @pytest.fixture(scope="function")
 def logging_service():
+    """Return a LoggingService instance."""
     mock_system_settings = Mock()
-    mock_system_settings = "mock_system_settings"
     mock_user_settings = Mock()
-    mock_user_settings = "mock_user_settings"
     mock_setup_handlers = Mock()
     mock_log_startup = Mock()
 
@@ -40,22 +47,42 @@ def logging_service():
         "openbb_core.app.logs.logging_service.LoggingService._log_startup",
         mock_log_startup,
     ):
-        logging_service = LoggingService(
+        _logging_service = LoggingService(
             system_settings=mock_system_settings,
             user_settings=mock_user_settings,
         )
 
-        assert mock_setup_handlers.assert_called_once
-        assert mock_log_startup.assert_called_once
-
-        return logging_service
+        return _logging_service
 
 
-def test_correctly_initialized(logging_service):
-    assert logging_service
+def test_correctly_initialized():
+    """Test the LoggingService is correctly initialized."""
+    mock_system_settings = Mock()
+    mock_user_settings = Mock()
+    mock_setup_handlers = Mock()
+    mock_log_startup = Mock()
+
+    with patch(
+        "openbb_core.app.logs.logging_service.LoggingSettings",
+        MockLoggingSettings,
+    ), patch(
+        "openbb_core.app.logs.logging_service.LoggingService._setup_handlers",
+        mock_setup_handlers,
+    ), patch(
+        "openbb_core.app.logs.logging_service.LoggingService._log_startup",
+        mock_log_startup,
+    ):
+        LoggingService(
+            system_settings=mock_system_settings,
+            user_settings=mock_user_settings,
+        )
+
+        mock_setup_handlers.assert_called_once()
+        mock_log_startup.assert_called_once()
 
 
 def test_logging_settings_setter(logging_service):
+    """Test the logging_settings setter."""
     custom_user_settings = "custom_user_settings"
     custom_system_settings = "custom_system_settings"
 
@@ -68,11 +95,12 @@ def test_logging_settings_setter(logging_service):
             custom_user_settings,
         )
 
-    assert logging_service.logging_settings.system_settings == "custom_system_settings"
-    assert logging_service.logging_settings.user_settings == "custom_user_settings"
+    assert logging_service.logging_settings.system_settings == "custom_system_settings"  # type: ignore[attr-defined]
+    assert logging_service.logging_settings.user_settings == "custom_user_settings"  # type: ignore[attr-defined]
 
 
 def test_log_startup(logging_service):
+    """Test the log_startup method."""
     with patch("logging.getLogger") as mock_get_logger:
         mock_info = mock_get_logger.return_value.info
 
@@ -93,7 +121,10 @@ def test_log_startup(logging_service):
         expected_log_data = {
             "route": "test_route",
             "PREFERENCES": "your_preferences",
-            "KEYS": {"username": "defined", "password": "defined"},
+            "KEYS": {
+                "username": "defined",
+                "password": "defined",  # pragma: allowlist secret
+            },
             "SYSTEM": "your_system_settings",
             "custom_headers": {"X-OpenBB-Test": "test"},
         }
@@ -101,7 +132,7 @@ def test_log_startup(logging_service):
             "STARTUP: %s ",
             json.dumps(expected_log_data),
         )
-        mock_get_logger.assert_called_once
+        mock_get_logger.assert_called_once()
 
 
 @pytest.mark.parametrize(
@@ -146,6 +177,7 @@ def test_log(
     exec_info,
     custom_headers,
 ):
+    """Test the log method."""
     with patch(
         "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,
@@ -163,7 +195,7 @@ def test_log(
                     exec_info=exec_info,
                     custom_headers=custom_headers,
                 )
-                assert mock_log_startup.assert_called_once
+                mock_log_startup.assert_called_once()
 
         else:
             mock_info = mock_get_logger.return_value.info

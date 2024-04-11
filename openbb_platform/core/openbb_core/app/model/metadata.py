@@ -1,6 +1,8 @@
+"""Metadata model."""
+
 from datetime import datetime
 from inspect import isclass
-from typing import Any, Dict
+from typing import Any, Dict, Optional, Sequence, Union
 
 import numpy as np
 import pandas as pd
@@ -10,6 +12,8 @@ from openbb_core.provider.abstract.data import Data
 
 
 class Metadata(BaseModel):
+    """Metadata of a command execution."""
+
     arguments: Dict[str, Any] = Field(
         default_factory=dict,
         description="Arguments of the command.",
@@ -21,6 +25,7 @@ class Metadata(BaseModel):
     timestamp: datetime = Field(description="Execution starting timestamp.")
 
     def __repr__(self) -> str:
+        """Return string representation."""
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
@@ -29,6 +34,7 @@ class Metadata(BaseModel):
     @classmethod
     def scale_arguments(cls, v):
         """Scale arguments.
+
         This function is meant to limit the size of the input arguments of a command.
         If the type is one of the following: `Data`, `List[Data]`, `DataFrame`, `List[DataFrame]`,
         `Series`, `List[Series]` or `ndarray`, the value of the argument is swapped by a dictionary
@@ -36,7 +42,7 @@ class Metadata(BaseModel):
         value is kept or trimmed to 80 characters.
         """
         for arg, arg_val in v.items():
-            new_arg_val = None
+            new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
 
             # Data
             if isclass(type(arg_val)) and issubclass(type(arg_val), Data):
@@ -47,30 +53,32 @@ class Metadata(BaseModel):
 
             # List[Data]
             if isinstance(arg_val, list) and issubclass(type(arg_val[0]), Data):
-                columns = [list(d.model_dump().keys()) for d in arg_val]
-                columns = (item for sublist in columns for item in sublist)  # flatten
+                _columns = [list(d.model_dump().keys()) for d in arg_val]
+                ld_columns = (
+                    item for sublist in _columns for item in sublist
+                )  # flatten
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": list(set(columns)),
+                    "columns": list(set(ld_columns)),
                 }
 
             # DataFrame
             elif isinstance(arg_val, pd.DataFrame):
-                columns = (
+                df_columns = (
                     list(arg_val.index.names) + arg_val.columns.tolist()
                     if any(index is not None for index in list(arg_val.index.names))
                     else arg_val.columns.tolist()
                 )
                 new_arg_val = {
                     "type": f"{type(arg_val).__name__}",
-                    "columns": columns,
+                    "columns": df_columns,
                 }
 
             # List[DataFrame]
             elif isinstance(arg_val, list) and issubclass(
                 type(arg_val[0]), pd.DataFrame
             ):
-                columns = [
+                ldf_columns = [
                     (
                         list(df.index.names) + df.columns.tolist()
                         if any(index is not None for index in list(df.index.names))
@@ -80,7 +88,7 @@ class Metadata(BaseModel):
                 ]
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": columns,
+                    "columns": ldf_columns,
                 }
 
             # Series
@@ -92,7 +100,7 @@ class Metadata(BaseModel):
 
             # List[Series]
             elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
-                columns = [
+                ls_columns = [
                     (
                         list(series.index.names) + [series.name]
                         if any(index is not None for index in list(series.index.names))
@@ -102,7 +110,7 @@ class Metadata(BaseModel):
                 ]
                 new_arg_val = {
                     "type": f"List[{type(arg_val[0]).__name__}]",
-                    "columns": columns,
+                    "columns": ls_columns,
                 }
 
             # ndarray
