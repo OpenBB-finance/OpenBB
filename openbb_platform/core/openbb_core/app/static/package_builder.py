@@ -1159,7 +1159,7 @@ class DocstringGenerator:
                         ),
                         model_name,
                     )
-                    if issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    if isclass(annotation) and issubclass(annotation, OBBject)  # type: ignore[arg-type]
                     else model_name
                 )
                 doc = cls.generate_model_docstring(
