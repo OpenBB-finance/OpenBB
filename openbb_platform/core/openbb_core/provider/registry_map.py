@@ -26,8 +26,8 @@ class RegistryMap:
         self._registry = registry or RegistryLoader.from_extensions()
         self._credentials = self._get_credentials(self._registry)
         self._available_providers = self._get_available_providers(self._registry)
-        self._standard_extra_map, self._original_models = self._get_maps(self._registry)
-        self._models = self._get_models(self._standard_extra_map)
+        self._standard_extra, self._original_models = self._get_maps(self._registry)
+        self._models = self._get_models(self._standard_extra)
 
     @property
     def registry(self) -> Registry:
@@ -47,7 +47,7 @@ class RegistryMap:
     @property
     def standard_extra(self) -> MapType:
         """Get provider registry map."""
-        return self._standard_extra_map
+        return self._standard_extra
 
     @property
     def original_models(self) -> MapType:
