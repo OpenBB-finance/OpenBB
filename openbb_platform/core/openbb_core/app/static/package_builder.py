@@ -1231,14 +1231,9 @@ class DocstringGenerator:
         --------
         [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
         """
-        s = []
-        for i in items:
-            if i == "Dict":
-                s.append(f"Dict[str, {model}]")
-            else:
-                s.append(f"{i}[{model}]")
-
-        if s:
+        if s := [
+            f"Dict[str, {model}]" if i == "Dict" else f"{i}[{model}]" for i in items
+        ]:
             return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
         return model
 
