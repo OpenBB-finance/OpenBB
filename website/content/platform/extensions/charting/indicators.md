@@ -48,7 +48,7 @@ data = obb.equity.price.historical(
 data.show()
 ```
 
-![TSLA Intraday With Indicators](indicators1.png)
+![TSLA Intraday With Indicators](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7d8d95d8-0383-4e9d-9477-7ad2424328df)
 
 ## Available Indicators
 
@@ -377,4 +377,8 @@ chart_params=dict(
 data.charting.to_chart(**chart_params)
 ```
 
-![Redrawn Indicators](indicators2.png)
+![indicators2](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/76c06aff-a568-4b7f-80d4-c58a73c0f1d7)
+
+:::tip
+Data can be exported directly from the chart as a CSV. Use the buttom at the bottom-right of the mode bar.
+:::
