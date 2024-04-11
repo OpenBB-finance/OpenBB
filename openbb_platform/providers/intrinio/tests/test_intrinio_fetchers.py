@@ -1,3 +1,5 @@
+"""Test Intrinio fetchers."""
+
 from datetime import date
 from unittest import mock
 
@@ -63,6 +65,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -79,6 +82,7 @@ def vcr_config():
 
 @pytest.fixture(autouse=True, scope="module")
 def mock_cpu_count():
+    """Mock the cpu_count function so recording works."""
     with mock.patch(
         "os.cpu_count"
     ) as mock_cpu_count:  # pylint: disable=redefined-outer-name
@@ -88,6 +92,7 @@ def mock_cpu_count():
 
 @pytest.mark.record_http
 def test_intrinio_equity_historical_fetcher(credentials=test_credentials):
+    """Test equity historical fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -102,6 +107,7 @@ def test_intrinio_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
+    """Test currency pairs fetcher."""
     params = {}
 
     fetcher = IntrinioCurrencyPairsFetcher()
@@ -111,6 +117,7 @@ def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_company_news_fetcher(credentials=test_credentials):
+    """Test company news fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioCompanyNewsFetcher()
@@ -120,6 +127,7 @@ def test_intrinio_company_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_world_news_fetcher(credentials=test_credentials):
+    """Test world news fetcher."""
     params = {}
 
     fetcher = IntrinioWorldNewsFetcher()
@@ -129,6 +137,7 @@ def test_intrinio_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
+    """Test equity quote fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioEquityQuoteFetcher()
@@ -138,6 +147,7 @@ def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
+    """Test options chains fetcher."""
     params = {"symbol": "AAPL", "date": date(2023, 9, 15)}
 
     fetcher = IntrinioOptionsChainsFetcher()
@@ -147,6 +157,7 @@ def test_intrinio_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
+    """Test options unusual fetcher."""
     params = {
         "source": "delayed",
         "trade_type": "block",
@@ -162,6 +173,7 @@ def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
+    """Test balance sheet fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioBalanceSheetFetcher()
@@ -171,6 +183,7 @@ def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
+    """Test cash flow statement fetcher."""
     params = {"symbol": "AAPL"}
     fetcher = IntrinioCashFlowStatementFetcher()
     result = fetcher.test(params, credentials)
@@ -179,6 +192,7 @@ def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_income_statement_fetcher(credentials=test_credentials):
+    """Test income statement fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioIncomeStatementFetcher()
@@ -188,6 +202,7 @@ def test_intrinio_income_statement_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_fred_series_fetcher(credentials=test_credentials):
+    """Test fred series fetcher."""
     params = {
         "symbol": "$GDP",
         "start_date": date(2022, 9, 20),
@@ -201,6 +216,7 @@ def test_intrinio_fred_series_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_calendar_ipo_fetcher(credentials=test_credentials):
+    """Test calendar IPO fetcher."""
     params = {"status": "upcoming"}
 
     fetcher = IntrinioCalendarIpoFetcher()
@@ -210,6 +226,7 @@ def test_intrinio_calendar_ipo_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_search_attributes(credentials=test_credentials):
+    """Test search attributes fetcher."""
     params = {"query": "ebit"}
 
     fetcher = IntrinioSearchAttributesFetcher()
@@ -219,6 +236,7 @@ def test_intrinio_search_attributes(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_historical_attributes(credentials=test_credentials):
+    """Test historical attributes fetcher."""
     params = {
         "provider": "intrinio",
         "symbol": "AAPL,MSFT",
@@ -238,6 +256,7 @@ def test_intrinio_historical_attributes(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_latest_attributes(credentials=test_credentials):
+    """Test latest attributes fetcher."""
     params = {
         "provider": "intrinio",
         "symbol": "AAPL,MSFT",
@@ -251,6 +270,7 @@ def test_intrinio_latest_attributes(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_equity_info_fetcher(credentials=test_credentials):
+    """Test equity info fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioEquityInfoFetcher()
@@ -260,6 +280,7 @@ def test_intrinio_equity_info_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_market_indices_fetcher(credentials=test_credentials):
+    """Test market indices fetcher."""
     params = {
         "symbol": "$DJI",
         "tag": "level",
@@ -274,6 +295,7 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_index_historical_fetcher(credentials=test_credentials):
+    """Test index historical fetcher."""
     params = {
         "symbol": "DJI",
         "start_date": date(2024, 1, 1),
@@ -287,6 +309,7 @@ def test_intrinio_index_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_historical_dividends_fetcher(credentials=test_credentials):
+    """Test historical dividends fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -300,6 +323,7 @@ def test_intrinio_historical_dividends_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_company_filings_fetcher(credentials=test_credentials):
+    """Test company filings fetcher."""
     params = {
         "symbol": "AAPL",
         "form_type": None,
@@ -315,6 +339,7 @@ def test_intrinio_company_filings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_insider_trading_fetcher(credentials=test_credentials):
+    """Test insider trading fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -338,6 +363,7 @@ def test_intrinio_insider_trading_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_key_metrics_fetcher(credentials=test_credentials):
+    """Test key metrics fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioKeyMetricsFetcher()
@@ -347,6 +373,7 @@ def test_intrinio_key_metrics_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
+    """Test share statistics fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioShareStatisticsFetcher()
@@ -356,6 +383,7 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_equity_search_fetcher(credentials=test_credentials):
+    """Test equity search fetcher."""
     params = {"query": "gold", "limit": 100}
 
     fetcher = IntrinioEquitySearchFetcher()
@@ -365,6 +393,7 @@ def test_intrinio_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_financial_ratios_fetcher(credentials=test_credentials):
+    """Test financial ratios fetcher."""
     params = {"symbol": "AAPL", "period": "annual", "limit": 2, "use_cache": False}
 
     fetcher = IntrinioFinancialRatiosFetcher()
@@ -374,6 +403,7 @@ def test_intrinio_financial_ratios_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
+    """Test reported financials fetcher."""
     params = {
         "symbol": "AAPL",
         "statement_type": "cash",
@@ -388,6 +418,7 @@ def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_etf_search_fetcher(credentials=test_credentials):
+    """Test etf search fetcher."""
     params = {"query": "factor", "exchange": "bats"}
 
     fetcher = IntrinioEtfSearchFetcher()
@@ -397,6 +428,7 @@ def test_intrinio_etf_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_etf_info_fetcher(credentials=test_credentials):
+    """Test etf info fetcher."""
     params = {"symbol": "DJIA,SPY,GOVT"}
 
     fetcher = IntrinioEtfInfoFetcher()
@@ -406,6 +438,7 @@ def test_intrinio_etf_info_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_etf_holdings_fetcher(credentials=test_credentials):
+    """Test etf holdings fetcher."""
     params = {"symbol": "DJIA"}
 
     fetcher = IntrinioEtfHoldingsFetcher()
@@ -415,6 +448,7 @@ def test_intrinio_etf_holdings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_etf_price_performance_fetcher(credentials=test_credentials):
+    """Test etf price performance fetcher."""
     params = {"symbol": "SPY:US"}
 
     fetcher = IntrinioEtfPricePerformanceFetcher()
@@ -424,6 +458,7 @@ def test_intrinio_etf_price_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_market_snapshots_fetcher(credentials=test_credentials):
+    """Test market snapshots fetcher."""
     params = {"date": date(2022, 6, 30)}
 
     fetcher = IntrinioMarketSnapshotsFetcher()
@@ -433,6 +468,7 @@ def test_intrinio_market_snapshots_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_forward_eps_estimates_fetcher(credentials=test_credentials):
+    """Test forward EPS estimates fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioForwardEpsEstimatesFetcher()
@@ -442,6 +478,7 @@ def test_intrinio_forward_eps_estimates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_forward_sales_estimates_fetcher(credentials=test_credentials):
+    """Test forward sales estimates fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioForwardSalesEstimatesFetcher()
@@ -451,6 +488,7 @@ def test_intrinio_forward_sales_estimates_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_price_target_consensus_fetcher(credentials=test_credentials):
+    """Test price target consensus fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioPriceTargetConsensusFetcher()

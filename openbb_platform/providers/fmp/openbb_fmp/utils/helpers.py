@@ -17,8 +17,7 @@ from pydantic import BaseModel
 async def response_callback(
     response: ClientResponse, _: ClientSession
 ) -> Union[Dict, List[Dict]]:
-    """Callback for make_request."""
-
+    """Use callback for make_request."""
     data = await response.json()
     if isinstance(data, dict) and "Error Message" in data:
         raise RuntimeError(f"FMP Error Message -> {data['Error Message']}")

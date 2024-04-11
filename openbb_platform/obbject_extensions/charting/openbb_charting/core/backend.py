@@ -74,6 +74,7 @@ class Backend(PyWry):
         max_retries: int = 30,
         proc_name: str = "OpenBB Terminal",
     ):
+        """Create a new instance of the backend."""
         self.charting_settings = charting_settings
 
         has_version = hasattr(PyWry, "__version__")

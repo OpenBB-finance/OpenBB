@@ -1,3 +1,5 @@
+"""Test the extension map."""
+
 import json
 from pathlib import Path
 from typing import Dict

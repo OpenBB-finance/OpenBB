@@ -1,3 +1,5 @@
+"""Utility functions for the econometrics extension of the OpenBB platform."""
+
 import warnings
 from typing import Tuple
 
@@ -10,8 +12,9 @@ from statsmodels.tsa.stattools import adfuller
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: pd.Series, independent_series: pd.Series
 ) -> Tuple[float, float, float, pd.Series, float, float]:
-    """Estimates long-run and short-run cointegration relationship for series y and x and apply
-    the two-step Engle & Granger test for cointegration.
+    """Estimate long-run and short-run cointegration relationship for series y and x.
+
+    Then apply the two-step Engle & Granger test for cointegration.
 
     Uses a 2-step process to first estimate coefficients for the long-run relationship
         y_t = c + gamma * x_t + z_t
@@ -87,7 +90,7 @@ def get_engle_granger_two_step_cointegration_test(
 
 
 def mock_multi_index_data():
-    """Creates a mock multi-index dataframe for testing purposes."""
+    """Create a mock multi-index dataframe for testing purposes."""
     arrays = [
         ["individual_" + str(i) for i in range(1, 11) for _ in range(5)],
         list(range(1, 6)) * 10,

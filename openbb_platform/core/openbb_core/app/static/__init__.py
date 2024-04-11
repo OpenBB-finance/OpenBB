@@ -1,0 +1,1 @@
+"""OpenBB Core App Static."""

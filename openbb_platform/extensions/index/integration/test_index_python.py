@@ -28,6 +28,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 )
 @pytest.mark.integration
 def test_index_constituents(params, obb):
+    """Test the index constituents endpoint."""
     result = obb.index.constituents(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -110,6 +111,7 @@ def test_index_constituents(params, obb):
 )
 @pytest.mark.integration
 def test_index_price_historical(params, obb):
+    """Test the index historical price endpoint."""
     result = obb.index.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -184,6 +186,7 @@ def test_index_price_historical(params, obb):
 @pytest.mark.integration
 @pytest.mark.skip(reason="Deprecating this endpoint")
 def test_index_market(params, obb):
+    """Test the index market endpoint."""
     result = obb.index.market(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -202,6 +205,7 @@ def test_index_market(params, obb):
 )
 @pytest.mark.integration
 def test_index_available(params, obb):
+    """Test the index available endpoint."""
     result = obb.index.available(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -223,6 +227,7 @@ def test_index_available(params, obb):
 )
 @pytest.mark.integration
 def test_index_search(params, obb):
+    """Test the index search endpoint."""
     result = obb.index.search(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -238,6 +243,7 @@ def test_index_search(params, obb):
 )
 @pytest.mark.integration
 def test_index_snapshots(params, obb):
+    """Test the index snapshots endpoint."""
     result = obb.index.snapshots(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -261,6 +267,7 @@ def test_index_snapshots(params, obb):
 )
 @pytest.mark.integration
 def test_index_sp500_multiples(params, obb):
+    """Test the index sp500 multiples endpoint."""
     result = obb.index.sp500_multiples(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -275,6 +282,7 @@ def test_index_sp500_multiples(params, obb):
 )
 @pytest.mark.integration
 def test_index_sectors(params, obb):
+    """Test the index sectors endpoint."""
     result = obb.index.sectors(**params)
     assert result
     assert isinstance(result, OBBject)

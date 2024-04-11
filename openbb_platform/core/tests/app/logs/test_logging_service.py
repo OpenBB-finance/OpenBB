@@ -1,3 +1,5 @@
+"""Test LoggingService class."""
+
 import json
 from typing import Optional
 from unittest.mock import MagicMock, Mock, patch
@@ -12,18 +14,24 @@ from pydantic import BaseModel
 
 
 class MockLoggingSettings:
+    """Mock logging settings."""
+
     def __init__(self, system_settings, user_settings):
+        """Initialize the mock logging settings."""
         self.system_settings = system_settings
         self.user_settings = user_settings
 
 
 class MockOBBject(BaseModel):
+    """Mock object for testing."""
+
     output: Optional[str] = None
     error: Optional[str] = None
 
 
 @pytest.fixture(scope="function")
 def logging_service():
+    """Return a LoggingService instance."""
     mock_system_settings = Mock()
     mock_user_settings = Mock()
     mock_setup_handlers = Mock()
@@ -48,6 +56,7 @@ def logging_service():
 
 
 def test_correctly_initialized():
+    """Test the LoggingService is correctly initialized."""
     mock_system_settings = Mock()
     mock_user_settings = Mock()
     mock_setup_handlers = Mock()
@@ -73,6 +82,7 @@ def test_correctly_initialized():
 
 
 def test_logging_settings_setter(logging_service):
+    """Test the logging_settings setter."""
     custom_user_settings = "custom_user_settings"
     custom_system_settings = "custom_system_settings"
 
@@ -90,6 +100,7 @@ def test_logging_settings_setter(logging_service):
 
 
 def test_log_startup(logging_service):
+    """Test the log_startup method."""
     with patch("logging.getLogger") as mock_get_logger:
         mock_info = mock_get_logger.return_value.info
 
@@ -166,6 +177,7 @@ def test_log(
     exec_info,
     custom_headers,
 ):
+    """Test the log method."""
     with patch(
         "openbb_core.app.logs.logging_service.LoggingSettings",
         MockLoggingSettings,

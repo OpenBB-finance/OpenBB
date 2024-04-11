@@ -1,12 +1,17 @@
+"""Tests for the ReferenceLoader class."""
+
 import json
 from pathlib import Path
 
 import pytest
 from openbb_core.app.static.reference_loader import ReferenceLoader
 
+# pylint: disable=W0212, W0621
+
 
 @pytest.fixture(scope="function")
 def reference_loader():
+    """Fixture to create a ReferenceLoader instance."""
     ReferenceLoader._instances = {}
     yield ReferenceLoader
     ReferenceLoader._instances = {}

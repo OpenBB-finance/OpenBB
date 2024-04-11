@@ -1,3 +1,5 @@
+"""Tests for the SystemSettings class."""
+
 import os
 from pathlib import Path
 
@@ -13,11 +15,13 @@ class MockSystemSettings(BaseModel):
 
 
 def test_system_settings():
+    """Test the SystemSettings class."""
     sys = SystemSettings()
     assert isinstance(sys, SystemSettings)
 
 
 def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
+    """Test the create_openbb_directory method."""
     # Arrange
     values = MockSystemSettings(
         **{
@@ -37,6 +41,7 @@ def test_create_openbb_directory_directory_and_files_not_exist(tmpdir):
 
 
 def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
+    """Test the create_openbb_directory method."""
     # Arrange
     values = MockSystemSettings(
         **{
@@ -59,6 +64,7 @@ def test_create_openbb_directory_directory_exists_user_settings_missing(tmpdir):
 
 
 def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir):
+    """Test the create_openbb_directory method."""
     # Arrange
     values = MockSystemSettings(
         **{
@@ -136,6 +142,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
     ],
 )
 def test_validate_posthog_handler(values, expected_handlers):
+    """Test the validate_posthog_handler method."""
     values = MockSystemSettings(**values)
     # Act
     result = SystemSettings.validate_posthog_handler(values)  # type: ignore[operator]
@@ -158,6 +165,7 @@ def test_validate_posthog_handler(values, expected_handlers):
     ],
 )
 def test_validate_logging_handlers(handlers, valid):
+    """Test the validate_logging_handlers method."""
     # Act and Assert
     if valid:
         assert SystemSettings.validate_logging_handlers(handlers) == handlers  # type: ignore[call-arg]

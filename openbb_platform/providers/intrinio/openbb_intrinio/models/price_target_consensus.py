@@ -128,7 +128,7 @@ class IntrinioPriceTargetConsensusFetcher(
             return results
 
         async def fetch_callback(response, session):
-            """Callback for pagination."""
+            """Use callback for pagination."""
             data = await response.json()
             messages = data.get("messages")
             if messages:
@@ -162,7 +162,6 @@ class IntrinioPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[IntrinioPriceTargetConsensusData]:
         """Transform the raw data into the standard format."""
-
         symbols = query.symbol.split(",") if query.symbol else []
         results: List[IntrinioPriceTargetConsensusData] = []
         for item in sorted(  # type: ignore
