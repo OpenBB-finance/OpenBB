@@ -46,12 +46,12 @@ class RegistryMap:
 
     @property
     def standard_extra(self) -> MapType:
-        """Get provider registry map."""
+        """Get standard extra map."""
         return self._standard_extra
 
     @property
     def original_models(self) -> MapType:
-        """Get provider registry return map."""
+        """Get original models."""
         return self._original_models
 
     @property
