@@ -57,7 +57,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Forecasted GDP Data.
+        """Get Forecasted GDP Data.
 
         Parameters
         ----------
@@ -154,7 +154,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Nominal GDP Data.
+        """Get Nominal GDP Data.
 
         Parameters
         ----------
@@ -248,7 +248,7 @@ class ROUTER_economy_gdp(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Real GDP Data.
+        """Get Real GDP Data.
 
         Parameters
         ----------

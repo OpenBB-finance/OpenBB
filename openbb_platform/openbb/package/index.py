@@ -111,7 +111,7 @@ class ROUTER_index(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents.
+        """Get Index Constituents.
 
         Parameters
         ----------
@@ -216,7 +216,7 @@ class ROUTER_index(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Historical Market Indices.
+        """Get Historical Market Indices.
 
         Parameters
         ----------
