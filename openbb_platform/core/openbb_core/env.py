@@ -51,6 +51,11 @@ class Env(metaclass=SingletonMeta):
         return self.str2bool(self._environ.get("OPENBB_DEBUG_MODE", False))
 
     @property
+    def LLM_MODE(self) -> bool:
+        """LLM mode: enables LLM mode."""
+        return self.str2bool(self._environ.get("OPENBB_LLM_MODE", False))
+
+    @property
     def DEV_MODE(self) -> bool:
         """Dev mode: enables development mode."""
         return self.str2bool(self._environ.get("OPENBB_DEV_MODE", False))
