@@ -19,7 +19,11 @@ class Preferences(BaseModel):
     model_config = ConfigDict(validate_assignment=True)
     output_type: Literal[
         "OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
-    ] = Field(default="OBBject", description="Python default output type.")
+    ] = Field(
+        default="OBBject",
+        description="Python default output type.",
+        validate_default=True,
+    )
     plot_enable_pywry: bool = True
     plot_open_export: bool = (
         False  # Whether to open plot image exports after they are created
@@ -37,7 +41,7 @@ class Preferences(BaseModel):
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
 
-    @field_validator("output_type")
+    @field_validator("output_type", mode="before")
     @classmethod
     def llm_mode(cls, value: str) -> str:  # pylint: disable=no-self-argument
         """Set LLM mode."""
