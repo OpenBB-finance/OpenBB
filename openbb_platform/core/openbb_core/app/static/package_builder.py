@@ -3,6 +3,7 @@
 # pylint: disable=too-many-lines
 import builtins
 import inspect
+import os
 import re
 import shutil
 import sys
@@ -1076,6 +1077,10 @@ class DocstringGenerator:
 
         docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
         docstring += "\n\n"
+        if os.getenv("LLM_MODE") == "True":
+            if len(docstring) > 1024:
+                docstring = docstring[:1021] + "..."
+            return docstring
         docstring += f"{create_indent(2)}Parameters\n"
         docstring += f"{create_indent(2)}----------\n"
 

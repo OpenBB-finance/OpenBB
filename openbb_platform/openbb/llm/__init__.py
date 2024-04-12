@@ -1,7 +1,7 @@
 """OpenBB Platform."""
 
 # flake8: noqa
-
+import os
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -44,12 +44,12 @@ try:
     from openbb.package.__extensions__ import Extensions as _Extensions
 
     obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
-    obb.user.preferences.llm_mode = True
-    obb.user.preferences.output_type = "llm"
+    obb.user.preferences.output_type = "llm"  # type: ignore
+    os.environ["LLM_MODE"] = "True"
     sdk = obb
 
 except (ImportError, ModuleNotFoundError):
     print("Failed to import extensions.")
     obb = sdk = _create_app()  # type: ignore
-    obb.user.preferences.llm_mode = True
-    obb.user.preferences.output_type = "llm"
+    obb.user.preferences.output_type = "llm"  # type: ignore
+    os.environ["LLM_MODE"] = "True"
