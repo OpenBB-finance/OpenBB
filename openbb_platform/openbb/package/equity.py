@@ -454,8 +454,10 @@ class ROUTER_equity(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Screen for companies meeting various criteria. These criteria include
-        market cap, price, beta, volume, and dividend yield.
+        """Screen for companies meeting various criteria.
+
+        These criteria include market cap, price, beta, volume, and dividend yield.
+
 
         Parameters
         ----------

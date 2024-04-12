@@ -181,7 +181,7 @@ class ROUTER_regulators_sec(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
+        """Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
         Parameters
         ----------
@@ -257,7 +257,7 @@ class ROUTER_regulators_sec(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """A tool for navigating the directory of SEC XML schema files by year.
+        """Use tool for navigating the directory of SEC XML schema files by year.
 
         Parameters
         ----------
