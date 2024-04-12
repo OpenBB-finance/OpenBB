@@ -7,6 +7,7 @@ import re
 import shutil
 import sys
 from dataclasses import Field
+from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -24,6 +25,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -41,6 +43,7 @@ from openbb_core.app.model.custom_parameter import (
     OpenBBCustomParameter,
 )
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.utils.console import Console
@@ -1150,18 +1153,25 @@ class DocstringGenerator:
                 # Parameters passed as **kwargs
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
-
-                returns = return_schema.model_fields
-                results_type = func.__annotations__.get("return", model_name)
-                if hasattr(results_type, "results_type_repr"):
-                    results_type = results_type.results_type_repr()
-
+                # Format the annotation to hide the metadata, tags, etc.
+                annotation = func.__annotations__.get("return")
+                results_type = (
+                    cls._get_repr(
+                        cls._get_generic_types(
+                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr]
+                            [],
+                        ),
+                        model_name,
+                    )
+                    if isclass(annotation) and issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    else model_name
+                )
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=returns,
+                    returns=return_schema.model_fields,
                     results_type=results_type,
                 )
         else:
@@ -1175,6 +1185,65 @@ class DocstringGenerator:
             )
 
         return doc
+
+    @classmethod
+    def _get_generic_types(cls, type_: type, items: list) -> List[str]:
+        """Unpack generic types recursively.
+
+        Parameters
+        ----------
+        type_ : type
+            Type to unpack.
+        items : list
+            List to store the unpacked types.
+
+        Returns
+        -------
+        List[str]
+            List of unpacked type names.
+
+        Examples
+        --------
+        Union[List[str], Dict[str, str], Tuple[str]] -> ["List", "Dict", "Tuple"]
+        """
+        if hasattr(type_, "__args__"):
+            origin = get_origin(type_)
+            # pylint: disable=unidiomatic-typecheck
+            if (
+                type(origin) is type
+                and origin is not Annotated
+                and (name := getattr(type_, "_name", getattr(type_, "__name__", None)))
+            ):
+                items.append(name.title())
+            func = partial(cls._get_generic_types, items=items)
+            set().union(*map(func, type_.__args__), items)
+        return items
+
+    @staticmethod
+    def _get_repr(items: List[str], model: str) -> str:
+        """Get the string representation of the types list with the model name.
+
+        Parameters
+        ----------
+        items : List[str]
+            List of type names.
+        model : str
+            Model name to access the model providers.
+
+        Returns
+        -------
+        str
+            String representation of the unpacked types list.
+
+        Examples
+        --------
+        [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
+        """
+        if s := [
+            f"Dict[str, {model}]" if i == "Dict" else f"{i}[{model}]" for i in items
+        ]:
+            return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
+        return model
 
 
 class PathHandler:
@@ -1366,7 +1435,7 @@ class ReferenceGenerator:
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
-        model_map = cls.pi._map[model]  # pylint: disable=protected-access
+        model_map = cls.pi.map[model]
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
@@ -1609,7 +1678,7 @@ class ReferenceGenerator:
                     route, "description", "No description available."
                 )
                 # Access model map from the ProviderInterface
-                model_map = cls.pi._map[
+                model_map = cls.pi.map[
                     standard_model
                 ]  # pylint: disable=protected-access
 
