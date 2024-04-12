@@ -157,7 +157,7 @@ class AVEquityHistoricalFetcher(
         results = []
 
         async def callback(response, _):
-            """Callback function to process the response."""
+            """Use callback function to process the response."""
             try:
                 result = await response.json()
                 if "Information" in result:
@@ -168,7 +168,7 @@ class AVEquityHistoricalFetcher(
             return await response.read()
 
         async def intraday_callback(response, _):
-            """Callback function to process the intraday response."""
+            """Use callback function to process the intraday response."""
             symbol = response.url.query.get("symbol", None)
             data = await response.read()
             if data:
@@ -189,7 +189,6 @@ class AVEquityHistoricalFetcher(
 
         async def get_one(symbol, intraday: bool = False):
             """Get data for one symbol."""
-
             if intraday is True:
                 adjusted = query.adjustment != "unadjusted"
                 if query.adjustment == "splits_only":
@@ -298,7 +297,6 @@ class AVEquityHistoricalFetcher(
         query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
-
         if data == []:
             return []
         if "{" in data[0]:

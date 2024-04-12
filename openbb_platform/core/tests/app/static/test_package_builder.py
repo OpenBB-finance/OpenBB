@@ -5,6 +5,7 @@
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
@@ -27,6 +28,7 @@ from typing_extensions import Annotated
 
 @pytest.fixture(scope="module")
 def tmp_openbb_dir(tmp_path_factory):
+    """Return a temporary openbb directory."""
     return tmp_path_factory.mktemp("openbb")
 
 
@@ -560,11 +562,46 @@ def test_generate_model_docstring(docstring_generator):
     assert "WorldNews" in docstring
 
 
+@pytest.mark.parametrize(
+    "type_, expected",
+    [
+        (Any, []),
+        (List[str], ["List"]),
+        (Dict[str, str], ["Dict"]),
+        (Tuple[str], ["Tuple"]),
+        (Union[List[str], Dict[str, str], Tuple[str]], ["List", "Dict", "Tuple"]),
+    ],
+)
+def test__get_generic_types(docstring_generator, type_, expected):
+    """Test get generic types."""
+    output = docstring_generator._get_generic_types(type_, [])
+    assert output == expected
+
+
+@pytest.mark.parametrize(
+    "items, model, expected",
+    [
+        ([], "test_model", "test_model"),
+        (["List"], "test_model", "List[test_model]"),
+        (["Dict"], "test_model", "Dict[str, test_model]"),
+        (["Tuple"], "test_model", "Tuple[test_model]"),
+        (
+            ["List", "Dict", "Tuple"],
+            "test_model",
+            "Union[List[test_model], Dict[str, test_model], Tuple[test_model]]",
+        ),
+    ],
+)
+def test__get_repr(docstring_generator, items, model, expected):
+    output = docstring_generator._get_repr(items, model)
+    assert output == expected
+
+
 def test_generate(docstring_generator):
     """Test generate docstring."""
 
     def some_func():
-        """Some func docstring."""
+        """Define Some func docstring."""
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -655,6 +692,7 @@ def test_package_diff(
     """Test package differences."""
 
     def mock_entry_points(group):
+        """Mock entry points."""
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."

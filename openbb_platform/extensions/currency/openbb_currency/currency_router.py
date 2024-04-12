@@ -65,7 +65,7 @@ async def reference_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current, official, currency reference rates.
+    """Get current, official, currency reference rates.
 
     Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
     serving as a benchmark for the value of currencies around the world.

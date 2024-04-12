@@ -145,6 +145,17 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="1m_stdev",
     )
+    smart_score_1m: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last month.",
+        alias="1m_smart_score",
+    )
+    success_rate_1m: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="1m_success_rate",
+    )
     gain_count_3m: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 months",
@@ -168,6 +179,17 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         + " analyst's ratings over the last 3 months",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="3m_stdev",
+    )
+    smart_score_3m: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last 3 months.",
+        alias="3m_smart_score",
+    )
+    success_rate_3m: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="3m_success_rate",
     )
     gain_count_6m: Optional[int] = Field(
         default=None,
@@ -217,6 +239,17 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="9m_stdev",
     )
+    smart_score_9m: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last 9 months.",
+        alias="9m_smart_score",
+    )
+    success_rate_9m: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="9m_success_rate",
+    )
     gain_count_1y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 1 year",
@@ -240,6 +273,17 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         + " analyst's ratings over the last 1 year",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="1y_stdev",
+    )
+    smart_score_1y: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last 1 year.",
+        alias="1y_smart_score",
+    )
+    success_rate_1y: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="1y_success_rate",
     )
     gain_count_2y: Optional[int] = Field(
         default=None,
@@ -265,6 +309,17 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="2y_stdev",
     )
+    smart_score_2y: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last 3 years.",
+        alias="2y_smart_score",
+    )
+    success_rate_2y: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="2y_success_rate",
+    )
     gain_count_3y: Optional[int] = Field(
         default=None,
         description="The number of ratings that have gained value over the last 3 years",
@@ -289,10 +344,22 @@ class BenzingaAnalystSearchData(AnalystSearchData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="3y_stdev",
     )
+    smart_score_3y: Optional[float] = Field(
+        default=None,
+        description="A weighted average smart score over the last 3 years.",
+        alias="3y_smart_score",
+    )
+    success_rate_3y: Optional[float] = Field(
+        default=None,
+        description="The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="3y_success_rate",
+    )
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
     def validate_date(cls, v):
+        """Validate date."""
         if v:
             dt = datetime.fromtimestamp(v, UTC)
             return dt.date() if dt.time() == dt.min.time() else dt
@@ -340,7 +407,6 @@ class BenzingaAnalystSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         token = credentials.get("benzinga_api_key") if credentials else ""
         querystring = get_querystring(query.model_dump(), [])
         url = f"https://api.benzinga.com/api/v2.1/calendar/ratings/analysts?{querystring}&token={token}"

@@ -489,7 +489,7 @@ def aroon(
     data: List[Data],
     index: str = "date",
     length: int = 25,
-    scalar: int = 100,
+    scalar: float = 100,
 ) -> OBBject[List[Data]]:
     """Calculate the Aroon Indicator.
 
@@ -513,7 +513,7 @@ def aroon(
         Index column name to use with `data`, by default "date".
     length : int, optional
         Number of periods to be used for the calculation, by default 25.
-    scalar : int, optional
+    scalar : float, optional
         Scalar to be used for the calculation, by default 100.
 
     Returns

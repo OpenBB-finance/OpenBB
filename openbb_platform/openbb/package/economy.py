@@ -180,8 +180,11 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The composite leading indicator (CLI) is designed to provide early signals of turning points
+        """Use the composite leading indicator (CLI).
+
+        It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
+
         CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
@@ -347,7 +350,10 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
+        """Get Consumer Price Index (CPI).
+
+        Returns either the rescaled index value, or a rate of change (inflation).
+
 
         Parameters
         ----------
@@ -457,6 +463,7 @@ class ROUTER_economy(Container):
         **kwargs
     ) -> OBBject:
         """Query the Geo Fred API for regional economic data by series group.
+
         The series group ID is found by using `fred_search` and the `series_id` parameter.
 
 
@@ -596,6 +603,7 @@ class ROUTER_economy(Container):
         **kwargs
     ) -> OBBject:
         """Search for FRED series or economic releases by ID or string.
+
         This does not return the observation values, only the metadata.
         Use this function to find series IDs for `fred_series()`.
 
@@ -885,7 +893,8 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Long-term interest rates refer to government bonds maturing in ten years.
+        """Get Long-term interest rates that refer to government bonds maturing in ten years.
+
         Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
         fall in the capital value. Long-term interest rates are generally averages of daily rates,
         measured as a percentage. These interest rates are implied by the prices at which the government bonds are
@@ -894,6 +903,7 @@ class ROUTER_economy(Container):
         Long-term interest rates are one of the determinants of business investment.
         Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
         Investment is, in turn, a major source of economic growth.
+
 
         Parameters
         ----------
@@ -988,7 +998,10 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.
+        """Get Money Measures (M1/M2 and components).
+
+        The Federal Reserve publishes as part of the H.6 Release.
+
 
         Parameters
         ----------
@@ -1074,7 +1087,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Market Risk Premium by country.
+        """Get Market Risk Premium by country.
 
         Parameters
         ----------
@@ -1153,8 +1166,11 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Short-term interest rates are the rates at which short-term borrowings are effected between
+        """Get Short-term interest rates.
+
+        They are the rates at which short-term borrowings are effected between
         financial institutions or the rate at which short-term government paper is issued or traded in the market.
+
         Short-term interest rates are generally averages of daily rates, measured as a percentage.
         Short-term interest rates are based on three-month money market rates where available.
         Typical standardised names are "money market rate" and "treasury bill rate".
@@ -1247,7 +1263,7 @@ class ROUTER_economy(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Global unemployment data.
+        """Get global unemployment data.
 
         Parameters
         ----------

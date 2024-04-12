@@ -28,7 +28,8 @@ async def peers(
     """Get the closest peers for a given company.
 
     Peers consist of companies trading on the same exchange, operating within the same sector
-    and with comparable market capitalizations."""
+    and with comparable market capitalizations.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -67,5 +68,6 @@ async def groups(
     """Get company data grouped by sector, industry or country and display either performance or valuation metrics.
 
     Valuation metrics include price to earnings, price to book, price to sales ratios and price to cash flow.
-    Performance metrics include the stock price change for different time periods."""
+    Performance metrics include the stock price change for different time periods.
+    """
     return await OBBject.from_query(Query(**locals()))

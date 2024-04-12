@@ -1,3 +1,5 @@
+"""Test the client helper."""
+
 import gzip
 import json
 import zlib
@@ -80,6 +82,7 @@ class MockClientSession(client.ClientSession):
     async def request(  # type: ignore
         self, *args, raise_for_status: bool = False, **kwargs
     ) -> client.ClientResponse:
+        """Mock the request method."""
         response = MockResponse(*args, **kwargs)
 
         if raise_for_status:

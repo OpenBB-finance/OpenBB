@@ -11,6 +11,7 @@ import pytest
 
 @pytest.fixture(autouse=True)
 def setup_mocks():
+    """Set up mocks for the test."""
     with patch(
         "openbb_core.app.static.package_builder.PackageBuilder.auto_build"
     ) as mock_auto_build:
@@ -20,6 +21,7 @@ def setup_mocks():
 
 @pytest.fixture
 def openbb_module(setup_mocks):
+    """Reload the openbb module."""
     if "openbb" in sys.modules:
         importlib.reload(sys.modules["openbb"])
     else:
@@ -29,7 +31,5 @@ def openbb_module(setup_mocks):
 
 @pytest.mark.integration
 def test_autobuild_called(openbb_module):
-    """
-    Test that auto_build is called upon importing openbb.
-    """
+    """Test that auto_build is called upon importing openbb."""
     openbb_module.assert_called_once()

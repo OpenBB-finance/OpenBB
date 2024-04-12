@@ -23,6 +23,7 @@ class Indicator:
         name: str = "",
         **attrs: Any,
     ) -> None:
+        """Initialize the indicator."""
         self.func = func
         self.name = name
         self.attrs = attrs
@@ -85,6 +86,7 @@ class PluginMeta(type):
 
     # pylint: disable=unused-argument
     def __init__(cls, *args: Any, **kwargs: Any) -> None:
+        """Initialize the class."""
         super().__init__(*args, **kwargs)
 
 
@@ -182,7 +184,7 @@ class PltTA(metaclass=PluginMeta):
         return iter(self.__indicators__)
 
     def get_float_precision(self) -> str:
-        """Returns f-string precision format."""
+        """Return f-string precision format."""
         price = self.df_stock[self.close_column].tail(1).values[0]
         float_precision = (
             ",.2f" if price > 1.10 else "" if len(str(price)) < 8 else ".6f"
@@ -194,7 +196,7 @@ def indicator(
     name: str = "",
     **attrs: Any,
 ) -> Callable:
-    """Decorator for adding indicators to a plugin class."""
+    """Use this decorator for adding indicators to a plugin class."""
     attrs["name"] = name
 
     def decorator(func: Callable) -> Indicator:
