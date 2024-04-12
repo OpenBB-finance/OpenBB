@@ -44,7 +44,11 @@ class Metadata(BaseModel):
         arguments: Dict[str, Any] = {}
         for item in ["provider_choices", "standard_params", "extra_params"]:
             arguments[item] = {}
-            for arg, arg_val in v[item].items():
+            # The item could be class or it could a dictionary.
+            v_item = v.__dict__.get(item, {}) if not isinstance(v, dict) else v.get(item, {})
+            # The item might not be a dictionary yet.
+            v_item = v_item if isinstance(v_item, dict) else v_item.__dict__
+            for arg, arg_val in v_item.items():
                 new_arg_val: Optional[Union[str, dict[str, Sequence[Any]]]] = None
 
                 # Data
