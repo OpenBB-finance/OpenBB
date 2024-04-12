@@ -311,11 +311,15 @@ async def fred_regional(
 @router.command(
     model="CountryProfile",
     examples=[
-        APIEx(parameters={"provider": "econdb"}),
+        APIEx(parameters={"provider": "econdb", "country": "united_kingdom"}),
         APIEx(
             description="Enter the country as the full name, or iso code."
             + " If `latest` is False, the complete history for each series is returned.",
-            parameters={"country": "united_states,jp", "latest": False, "provider": "econdb"}
+            parameters={
+                "country": "united_states,jp",
+                "latest": False,
+                "provider": "econdb",
+            },
         ),
     ],
 )
@@ -328,3 +332,43 @@ async def country_profile(
     """Get a profile of country statistics and economic indicators."""
     return await OBBject.from_query(Query(**locals()))
 
+
+@router.command(
+    model="AvailableIndicators",
+    examples=[
+        APIEx(parameters={"provider": "econdb"}),
+    ],
+)
+async def available_indicators(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the available economic indicators for a provider."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="EconomicIndicators",
+    examples=[
+        APIEx(parameters={"provider": "econdb", "country": "japan", "indicator": "GDP"}),
+        APIEx(
+            description="Enter the country as the full name, or iso code."
+            + " Use `available_indicators()` to get a list of supported indicators from EconDB.",
+            parameters={
+                "country": "united_states,jp",
+                "latest": False,
+                "provider": "econdb",
+            },
+        ),
+    ],
+)
+async def indicators(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get economic indicators by country and indicator."""
+    return await OBBject.from_query(Query(**locals()))
