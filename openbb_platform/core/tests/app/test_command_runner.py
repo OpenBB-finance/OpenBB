@@ -352,6 +352,7 @@ async def test_static_command_runner_run(
             """Initialize the mock object."""
             self.results = results
             self.extra = {}
+            self.extra["metadata"] = {"test": "test"}
 
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])

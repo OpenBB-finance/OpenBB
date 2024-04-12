@@ -38,6 +38,7 @@ class ROUTER_equity_compare(Container):
         Peers consist of companies trading on the same exchange, operating within the same sector
         and with comparable market capitalizations.
 
+
         Parameters
         ----------
         symbol : str
