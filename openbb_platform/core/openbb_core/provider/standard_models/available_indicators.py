@@ -18,7 +18,7 @@ class AvailableIndicatorsData(Data):
     Returns the list of available economic indicators from a provider.
     """
 
-    indicator_symbol: Optional[str] = Field(
+    symbol_root: Optional[str] = Field(
         default=None, description="The root symbol representing the indicator."
     )
     symbol: Optional[str] = Field(
