@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
