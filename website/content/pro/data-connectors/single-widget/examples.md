@@ -16,8 +16,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 | Widget title | Public URL | Category | Subcategory | Source | Description |
 | -------- | ------- | -------- | ------- | -------- | ------- |
-| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | | DefiLLama | Get historical TVL (excludes liquid staking and double counted tvl) on DeFi on all chains |
-| Chains | https://api.llama.fi/v2/chains | DeFi | | DefiLLama | Get current TVL of all chains |
+| Protocols | https://api.llama.fi/v2/protocols | DeFi | TVL | DefiLLama | List of all protocols on DefiLlama along with their TVL |
+| Historical Chain TVL | https://api.llama.fi/v2/historicalChainTvl | DeFi | TVL | DefiLLama | Get historical TVL (excludes liquid staking and double counted tvl) on DeFi on all chains |
+| Chains | https://api.llama.fi/v2/chains | DeFi | TVL | DefiLLama | Get current TVL of all chains |
+| Stablecoins | https://api.llama.fi/v2/stablecoins | DeFi | coins | DefiLLama | List all stablecoins along with their circulating amounts |
 | TAO stats | https://taostats.io/data.json | Crypto | | Tao | Latest $TAO token and subnet information |
-
-
