@@ -43,6 +43,9 @@ class EconomicIndicatorsData(Data):
     """Economic Indicators Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    symbol_root: Optional[str] = Field(
+        default=None, description="The root symbol for the indicator (e.g. GDP)."
+    )
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )

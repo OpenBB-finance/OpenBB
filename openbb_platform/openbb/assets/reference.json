@@ -20,6 +20,7 @@
             ],
             "openbb_provider_extension": [
                 "benzinga@1.1.4",
+                "econdb@1.0.0",
                 "federal_reserve@1.1.4",
                 "fmp@1.1.4",
                 "fred@1.1.4",
@@ -1416,14 +1417,14 @@
                     },
                     {
                         "name": "min_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The inclusive minimum total value for the unusual activity.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "max_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The inclusive maximum total value for the unusual activity.",
                         "default": null,
                         "optional": true
@@ -3605,7 +3606,7 @@
                     },
                     {
                         "name": "value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The obersvation value. The units are defined in the search results by series ID.",
                         "default": null,
                         "optional": true
@@ -3620,6 +3621,476 @@
                 ]
             },
             "model": "FredRegional"
+        },
+        "/economy/country_profile": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get a profile of country statistics and economic indicators.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.country_profile(provider='econdb', country='united_kingdom')\n# Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.\nobb.economy.country_profile(country='united_states,jp', latest=False, provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country, or country group, to get data for. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "latest",
+                        "type": "bool",
+                        "description": "If True, return only the latest data. If False, return all available data for each indicator.",
+                        "default": true,
+                        "optional": true
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CountryProfile]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "population",
+                        "type": "int",
+                        "description": "Population.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_usd",
+                        "type": "float",
+                        "description": "Gross Domestic Product, in billions of USD.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_qoq",
+                        "type": "float",
+                        "description": "GDP growth quarter-over-quarter change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_yoy",
+                        "type": "float",
+                        "description": "GDP growth year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "cpi_yoy",
+                        "type": "float",
+                        "description": "Consumer Price Index year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "core_yoy",
+                        "type": "float",
+                        "description": "Core Consumer Price Index year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "retail_sales_yoy",
+                        "type": "float",
+                        "description": "Retail Sales year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "industrial_production_yoy",
+                        "type": "float",
+                        "description": "Industrial Production year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "policy_rate",
+                        "type": "float",
+                        "description": "Short term policy rate, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "yield_10y",
+                        "type": "float",
+                        "description": "10-year government bond yield, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "govt_debt_gdp",
+                        "type": "float",
+                        "description": "Government debt as a percent (normalized) of GDP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "current_account_gdp",
+                        "type": "float",
+                        "description": "Current account balance as a percent (normalized) of GDP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "jobless_rate",
+                        "type": "float",
+                        "description": "Unemployment rate, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": []
+            },
+            "model": "CountryProfile"
+        },
+        "/economy/available_indicators": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the available economic indicators for a provider.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.available_indicators(provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use cache or not, by default is True The cache of indicator symbols will persist for one week.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[AvailableIndicators]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol_root",
+                        "type": "str",
+                        "description": "The root symbol representing the indicator.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The root symbol with additional codes.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The name of the country, region, or entity represented by the symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "iso",
+                        "type": "str",
+                        "description": "The ISO code of the country, region, or entity represented by the symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "The description of the indicator.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "str",
+                        "description": "The frequency of the indicator data.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "The currency, or unit, the data is based in.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "scale",
+                        "type": "str",
+                        "description": "The scale of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "multiplier",
+                        "type": "int",
+                        "description": "The multiplier of the data to arrive at whole units.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "transformation",
+                        "type": "str",
+                        "description": "Transformation type.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The original source of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "first_date",
+                        "type": "date",
+                        "description": "The first date of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_date",
+                        "type": "date",
+                        "description": "The last date of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_insert_timestamp",
+                        "type": "datetime",
+                        "description": "The time of the last update. Data is typically reported with a lag.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "AvailableIndicators"
+        },
+        "/economy/indicators": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get economic indicators by country and indicator.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', country='japan', indicator=GDP)\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(country='united_states,jp', latest=False, provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. The country represented by the indicator, if available. Multiple items allowed for provider(s): econdb.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "transform",
+                        "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
+                        "description": "The transformation to apply to the data, default is None.     tpop: Change from previous period     toya: Change from one year ago     tusd: Values as US dollars     tpgp: Values as a percent of GDP    Only 'tpop' and 'toya' are applicable to all indicators.   Applying transformations across multiple indicators/countries   may produce unexpected results.   This is because not all indicators are compatible with all transformations,   and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[EconomicIndicators]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "symbol_root",
+                        "type": "str",
+                        "description": "The root symbol for the indicator (e.g. GDP).",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": []
+            },
+            "model": "EconomicIndicators"
         },
         "/equity/calendar/ipo": {
             "deprecated": {
@@ -5351,6 +5822,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_1m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3m",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 months",
@@ -5375,6 +5860,20 @@
                         "name": "std_dev_3m",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
                         "default": null,
                         "optional": true
                     },
@@ -5435,6 +5934,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_9m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 9 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_9m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_1y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 1 year",
@@ -5459,6 +5972,20 @@
                         "name": "std_dev_1y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_1y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 1 year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
                         "default": null,
                         "optional": true
                     },
@@ -5491,6 +6018,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_2y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_2y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 years",
@@ -5515,6 +6056,20 @@
                         "name": "std_dev_3y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
                         "default": null,
                         "optional": true
                     }
@@ -16780,7 +17335,7 @@
                     },
                     {
                         "name": "underlying_shares",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "Number of underlying shares related to this derivative transaction.",
                         "default": null,
                         "optional": true
@@ -17444,14 +17999,14 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "exchange_volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "Volume of shares exchanged during the trading day on the specific exchange.",
                         "default": null,
                         "optional": true
@@ -18030,7 +18585,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
@@ -20358,7 +20913,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
@@ -22566,7 +23121,7 @@
                     },
                     {
                         "name": "balance",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The number of units of the security held, if available.",
                         "default": null,
                         "optional": true
@@ -23482,7 +24037,7 @@
                     },
                     {
                         "name": "market_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The market value of the equity position in the ETF.",
                         "default": null,
                         "optional": true
