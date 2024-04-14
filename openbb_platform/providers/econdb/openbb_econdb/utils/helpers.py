@@ -360,7 +360,7 @@ def parse_symbols(
     return ",".join(symbols)
 
 
-def unit_multiplier(unit: str) -> int:
+def unit_multiplier(unit: str) -> int:  # pylint: disable=R0911
     """Return the multiplier for a given unit measurement."""
     if unit == "thousands":
         return 1000
@@ -389,7 +389,7 @@ def get_indicator_countries(indicator: str) -> List[str]:
 async def create_token(use_cache: bool = True) -> str:
     """Create a temporary token for the EconDB API."""
 
-    async def _callback(response, session):  # pylint: ignore=W0613
+    async def _callback(response, session):  # pylint: disable=W0613
         """Callback function to get the token."""
         try:
             return await response.json()
@@ -506,7 +506,7 @@ async def get_context(
     return response
 
 
-def parse_context(
+def parse_context(  # pylint: disable=R0912, R0914, R0915
     response: List[Dict], latest: bool = False, with_metadata: bool = False
 ) -> Union[DataFrame, Tuple[DataFrame, Dict]]:
     """Parse the output from `get_context()`, and optionally return the metadata."""
@@ -542,7 +542,7 @@ def parse_context(
             )
             date_ranges = temp_meta.get("range", [])
             # We store the metadata for each indicator.
-            metadata[_symbol] = dict(
+            metadata[_symbol] = dict(  # pylint: disable=R1735
                 country=temp_country.title(),
                 title=item.get("verbose_title", None),
                 frequency=temp_meta.get("frequency", None),
@@ -619,22 +619,32 @@ def update_json_files() -> None:
 
     def update_symbol_to_indicator() -> None:
         """Update the symbol to indicator mapping."""
-        with open(files("openbb_econdb.utils") / "symbol_to_indicator.json", "w") as f:
+        with open(
+            files("openbb_econdb.utils") / "symbol_to_indicator.json",
+            "w",
+            encoding="utf-8",
+        ) as f:
             indicators.set_index("short_ticker").sort_index()["symbol_root"].to_json(f)
 
     def update_multipliers() -> None:
         """Update the unit multipliers."""
-        with open(files("openbb_econdb.utils") / "multipliers.json", "w") as f:
+        with open(
+            files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8"
+        ) as f:
             indicators.set_index("short_ticker").sort_index()["multiplier"].to_json(f)
 
     def update_scales() -> None:
         """Update the scales."""
-        with open(files("openbb_econdb.utils") / "scales.json", "w") as f:
+        with open(
+            files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8"
+        ) as f:
             indicators.set_index("short_ticker").sort_index()["scale"].to_json(f)
 
     def update_units() -> None:
         """Update the units."""
-        with open(files("openbb_econdb.utils") / "units.json", "w") as f:
+        with open(
+            files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8"
+        ) as f:
             indicators.set_index("short_ticker").sort_index()["currency"].to_json(f)
 
     def update_descriptions() -> None:
@@ -644,13 +654,19 @@ def update_json_files() -> None:
         )
         descriptions_dict = {k: descriptions_dict[k] for k in sorted(descriptions_dict)}
         with open(
-            files("openbb_econdb.utils") / "indicators_descriptions.json", "w"
+            files("openbb_econdb.utils") / "indicators_descriptions.json",
+            "w",
+            encoding="utf-8",
         ) as f:
             json.dump(descriptions_dict, f)
 
     def update_indicator_countries() -> None:
         """Update the indicator countries."""
-        with open(files("openbb_econdb.utils") / "indicator_countries.json", "w") as f:
+        with open(
+            files("openbb_econdb.utils") / "indicator_countries.json",
+            "w",
+            encoding="utf-8",
+        ) as f:
             indicators[indicators["symbol_root"] != "[W00]"].groupby("symbol_root")[
                 "iso"
             ].apply(lambda x: x.sort_values().unique().tolist()).to_json(f)
