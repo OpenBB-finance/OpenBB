@@ -621,28 +621,28 @@ def update_json_files() -> None:
         """Update the symbol to indicator mapping."""
         with open(
             files("openbb_econdb.utils") / "symbol_to_indicator.json",
-            "w",
+            "w",  # type: ignore
             encoding="utf-8",
         ) as f:
             indicators.set_index("short_ticker").sort_index()["symbol_root"].to_json(f)
 
     def update_multipliers() -> None:
         """Update the unit multipliers."""
-        with open(
+        with open(  # type: ignore
             files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8"
         ) as f:
             indicators.set_index("short_ticker").sort_index()["multiplier"].to_json(f)
 
     def update_scales() -> None:
         """Update the scales."""
-        with open(
+        with open(  # type: ignore
             files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8"
         ) as f:
             indicators.set_index("short_ticker").sort_index()["scale"].to_json(f)
 
     def update_units() -> None:
         """Update the units."""
-        with open(
+        with open(  # type: ignore
             files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8"
         ) as f:
             indicators.set_index("short_ticker").sort_index()["currency"].to_json(f)
@@ -653,7 +653,7 @@ def update_json_files() -> None:
             zip(indicators["symbol_root"], indicators["description"])
         )
         descriptions_dict = {k: descriptions_dict[k] for k in sorted(descriptions_dict)}
-        with open(
+        with open(  # type: ignore
             files("openbb_econdb.utils") / "indicators_descriptions.json",
             "w",
             encoding="utf-8",
@@ -662,7 +662,7 @@ def update_json_files() -> None:
 
     def update_indicator_countries() -> None:
         """Update the indicator countries."""
-        with open(
+        with open(  # type: ignore
             files("openbb_econdb.utils") / "indicator_countries.json",
             "w",
             encoding="utf-8",
