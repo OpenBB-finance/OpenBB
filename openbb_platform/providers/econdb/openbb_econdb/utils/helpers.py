@@ -364,22 +364,21 @@ def unit_multiplier(unit: str) -> int:
     """Return the multiplier for a given unit measurement."""
     if unit == "thousands":
         return 1000
-    elif unit in ["tens of thousands", "tens thousands"]:
+    if unit in ["tens of thousands", "tens thousands"]:
         return 10000
-    elif unit in ["hundreds of thousands", "hundreds thousands"]:
+    if unit in ["hundreds of thousands", "hundreds thousands"]:
         return 100000
-    elif unit in ["millions", "milions"]:
+    if unit in ["millions", "milions"]:
         return 1000000
-    elif unit in ["tens of millions", "tens millions"]:
+    if unit in ["tens of millions", "tens millions"]:
         return 10000000
-    elif unit in ["hundreds of millions", "hundreds millions"]:
+    if unit in ["hundreds of millions", "hundreds millions"]:
         return 100000000
-    elif unit == "billions":
+    if unit == "billions":
         return 1000000000
-    elif unit == "trillions":
+    if unit == "trillions":
         return 1000000000000
-    else:
-        return 1
+    return 1
 
 
 def get_indicator_countries(indicator: str) -> List[str]:
@@ -400,7 +399,7 @@ async def create_token(use_cache: bool = True) -> str:
                 + " Please try again later or provide your own token."
                 + " Sign-up at: https://www.econdb.com/"
                 + " Your IP address may have been flagged by Cloudflare."
-            )
+            ) from _
 
     url = "https://www.econdb.com/user/create_token/?reset=0"
     if use_cache is True:
