@@ -352,7 +352,9 @@ async def available_indicators(
 @router.command(
     model="EconomicIndicators",
     examples=[
-        APIEx(parameters={"provider": "econdb", "country": "japan", "indicator": "GDP"}),
+        APIEx(
+            parameters={"provider": "econdb", "country": "japan", "indicator": "GDP"}
+        ),
         APIEx(
             description="Enter the country as the full name, or iso code."
             + " Use `available_indicators()` to get a list of supported indicators from EconDB.",
