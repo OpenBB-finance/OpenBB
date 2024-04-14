@@ -353,14 +353,14 @@ async def available_indicators(
     model="EconomicIndicators",
     examples=[
         APIEx(
-            parameters={"provider": "econdb", "country": "japan", "indicator": "GDP"}
+            parameters={"provider": "econdb", "symbol": "PCOCO"}
         ),
         APIEx(
             description="Enter the country as the full name, or iso code."
             + " Use `available_indicators()` to get a list of supported indicators from EconDB.",
             parameters={
+                "symbol": "CPI",
                 "country": "united_states,jp",
-                "latest": False,
                 "provider": "econdb",
             },
         ),

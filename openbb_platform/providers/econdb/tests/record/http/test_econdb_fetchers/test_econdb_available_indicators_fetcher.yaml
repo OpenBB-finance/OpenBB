@@ -16,21 +16,21 @@ interactions:
     body: {}
     headers:
       CF-RAY:
-      - 872fded5dbed2dbf-YVR
+      - 87460b38dbfe605f-YVR
       Cache-Control:
       - max-age=3600
       Connection:
       - keep-alive
       Date:
-      - Fri, 12 Apr 2024 02:43:43 GMT
+      - Sun, 14 Apr 2024 19:18:48 GMT
       Expires:
-      - Fri, 12 Apr 2024 03:43:43 GMT
+      - Sun, 14 Apr 2024 20:18:48 GMT
       Location:
       - https://www.econdb.com/static/help/main_tickers.csv
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=ImAVS8n9CZW3fPgWr%2FJRvm6Npol7mjliIlwZsVH52ZR8MQcleRSpsOG%2Fp%2B3Ug%2F8%2BosW3sc2n3KUNJFIInVQMHx039L4vUxnuMKDzXVq3Jn2ervqTOYBeMfkntYrqsKYLk3jjrJQjc1Q%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=1qy9mDT1e7kNk9oTUSAnuxrXzhvr80h5v3v4pnaLxEzLIV21bpCRmmd4xt%2BnX1TuGLG%2BSQv%2FDTT03qs%2FTr%2BQA2B6cHGHQ6ghs2c10OuqSTfTj7VLDsHyZW4k0%2Fyvk8SaOydE9pgXqA4%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -7957,11 +7957,11 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Age:
-      - '73'
+      - '68020'
       CF-Cache-Status:
       - HIT
       CF-RAY:
-      - 872fded68f206064-YVR
+      - 87460b3a2ba6844a-YVR
       Cache-Control:
       - public, max-age=86400
       Connection:
@@ -7971,11 +7971,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Fri, 12 Apr 2024 02:43:43 GMT
+      - Sun, 14 Apr 2024 19:18:48 GMT
       Etag:
       - '"6614b578-abd48"'
       Expires:
-      - Sat, 13 Apr 2024 02:42:30 GMT
+      - Mon, 15 Apr 2024 00:25:08 GMT
       Last-Modified:
       - Tue, 09 Apr 2024 03:26:48 GMT
       NEL:
@@ -7983,7 +7983,7 @@ interactions:
       Pragma:
       - public
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=j9f4E3PzMOA9HqXBjDSyDRAeqsgkUBoKr%2BsD0UUP0BJlgGI4BRKGZk6RYWhiAmxvcSrK8Wopafmv0aTDf5ITi43S3kczCkjas%2B%2FBtHQaHkx96MZp8YMg7k9axL0z7%2FQwEJEPLMTffFJpFMAf"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=W1hJMicmh%2BOCycgbQKGz5SCP1UJ%2Bgd4hjyUVjx9bvIwruSNMNE9ret0vD1exhzbJb7IK7EL6cMx8kDXVW31MZcUwXIIi9uwUWtLCKxzSS%2BYLgddD%2F6AD5Ol5msKSdafU4Q31AfbmX7AUqXmG"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Vary:
