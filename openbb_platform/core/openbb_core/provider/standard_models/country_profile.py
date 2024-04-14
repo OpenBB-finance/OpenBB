@@ -6,12 +6,12 @@ from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 class CountryProfileQueryParams(QueryParams):
     """Country Profile Query."""
 
-    country: str = Field(description="The country, or country group, to get data for.")
+    country: str = Field(description=QUERY_DESCRIPTIONS.get("country", ""))
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
@@ -23,7 +23,7 @@ class CountryProfileQueryParams(QueryParams):
 class CountryProfileData(Data):
     """Country Profile Data."""
 
-    country: str = Field(description="The country represented by the data.")
+    country: str = Field(description=DATA_DESCRIPTIONS.get("country", ""))
     population: Optional[int] = Field(default=None, description="Population.")
     gdp_usd: Optional[float] = Field(
         default=None, description="Gross Domestic Product, in billions of USD."
