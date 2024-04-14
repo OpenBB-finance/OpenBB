@@ -224,7 +224,7 @@ This list should not be considered as the absolute source of truth. The metadata
 | PGOLD     | Gold                                               |
 | PHEATOIL  | Heating Oil                                        |
 | PHIDE     | Hides                                              |
-| PIORECR   | Iron Ore                                           |
+| PIORECR   | Iron                                               |
 | PLAMB     | Lamb                                               |
 | PLEAD     | Lead                                               |
 | PLITH     | Lithium                                            |
@@ -341,7 +341,7 @@ OBBject
 id: 0661ac07-ab9c-7ebf-8000-849fef1202bc
 results: [{'date': datetime.date(2013, 4, 29), 'symbol': 'POLIRSG', 'country': 'Sin...
 provider: econdb
-warnings: [{'category': 'UserWarning', 'message': "Invalid country code for indicat...
+warnings: [{'category': 'UserWarning', 'message': "Invalid country code for...
 chart: None
 extra: {'results_metadata': {'POLIRID': {'title': 'Indonesia - Policy rate - short ...
 ```
@@ -598,7 +598,7 @@ The grouping behaviour can be overridden. This will allow multiple transformatio
 ### Example - Bypass Group Parameters
 
 The "~" character is used to separate the base symbol + 2-letter ISO country code, and the transformation.
-It works as a flag to exclude from the other paramters.
+It works as a flag to exclude from the other parameters.
 
 ```python
 obb.economy.indicators("CPIUS~").to_df().tail(2)
