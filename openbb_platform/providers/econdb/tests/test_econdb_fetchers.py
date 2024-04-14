@@ -1,6 +1,5 @@
 """ Test EconDB Fetchers. """
 
-import asyncio
 import datetime
 
 import pytest
@@ -8,15 +7,10 @@ from openbb_core.app.service.user_service import UserService
 from openbb_econdb.models.available_indicators import EconDbAvailableIndicatorsFetcher
 from openbb_econdb.models.country_profile import EconDbCountryProfileFetcher
 from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFetcher
-from openbb_econdb.utils.helpers import create_token
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
-
-if test_credentials.get("econdb_api_key") is None:
-    test_credentials["econdb_api_key"] = asyncio.run(create_token())
-
 
 @pytest.fixture(scope="module")
 def vcr_config():
