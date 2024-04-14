@@ -666,7 +666,7 @@ symbols = [
 ]
 data = obb.economy.indicators(symbol=symbols)
 
-curve = data.to_df().filter(like="2024-04-11")
+curve = data.to_df().filter(like="2024-04-11", axis=0)
 
 curve
 ```
