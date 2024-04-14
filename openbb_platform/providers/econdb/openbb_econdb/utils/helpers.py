@@ -389,7 +389,7 @@ def get_indicator_countries(indicator: str) -> List[str]:
 async def create_token(use_cache: bool = True) -> str:
     """Create a temporary token for the EconDB API."""
 
-    async def _callback(response, session):
+    async def _callback(response, session):  # pylint: ignore=W0613
         """Callback function to get the token."""
         try:
             return await response.json()
