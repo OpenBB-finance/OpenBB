@@ -1,5 +1,7 @@
 """FMP Equity Quote Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from datetime import (
     date as dateType,
@@ -119,7 +121,7 @@ class FMPEquityQuoteFetcher(
 
         symbols = query.symbol.split(",")
 
-        results = []
+        results: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""

@@ -1,5 +1,7 @@
 """FMP Market Snapshots Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
@@ -98,10 +100,10 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
 
         if isinstance(v, (int, float)) and v != 0:
             try:
-                v = safe_fromtimestamp(v)
-                if v.hour == 0 and v.minute == 0 and v.second == 0:
-                    v = v.date()
-                return v
+                v = safe_fromtimestamp(v)  # type: ignore
+                if v.hour == 0 and v.minute == 0 and v.second == 0:  # type: ignore
+                    v = v.date()  # type: ignore
+                return v  # type: ignore
             except ValueError:
                 return None
         return None
