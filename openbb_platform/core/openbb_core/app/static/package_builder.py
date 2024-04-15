@@ -11,6 +11,7 @@ from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
+from textwrap import shorten
 from typing import (
     Any,
     Callable,
@@ -46,6 +47,7 @@ from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.app.version import CORE_VERSION, VERSION
@@ -1079,10 +1081,6 @@ class DocstringGenerator:
 
         docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
         docstring += "\n\n"
-        if Env().LLM_MODE:
-            if len(docstring) > 1024:
-                docstring = docstring[:1021] + "..."
-            return docstring
         docstring += f"{create_indent(2)}Parameters\n"
         docstring += f"{create_indent(2)}----------\n"
 
@@ -1158,7 +1156,7 @@ class DocstringGenerator:
                 results_type = (
                     cls._get_repr(
                         cls._get_generic_types(
-                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr]
+                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr,arg-type]
                             [],
                         ),
                         model_name,
@@ -1184,6 +1182,12 @@ class DocstringGenerator:
                 examples,
             )
 
+        if w := SystemService().system_settings.python_settings.docstring_max_length:
+            doc = shorten(
+                doc,
+                width=w,
+                placeholder="...",
+            )
         return doc
 
     @classmethod
