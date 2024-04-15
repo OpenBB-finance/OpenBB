@@ -380,5 +380,5 @@ data.charting.to_chart(**chart_params)
 ![indicators2](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/76c06aff-a568-4b7f-80d4-c58a73c0f1d7)
 
 :::tip
-Data can be exported directly from the chart as a CSV. Use the buttom at the bottom-right of the mode bar.
+Data can be exported directly from the chart as a CSV. Use the button at the bottom-right of the mode bar.
 :::
