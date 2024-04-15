@@ -3,9 +3,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, PositiveInt, field_validator
-
-from openbb_core.env import Env
+from pydantic import BaseModel, ConfigDict, Field, PositiveInt
 
 
 class Preferences(BaseModel):
@@ -40,11 +38,3 @@ class Preferences(BaseModel):
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
-
-    @field_validator("output_type", mode="before")
-    @classmethod
-    def llm_mode(cls, value: str) -> str:  # pylint: disable=no-self-argument
-        """Set LLM mode."""
-        if Env().LLM_MODE:
-            return "llm"
-        return value
