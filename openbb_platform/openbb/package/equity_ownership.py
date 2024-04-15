@@ -53,7 +53,9 @@ class ROUTER_equity_ownership(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
+        """Get the form 13F.
+
+        The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
         that is required to be filed by all institutional investment managers with at least
         $100 million in assets under management.
         Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
