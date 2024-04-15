@@ -34,6 +34,7 @@ class Account:
         self._openbb_directory = (
             base_app._command_runner.system_settings.openbb_directory
         )
+        self._hub_service: Optional[HubService] = None
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -120,18 +121,20 @@ class Account:
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
-        hs = self._create_hub_service(email, password, pat)
-        incoming = hs.pull()
+        self._hub_service = self._create_hub_service(email, password, pat)
+        incoming = self._hub_service.pull()
         updated: UserSettings = UserService.update_default(incoming)
         self._base_app._command_runner.user_settings = updated
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(self._openbb_directory, self.SESSION_FILE)
             with open(session_file, "w") as f:
-                if not hs.session:
+                if not self._hub_service.session:
                     raise OpenBBError("Not connected to hub.")
 
-                json.dump(hs.session.model_dump(mode="json"), f, indent=4)
+                json.dump(
+                    self._hub_service.session.model_dump(mode="json"), f, indent=4
+                )
 
         if return_settings:
             return self._base_app._command_runner.user_settings
@@ -151,14 +154,12 @@ class Account:
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
-        hub_session = self._base_app._command_runner.user_settings.profile.hub_session
-        if not hub_session:
+        if not self._hub_service:
             UserService.write_default_user_settings(
                 self._base_app._command_runner.user_settings
             )
         else:
-            hs = HubService(hub_session)
-            hs.push(self._base_app._command_runner.user_settings)
+            self._hub_service.push(self._base_app._command_runner.user_settings)
 
         if return_settings:
             return self._base_app._command_runner.user_settings
@@ -178,14 +179,12 @@ class Account:
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
-        hub_session = self._base_app._command_runner.user_settings.profile.hub_session
-        if not hub_session:
+        if not self._hub_service:
             self._base_app._command_runner.user_settings = (
                 UserService.read_default_user_settings()
             )
         else:
-            hs = HubService(hub_session)
-            incoming = hs.pull()
+            incoming = self._hub_service.pull()
             updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
@@ -208,12 +207,10 @@ class Account:
         Optional[UserSettings]
             User settings: profile, credentials, preferences
         """
-        hub_session = self._base_app._command_runner.user_settings.profile.hub_session
-        if not hub_session:
+        if not self._hub_service:
             raise OpenBBError("Not connected to hub.")
 
-        hs = HubService(hub_session)
-        hs.disconnect()
+        self._hub_service.disconnect()
 
         session_file = Path(self._openbb_directory, self.SESSION_FILE)
         if session_file.exists():
