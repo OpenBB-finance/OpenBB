@@ -11,7 +11,6 @@ from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
-from textwrap import shorten
 from typing import (
     Any,
     Callable,
@@ -1046,6 +1045,7 @@ class DocstringGenerator:
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
+        sections: List[str],
     ) -> str:
         """Create the docstring for model."""
 
@@ -1079,50 +1079,56 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
-        docstring += "\n\n"
-        docstring += f"{create_indent(2)}Parameters\n"
-        docstring += f"{create_indent(2)}----------\n"
+        # Description summary
+        if "description" in sections:
+            docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
+            docstring += "\n\n"
+        if "parameters" in sections:
+            docstring += f"{create_indent(2)}Parameters\n"
+            docstring += f"{create_indent(2)}----------\n"
 
-        # Explicit parameters
-        for param_name, param in explicit_params.items():
-            type_, description = get_param_info(param)
-            type_str = format_type(str(type_), char_limit=79)
-            docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            # Explicit parameters
+            for param_name, param in explicit_params.items():
+                type_, description = get_param_info(param)
+                type_str = format_type(str(type_), char_limit=79)
+                docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Kwargs
-        for param_name, param in kwarg_params.items():
-            p_type = getattr(param, "type", "")
-            type_ = (
-                getattr(p_type, "__name__", "") if inspect.isclass(p_type) else p_type
-            )
+            # Kwargs
+            for param_name, param in kwarg_params.items():
+                p_type = getattr(param, "type", "")
+                type_ = (
+                    getattr(p_type, "__name__", "")
+                    if inspect.isclass(p_type)
+                    else p_type
+                )
 
-            if "NoneType" in str(type_):
-                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+                if "NoneType" in str(type_):
+                    type_ = f"Optional[{type_}]".replace(", NoneType", "")
 
-            default = getattr(param, "default", "")
-            description = getattr(default, "description", "")
-            docstring += f"{create_indent(2)}{param_name} : {type_}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+                default = getattr(param, "default", "")
+                description = getattr(default, "description", "")
+                docstring += f"{create_indent(2)}{param_name} : {type_}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Returns
-        docstring += "\n"
-        docstring += f"{create_indent(2)}Returns\n"
-        docstring += f"{create_indent(2)}-------\n"
-        providers, _ = get_param_info(explicit_params.get("provider", None))
-        docstring += cls.get_OBBject_description(results_type, providers)
+        if "returns" in sections:
+            # Returns
+            docstring += "\n"
+            docstring += f"{create_indent(2)}Returns\n"
+            docstring += f"{create_indent(2)}-------\n"
+            providers, _ = get_param_info(explicit_params.get("provider", None))
+            docstring += cls.get_OBBject_description(results_type, providers)
 
-        # Schema
-        underline = "-" * len(model_name)
-        docstring += f"\n{create_indent(2)}{model_name}\n"
-        docstring += f"{create_indent(2)}{underline}\n"
+            # Schema
+            underline = "-" * len(model_name)
+            docstring += f"\n{create_indent(2)}{model_name}\n"
+            docstring += f"{create_indent(2)}{underline}\n"
 
-        for name, field in returns.items():
-            field_type = cls.get_field_type(field.annotation, field.is_required())
-            description = getattr(field, "description", "")
-            docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            for name, field in returns.items():
+                field_type = cls.get_field_type(field.annotation, field.is_required())
+                description = getattr(field, "description", "")
+                docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
         return docstring
 
     @classmethod
@@ -1137,6 +1143,11 @@ class DocstringGenerator:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
         param_types = {}
+
+        sections = SystemService().system_settings.python_settings.docstring_sections
+        max_length = (
+            SystemService().system_settings.python_settings.docstring_max_length
+        )
 
         # Parameters explicit in the function signature
         explicit_params = dict(formatted_params)
@@ -1171,23 +1182,24 @@ class DocstringGenerator:
                     kwarg_params=kwarg_params,
                     returns=return_schema.model_fields,
                     results_type=results_type,
+                    sections=sections,
                 )
         else:
             doc = doc.replace("\n    ", f"\n{create_indent(2)}")
 
-        if doc and examples:
+        if doc and examples and "examples" in sections:
             doc += cls.build_examples(
                 path.replace("/", "."),
                 param_types,
                 examples,
             )
 
-        if w := SystemService().system_settings.python_settings.docstring_max_length:
-            doc = shorten(
-                doc,
-                width=w,
-                placeholder="...",
-            )
+        if (
+            max_length  # pylint: disable=chained-comparison
+            and len(doc) > max_length
+            and max_length > 3
+        ):
+            doc = doc[: max_length - 3] + "..."
         return doc
 
     @classmethod
