@@ -67,7 +67,7 @@ spdrs = obb.equity.price.historical(SPDRS, start_date=start_date, provider="yfin
 spdrs.show()
 ```
 
-![SPDRs Cumulative Returns - 5 years](cumsum1.png)
+![SPDRs Cumulative Returns - 5 years](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8884f4ed-b09c-4161-9dc6-87ad66d9fc8b)
 
 ### Redraw as YTD
 
@@ -84,7 +84,7 @@ spdrs.charting.to_chart(data=new_data, title="YTD")
 This replaces the chart that was already created.
 :::
 
-![SPDRs Cumulative Returns - YTD](cumsum2.png)
+![SPDRs Cumulative Returns - YTD](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/22ed2588-1098-4712-aec1-54dd22c324ef)
 
 ## Price Performance Bar Chart
 
@@ -95,7 +95,7 @@ price_performance = obb.equity.price.performance(SPDRS, chart=True)
 price_performance.show()
 ```
 
-![Price Performance](performance1.png)
+![Price Performance](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0de3260d-7fce-490b-90e1-bdfa38d6ab23)
 
 ### Create Bar Chart
 
@@ -162,4 +162,4 @@ create_bar_chart(
     title="S&P Energy Sector YTD Turnover Rate",
 )
 ```
-![S&P 500 Energy Sector Turnover Rate](turnover.png)
+![S&P 500 Energy Sector Turnover Rate](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4f59eb36-e637-4a54-87ab-e730e43baf8d)
