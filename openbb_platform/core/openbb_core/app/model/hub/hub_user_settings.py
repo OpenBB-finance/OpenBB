@@ -1,16 +1,15 @@
 """Hub user settings model."""
 
-# from typing import Dict, List, Union
+from typing import Dict, Optional
 
-from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class HubUserSettings(BaseModel):
-    """User settings for the Hub."""
+    """Hub user settings model."""
 
     # features_settings: Dict[str, str]
-    features_keys: FeaturesKeys = Field(default_factory=FeaturesKeys)
+    features_keys: Dict[str, Optional[str]] = Field(default_factory=dict)
     # features_sources: Dict[str, List[str]]
     # features_terminal_style: Dict[str, Union[str, Dict[str, str]]]
 
