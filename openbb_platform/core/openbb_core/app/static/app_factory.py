@@ -62,10 +62,7 @@ class BaseApp:
 def create_app(extensions: Optional[E] = None) -> Type[BaseApp]:
     """Create the app."""
 
-    class EmptyClass:
-        pass
-
-    class App(BaseApp, extensions or EmptyClass):  # type: ignore
+    class App(BaseApp, extensions or object):  # type: ignore[misc]
         def __repr__(self) -> str:
             # pylint: disable=E1101
             ext_doc = extensions.__doc__ if extensions else ""
