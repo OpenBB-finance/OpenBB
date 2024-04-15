@@ -3,6 +3,7 @@ title: OpenBB Platform Extensions
 sidebar_position: 1
 description: This page describes the types of extensions available for the OpenBB Platform.
 keywords:
+- reference
 - OpenBB Platform
 - Python client
 - Fast API
