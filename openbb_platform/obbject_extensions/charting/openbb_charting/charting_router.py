@@ -290,7 +290,6 @@ def equity_price_historical(  # noqa: PLR0912
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
         fig.update_layout(
-            title=dict(text=title, x=0.5, font=dict(size=16)),
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
@@ -341,6 +340,10 @@ def equity_price_historical(  # noqa: PLR0912
             dragmode="pan",
             hovermode="x",
         )
+
+        if kwargs.get("title"):
+            title = kwargs["title"]
+        fig.update_layout(title=dict(text=title, x=0.5))
 
         content = fig.to_plotly_json()
 
