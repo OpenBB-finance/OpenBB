@@ -1217,14 +1217,10 @@ def technical_relative_rotation(
     ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
     momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
     benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
-    study = (
-        str(kwargs.get("study"))
-        if "study" in kwargs and kwargs.get("study") is not None
-        else str(kwargs["obbject_item"].study)  # type: ignore
-    )
-    show_tails = True
-    if kwargs.get("show_tails") is not None:
-        show_tails = kwargs.get("show_tails") is True  # type: ignore
+    study = kwargs.get("study", None)
+    study = str(kwargs["obbject_item"].study) if study is None else str(study)
+    show_tails = kwargs.get("show_tails")
+    show_tails = True if show_tails is None else show_tails
     tail_periods = int(kwargs.get("tail_periods")) if "tail_periods" in kwargs else 16  # type: ignore
     tail_interval = str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"  # type: ignore
     date = kwargs.get("date") if "date" in kwargs else None  # type: ignore
@@ -1243,9 +1239,11 @@ def technical_relative_rotation(
         )
 
     figure = OpenBBFigure(fig)
+    font_color = "black" if ChartStyle().plt_style == "light" else "white"
     figure.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(255,255,255,1)",
+        font=dict(color=font_color),
         yaxis=dict(
             showgrid=True,
             gridcolor="rgba(128,128,128,0.3)",
