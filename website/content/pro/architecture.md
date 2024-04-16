@@ -1,6 +1,6 @@
 ---
-title: Getting Started
-sidebar_position: 0
+title: Architecture
+sidebar_position: 1
 description: Get started with OpenBB Terminal Pro, your comprehensive tool for investment
   research. Understand the layout and powerful features that can enhance your research
   capabilities.
@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Getting Started | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Architecture | OpenBB Terminal Pro Docs" />
 
 Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment research.
 
