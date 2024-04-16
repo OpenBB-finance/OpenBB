@@ -9,6 +9,54 @@ interactions:
       Connection:
       - keep-alive
     method: GET
+    uri: https://www.econdb.com/user/create_token/?reset=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAxTLSwqAIBAA0KvIrBOcccbfZUJNQdpIbYro7tHbvwfyHOvebkgKkANVcjVTEZbY
+        ig0kgtYzY4ilmyBu6znDoqBdcxzt/BsZYm1Yo1dkk7FJEN4PAAD//wMAUDPkb1kAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8757cfa3ad5f2d6c-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Apr 2024 23:03:51 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=bzxJE5Y4WTu%2Fk8wzG0GOCRKkmLZ7g67rctpErrmfGGBuZYFkgaWqaJZZgfuahjfAptNMbO8MCpz%2FOf9DnkW%2FiXZo29EoouU69YyXacIHdhC2GnQJ4MyHdDm0%2BJoJ5xrOVOMZiqGAyVfMzaNG"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
     uri: https://www.econdb.com/api/series/?format=json&from=2020-01-01&ticker=%5BGDPUS%5D&to=2024-01-01&token=MOCK_TOKEN
   response:
     body:
@@ -34,7 +82,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 87460b466ef48414-YVR
+      - 8757cfa49bec2db5-YVR
       Connection:
       - keep-alive
       Content-Encoding:
@@ -42,13 +90,13 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 14 Apr 2024 19:18:50 GMT
+      - Tue, 16 Apr 2024 23:03:51 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=ELyFl90RCxxBOvZCEQDncIU4RHBAv%2F8EcKPE%2FFV6y4onxu%2BcrhVjzbCj%2FQ5rAz59QIHGDmMmJLJZUyDK%2BgxPLT%2B37AF540W8Je24amiKn3VWaq4RsVijzHw1gQfryqItvFUrdDq16qvMl3bG"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=DtYnXyxGPYd3xpC3hzdp9nGI23hFrYmMBTlGXUMtj0lsucYCQqy4fOonk9LaBWjFc8o5EVnLIuL4ke%2BRMAQu8%2FGqXHx%2F5K1CUg7gxtYM%2BXCpS9P4Qiqnl%2BvMvo2rHjKgj%2BZ0s35XHFGAUR5Y"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
