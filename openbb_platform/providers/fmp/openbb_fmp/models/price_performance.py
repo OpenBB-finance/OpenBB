@@ -73,13 +73,18 @@ class FMPPricePerformanceFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = list(set(query.symbol.upper().split(",")))
         chunk_size = 200
-        chunks = [symbols[i:i + chunk_size] for i in range(0, len(symbols), chunk_size)]
-        urls = [create_url(
-            version=3,
-            endpoint=f"stock-price-change/{','.join(chunk)}",
-            api_key=api_key,
-            exclude=["symbol"],
-        ) for chunk in chunks]
+        chunks = [
+            symbols[i : i + chunk_size] for i in range(0, len(symbols), chunk_size)
+        ]
+        urls = [
+            create_url(
+                version=3,
+                endpoint=f"stock-price-change/{','.join(chunk)}",
+                api_key=api_key,
+                exclude=["symbol"],
+            )
+            for chunk in chunks
+        ]
         return await get_data_urls(urls, **kwargs)
 
     @staticmethod
