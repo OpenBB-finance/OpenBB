@@ -3,33 +3,33 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/stock-price-change/AAPL,SPY,QQQ,MSFT,AMZN,GOOG?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/api/v3/stock-price-change/MSFT,AAPL,GOOG,SPY,AMZN,QQQ?apikey=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WUvW5UMRCF+zzFautkNP/20K2ESENIVqEJEQWIkogCCiLEuzO+vr6JV2yxzZHv
-        er5zzvjxYrf7k7/dbv/z+enrj+/7N7v94XD3fn/ZVXqbCgEL2qpYU64QUD3MncfBmy6bFDEqscqy
-        yCQg5FJW0ZuIIBaGyLqqz7++pSwOZFbGbfTQ7idAkzo+l6aZg1kUGlM1jWmZNLaZsKmVGBiLjZGe
-        vvxu/ylsxYGLVUr97+X/nLi/ezgxgpL5xAhGNyxSJyMYSiUdg3QXApjqkHz1CysVVRtyNyGABOW1
-        BQUcC4+rFwfYoDriuHdxwATMJYYr3QBKT5W4DP+6AVXze2ItZ+mPx+MpPftUgxyfOUjLGGzAW8Y9
-        hujwFaK6j3MLfQW2GgNzjZ8BhX2MSiuoi9L2f4sWIMoxxU+YBzl0BN3phQlKIM70VgUCieMs/c39
-        u48TfraojK6O7EOrhtg2bsNyqFxpWgBM/6XUoS30AaVEDKnTK+aozFt/2/wZkxBuvVno3aEQT8kz
-        ZZwoL0n07ltmURXH1x1e1Kum+0x+Fv9w8+nDhC9QYzNx4aeMnxQ3uxuVgkQ56X1CsTllhK/5W32N
-        tlS7AaYZddmqQ2vUtmW64F/lnrv59nLY6gmG0bz7WQegXPGZn8RUpL0zLmcNuL69vT6pf6BOBchn
-        iavM3U8Adt2eqkUzMA6euk/5zEWGcBo/1bAp/lyIqlKnzW8uFX15kfuSt9XnzeO1/DWgFtJxtPNn
-        ZbFxX3z+BxdaXH0ABgAA
+        H4sIAAAAAAAAA3WUO29UMRCF+/yK1dbZ0TzsmTHdSog0LEkUmoAoQJREFFAQIf4743tt53phi23O
+        Xj/Od87449Vu9zt+u93+x/PTl+/f9q92+9PDm/f761Wl16EgMBs3JVflwKBSlPpXp6ohpESulL3J
+        UmWNxQX7aq0Sp1gtnJr2/PNriERgPpbSY0hJIGdW6dtVLRdApC7lx2U7AXbUfgZhVQsrkDt19enz
+        r7plbFf/IMs59D/X/wNwPN69nQAcCAqpbQkgKJkVk5kBgZsW3QI4GJgi9dULgUMOKop5InBwsOxe
+        tggYMpH27xYCcX3OPOg1BAgY4kTAKfgV5g5rJUASGRlwXNMvEri5vb2ZCUQHiLrX3KAkM++7L/4L
+        GAeVrX2Po+LIrfuIGqWUvvIlfys+F0ChAhn7VU1y9IQHusU+5QQsxgMdrqsZSJl6Gqt/pYQXfT/c
+        PZ7bpjIK2KsvkfA4qsXOqaQeSes9ok21pwxJaThcbYdD8tzLsWZOoLWmU+jRt/wyHotrk1qOUazV
+        NFmMobt0tYWOqWIrRhetH08f3v3jXWXUrEXuQmnUrLrKQLiZ0cVoAS00mrGYFwdBznPmzFGOqMLW
+        vTkkwTlzA89JpqEvCo7oPdtmHkUCu1gvanPvRnEni9egXPR/f39/9ughlvPk0THPyUcuKVpbZHr0
+        Yry15Ln0GlDGy7D6t9jwZbqp1ZvRR0n6xGPyMldeCCizzyOfMOZUGOf0LaWAj87V/NWnvzBMedH1
+        BQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
       Access-Control-Allow-Headers:
       - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
-        APPS
+        APPS, publicauthkey, privateauthkey
       Access-Control-Allow-Methods:
       - GET, POST, OPTIONS
       Access-Control-Allow-Origin:
@@ -43,9 +43,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 31 Oct 2023 12:26:07 GMT
-      ETag:
-      - W/"600-x3+R/EIjLOnwqmRci/IeiPVQcrY"
+      - Tue, 16 Apr 2024 20:21:31 GMT
+      Etag:
+      - W/"5f5-YOfcGWSFlAMQeQP8Lw/jMZliWe8"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
