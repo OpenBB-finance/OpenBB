@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_urls
 from pydantic import Field, model_validator
 
 
@@ -71,14 +71,16 @@ class FMPPricePerformanceFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        url = create_url(
+        symbols = list(set(query.symbol.upper().split(",")))
+        chunk_size = 200
+        chunks = [symbols[i:i + chunk_size] for i in range(0, len(symbols), chunk_size)]
+        urls = [create_url(
             version=3,
-            endpoint=f"stock-price-change/{query.symbol}",
+            endpoint=f"stock-price-change/{','.join(chunk)}",
             api_key=api_key,
             exclude=["symbol"],
-        )
-        return await get_data_many(url, **kwargs)
+        ) for chunk in chunks]
+        return await get_data_urls(urls, **kwargs)
 
     @staticmethod
     def transform_data(
@@ -88,7 +90,7 @@ class FMPPricePerformanceFetcher(
     ) -> List[FMPPricePerformanceData]:
         """Return the transformed data."""
 
-        symbols = query.symbol.split(",")
+        symbols = list(set(query.symbol.upper().split(",")))
         if len(data) != len(symbols):
             data_symbols = [d["symbol"] for d in data]
             missing_symbols = [
