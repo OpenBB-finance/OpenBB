@@ -3,6 +3,7 @@ title: Basic Response & Command Coverage
 sidebar_position: 4
 description: This page details the basic response and output that can be expected to be received from the the OpenBB Platform, as well as instructions for determining the command coverage provided by the installed extensions.
 keywords:
+- tutorial
 - standardized output
 - OBBject
 - basic response

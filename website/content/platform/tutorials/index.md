@@ -1,8 +1,9 @@
 ---
-title: Overview
+title: Tutorials
 sidebar_position: 1
-description: An overview for getting started with the OpenBB Platform Python client and Fast API, details on authorization, data providers, settings, responses, commands, logging, and features such as dynamic command execution.
+description: Tutorials for getting started with the OpenBB Platform Python client and Fast API, details on authorization, data providers, settings, responses, commands, logging, and features such as dynamic command execution.
 keywords:
+- tutorial
 - OpenBB Platform
 - Python client
 - Fast API
@@ -25,7 +26,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Overview - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Tutorials - Usage | OpenBB Platform Docs" />
+
+## Overview
 
 At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API.
 The extension framework provides interoperability between as many, or few, services required.
@@ -41,11 +44,13 @@ Optional extras are not included with the base installation, and these include:
 
 Additional functionality and data providers can be installed or removed independently. Refer to [Extensions](extensions) for the list of extensions hosted in the OpenBB GitHub repository.
 
+## Topics In This Section
+
 The pages in this section cover topics to get started using the OpenBB Platform, including:
 
-- [Authorization and API Keys](usage/api_keys)
-- [Launching the REST API](usage/rest_api)
-- [User Settings and Environment Variables](usage/settings_and_environment_variables)
-- [Basic Response](usage/basic_response)
-- [Basic Syntax](usage/basic_syntax)
-- [Explanations](usage/explanation)
+- [Authorization and API Keys](tutorials/api_keys)
+- [Launching the REST API](tutorials/rest_api)
+- [User Settings and Environment Variables](tutorials/settings_and_environment_variables)
+- [Basic Response](tutorials/basic_response)
+- [Basic Syntax](tutorials/basic_syntax)
+

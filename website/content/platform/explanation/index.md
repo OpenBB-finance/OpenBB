@@ -29,7 +29,7 @@ Subjects covered include:
 - [Finding Ticker Symbols](explanation/find_symbols)
 - [Loading Historical Price Data](explanation/historical_prices)
 - [Market Calendars](explanation/market_calendars)
-- [Financial Statements](explanations/financial_statements)
-- [Commitment of Traders](explanations/commitment_of_traders)
+- [Financial Statements](explanation/financial_statements)
+- [Commitment of Traders](explanation/commitment_of_traders)
 
 Jupyter Notebook examples are also hosted in the OpenBB GitHub repository [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/examples)

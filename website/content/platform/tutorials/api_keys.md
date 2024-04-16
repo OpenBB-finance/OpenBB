@@ -3,6 +3,7 @@ title: API Keys
 sidebar_position: 1
 description: An overview for setting up the OpenBB Platform Python client and Fast API with data provider API keys.
 keywords:
+- tutorial
 - OpenBB Platform
 - Python client
 - Fast API
