@@ -14,4 +14,3 @@
 ./build/pyinstaller
 ./website/config.toml
 ./**/node_modules
-./openbb_platform/provider/econdb/utils/helpers.py
