@@ -144,11 +144,11 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
-        token = credentials.get("econdb_api_key", "")
+        token = credentials.get("econdb_api_key", "")  # type: ignore
         # Attempt to create a temporary token if one is not supplied.
         if not token:
             token = await helpers.create_token(use_cache=query.use_cache)
-            credentials.update({"econdb_api_key": token})
+            credentials.update({"econdb_api_key": token})  # type: ignore
         base_url = "https://www.econdb.com/api/series/?ticker="
         data: List[Dict] = []
         symbols = query.symbol.split(",")
