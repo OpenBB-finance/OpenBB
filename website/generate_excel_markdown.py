@@ -33,114 +33,14 @@ class CommandLib:
     }
     API_PREFIX = "/api/v1"
 
-    # These examples will be generated in the core, but we keep them here meanwhile
-    EXAMPLE_PARAMS: Dict[str, Dict] = {
+    EXAMPLES: Dict[str, Dict] = {
         "/get": {
-            "array": '{"a","b","c";"d","e","f"}',
-            "rows": '"d"',
-            "columns": '"c"',
+            "Example 0": '=OBB.GET({"a","b","c";"d","e","f"})',
+            "Example 1": '=OBB.GET({"a","b","c";"d","e","f"},"d","c")',
         },
         "/byod": {
-            "widget": '"widget_name"',
-            "backend": '"backend_name"',
-        },
-        "crypto": {
-            "symbol": '"BTCUSD"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "query": '"coin"',
-        },
-        "currency": {
-            "symbol": '"EURUSD"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-        },
-        "derivatives": {
-            "symbol": '"AAPL"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-        },
-        "/derivatives/futures/curve": {
-            "symbol": '"NG"',
-        },
-        "economy": {
-            "countries": '"united_states"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "units": '"growth_previous"',
-            "frequency": '"quarterly"',
-            "harmonized": "TRUE",
-            "query": '"gdp"',
-            "symbol": '"GFDGDPA188S"',
-            "limit": 5,
-            "period": '"quarter"',
-            "type": '"real"',
-            "adjusted": "TRUE",
-        },
-        "/economy/fred_regional": {
-            "symbol": '"NYICLAIMS"',
-        },
-        "equity": {
-            "symbol": '"AAPL"',
-            "tag": '"ebitda"',
-            "query": '"ebitda"',
-            "year": 2022,
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "limit": 5,
-            "form_type": '"10-K"',
-            "period": '"annual"',
-            "frequency": '"quarterly"',
-            "type": "",
-            "sort": '"desc"',
-            "structure": '"flat"',
-            "date": '"2023-05-07"',
-            "page": 1,
-            "interval": '"1d"',
-            "is_symbol": "FALSE",
-        },
-        "/equity/fundamental/reported_financials": {
-            "symbol": '"AAPL"',
-            "period": '"annual"',
-            "statement_type": '"balance"',
-            "limit": 5,
-        },
-        "etf": {
-            "symbol": '"SPY"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "query": '"global"',
-        },
-        "fixedincome": {
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "maturity": '"90d"',
-            "category": '"nonfinancial"',
-            "grade": '"aa"',
-            "date": '"2023-05-07"',
-            "yield_curve": '"spot"',
-            "index_type": '"yield"',
-            "inflation_adjusted": "TRUE",
-            "interest_rate_type": '"deposit"',
-        },
-        "index": {
-            "symbol": '"^GSPC"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "index": '"sp500"',
-        },
-        "news": {
-            "symbol": '"AAPL"',
-            "symbols": '"AAPL,MSFT"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "limit": 5,
-        },
-        "regulators": {
-            "symbol": '"AAPL"',
-            "start_date": '"2023-01-01"',
-            "end_date": '"2023-12-31"',
-            "query": '"AAPL"',
+            "Example 0": '=OBB.BYOD("widget_name")',
+            "Example 1": '=OBB.BYOD("widget_name","backend_name")',
         },
     }
 
@@ -262,35 +162,41 @@ class CommandLib:
         return {}
 
     def _get_examples(
-        self, cmd: str, signature_: str, parameters: dict, sep: str = ","
-    ) -> dict:
+        self, cmd: str, sig_parameters: Dict, sep: str = ","
+    ) -> Dict[str, str]:
         """Get the examples of the command."""
-        sig = signature_.split("(")[0] + "("
-        category = signature_.split(".")[1].lower()
-
-        def get_p_value(cmd, p_name) -> str:
-            if cmd in self.EXAMPLE_PARAMS:
-                return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
-            return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
-
-        required_eg = sig
-        for p_name, p_info in parameters.items():
-            if p_info["required"]:
-                p_value = get_p_value(cmd, p_name)
-                required_eg += f"{p_value}{sep}"
-        required_eg = required_eg.strip(f"{sep} ") + ")"
-
-        standard_eg = sig
-        for p_name, p_info in parameters.items():
-            if p_name == "provider":
-                break
-            p_value = get_p_value(cmd, p_name)
-            standard_eg += f"{p_value}{sep}"
-        standard_eg = standard_eg.strip(f"{sep} ") + ")"
-
         if cmd in ("/get", "/byod"):
-            return {"Required": required_eg, "Standard": standard_eg}
-        return {"Required": required_eg}
+            return self.EXAMPLES[cmd]
+
+        # API examples
+        examples = self._traverse(
+            ["paths", self.API_PREFIX + cmd, "get", "examples"], self.openapi
+        )
+        sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+        ex_reference: Dict[str, str] = {}
+        for i, ex in enumerate(examples):
+            ex_code = ""
+            if ex.get("scope") == "api":
+                ex_code += sig + "("
+                ex_parameters = ex.get("parameters", {})
+                for p_name, p_info in sig_parameters.items():
+                    p_type = p_info.get("type", {})
+                    if p_value := ex_parameters.get(p_name):
+                        if p_type == "Text":
+                            ex_code += f'"{p_value}"{sep}'
+                        elif p_type == "Boolean":
+                            p_type = "TRUE" if bool(p_value) else "FALSE"
+                            ex_code += f"{p_type}{sep}"
+                        else:
+                            ex_code += f"{p_value}{sep}"
+                    else:
+                        ex_code += sep
+                ex_code = ex_code.strip(sep)
+                ex_code += ")"
+            # Some example are repeated, we only want to add them once
+            if ex_code not in ex_reference.values():
+                ex_reference[f"Example {i}"] = ex_code
+        return ex_reference
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -303,7 +209,7 @@ class CommandLib:
         signature_ = self._get_signature(cmd, parameters)
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        examples = self._get_examples(cmd, signature_, parameters)
+        examples = self._get_examples(cmd, parameters)
         return {
             "name": name,
             "description": description,
@@ -423,7 +329,7 @@ class Editor:
 
         def get_examples() -> str:
             if cmd_examples := cmd_info["examples"]:
-                examples = "### Example\n\n"
+                examples = "## Examples\n\n"
                 for _, v in cmd_examples.items():
                     # examples += f"### {k}\n\n"
                     examples += f"```{self.interface}\n"
