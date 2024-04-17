@@ -24,7 +24,7 @@ class AvailableIndicatorsData(Data):
     )
     symbol: Optional[str] = Field(
         default=None,
-        description=DATA_DESCRIPTIONS.get("symbol")
+        description=DATA_DESCRIPTIONS.get("symbol", "")
         + " The root symbol with additional codes.",
     )
     country: Optional[str] = Field(
