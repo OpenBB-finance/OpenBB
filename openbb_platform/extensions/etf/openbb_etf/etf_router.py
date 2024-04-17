@@ -177,7 +177,7 @@ async def holdings_date(
     deprecation=OpenBBDeprecationWarning(
         message="This endpoint is deprecated; pass a list of holdings symbols directly to"
         + " `/equity/price/performance` instead.",
-        since=(4, 1, 6),
+        since=(4, 1),
         expected_removal=(4, 2),
     ),
     examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
