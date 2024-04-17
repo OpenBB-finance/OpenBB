@@ -1,5 +1,6 @@
 """ETF Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -172,6 +173,13 @@ async def holdings_date(
 
 @router.command(
     model="EtfHoldingsPerformance",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; pass a list of holdings symbols directly to"
+        + " `/equity/price/performance` instead.",
+        since=(4, 1, 6),
+        expected_removal=(4, 2),
+    ),
     examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_performance(

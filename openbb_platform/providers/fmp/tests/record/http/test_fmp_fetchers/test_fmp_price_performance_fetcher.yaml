@@ -9,21 +9,20 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/stock-price-change/MSFT,AAPL,GOOG,SPY,AMZN,QQQ?apikey=MOCK_API_KEY
+    uri: https://financialmodelingprep.com/api/v3/stock-price-change/AAPL,SPY,QQQ,MSFT,AMZN,GOOG?apikey=MOCK_API_KEY
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WUO29UMRCF+/yK1dbZ0TzsmTHdSog0LEkUmoAoQJREFFAQIf4743tt53phi23O
-        Xj/Od87449Vu9zt+u93+x/PTl+/f9q92+9PDm/f761Wl16EgMBs3JVflwKBSlPpXp6ohpESulL3J
-        UmWNxQX7aq0Sp1gtnJr2/PNriERgPpbSY0hJIGdW6dtVLRdApC7lx2U7AXbUfgZhVQsrkDt19enz
-        r7plbFf/IMs59D/X/wNwPN69nQAcCAqpbQkgKJkVk5kBgZsW3QI4GJgi9dULgUMOKop5InBwsOxe
-        tggYMpH27xYCcX3OPOg1BAgY4kTAKfgV5g5rJUASGRlwXNMvEri5vb2ZCUQHiLrX3KAkM++7L/4L
-        GAeVrX2Po+LIrfuIGqWUvvIlfys+F0ChAhn7VU1y9IQHusU+5QQsxgMdrqsZSJl6Gqt/pYQXfT/c
-        PZ7bpjIK2KsvkfA4qsXOqaQeSes9ok21pwxJaThcbYdD8tzLsWZOoLWmU+jRt/wyHotrk1qOUazV
-        NFmMobt0tYWOqWIrRhetH08f3v3jXWXUrEXuQmnUrLrKQLiZ0cVoAS00mrGYFwdBznPmzFGOqMLW
-        vTkkwTlzA89JpqEvCo7oPdtmHkUCu1gvanPvRnEni9egXPR/f39/9ughlvPk0THPyUcuKVpbZHr0
-        Yry15Ln0GlDGy7D6t9jwZbqp1ZvRR0n6xGPyMldeCCizzyOfMOZUGOf0LaWAj87V/NWnvzBMedH1
-        BQAA
+        H4sIAAAAAAAAA3WUP29VMQzF936KpzcXy/G/xGyVEF0obVWWghhAjFQMMFAhvjtO7nVKHnS4y1Gu
+        45/PcT6cHQ6/4jscjt8fHz5/+3p8eTheXNy8OZ5vankVygsEI227pENiEGw1T111iUC8IO0aD61C
+        M6yyazY0AW8iWe7xx5cuOjB58yx4H1qBVrHMel0igUYunK0MjQuIOWbBgl2tXqGiWbb48OlnL8kF
+        JY5HmyX03+f/47+7uT/Fr1QWeoJWeGobfgGXWvO+ga/QRD0JBn0RMEXLiWz0CtU0oQY7xZ1mtMIj
+        sFvLXwd8pU5ZdWEv1oAQ58U7O3IFi5HWZ8lvb29X8gJkJU1J4xWRs4mJjjwDMtAFlLEl04auYKiW
+        vU50xlmtd8/9BppzHOT9z9pmAgckVRBhmmMb6OwMDTWd2chrlDQx82fBr+5ev/vHc5mWpOkewzg1
+        vTTOAe2eh5VtSTwxOCGviS8IrmTp0UCXWKFGNut1TR2QbcZvS3yNguyr604t9uBpShu7xHpIbCGJ
+        Pu/7xdX7t6fGc8M18zFDL7asfEg6t2DQF4dIX8nOBn50q0XIFvwIs/ZV/hu/KvR858GBX4EYy7Lw
+        3WKvMjvZMh8vBWhMPq/eQx8LyL1spWfpL6+vLxd6BBLOLnSfhyPW1Aa8g7viEnqPRJ6GPmwuOse2
+        e0+AMbhZbnhv8X4YLvDcHxBss5UBqj2H+PT4DHxpGjFRzXlu9FZUYYCfffwDDUGZzesFAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,9 +42,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 16 Apr 2024 20:21:31 GMT
+      - Wed, 17 Apr 2024 16:43:17 GMT
       Etag:
-      - W/"5f5-YOfcGWSFlAMQeQP8Lw/jMZliWe8"
+      - W/"5eb-Y1janTBJnrcROzV/drQMXgAsvnA"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

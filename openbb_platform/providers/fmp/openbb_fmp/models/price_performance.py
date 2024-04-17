@@ -71,7 +71,8 @@ class FMPPricePerformanceFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        symbols = list(set(query.symbol.upper().split(",")))
+        symbols = query.symbol.upper().split(",")
+        symbols = list(dict.fromkeys(symbols))
         chunk_size = 200
         chunks = [
             symbols[i : i + chunk_size] for i in range(0, len(symbols), chunk_size)
@@ -85,7 +86,8 @@ class FMPPricePerformanceFetcher(
             )
             for chunk in chunks
         ]
-        return await get_data_urls(urls, **kwargs)
+        data = await get_data_urls(urls, **kwargs)
+        return data
 
     @staticmethod
     def transform_data(
@@ -95,7 +97,8 @@ class FMPPricePerformanceFetcher(
     ) -> List[FMPPricePerformanceData]:
         """Return the transformed data."""
 
-        symbols = list(set(query.symbol.upper().split(",")))
+        symbols = query.symbol.upper().split(",")
+        symbols = list(dict.fromkeys(symbols))
         if len(data) != len(symbols):
             data_symbols = [d["symbol"] for d in data]
             missing_symbols = [
