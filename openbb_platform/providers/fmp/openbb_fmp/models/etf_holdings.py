@@ -137,7 +137,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
     def replace_empty(cls, v):
         """Replace empty strings and 0s with None."""
         if isinstance(v, str):
-            return v if v not in ("", "0") else None
+            return v if v not in ("", "0", "-") else None
         if isinstance(v, (float, int)):
             return v if v and v not in (0.0, 0) else None
         return v if v else None
