@@ -42,6 +42,8 @@ if TYPE_CHECKING:
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
+pio.default_renderers = "notebook"
+
 
 class OpenBBFigure(go.Figure):
     """Custom Figure class for OpenBB Terminal.
