@@ -390,7 +390,7 @@ async def create_token(use_cache: bool = True) -> str:
     """Create a temporary token for the EconDB API."""
 
     async def _callback(response, session):  # pylint: disable=W0613
-        """Callback function to get the token."""
+        """Response callback function."""
         try:
             return await response.json()
         except Exception as _:
@@ -423,7 +423,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
     url = "http://econdb.com/static/help/main_tickers.csv"
 
     async def callback(response, _) -> str:
-        """Callback function to read the CSV response."""
+        """Response callback to read the CSV response."""
         return await response.text()
 
     if use_cache is True:

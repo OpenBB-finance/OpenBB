@@ -254,7 +254,7 @@ class EconDbEconomicIndicatorsFetcher(
             )
 
         async def response_callback(response, session):
-            """Callback function for the response."""
+            """Response callback."""
             if response.status != 200:
                 warn(f"Error: {response.status} - {response.reason}")
             response = await response.json()
