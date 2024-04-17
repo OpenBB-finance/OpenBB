@@ -82,7 +82,7 @@ def standard_deviation(
     is_crypto: bool = False,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Standard deviation.
+    """Calculate the Standard deviation.
 
     Measures how widely returns are dispersed from the average return.
     It is the most common (and biased) estimator of volatility.

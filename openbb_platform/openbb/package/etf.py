@@ -392,6 +392,7 @@ class ROUTER_etf(Container):
             no default.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for. (provider: intrinio);
             A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)

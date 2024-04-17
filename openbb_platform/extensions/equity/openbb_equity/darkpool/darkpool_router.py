@@ -35,5 +35,6 @@ async def otc(
     """Get the weekly aggregate trade data for Over The Counter deals.
 
     ATS and non-ATS trading data for each ATS/firm
-    with trade reporting obligations under FINRA rules."""
+    with trade reporting obligations under FINRA rules.
+    """
     return await OBBject.from_query(Query(**locals()))

@@ -166,6 +166,6 @@ def check_single_item(
     value: Optional[str], message: Optional[str] = None
 ) -> Optional[str]:
     """Check that string contains a single item."""
-    if value and ("," in value or ";" in value):
+    if value and isinstance(value, str) and ("," in value or ";" in value):
         raise OpenBBError(message if message else "multiple items not allowed")
     return value

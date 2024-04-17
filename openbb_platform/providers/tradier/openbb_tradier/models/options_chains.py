@@ -1,4 +1,4 @@
-"""Tradier Options Chains Model"""
+"""Tradier Options Chains Model."""
 
 # pylint: disable = unused-argument
 
@@ -20,8 +20,7 @@ from pytz import timezone
 
 
 class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """
-    Tradier Options Chains Query.
+    """Tradier Options Chains Query.
 
     Source: https://documentation.tradier.com/brokerage-api/markets/get-options-chains
 
@@ -31,7 +30,7 @@ class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
 
 
 class TradierOptionsChainsData(OptionsChainsData):
-    """Tradier Options Chains Data"""
+    """Tradier Options Chains Data."""
 
     __alias_dict__ = {
         "expiration": "expiration_date",
@@ -177,6 +176,7 @@ class TradierOptionsChainsFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TradierOptionsChainsQueryParams:
+        """Transform the query parameters."""
         return TradierOptionsChainsQueryParams(**params)
 
     @staticmethod
@@ -185,8 +185,7 @@ class TradierOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the Tradier endpoint"""
-
+        """Return the raw data from the Tradier endpoint."""
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -216,7 +215,6 @@ class TradierOptionsChainsFetcher(
         # Get the expiration dates for the symbol so we can gather the chains data.
         async def get_expirations(symbol):
             """Get the expiration dates for the given symbol."""
-
             url = (
                 f"{BASE_URL}expirations?symbol={symbol}&includeAllRoots=true"
                 "&strikes=false&contractSize=false&expirationType=false"

@@ -1,3 +1,5 @@
+"""Test the Warnings model."""
+
 from unittest.mock import Mock
 
 import pytest
@@ -12,6 +14,7 @@ from openbb_core.app.model.abstract.warning import Warning_, cast_warning
     ],
 )
 def test_warn_model(category, message):
+    """Test the Warning_ model."""
     war = Warning_(category=category, message=message)
 
     assert war.category == category
@@ -19,6 +22,7 @@ def test_warn_model(category, message):
 
 
 def test_fields():
+    """Test the Warning_ fields."""
     fields = Warning_.model_fields
     fields_keys = fields.keys()
 
@@ -27,6 +31,7 @@ def test_fields():
 
 
 def test_cast_warning():
+    """Test the cast_warning function."""
     mock_warning_message = Mock()
     mock_warning_message.category.__name__ = "test"
     mock_warning_message.message = "test"

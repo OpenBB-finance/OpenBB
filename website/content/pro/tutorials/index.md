@@ -1,6 +1,6 @@
 ---
 title: Tutorials
-sidebar_position: 0
+sidebar_position: -1
 description: Learn about common workflows that you can do with the OpenBB Terminal Pro.
 keywords:
 - workflows

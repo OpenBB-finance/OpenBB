@@ -68,8 +68,10 @@ async def screener(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Screen for companies meeting various criteria. These criteria include
-    market cap, price, beta, volume, and dividend yield."""
+    """Screen for companies meeting various criteria.
+
+    These criteria include market cap, price, beta, volume, and dividend yield.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 

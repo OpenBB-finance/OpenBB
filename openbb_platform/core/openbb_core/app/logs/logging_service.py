@@ -19,8 +19,7 @@ from pydantic_core import to_jsonable_python
 
 
 class LoggingService(metaclass=SingletonMeta):
-    """
-    Logging Manager class responsible for managing logging settings and handling logs.
+    """Logging Manager class responsible for managing logging settings and handling logs.
 
     Attributes
     ----------
@@ -59,8 +58,7 @@ class LoggingService(metaclass=SingletonMeta):
         system_settings: SystemSettings,
         user_settings: UserSettings,
     ) -> None:
-        """
-        Logging Service Constructor.
+        """Define the Logging Service Constructor.
 
         Sets up the logging settings and handlers and then logs the startup information.
 
@@ -82,8 +80,7 @@ class LoggingService(metaclass=SingletonMeta):
 
     @property
     def logging_settings(self) -> LoggingSettings:
-        """
-        Current logging settings.
+        """Define the Current logging settings.
 
         Returns
         -------
@@ -94,8 +91,7 @@ class LoggingService(metaclass=SingletonMeta):
 
     @logging_settings.setter
     def logging_settings(self, value: Tuple[SystemSettings, UserSettings]):
-        """
-        Setter for updating the logging settings.
+        """Define the Setter for updating the logging settings.
 
         Parameters
         ----------
@@ -109,8 +105,7 @@ class LoggingService(metaclass=SingletonMeta):
         )
 
     def _setup_handlers(self) -> HandlersManager:
-        """
-        Setup Logging Handlers.
+        """Set up Logging Handlers.
 
         Returns
         -------

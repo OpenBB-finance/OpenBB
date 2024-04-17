@@ -29,6 +29,7 @@ class SystemService(metaclass=SingletonMeta):
         self,
         **kwargs,
     ):
+        """Initialize system service."""
         self._system_settings = self._read_default_system_settings(
             path=self.SYSTEM_SETTINGS_PATH, **kwargs
         )
