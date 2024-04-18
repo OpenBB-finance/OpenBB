@@ -652,7 +652,7 @@ def test_fmp_etf_countries_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
     """Test FMP ETF holdings performance fetcher."""
-    params = {"symbol": "SILJ"}
+    params = {"symbol": "QQQ"}
 
     fetcher = FMPEtfHoldingsPerformanceFetcher()
     result = fetcher.test(params, credentials)
