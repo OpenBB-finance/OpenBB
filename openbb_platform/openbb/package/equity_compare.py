@@ -23,16 +23,13 @@ class ROUTER_equity_compare(Container):
     def peers(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

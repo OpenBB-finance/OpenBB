@@ -32,7 +32,6 @@ class ROUTER_equity_ownership(Container):
             str,
             FieldInfo(
                 annotation=str,
-                required=True,
                 description="Symbol to get data for. A CIK or Symbol can be used.",
             ),
         ],
@@ -40,7 +39,7 @@ class ROUTER_equity_ownership(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.",
             ),
         ] = None,
@@ -57,7 +56,7 @@ class ROUTER_equity_ownership(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -163,10 +162,7 @@ class ROUTER_equity_ownership(Container):
     def insider_trading(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -181,7 +177,7 @@ class ROUTER_equity_ownership(Container):
             Optional[Literal["fmp", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -315,16 +311,13 @@ class ROUTER_equity_ownership(Container):
     def institutional(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -462,16 +455,13 @@ class ROUTER_equity_ownership(Container):
     def major_holders(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         date: Annotated[
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="A specific date to get data for.",
             ),
         ] = None,
@@ -488,7 +478,7 @@ class ROUTER_equity_ownership(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -638,7 +628,6 @@ class ROUTER_equity_ownership(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.",
             ),
         ],
@@ -646,7 +635,7 @@ class ROUTER_equity_ownership(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

@@ -28,7 +28,6 @@ class ROUTER_currency_price(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
             ),
         ],
@@ -36,7 +35,7 @@ class ROUTER_currency_price(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -44,7 +43,7 @@ class ROUTER_currency_price(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -52,7 +51,7 @@ class ROUTER_currency_price(Container):
             Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "polygon", "tiingo", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

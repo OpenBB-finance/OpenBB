@@ -39,7 +39,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -47,7 +47,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -64,7 +64,7 @@ class ROUTER_economy_gdp(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,
@@ -154,7 +154,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -162,7 +162,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -170,7 +170,7 @@ class ROUTER_economy_gdp(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,
@@ -257,7 +257,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -265,7 +265,7 @@ class ROUTER_economy_gdp(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -273,7 +273,7 @@ class ROUTER_economy_gdp(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,

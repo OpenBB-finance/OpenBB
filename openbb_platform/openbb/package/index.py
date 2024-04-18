@@ -33,7 +33,7 @@ class ROUTER_index(Container):
             Optional[Literal["fmp", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -104,16 +104,13 @@ class ROUTER_index(Container):
     def constituents(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -198,7 +195,6 @@ class ROUTER_index(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon, yfinance.",
             ),
         ],
@@ -206,7 +202,7 @@ class ROUTER_index(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -214,7 +210,7 @@ class ROUTER_index(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -233,7 +229,7 @@ class ROUTER_index(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

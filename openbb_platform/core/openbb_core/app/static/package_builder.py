@@ -604,10 +604,10 @@ class MethodDefinition:
                     name="provider",
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
-                        Union[MethodDefinition.get_type(field), None],
+                        Optional[MethodDefinition.get_type(field)],
                         FieldInfo(
                             default=None,
-                            annotation=Union[MethodDefinition.get_type(field), None],
+                            annotation=Optional[MethodDefinition.get_type(field)],
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
@@ -684,7 +684,9 @@ class MethodDefinition:
                         annotation=Annotated[
                             value.annotation,
                             FieldInfo(
-                                default=... if value.default is _empty else value.default,
+                                default=(
+                                    ... if value.default is _empty else value.default
+                                ),
                                 annotation=value.annotation,
                                 description=description,
                                 json_schema_extra={"choices": choices},
@@ -696,7 +698,9 @@ class MethodDefinition:
                         annotation=Annotated[
                             value.annotation,
                             FieldInfo(
-                                default=... if value.default is _empty else value.default,
+                                default=(
+                                    ... if value.default is _empty else value.default
+                                ),
                                 annotation=value.annotation,
                                 description=description,
                             ),
@@ -708,8 +712,14 @@ class MethodDefinition:
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
+
+        def _stringify(param) -> str:
+            if param.default is None:
+                return str(param).replace("required=False", "default=None")
+            return str(param).replace("required=True, ", "")
+
         func_params = ",\n        ".join(
-            str(param) for param in formatted_params.values()
+            _stringify(param) for param in formatted_params.values()
         )
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(

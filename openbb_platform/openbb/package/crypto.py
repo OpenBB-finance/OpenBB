@@ -33,14 +33,14 @@ class ROUTER_crypto(Container):
         query: Annotated[
             Optional[str],
             FieldInfo(
-                annotation=Union[str, None], required=False, description="Search query."
+                annotation=Union[str, None], default=None, description="Search query."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

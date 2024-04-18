@@ -23,16 +23,13 @@ class ROUTER_equity_shorts(Container):
     def fails_to_deliver(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,

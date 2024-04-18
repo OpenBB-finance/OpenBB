@@ -29,8 +29,8 @@ class ROUTER_news(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
             ),
         ] = None,
@@ -38,7 +38,7 @@ class ROUTER_news(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -46,14 +46,14 @@ class ROUTER_news(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             FieldInfo(
-                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                annotation=Union[Annotated[int, Ge], None],
                 required=False,
                 default=2500,
                 description="The number of data entries to return.",
@@ -70,7 +70,7 @@ class ROUTER_news(Container):
                     ],
                     None,
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
@@ -251,7 +251,7 @@ class ROUTER_news(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -259,7 +259,7 @@ class ROUTER_news(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -269,7 +269,7 @@ class ROUTER_news(Container):
                 annotation=Union[
                     Literal["benzinga", "fmp", "intrinio", "tiingo"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,

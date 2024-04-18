@@ -37,7 +37,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -45,7 +44,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -113,7 +112,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -121,7 +119,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -199,7 +197,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
             ),
         ],
@@ -216,7 +213,7 @@ class ROUTER_etf(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -224,7 +221,7 @@ class ROUTER_etf(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -234,7 +231,7 @@ class ROUTER_etf(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -394,18 +391,13 @@ class ROUTER_etf(Container):
     def holdings(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str,
-                required=True,
-                description="Symbol to get data for. (ETF)",
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -662,18 +654,13 @@ class ROUTER_etf(Container):
     def holdings_date(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str,
-                required=True,
-                description="Symbol to get data for. (ETF)",
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -742,7 +729,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -750,7 +736,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -850,7 +836,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ],
@@ -858,7 +843,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1246,7 +1231,6 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
             ),
         ],
@@ -1254,7 +1238,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1398,7 +1382,7 @@ class ROUTER_etf(Container):
             Optional[Literal["fmp", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1508,18 +1492,13 @@ class ROUTER_etf(Container):
     def sectors(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str,
-                required=True,
-                description="Symbol to get data for. (ETF)",
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

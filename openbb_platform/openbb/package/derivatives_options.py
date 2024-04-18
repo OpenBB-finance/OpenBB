@@ -24,16 +24,13 @@ class ROUTER_derivatives_options(Container):
     def chains(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -190,7 +187,7 @@ class ROUTER_derivatives_options(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="Symbol to get data for. (the underlying symbol)",
             ),
         ] = None,
@@ -198,7 +195,7 @@ class ROUTER_derivatives_options(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,

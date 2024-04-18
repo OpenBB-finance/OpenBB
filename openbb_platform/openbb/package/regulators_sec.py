@@ -28,16 +28,13 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -119,7 +116,7 @@ class ROUTER_regulators_sec(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -192,7 +189,7 @@ class ROUTER_regulators_sec(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -278,7 +275,7 @@ class ROUTER_regulators_sec(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -383,7 +380,7 @@ class ROUTER_regulators_sec(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,
@@ -454,9 +451,7 @@ class ROUTER_regulators_sec(Container):
     @validate
     def symbol_map(
         self,
-        query: Annotated[
-            str, FieldInfo(annotation=str, required=True, description="Search query.")
-        ],
+        query: Annotated[str, FieldInfo(annotation=str, description="Search query.")],
         use_cache: Annotated[
             Optional[bool],
             FieldInfo(
@@ -470,7 +465,7 @@ class ROUTER_regulators_sec(Container):
             Optional[Literal["sec"]],
             FieldInfo(
                 annotation=Union[Literal["sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
             ),
         ] = None,

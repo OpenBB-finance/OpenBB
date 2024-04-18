@@ -30,16 +30,16 @@ class ROUTER_equity_estimates(Container):
         analyst_name: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.",
             ),
         ] = None,
         firm_name: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.",
             ),
         ] = None,
@@ -47,7 +47,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["benzinga"]],
             FieldInfo(
                 annotation=Union[Literal["benzinga"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
@@ -244,8 +244,8 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ] = None,
@@ -253,7 +253,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -359,8 +359,8 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
             ),
         ] = None,
@@ -368,7 +368,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["fmp", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -482,8 +482,8 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ] = None,
@@ -491,7 +491,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -610,7 +610,6 @@ class ROUTER_equity_estimates(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -618,7 +617,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -731,8 +730,8 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             FieldInfo(
-                annotation=Union[str, None, List[Optional[str]]],
-                required=False,
+                annotation=Union[str, None, List[Union[str, None]]],
+                default=None,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.",
             ),
         ] = None,
@@ -749,7 +748,7 @@ class ROUTER_equity_estimates(Container):
             Optional[Literal["benzinga", "fmp"]],
             FieldInfo(
                 annotation=Union[Literal["benzinga", "fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,

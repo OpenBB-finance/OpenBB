@@ -44,7 +44,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -137,7 +137,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -221,7 +221,7 @@ class ROUTER_equity_discovery(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -229,7 +229,7 @@ class ROUTER_equity_discovery(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -237,7 +237,7 @@ class ROUTER_equity_discovery(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.",
             ),
         ] = None,
@@ -254,7 +254,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -359,7 +359,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -452,7 +452,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -545,7 +545,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -638,7 +638,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
@@ -731,7 +731,7 @@ class ROUTER_equity_discovery(Container):
             Optional[Literal["yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,

@@ -39,7 +39,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -47,7 +47,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -55,7 +55,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fmp", "tradingeconomics"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "tradingeconomics"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -168,7 +168,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -176,7 +176,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -184,7 +184,7 @@ class ROUTER_economy(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,
@@ -267,7 +267,6 @@ class ROUTER_economy(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
                 json_schema_extra={
                     "choices": [
@@ -355,7 +354,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -363,7 +362,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -371,7 +370,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fred"]],
             FieldInfo(
                 annotation=Union[Literal["fred"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
@@ -463,16 +462,13 @@ class ROUTER_economy(Container):
     def fred_regional(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -480,7 +476,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -497,7 +493,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fred"]],
             FieldInfo(
                 annotation=Union[Literal["fred"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
@@ -636,7 +632,7 @@ class ROUTER_economy(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="The search word(s).",
             ),
         ] = None,
@@ -644,7 +640,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fred"]],
             FieldInfo(
                 annotation=Union[Literal["fred"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
@@ -771,7 +767,6 @@ class ROUTER_economy(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.",
             ),
         ],
@@ -779,7 +774,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -787,7 +782,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -804,7 +799,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fred", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fred", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
@@ -938,7 +933,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -946,7 +941,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -954,7 +949,7 @@ class ROUTER_economy(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,
@@ -1043,7 +1038,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1051,7 +1046,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1068,7 +1063,7 @@ class ROUTER_economy(Container):
             Optional[Literal["federal_reserve"]],
             FieldInfo(
                 annotation=Union[Literal["federal_reserve"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default.",
             ),
         ] = None,
@@ -1159,7 +1154,7 @@ class ROUTER_economy(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1228,7 +1223,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1236,7 +1231,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1244,7 +1239,7 @@ class ROUTER_economy(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,
@@ -1331,7 +1326,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1339,7 +1334,7 @@ class ROUTER_economy(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1347,7 +1342,7 @@ class ROUTER_economy(Container):
             Optional[Literal["oecd"]],
             FieldInfo(
                 annotation=Union[Literal["oecd"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
             ),
         ] = None,

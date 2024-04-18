@@ -52,10 +52,7 @@ class ROUTER_equity_fundamental(Container):
     def balance(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             str,
@@ -69,7 +66,7 @@ class ROUTER_equity_fundamental(Container):
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             FieldInfo(
-                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                annotation=Union[Annotated[int, Ge], None],
                 required=False,
                 default=5,
                 description="The number of data entries to return.",
@@ -81,7 +78,7 @@ class ROUTER_equity_fundamental(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -432,10 +429,7 @@ class ROUTER_equity_fundamental(Container):
     def balance_growth(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -450,7 +444,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -600,10 +594,7 @@ class ROUTER_equity_fundamental(Container):
     def cash(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             str,
@@ -617,7 +608,7 @@ class ROUTER_equity_fundamental(Container):
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             FieldInfo(
-                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                annotation=Union[Annotated[int, Ge], None],
                 required=False,
                 default=5,
                 description="The number of data entries to return.",
@@ -629,7 +620,7 @@ class ROUTER_equity_fundamental(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -888,10 +879,7 @@ class ROUTER_equity_fundamental(Container):
     def cash_growth(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -906,7 +894,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1038,16 +1026,13 @@ class ROUTER_equity_fundamental(Container):
     def dividends(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1055,7 +1040,7 @@ class ROUTER_equity_fundamental(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1063,7 +1048,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1153,16 +1138,13 @@ class ROUTER_equity_fundamental(Container):
     def employee_count(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1245,7 +1227,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="Symbol to get data for.",
             ),
         ] = None,
@@ -1253,7 +1235,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="Filter by form type. Check the data provider for available types.",
             ),
         ] = None,
@@ -1270,7 +1252,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp", "intrinio", "sec"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "sec"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1411,7 +1393,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
@@ -1419,7 +1400,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
@@ -1427,7 +1407,7 @@ class ROUTER_equity_fundamental(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1435,7 +1415,7 @@ class ROUTER_equity_fundamental(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -1463,7 +1443,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[str],
             FieldInfo(
                 annotation=Union[str, None],
-                required=False,
+                default=None,
                 description="Filter by type, when applicable.",
             ),
         ] = None,
@@ -1480,7 +1460,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -1575,16 +1555,13 @@ class ROUTER_equity_fundamental(Container):
     def historical_eps(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1668,16 +1645,13 @@ class ROUTER_equity_fundamental(Container):
     def historical_splits(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -1747,10 +1721,7 @@ class ROUTER_equity_fundamental(Container):
     def income(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             str,
@@ -1764,7 +1735,7 @@ class ROUTER_equity_fundamental(Container):
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
             FieldInfo(
-                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                annotation=Union[Annotated[int, Ge], None],
                 required=False,
                 default=5,
                 description="The number of data entries to return.",
@@ -1776,7 +1747,7 @@ class ROUTER_equity_fundamental(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -2129,10 +2100,7 @@ class ROUTER_equity_fundamental(Container):
     def income_growth(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -2156,7 +2124,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -2286,7 +2254,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
@@ -2294,7 +2261,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
@@ -2302,7 +2268,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -2377,16 +2343,13 @@ class ROUTER_equity_fundamental(Container):
     def management(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -2469,7 +2432,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -2477,7 +2439,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -2575,7 +2537,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ],
@@ -2601,7 +2562,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -2910,7 +2871,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -2918,7 +2878,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -3107,16 +3067,13 @@ class ROUTER_equity_fundamental(Container):
     def overview(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -3257,10 +3214,7 @@ class ROUTER_equity_fundamental(Container):
     def ratios(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             str,
@@ -3284,7 +3238,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp", "intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -3473,10 +3427,7 @@ class ROUTER_equity_fundamental(Container):
     def reported_financials(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             str,
@@ -3509,7 +3460,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -3594,10 +3545,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_geography(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3621,7 +3569,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -3700,10 +3648,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_segment(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3727,7 +3672,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -3806,10 +3751,7 @@ class ROUTER_equity_fundamental(Container):
     def search_attributes(
         self,
         query: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Query to search for."
-            ),
+            str, FieldInfo(annotation=str, description="Query to search for.")
         ],
         limit: Annotated[
             Optional[int],
@@ -3824,7 +3766,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["intrinio"]],
             FieldInfo(
                 annotation=Union[Literal["intrinio"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
@@ -3911,10 +3853,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         limit: Annotated[
             Optional[int],
@@ -3929,7 +3868,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Literal["tiingo"]],
             FieldInfo(
                 annotation=Union[Literal["tiingo"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default.",
             ),
         ] = None,
@@ -3999,24 +3938,19 @@ class ROUTER_equity_fundamental(Container):
     def transcript(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         year: Annotated[
             int,
             FieldInfo(
-                annotation=int,
-                required=True,
-                description="Year of the earnings call transcript.",
+                annotation=int, description="Year of the earnings call transcript."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

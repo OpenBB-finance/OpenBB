@@ -31,7 +31,6 @@ class ROUTER_equity_price(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
             ),
         ],
@@ -48,7 +47,7 @@ class ROUTER_equity_price(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -56,7 +55,7 @@ class ROUTER_equity_price(Container):
             Union[datetime.date, None, str],
             FieldInfo(
                 annotation=Union[date, None, str],
-                required=False,
+                default=None,
                 description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
@@ -66,7 +65,7 @@ class ROUTER_equity_price(Container):
                 annotation=Union[
                     Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"], None
                 ],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -224,16 +223,13 @@ class ROUTER_equity_price(Container):
     def nbbo(
         self,
         symbol: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=True, description="Symbol to get data for."
-            ),
+            str, FieldInfo(annotation=str, description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["polygon"]],
             FieldInfo(
                 annotation=Union[Literal["polygon"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'polygon' if there is\n    no default.",
             ),
         ] = None,
@@ -340,7 +336,6 @@ class ROUTER_equity_price(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
@@ -348,7 +343,7 @@ class ROUTER_equity_price(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -448,7 +443,6 @@ class ROUTER_equity_price(Container):
             Union[str, List[str]],
             FieldInfo(
                 annotation=Union[str, List[str]],
-                required=True,
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ],
@@ -456,7 +450,7 @@ class ROUTER_equity_price(Container):
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,

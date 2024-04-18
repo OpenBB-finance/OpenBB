@@ -35,7 +35,7 @@ class ROUTER_currency(Container):
             Optional[Literal["fmp", "intrinio", "polygon"]],
             FieldInfo(
                 annotation=Union[Literal["fmp", "intrinio", "polygon"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
@@ -175,7 +175,7 @@ class ROUTER_currency(Container):
             Union[List[str], str, None],
             FieldInfo(
                 annotation=Union[List[str], str, None],
-                required=False,
+                default=None,
                 description="An optional list of counter currency symbols to filter for. None returns all.",
             ),
         ] = None,
@@ -183,7 +183,7 @@ class ROUTER_currency(Container):
             Optional[Literal["fmp"]],
             FieldInfo(
                 annotation=Union[Literal["fmp"], None],
-                required=False,
+                default=None,
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
