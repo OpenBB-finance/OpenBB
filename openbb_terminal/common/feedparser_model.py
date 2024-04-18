@@ -58,6 +58,7 @@ def get_news(
 
     while not have_data:
         if term:
+            term = f"\"‘{term.upper()}’ stock\""
             term = quote(term)
             data = feedparser.parse(
                 f"https://news.google.com/rss/search?q={term}&hl=en-US&gl=US&ceid=US:en&when:24h+allinurl"
