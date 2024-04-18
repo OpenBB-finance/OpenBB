@@ -21,7 +21,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
-from pandas.tseries.offsets import DateOffset
+from pandas.tseries.offsets import DateOffset, MonthEnd
 from pydantic import Field, field_validator, model_validator
 
 
@@ -740,10 +740,10 @@ class SecEtfHoldingsFetcher(
                 metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
                 current_month = pd.to_datetime(metadata["period_ending"])
                 month_1 = (
-                    (current_month + DateOffset(months=-2)).date().strftime("%Y-%m-%d")
+                    (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
                 )
                 month_2 = (
-                    (current_month + DateOffset(months=-1)).date().strftime("%Y-%m-%d")
+                    (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
                 )
                 month_3 = current_month.strftime("%Y-%m-%d")
             fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})  # type: ignore
