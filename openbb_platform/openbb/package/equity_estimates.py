@@ -2,11 +2,11 @@
 
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -29,20 +29,26 @@ class ROUTER_equity_estimates(Container):
         self,
         analyst_name: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.",
             ),
         ] = None,
         firm_name: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["benzinga"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["benzinga"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -126,6 +132,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last month (provider: benzinga)
         std_dev_1m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last month (provider: benzinga)
+        smart_score_1m : Optional[float]
+            A weighted average smart score over the last month. (provider: benzinga)
+        success_rate_1m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month (provider: benzinga)
         gain_count_3m : Optional[int]
             The number of ratings that have gained value over the last 3 months (provider: benzinga)
         loss_count_3m : Optional[int]
@@ -134,6 +144,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 3 months (provider: benzinga)
         std_dev_3m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months (provider: benzinga)
+        smart_score_3m : Optional[float]
+            A weighted average smart score over the last 3 months. (provider: benzinga)
+        success_rate_3m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months (provider: benzinga)
         gain_count_6m : Optional[int]
             The number of ratings that have gained value over the last 6 months (provider: benzinga)
         loss_count_6m : Optional[int]
@@ -150,6 +164,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 9 months (provider: benzinga)
         std_dev_9m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 9 months (provider: benzinga)
+        smart_score_9m : Optional[float]
+            A weighted average smart score over the last 9 months. (provider: benzinga)
+        success_rate_9m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months (provider: benzinga)
         gain_count_1y : Optional[int]
             The number of ratings that have gained value over the last 1 year (provider: benzinga)
         loss_count_1y : Optional[int]
@@ -158,6 +176,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 1 year (provider: benzinga)
         std_dev_1y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year (provider: benzinga)
+        smart_score_1y : Optional[float]
+            A weighted average smart score over the last 1 year. (provider: benzinga)
+        success_rate_1y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year (provider: benzinga)
         gain_count_2y : Optional[int]
             The number of ratings that have gained value over the last 2 years (provider: benzinga)
         loss_count_2y : Optional[int]
@@ -166,6 +188,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 2 years (provider: benzinga)
         std_dev_2y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 2 years (provider: benzinga)
+        smart_score_2y : Optional[float]
+            A weighted average smart score over the last 3 years. (provider: benzinga)
+        success_rate_2y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years (provider: benzinga)
         gain_count_3y : Optional[int]
             The number of ratings that have gained value over the last 3 years (provider: benzinga)
         loss_count_3y : Optional[int]
@@ -174,6 +200,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 3 years (provider: benzinga)
         std_dev_3y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years (provider: benzinga)
+        smart_score_3y : Optional[float]
+            A weighted average smart score over the last 3 years. (provider: benzinga)
+        success_rate_3y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years (provider: benzinga)
 
         Examples
         --------
@@ -213,14 +243,18 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -324,14 +358,18 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -443,14 +481,18 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -566,14 +608,18 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -684,18 +730,27 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.",
             ),
         ] = None,
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=200,
+                description="The number of data entries to return.",
+            ),
         ] = 200,
         provider: Annotated[
             Optional[Literal["benzinga", "fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["benzinga", "fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

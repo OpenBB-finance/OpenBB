@@ -1,14 +1,15 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+from datetime import date
 from typing import List, Literal, Optional, Union
 
 from annotated_types import Ge
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -27,32 +28,50 @@ class ROUTER_news(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
+            FieldInfo(
+                annotation=Union[str, None, List[Optional[str]]],
+                required=False,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
             ),
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                required=False,
+                default=2500,
+                description="The number of data entries to return.",
+            ),
         ] = 2500,
         provider: Annotated[
             Optional[
                 Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
             ],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[
+                    Literal[
+                        "benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"
+                    ],
+                    None,
+                ],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -221,26 +240,37 @@ class ROUTER_news(Container):
         self,
         limit: Annotated[
             int,
-            OpenBBCustomParameter(
-                description="The number of data entries to return. The number of articles to return."
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=2500,
+                description="The number of data entries to return. The number of articles to return.",
             ),
         ] = 2500,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[
+                    Literal["benzinga", "fmp", "intrinio", "tiingo"], None
+                ],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

@@ -1,12 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -31,12 +31,17 @@ class ROUTER_crypto(Container):
     def search(
         self,
         query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Search query.")
+            Optional[str],
+            FieldInfo(
+                annotation=Union[str, None], required=False, description="Search query."
+            ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

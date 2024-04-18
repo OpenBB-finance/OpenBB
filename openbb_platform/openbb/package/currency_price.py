@@ -1,13 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+from datetime import date
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -25,26 +26,34 @@ class ROUTER_currency_price(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "polygon", "tiingo", "yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

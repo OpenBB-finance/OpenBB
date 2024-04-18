@@ -1,16 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+from datetime import date
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -32,31 +30,53 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         maturity: Annotated[
             Literal["overnight", "7d", "15d", "30d", "60d", "90d"],
-            OpenBBCustomParameter(description="The maturity."),
+            FieldInfo(
+                annotation=Literal["overnight", "7d", "15d", "30d", "60d", "90d"],
+                required=False,
+                default="30d",
+                description="The maturity.",
+            ),
         ] = "30d",
         category: Annotated[
             Literal["asset_backed", "financial", "nonfinancial"],
-            OpenBBCustomParameter(description="The category."),
+            FieldInfo(
+                annotation=Literal["asset_backed", "financial", "nonfinancial"],
+                required=False,
+                default="financial",
+                description="The category.",
+            ),
         ] = "financial",
         grade: Annotated[
-            Literal["aa", "a2_p2"], OpenBBCustomParameter(description="The grade.")
+            Literal["aa", "a2_p2"],
+            FieldInfo(
+                annotation=Literal["aa", "a2_p2"],
+                required=False,
+                default="aa",
+                description="The grade.",
+            ),
         ] = "aa",
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fred"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -141,16 +161,27 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(description="A specific date to get data for."),
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="A specific date to get data for.",
+            ),
         ] = None,
         yield_curve: Annotated[
             Literal["spot", "par"],
-            OpenBBCustomParameter(description="The yield curve type."),
+            FieldInfo(
+                annotation=Literal["spot", "par"],
+                required=False,
+                default="spot",
+                description="The yield curve type.",
+            ),
         ] = "spot",
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fred"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -232,24 +263,35 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         index_type: Annotated[
             Literal["yield", "yield_to_worst", "total_return", "spread"],
-            OpenBBCustomParameter(description="The type of series."),
+            FieldInfo(
+                annotation=Literal["yield", "yield_to_worst", "total_return", "spread"],
+                required=False,
+                default="yield",
+                description="The type of series.",
+            ),
         ] = "yield",
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fred"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -337,24 +379,35 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         index_type: Annotated[
             Literal["aaa", "baa"],
-            OpenBBCustomParameter(description="The type of series."),
+            FieldInfo(
+                annotation=Literal["aaa", "baa"],
+                required=False,
+                default="aaa",
+                description="The type of series.",
+            ),
         ] = "aaa",
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fred"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -435,33 +488,45 @@ class ROUTER_fixedincome_corporate(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         maturity: Annotated[
             Union[float, str, List[Union[float, str]]],
-            OpenBBCustomParameter(
-                description="Maturities in years. Multiple comma separated items allowed for provider(s): fred."
+            FieldInfo(
+                annotation=Union[float, str, List[Union[float, str]]],
+                required=False,
+                default=10.0,
+                description="Maturities in years. Multiple comma separated items allowed for provider(s): fred.",
             ),
         ] = 10.0,
         category: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=False,
+                default="spot_rate",
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.",
+                json_schema_extra={"choices": ["par_yield", "spot_rate"]},
             ),
-            OpenBBCustomChoices(choices=["par_yield", "spot_rate"]),
         ] = "spot_rate",
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fred"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

@@ -1,12 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -24,12 +24,17 @@ class ROUTER_derivatives_options(Container):
     def chains(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -183,14 +188,18 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. (the underlying symbol)"
+            FieldInfo(
+                annotation=Union[str, None],
+                required=False,
+                description="Symbol to get data for. (the underlying symbol)",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

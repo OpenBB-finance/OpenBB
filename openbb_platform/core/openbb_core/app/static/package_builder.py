@@ -6,7 +6,7 @@ import inspect
 import re
 import shutil
 import sys
-from dataclasses import Field
+from dataclasses import Field as DCField
 from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
@@ -38,10 +38,6 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
 from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
@@ -355,7 +351,6 @@ class ImportDefinition:
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
-        code += "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter, OpenBBCustomChoices"
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -364,8 +359,10 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport numpy"
         code += "\nimport datetime"
+        code += "\nfrom datetime import date"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
+        code += "\nfrom pydantic.fields import FieldInfo"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Any"
@@ -582,8 +579,10 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    OpenBBCustomParameter(
-                        description="Whether to create a chart or not, by default False."
+                    FieldInfo(
+                        default=False,
+                        annotation=bool,
+                        description="Whether to create a chart or not, by default False.",
                     ),
                 ],
                 default=False,
@@ -606,13 +605,15 @@ class MethodDefinition:
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
                         Union[MethodDefinition.get_type(field), None],
-                        OpenBBCustomParameter(
+                        FieldInfo(
+                            default=None,
+                            annotation=Union[MethodDefinition.get_type(field), None],
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
                                 "    no default."
                                 ""
-                            )
+                            ),
                         ),
                     ],
                     default=None,
@@ -663,7 +664,7 @@ class MethodDefinition:
     ):
         """Add the field custom description and choices to the param signature as annotations."""
         if model_name:
-            available_fields: Dict[str, Field] = (
+            available_fields: Dict[str, DCField] = (
                 ProviderInterface().params[model_name]["standard"].__dataclass_fields__
             )
 
@@ -682,15 +683,23 @@ class MethodDefinition:
                     new_value = value.replace(
                         annotation=Annotated[
                             value.annotation,
-                            OpenBBCustomParameter(description=description),
-                            OpenBBCustomChoices(choices=choices),
+                            FieldInfo(
+                                default=... if value.default is _empty else value.default,
+                                annotation=value.annotation,
+                                description=description,
+                                json_schema_extra={"choices": choices},
+                            ),
                         ],
                     )
                 else:
                     new_value = value.replace(
                         annotation=Annotated[
                             value.annotation,
-                            OpenBBCustomParameter(description=description),
+                            FieldInfo(
+                                default=... if value.default is _empty else value.default,
+                                annotation=value.annotation,
+                                description=description,
+                            ),
                         ],
                     )
 

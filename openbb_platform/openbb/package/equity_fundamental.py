@@ -1,16 +1,17 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+from datetime import date
 from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from annotated_types import Ge
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated, deprecated
 
 
@@ -51,19 +52,37 @@ class ROUTER_equity_fundamental(Container):
     def balance(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str,
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                required=False,
+                default=5,
+                description="The number of data entries to return.",
+            ),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[
+                    Literal["fmp", "intrinio", "polygon", "yfinance"], None
+                ],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -413,16 +432,26 @@ class ROUTER_equity_fundamental(Container):
     def balance_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=10,
+                description="The number of data entries to return.",
+            ),
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -571,19 +600,37 @@ class ROUTER_equity_fundamental(Container):
     def cash(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str,
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                required=False,
+                default=5,
+                description="The number of data entries to return.",
+            ),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[
+                    Literal["fmp", "intrinio", "polygon", "yfinance"], None
+                ],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -841,16 +888,26 @@ class ROUTER_equity_fundamental(Container):
     def cash_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=10,
+                description="The number of data entries to return.",
+            ),
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -981,24 +1038,33 @@ class ROUTER_equity_fundamental(Container):
     def dividends(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1087,12 +1153,17 @@ class ROUTER_equity_fundamental(Container):
     def employee_count(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1171,22 +1242,36 @@ class ROUTER_equity_fundamental(Container):
     def filings(
         self,
         symbol: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str],
+            FieldInfo(
+                annotation=Union[str, None],
+                required=False,
+                description="Symbol to get data for.",
+            ),
         ] = None,
         form_type: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
-                description="Filter by form type. Check the data provider for available types."
+            FieldInfo(
+                annotation=Union[str, None],
+                required=False,
+                description="Filter by form type. Check the data provider for available types.",
             ),
         ] = None,
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=100,
+                description="The number of data entries to return.",
+            ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio", "sec"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1324,48 +1409,79 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         frequency: Annotated[
             Optional[Literal["daily", "weekly", "monthly", "quarterly", "yearly"]],
-            OpenBBCustomParameter(description="The frequency of the data."),
+            FieldInfo(
+                annotation=Union[
+                    Literal["daily", "weekly", "monthly", "quarterly", "yearly"], None
+                ],
+                required=False,
+                default="yearly",
+                description="The frequency of the data.",
+            ),
         ] = "yearly",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[int, None],
+                required=False,
+                default=1000,
+                description="The number of data entries to return.",
+            ),
         ] = 1000,
         tag_type: Annotated[
             Optional[str],
-            OpenBBCustomParameter(description="Filter by type, when applicable."),
+            FieldInfo(
+                annotation=Union[str, None],
+                required=False,
+                description="Filter by type, when applicable.",
+            ),
         ] = None,
         sort: Annotated[
             Optional[Literal["asc", "desc"]],
-            OpenBBCustomParameter(description="Sort order."),
+            FieldInfo(
+                annotation=Union[Literal["asc", "desc"], None],
+                required=False,
+                default="desc",
+                description="Sort order.",
+            ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1459,12 +1575,17 @@ class ROUTER_equity_fundamental(Container):
     def historical_eps(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1547,12 +1668,17 @@ class ROUTER_equity_fundamental(Container):
     def historical_splits(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1621,19 +1747,37 @@ class ROUTER_equity_fundamental(Container):
     def income(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str,
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[Annotated[int, Ge(ge=0)], None],
+                required=False,
+                default=5,
+                description="The number of data entries to return.",
+            ),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[
+                    Literal["fmp", "intrinio", "polygon", "yfinance"], None
+                ],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -1985,20 +2129,35 @@ class ROUTER_equity_fundamental(Container):
     def income_growth(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=10,
+                description="The number of data entries to return.",
+            ),
         ] = 10,
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            FieldInfo(
+                annotation=Literal["annual", "quarter"],
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2125,20 +2284,26 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
             ),
         ],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2212,12 +2377,17 @@ class ROUTER_equity_fundamental(Container):
     def management(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2297,14 +2467,18 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2399,22 +2573,36 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
             ),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            FieldInfo(
+                annotation=Union[Literal["annual", "quarter"], None],
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[int, None],
+                required=False,
+                default=100,
+                description="The number of data entries to return.",
+            ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2720,14 +2908,18 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+            FieldInfo(
+                annotation=Union[str, List[str]],
+                required=True,
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -2915,12 +3107,17 @@ class ROUTER_equity_fundamental(Container):
     def overview(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3060,19 +3257,35 @@ class ROUTER_equity_fundamental(Container):
     def ratios(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str,
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=12,
+                description="The number of data entries to return.",
+            ),
         ] = 12,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp", "intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3260,27 +3473,44 @@ class ROUTER_equity_fundamental(Container):
     def reported_financials(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str,
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         statement_type: Annotated[
             str,
-            OpenBBCustomParameter(
-                description="The type of financial statement - i.e, balance, income, cash."
+            FieldInfo(
+                annotation=str,
+                required=False,
+                default="balance",
+                description="The type of financial statement - i.e, balance, income, cash.",
             ),
         ] = "balance",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
-                description="The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks."
+            FieldInfo(
+                annotation=Union[int, None],
+                required=False,
+                default=100,
+                description="The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.",
             ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3364,20 +3594,35 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_geography(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            Literal["quarter", "annual"],
+            FieldInfo(
+                annotation=Literal["quarter", "annual"],
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            FieldInfo(
+                annotation=Literal["hierarchical", "flat"],
+                required=False,
+                default="flat",
+                description="Structure of the returned data.",
+            ),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3388,7 +3633,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3455,20 +3700,35 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_segment(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         period: Annotated[
-            Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            Literal["quarter", "annual"],
+            FieldInfo(
+                annotation=Literal["quarter", "annual"],
+                required=False,
+                default="annual",
+                description="Time period of the data to return.",
+            ),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            FieldInfo(
+                annotation=Literal["hierarchical", "flat"],
+                required=False,
+                default="flat",
+                description="Structure of the returned data.",
+            ),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3479,7 +3739,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3546,16 +3806,26 @@ class ROUTER_equity_fundamental(Container):
     def search_attributes(
         self,
         query: Annotated[
-            str, OpenBBCustomParameter(description="Query to search for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Query to search for."
+            ),
         ],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=Union[int, None],
+                required=False,
+                default=1000,
+                description="The number of data entries to return.",
+            ),
         ] = 1000,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["intrinio"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3641,18 +3911,26 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
-                description="The number of data entries to return. Default is 252, the number of trading days in a year."
+            FieldInfo(
+                annotation=Union[int, None],
+                required=False,
+                default=252,
+                description="The number of data entries to return. Default is 252, the number of trading days in a year.",
             ),
         ] = 252,
         provider: Annotated[
             Optional[Literal["tiingo"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["tiingo"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -3721,16 +3999,25 @@ class ROUTER_equity_fundamental(Container):
     def transcript(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            str,
+            FieldInfo(
+                annotation=str, required=True, description="Symbol to get data for."
+            ),
         ],
         year: Annotated[
             int,
-            OpenBBCustomParameter(description="Year of the earnings call transcript."),
+            FieldInfo(
+                annotation=int,
+                required=True,
+                description="Year of the earnings call transcript.",
+            ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs

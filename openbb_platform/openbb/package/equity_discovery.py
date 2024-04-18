@@ -1,13 +1,14 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
+from datetime import date
 from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
+from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -32,14 +33,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -120,14 +126,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -208,30 +219,43 @@ class ROUTER_equity_discovery(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="Start date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
+            FieldInfo(
+                annotation=Union[date, None, str],
+                required=False,
+                description="End date of the data, in YYYY-MM-DD format.",
             ),
         ] = None,
         form_type: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
-                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
+            FieldInfo(
+                annotation=Union[str, None],
+                required=False,
+                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.",
             ),
         ] = None,
         limit: Annotated[
             int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            FieldInfo(
+                annotation=int,
+                required=False,
+                default=100,
+                description="The number of data entries to return.",
+            ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["fmp"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -324,14 +348,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -412,14 +441,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -500,14 +534,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -588,14 +627,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
@@ -676,14 +720,19 @@ class ROUTER_equity_discovery(Container):
         self,
         sort: Annotated[
             Literal["asc", "desc"],
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
+            FieldInfo(
+                annotation=Literal["asc", "desc"],
+                required=False,
+                default="desc",
+                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
             ),
         ] = "desc",
         provider: Annotated[
             Optional[Literal["yfinance"]],
-            OpenBBCustomParameter(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+            FieldInfo(
+                annotation=Union[Literal["yfinance"], None],
+                required=False,
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default.",
             ),
         ] = None,
         **kwargs
