@@ -4,7 +4,7 @@
 
 from datetime import timedelta
 from io import BytesIO
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 from zipfile import ZipFile
 
 import pandas as pd
@@ -80,7 +80,7 @@ async def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
     else:
         response = await amake_request(url, headers=SEC_HEADERS, response_callback=callback)  # type: ignore
     data = response
-    lines = data.split("\n")
+    lines = data.split("\n")  # type: ignore
     data_list = []
     delimiter = ":"
     for line in lines:
@@ -112,7 +112,7 @@ async def get_mf_and_etf_map(use_cache: bool = True) -> pd.DataFrame:
     else:
         response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-    symbols = pd.DataFrame(data=response["data"], columns=response["fields"])
+    symbols = pd.DataFrame(data=response["data"], columns=response["fields"])  # type: ignore
 
     return symbols.astype(str)
 
@@ -142,7 +142,7 @@ async def symbol_map(symbol: str, use_cache: bool = True) -> str:
     return str(cik_ + cik)
 
 
-async def cik_map(cik: int, use_cache: bool = True) -> str:
+async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
     """Convert a CIK number to a ticker symbol.  Enter CIK as an integer with no leading zeros.
 
     Function is not meant for funds.
@@ -286,10 +286,10 @@ async def download_zip_file(
         response = await amake_request(url, response_callback=callback)  # type: ignore
 
     try:
-        data = pd.read_csv(BytesIO(response), compression="zip", sep="|")
+        data = pd.read_csv(BytesIO(response), compression="zip", sep="|")  # type: ignore
         results = data.iloc[:-2]
     except ValueError:
-        zip_file = ZipFile(BytesIO(response))
+        zip_file = ZipFile(BytesIO(response))  # type: ignore
         file_list = [d.filename for d in zip_file.infolist()]
         for item in file_list:
             with zip_file.open(item) as _item:
@@ -333,7 +333,7 @@ async def get_ftd_urls() -> Dict:
     value = "Fails-to-Deliver Data"
 
     r = await amake_request("https://www.sec.gov/data.json", headers=SEC_HEADERS)
-    data = r["dataset"]
+    data = r.get("dataset", {})  # type: ignore
 
     for index, d in enumerate(data):
         if key in d and d[key] == value:
@@ -409,8 +409,8 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
     else:
         response = await amake_request(url, response_callback=sec_callback)  # type: ignore
 
-    if "hits" in response and len(response["hits"]["hits"]) > 0:
-        hits = response["hits"]["hits"]
+    if "hits" in response and len(response["hits"].get("hits")) > 0:
+        hits = response["hits"]["hits"]  # type: ignore
         results = [
             {
                 "name": d["_source"]["display_names"][0],

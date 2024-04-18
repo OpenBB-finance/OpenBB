@@ -39,7 +39,7 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    form_type: Union[None, Literal[FORM_TYPES]] = Field(
+    form_type: Union[Literal[FORM_TYPES], None] = Field(
         description="Type of the SEC filing form.",
         default=None,
     )
@@ -185,7 +185,11 @@ class SecCompanyFilingsFetcher(
             data = await amake_request(url, headers=HEADERS)  # type: ignore
 
         # This seems to work for the data structure.
-        filings = DataFrame.from_records(data["filings"]["recent"])
+        filings = (
+            DataFrame.from_records(data["filings"].get("recent"))
+            if "filings" in data
+            else DataFrame()
+        )
         results = filings.to_dict("records")
 
         # If there are lots of filings, there will be custom pagination.
@@ -203,7 +207,11 @@ class SecCompanyFilingsFetcher(
                     results.extend(new_data.to_dict("records"))
 
             urls = []
-            new_urls = DataFrame(data["filings"]["files"])
+            new_urls = (
+                DataFrame(data["filings"].get("files"))
+                if "files" in data["filings"]
+                else DataFrame()
+            )
             for i in new_urls.index:
                 new_cik: str = data["filings"]["files"][i]["name"]
                 new_url: str = "https://data.sec.gov/submissions/" + new_cik
