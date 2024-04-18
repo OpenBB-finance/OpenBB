@@ -1,5 +1,7 @@
 """Nasdaq Earnings Calendar Model."""
 
+# pylint: disable=unused-argument
+
 from concurrent.futures import ThreadPoolExecutor
 from datetime import (
     date as dateType,
