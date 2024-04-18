@@ -126,6 +126,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last month (provider: benzinga)
         std_dev_1m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last month (provider: benzinga)
+        smart_score_1m : Optional[float]
+            A weighted average smart score over the last month. (provider: benzinga)
+        success_rate_1m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month (provider: benzinga)
         gain_count_3m : Optional[int]
             The number of ratings that have gained value over the last 3 months (provider: benzinga)
         loss_count_3m : Optional[int]
@@ -134,6 +138,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 3 months (provider: benzinga)
         std_dev_3m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months (provider: benzinga)
+        smart_score_3m : Optional[float]
+            A weighted average smart score over the last 3 months. (provider: benzinga)
+        success_rate_3m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months (provider: benzinga)
         gain_count_6m : Optional[int]
             The number of ratings that have gained value over the last 6 months (provider: benzinga)
         loss_count_6m : Optional[int]
@@ -150,6 +158,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 9 months (provider: benzinga)
         std_dev_9m : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 9 months (provider: benzinga)
+        smart_score_9m : Optional[float]
+            A weighted average smart score over the last 9 months. (provider: benzinga)
+        success_rate_9m : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months (provider: benzinga)
         gain_count_1y : Optional[int]
             The number of ratings that have gained value over the last 1 year (provider: benzinga)
         loss_count_1y : Optional[int]
@@ -158,6 +170,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 1 year (provider: benzinga)
         std_dev_1y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year (provider: benzinga)
+        smart_score_1y : Optional[float]
+            A weighted average smart score over the last 1 year. (provider: benzinga)
+        success_rate_1y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year (provider: benzinga)
         gain_count_2y : Optional[int]
             The number of ratings that have gained value over the last 2 years (provider: benzinga)
         loss_count_2y : Optional[int]
@@ -166,6 +182,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 2 years (provider: benzinga)
         std_dev_2y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 2 years (provider: benzinga)
+        smart_score_2y : Optional[float]
+            A weighted average smart score over the last 3 years. (provider: benzinga)
+        success_rate_2y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years (provider: benzinga)
         gain_count_3y : Optional[int]
             The number of ratings that have gained value over the last 3 years (provider: benzinga)
         loss_count_3y : Optional[int]
@@ -174,6 +194,10 @@ class ROUTER_equity_estimates(Container):
             The average percent (normalized) price difference per rating over the last 3 years (provider: benzinga)
         std_dev_3y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years (provider: benzinga)
+        smart_score_3y : Optional[float]
+            A weighted average smart score over the last 3 years. (provider: benzinga)
+        success_rate_3y : Optional[float]
+            The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years (provider: benzinga)
 
         Examples
         --------

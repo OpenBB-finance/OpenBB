@@ -601,13 +601,14 @@ class PlotlyTA(PltTA):
                 item.hoveron = "fills"
                 item.legendgroup = "SR Lines"
                 item.pop("hovertemplate", None)
+                item.opacity = 0.5
                 if not sr_legend_shown:
                     item.showlegend = True
                     sr_legend_shown = True
 
         if "annotations" in figure.layout:
             for item in figure.layout.annotations:  # type: ignore
-                item["font"]["size"] = 12
+                item["font"]["size"] = 14
         figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
 

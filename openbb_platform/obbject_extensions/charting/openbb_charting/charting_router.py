@@ -289,21 +289,20 @@ def equity_price_historical(  # noqa: PLR0912
         )
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
-        fig.set_title(title)
         fig.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
             showlegend=True,
             legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                xanchor="auto",
-                y=1.02,
-                x=0.95,
+                orientation="v",
+                yanchor="top",
+                xanchor="right",
+                y=0.95,
+                x=-0.01,
                 xref="paper",
-                bgcolor="rgba(0,0,0,0)",
                 font=dict(size=12),
+                bgcolor="rgba(0,0,0,0)",
             ),
             xaxis=dict(
                 ticklen=0,
@@ -328,6 +327,7 @@ def equity_price_historical(  # noqa: PLR0912
                 zeroline=True,
                 mirror=True,
                 showline=True,
+                tickfont=dict(size=14),
             ),
             yaxis2=dict(
                 ticklen=0,
@@ -341,6 +341,10 @@ def equity_price_historical(  # noqa: PLR0912
             hovermode="x",
         )
 
+        if kwargs.get("title"):
+            title = kwargs["title"]
+        fig.update_layout(title=dict(text=title, x=0.5))
+
         content = fig.to_plotly_json()
 
         return fig, content
@@ -353,7 +357,7 @@ def equity_price_historical(  # noqa: PLR0912
         if "symbol" in data.columns:
             data = data.pivot(columns="symbol", values=target)
 
-        title: str = kwargs.get("title") if "title" in kwargs else title if title else "Historical Prices"  # type: ignore
+        title: str = kwargs.get("title", "Historical Prices")  # type: ignore
 
         y1title = data.iloc[:, 0].name
         y2title = ""
@@ -373,8 +377,6 @@ def equity_price_historical(  # noqa: PLR0912
                 y2title = None  # type: ignore
 
         fig = OpenBBFigure()
-
-        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
         for i, col in enumerate(data.columns):
 
@@ -416,23 +418,34 @@ def equity_price_historical(  # noqa: PLR0912
         y2title = None  # type: ignore
 
     fig.update_layout(
-        title=dict(text=title, x=0.5, font=dict(size=16)),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=text_color),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            xanchor="right",
-            y=1.02,
-            x=1,
-            bgcolor="rgba(0,0,0,0)",
+        legend=(
+            dict(
+                orientation="v",
+                yanchor="top",
+                xanchor="right",
+                y=0.95,
+                x=-0.01,
+                bgcolor="rgba(0,0,0,0)",
+            )
+            if len(data.columns) > 2
+            else dict(
+                orientation="h",
+                yanchor="bottom",
+                xanchor="right",
+                y=1.02,
+                x=0.98,
+                bgcolor="rgba(0,0,0,0)",
+            )
         ),
         yaxis1=(
             dict(
                 side="right",
                 ticklen=0,
                 showgrid=True,
+                showline=True,
+                gridcolor="rgba(128,128,128,0.3)",
                 title=dict(
                     text=y1title if y1title else None, standoff=20, font=dict(size=20)
                 ),
@@ -458,11 +471,16 @@ def equity_price_historical(  # noqa: PLR0912
         xaxis=dict(
             ticklen=0,
             showgrid=True,
+            showline=True,
+            gridcolor="rgba(128,128,128,0.3)",
         ),
-        margin=dict(l=20, r=20, b=20),
+        margin=dict(l=20, r=20, b=20, t=20),
         dragmode="pan",
         hovermode="x",
     )
+    if kwargs.get("title"):
+        title = kwargs["title"]
+    fig.update_layout(title=dict(text=title, x=0.5))
 
     content = fig.show(external=True).to_plotly_json()
 
