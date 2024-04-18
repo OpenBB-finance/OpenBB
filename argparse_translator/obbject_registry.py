@@ -52,7 +52,9 @@ class Registry(metaclass=SingletonMeta):
             standard_params = {k: v for k, v in standard_params.items() if v}
             standard_params_json = json.dumps(standard_params)
             data_schema = (
-                obbject.results[0].model_json_schema() if obbject.results else ""
+                obbject.results[0].model_json_schema()
+                if obbject.results and isinstance(obbject.results, list)
+                else ""
             )
             data_repr = f"{data_schema['title']} - {data_schema['description']}"
             obbjects[obbject.id]["standard params"] = standard_params_json
