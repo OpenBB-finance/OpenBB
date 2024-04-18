@@ -4,6 +4,7 @@
 
 from datetime import (
     datetime,
+    timezone,
 )
 from typing import Any, Dict, List, Optional
 
@@ -142,7 +143,7 @@ class FMPCurrencySnapshotsFetcher(
             # If there are no records, don't concatenate.
             if len(temp) > 0:
                 # Convert the Unix timestamp to a datetime.
-                temp.timestamp = temp.timestamp.apply(lambda x: safe_fromtimestamp(x))
+                temp.timestamp = temp.timestamp.apply(lambda x: safe_fromtimestamp(x, tz=timezone.utc))
                 new_df = concat([new_df, temp])
             if len(new_df) == 0:
                 raise EmptyDataError(
