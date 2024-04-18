@@ -35,7 +35,8 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 COPY ./openbb_platform ./openbb_platform
 
 # Install the SDK
-RUN pip install /openbb/openbb_platform[all]
+RUN pip install -e /openbb/openbb_platform[all]
+RUN pip install openbb-devtools
 
 # ---- Copy Files ----
 FROM base
