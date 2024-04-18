@@ -837,7 +837,7 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
             {
                 "symbol": "AAPL",
                 "limit": 3,
-                "type": "8-K",
+                "form_type": "8-K",
                 "cik": None,
                 "provider": "sec",
                 "use_cache": False,
