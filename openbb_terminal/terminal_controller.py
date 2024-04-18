@@ -25,6 +25,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
+from argparse_translator.obbject_registry import Registry
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -87,11 +88,7 @@ if is_installer():
 class TerminalController(BaseController):
     """Terminal Controller class."""
 
-    CHOICES_COMMANDS = [
-        "record",
-        "stop",
-        "exe",
-    ]
+    CHOICES_COMMANDS = ["record", "stop", "exe", "results"]
     CHOICES_MENUS = [
         "settings",
     ]
@@ -242,8 +239,7 @@ class TerminalController(BaseController):
         mt.add_cmd("exe")
         mt.add_raw("\n")
         mt.add_info("Platform CLI")
-
-        mt.add_raw("\n    data\n")
+        mt.add_raw("    data\n")
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS:
                 continue
@@ -262,12 +258,15 @@ class TerminalController(BaseController):
 
         mt.add_raw("\n    configuration\n")
         for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS:
+            if router not in NON_DATA_ROUTERS or router == "reference":
                 continue
             if value == "menu":
                 mt.add_menu(router)
             else:
                 mt.add_cmd(router)
+
+        mt.add_raw("\n    cached results (OBBjects)\n")
+        mt.add_cmd("results")
 
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -457,6 +456,17 @@ class TerminalController(BaseController):
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     self.queue = self.queue[1:]
+
+    def call_results(self, _):
+        """Process results command."""
+        results = Registry().all
+        if results:
+            df = pd.DataFrame.from_dict(results, orient="index")
+            print_rich_table(
+                df, show_index=True, index_name="uuid", title="OBBject Results"
+            )
+        else:
+            console.print("[info]No results found.[/info]")
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
