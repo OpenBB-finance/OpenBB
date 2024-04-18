@@ -47,7 +47,7 @@ class SecSymbolMapFetcher(
         """Return the raw data from the SEC endpoint."""
         if not query.query.isdigit():
             raise ValueError("Query is required and must be a valid CIK.")
-        symbol = await cik_map(int(query.query))
+        symbol = await cik_map(int(query.query), query.use_cache)
         response = {"symbol": symbol}
         return response
 
