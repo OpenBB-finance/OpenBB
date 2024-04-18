@@ -10,8 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential openssh-client curl libwebkit2gtk-4.0-dev \
-    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && apt-get install -y --no-install-recommends build-essential openssh-client curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,6 +21,14 @@ RUN pip install toml poetry
 FROM base AS builder
 
 WORKDIR /openbb
+
+# install Rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+    && . $HOME/.cargo/env \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends libwebkit2gtk-4.0-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY ./openbb_platform ./openbb_platform
 
