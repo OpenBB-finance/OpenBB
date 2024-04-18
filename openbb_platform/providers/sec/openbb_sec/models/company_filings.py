@@ -121,6 +121,7 @@ class SecCompanyFilingsData(CompanyFilingsData):
     )
 
     @field_validator("report_date", mode="before", check_fields=False)
+    @classmethod
     def validate_report_date(cls, v: Optional[Union[str, dateType]]):
         """Validate report_date."""
         if isinstance(v, dateType):

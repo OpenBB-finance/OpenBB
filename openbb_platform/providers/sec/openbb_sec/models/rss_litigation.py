@@ -75,6 +75,8 @@ class SecRssLitigationFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecRssLitigationData]:
+    def transform_data(
+        query: SecRssLitigationQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecRssLitigationData]:
         """Transform the data to the standard format."""
         return [SecRssLitigationData.model_validate(d) for d in data]

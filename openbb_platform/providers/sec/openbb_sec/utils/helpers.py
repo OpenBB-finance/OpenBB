@@ -317,8 +317,7 @@ async def download_zip_file(
             results = results[results["symbol"] == symbol]
         results["date"] = pd.to_datetime(results["date"], format="%Y%m%d").dt.date
         results["price"] = results["price"].mask(
-            results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True)
-            == False,  # noqa
+            not results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True),  # noqa
             None,
         )
         results["price"] = results["price"].astype(float)
@@ -393,8 +392,8 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
             if _series_id is None or len(_series_id) == 0
             else _series_id["seriesId"].iloc[0]
         )
-    except IndexError:
-        raise ValueError("Fund not found for, the symbol: " + symbol)
+    except IndexError as e:
+        raise ValueError("Fund not found for, the symbol: " + symbol) from e
     if series_id == "" or series_id is None:
         raise ValueError("Fund not found for, the symbol: " + symbol)
 
@@ -419,7 +418,10 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
                 "file_date": d["_source"]["file_date"],
                 "period_ending": d["_source"]["period_ending"],
                 "form_type": d["_source"]["form"],
-                "primary_doc": f"https://www.sec.gov/Archives/edgar/data/{int(d['_source']['ciks'][0])}/{d['_id'].replace('-', '').replace(':', '/')}",  # noqa
+                "primary_doc": (
+                    f"https://www.sec.gov/Archives/edgar/data/{int(d['_source']['ciks'][0])}"  # noqa
+                    + f"/{d['_id'].replace('-', '').replace(':', '/')}"  # noqa
+                ),
             }
             for d in hits
         ]
