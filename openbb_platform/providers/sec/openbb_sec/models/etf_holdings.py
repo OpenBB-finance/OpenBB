@@ -739,12 +739,8 @@ class SecEtfHoldingsFetcher(
                 metadata["period_ending"] = gen_info.get("repPdDate")
                 metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
                 current_month = pd.to_datetime(metadata["period_ending"])
-                month_1 = (
-                    (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
-                )
-                month_2 = (
-                    (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
-                )
+                month_1 = (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
+                month_2 = (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
                 month_3 = current_month.strftime("%Y-%m-%d")
             fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})  # type: ignore
             if fund_info:
