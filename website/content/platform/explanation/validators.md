@@ -1,6 +1,6 @@
 ---
 title: Validators
-sidebar_position: 2
+sidebar_position: 9
 description: This guide provides detailed instructions on how and where validators should be used.
 keywords:
 - OpenBB Platform

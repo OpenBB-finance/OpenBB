@@ -1,6 +1,6 @@
 ---
-title: Expectations For Contributors
-sidebar_position: 1
+title: Contributing
+sidebar_position: 6
 description: This guide outlines the expectations for contributors to the OpenBB Platform. It covers aspects such as use cases, documentation, code quality, testing, performance, and collaboration. Whether you're enhancing functionality, building extensions, or contributing code.
 keywords:
 - OpenBB Platform
@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Expectations For Contributors - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Contributing - Explanation | OpenBB Platform Docs" />
 
 Thank you for taking the time to engage as a contributor. There is no contribution that is too small.
 whether it is a spelling error in the documentation, or contributing code and participating in the

@@ -1,6 +1,6 @@
 ---
 title: Function Examples
-sidebar_position: 3
+sidebar_position: 7
 description: This guide provides detailed instructions for including function examples in the router endpoints of the OpenBB Platform.
 keywords:
 - OpenBB community

@@ -1,6 +1,6 @@
 ---
 title: Finding Symbols
-sidebar_position: 3
+sidebar_position: 6
 description: This page provides comprehensive information about finding stocks in the
   with the OpenBB Platform.  Search companies from different sources, and filter results.
   This guide is intended to introduce some methods for searching, screening, and discovery.

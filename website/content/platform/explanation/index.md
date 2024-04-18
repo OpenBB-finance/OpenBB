@@ -1,35 +1,62 @@
 ---
 title: Explanation
 sidebar_position: 1
-description: This section provides explanations of concepts related to usage and getting started with the OpenBB Platform.
-  The pages include example syntax and outline what you can expect while working with the OpenBB Python interface and REST API.
+description: The OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API
 keywords:
-- getting started
 - explanation
-- guide
-- syntax
-- examples
-- symbols
-- calendars
-- commitment of traders
-- financial statements
-- time series
-- historical prices
+- OpenBB Platform
+- Python client
+- Fast API
+- getting started
+- authorization
+- data providers
+- OpenBB Hub
+- local environment
+- environment variables
+- user settings
+- command execution
+- API response
+- logging
+- proxy networks
+- data cleaning
+- technical analysis
+- quantitative analysis
+- charting libraries
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Explanation - Usage | OpenBB Platform Docs" />
 
-This section provides explanations for getting started using the OpenBB Platform.
-Pages outline things to expect and include example syntax for use.
+## Overview
 
-Subjects covered include:
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API.
+The extension framework provides interoperability between as many, or few, services required.
 
-- [Finding Ticker Symbols](explanation/find_symbols)
-- [Loading Historical Price Data](explanation/historical_prices)
-- [Market Calendars](explanation/market_calendars)
-- [Financial Statements](explanation/financial_statements)
-- [Commitment of Traders](explanation/commitment_of_traders)
+Optional extras are not included with the base installation, and these include:
 
-Jupyter Notebook examples are also hosted in the OpenBB GitHub repository [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/examples)
+- Charting libraries and views
+- Data processing and calculations
+- Technical/Quantitative Analysis
+- Community data providers
+- Toolkit extensions
+- CLI Terminal
+
+Additional functionality and data providers can be installed or removed independently. Refer to [Extensions](extensions) for the list of extensions hosted in the OpenBB GitHub repository.
+
+## Topics In This Section
+
+The pages in this section cover topics to get started using the OpenBB Platform, including:
+
+- [Data Stanardization](explanation/standardization)
+- [Architecture Overview](explanation/architecture_overview)
+- [OBBject](explanation/obbject)
+- [Development](explanation/development)
+- [Contributing](explanation/contributing)
+- [HTTP Requests](explanation/http_requests)
+- [Function Examples](explanation/function_examples)
+- [HTTP Requests](explanation/http_requests)
+- [Validators](explanataion/validators)
+- [Deprecating Endpoints](explanation/deprecating_endpoints)
+- [Tests](explanation/tests)
+

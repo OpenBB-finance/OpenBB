@@ -1,6 +1,6 @@
 ---
-title: Considerations
-sidebar_position: 1
+title: Development
+sidebar_position: 5
 description: Learn about the OpenBB Platform, an open-source solution built by the
   community. Understand its use via Python interface and REST API, and acquaint yourself
   with how to build a custom extension or contribute directly to the platform
@@ -21,10 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Considerations - Development | OpenBB Platform Docs" />
-
-These sections provide guidelines for developing with, and contributing to, the OpenBB Platform.
-There are comprehensive guides on how to build extensions, add new data points, contribute to the code base, and more.
+<HeadTitle title="Development - Explanation | OpenBB Platform Docs" />
 
 We generalize between two distinct types of users:
 

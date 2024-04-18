@@ -1,6 +1,6 @@
 ---
 title: Commitment of Traders
-sidebar_position: 7
+sidebar_position: 2
 description: This page provides details on the accessing Commitment of Traders reports with
   the OpenBB Platform, published by the CFTC weekly.  This guide provides examples for
   using the combinations of parameters used to get aspects of the report's data.
