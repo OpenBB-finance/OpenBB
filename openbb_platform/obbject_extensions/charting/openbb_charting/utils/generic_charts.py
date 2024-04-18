@@ -117,8 +117,6 @@ def line_chart(  # noqa: PLR0912
     except Exception as _:
         fig = OpenBBFigure(create_backend=True)
 
-    fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
-
     title = f"{title}" if title else ""
     xtitle = xtitle if xtitle else ""
     y1title = ytitle if ytitle else ""
@@ -345,6 +343,7 @@ def bar_chart(  # noqa: PLR0912
     ytitle: Optional[str] = None,
     orientation: Literal["h", "v"] = "v",
     colors: Optional[List[str]] = None,
+    bar_kwargs: Optional[Dict[str, Any]] = None,
     layout_kwargs: Optional[Dict[str, Any]] = None,
     **kwargs,
 ) -> Union[OpenBBFigure, Figure]:
@@ -364,15 +363,17 @@ def bar_chart(  # noqa: PLR0912
         The bar mode, by default "group".
     xtype : Literal["category", "multicategory", "date", "log", "linear"], optional
         The x-axis type, by default "category".
-    title : Optional[str], optional
+    title : str, optional
         The title of the chart, by default None.
-    xtitle : Optional[str], optional
+    xtitle : str, optional
         The x-axis title, by default None.
-    ytitle : Optional[str], optional
+    ytitle : str, optional
         The y-axis title, by default None.
-    colors: Optional[List[str]], optional
+    colors: List[str], optional
         Manually set the colors to cycle through for each column in 'y', by default None.
-    layout_kwargs : Optional[Dict[str, Any]], optional
+    bar_kwargs : Dict[str, Any], optional
+        Additional keyword arguments to apply with figure.add_bar(), by default None.
+    layout_kwargs : Dict[str, Any], optional
         Additional keyword arguments to apply with figure.update_layout(), by default None.
 
     Returns
@@ -399,7 +400,8 @@ def bar_chart(  # noqa: PLR0912
     figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
     if colors is not None:
         figure.update_layout(colorway=colors)
-
+    if bar_kwargs is None:
+        bar_kwargs = {}
     if isinstance(data, (Data, list, dict)):
         data = basemodel_to_df(convert_to_basemodel(data), index=None)
 
@@ -420,20 +422,20 @@ def bar_chart(  # noqa: PLR0912
                 else "%{fullData.name}:%{x}<extra></extra>"
             ),
             width=0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95,
+            **bar_kwargs,
         )
 
     figure.update_layout(
-        title=dict(text=title if title else None, x=0.5, font=dict(size=20)),
+        title=dict(text=title if title else None, x=0.5, font=dict(size=16)),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.02,
             xanchor="right",
-            x=0.94,
+            y=1.02,
+            x=0.98,
             bgcolor="rgba(0,0,0,0)",
-            font=dict(size=12),
         ),
         xaxis=dict(
             type=xtype,
@@ -475,12 +477,10 @@ def bar_chart(  # noqa: PLR0912
                 font=dict(size=12),
             ),
         )
-
     if layout_kwargs:
         figure.update_layout(
             **layout_kwargs,
         )
-
     return figure
 
 
