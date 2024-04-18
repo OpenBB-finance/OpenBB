@@ -61,6 +61,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The weight of the holding in ETF in %.",
         alias="pctVal",
         default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     value: Optional[float] = Field(
         description="The value of the holding in USD.", alias="valUSD", default=None
@@ -134,7 +135,9 @@ class SecEtfHoldingsData(EtfHoldingsData):
         default=None,
     )
     annualized_return: Optional[float] = Field(
-        description="The annualized return on the debt security.", default=None
+        description="The annualized return on the debt security.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     is_default: Optional[str] = Field(
         description="If the debt security is defaulted.", default=None
