@@ -5,6 +5,7 @@
 from datetime import (
     date as dateType,
     datetime,
+    timezone,
 )
 from typing import Any, Dict, List, Optional, Union
 
@@ -100,7 +101,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
 
         if isinstance(v, (int, float)) and v != 0:
             try:
-                v = safe_fromtimestamp(v)  # type: ignore
+                v = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
                 if v.hour == 0 and v.minute == 0 and v.second == 0:  # type: ignore
                     v = v.date()  # type: ignore
                 return v  # type: ignore
