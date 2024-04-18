@@ -626,7 +626,7 @@ class ROUTER_equity(Container):
         ------------
         symbol : Optional[str]
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the company.
         cik : Optional[str]
             ;

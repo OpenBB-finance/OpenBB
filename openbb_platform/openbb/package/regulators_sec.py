@@ -48,6 +48,8 @@ class ROUTER_regulators_sec(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
             no default.
+        use_cache : Optional[bool]
+            Whether or not to use cache for the request, default is True. (provider: sec)
 
         Returns
         -------
@@ -98,9 +100,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            OpenBBCustomParameter(description="Whether or not to use cache."),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
@@ -117,7 +117,7 @@ class ROUTER_regulators_sec(Container):
         query : str
             Search query.
         use_cache : Optional[bool]
-            Whether or not to use cache. If True, cache will store for seven days.
+            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -141,7 +141,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) (provider: sec)
 
         Examples
@@ -245,9 +245,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            OpenBBCustomParameter(description="Whether or not to use cache."),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
@@ -264,7 +262,7 @@ class ROUTER_regulators_sec(Container):
         query : str
             Search query.
         use_cache : Optional[bool]
-            Whether or not to use cache. If True, cache will store for seven days.
+            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -340,9 +338,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            OpenBBCustomParameter(description="Whether or not to use cache."),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
@@ -359,7 +355,7 @@ class ROUTER_regulators_sec(Container):
         query : str
             Search query.
         use_cache : Optional[bool]
-            Whether or not to use cache. If True, cache will store for seven days.
+            Whether or not to use cache.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is

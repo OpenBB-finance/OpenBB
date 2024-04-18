@@ -32,7 +32,6 @@ class SecEquitySearchQueryParams(EquitySearchQueryParams):
 class SecEquitySearchData(EquitySearchData):
     """SEC Equity Search Data."""
 
-    name: Optional[str] = Field(description="The name of the entity.", default=None)
     cik: str = Field(description="Central Index Key")
 
 

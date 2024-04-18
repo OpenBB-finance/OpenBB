@@ -409,7 +409,7 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
     else:
         response = await amake_request(url, response_callback=sec_callback)  # type: ignore
 
-    if "hits" in response and len(response["hits"].get("hits")) > 0:
+    if "hits" in response and len(response["hits"].get("hits")) > 0:  # type: ignore
         hits = response["hits"]["hits"]  # type: ignore
         results = [
             {

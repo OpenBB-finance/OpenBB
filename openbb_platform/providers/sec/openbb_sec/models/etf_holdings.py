@@ -11,14 +11,17 @@ import xmltodict
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.utils import get_user_cache_directory
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
+from pandas.tseries.offsets import DateOffset
 from pydantic import Field, field_validator, model_validator
 
 
@@ -172,7 +175,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The delta of the option.", default=None
     )
     rate_type_rec: Optional[str] = Field(
-        description="The type of rate for reveivable portion of the swap.", default=None
+        description="The type of rate for receivable portion of the swap.", default=None
     )
     receive_currency: Optional[str] = Field(
         description="The receive currency of the swap.", default=None
@@ -181,7 +184,7 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The upfront amount received of the swap.", default=None
     )
     floating_rate_index_rec: Optional[str] = Field(
-        description="The floating rate index for reveivable portion of the swap.",
+        description="The floating rate index for receivable portion of the swap.",
         default=None,
     )
     floating_rate_spread_rec: Optional[float] = Field(
@@ -189,17 +192,17 @@ class SecEtfHoldingsData(EtfHoldingsData):
         default=None,
     )
     rate_tenor_rec: Optional[str] = Field(
-        description="The rate tenor for reveivable portion of the swap.", default=None
+        description="The rate tenor for receivable portion of the swap.", default=None
     )
     rate_tenor_unit_rec: Optional[Union[str, int]] = Field(
-        description="The rate tenor unit for reveivable portion of the swap.",
+        description="The rate tenor unit for receivable portion of the swap.",
         default=None,
     )
     reset_date_rec: Optional[str] = Field(
-        description="The reset date for reveivable portion of the swap.", default=None
+        description="The reset date for receivable portion of the swap.", default=None
     )
     reset_date_unit_rec: Optional[Union[str, int]] = Field(
-        description="The reset date unit for reveivable portion of the swap.",
+        description="The reset date unit for receivable portion of the swap.",
         default=None,
     )
     rate_type_pmnt: Optional[str] = Field(
@@ -346,9 +349,6 @@ class SecEtfHoldingsFetcher(
             ].values[0]
         else:
             filing_url = filing_candidates["primary_doc"].values[0]
-            period_ending = filing_candidates["period_ending"].values[0]
-            warn(f"The latest filing is for the period ending: {period_ending}")
-        warn(f"Source Document: {filing_url}")
 
         async def callback(response, session):
             """Response callback for the request."""
@@ -364,8 +364,9 @@ class SecEtfHoldingsFetcher(
                 finally:
                     await session.close()
         else:
-            response = await amake_request(filing_url, headers=HEADERS, response_callback=callback)  # type: ignore
-
+            response = await amake_request(
+                filing_url, headers=HEADERS, response_callback=callback  # type: ignore
+            )
         results = xmltodict.parse(response)
 
         return results
@@ -376,11 +377,15 @@ class SecEtfHoldingsFetcher(
         query: SecEtfHoldingsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[SecEtfHoldingsData]:
+    ) -> AnnotatedResult[List[SecEtfHoldingsData]]:
         """Transform the data."""
+
+        if not data:
+            raise EmptyDataError(f"No data was returned for the symbol, {query.symbol}")
         results = []
 
         response = data
+
         # Parse the response if it is a NPORT-P filing.
         if (
             "edgarSubmission" in response
@@ -723,5 +728,115 @@ class SecEtfHoldingsFetcher(
                 .sort_values(by="pctVal", ascending=False)
                 .to_dict(orient="records")
             )
-
-        return [SecEtfHoldingsData.model_validate(d) for d in results]
+        # Extract additional information from the form that doesn't belong in the holdings table.
+        metadata = {}
+        try:
+            gen_info = response["edgarSubmission"]["formData"].get("genInfo", {})  # type: ignore
+            if gen_info:
+                metadata["fund_name"] = gen_info.get("seriesName")
+                metadata["series_id"] = gen_info.get("seriesId")
+                metadata["lei"] = gen_info.get("seriesLei")
+                metadata["period_ending"] = gen_info.get("repPdDate")
+                metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
+                current_month = pd.to_datetime(metadata["period_ending"])
+                month_1 = (
+                    (current_month + DateOffset(months=-2)).date().strftime("%Y-%m-%d")
+                )
+                month_2 = (
+                    (current_month + DateOffset(months=-1)).date().strftime("%Y-%m-%d")
+                )
+                month_3 = current_month.strftime("%Y-%m-%d")
+            fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})  # type: ignore
+            if fund_info:
+                metadata["total_assets"] = float(fund_info.pop("totAssets", None))
+                metadata["total_liabilities"] = float(fund_info.pop("totLiabs", None))
+                metadata["net_assets"] = float(fund_info.pop("netAssets", None))
+                metadata["cash_and_equivalents"] = fund_info.pop(
+                    "cshNotRptdInCorD", None
+                )
+                return_info = fund_info["returnInfo"]["monthlyTotReturns"].get(
+                    "monthlyTotReturn", {}
+                )
+                returns = {
+                    month_1: float(return_info.get("@rtn1")) / 100,
+                    month_2: float(return_info.get("@rtn2")) / 100,
+                    month_3: float(return_info.get("@rtn3")) / 100,
+                }
+                metadata["returns"] = returns
+                flow = {
+                    month_1: {
+                        "creation": float(fund_info["mon1Flow"].get("@sales", None)),
+                        "redemption": float(
+                            fund_info["mon1Flow"].get("@redemption", None)
+                        ),
+                    },
+                    month_2: {
+                        "creation": float(fund_info["mon2Flow"].get("@sales", None)),
+                        "redemption": float(
+                            fund_info["mon2Flow"].get("@redemption", None)
+                        ),
+                    },
+                    month_3: {
+                        "creation": float(fund_info["mon3Flow"].get("@sales")),
+                        "redemption": float(
+                            fund_info["mon3Flow"].get("@redemption", None)
+                        ),
+                    },
+                }
+                metadata["flow"] = flow
+                gains = {
+                    month_1: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon1"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon1"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                    month_2: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon2"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon2"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                    month_3: {
+                        "realized": float(
+                            fund_info["returnInfo"]["othMon3"].get(
+                                "@netRealizedGain", None
+                            )
+                        ),
+                        "unrealized": float(
+                            fund_info["returnInfo"]["othMon3"].get(
+                                "@netUnrealizedAppr", None
+                            )
+                        ),
+                    },
+                }
+                metadata["gains"] = gains
+                _borrowers = fund_info["borrowers"].get("borrower", [])
+                if _borrowers:
+                    borrowers = [
+                        {
+                            "name": d["@name"],
+                            "lei": d["@lei"],
+                            "value": float(d["@aggrVal"]),
+                        }
+                        for d in _borrowers
+                    ]
+                    metadata["borrowers"] = borrowers
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Error extracting metadata: {e}")
+        return AnnotatedResult(
+            result=[SecEtfHoldingsData.model_validate(d) for d in results],
+            metadata=metadata,
+        )

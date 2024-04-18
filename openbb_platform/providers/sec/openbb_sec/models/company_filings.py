@@ -186,7 +186,7 @@ class SecCompanyFilingsFetcher(
 
         # This seems to work for the data structure.
         filings = (
-            DataFrame.from_records(data["filings"].get("recent"))
+            DataFrame.from_records(data["filings"].get("recent"))  # type: ignore
             if "filings" in data
             else DataFrame()
         )
@@ -208,12 +208,12 @@ class SecCompanyFilingsFetcher(
 
             urls = []
             new_urls = (
-                DataFrame(data["filings"].get("files"))
-                if "files" in data["filings"]
+                DataFrame(data["filings"].get("files"))  # type: ignore
+                if "filings" in data
                 else DataFrame()
             )
             for i in new_urls.index:
-                new_cik: str = data["filings"]["files"][i]["name"]
+                new_cik: str = data["filings"]["files"][i]["name"]  # type: ignore
                 new_url: str = "https://data.sec.gov/submissions/" + new_cik
                 urls.append(new_url)
             if query.use_cache is True:
