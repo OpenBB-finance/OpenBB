@@ -2,23 +2,24 @@
 
 # pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
-import warnings
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
 import pandas as pd
-import requests
 import xmltodict
+from aiohttp_client_cache import SQLiteBackend
+from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_sec.utils.helpers import HEADERS, get_nport_candidates, sec_session_etf
-from pydantic import Field, model_validator
-
-_warn = warnings.warn
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
+from pydantic import Field, field_validator, model_validator
 
 
 class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
@@ -284,6 +285,12 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The unrealized gain or loss on the derivative.", default=None
     )
 
+    @field_validator("weight", "annualized_return", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize the percent values."""
+        return float(v) / 100 if v else None
+
     @model_validator(mode="before")
     @classmethod
     def replace_zero(cls, values):
@@ -309,20 +316,20 @@ class SecEtfHoldingsFetcher(
         params["symbol"] = params["symbol"].upper()
         return SecEtfHoldingsQueryParams(**params)
 
-    # pylint: disable=unused-argument
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecEtfHoldingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
-        filing_candidates = pd.DataFrame.from_records(
-            get_nport_candidates(symbol=query.symbol, use_cache=query.use_cache)
+        filings = await get_nport_candidates(
+            symbol=query.symbol, use_cache=query.use_cache
         )
+        filing_candidates = pd.DataFrame.from_records(filings)
         if filing_candidates.empty:
             raise ValueError(f"No N-Port records found for {query.symbol}.")
-        dates = filing_candidates["period_ending"].to_list()
+        dates = filing_candidates.period_ending.to_list()
         new_date: str = ""
         if query.date is not None:
             date = query.date
@@ -333,25 +340,35 @@ class SecEtfHoldingsFetcher(
             __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
             new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
             date = new_date if new_date else date
-            _warn(f"Closest filing date to, {query.date}, is the period ending: {date}")
+            warn(f"Closest filing date to, {query.date}, is the period ending: {date}")
             filing_url = filing_candidates[filing_candidates["period_ending"] == date][
                 "primary_doc"
             ].values[0]
         else:
             filing_url = filing_candidates["primary_doc"].values[0]
             period_ending = filing_candidates["period_ending"].values[0]
-            _warn(f"The latest filing is for the period ending: {period_ending}")
-        _warn(f"Source Document: {filing_url}")
-        r = (
-            sec_session_etf.get(filing_url, headers=HEADERS, timeout=5)
-            if query.use_cache
-            else requests.get(filing_url, headers=HEADERS, timeout=5)
-        )
-        if r.status_code != 200:
-            raise RuntimeError(f"Request failed with status code {r.status_code}")
-        response = xmltodict.parse(r.content)
+            warn(f"The latest filing is for the period ending: {period_ending}")
+        warn(f"Source Document: {filing_url}")
 
-        return response
+        async def callback(response, session):
+            """Response callback for the request."""
+            return await response.read()
+
+        if query.use_cache is True:
+            cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
+            async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
+                try:
+                    response = await amake_request(
+                        filing_url, headers=HEADERS, session=session, response_callback=callback  # type: ignore
+                    )
+                finally:
+                    await session.close()
+        else:
+            response = await amake_request(filing_url, headers=HEADERS, response_callback=callback)  # type: ignore
+
+        results = xmltodict.parse(response)
+
+        return results
 
     # pylint: disable=too-many-statements
     @staticmethod
