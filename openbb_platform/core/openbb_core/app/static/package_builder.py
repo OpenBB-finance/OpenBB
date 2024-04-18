@@ -673,39 +673,31 @@ class MethodDefinition:
                     continue
 
                 field_default = available_fields[param].default
-
+                field_info_default = (
+                    PydanticUndefined if value.default is _empty else value.default
+                )
                 choices = getattr(field_default, "json_schema_extra", {}).get(
                     "choices", []
                 )
                 description = getattr(field_default, "description", "")
 
-                if choices:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            FieldInfo(
-                                default=(
-                                    ... if value.default is _empty else value.default
-                                ),
-                                annotation=value.annotation,
-                                description=description,
-                                json_schema_extra={"choices": choices},
-                            ),
-                        ],
-                    )
-                else:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            FieldInfo(
-                                default=(
-                                    ... if value.default is _empty else value.default
-                                ),
-                                annotation=value.annotation,
-                                description=description,
-                            ),
-                        ],
-                    )
+                PartialFieldInfo = partial(
+                    FieldInfo,
+                    default=field_info_default,
+                    annotation=value.annotation,
+                    description=description,
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation,
+                        (
+                            PartialFieldInfo(json_schema_extra={"choices": choices})
+                            if choices
+                            else PartialFieldInfo()
+                        ),
+                    ],
+                )
 
                 od[param] = new_value
 
