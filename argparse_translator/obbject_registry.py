@@ -8,6 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 class Registry(metaclass=SingletonMeta):
 
     obbject_instances: List[OBBject] = []
+    ids: List[str] = []
 
     @classmethod
     def register(cls, obbject: OBBject):
@@ -16,12 +17,14 @@ class Registry(metaclass=SingletonMeta):
                 if obbject_.id == obbject.id:
                     return
             cls.obbject_instances.append(obbject)
+            cls.ids.append(obbject.id)
 
     @classmethod
     def remove(cls, id_: str):
         for obbject in cls.obbject_instances:
             if obbject.id == id_:
                 cls.obbject_instances.remove(obbject)
+                cls.ids.remove(id_)
 
     @classmethod
     def get(cls, id_: str):
@@ -35,6 +38,7 @@ class Registry(metaclass=SingletonMeta):
         for obbject in cls.obbject_instances:
             if obbject.id == id_:
                 cls.obbject_instances.remove(obbject)
+                cls.ids.remove(id_)
                 return obbject
         raise ValueError(f"OBBject with id {id_} not found")
 

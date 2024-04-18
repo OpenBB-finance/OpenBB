@@ -66,12 +66,21 @@ class PlatformController(BaseController):
         self.paths = getattr(self._translated_target, "paths", {})
 
         if self.translators:
+            self._link_obbject_to_data_processing_commands()
             self._generate_commands()
             self._generate_sub_controllers()
 
             if session and get_current_settings().USE_PROMPT_TOOLKIT:
                 choices: dict = self.choices_default
                 self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def _link_obbject_to_data_processing_commands(self):
+        """Link data processing commands to OBBject registry."""
+        for _, trl in self.translators.items():
+            for action in trl._parser._actions:  # pylint: disable=protected-access
+                if action.dest == "data":
+                    # this is purposely making the choices pointing to the registry ids
+                    action.choices = Registry.ids
 
     def _generate_sub_controllers(self):
         """Handle paths."""
