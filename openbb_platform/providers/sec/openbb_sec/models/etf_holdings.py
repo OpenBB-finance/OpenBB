@@ -21,7 +21,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
-from pandas.tseries.offsets import DateOffset, MonthEnd
+from pandas.tseries.offsets import MonthEnd
 from pydantic import Field, field_validator, model_validator
 
 
