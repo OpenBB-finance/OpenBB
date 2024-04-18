@@ -39,7 +39,7 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    form_type: Union[Literal[FORM_TYPES], None] = Field(
+    form_type: Union[None, FORM_TYPES] = Field(
         description="Type of the SEC filing form.",
         default=None,
     )
