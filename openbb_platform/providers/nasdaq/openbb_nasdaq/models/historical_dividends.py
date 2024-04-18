@@ -2,12 +2,12 @@
 
 # pylint: disable=unused-argument
 import asyncio
-import warnings
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,8 +19,6 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_nasdaq.utils.helpers import IPO_HEADERS
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class NasdaqHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
@@ -92,6 +90,8 @@ class NasdaqHistoricalDividendsFetcher(
 ):
     """Nasdaq Historical Dividends Fetcher."""
 
+    require_credentials = False
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqHistoricalDividendsQueryParams:
         """Transform the params to the provider-specific query."""
@@ -131,7 +131,7 @@ class NasdaqHistoricalDividendsFetcher(
                         d["symbol"] = symbol
                 results.extend(data)
             if not data:
-                _warn(f"No data found for {symbol}")
+                warn(f"No data found for {symbol}")
 
         tasks = [get_one(symbol) for symbol in symbols]
 
