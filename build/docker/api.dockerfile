@@ -24,11 +24,13 @@ WORKDIR /openbb
 
 # install Rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
-    && . $HOME/.cargo/env \
     && apt-get update \
     && apt-get install -y --no-install-recommends libwebkit2gtk-4.0-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# add Rust to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 COPY ./openbb_platform ./openbb_platform
 
