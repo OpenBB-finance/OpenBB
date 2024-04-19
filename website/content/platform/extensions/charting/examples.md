@@ -114,7 +114,7 @@ price_performance.charting.create_bar_chart(
 )
 ```
 
-![Horizontal Price Performance](performance2.png)
+![Horizonontal Price Performance](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8da01f73-d7a8-4168-846a-9fa9ed6a0e39)
 
 ## Create Your Own
 
