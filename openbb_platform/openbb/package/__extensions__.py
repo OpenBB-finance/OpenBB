@@ -20,7 +20,7 @@ Routers:
     /regulators
 
 Extensions:
-    - commodity@1.0.2
+    - commodity@1.0.4
     - crypto@1.1.4
     - currency@1.1.4
     - derivatives@1.1.4
