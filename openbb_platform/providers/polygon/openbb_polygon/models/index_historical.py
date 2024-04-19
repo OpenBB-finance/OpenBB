@@ -155,7 +155,7 @@ class PolygonIndexHistoricalFetcher(
 
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
-                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))  # type: ignore[union-type]
+                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))  # type: ignore[arg-type]
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:

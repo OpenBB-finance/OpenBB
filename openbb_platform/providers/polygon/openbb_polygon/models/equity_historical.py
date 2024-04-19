@@ -155,18 +155,18 @@ class PolygonEquityHistoricalFetcher(
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)
-            results: list = data.get("results", [])
+            next_url = data.get("next_url", None)  # type: ignore[union-type]
+            results: list = data.get("results", [])  # type: ignore[union-type]
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))
-                next_url = data.get("next_url", None)
+                results.extend(data.get("results", []))  # type: ignore[union-type]
+                next_url = data.get("next_url", None)  # type: ignore[union-type]
 
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
-                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))
+                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))  # type: ignore[arg-type]
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
