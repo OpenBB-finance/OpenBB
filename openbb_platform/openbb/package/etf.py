@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_etf(Container):
@@ -694,6 +696,10 @@ class ROUTER_etf(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2.",
+        category=OpenBBDeprecationWarning,
+    )
     def holdings_performance(
         self,
         symbol: Annotated[
@@ -777,6 +783,13 @@ class ROUTER_etf(Container):
         >>> from openbb import obb
         >>> obb.etf.holdings_performance(symbol='XLK', provider='fmp')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/etf/holdings_performance",
