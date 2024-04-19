@@ -1154,7 +1154,7 @@ class DocstringGenerator:
                 results_type = (
                     cls._get_repr(
                         cls._get_generic_types(
-                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr]
+                            annotation.model_fields["results"].annotation,  # type: ignore[arg-type]
                             [],
                         ),
                         model_name,
@@ -1673,10 +1673,10 @@ class ReferenceGenerator:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
+
+                # TODO: The reference is not getting populated when a command does not use a standard model
                 # Access model map from the ProviderInterface
-                model_map = cls.pi.map[
-                    standard_model
-                ]  # pylint: disable=protected-access
+                model_map = cls.pi.map.get(standard_model, {})
 
                 for provider in model_map:
                     if provider == "openbb":
