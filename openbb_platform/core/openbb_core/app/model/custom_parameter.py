@@ -9,6 +9,7 @@ class OpenBBCustomParameter(FieldInfo):
     """Custom parameter for OpenBB."""
 
     def __repr__(self):
+        """Override FieldInfo __repr__."""
         # We use repr() to avoid decoding special characters like \n
         if self.choices:
             return f"OpenBBCustomParameter(description={repr(self.description)}, choices={repr(self.choices)})"
@@ -20,5 +21,6 @@ class OpenBBCustomParameter(FieldInfo):
         )
 
     @property
-    def choices(self):
-        return self.json_schema_extra.get("choices")
+    def choices(self) -> Optional[List[Any]]:
+        """Custom choices."""
+        return self.json_schema_extra.get("choices")  # type: ignore[union-attr,return-value]
