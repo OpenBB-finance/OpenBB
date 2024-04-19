@@ -16,6 +16,7 @@ class OpenBBField(FieldInfo):
         return f"OpenBBField(description={repr(self.description)})"
 
     def __init__(self, description: str, choices: Optional[List[Any]] = None):
+        """Initialize OpenBBField."""
         super().__init__(
             description=description, json_schema_extra={"choices": choices}
         )
