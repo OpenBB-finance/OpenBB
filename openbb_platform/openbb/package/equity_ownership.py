@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from datetime import date
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -30,34 +29,26 @@ class ROUTER_equity_ownership(Container):
         self,
         symbol: Annotated[
             str,
-            FieldInfo(
-                annotation=str,
-                description="Symbol to get data for. A CIK or Symbol can be used.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. A CIK or Symbol can be used."
             ),
         ],
         date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.",
+            OpenBBCustomParameter(
+                description="A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported."
             ),
         ] = None,
         limit: Annotated[
             Optional[int],
-            FieldInfo(
-                annotation=Union[int, None],
-                required=False,
-                default=1,
-                description="The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.",
+            OpenBBCustomParameter(
+                description="The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter."
             ),
         ] = 1,
         provider: Annotated[
             Optional[Literal["sec"]],
-            FieldInfo(
-                annotation=Union[Literal["sec"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -162,23 +153,16 @@ class ROUTER_equity_ownership(Container):
     def insider_trading(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for.")
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
-            FieldInfo(
-                annotation=int,
-                required=False,
-                default=500,
-                description="The number of data entries to return.",
-            ),
+            OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 500,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -311,14 +295,12 @@ class ROUTER_equity_ownership(Container):
     def institutional(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for.")
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -455,31 +437,20 @@ class ROUTER_equity_ownership(Container):
     def major_holders(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for.")
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="A specific date to get data for.",
-            ),
+            OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         page: Annotated[
             Optional[int],
-            FieldInfo(
-                annotation=Union[int, None],
-                required=False,
-                default=0,
-                description="Page number of the data to fetch.",
-            ),
+            OpenBBCustomParameter(description="Page number of the data to fetch."),
         ] = 0,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -626,17 +597,14 @@ class ROUTER_equity_ownership(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs

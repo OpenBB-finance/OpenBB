@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from datetime import date
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -35,17 +34,14 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -110,17 +106,14 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -195,44 +188,30 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
         ],
         interval: Annotated[
             Optional[str],
-            FieldInfo(
-                annotation=Union[str, None],
-                required=False,
-                default="1d",
-                description="Time interval of the data to return.",
-            ),
+            OpenBBCustomParameter(description="Time interval of the data to return."),
         ] = "1d",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
-            FieldInfo(
-                annotation=Union[
-                    Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"], None
-                ],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -391,14 +370,12 @@ class ROUTER_etf(Container):
     def holdings(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "sec"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -563,11 +540,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[int, str]]
+        rate_tenor_unit_rec : Optional[Union[str, int]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[int, str]]
+        reset_date_unit_rec : Optional[Union[str, int]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -581,11 +558,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[int, str]]
+        rate_tenor_unit_pmnt : Optional[Union[str, int]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[int, str]]
+        reset_date_unit_pmnt : Optional[Union[str, int]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -654,14 +631,12 @@ class ROUTER_etf(Container):
     def holdings_date(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -727,17 +702,14 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -834,17 +806,14 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1229,17 +1198,14 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1370,20 +1336,12 @@ class ROUTER_etf(Container):
     def search(
         self,
         query: Annotated[
-            Optional[str],
-            FieldInfo(
-                annotation=Union[str, None],
-                required=False,
-                default="",
-                description="Search query.",
-            ),
+            Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1492,14 +1450,12 @@ class ROUTER_etf(Container):
     def sectors(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for. (ETF)")
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs

@@ -2,11 +2,11 @@
 
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -33,10 +33,8 @@ class ROUTER_currency(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "polygon"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -155,36 +153,26 @@ class ROUTER_currency(Container):
         self,
         base: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                required=False,
-                default="usd",
-                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp.",
+            OpenBBCustomParameter(
+                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ] = "usd",
         quote_type: Annotated[
             Literal["direct", "indirect"],
-            FieldInfo(
-                annotation=Literal["direct", "indirect"],
-                required=False,
-                default="indirect",
-                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.",
+            OpenBBCustomParameter(
+                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency."
             ),
         ] = "indirect",
         counter_currencies: Annotated[
             Union[List[str], str, None],
-            FieldInfo(
-                annotation=Union[List[str], str, None],
-                default=None,
-                description="An optional list of counter currency symbols to filter for. None returns all.",
+            OpenBBCustomParameter(
+                description="An optional list of counter currency symbols to filter for. None returns all."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs

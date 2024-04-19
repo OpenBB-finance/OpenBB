@@ -15410,7 +15410,7 @@
                 "sec": [
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
                         "default": null,
                         "optional": true
@@ -15567,7 +15567,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true
@@ -15595,42 +15595,42 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "size",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true
@@ -23016,7 +23016,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The rate tenor unit for reveivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23030,7 +23030,7 @@
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The reset date unit for reveivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23079,7 +23079,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23093,7 +23093,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -26908,7 +26908,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true

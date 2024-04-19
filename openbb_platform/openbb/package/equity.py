@@ -2,11 +2,11 @@
 
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -78,10 +78,8 @@ class ROUTER_equity(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "polygon"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -255,17 +253,14 @@ class ROUTER_equity(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -453,10 +448,8 @@ class ROUTER_equity(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -577,36 +570,19 @@ class ROUTER_equity(Container):
     @validate
     def search(
         self,
-        query: Annotated[
-            str,
-            FieldInfo(
-                annotation=str, required=False, default="", description="Search query."
-            ),
-        ] = "",
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         is_symbol: Annotated[
             bool,
-            FieldInfo(
-                annotation=bool,
-                required=False,
-                default=False,
-                description="Whether to search by ticker symbol.",
-            ),
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
         use_cache: Annotated[
             Optional[bool],
-            FieldInfo(
-                annotation=Union[bool, None],
-                required=False,
-                default=True,
-                description="Whether to use the cache or not.",
-            ),
+            OpenBBCustomParameter(description="Whether to use the cache or not."),
         ] = True,
         provider: Annotated[
             Optional[Literal["intrinio", "sec"]],
-            FieldInfo(
-                annotation=Union[Literal["intrinio", "sec"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
         **kwargs

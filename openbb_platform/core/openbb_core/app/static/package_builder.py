@@ -38,6 +38,7 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
@@ -362,7 +363,6 @@ class ImportDefinition:
         code += "\nfrom datetime import date"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
-        code += "\nfrom pydantic.fields import FieldInfo"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal, Any"
@@ -377,6 +377,9 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
+        code += (
+            "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
+        )
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -579,9 +582,7 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    FieldInfo(
-                        default=False,
-                        annotation=bool,
+                    OpenBBCustomParameter(
                         description="Whether to create a chart or not, by default False.",
                     ),
                 ],
@@ -605,9 +606,7 @@ class MethodDefinition:
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
                         Optional[MethodDefinition.get_type(field)],
-                        FieldInfo(
-                            default=None,
-                            annotation=Optional[MethodDefinition.get_type(field)],
+                        OpenBBCustomParameter(
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
@@ -673,18 +672,13 @@ class MethodDefinition:
                     continue
 
                 field_default = available_fields[param].default
-                field_info_default = (
-                    PydanticUndefined if value.default is _empty else value.default
-                )
                 choices = getattr(field_default, "json_schema_extra", {}).get(
                     "choices", []
                 )
                 description = getattr(field_default, "description", "")
 
-                PartialFieldInfo = partial(
-                    FieldInfo,
-                    default=field_info_default,
-                    annotation=value.annotation,
+                PartialParameter = partial(
+                    OpenBBCustomParameter,
                     description=description,
                 )
 
@@ -692,9 +686,9 @@ class MethodDefinition:
                     annotation=Annotated[
                         value.annotation,
                         (
-                            PartialFieldInfo(json_schema_extra={"choices": choices})
+                            PartialParameter(choices=choices)
                             if choices
-                            else PartialFieldInfo()
+                            else PartialParameter()
                         ),
                     ],
                 )
@@ -705,13 +699,8 @@ class MethodDefinition:
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
 
-        def _stringify(param) -> str:
-            if param.default is None:
-                return str(param).replace("required=False", "default=None")
-            return str(param).replace("required=True, ", "")
-
         func_params = ",\n        ".join(
-            _stringify(param) for param in formatted_params.values()
+            str(param) for param in formatted_params.values()
         )
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(

@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from datetime import date
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -37,26 +36,20 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "tradingeconomics"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "tradingeconomics"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -166,26 +159,20 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            FieldInfo(
-                annotation=Union[Literal["oecd"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -265,113 +252,95 @@ class ROUTER_economy(Container):
         self,
         country: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
+            OpenBBCustomParameter(
                 description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
-                json_schema_extra={
-                    "choices": [
-                        "australia",
-                        "austria",
-                        "belgium",
-                        "brazil",
-                        "bulgaria",
-                        "canada",
-                        "chile",
-                        "china",
-                        "croatia",
-                        "cyprus",
-                        "czech_republic",
-                        "denmark",
-                        "estonia",
-                        "euro_area",
-                        "finland",
-                        "france",
-                        "germany",
-                        "greece",
-                        "hungary",
-                        "iceland",
-                        "india",
-                        "indonesia",
-                        "ireland",
-                        "israel",
-                        "italy",
-                        "japan",
-                        "korea",
-                        "latvia",
-                        "lithuania",
-                        "luxembourg",
-                        "malta",
-                        "mexico",
-                        "netherlands",
-                        "new_zealand",
-                        "norway",
-                        "poland",
-                        "portugal",
-                        "romania",
-                        "russian_federation",
-                        "slovak_republic",
-                        "slovakia",
-                        "slovenia",
-                        "south_africa",
-                        "spain",
-                        "sweden",
-                        "switzerland",
-                        "turkey",
-                        "united_kingdom",
-                        "united_states",
-                    ]
-                },
+                choices=[
+                    "australia",
+                    "austria",
+                    "belgium",
+                    "brazil",
+                    "bulgaria",
+                    "canada",
+                    "chile",
+                    "china",
+                    "croatia",
+                    "cyprus",
+                    "czech_republic",
+                    "denmark",
+                    "estonia",
+                    "euro_area",
+                    "finland",
+                    "france",
+                    "germany",
+                    "greece",
+                    "hungary",
+                    "iceland",
+                    "india",
+                    "indonesia",
+                    "ireland",
+                    "israel",
+                    "italy",
+                    "japan",
+                    "korea",
+                    "latvia",
+                    "lithuania",
+                    "luxembourg",
+                    "malta",
+                    "mexico",
+                    "netherlands",
+                    "new_zealand",
+                    "norway",
+                    "poland",
+                    "portugal",
+                    "romania",
+                    "russian_federation",
+                    "slovak_republic",
+                    "slovakia",
+                    "slovenia",
+                    "south_africa",
+                    "spain",
+                    "sweden",
+                    "switzerland",
+                    "turkey",
+                    "united_kingdom",
+                    "united_states",
+                ],
             ),
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
-            FieldInfo(
-                annotation=Literal["growth_previous", "growth_same", "index_2015"],
-                required=False,
-                default="growth_same",
-                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
+            OpenBBCustomParameter(
+                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
             ),
         ] = "growth_same",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            FieldInfo(
-                annotation=Literal["monthly", "quarter", "annual"],
-                required=False,
-                default="monthly",
-                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`.",
+            OpenBBCustomParameter(
+                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
             ),
         ] = "monthly",
         harmonized: Annotated[
             bool,
-            FieldInfo(
-                annotation=bool,
-                required=False,
-                default=False,
-                description="Whether you wish to obtain harmonized data.",
+            OpenBBCustomParameter(
+                description="Whether you wish to obtain harmonized data."
             ),
         ] = False,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            FieldInfo(
-                annotation=Union[Literal["fred"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -462,39 +431,28 @@ class ROUTER_economy(Container):
     def fred_regional(
         self,
         symbol: Annotated[
-            str, FieldInfo(annotation=str, description="Symbol to get data for.")
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         limit: Annotated[
             Optional[int],
-            FieldInfo(
-                annotation=Union[int, None],
-                required=False,
-                default=100000,
-                description="The number of data entries to return.",
-            ),
+            OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred"]],
-            FieldInfo(
-                annotation=Union[Literal["fred"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -589,7 +547,7 @@ class ROUTER_economy(Container):
             The date of the data.
         region : Optional[str]
             The name of the region. (provider: fred)
-        code : Optional[Union[int, str]]
+        code : Optional[Union[str, int]]
             The code of the region. (provider: fred)
         value : Optional[Union[float, int]]
             The obersvation value. The units are defined in the search results by series ID. (provider: fred)
@@ -629,19 +587,12 @@ class ROUTER_economy(Container):
     def fred_search(
         self,
         query: Annotated[
-            Optional[str],
-            FieldInfo(
-                annotation=Union[str, None],
-                default=None,
-                description="The search word(s).",
-            ),
+            Optional[str], OpenBBCustomParameter(description="The search word(s).")
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            FieldInfo(
-                annotation=Union[Literal["fred"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -765,42 +716,30 @@ class ROUTER_economy(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         limit: Annotated[
             Optional[int],
-            FieldInfo(
-                annotation=Union[int, None],
-                required=False,
-                default=100000,
-                description="The number of data entries to return.",
-            ),
+            OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred", "intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["fred", "intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -931,26 +870,20 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            FieldInfo(
-                annotation=Union[Literal["oecd"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1036,35 +969,26 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         adjusted: Annotated[
             Optional[bool],
-            FieldInfo(
-                annotation=Union[bool, None],
-                required=False,
-                default=True,
-                description="Whether to return seasonally adjusted data.",
+            OpenBBCustomParameter(
+                description="Whether to return seasonally adjusted data."
             ),
         ] = True,
         provider: Annotated[
             Optional[Literal["federal_reserve"]],
-            FieldInfo(
-                annotation=Union[Literal["federal_reserve"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1152,10 +1076,8 @@ class ROUTER_economy(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1221,26 +1143,20 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            FieldInfo(
-                annotation=Union[Literal["oecd"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -1324,26 +1240,20 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="Start date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            FieldInfo(
-                annotation=Union[date, None, str],
-                default=None,
-                description="End date of the data, in YYYY-MM-DD format.",
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            FieldInfo(
-                annotation=Union[Literal["oecd"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs

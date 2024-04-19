@@ -1,0 +1,24 @@
+"""Custom parameter for OpenBB."""
+
+from typing import Any, List, Optional
+
+from pydantic.fields import FieldInfo
+
+
+class OpenBBCustomParameter(FieldInfo):
+    """Custom parameter for OpenBB."""
+
+    def __repr__(self):
+        # We use repr() to avoid decoding special characters like \n
+        if self.choices:
+            return f"OpenBBCustomParameter(description={repr(self.description)}, choices={repr(self.choices)})"
+        return f"OpenBBCustomParameter(description={repr(self.description)})"
+
+    def __init__(self, description: str, choices: Optional[List[Any]] = None):
+        super().__init__(
+            description=description, json_schema_extra={"choices": choices}
+        )
+
+    @property
+    def choices(self):
+        return self.json_schema_extra.get("choices")

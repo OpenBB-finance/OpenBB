@@ -2,11 +2,11 @@
 
 from typing import List, Literal, Optional, Union
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from pydantic.fields import FieldInfo
 from typing_extensions import Annotated
 
 
@@ -29,26 +29,20 @@ class ROUTER_equity_estimates(Container):
         self,
         analyst_name: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.",
+            OpenBBCustomParameter(
+                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         firm_name: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.",
+            OpenBBCustomParameter(
+                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["benzinga"]],
-            FieldInfo(
-                annotation=Union[Literal["benzinga"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -243,18 +237,14 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio", "yfinance"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -358,18 +348,14 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp", "intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -481,18 +467,14 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            FieldInfo(
-                annotation=Union[Literal["intrinio"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -608,17 +590,14 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            FieldInfo(
-                annotation=Union[str, List[str]],
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
@@ -729,27 +708,18 @@ class ROUTER_equity_estimates(Container):
         self,
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
-            FieldInfo(
-                annotation=Union[str, None, List[Union[str, None]]],
-                default=None,
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.",
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp."
             ),
         ] = None,
         limit: Annotated[
             int,
-            FieldInfo(
-                annotation=int,
-                required=False,
-                default=200,
-                description="The number of data entries to return.",
-            ),
+            OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 200,
         provider: Annotated[
             Optional[Literal["benzinga", "fmp"]],
-            FieldInfo(
-                annotation=Union[Literal["benzinga", "fmp"], None],
-                default=None,
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default.",
+            OpenBBCustomParameter(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
             ),
         ] = None,
         **kwargs
