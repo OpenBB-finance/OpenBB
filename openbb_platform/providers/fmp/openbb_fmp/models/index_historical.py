@@ -58,6 +58,7 @@ class FMPIndexHistoricalData(IndexHistoricalData):
     )
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         return parse_date(v, "America/New_York")

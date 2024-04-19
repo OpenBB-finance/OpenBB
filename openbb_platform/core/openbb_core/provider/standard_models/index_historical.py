@@ -69,7 +69,7 @@ class IndexHistoricalData(Data):
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):
+    def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
         if ":" in str(v):
             return parser.isoparse(str(v))
