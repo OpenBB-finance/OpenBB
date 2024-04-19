@@ -142,7 +142,7 @@ class EquityQuoteData(Data):
     change_percent: Optional[float] = Field(
         default=None,
         description="Change in price as a normalized percentage.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"x-frontend_multiply": 100},
     )
     year_high: Optional[float] = Field(
         default=None, description="The one year high (52W High)."

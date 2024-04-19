@@ -13,8 +13,8 @@ from openbb_core.provider.standard_models.market_indices import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, NonNegativeInt
+from openbb_fmp.utils.helpers import get_data_many, parse_date
+from pydantic import Field, NonNegativeInt, field_validator
 
 
 class FMPMarketIndicesQueryParams(MarketIndicesQueryParams):
@@ -62,6 +62,11 @@ class FMPMarketIndicesData(MarketIndicesData):
         description="Change % in the price of the symbol over a period of time.",
         default=None,
     )
+
+    @field_validator("date", mode="before", check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return parse_date(v, "America/New_York")
 
 
 class FMPMarketIndicesFetcher(
