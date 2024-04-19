@@ -242,7 +242,7 @@ class FMPFinancialRatiosFetcher(
         async def response_callback(
             response: ClientResponse, session: ClientSession
         ) -> List[Dict]:
-            results: List[dict] = await response.json()
+            results: List[dict] = await response.json()  # type: ignore
             symbol = response.url.parts[-1]
 
             # TTM data

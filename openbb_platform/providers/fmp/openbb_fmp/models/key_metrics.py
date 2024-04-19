@@ -229,7 +229,7 @@ class FMPKeyMetricsFetcher(
 
         symbols = query.symbol.split(",")
 
-        results = []
+        results = []  # type: ignore
 
         async def get_one(symbol):
             """Get data for one symbol."""

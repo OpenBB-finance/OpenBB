@@ -72,9 +72,9 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         }
 
         if values.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]:
-            values._interval_size = values.interval
+            values._interval_size = values.interval  # type: ignore
         elif values.interval in ["1d", "1W", "1M", "1Q", "1Y"]:
-            values._frequency = frequency_dict[values.interval]
+            values._frequency = frequency_dict[values.interval]  # type: ignore
 
         return values
 
@@ -210,7 +210,7 @@ class IntrinioEquityHistoricalFetcher(
 
         async def callback(response: ClientResponse, session: ClientSession) -> list:
             """Return the response."""
-            init_response: dict = await response.json()
+            init_response: dict = await response.json()  # type: ignore
 
             all_data: list = init_response.get(data_key, [])
 
@@ -219,8 +219,8 @@ class IntrinioEquityHistoricalFetcher(
                 url = response.url.update_query(next_page=next_page).human_repr()
                 response_data = await session.get_json(url)
 
-                all_data.extend(response_data.get(data_key, []))
-                next_page = response_data.get("next_page", None)
+                all_data.extend(response_data.get(data_key, []))  # type: ignore
+                next_page = response_data.get("next_page", None)  # type: ignore
 
             return all_data
 
