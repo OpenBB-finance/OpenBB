@@ -3,7 +3,7 @@
 import datetime
 from typing import Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -27,31 +27,27 @@ class ROUTER_economy_gdp(Container):
         self,
         period: Annotated[
             Literal["quarter", "annual"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual."
             ),
         ] = "annual",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         type: Annotated[
             Literal["nominal", "real"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Type of GDP to get forecast of. Either nominal or real."
             ),
         ] = "real",
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
@@ -130,25 +126,21 @@ class ROUTER_economy_gdp(Container):
         self,
         units: Annotated[
             Literal["usd", "usd_cap"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
             ),
         ] = "usd",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
@@ -224,25 +216,21 @@ class ROUTER_economy_gdp(Container):
         self,
         units: Annotated[
             Literal["idx", "qoq", "yoy"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
             ),
         ] = "yoy",
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
