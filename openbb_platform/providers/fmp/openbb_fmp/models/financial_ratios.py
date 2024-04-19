@@ -268,7 +268,7 @@ class FMPFinancialRatiosFetcher(
             params={"period": query.period, "limit": query.limit, "apikey": api_key}
         )
 
-        return await amake_requests(urls, response_callback=response_callback, **kwargs)
+        return await amake_requests(urls, response_callback, **kwargs)
 
     @staticmethod
     def transform_data(
@@ -277,7 +277,10 @@ class FMPFinancialRatiosFetcher(
         """Return the transformed data."""
         results: List[FMPFinancialRatiosData] = []
         for item in data:
-            new_item = {to_snake_case(k).replace("ttm", ""): v for k, v in item.items()}
+            new_item = {
+                to_snake_case(k).replace("_ttm", "").replace("ttm", ""): v
+                for k, v in item.items()
+            }
 
             if new_item.get("period") != "TTM":
                 new_item.pop("dividend_yiel_percentage", None)
