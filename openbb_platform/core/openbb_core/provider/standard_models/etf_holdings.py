@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -16,6 +16,12 @@ class EtfHoldingsQueryParams(QueryParams):
     """ETF Holdings Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", "") + " (ETF)")
+
+    @field_validator("symbol")
+    @classmethod
+    def to_upper(cls, v: str) -> str:
+        """Convert field to uppercase."""
+        return v.upper()
 
 
 class EtfHoldingsData(Data):

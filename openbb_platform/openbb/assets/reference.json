@@ -23300,8 +23300,8 @@
         },
         "/etf/holdings_performance": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2."
             },
             "description": "Get the recent price performance of each ticker held in the ETF.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings_performance(symbol='XLK', provider='fmp')\n```\n\n",
