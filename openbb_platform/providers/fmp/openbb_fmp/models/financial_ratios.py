@@ -262,9 +262,7 @@ class FMPFinancialRatiosFetcher(
 
         endpoint = "ratios" if query.period != "ttm" else "ratios-ttm"
 
-        urls = [
-            (f"{base_url}/{endpoint}/{symbol}") for symbol in query.symbol.split(",")
-        ]
+        urls = [f"{base_url}/{endpoint}/{symbol}" for symbol in query.symbol.split(",")]
 
         kwargs.update(
             params={"period": query.period, "limit": query.limit, "apikey": api_key}
