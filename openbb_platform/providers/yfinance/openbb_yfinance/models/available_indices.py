@@ -45,6 +45,7 @@ class YFinanceAvailableIndicesFetcher(
     def extract_data(
         query: YFinanceAvailableIndicesQueryParams,  # pylint disable=unused-argument
         credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
         indices = pd.DataFrame(INDICES).transpose().reset_index()
