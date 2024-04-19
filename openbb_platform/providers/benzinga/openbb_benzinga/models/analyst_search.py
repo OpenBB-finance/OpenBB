@@ -364,7 +364,7 @@ class BenzingaAnalystSearchData(AnalystSearchData):
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v: float) -> Optional[dateType]:
+    def validate_date(cls, v: Optional[float]) -> Optional[dateType]:
         """Validate last_updated."""
         if v:
             dt = safe_fromtimestamp(v, tz=timezone.utc)

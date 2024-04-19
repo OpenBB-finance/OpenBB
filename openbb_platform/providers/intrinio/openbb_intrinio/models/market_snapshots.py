@@ -106,7 +106,7 @@ class IntrinioMarketSnapshotsFetcher(
                 dt = transformed_params["date"]
                 dt = dt.astimezone(tz=timezone("America/New_York"))
             if isinstance(transformed_params["date"], dateType):
-                dt = transformed_params["date"]
+                dt = transformed_params["date"]  # type: ignore
                 if isinstance(dt, dateType):
                     dt = datetime(
                         dt.year,
