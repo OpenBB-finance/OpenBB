@@ -76,7 +76,7 @@ class FMPEtfInfoFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results = []
+        results: List[dict] = []
 
         async def get_one(symbol):
             """Get one symbol."""

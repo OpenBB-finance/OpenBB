@@ -210,7 +210,7 @@ class IntrinioEquityHistoricalFetcher(
 
         async def callback(response: ClientResponse, session: ClientSession) -> list:
             """Return the response."""
-            init_response = await response.json()
+            init_response: dict = await response.json()
 
             all_data: list = init_response.get(data_key, [])
 

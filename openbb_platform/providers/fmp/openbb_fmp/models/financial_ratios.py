@@ -242,19 +242,19 @@ class FMPFinancialRatiosFetcher(
         async def response_callback(
             response: ClientResponse, session: ClientSession
         ) -> List[Dict]:
-            results = await response.json()
+            results: List[dict] = await response.json()
             symbol = response.url.parts[-1]
 
             # TTM data
             ttm_url = f"{base_url}/ratios-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (ratios_ttm := await session.get_one(ttm_url)):
+
+            if query.period == "ttm":
+                results = [{**ttm_dict, **item} for item in results]
+            elif query.with_ttm and (ratios_ttm := await session.get_one(ttm_url)):
                 results.insert(
                     0,
                     {"symbol": symbol, **ttm_dict, **ratios_ttm},
                 )
-
-            if query.period == "ttm":
-                results = [{**ttm_dict, **item} for item in results]
 
             return results
 
@@ -275,11 +275,11 @@ class FMPFinancialRatiosFetcher(
         query: FMPFinancialRatiosQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPFinancialRatiosData]:
         """Return the transformed data."""
-        results = []
+        results: List[FMPFinancialRatiosData] = []
         for item in data:
             new_item = {to_snake_case(k).replace("ttm", ""): v for k, v in item.items()}
 
-            if new_item.get("period", None) != "TTM":
+            if new_item.get("period") != "TTM":
                 new_item.pop("dividend_yiel_percentage", None)
 
             if len(query.symbol.split(",")) == 1:
