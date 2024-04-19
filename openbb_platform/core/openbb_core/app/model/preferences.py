@@ -14,7 +14,6 @@ class Preferences(BaseModel):
     data_directory: str = str(Path.home() / "OpenBBUserData")
     export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
     metadata: bool = True
-    model_config = ConfigDict(validate_assignment=True)
     output_type: Literal[
         "OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
     ] = Field(
@@ -32,6 +31,8 @@ class Preferences(BaseModel):
     show_warnings: bool = True
     table_style: Literal["dark", "light"] = "dark"
     user_styles_directory: str = str(Path.home() / "OpenBBUserData" / "styles" / "user")
+
+    model_config = ConfigDict(validate_assignment=True)
 
     def __repr__(self) -> str:
         """Return a string representation of the model."""
