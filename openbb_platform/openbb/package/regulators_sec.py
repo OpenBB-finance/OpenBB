@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -27,12 +27,10 @@ class ROUTER_regulators_sec(Container):
     @validate
     def cik_map(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -95,16 +93,16 @@ class ROUTER_regulators_sec(Container):
     @validate
     def institutions_search(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -141,7 +139,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) (provider: sec)
 
         Examples
@@ -175,7 +173,7 @@ class ROUTER_regulators_sec(Container):
         self,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -242,16 +240,16 @@ class ROUTER_regulators_sec(Container):
     @validate
     def schema_files(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -337,16 +335,16 @@ class ROUTER_regulators_sec(Container):
     @validate
     def sic_search(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -417,16 +415,16 @@ class ROUTER_regulators_sec(Container):
     @validate
     def symbol_map(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")],
+        query: Annotated[str, OpenBBField(description="Search query.")],
         use_cache: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Whether or not to use cache. If True, cache will store for seven days."
             ),
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
