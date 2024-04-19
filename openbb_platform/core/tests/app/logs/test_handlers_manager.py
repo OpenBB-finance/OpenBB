@@ -36,19 +36,24 @@ class MockFormatterWithExceptions(logging.Formatter):
     def __init__(self, settings):
         """Initialize the formatter."""
         self.settings = settings
+        self._style = logging.PercentStyle
 
 
 def test_handlers_added_correctly():
     """Test if the handlers are added correctly."""
-    with patch(
-        "openbb_core.app.logs.handlers_manager.PosthogHandler",
-        MockPosthogHandler,
-    ), patch(
-        "openbb_core.app.logs.handlers_manager.PathTrackingFileHandler",
-        MockPathTrackingFileHandler,
-    ), patch(
-        "openbb_core.app.logs.handlers_manager.FormatterWithExceptions",
-        MockFormatterWithExceptions,
+    with (
+        patch(
+            "openbb_core.app.logs.handlers_manager.PosthogHandler",
+            MockPosthogHandler,
+        ),
+        patch(
+            "openbb_core.app.logs.handlers_manager.PathTrackingFileHandler",
+            MockPathTrackingFileHandler,
+        ),
+        patch(
+            "openbb_core.app.logs.handlers_manager.FormatterWithExceptions",
+            MockFormatterWithExceptions,
+        ),
     ):
         settings = Mock()
         settings.handler_list = ["stdout", "stderr", "noop", "file", "posthog"]
@@ -75,15 +80,19 @@ def test_handlers_added_correctly():
 
 def test_update_handlers():
     """Test if the handlers are updated correctly."""
-    with patch(
-        "openbb_core.app.logs.handlers_manager.PosthogHandler",
-        MockPosthogHandler,
-    ), patch(
-        "openbb_core.app.logs.handlers_manager.PathTrackingFileHandler",
-        MockPathTrackingFileHandler,
-    ), patch(
-        "openbb_core.app.logs.handlers_manager.FormatterWithExceptions",
-        MockFormatterWithExceptions,
+    with (
+        patch(
+            "openbb_core.app.logs.handlers_manager.PosthogHandler",
+            MockPosthogHandler,
+        ),
+        patch(
+            "openbb_core.app.logs.handlers_manager.PathTrackingFileHandler",
+            MockPathTrackingFileHandler,
+        ),
+        patch(
+            "openbb_core.app.logs.handlers_manager.FormatterWithExceptions",
+            MockFormatterWithExceptions,
+        ),
     ):
         settings = Mock()
         settings.handler_list = ["file", "posthog"]
