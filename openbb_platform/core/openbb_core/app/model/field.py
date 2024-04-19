@@ -17,11 +17,12 @@ class OpenBBField(FieldInfo):
 
     def __init__(self, description: str, choices: Optional[List[Any]] = None):
         """Initialize OpenBBField."""
-        super().__init__(
-            description=description, json_schema_extra={"choices": choices}
-        )
+        json_schema_extra = {"choices": choices} if choices else None
+        super().__init__(description=description, json_schema_extra=json_schema_extra)  # type: ignore[arg-type]
 
     @property
     def choices(self) -> Optional[List[Any]]:
         """Custom choices."""
-        return self.json_schema_extra.get("choices")  # type: ignore[union-attr,return-value]
+        if self.json_schema_extra:
+            return self.json_schema_extra.get("choices")  # type: ignore[union-attr,return-value]
+        return None
