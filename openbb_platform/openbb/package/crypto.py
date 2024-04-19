@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -31,11 +31,11 @@ class ROUTER_crypto(Container):
     def search(
         self,
         query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Search query.")
+            Optional[str], OpenBBField(description="Search query.")
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,

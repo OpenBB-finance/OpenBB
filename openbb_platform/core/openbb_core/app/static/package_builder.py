@@ -38,7 +38,7 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
@@ -378,7 +378,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         code += (
-            "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
+            "\nfrom openbb_core.app.model.field import OpenBBField"
         )
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
@@ -582,7 +582,7 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    OpenBBCustomParameter(
+                    OpenBBField(
                         description="Whether to create a chart or not, by default False.",
                     ),
                 ],
@@ -606,7 +606,7 @@ class MethodDefinition:
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
                         Optional[MethodDefinition.get_type(field)],
-                        OpenBBCustomParameter(
+                        OpenBBField(
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
@@ -678,7 +678,7 @@ class MethodDefinition:
                 description = getattr(field_default, "description", "")
 
                 PartialParameter = partial(
-                    OpenBBCustomParameter,
+                    OpenBBField,
                     description=description,
                 )
 
