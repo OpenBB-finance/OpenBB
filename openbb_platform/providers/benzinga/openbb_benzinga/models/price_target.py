@@ -229,7 +229,7 @@ class BenzingaPriceTargetData(PriceTargetData):
         if v:
             dt = safe_fromtimestamp(v, tz=timezone.utc)
             return dt.date() if dt.time() == dt.min.time() else dt
-        return v
+        return None
 
     @model_validator(mode="before")
     @classmethod
