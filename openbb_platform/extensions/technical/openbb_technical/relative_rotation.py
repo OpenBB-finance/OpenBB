@@ -1,6 +1,7 @@
 """Relative Rotation Model."""
 
-# pylint: disable=too-many-arguments, too-many-instance-attributes, too-many-locals, too-few-public-methods, unused-argument
+# pylint: disable=too-many-arguments, too-many-instance-attributes, protected-access
+# pylint: disable=too-many-locals, too-few-public-methods, unused-argument
 
 import contextlib
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union
@@ -16,12 +17,12 @@ from pydantic import Field, field_validator
 
 
 def absolute_maximum_scale(data: Series) -> Series:
-    """Absolute Maximum Scale Normaliztion Method"""
+    """Absolute Maximum Scale Normaliztion Method."""
     return data / data.abs().max()
 
 
 def min_max_scaling(data: Series) -> Series:
-    """ "Min/Max ScalingNormalization Method"""
+    """Min/Max ScalingNormalization Method."""
     return (data - data.min()) / (data.max() - data.min())
 
 
@@ -35,7 +36,7 @@ def normalize(data: DataFrame, method: Literal["z", "m", "a"] = "z") -> DataFram
     Normalize a Pandas DataFrame based on method.
 
     Parameters
-    -----------
+    ----------
     data: DataFrame
         Pandas DataFrame with any number of columns to be normalized.
     method: Literal["z", "m", "a"]
@@ -45,11 +46,10 @@ def normalize(data: DataFrame, method: Literal["z", "m", "a"] = "z") -> DataFram
             a: Absolute Maximum Scale
 
     Returns
-    --------
+    -------
     DataFrame
         Normalized DataFrame.
     """
-
     methods = {
         "z": z_score_standardization,
         "m": min_max_scaling,
@@ -71,6 +71,7 @@ def standard_deviation(
 ) -> DataFrame:
     """
     Measures how widely returns are dispersed from the average return.
+
     It is the most common (and biased) estimator of volatility.
 
     Parameters
@@ -108,6 +109,7 @@ def calculate_momentum(
 ) -> Series:
     """
     Momentum is calculated as the log trailing 12-month return minus trailing one-month return.
+
     Higher values indicate larger, positive momentum exposure.
 
     Momentum = ln(1 + r12) - ln(1 + r1)
@@ -140,6 +142,7 @@ def get_momentum(
 ) -> DataFrame:
     """
     Calculate the Relative-Strength Momentum Indicator.
+
     Takes the Relative Strength Ratio as the input.
 
     Parameters
@@ -156,7 +159,6 @@ def get_momentum(
     DataFrame
         Pandas DataFrame with the calculated historical momentum factor exposure score.
     """
-
     df = data.copy()
     rs_momentum = DataFrame()
     for ticker in df.columns.to_list():
@@ -171,20 +173,20 @@ def calculate_relative_strength_ratio(
     symbols_data: DataFrame,
     benchmark_data: DataFrame,
 ) -> DataFrame:
-    """Calculate the Relative Strength Ratio for each ticker
-    (column) in a DataFrame against the benchmark.
+    """Calculate the Relative Strength Ratio for each ticker (column) in a DataFrame against the benchmark.
+
     Symbols data and benchmark data should have the same index,
     and each column should represent a ticker.
 
     Parameters
-    -----------
+    ----------
     symbols_data: DataFrame
         Pandas DataFrame with the symbols data to compare against the benchmark.
     benchmark_data: DataFrame
         Pandas DataFrame with the benchmark data.
 
     Returns
-    --------
+    -------
     DataFrame
         Pandas DataFrame with the calculated relative strength
         ratio for each ticker joined with the benchmark values.
@@ -223,7 +225,6 @@ def process_data(
     Tuple[DataFrame, DataFrame]
         Tuple of Pandas DataFrames with the normalized ratio and momentum indicator values.
     """
-
     ratio_data = calculate_relative_strength_ratio(symbols_data, benchmark_data)
     momentum_data = get_momentum(ratio_data, long_period, short_period)
     normalized_ratio = normalize(ratio_data, normalize_method)
@@ -336,10 +337,17 @@ class RelativeRotation:
 def _get_type_name(t):
     """Get the type name of a type hint."""
     if hasattr(t, "__origin__"):
-        return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
+        if hasattr(t.__origin__, "__name__"):
+            return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
+        if hasattr(t.__origin__, "_name"):
+            return f"{t.__origin__._name}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
     if isinstance(t, str):
         return t
-    return t.__name__
+    if hasattr(t, "__name__"):
+        return t.__name__
+    if hasattr(t, "_name"):
+        return t._name
+    return str(t)
 
 
 class RelativeRotationQueryParams(QueryParams):
