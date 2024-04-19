@@ -256,7 +256,7 @@ class FMPFinancialRatiosFetcher(
                 )
 
             if query.period == "ttm":
-                results = [{**ttm_dict, **item} for item in results]
+                results = [{"symbol": symbol, **ttm_dict, **item} for item in results]
 
             return results
 
