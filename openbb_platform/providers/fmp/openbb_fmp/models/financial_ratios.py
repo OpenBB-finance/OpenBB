@@ -239,6 +239,8 @@ class FMPFinancialRatiosFetcher(
 
         ttm_dict = {"period": "TTM", "date": datetime.now().strftime("%Y-%m-%d")}
 
+        include_ttm = query.period != "ttm" and query.with_ttm
+
         async def response_callback(
             response: ClientResponse, session: ClientSession
         ) -> List[Dict]:
@@ -247,14 +249,14 @@ class FMPFinancialRatiosFetcher(
 
             # TTM data
             ttm_url = f"{base_url}/ratios-ttm/{symbol}?&apikey={api_key}"
-
-            if query.period == "ttm":
-                results = [{**ttm_dict, **item} for item in results]
-            elif query.with_ttm and (ratios_ttm := await session.get_one(ttm_url)):
+            if include_ttm and (ratios_ttm := await session.get_one(ttm_url)):
                 results.insert(
                     0,
                     {"symbol": symbol, **ttm_dict, **ratios_ttm},
                 )
+
+            if query.period == "ttm":
+                results = [{**ttm_dict, **item} for item in results]
 
             return results
 
