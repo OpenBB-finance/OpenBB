@@ -155,14 +155,14 @@ class PolygonEquityHistoricalFetcher(
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)  # type: ignore[union-type]
-            results: list = data.get("results", [])  # type: ignore[union-type]
+            next_url = data.get("next_url", None)  # type: ignore
+            results: list = data.get("results", [])  # type: ignore
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))  # type: ignore[union-type]
-                next_url = data.get("next_url", None)  # type: ignore[union-type]
+                results.extend(data.get("results", []))  # type: ignore
+                next_url = data.get("next_url", None)  # type: ignore
 
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
