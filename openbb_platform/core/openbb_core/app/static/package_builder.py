@@ -38,8 +38,8 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
@@ -377,9 +377,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
-        code += (
-            "\nfrom openbb_core.app.model.field import OpenBBField"
-        )
+        code += "\nfrom openbb_core.app.model.field import OpenBBField"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -698,7 +696,6 @@ class MethodDefinition:
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
-
         func_params = ",\n        ".join(
             str(param) for param in formatted_params.values()
         )

@@ -1,4 +1,4 @@
-"""Custom parameter for OpenBB."""
+"""Custom field for OpenBB."""
 
 from typing import Any, List, Optional
 
@@ -6,7 +6,7 @@ from pydantic.fields import FieldInfo
 
 
 class OpenBBField(FieldInfo):
-    """Custom parameter for OpenBB."""
+    """Custom field for OpenBB."""
 
     def __repr__(self):
         """Override FieldInfo __repr__."""
