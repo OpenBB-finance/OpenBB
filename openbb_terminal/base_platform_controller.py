@@ -81,6 +81,20 @@ class PlatformController(BaseController):
                 if action.dest == "data":
                     # this is purposely making the choices pointing to the registry ids
                     action.choices = Registry.ids
+                    # also change the action type to str
+                    action.type = str
+
+    def _intersect_data_processing_commands(self, ns_parser):
+        """Intersect data processing commands and change the obbject id into an actual obbject."""
+        if (
+            hasattr(ns_parser, "data")
+            and ns_parser.data
+            and ns_parser.data in Registry.ids
+        ):
+            obbject = Registry.get(ns_parser.data)
+            setattr(ns_parser, "data", obbject.results)
+
+        return ns_parser
 
     def _generate_sub_controllers(self):
         """Handle paths."""
@@ -137,6 +151,8 @@ class PlatformController(BaseController):
                 export_allowed="raw_data_and_figures",
             ):
                 try:
+                    ns_parser = self._intersect_data_processing_commands(ns_parser)
+
                     obbject = translator.execute_func(parsed_args=ns_parser)
                     df: pd.DataFrame = None
                     fig: OpenBBFigure = None
