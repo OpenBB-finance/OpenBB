@@ -534,6 +534,7 @@ def test_generate_model_docstring(docstring_generator):
     docstring = ""
     model_name = "WorldNews"
     summary = "This is a summary."
+    sections = ["description", "parameters", "returns", "examples"]
 
     pi = docstring_generator.provider_interface
     kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
@@ -553,6 +554,7 @@ def test_generate_model_docstring(docstring_generator):
         kwarg_params=kwarg_params,
         returns=returns,
         results_type="List[WorldNews]",
+        sections=sections,
     )
 
     assert docstring

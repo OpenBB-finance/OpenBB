@@ -20,6 +20,7 @@ class SystemService(metaclass=SingletonMeta):
         "headless",
         "logging_sub_app",
         "api_settings",
+        "python_settings",
         "debug_mode",
     }
 

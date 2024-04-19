@@ -14,7 +14,8 @@ from openbb_core.app.constants import (
     USER_SETTINGS_PATH,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.model.fast_api_settings import FastAPISettings
+from openbb_core.app.model.api_settings import APISettings
+from openbb_core.app.model.python_settings import PythonSettings
 from openbb_core.app.version import CORE_VERSION, VERSION
 
 
@@ -46,7 +47,10 @@ class SystemSettings(Tagged):
     log_collect: bool = True
 
     # API section
-    api_settings: FastAPISettings = Field(default_factory=FastAPISettings)
+    api_settings: APISettings = Field(default_factory=APISettings)
+
+    # Python section
+    python_settings: PythonSettings = Field(default_factory=PythonSettings)
 
     # Others
     debug_mode: bool = False
