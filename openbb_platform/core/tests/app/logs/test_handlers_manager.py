@@ -36,7 +36,6 @@ class MockFormatterWithExceptions(logging.Formatter):
     def __init__(self, settings):
         """Initialize the formatter."""
         self.settings = settings
-        self._style = logging.PercentStyle
 
 
 def test_handlers_added_correctly():
