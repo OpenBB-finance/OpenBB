@@ -1,8 +1,6 @@
 """FMP Helpers Module."""
 
-from datetime import (
-    date as dateType,
-)
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.utils.client import ClientSession
