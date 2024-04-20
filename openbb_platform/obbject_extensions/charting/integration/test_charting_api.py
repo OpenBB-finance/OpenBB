@@ -584,7 +584,7 @@ def test_charting_economy_fred_series(params, headers):
                 "short_period": 21,
                 "window": 21,
                 "trading_periods": 252,
-                "normalize_method": "z",
+                "chart": True,
             }
         ),
     ],
@@ -609,7 +609,7 @@ def test_charting_technical_relative_rotation(params):
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
-
+    print(result.json())
     chart = result.json()["chart"]
     fig = chart.pop("fig", {})
 
