@@ -15,6 +15,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [
             ("User-Agent", None),
@@ -30,6 +31,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_finviz_price_target_fetcher(credentials=test_credentials):
+    """Test Finviz Price Target Fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = FinvizPriceTargetFetcher()
@@ -39,6 +41,7 @@ def test_finviz_price_target_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_finviz_price_performance_fetcher(credentials=test_credentials):
+    """Test Finviz Price Performance Fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = FinvizPricePerformanceFetcher()
@@ -48,6 +51,7 @@ def test_finviz_price_performance_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_finviz_key_metrics_fetcher(credentials=test_credentials):
+    """Test Finviz Key Metrics Fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = FinvizKeyMetricsFetcher()
@@ -57,6 +61,7 @@ def test_finviz_key_metrics_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_finviz_equity_profile_fetcher(credentials=test_credentials):
+    """Test Finviz Equity Profile Fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = FinvizEquityProfileFetcher()
@@ -66,6 +71,7 @@ def test_finviz_equity_profile_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_finviz_compare_groups_fetcher(credentials=test_credentials):
+    """Test Finviz Compare Groups Fetcher."""
     params = {"group": "country", "metric": "performance"}
 
     fetcher = FinvizCompareGroupsFetcher()

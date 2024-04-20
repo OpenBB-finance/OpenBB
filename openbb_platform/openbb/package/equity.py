@@ -2,7 +2,7 @@
 
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -78,7 +78,7 @@ class ROUTER_equity(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -253,13 +253,13 @@ class ROUTER_equity(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -448,14 +448,16 @@ class ROUTER_equity(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Screen for companies meeting various criteria. These criteria include
-        market cap, price, beta, volume, and dividend yield.
+        """Screen for companies meeting various criteria.
+
+        These criteria include market cap, price, beta, volume, and dividend yield.
+
 
         Parameters
         ----------
@@ -568,18 +570,16 @@ class ROUTER_equity(Container):
     @validate
     def search(
         self,
-        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[str, OpenBBField(description="Search query.")] = "",
         is_symbol: Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+            bool, OpenBBField(description="Whether to search by ticker symbol.")
         ] = False,
         use_cache: Annotated[
-            Optional[bool],
-            OpenBBCustomParameter(description="Whether to use the cache or not."),
+            Optional[bool], OpenBBField(description="Whether to use the cache or not.")
         ] = True,
         provider: Annotated[
             Optional[Literal["intrinio", "sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,

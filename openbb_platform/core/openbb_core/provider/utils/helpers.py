@@ -1,8 +1,9 @@
 """Provider helpers."""
 
 import asyncio
+import os
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
@@ -313,3 +314,12 @@ def filter_by_dates(
         return False
 
     return list(filter(_filter, data))
+
+
+def safe_fromtimestamp(
+    timestamp: Union[float, int], tz: Optional[timezone] = None
+) -> datetime:
+    """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
+    if os.name == "nt" and timestamp < 0:
+        return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)
+    return datetime.fromtimestamp(timestamp, tz)

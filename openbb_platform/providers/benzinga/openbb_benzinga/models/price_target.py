@@ -17,9 +17,12 @@ from openbb_core.provider.standard_models.price_target import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from openbb_core.provider.utils.helpers import (
+    amake_requests,
+    get_querystring,
+    safe_fromtimestamp,
+)
 from pydantic import Field, field_validator, model_validator
-from pytz import UTC
 
 COVERAGE_DICT = {
     "downgrades": "Downgrades",
@@ -221,12 +224,12 @@ class BenzingaPriceTargetData(PriceTargetData):
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v):
+    def validate_date(cls, v: float) -> Optional[dateType]:
         """Convert the Unix timestamp to a datetime object."""
         if v:
-            dt = datetime.fromtimestamp(v, UTC)
+            dt = safe_fromtimestamp(v, tz=timezone.utc)
             return dt.date() if dt.time() == dt.min.time() else dt
-        return v
+        return None
 
     @model_validator(mode="before")
     @classmethod

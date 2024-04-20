@@ -1716,8 +1716,6 @@ The `develop` branch is only merged to `main` right before a new release, but so
 3. merge `docs/[my-update]` into `main` -> website deployment triggered
 4. merge `docs/[my-update]` into `develop` -> NO website deployment, just to sync branches
 
-The `docs/docs-name` branch is used to update documentation in-between releases, it will trigger the website deployment to GitHub pages.
-
 ## Installers
 
 When implementing a new feature or fixing something within the codebase, it is necessary to ensure that it is working

@@ -74,5 +74,5 @@ class IntrinioEquityInfoFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[IntrinioEquityInfoData]:
-        """Transforms the data."""
+        """Transform the data."""
         return [IntrinioEquityInfoData.model_validate(d) for d in data]

@@ -1,4 +1,7 @@
+"""Volatility technical indicators plugin for Plotly TA."""
+
 import pandas as pd
+
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,
@@ -10,15 +13,14 @@ from openbb_charting.core.plotly_ta.data_classes import (
 
 
 class Volatility(PltTA):
-    """Volatility technical indicators"""
+    """Volatility technical indicators."""
 
     __inchart__ = ["bbands", "donchian", "kc"]
     __subplots__ = ["atr"]
 
     @indicator()
     def plot_atr(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
-        """Adds average true range to plotly figure"""
-
+        """Add average true range to plotly figure."""
         fig.add_scatter(
             name=f"{columns_regex(df_ta, 'ATR')[0]}",
             x=df_ta.index,
@@ -47,8 +49,7 @@ class Volatility(PltTA):
 
     @indicator()
     def plot_bbands(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds bollinger bands to plotly figure"""
-
+        """Add bollinger bands to plotly figure."""
         bbands_opacity = 0.8 if fig.theme.plt_style == "light" else 1
 
         fig.add_scatter(
@@ -107,8 +108,7 @@ class Volatility(PltTA):
 
     @indicator()
     def plot_donchian(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds donchian channels to plotly figure"""
-
+        """Add donchian channels to plotly figure."""
         if fig.theme.plt_style == "light":
             fillcolor = "rgba(239, 103, 137, 0.05)"
             donchian_opacity = 0.4
@@ -166,7 +166,7 @@ class Volatility(PltTA):
 
     @indicator()
     def plot_kc(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
-        """Adds Keltner channels to plotly figure"""
+        """Add Keltner channels to plotly figure."""
         mamode = (self.params["kc"].get_argument_values("mamode") or "ema").lower()  # type: ignore
 
         if fig.theme.plt_style == "light":

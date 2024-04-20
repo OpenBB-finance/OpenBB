@@ -14,8 +14,9 @@ from openbb_core.app.constants import (
     USER_SETTINGS_PATH,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.model.fast_api_settings import FastAPISettings
-from openbb_core.app.version import VERSION
+from openbb_core.app.model.api_settings import APISettings
+from openbb_core.app.model.python_settings import PythonSettings
+from openbb_core.app.version import CORE_VERSION, VERSION
 
 
 class SystemSettings(Tagged):
@@ -28,6 +29,7 @@ class SystemSettings(Tagged):
 
     # OpenBB section
     version: str = VERSION
+    core: str = CORE_VERSION
     home_directory: str = str(HOME_DIRECTORY)
     openbb_directory: str = str(OPENBB_DIRECTORY)
     user_settings_path: str = str(USER_SETTINGS_PATH)
@@ -45,7 +47,10 @@ class SystemSettings(Tagged):
     log_collect: bool = True
 
     # API section
-    api_settings: FastAPISettings = Field(default_factory=FastAPISettings)
+    api_settings: APISettings = Field(default_factory=APISettings)
+
+    # Python section
+    python_settings: PythonSettings = Field(default_factory=PythonSettings)
 
     # Others
     debug_mode: bool = False

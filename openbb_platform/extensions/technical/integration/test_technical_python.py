@@ -24,6 +24,7 @@ data: dict = {}
 
 
 def get_stocks_data():
+    """Get stocks data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
@@ -39,6 +40,7 @@ def get_stocks_data():
 
 
 def get_crypto_data():
+    """Get crypto data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "crypto_data" in data:
@@ -55,6 +57,7 @@ def get_crypto_data():
 
 
 def get_data(menu: Literal["stocks", "crypto"]):
+    """Get data."""
     funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
@@ -88,6 +91,7 @@ def get_data(menu: Literal["stocks", "crypto"]):
 )
 @pytest.mark.integration
 def test_technical_atr(params, data_type, obb):
+    """Test atr."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -126,6 +130,7 @@ def test_technical_atr(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_fib(params, data_type, obb):
+    """Test fib."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -144,6 +149,7 @@ def test_technical_fib(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_obv(params, data_type, obb):
+    """Test obv."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -162,6 +168,7 @@ def test_technical_obv(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_fisher(params, data_type, obb):
+    """Test fisher."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -198,6 +205,7 @@ def test_technical_fisher(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_adosc(params, data_type, obb):
+    """Test adosc."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -238,6 +246,7 @@ def test_technical_adosc(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_bbands(params, data_type, obb):
+    """Test bbands."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -274,6 +283,7 @@ def test_technical_bbands(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_zlma(params, data_type, obb):
+    """Test zlma."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -300,6 +310,7 @@ def test_technical_zlma(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_aroon(params, data_type, obb):
+    """Test aroon."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -336,6 +347,7 @@ def test_technical_aroon(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_sma(params, data_type, obb):
+    """Test sma."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -374,6 +386,7 @@ def test_technical_sma(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_demark(params, data_type, obb):
+    """Test demark."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -392,6 +405,7 @@ def test_technical_demark(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_vwap(params, data_type, obb):
+    """Test vwap."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -430,6 +444,7 @@ def test_technical_vwap(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_macd(params, data_type, obb):
+    """Test macd."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -466,6 +481,7 @@ def test_technical_macd(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_hma(params, data_type, obb):
+    """Test hma."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -502,6 +518,7 @@ def test_technical_hma(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_donchian(params, data_type, obb):
+    """Test donchian."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -542,6 +559,7 @@ def test_technical_donchian(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_ichimoku(params, data_type, obb):
+    """Test ichimoku."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -568,6 +586,7 @@ def test_technical_ichimoku(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_clenow(params, data_type, obb):
+    """Test clenow."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -604,6 +623,7 @@ def test_technical_clenow(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_adx(params, data_type, obb):
+    """Test adx."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -622,6 +642,7 @@ def test_technical_adx(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_ad(params, data_type, obb):
+    """Test ad."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -658,6 +679,7 @@ def test_technical_ad(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_wma(params, data_type, obb):
+    """Test wma."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -684,6 +706,7 @@ def test_technical_wma(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_cci(params, data_type, obb):
+    """Test cci."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -722,6 +745,7 @@ def test_technical_cci(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_rsi(params, data_type, obb):
+    """Test rsi."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -758,6 +782,7 @@ def test_technical_rsi(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_stoch(params, data_type, obb):
+    """Test stoch."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -796,6 +821,7 @@ def test_technical_stoch(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_kc(params, data_type, obb):
+    """Test kc."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -814,6 +840,7 @@ def test_technical_kc(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_cg(params, data_type, obb):
+    """Test cg."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -854,6 +881,7 @@ def test_technical_cg(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_cones(params, data_type, obb):
+    """Test cones."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -890,6 +918,7 @@ def test_technical_cones(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_technical_ema(params, data_type, obb):
+    """Test ema."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -897,3 +926,45 @@ def test_technical_ema(params, data_type, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "study": "price",
+                "benchmark": "SPY",
+                "long_period": 252,
+                "short_period": 21,
+                "window": 21,
+                "trading_periods": 252,
+                "chart_params": {"show_tails": False},
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_technical_relative_rotation(params, obb):
+    params["data"] = obb.equity.price.historical(
+        "AAPL,MSFT,GOOGL,AMZN,SPY",
+        provider="yfinance",
+        start_date="2022-01-01",
+        end_date="2024-01-01",
+    ).results
+    result = obb.technical.relative_rotation(
+        data=params["data"],
+        benchmark=params["benchmark"],
+        study=params["study"],
+        long_period=params["long_period"],
+        short_period=params["short_period"],
+        window=params["window"],
+        trading_periods=params["trading_periods"],
+    )
+    assert result
+    assert isinstance(result, OBBject)
+    assert hasattr(result.results, "rs_ratios")
+    assert len(result.results.rs_ratios) > 0  # type: ignore
+    assert hasattr(result.results, "rs_momentum")
+    assert len(result.results.rs_momentum) > 0  # type: ignore

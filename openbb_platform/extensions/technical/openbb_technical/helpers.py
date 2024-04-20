@@ -1,12 +1,10 @@
 """Technical Analysis Helpers."""
 
-import warnings
 from typing import Any, List, Literal, Optional, Tuple, Union
+from warnings import warn
 
 import numpy as np
 import pandas as pd
-
-_warn = warnings.warn
 
 
 def validate_data(data: list, length: Union[int, List[int]]) -> None:
@@ -51,11 +49,11 @@ def parkinson(
         Dataframe with results.
     """
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -82,7 +80,7 @@ def standard_deviation(
     is_crypto: bool = False,
     clean: bool = True,
 ) -> pd.DataFrame:
-    """Standard deviation.
+    """Calculate the Standard deviation.
 
     Measures how widely returns are dispersed from the average return.
     It is the most common (and biased) estimator of volatility.
@@ -106,11 +104,11 @@ def standard_deviation(
         Dataframe with results.
     """
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -159,11 +157,11 @@ def garman_klass(
         Dataframe with results.
     """
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -220,11 +218,11 @@ def hodges_tompkins(
     >>> df = obb.technical.hodges_tompkins(data, is_crypto = True)
     """
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -280,11 +278,11 @@ def rogers_satchell(
         Pandas Series with results.
     """
     if window < 1:
-        _warn("Error: Window must be at least 1, defaulting to 30.")
+        warn("Error: Window must be at least 1, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -337,11 +335,11 @@ def yang_zhang(
         Dataframe with results.
     """
     if window < 2:
-        _warn("Error: Window must be at least 2, defaulting to 30.")
+        warn("Error: Window must be at least 2, defaulting to 30.")
         window = 30
 
     if trading_periods and is_crypto:
-        _warn("is_crypto is overridden by trading_periods.")
+        warn("is_crypto is overridden by trading_periods.")
 
     if not trading_periods:
         trading_periods = 365 if is_crypto else 252
@@ -547,12 +545,12 @@ def calculate_fib_levels(
     if start_date and end_date:
         if start_date not in data.index:
             date0 = data.index[data.index.get_indexer([end_date], method="nearest")[0]]
-            _warn(f"Start date not in data.  Using nearest: {date0}")
+            warn(f"Start date not in data.  Using nearest: {date0}")
         else:
             date0 = start_date
         if end_date not in data.index:
             date1 = data.index[data.index.get_indexer([end_date], method="nearest")[0]]
-            _warn(f"End date not in data.  Using nearest: {date1}")
+            warn(f"End date not in data.  Using nearest: {date1}")
         else:
             date1 = end_date
 

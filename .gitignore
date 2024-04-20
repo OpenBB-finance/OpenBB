@@ -85,3 +85,9 @@ lightning_logs/
 
 # Platform auto generated files
 openbb_platform/openbb/package/*
+
+# Reference files
+website/content/excel/reference/*
+website/content/excel/reference/*/*
+website/content/platform/data_models/*
+website/content/platform/reference/*

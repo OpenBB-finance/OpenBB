@@ -860,13 +860,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.1.5"
+version = "1.1.6"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "openbb_core-1.1.5-py3-none-any.whl", hash = "sha256:abac970b9503a40ed12c3a153b734c419e46bdc7ecd9e9d51c384c0b6bf140bd"},
-    {file = "openbb_core-1.1.5.tar.gz", hash = "sha256:c280bfbf579cf1accf32bbd6a4de581c39b5e88793a3d2c362c85c87a3fe31ad"},
+    {file = "openbb_core-1.1.6-py3-none-any.whl", hash = "sha256:4161d6e7654cab2185fcc39e5172385c8226e3cf6bfd5d4b1ff1076f70a6374c"},
+    {file = "openbb_core-1.1.6.tar.gz", hash = "sha256:bf56a8a0dc26d72e679a2c68b1f57bf6703ed130b52348a77a2f6cfa32c9fcae"},
 ]
 
 [package.dependencies]
@@ -1659,4 +1659,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "306b01fa966bc45551da0f17a2f1e5fa1968887aa1c3053f2f7e3d1205e0499b"
+content-hash = "bc7b5321316f41e8aef2c0faa24ca338dffdf77dfafc5672d4d8066cf6c17501"

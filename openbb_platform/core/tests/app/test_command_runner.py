@@ -1,3 +1,5 @@
+"""Test command runner."""
+
 from dataclasses import dataclass
 from inspect import Parameter
 from typing import Dict, List
@@ -20,6 +22,8 @@ from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
 from pydantic import BaseModel, ConfigDict
 
+# pylint: disable=W0613, W0621, W0102, W0212
+
 
 @pytest.fixture()
 def execution_context():
@@ -37,7 +41,7 @@ def mock_func():
     def mock_func(
         a: int, b: int, c: float = 10.0, d: int = 5, provider_choices: Dict = {}
     ) -> None:
-        pass
+        """Mock function."""
 
     return mock_func
 
@@ -155,12 +159,14 @@ def test_parameters_builder_merge_args_and_kwargs(
 def test_parameters_builder_update_command_context(
     kwargs, system_settings, user_settings, expected_result
 ):
+    """Test update_command_context."""
+
     def other_mock_func(
         cc: CommandContext,
         a: int,
         b: int,
     ) -> None:
-        pass
+        """Mock function."""
 
     result = ParametersBuilder.update_command_context(
         other_mock_func, kwargs, system_settings, user_settings
@@ -207,6 +213,7 @@ def test_parameters_builder_update_command_context(
 def test_parameters_builder_update_provider_choices(
     command_coverage, route, kwargs, route_default, expected_result
 ):
+    """Test update_provider_choices."""
     with patch("openbb_core.app.command_runner.ProviderInterface") as mock_pi:
         mock_pi.available_providers = ["provider1", "provider2"]
         result = ParametersBuilder.update_provider_choices(
@@ -218,7 +225,6 @@ def test_parameters_builder_update_provider_choices(
 
 def test_parameters_builder_validate_kwargs(mock_func):
     """Test validate_kwargs."""
-
     # TODO: add more test cases with @pytest.mark.parametrize
 
     result = ParametersBuilder.validate_kwargs(
@@ -268,7 +274,6 @@ def test_parameters_builder__warn_kwargs(extra_params, base, expect):
 
 def test_parameters_builder_build(mock_func, execution_context):
     """Test build."""
-
     # TODO: add more test cases with @pytest.mark.parametrize
 
     with patch("openbb_core.app.command_runner.ProviderInterface") as mock_pi:
@@ -298,14 +303,12 @@ def test_parameters_builder_build(mock_func, execution_context):
 @patch("openbb_core.app.command_runner.LoggingService")
 def test_command_runner(_):
     """Test command runner."""
-
     assert CommandRunner()
 
 
 @patch("openbb_core.app.command_runner.LoggingService")
 def test_command_runner_properties(mock_logging_service):
     """Test properties."""
-
     sys = SystemSettings()
     user = UserSettings()
     cmd_map = CommandMap()
@@ -320,6 +323,7 @@ def test_command_runner_properties(mock_logging_service):
 
 @patch("openbb_core.app.command_runner.LoggingService")
 def test_command_runner_run(_):
+    """Test run."""
     runner = CommandRunner()
 
     with patch(
@@ -338,14 +342,17 @@ async def test_static_command_runner_run(
     """Test static command runner run."""
 
     def other_mock_func(a: int, b: int, c: int, d: int) -> List[int]:
+        """Mock function."""
         return [a, b, c, d]
 
     class MockOBBject:
         """Mock OBBject"""
 
         def __init__(self, results):
+            """Initialize the mock object."""
             self.results = results
             self.extra = {}
+            self.extra["metadata"] = {"test": "test"}
 
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])

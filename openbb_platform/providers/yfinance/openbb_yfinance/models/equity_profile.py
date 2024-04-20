@@ -3,7 +3,10 @@
 # pylint: disable=unused-argument
 import asyncio
 import warnings
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    timezone,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,6 +14,7 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -97,9 +101,9 @@ class YFinanceEquityProfileData(EquityInfoData):
 
     @field_validator("first_stock_price_date", mode="before", check_fields=False)
     @classmethod
-    def validate_first_trade_date(cls, v):
+    def validate_first_trade_date(cls, v: float) -> Optional[dateType]:
         """Validate first stock price date."""
-        return datetime.utcfromtimestamp(v).date() if v else None
+        return safe_fromtimestamp(v, tz=timezone.utc).date() if v else None
 
 
 class YFinanceEquityProfileFetcher(

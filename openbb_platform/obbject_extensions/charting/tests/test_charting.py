@@ -1,3 +1,5 @@
+"""Test Charting class."""
+
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -6,9 +8,14 @@ from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from pydantic import BaseModel
 
+# pylint: disable=redefined-outer-name, protected-access
+
 
 class MockDataframe:
+    """Mock Dataframe."""
+
     def __init__(self):
+        """Mock Dataframe."""
         self.columns = ["column1", "column2"]
 
 
@@ -17,12 +24,19 @@ mock_dataframe = MockDataframe()
 
 @pytest.fixture()
 def obbject():
+    """Mock OOBject."""
+
     class MockStdParams(BaseModel):
+        """Mock Standard Parameters."""
+
         param1: str
         param2: str
 
     class MockOOBject:
+        """Mock OOBject."""
+
         def __init__(self):
+            """Mock OOBject."""
             self._user_settings = UserSettings()
             self._system_settings = SystemSettings()
             self._route = "mock/route"
@@ -36,36 +50,53 @@ def obbject():
             self.warnings = "mock_warnings"
 
         def to_dataframe(self):
+            """Mock to_dataframe."""
             return mock_dataframe
 
     return MockOOBject()
 
 
 def test_charting_settings(obbject):
+    """Test charting_settings."""
     cm = Charting(obbject)
     assert isinstance(cm, Charting)
 
 
-@patch("openbb_charting.ChartIndicators.get_available_indicators")
-def test_indicators(mock_get_available_indicators, obbject):
-    # Arrange
-    mock_get_available_indicators.return_value = [
-        "indicator1",
-        "indicator2",
-        "indicator3",
-    ]
+def test_indicators(obbject):
+    """Test indicators method."""
     obj = Charting(obbject)
+    indicators = list(obj.indicators().model_dump().keys())
 
-    # Act
-    result = obj.indicators()
-
-    # Assert
-    assert result == ["indicator1", "indicator2", "indicator3"]
-    mock_get_available_indicators.assert_called_once()
+    assert indicators == [
+        "sma",
+        "ema",
+        "hma",
+        "wma",
+        "zlma",
+        "ad",
+        "adoscillator",
+        "adx",
+        "aroon",
+        "atr",
+        "cci",
+        "clenow",
+        "demark",
+        "donchian",
+        "fib",
+        "fisher",
+        "ichimoku",
+        "kc",
+        "macd",
+        "obv",
+        "rsi",
+        "srlines",
+        "stoch",
+    ]
 
 
 @patch("openbb_charting.get_charting_functions")
 def test_functions(mock_get_charting_functions):
+    """Test functions method."""
     # Arrange
     mock_get_charting_functions.return_value = ["function1", "function2", "function3"]
 
@@ -80,6 +111,7 @@ def test_functions(mock_get_charting_functions):
 @patch("openbb_charting.core.backend.get_backend")
 @patch("openbb_charting.core.backend.create_backend")
 def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
+    """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
     obj = Charting(obbject)
 
@@ -90,6 +122,7 @@ def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
 
 @patch("openbb_charting.charting_router")
 def test_get_chart_function(mock_charting_router):
+    """Test _get_chart_function method."""
     # Arrange
     mock_function = MagicMock()
     mock_charting_router.some_function = mock_function
@@ -104,6 +137,7 @@ def test_get_chart_function(mock_charting_router):
 
 @patch("openbb_charting.Charting._get_chart_function")
 def test_show(mock_get_chart_function, obbject):
+    """Test show method."""
     # Arrange
     mock_function = MagicMock()
     mock_get_chart_function.return_value = mock_function
@@ -122,6 +156,7 @@ def test_show(mock_get_chart_function, obbject):
 
 @patch("openbb_charting.to_chart")
 def test_to_chart(mock_to_chart, obbject):
+    """Test to_chart method."""
     # Arrange
     mock_fig = MagicMock()
     mock_to_chart.return_value = (mock_fig, {"content": "mock_content"})

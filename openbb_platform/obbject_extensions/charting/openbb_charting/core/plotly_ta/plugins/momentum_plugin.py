@@ -5,6 +5,7 @@ import warnings
 import numpy as np
 import pandas as pd
 import pandas_ta as ta
+
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,
@@ -46,8 +47,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hrect(
@@ -57,8 +58,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -66,8 +67,8 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.down_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -75,8 +76,8 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.up_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
 
@@ -91,7 +92,7 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#e0b700",
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -144,7 +145,7 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#ef7d00",
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -162,8 +163,8 @@ class Momentum(PltTA):
             )
             return fig, inchart_index
 
-        window = self.params["clenow"].get_argument_values("window") or 90
-        _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)
+        window = self.params["clenow"].get_argument_values("window") or 90  # type: ignore
+        _, _, fit_data = clenow_momentum(df_ta[self.close_column], window=window)  # type: ignore
 
         fig.add_scatter(
             x=df_ta.index[-window:],  # type: ignore
@@ -193,7 +194,7 @@ class Momentum(PltTA):
     @indicator()
     def plot_demark(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Add demark to plotly figure."""
-        min_val = self.params["demark"].get_argument_values("min_val") or 5
+        min_val = self.params["demark"].get_argument_values("min_val") or 5  # type: ignore
 
         demark = ta.td_seq(df_ta[self.close_column], asint=True)
         demark = demark.set_index(df_ta.index)
@@ -313,8 +314,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hrect(
@@ -324,8 +325,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -334,8 +335,8 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.down_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -344,11 +345,11 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.up_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -410,7 +411,7 @@ class Momentum(PltTA):
             xshift=-3,
             font_color="rgb(7, 166, 52)",
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(autorange=True, nticks=5)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(autorange=True, nticks=5)  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -448,8 +449,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hrect(
@@ -459,8 +460,8 @@ class Momentum(PltTA):
             opacity=0.2,
             layer="below",
             line_width=0,
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -469,8 +470,8 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.down_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
         fig.add_hline(
@@ -479,11 +480,11 @@ class Momentum(PltTA):
             opacity=1,
             layer="below",
             line=dict(width=2, color=fig.theme.up_color, dash="dash"),
-            row=subplot_row,
-            col=1,
+            row=subplot_row,  # type: ignore
+            col=1,  # type: ignore
             secondary_y=False,
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(tickvals=[0, 30, 70, 100])
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(tickvals=[0, 30, 70, 100])  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -524,7 +525,7 @@ class Momentum(PltTA):
             font_size=14,
             font_color="#e0b700",
         )
-        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)
+        fig["layout"][f"yaxis{subplot_row + 1}"].update(nticks=5, autorange=True)  # type: ignore
 
         return fig, subplot_row + 1
 
@@ -532,38 +533,40 @@ class Momentum(PltTA):
     def plot_ichimoku(self, fig: OpenBBFigure, df_ta: pd.DataFrame, inchart_index: int):
         """Calculate Ichimoku indicator."""
         conversion_period = (
-            self.params["ichimoku"].get_argument_values("conversion_period") or 9
+            self.params["ichimoku"].get_argument_values("conversion_period") or 9  # type: ignore
         )
-        base_period = self.params["ichimoku"].get_argument_values("base_period") or 26
+        base_period = self.params["ichimoku"].get_argument_values("base_period") or 26  # type: ignore
         lagging_line_period = (
-            self.params["ichimoku"].get_argument_values("lagging_line_period") or 52
+            self.params["ichimoku"].get_argument_values("lagging_line_period") or 52  # type: ignore
         )
-        displacement = self.params["ichimoku"].get_argument_values("displacement") or 26
+        displacement = self.params["ichimoku"].get_argument_values("displacement") or 26  # type: ignore
 
         # Tenkan-sen (Conversion Line)
         conversion_line = (
-            df_ta["high"].rolling(window=conversion_period).max()
-            + df_ta["low"].rolling(window=conversion_period).min()
+            df_ta["high"].rolling(window=conversion_period).max()  # type: ignore
+            + df_ta["low"].rolling(window=conversion_period).min()  # type: ignore
         ) / 2
 
         # Kijun-sen (Base Line)
         base_line = (
-            df_ta["high"].rolling(window=base_period).max()
-            + df_ta["low"].rolling(window=base_period).min()
+            df_ta["high"].rolling(window=base_period).max()  # type: ignore
+            + df_ta["low"].rolling(window=base_period).min()  # type: ignore
         ) / 2
 
         # Senkou Span A (Leading Span A)
-        leading_span_a = ((conversion_line + base_line) / 2).shift(displacement)
+        leading_span_a = ((conversion_line + base_line) / 2).shift(displacement)  # type: ignore
 
         # Senkou Span B (Leading Span B)
         lagging_line = df_ta[self.close_column].shift(-lagging_line_period)  # type: ignore
         leading_span_b = (
             (
-                lagging_line.rolling(window=base_period).max()
-                + lagging_line.rolling(window=base_period).min()
+                lagging_line.rolling(window=base_period).max()  # type: ignore
+                + lagging_line.rolling(window=base_period).min()  # type: ignore
             )
             / 2
-        ).shift(displacement)
+        ).shift(
+            displacement  # type: ignore
+        )
 
         # Plot Tenkan-sen and Kijun-sen
         fig.add_scatter(
