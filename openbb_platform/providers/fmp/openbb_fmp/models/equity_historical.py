@@ -22,8 +22,8 @@ from openbb_core.provider.utils.helpers import (
     amake_request,
     get_querystring,
 )
-from openbb_fmp.utils.helpers import get_interval, parse_date
-from pydantic import Field, field_validator
+from openbb_fmp.utils.helpers import get_interval
+from pydantic import Field
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -60,11 +60,6 @@ class FMPEquityHistoricalData(EquityHistoricalData):
         alias="changeOverTime",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
-        return parse_date(v, "America/New_York")
 
 
 class FMPEquityHistoricalFetcher(

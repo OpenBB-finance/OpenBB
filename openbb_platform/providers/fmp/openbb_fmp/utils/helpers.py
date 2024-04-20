@@ -2,11 +2,9 @@
 
 from datetime import (
     date as dateType,
-    datetime,
 )
 from typing import Any, Dict, List, Optional, Union
 
-from dateutil import parser
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
@@ -16,7 +14,6 @@ from openbb_core.provider.utils.helpers import (
     get_querystring,
 )
 from pydantic import BaseModel
-from pytz import timezone
 
 
 async def response_callback(
@@ -149,27 +146,3 @@ def get_interval(value: str) -> str:
     }
 
     return f"{value[:-1]}{intervals[value[-1]]}"
-
-
-# some fmp endpoint return date in EST without a timezone, this function will parse it
-# and return a datetime object with the correct timezone
-def parse_date(date: str, with_tz: Optional[str] = None) -> datetime:
-    """Parse the date string.
-
-    Parameters
-    ----------
-    date: str
-        The date string to parse.
-    with_tz: Optional[str]
-        Timezone the date is in.
-
-    Returns
-    -------
-    datetime
-        The parsed datetime.
-    """
-
-    date_dt = parser.isoparse(str(date))
-    local = timezone(with_tz or "America/New_York")
-
-    return local.localize(date_dt.replace(tzinfo=None)) if with_tz else date_dt
