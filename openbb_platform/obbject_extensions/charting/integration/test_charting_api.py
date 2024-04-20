@@ -609,7 +609,6 @@ def test_charting_technical_relative_rotation(params):
     result = requests.post(url, headers=get_headers(), timeout=10, data=body)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
-    print(result.json())
     chart = result.json()["chart"]
     fig = chart.pop("fig", {})
 
