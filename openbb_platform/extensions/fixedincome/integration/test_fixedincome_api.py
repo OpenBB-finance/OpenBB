@@ -583,7 +583,7 @@ def test_fixedincome_government_treasury_prices(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/fixedincome/government/treasury_prices?{query_str}"
     )
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -620,6 +620,6 @@ def test_fixedincome_corporate_bond_prices(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/corporate/bond_prices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

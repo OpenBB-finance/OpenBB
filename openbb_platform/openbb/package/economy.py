@@ -526,7 +526,7 @@ class ROUTER_economy(Container):
             The date of the data.
         region : Optional[str]
             The name of the region. (provider: fred)
-        code : Optional[Union[str, int]]
+        code : Optional[Union[int, str]]
             The code of the region. (provider: fred)
         value : Optional[Union[float, int]]
             The obersvation value. The units are defined in the search results by series ID. (provider: fred)
