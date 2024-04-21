@@ -39,7 +39,7 @@ class ROUTER_economy(Container):
         self,
         provider: Annotated[
             Optional[Literal["econdb"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
             ),
         ] = None,
@@ -75,7 +75,7 @@ class ROUTER_economy(Container):
         symbol_root : Optional[str]
             The root symbol representing the indicator.
         symbol : Optional[str]
-            The root symbol with additional codes.
+            Symbol representing the entity requested in the data. The root symbol with additional codes.
         country : Optional[str]
             The name of the country, region, or entity represented by the symbol.
         iso : Optional[str]
@@ -336,13 +336,13 @@ class ROUTER_economy(Container):
         self,
         country: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="The country, or country group, to get data for. Multiple comma separated items allowed for provider(s): econdb."
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): econdb."
             ),
         ],
         provider: Annotated[
             Optional[Literal["econdb"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
             ),
         ] = None,
@@ -353,7 +353,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country, or country group, to get data for. Multiple comma separated items allowed for provider(s): econdb.
+            The country to get data. Multiple comma separated items allowed for provider(s): econdb.
         provider : Optional[Literal['econdb']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
@@ -380,7 +380,7 @@ class ROUTER_economy(Container):
         CountryProfile
         --------------
         country : str
-            The country represented by the data.
+
         population : Optional[int]
             Population.
         gdp_usd : Optional[float]
@@ -1041,31 +1041,27 @@ class ROUTER_economy(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb."
             ),
         ],
         country: Annotated[
             Union[str, None, List[Optional[str]]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb."
             ),
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["econdb"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
             ),
         ] = None,
@@ -1131,9 +1127,9 @@ class ROUTER_economy(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.economy.indicators(provider='econdb', country='japan', indicator=GDP)
+        >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
         >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
-        >>> obb.economy.indicators(country='united_states,jp', latest=False, provider='econdb')
+        >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
         """  # noqa: E501
 
         return self._run(
