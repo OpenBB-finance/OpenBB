@@ -316,15 +316,18 @@ class StaticCommandRunner:
         elif isinstance(extra_params, dict) and "chart_params" in extra_params:
             chart_params = kwargs["extra_params"].get("chart_params", {})
 
-        if "chart_params" in kwargs:
+        if "chart_params" in kwargs and kwargs["chart_params"] is not None:
             chart_params.update(kwargs.pop("chart_params", {}))
 
-        if "kwargs" in kwargs:
+        if (
+            "kwargs" in kwargs
+            and "chart_params" in kwargs["kwargs"]
+            and kwargs["kwargs"].get("chart_params") is not None
+        ):
             chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
         if chart_params:
             kwargs.update(chart_params)
-
         obbject.charting.show(render=False, **kwargs)
 
     # pylint: disable=R0913, R0914
@@ -374,7 +377,6 @@ class StaticCommandRunner:
                 # pylint: disable=protected-access
                 obbject._route = route
                 obbject._standard_params = kwargs.get("standard_params", None)
-
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
 

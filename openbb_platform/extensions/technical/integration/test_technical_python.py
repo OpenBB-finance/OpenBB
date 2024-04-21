@@ -926,3 +926,45 @@ def test_technical_ema(params, data_type, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "data": "",
+                "study": "price",
+                "benchmark": "SPY",
+                "long_period": 252,
+                "short_period": 21,
+                "window": 21,
+                "trading_periods": 252,
+                "chart_params": {"show_tails": False},
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_technical_relative_rotation(params, obb):
+    params["data"] = obb.equity.price.historical(
+        "AAPL,MSFT,GOOGL,AMZN,SPY",
+        provider="yfinance",
+        start_date="2022-01-01",
+        end_date="2024-01-01",
+    ).results
+    result = obb.technical.relative_rotation(
+        data=params["data"],
+        benchmark=params["benchmark"],
+        study=params["study"],
+        long_period=params["long_period"],
+        short_period=params["short_period"],
+        window=params["window"],
+        trading_periods=params["trading_periods"],
+    )
+    assert result
+    assert isinstance(result, OBBject)
+    assert hasattr(result.results, "rs_ratios")
+    assert len(result.results.rs_ratios) > 0  # type: ignore
+    assert hasattr(result.results, "rs_momentum")
+    assert len(result.results.rs_momentum) > 0  # type: ignore

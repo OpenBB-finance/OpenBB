@@ -24,7 +24,7 @@ class Servers(BaseModel):
     description: str = "Local OpenBB development server"
 
 
-class FastAPISettings(BaseModel):
+class APISettings(BaseModel):
     """Settings model for FastAPI configuration."""
 
     model_config = ConfigDict(frozen=True)

@@ -117,13 +117,13 @@ class NasdaqHistoricalDividendsFetcher(
                 url,
                 headers=IPO_HEADERS,
             )
-            if response.get("status").get("rCode") == 400:
+            if response.get("status").get("rCode") == 400:  # type: ignore
                 response = await amake_request(
                     url.replace("stocks", "etf"),
                     headers=IPO_HEADERS,
                 )
-            if response.get("status").get("rCode") == 200:
-                data = response.get("data").get("dividends").get("rows")
+            if response.get("status").get("rCode") == 200:  # type: ignore
+                data = response.get("data").get("dividends").get("rows")  # type: ignore
 
             if data:
                 if len(symbols) > 1:
