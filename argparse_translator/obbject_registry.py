@@ -51,7 +51,9 @@ class Registry(metaclass=SingletonMeta):
             standard_params_json = ""
             std_params = obbject._standard_params  # pylint: disable=protected-access
             if hasattr(std_params, "__dict__"):
-                standard_params = {k: v for k, v in std_params.__dict__.items() if v}
+                standard_params = {
+                    k: str(v)[:20] for k, v in std_params.__dict__.items() if v
+                }
                 standard_params_json = json.dumps(standard_params)
 
             return standard_params_json
