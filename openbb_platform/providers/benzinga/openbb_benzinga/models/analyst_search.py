@@ -2,7 +2,10 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    timezone,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,9 +14,12 @@ from openbb_core.provider.standard_models.analyst_search import (
     AnalystSearchQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, get_querystring
+from openbb_core.provider.utils.helpers import (
+    amake_request,
+    get_querystring,
+    safe_fromtimestamp,
+)
 from pydantic import Field, field_validator, model_validator
-from pytz import UTC
 
 
 class BenzingaAnalystSearchQueryParams(AnalystSearchQueryParams):
@@ -358,12 +364,12 @@ class BenzingaAnalystSearchData(AnalystSearchData):
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod
-    def validate_date(cls, v):
-        """Validate date."""
+    def validate_date(cls, v: float) -> Optional[dateType]:
+        """Validate last_updated."""
         if v:
-            dt = datetime.fromtimestamp(v, UTC)
+            dt = safe_fromtimestamp(v, tz=timezone.utc)
             return dt.date() if dt.time() == dt.min.time() else dt
-        return v
+        return None
 
     @model_validator(mode="before")
     @classmethod

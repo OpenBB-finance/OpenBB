@@ -28,7 +28,7 @@ class IntrinioWorldNewsData(WorldNewsData):
     __alias_dict__ = {"date": "publication_date", "text": "summary"}
 
     id: str = Field(description="Article ID.")
-    company: Dict[str, Any] = Field(
+    company: Optional[Dict[str, Any]] = Field(
         description="Company details related to the news article."
     )
 

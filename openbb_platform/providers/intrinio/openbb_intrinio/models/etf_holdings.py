@@ -157,7 +157,7 @@ class IntrinioEtfHoldingsFetcher(
         URL = f"https://api-v2.intrinio.com/etfs/{symbol}/holdings?page_size=10000&api_key={api_key}"
         if query.date:
             URL += f"&as_of_date={query.date}"
-        data = []
+        data: List = []
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Async response callback."""

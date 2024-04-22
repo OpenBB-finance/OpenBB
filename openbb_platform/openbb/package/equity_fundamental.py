@@ -6,7 +6,7 @@ from warnings import simplefilter, warn
 
 from annotated_types import Ge
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -50,19 +50,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -412,16 +410,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -570,19 +565,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -840,16 +833,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -980,24 +970,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def dividends(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1086,12 +1070,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def employee_count(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1171,21 +1153,20 @@ class ROUTER_equity_fundamental(Container):
     def filings(
         self,
         symbol: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str], OpenBBField(description="Symbol to get data for.")
         ] = None,
         form_type: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Filter by form type. Check the data provider for available types."
             ),
         ] = None,
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1324,47 +1305,41 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         frequency: Annotated[
             Optional[Literal["daily", "weekly", "monthly", "quarterly", "yearly"]],
-            OpenBBCustomParameter(description="The frequency of the data."),
+            OpenBBField(description="The frequency of the data."),
         ] = "yearly",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 1000,
         tag_type: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(description="Filter by type, when applicable."),
+            Optional[str], OpenBBField(description="Filter by type, when applicable.")
         ] = None,
         sort: Annotated[
-            Optional[Literal["asc", "desc"]],
-            OpenBBCustomParameter(description="Sort order."),
+            Optional[Literal["asc", "desc"]], OpenBBField(description="Sort order.")
         ] = "desc",
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -1458,12 +1433,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_eps(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1546,12 +1519,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_splits(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1620,19 +1591,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1984,20 +1953,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         period: Annotated[
             Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2125,19 +2091,19 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -2211,12 +2177,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def management(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2297,13 +2261,13 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2399,21 +2363,21 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2720,13 +2684,13 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2914,12 +2878,10 @@ class ROUTER_equity_fundamental(Container):
     )
     def overview(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3059,19 +3021,16 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def ratios(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 12,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3259,27 +3218,25 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def reported_financials(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         statement_type: Annotated[
             str,
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The type of financial statement - i.e, balance, income, cash."
             ),
         ] = "balance",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks."
             ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -3363,20 +3320,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_geography(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            Literal["quarter", "annual"],
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            OpenBBField(description="Structure of the returned data."),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3388,7 +3343,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3454,20 +3409,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_segment(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            Literal["annual", "quarter"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            Literal["quarter", "annual"],
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            OpenBBField(description="Structure of the returned data."),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3479,7 +3432,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Time period of the data to return.
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
@@ -3545,16 +3498,14 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def search_attributes(
         self,
-        query: Annotated[
-            str, OpenBBCustomParameter(description="Query to search for.")
-        ],
+        query: Annotated[str, OpenBBField(description="Query to search for.")],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 1000,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -3640,18 +3591,16 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def trailing_dividend_yield(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The number of data entries to return. Default is 252, the number of trading days in a year."
             ),
         ] = 252,
         provider: Annotated[
             Optional[Literal["tiingo"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default."
             ),
         ] = None,
@@ -3720,16 +3669,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def transcript(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         year: Annotated[
-            int,
-            OpenBBCustomParameter(description="Year of the earnings call transcript."),
+            int, OpenBBField(description="Year of the earnings call transcript.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,

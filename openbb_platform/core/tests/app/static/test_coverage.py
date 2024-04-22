@@ -37,3 +37,10 @@ def test_coverage_commands(coverage):
     command_coverage = coverage.commands
     assert command_coverage
     assert isinstance(command_coverage, dict)
+
+
+def test_coverage_reference(coverage):
+    """Test coverage reference."""
+    reference = coverage.reference
+    assert reference
+    assert isinstance(reference, dict)

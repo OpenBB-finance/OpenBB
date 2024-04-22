@@ -1,35 +1,35 @@
 {
-    "openbb": "4.1.6",
+    "openbb": "4.1.7",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "This is the OpenBB Platform (Python).",
-        "core": "1.1.5",
+        "core": "1.1.6",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.0.2",
-                "crypto@1.1.4",
-                "currency@1.1.4",
-                "derivatives@1.1.4",
-                "economy@1.1.4",
-                "equity@1.1.4",
-                "etf@1.1.4",
-                "fixedincome@1.1.4",
-                "index@1.1.4",
-                "news@1.1.4",
-                "regulators@1.1.4"
+                "commodity@1.0.4",
+                "crypto@1.1.5",
+                "currency@1.1.5",
+                "derivatives@1.1.5",
+                "economy@1.1.5",
+                "equity@1.1.5",
+                "etf@1.1.5",
+                "fixedincome@1.1.5",
+                "index@1.1.5",
+                "news@1.1.5",
+                "regulators@1.1.5"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.1.4",
-                "federal_reserve@1.1.4",
-                "fmp@1.1.4",
-                "fred@1.1.4",
-                "intrinio@1.1.4",
-                "oecd@1.1.4",
-                "polygon@1.1.4",
-                "sec@1.1.4",
-                "tiingo@1.1.4",
-                "tradingeconomics@1.1.4",
-                "yfinance@1.1.4"
+                "benzinga@1.1.5",
+                "federal_reserve@1.1.5",
+                "fmp@1.1.5",
+                "fred@1.1.5",
+                "intrinio@1.1.5",
+                "oecd@1.1.5",
+                "polygon@1.1.5",
+                "sec@1.1.5",
+                "tiingo@1.1.5",
+                "tradingeconomics@1.1.5",
+                "yfinance@1.1.5"
             ],
             "openbb_obbject_extension": []
         }
@@ -5351,6 +5351,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_1m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3m",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 months",
@@ -5375,6 +5389,20 @@
                         "name": "std_dev_3m",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
                         "default": null,
                         "optional": true
                     },
@@ -5435,6 +5463,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_9m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 9 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_9m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_1y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 1 year",
@@ -5459,6 +5501,20 @@
                         "name": "std_dev_1y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_1y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 1 year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
                         "default": null,
                         "optional": true
                     },
@@ -5491,6 +5547,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_2y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_2y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 years",
@@ -5515,6 +5585,20 @@
                         "name": "std_dev_3y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
                         "default": null,
                         "optional": true
                     }
@@ -23216,8 +23300,8 @@
         },
         "/etf/holdings_performance": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2."
             },
             "description": "Get the recent price performance of each ticker held in the ETF.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings_performance(symbol='XLK', provider='fmp')\n```\n\n",

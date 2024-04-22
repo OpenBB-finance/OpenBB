@@ -3,10 +3,7 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -39,19 +36,15 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "tradingeconomics"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -162,19 +155,15 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
@@ -255,10 +244,8 @@ class ROUTER_economy(Container):
         self,
         country: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="The country to get data. Multiple comma separated items allowed for provider(s): fred."
-            ),
-            OpenBBCustomChoices(
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
                 choices=[
                     "australia",
                     "austria",
@@ -309,42 +296,35 @@ class ROUTER_economy(Container):
                     "turkey",
                     "united_kingdom",
                     "united_states",
-                ]
+                ],
             ),
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
             ),
         ] = "growth_same",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
             ),
         ] = "monthly",
         harmonized: Annotated[
-            bool,
-            OpenBBCustomParameter(
-                description="Whether you wish to obtain harmonized data."
-            ),
+            bool, OpenBBField(description="Whether you wish to obtain harmonized data.")
         ] = False,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
@@ -435,28 +415,22 @@ class ROUTER_economy(Container):
     @validate
     def fred_regional(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
@@ -592,11 +566,11 @@ class ROUTER_economy(Container):
     def fred_search(
         self,
         query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="The search word(s).")
+            Optional[str], OpenBBField(description="The search word(s).")
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
@@ -721,29 +695,25 @@ class ROUTER_economy(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred", "intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
@@ -875,19 +845,15 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
@@ -974,25 +940,19 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         adjusted: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether to return seasonally adjusted data."
-            ),
+            OpenBBField(description="Whether to return seasonally adjusted data."),
         ] = True,
         provider: Annotated[
             Optional[Literal["federal_reserve"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
             ),
         ] = None,
@@ -1081,7 +1041,7 @@ class ROUTER_economy(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1148,19 +1108,15 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
@@ -1245,19 +1201,15 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,

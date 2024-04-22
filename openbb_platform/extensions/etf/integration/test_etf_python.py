@@ -339,7 +339,7 @@ def test_etf_holdings_date(params, obb):
         ),
         (
             {
-                "symbol": "DJIA",
+                "symbol": "QQQ",
                 "provider": "intrinio",
                 "date": "2020-04-03",
             }

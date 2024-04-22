@@ -1,13 +1,18 @@
 """FMP Key Executives Model."""
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+# pylint: disable=unused-argument
+
+from datetime import (
+    date as dateType,
+)
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import field_validator
 
@@ -24,9 +29,12 @@ class FMPKeyExecutivesData(KeyExecutivesData):
 
     @field_validator("titleSince", mode="before", check_fields=False)
     @classmethod
-    def time_validate(cls, v):  # pylint: disable=E0213
+    def time_validate(cls, v: Union[float, int]) -> Optional[dateType]:
         """Return the date as a datetime object."""
-        return datetime.fromtimestamp(v / 1000)
+        if v:
+            v = v / 1000
+            return safe_fromtimestamp(v)
+        return v  # type: ignore
 
 
 class FMPKeyExecutivesFetcher(
