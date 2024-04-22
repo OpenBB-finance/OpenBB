@@ -109,7 +109,10 @@
             "zeroline": false,
             "tick0": 1,
             "title": {
-                "standoff": 20
+                "standoff": 20,
+                "font": {
+                    "size": 16
+                }
             },
             "linecolor": "#A9A9A9",
             "mirror": true,
@@ -125,9 +128,12 @@
             "side": "right",
             "tick0": 0.5,
             "title": {
-                "standoff": 20
+                "standoff": 20,
+                "font": {
+                    "size": 16
+                }
             },
-            "gridcolor": "rgba(128, 128, 128, 0.25)",
+            "gridcolor": "rgba(128, 128, 128, 0.33)",
             "linecolor": "#A9A9A9",
             "mirror": true,
             "ticks": "outside"

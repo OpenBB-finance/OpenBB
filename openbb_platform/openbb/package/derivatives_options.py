@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -23,12 +23,10 @@ class ROUTER_derivatives_options(Container):
     @validate
     def chains(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -183,13 +181,11 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. (the underlying symbol)"
-            ),
+            OpenBBField(description="Symbol to get data for. (the underlying symbol)"),
         ] = None,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,

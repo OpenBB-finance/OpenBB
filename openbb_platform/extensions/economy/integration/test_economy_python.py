@@ -510,3 +510,71 @@ def test_economy_fred_regional(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "latest": True,
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_country_profile(params, obb):
+    """Test economy country profile."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.country_profile(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "econdb", "use_cache": False}),
+    ],
+)
+@pytest.mark.integration
+def test_economy_available_indicators(params, obb):
+    """Test economy available indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.available_indicators(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "symbol": "GDP,GDEBT",
+                "transform": None,
+                "start_date": "2022-01-01",
+                "end_date": "2024-01-01",
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_indicators(params, obb):
+    """Test economy indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.indicators(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

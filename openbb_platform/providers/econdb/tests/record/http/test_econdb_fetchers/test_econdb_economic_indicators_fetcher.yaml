@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/user/create_token/?reset=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAxTLSwqAIBAA0KvIrBOcccbfZUJNQdpIbYro7tHbvwfyHOvebkgKkANVcjVTEZbY
+        ig0kgtYzY4ilmyBu6znDoqBdcxzt/BsZYm1Yo1dkk7FJEN4PAAD//wMAUDPkb1kAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8757cfa3ad5f2d6c-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Apr 2024 23:03:51 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=bzxJE5Y4WTu%2Fk8wzG0GOCRKkmLZ7g67rctpErrmfGGBuZYFkgaWqaJZZgfuahjfAptNMbO8MCpz%2FOf9DnkW%2FiXZo29EoouU69YyXacIHdhC2GnQJ4MyHdDm0%2BJoJ5xrOVOMZiqGAyVfMzaNG"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Cookie
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.econdb.com/api/series/?format=json&from=2020-01-01&ticker=%5BGDPUS%5D&to=2024-01-01&token=MOCK_TOKEN
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8VUXW+rOBD9K4hnLrLHxjZ+45a0irSlbUJeqCrEDW4vWgJZPqqtqv73HUMbWXfv
+        40orRcT28Zk5M3Pg3T/2czf5mgb+uXox47LqzN941M1ti6eDeW36efzaD2ac2wm3j+/+1Bz/NIOv
+        /Zv0/rD3A78243FozlPTd3h66JrJ1N5+qiYzet+8m6EfR6/uT2ZEpnce+no+Tkh7Mf3LUJ1/vv1K
+        Qux5MH/Npjta7MGmqKZqNCjP/75Jyiy5IQRPZ2RdJFZ13VgJVVuezFRZhq/f/TTJkzK9u022mU7x
+        zEv7U9VYoRhFZ9VK8ZLj0pJFcHqPsXeb6zLZbRK9M89mQCnGW24Mb14/eNVgKit7r39Vvs3S7VWS
+        3+305th3/QlL3nZ1c6ym3vYsw+jlYZ/+O3Pw2an0q1P3a6cCL8MoeDPwDntE27YabKKru0OWb3b3
+        yS5fhV7ZMGY4V8P0G6llobN+8qrzuUUxP1qDIQ7ZNi9vD3/kSxXeCUfcILwMV+jbpm1Ros11vds8
+        6Gt3JvphxjxmaN/8j3U8ttmvVTtbNz0ClUREFAIax5RRzgOggkvBSQBAgEcEcCEIoQohBjEwgSdM
+        gYolLriIuCAI4cWYUoGLiHOwUBTHfImDD8XtHaEow1ABYE5GMClIQfFf4SJmSjF4WiQuynxMT74R
+        ij8sbN1wdyOdDSWXDXU51OVQl0NdDrgccDngcsDlMJfDXA5zOeyTg5WNaL15Ke3a2sSO63/5f7Kf
+        idbge1rW+KY+Lq/lf/fA8E03GjRdXdoPzeNleBDnlGsmNSMhI4rwuHCmyUgORDOhCQ+BUCFp4YwX
+        USo1ANJDIShc0GXeNvKKxqGMBFq6cAyAKEbmXEcqFJTFESscR3yiRJM4BCklgwtK8QLklGkKOopD
+        IqWKeOF4BuRSkdIMQkIiecm7mAiU5SJKIOQRCCkKx1UrClJzCJmKI6IKx2ZrZIIXaKgkjdgXd/Ed
+        iJxGmhBNWSi54pQVjhFXLmrmKlSC4DtbOM5EFKjtFdYrJQHJC8eqGNmisc0bMazoqxt8yRt9opSH
+        2Ef8chT+08fH08c/QxF3XKoGAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8757cfa49bec2db5-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Apr 2024 23:03:51 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=DtYnXyxGPYd3xpC3hzdp9nGI23hFrYmMBTlGXUMtj0lsucYCQqy4fOonk9LaBWjFc8o5EVnLIuL4ke%2BRMAQu8%2FGqXHx%2F5K1CUg7gxtYM%2BXCpS9P4Qiqnl%2BvMvo2rHjKgj%2BZ0s35XHFGAUR5Y"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Accept, Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1
