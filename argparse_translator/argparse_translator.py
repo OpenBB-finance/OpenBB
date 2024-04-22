@@ -285,8 +285,8 @@ class ArgparseTranslator:
                 param_type = type(choices[0])
 
         if type_origin is Union:
-            # if str type is available on Union, use it
-            if str in get_args(param_type):
+            union_args = get_args(param_type)
+            if str in union_args:
                 param_type = str
 
             # check if it's an Optional, which would be a Union with NoneType
@@ -352,9 +352,16 @@ class ArgparseTranslator:
     def _get_nargs(self, param: inspect.Parameter) -> Optional[str]:
         """Returns the nargs annotation for the given parameter."""
         param_type = self.type_hints[param.name]
+        origin = get_origin(param_type)
 
-        if get_origin(param_type) is list:
+        if origin is list:
             return "+"
+
+        if origin is Union and any(
+            get_origin(arg) is list for arg in get_args(param_type)
+        ):
+            return "+"
+
         return None
 
     def _generate_argparse_arguments(self, parameters) -> None:
