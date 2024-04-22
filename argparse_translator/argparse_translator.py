@@ -17,10 +17,7 @@ from typing import (
     get_type_hints,
 )
 
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
+from openbb_core.app.model.field import OpenBBField
 from pydantic import BaseModel, model_validator
 from typing_extensions import Annotated
 
@@ -316,7 +313,7 @@ class ArgparseTranslator:
     def _split_annotation(
         base_annotation: Type[Any], custom_annotation_type: Type
     ) -> Tuple[Type[Any], List[Any]]:
-        """Find the base annotation and the custom annotations, namely the OpenBBCustomParameter."""
+        """Find the base annotation and the custom annotations, namely the OpenBBField."""
         if get_origin(base_annotation) is not Annotated:
             return base_annotation, []
         base_annotation, *maybe_custom_annotations = get_args(base_annotation)
@@ -330,9 +327,7 @@ class ArgparseTranslator:
     def _get_argument_custom_help(cls, param: inspect.Parameter) -> Optional[str]:
         """Returns the help annotation for the given parameter."""
         base_annotation = param.annotation
-        _, custom_annotations = cls._split_annotation(
-            base_annotation, OpenBBCustomParameter
-        )
+        _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
         help_annotation = (
             custom_annotations[0].description if custom_annotations else None
         )
@@ -345,9 +340,7 @@ class ArgparseTranslator:
     def _get_argument_custom_choices(cls, param: inspect.Parameter) -> Optional[str]:
         """Returns the help annotation for the given parameter."""
         base_annotation = param.annotation
-        _, custom_annotations = cls._split_annotation(
-            base_annotation, OpenBBCustomChoices
-        )
+        _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
         choices_annotation = (
             custom_annotations[0].choices if custom_annotations else None
         )
@@ -395,7 +388,7 @@ class ArgparseTranslator:
                         name=f"{param.name}{SEP}{child_param.name}",
                         annotation=Annotated[
                             child_param.annotation,
-                            OpenBBCustomParameter(
+                            OpenBBField(
                                 description=param_type.model_json_schema()[
                                     "properties"
                                 ][child_param.name].get("description", None)
