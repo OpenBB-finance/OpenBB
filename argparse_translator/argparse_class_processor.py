@@ -39,7 +39,7 @@ class ArgparseClassProcessor:
         self._translators: Dict[str, ArgparseTranslator] = {}
         self._paths: Dict[str, str] = {}
 
-        ArgparseClassProcessor._reference = reference if reference else {}
+        ArgparseClassProcessor._reference = reference or {}
 
         self._translators = self._process_class(
             target=self._target_class, add_help=self._add_help
