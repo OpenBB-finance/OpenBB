@@ -6,7 +6,6 @@ from typing import Any, Type, TypeVar
 from pydantic import ValidationError
 
 from openbb_terminal.core.models import BaseModel
-from openbb_terminal.rich_config import console
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -62,7 +61,8 @@ def remove(path: Path) -> bool:
     bool
         The status of the removal.
     """
-
+    # TODO: Check why module level import leads to circular import.
+    from openbb_terminal.rich_config import console  # pylint: disable=import-outside-toplevel
     try:
         if os.path.isfile(path):
             os.remove(path)
