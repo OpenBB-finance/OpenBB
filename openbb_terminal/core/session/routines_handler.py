@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 
-import openbb_terminal.core.session.hub_model as Hub
+import openbb_terminal.core.session.hub_service as HubService
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
 )
@@ -34,7 +34,7 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
     default_routines_dict = {}
 
     try:
-        response = Hub.get_default_routines(silent=silent)
+        response = HubService.get_default_routines(silent=silent)
         if response and response.status_code == 200:
             content = response.json()
             data = content.get("data", [])
@@ -47,12 +47,12 @@ def download_routines(auth_header: str, silent: bool = False) -> list:
 
     try:
         # Number of routines downloaded is limited to 100
-        response = Hub.list_routines(
+        response = HubService.list_routines(
             auth_header=auth_header,
             fields=["name", "script"],
             page=1,
             size=100,
-            base_url=Hub.BackendEnvironment.BASE_URL,
+            base_url=HubService.BackendEnvironment.BASE_URL,
             silent=silent,
         )
         if response and response.status_code == 200:

@@ -23,7 +23,7 @@ from openbb_terminal import config_terminal
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 
 # from openbb_terminal.core.config.paths import HIST_FILE_PATH
-from openbb_terminal.core.session import hub_model as Hub
+from openbb_terminal.core.session import hub_service as HubService
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.core.session.current_user import (
@@ -699,9 +699,9 @@ class BaseController(metaclass=ABCMeta):
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
                         "public": SESSION_RECORDED_PUBLIC,
-                        "base_url": Hub.BackendEnvironment.BASE_URL,
+                        "base_url": HubService.BackendEnvironment.BASE_URL,
                     }
-                    response = Hub.upload_routine(**kwargs)  # type: ignore
+                    response = HubService.upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
                         i = console.input(
                             "A routine with the same name already exists, "
@@ -710,7 +710,7 @@ class BaseController(metaclass=ABCMeta):
                         console.print("")
                         if i.lower() in ["y", "yes"]:
                             kwargs["override"] = True  # type: ignore
-                            response = Hub.upload_routine(**kwargs)  # type: ignore
+                            response = HubService.upload_routine(**kwargs)  # type: ignore
                         else:
                             console.print("[info]Aborted.[/info]")
 
