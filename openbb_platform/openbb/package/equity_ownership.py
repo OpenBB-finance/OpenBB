@@ -3,7 +3,7 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -29,31 +29,33 @@ class ROUTER_equity_ownership(Container):
         self,
         symbol: Annotated[
             str,
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. A CIK or Symbol can be used."
             ),
         ],
         date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported."
             ),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter."
             ),
         ] = 1,
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
+        """Get the form 13F.
+
+        The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
         that is required to be filed by all institutional investment managers with at least
         $100 million in assets under management.
         Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
@@ -150,16 +152,13 @@ class ROUTER_equity_ownership(Container):
     @validate
     def insider_trading(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 500,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -292,12 +291,10 @@ class ROUTER_equity_ownership(Container):
     @validate
     def institutional(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -434,20 +431,17 @@ class ROUTER_equity_ownership(Container):
     @validate
     def major_holders(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(description="A specific date to get data for."),
+            OpenBBField(description="A specific date to get data for."),
         ] = None,
         page: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="Page number of the data to fetch."),
+            Optional[int], OpenBBField(description="Page number of the data to fetch.")
         ] = 0,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -595,13 +589,13 @@ class ROUTER_equity_ownership(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,

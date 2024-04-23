@@ -6,7 +6,8 @@ import inspect
 import re
 import shutil
 import sys
-from dataclasses import Field
+from dataclasses import Field as DCField
+from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -24,6 +25,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -36,13 +38,12 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.field import OpenBBField
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.app.version import CORE_VERSION, VERSION
@@ -351,7 +352,6 @@ class ImportDefinition:
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
-        code += "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter, OpenBBCustomChoices"
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -360,6 +360,7 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport numpy"
         code += "\nimport datetime"
+        code += "\nfrom datetime import date"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
@@ -376,6 +377,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
+        code += "\nfrom openbb_core.app.model.field import OpenBBField"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -578,8 +580,8 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    OpenBBCustomParameter(
-                        description="Whether to create a chart or not, by default False."
+                    OpenBBField(
+                        description="Whether to create a chart or not, by default False.",
                     ),
                 ],
                 default=False,
@@ -601,14 +603,14 @@ class MethodDefinition:
                     name="provider",
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
-                        Union[MethodDefinition.get_type(field), None],
-                        OpenBBCustomParameter(
+                        Optional[MethodDefinition.get_type(field)],
+                        OpenBBField(
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
                                 "    no default."
                                 ""
-                            )
+                            ),
                         ),
                     ],
                     default=None,
@@ -659,7 +661,7 @@ class MethodDefinition:
     ):
         """Add the field custom description and choices to the param signature as annotations."""
         if model_name:
-            available_fields: Dict[str, Field] = (
+            available_fields: Dict[str, DCField] = (
                 ProviderInterface().params[model_name]["standard"].__dataclass_fields__
             )
 
@@ -668,27 +670,26 @@ class MethodDefinition:
                     continue
 
                 field_default = available_fields[param].default
-
                 choices = getattr(field_default, "json_schema_extra", {}).get(
                     "choices", []
                 )
                 description = getattr(field_default, "description", "")
 
-                if choices:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            OpenBBCustomParameter(description=description),
-                            OpenBBCustomChoices(choices=choices),
-                        ],
-                    )
-                else:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            OpenBBCustomParameter(description=description),
-                        ],
-                    )
+                PartialParameter = partial(
+                    OpenBBField,
+                    description=description,
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation,
+                        (
+                            PartialParameter(choices=choices)
+                            if choices
+                            else PartialParameter()
+                        ),
+                    ],
+                )
 
                 od[param] = new_value
 
@@ -1041,6 +1042,7 @@ class DocstringGenerator:
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
+        sections: List[str],
     ) -> str:
         """Create the docstring for model."""
 
@@ -1074,50 +1076,56 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
-        docstring += "\n\n"
-        docstring += f"{create_indent(2)}Parameters\n"
-        docstring += f"{create_indent(2)}----------\n"
+        # Description summary
+        if "description" in sections:
+            docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
+            docstring += "\n\n"
+        if "parameters" in sections:
+            docstring += f"{create_indent(2)}Parameters\n"
+            docstring += f"{create_indent(2)}----------\n"
 
-        # Explicit parameters
-        for param_name, param in explicit_params.items():
-            type_, description = get_param_info(param)
-            type_str = format_type(str(type_), char_limit=79)
-            docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            # Explicit parameters
+            for param_name, param in explicit_params.items():
+                type_, description = get_param_info(param)
+                type_str = format_type(str(type_), char_limit=79)
+                docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Kwargs
-        for param_name, param in kwarg_params.items():
-            p_type = getattr(param, "type", "")
-            type_ = (
-                getattr(p_type, "__name__", "") if inspect.isclass(p_type) else p_type
-            )
+            # Kwargs
+            for param_name, param in kwarg_params.items():
+                p_type = getattr(param, "type", "")
+                type_ = (
+                    getattr(p_type, "__name__", "")
+                    if inspect.isclass(p_type)
+                    else p_type
+                )
 
-            if "NoneType" in str(type_):
-                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+                if "NoneType" in str(type_):
+                    type_ = f"Optional[{type_}]".replace(", NoneType", "")
 
-            default = getattr(param, "default", "")
-            description = getattr(default, "description", "")
-            docstring += f"{create_indent(2)}{param_name} : {type_}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+                default = getattr(param, "default", "")
+                description = getattr(default, "description", "")
+                docstring += f"{create_indent(2)}{param_name} : {type_}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Returns
-        docstring += "\n"
-        docstring += f"{create_indent(2)}Returns\n"
-        docstring += f"{create_indent(2)}-------\n"
-        providers, _ = get_param_info(explicit_params.get("provider", None))
-        docstring += cls.get_OBBject_description(results_type, providers)
+        if "returns" in sections:
+            # Returns
+            docstring += "\n"
+            docstring += f"{create_indent(2)}Returns\n"
+            docstring += f"{create_indent(2)}-------\n"
+            providers, _ = get_param_info(explicit_params.get("provider", None))
+            docstring += cls.get_OBBject_description(results_type, providers)
 
-        # Schema
-        underline = "-" * len(model_name)
-        docstring += f"\n{create_indent(2)}{model_name}\n"
-        docstring += f"{create_indent(2)}{underline}\n"
+            # Schema
+            underline = "-" * len(model_name)
+            docstring += f"\n{create_indent(2)}{model_name}\n"
+            docstring += f"{create_indent(2)}{underline}\n"
 
-        for name, field in returns.items():
-            field_type = cls.get_field_type(field.annotation, field.is_required())
-            description = getattr(field, "description", "")
-            docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            for name, field in returns.items():
+                field_type = cls.get_field_type(field.annotation, field.is_required())
+                description = getattr(field, "description", "")
+                docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
         return docstring
 
     @classmethod
@@ -1133,6 +1141,11 @@ class DocstringGenerator:
         doc = func.__doc__ or ""
         param_types = {}
 
+        sections = SystemService().system_settings.python_settings.docstring_sections
+        max_length = (
+            SystemService().system_settings.python_settings.docstring_max_length
+        )
+
         # Parameters explicit in the function signature
         explicit_params = dict(formatted_params)
         explicit_params.pop("extra_params", None)
@@ -1146,31 +1159,104 @@ class DocstringGenerator:
                 # Parameters passed as **kwargs
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
-
-                returns = return_schema.model_fields
-                results_type = func.__annotations__.get("return", model_name)
-                if hasattr(results_type, "results_type_repr"):
-                    results_type = results_type.results_type_repr()
-
+                # Format the annotation to hide the metadata, tags, etc.
+                annotation = func.__annotations__.get("return")
+                results_type = (
+                    cls._get_repr(
+                        cls._get_generic_types(
+                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr,arg-type]
+                            [],
+                        ),
+                        model_name,
+                    )
+                    if isclass(annotation) and issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    else model_name
+                )
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=returns,
+                    returns=return_schema.model_fields,
                     results_type=results_type,
+                    sections=sections,
                 )
         else:
             doc = doc.replace("\n    ", f"\n{create_indent(2)}")
 
-        if doc and examples:
+        if doc and examples and "examples" in sections:
             doc += cls.build_examples(
                 path.replace("/", "."),
                 param_types,
                 examples,
             )
 
+        if (
+            max_length  # pylint: disable=chained-comparison
+            and len(doc) > max_length
+            and max_length > 3
+        ):
+            doc = doc[: max_length - 3] + "..."
         return doc
+
+    @classmethod
+    def _get_generic_types(cls, type_: type, items: list) -> List[str]:
+        """Unpack generic types recursively.
+
+        Parameters
+        ----------
+        type_ : type
+            Type to unpack.
+        items : list
+            List to store the unpacked types.
+
+        Returns
+        -------
+        List[str]
+            List of unpacked type names.
+
+        Examples
+        --------
+        Union[List[str], Dict[str, str], Tuple[str]] -> ["List", "Dict", "Tuple"]
+        """
+        if hasattr(type_, "__args__"):
+            origin = get_origin(type_)
+            # pylint: disable=unidiomatic-typecheck
+            if (
+                type(origin) is type
+                and origin is not Annotated
+                and (name := getattr(type_, "_name", getattr(type_, "__name__", None)))
+            ):
+                items.append(name.title())
+            func = partial(cls._get_generic_types, items=items)
+            set().union(*map(func, type_.__args__), items)
+        return items
+
+    @staticmethod
+    def _get_repr(items: List[str], model: str) -> str:
+        """Get the string representation of the types list with the model name.
+
+        Parameters
+        ----------
+        items : List[str]
+            List of type names.
+        model : str
+            Model name to access the model providers.
+
+        Returns
+        -------
+        str
+            String representation of the unpacked types list.
+
+        Examples
+        --------
+        [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
+        """
+        if s := [
+            f"Dict[str, {model}]" if i == "Dict" else f"{i}[{model}]" for i in items
+        ]:
+            return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
+        return model
 
 
 class PathHandler:
@@ -1362,7 +1448,7 @@ class ReferenceGenerator:
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
-        model_map = cls.pi._map[model]  # pylint: disable=protected-access
+        model_map = cls.pi.map[model]
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
@@ -1604,10 +1690,10 @@ class ReferenceGenerator:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
+
+                # TODO: The reference is not getting populated when a command does not use a standard model
                 # Access model map from the ProviderInterface
-                model_map = cls.pi._map[
-                    standard_model
-                ]  # pylint: disable=protected-access
+                model_map = cls.pi.map.get(standard_model, {})
 
                 for provider in model_map:
                     if provider == "openbb":

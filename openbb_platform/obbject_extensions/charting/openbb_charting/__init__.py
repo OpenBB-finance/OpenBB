@@ -27,7 +27,6 @@ from plotly.graph_objs import Figure
 from openbb_charting import charting_router
 from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.query_params import ChartParams, IndicatorsParams
 from openbb_charting.utils.generic_charts import bar_chart, line_chart
 from openbb_charting.utils.helpers import get_charting_functions
@@ -264,6 +263,7 @@ class Charting:
         orientation: Literal["h", "v"] = "v",
         colors: Optional[List[str]] = None,
         layout_kwargs: Optional[Dict[str, Any]] = None,
+        bar_kwargs: Optional[Dict[str, Any]] = None,
         render: bool = True,
         **kwargs,
     ) -> Union[OpenBBFigure, Figure, None]:
@@ -281,19 +281,18 @@ class Charting:
             The bar mode, by default "group".
         xtype : Literal["category", "multicategory", "date", "log", "linear"], optional
             The x-axis type, by default "category".
-        title : Optional[str], optional
+        title : str, optional
             The title of the chart, by default None.
-        xtitle : Optional[str], optional
+        xtitle : str, optional
             The x-axis title, by default None.
-        ytitle : Optional[str], optional
+        ytitle : str, optional
             The y-axis title, by default None.
-        orientation : Literal["h", "v"], optional
-            The orientation of the chart, by default "v".
-        colors: Optional[List[str]], optional
+        colors: List[str], optional
             Manually set the colors to cycle through for each column in 'y', by default None.
-        layout_kwargs : Optional[Dict[str, Any]], optional
+        bar_kwargs : Dict[str, Any], optional
+            Additional keyword arguments to apply with figure.add_bar(), by default None.
+        layout_kwargs : Dict[str, Any], optional
             Additional keyword arguments to apply with figure.update_layout(), by default None.
-
         Returns
         -------
         OpenBBFigure
@@ -311,6 +310,7 @@ class Charting:
             ytitle=ytitle,
             orientation=orientation,
             colors=colors,
+            bar_kwargs=bar_kwargs,
             layout_kwargs=layout_kwargs,
         )
 

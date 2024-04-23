@@ -480,6 +480,48 @@ def test_charting_economy_fred_series(params, obb):
     [
         (
             {
+                "data": "",
+                "study": "price",
+                "benchmark": "SPY",
+                "long_period": 252,
+                "short_period": 21,
+                "window": 21,
+                "trading_periods": 252,
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_technical_relative_rotation(params, obb):
+    params["data"] = obb.equity.price.historical(
+        "AAPL,MSFT,GOOGL,AMZN,SPY",
+        provider="yfinance",
+        start_date="2022-01-01",
+        end_date="2024-01-01",
+    ).results
+    result = obb.technical.relative_rotation(
+        data=params["data"],
+        benchmark=params["benchmark"],
+        study=params["study"],
+        long_period=params["long_period"],
+        short_period=params["short_period"],
+        window=params["window"],
+        trading_periods=params["trading_periods"],
+        chart=params["chart"],
+    )
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results.rs_ratios) > 0  # type: ignore
+    assert result.chart.content  # type: ignore
+    assert isinstance(result.chart.fig, OpenBBFigure)  # type: ignore
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
                 "data": None,
                 "symbol": "XRT,XLB,XLI,XLH,XLC,XLY,XLU,XLK",
                 "chart": True,

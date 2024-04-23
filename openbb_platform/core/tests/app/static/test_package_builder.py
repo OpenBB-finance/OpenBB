@@ -5,6 +5,7 @@
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
@@ -533,6 +534,7 @@ def test_generate_model_docstring(docstring_generator):
     docstring = ""
     model_name = "WorldNews"
     summary = "This is a summary."
+    sections = ["description", "parameters", "returns", "examples"]
 
     pi = docstring_generator.provider_interface
     kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
@@ -552,6 +554,7 @@ def test_generate_model_docstring(docstring_generator):
         kwarg_params=kwarg_params,
         returns=returns,
         results_type="List[WorldNews]",
+        sections=sections,
     )
 
     assert docstring
@@ -559,6 +562,41 @@ def test_generate_model_docstring(docstring_generator):
     assert "Parameters" in docstring
     assert "Returns" in docstring
     assert "WorldNews" in docstring
+
+
+@pytest.mark.parametrize(
+    "type_, expected",
+    [
+        (Any, []),
+        (List[str], ["List"]),
+        (Dict[str, str], ["Dict"]),
+        (Tuple[str], ["Tuple"]),
+        (Union[List[str], Dict[str, str], Tuple[str]], ["List", "Dict", "Tuple"]),
+    ],
+)
+def test__get_generic_types(docstring_generator, type_, expected):
+    """Test get generic types."""
+    output = docstring_generator._get_generic_types(type_, [])
+    assert output == expected
+
+
+@pytest.mark.parametrize(
+    "items, model, expected",
+    [
+        ([], "test_model", "test_model"),
+        (["List"], "test_model", "List[test_model]"),
+        (["Dict"], "test_model", "Dict[str, test_model]"),
+        (["Tuple"], "test_model", "Tuple[test_model]"),
+        (
+            ["List", "Dict", "Tuple"],
+            "test_model",
+            "Union[List[test_model], Dict[str, test_model], Tuple[test_model]]",
+        ),
+    ],
+)
+def test__get_repr(docstring_generator, items, model, expected):
+    output = docstring_generator._get_repr(items, model)
+    assert output == expected
 
 
 def test_generate(docstring_generator):

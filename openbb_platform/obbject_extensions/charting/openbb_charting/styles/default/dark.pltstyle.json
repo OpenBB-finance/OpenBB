@@ -134,7 +134,7 @@
                 }
             },
 
-            "gridcolor": "rgba(128, 128, 128, 0.25)",
+            "gridcolor": "rgba(128, 128, 128, 0.33)",
             "linecolor": "#F5EFF3",
             "mirror": true,
             "ticks": "outside"

@@ -1,35 +1,36 @@
 {
-    "openbb": "4.1.6",
+    "openbb": "4.1.7",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "This is the OpenBB Platform (Python).",
-        "core": "1.1.5",
+        "core": "1.1.6",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.0.2",
-                "crypto@1.1.4",
-                "currency@1.1.4",
-                "derivatives@1.1.4",
-                "economy@1.1.4",
-                "equity@1.1.4",
-                "etf@1.1.4",
-                "fixedincome@1.1.4",
-                "index@1.1.4",
-                "news@1.1.4",
-                "regulators@1.1.4"
+                "commodity@1.0.4",
+                "crypto@1.1.5",
+                "currency@1.1.5",
+                "derivatives@1.1.5",
+                "economy@1.1.5",
+                "equity@1.1.5",
+                "etf@1.1.5",
+                "fixedincome@1.1.5",
+                "index@1.1.5",
+                "news@1.1.5",
+                "regulators@1.1.5"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.1.4",
-                "federal_reserve@1.1.4",
-                "fmp@1.1.4",
-                "fred@1.1.4",
-                "intrinio@1.1.4",
-                "oecd@1.1.4",
-                "polygon@1.1.4",
-                "sec@1.1.4",
-                "tiingo@1.1.4",
-                "tradingeconomics@1.1.4",
-                "yfinance@1.1.4"
+                "benzinga@1.1.5",
+                "econdb@1.0.0",
+                "federal_reserve@1.1.5",
+                "fmp@1.1.5",
+                "fred@1.1.5",
+                "intrinio@1.1.5",
+                "oecd@1.1.5",
+                "polygon@1.1.5",
+                "sec@1.1.5",
+                "tiingo@1.1.5",
+                "tradingeconomics@1.1.5",
+                "yfinance@1.1.5"
             ],
             "openbb_obbject_extension": []
         }
@@ -805,7 +806,7 @@
                     {
                         "name": "base",
                         "type": "Union[str, List[str]]",
-                        "description": "The base currency symbol. Multiple items allowed for provider(s): fmp.",
+                        "description": "The base currency symbol. Multiple items allowed for provider(s): fmp, polygon.",
                         "default": "usd",
                         "optional": true
                     },
@@ -825,13 +826,14 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fmp']",
+                        "type": "Literal['fmp', 'polygon']",
                         "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                         "default": "fmp",
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "polygon": []
             },
             "returns": {
                 "OBBject": [
@@ -842,7 +844,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'polygon']]",
                         "description": "Provider name."
                     },
                     {
@@ -977,6 +979,148 @@
                         "description": "The timestamp of the last rate.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "polygon": [
+                    {
+                        "name": "vwap",
+                        "type": "float",
+                        "description": "The volume-weighted average price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "change",
+                        "type": "float",
+                        "description": "The change in price from the previous day.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "change_percent",
+                        "type": "float",
+                        "description": "The percentage change in price from the previous day.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_open",
+                        "type": "float",
+                        "description": "The previous day's opening price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_high",
+                        "type": "float",
+                        "description": "The previous day's high price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_low",
+                        "type": "float",
+                        "description": "The previous day's low price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_volume",
+                        "type": "float",
+                        "description": "The previous day's volume.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_vwap",
+                        "type": "float",
+                        "description": "The previous day's VWAP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "bid",
+                        "type": "float",
+                        "description": "The current bid price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "ask",
+                        "type": "float",
+                        "description": "The current ask price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_open",
+                        "type": "float",
+                        "description": "The open price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_high",
+                        "type": "float",
+                        "description": "The high price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_low",
+                        "type": "float",
+                        "description": "The low price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_close",
+                        "type": "float",
+                        "description": "The close price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_volume",
+                        "type": "float",
+                        "description": "The volume from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_vwap",
+                        "type": "float",
+                        "description": "The VWAP from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_transactions",
+                        "type": "float",
+                        "description": "The number of transactions in the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "quote_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp of the last quote.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp for the start of the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "datetime",
+                        "description": "The last time the data was updated.",
+                        "default": "",
+                        "optional": false
                     }
                 ]
             },
@@ -1416,14 +1560,14 @@
                     },
                     {
                         "name": "min_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The inclusive minimum total value for the unusual activity.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "max_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The inclusive maximum total value for the unusual activity.",
                         "default": null,
                         "optional": true
@@ -1779,7 +1923,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Forecasted GDP Data.",
+            "description": "Get Forecasted GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.forecast(provider='oecd')\nobb.economy.gdp.forecast(period='annual', type='real', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -1884,7 +2028,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Nominal GDP Data.",
+            "description": "Get Nominal GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.nominal(provider='oecd')\nobb.economy.gdp.nominal(units='usd', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -1982,7 +2126,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Real GDP Data.",
+            "description": "Get Real GDP Data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.gdp.real(provider='oecd')\nobb.economy.gdp.real(units='yoy', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2300,7 +2444,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
+            "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `units` parameter to define the reference period for the change in values.\nobb.economy.cpi(country='united_states,united_kingdom', units='growth_previous', provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2404,7 +2548,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Market Risk Premium by country.",
+            "description": "Get Market Risk Premium by country.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.risk_premium(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2487,7 +2631,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Search for FRED series or economic releases by ID or string.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+            "description": "Search for FRED series or economic releases by ID or string.\n\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_search(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2891,7 +3035,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.",
+            "description": "Get Money Measures (M1/M2 and components).\n\nThe Federal Reserve publishes as part of the H.6 Release.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.money_measures(provider='federal_reserve')\nobb.economy.money_measures(adjusted=False, provider='federal_reserve')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3023,7 +3167,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Global unemployment data.",
+            "description": "Get global unemployment data.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country=all, frequency=quarterly, provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country=all, frequency=quarterly, age=25-54, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3149,7 +3293,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The composite leading indicator (CLI) is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
+            "description": "Use the composite leading indicator (CLI).\n\nIt is designed to provide early signals of turning points\nin business cycles showing fluctuation of the economic activity around its long term potential level.\n\nCLIs show short-term economic movements in qualitative rather than quantitative terms.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.composite_leading_indicator(provider='oecd')\nobb.economy.composite_leading_indicator(country=all, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3247,7 +3391,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Short-term interest rates are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
+            "description": "Get Short-term interest rates.\n\nThey are the rates at which short-term borrowings are effected between\nfinancial institutions or the rate at which short-term government paper is issued or traded in the market.\n\nShort-term interest rates are generally averages of daily rates, measured as a percentage.\nShort-term interest rates are based on three-month money market rates where available.\nTypical standardised names are \"money market rate\" and \"treasury bill rate\".",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.short_term_interest_rate(provider='oecd')\nobb.economy.short_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3352,7 +3496,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Long-term interest rates refer to government bonds maturing in ten years.\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
+            "description": "Get Long-term interest rates that refer to government bonds maturing in ten years.\n\nRates are mainly determined by the price charged by the lender, the risk from the borrower and the\nfall in the capital value. Long-term interest rates are generally averages of daily rates,\nmeasured as a percentage. These interest rates are implied by the prices at which the government bonds are\ntraded on financial markets, not the interest rates at which the loans were issued.\nIn all cases, they refer to bonds whose capital repayment is guaranteed by governments.\nLong-term interest rates are one of the determinants of business investment.\nLow long-term interest rates encourage investment in new equipment and high interest rates discourage it.\nInvestment is, in turn, a major source of economic growth.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.long_term_interest_rate(provider='oecd')\nobb.economy.long_term_interest_rate(country=all, frequency=quarterly, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3457,7 +3601,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Query the Geo Fred API for regional economic data by series group.\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
+            "description": "Query the Geo Fred API for regional economic data by series group.\n\nThe series group ID is found by using `fred_search` and the `series_id` parameter.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.fred_regional(symbol='NYICLAIMS', provider='fred')\n# With a date, time series data is returned.\nobb.economy.fred_regional(symbol='NYICLAIMS', start_date='2021-01-01', end_date='2021-12-31', limit=10, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -3605,7 +3749,7 @@
                     },
                     {
                         "name": "value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The obersvation value. The units are defined in the search results by series ID.",
                         "default": null,
                         "optional": true
@@ -3620,6 +3764,476 @@
                 ]
             },
             "model": "FredRegional"
+        },
+        "/economy/country_profile": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get a profile of country statistics and economic indicators.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.country_profile(provider='econdb', country='united_kingdom')\n# Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.\nobb.economy.country_profile(country='united_states,jp', latest=False, provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "latest",
+                        "type": "bool",
+                        "description": "If True, return only the latest data. If False, return all available data for each indicator.",
+                        "default": true,
+                        "optional": true
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CountryProfile]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "population",
+                        "type": "int",
+                        "description": "Population.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_usd",
+                        "type": "float",
+                        "description": "Gross Domestic Product, in billions of USD.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_qoq",
+                        "type": "float",
+                        "description": "GDP growth quarter-over-quarter change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "gdp_yoy",
+                        "type": "float",
+                        "description": "GDP growth year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "cpi_yoy",
+                        "type": "float",
+                        "description": "Consumer Price Index year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "core_yoy",
+                        "type": "float",
+                        "description": "Core Consumer Price Index year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "retail_sales_yoy",
+                        "type": "float",
+                        "description": "Retail Sales year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "industrial_production_yoy",
+                        "type": "float",
+                        "description": "Industrial Production year-over-year change, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "policy_rate",
+                        "type": "float",
+                        "description": "Short term policy rate, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "yield_10y",
+                        "type": "float",
+                        "description": "10-year government bond yield, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "govt_debt_gdp",
+                        "type": "float",
+                        "description": "Government debt as a percent (normalized) of GDP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "current_account_gdp",
+                        "type": "float",
+                        "description": "Current account balance as a percent (normalized) of GDP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "jobless_rate",
+                        "type": "float",
+                        "description": "Unemployment rate, as a normalized percent.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": []
+            },
+            "model": "CountryProfile"
+        },
+        "/economy/available_indicators": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the available economic indicators for a provider.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.available_indicators(provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use cache or not, by default is True The cache of indicator symbols will persist for one week.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[AvailableIndicators]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol_root",
+                        "type": "str",
+                        "description": "The root symbol representing the indicator.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data. The root symbol with additional codes.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The name of the country, region, or entity represented by the symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "iso",
+                        "type": "str",
+                        "description": "The ISO code of the country, region, or entity represented by the symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "The description of the indicator.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "str",
+                        "description": "The frequency of the indicator data.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "currency",
+                        "type": "str",
+                        "description": "The currency, or unit, the data is based in.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "scale",
+                        "type": "str",
+                        "description": "The scale of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "multiplier",
+                        "type": "int",
+                        "description": "The multiplier of the data to arrive at whole units.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "transformation",
+                        "type": "str",
+                        "description": "Transformation type.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The original source of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "first_date",
+                        "type": "date",
+                        "description": "The first date of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_date",
+                        "type": "date",
+                        "description": "The last date of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_insert_timestamp",
+                        "type": "datetime",
+                        "description": "The time of the last update. Data is typically reported with a lag.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "AvailableIndicators"
+        },
+        "/economy/indicators": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get economic indicators by country and indicator.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple items allowed for provider(s): econdb.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. The country represented by the indicator, if available. Multiple items allowed for provider(s): econdb.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "transform",
+                        "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
+                        "description": "The transformation to apply to the data, default is None.     tpop: Change from previous period     toya: Change from one year ago     tusd: Values as US dollars     tpgp: Values as a percent of GDP    Only 'tpop' and 'toya' are applicable to all indicators.   Applying transformations across multiple indicators/countries   may produce unexpected results.   This is because not all indicators are compatible with all transformations,   and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[EconomicIndicators]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "symbol_root",
+                        "type": "str",
+                        "description": "The root symbol for the indicator (e.g. GDP).",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country represented by the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "value",
+                        "type": "Union[int, float]",
+                        "description": "",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "econdb": []
+            },
+            "model": "EconomicIndicators"
         },
         "/equity/calendar/ipo": {
             "deprecated": {
@@ -5351,6 +5965,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_1m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last month.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last month",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3m",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 months",
@@ -5375,6 +6003,20 @@
                         "name": "std_dev_3m",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 months",
                         "default": null,
                         "optional": true
                     },
@@ -5435,6 +6077,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_9m",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 9 months.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_9m",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 9 months",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_1y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 1 year",
@@ -5459,6 +6115,20 @@
                         "name": "std_dev_1y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 1 year",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_1y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 1 year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_1y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 1 year",
                         "default": null,
                         "optional": true
                     },
@@ -5491,6 +6161,20 @@
                         "optional": true
                     },
                     {
+                        "name": "smart_score_2y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_2y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 2 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "gain_count_3y",
                         "type": "int",
                         "description": "The number of ratings that have gained value over the last 3 years",
@@ -5515,6 +6199,20 @@
                         "name": "std_dev_3y",
                         "type": "float",
                         "description": "The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "smart_score_3y",
+                        "type": "float",
+                        "description": "A weighted average smart score over the last 3 years.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "success_rate_3y",
+                        "type": "float",
+                        "description": "The percentage (normalized) of gain/loss ratings that resulted in a gain over the last 3 years",
                         "default": null,
                         "optional": true
                     }
@@ -6897,7 +7595,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC\nfilings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
+            "description": "Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more.\n\nSEC filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,\nForeign Investment Disclosures and others. The annual 10-K report is required to be\nfiled annually and includes the company's financial statements, management discussion and analysis,\nand audited financial statements.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.discovery.filings(provider='fmp')\n# Get filings for the year 2023, limited to 100 results\nobb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100, provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -15326,15 +16024,8 @@
                 "sec": [
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "type",
-                        "type": "Literal['1', '1-A', '1-A POS', '1-A-W', '1-E', '1-E AD', '1-K', '1-SA', '1-U', '1-Z', '1-Z-W', '10-12B', '10-12G', '10-D', '10-K', '10-KT', '10-Q', '10-QT', '11-K', '11-KT', '13F-HR', '13F-NT', '13FCONP', '144', '15-12B', '15-12G', '15-15D', '15F-12B', '15F-12G', '15F-15D', '18-12B', '18-K', '19B-4E', '2-A', '2-AF', '2-E', '20-F', '20FR12B', '20FR12G', '24F-2NT', '25', '25-NSE', '253G1', '253G2', '253G3', '253G4', '3', '305B2', '34-12H', '4', '40-17F1', '40-17F2', '40-17G', '40-17GCS', '40-202A', '40-203A', '40-206A', '40-24B2', '40-33', '40-6B', '40-8B25', '40-8F-2', '40-APP', '40-F', '40-OIP', '40FR12B', '40FR12G', '424A', '424B1', '424B2', '424B3', '424B4', '424B5', '424B7', '424B8', '424H', '425', '485APOS', '485BPOS', '485BXT', '486APOS', '486BPOS', '486BXT', '487', '497', '497AD', '497H2', '497J', '497K', '497VPI', '497VPU', '5', '6-K', '6B NTC', '6B ORDR', '8-A12B', '8-A12G', '8-K', '8-K12B', '8-K12G3', '8-K15D5', '8-M', '8F-2 NTC', '8F-2 ORDR', '9-M', 'ABS-15G', 'ABS-EE', 'ADN-MTL', 'ADV-E', 'ADV-H-C', 'ADV-H-T', 'ADV-NR', 'ANNLRPT', 'APP NTC', 'APP ORDR', 'APP WD', 'APP WDG', 'ARS', 'ATS-N', 'ATS-N-C', 'ATS-N/UA', 'AW', 'AW WD', 'C', 'C-AR', 'C-AR-W', 'C-TR', 'C-TR-W', 'C-U', 'C-U-W', 'C-W', 'CB', 'CERT', 'CERTARCA', 'CERTBATS', 'CERTCBO', 'CERTNAS', 'CERTNYS', 'CERTPAC', 'CFPORTAL', 'CFPORTAL-W', 'CORRESP', 'CT ORDER', 'D', 'DEF 14A', 'DEF 14C', 'DEFA14A', 'DEFA14C', 'DEFC14A', 'DEFC14C', 'DEFM14A', 'DEFM14C', 'DEFN14A', 'DEFR14A', 'DEFR14C', 'DEL AM', 'DFAN14A', 'DFRN14A', 'DOS', 'DOSLTR', 'DRS', 'DRSLTR', 'DSTRBRPT', 'EFFECT', 'F-1', 'F-10', 'F-10EF', 'F-10POS', 'F-1MEF', 'F-3', 'F-3ASR', 'F-3D', 'F-3DPOS', 'F-3MEF', 'F-4', 'F-4 POS', 'F-4MEF', 'F-6', 'F-6 POS', 'F-6EF', 'F-7', 'F-7 POS', 'F-8', 'F-8 POS', 'F-80', 'F-80POS', 'F-9', 'F-9 POS', 'F-N', 'F-X', 'FOCUSN', 'FWP', 'G-405', 'G-405N', 'G-FIN', 'G-FINW', 'IRANNOTICE', 'MA', 'MA-A', 'MA-I', 'MA-W', 'MSD', 'MSDCO', 'MSDW', 'N-1', 'N-14', 'N-14 8C', 'N-14MEF', 'N-18F1', 'N-1A', 'N-2', 'N-2 POSASR', 'N-23C-2', 'N-23C3A', 'N-23C3B', 'N-23C3C', 'N-2ASR', 'N-2MEF', 'N-30B-2', 'N-30D', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6F', 'N-8A', 'N-8B-2', 'N-8F', 'N-8F NTC', 'N-8F ORDR', 'N-CEN', 'N-CR', 'N-CSR', 'N-CSRS', 'N-MFP', 'N-MFP1', 'N-MFP2', 'N-PX', 'N-Q', 'N-VP', 'N-VPFS', 'NO ACT', 'NPORT-EX', 'NPORT-NP', 'NPORT-P', 'NRSRO-CE', 'NRSRO-UPD', 'NSAR-A', 'NSAR-AT', 'NSAR-B', 'NSAR-BT', 'NSAR-U', 'NT 10-D', 'NT 10-K', 'NT 10-Q', 'NT 11-K', 'NT 20-F', 'NT N-CEN', 'NT N-MFP', 'NT N-MFP1', 'NT N-MFP2', 'NT NPORT-EX', 'NT NPORT-P', 'NT-NCEN', 'NT-NCSR', 'NT-NSAR', 'NTFNCEN', 'NTFNCSR', 'NTFNSAR', 'NTN 10D', 'NTN 10K', 'NTN 10Q', 'NTN 20F', 'OIP NTC', 'OIP ORDR', 'POS 8C', 'POS AM', 'POS AMI', 'POS EX', 'POS462B', 'POS462C', 'POSASR', 'PRE 14A', 'PRE 14C', 'PREC14A', 'PREC14C', 'PREM14A', 'PREM14C', 'PREN14A', 'PRER14A', 'PRER14C', 'PRRN14A', 'PX14A6G', 'PX14A6N', 'QRTLYRPT', 'QUALIF', 'REG-NR', 'REVOKED', 'RW', 'RW WD', 'S-1', 'S-11', 'S-11MEF', 'S-1MEF', 'S-20', 'S-3', 'S-3ASR', 'S-3D', 'S-3DPOS', 'S-3MEF', 'S-4', 'S-4 POS', 'S-4EF', 'S-4MEF', 'S-6', 'S-8', 'S-8 POS', 'S-B', 'S-BMEF', 'SBSE', 'SBSE-A', 'SBSE-BD', 'SBSE-C', 'SBSE-W', 'SC 13D', 'SC 13E1', 'SC 13E3', 'SC 13G', 'SC 14D9', 'SC 14F1', 'SC 14N', 'SC TO-C', 'SC TO-I', 'SC TO-T', 'SC13E4F', 'SC14D1F', 'SC14D9C', 'SC14D9F', 'SD', 'SDR', 'SE', 'SEC ACTION', 'SEC STAFF ACTION', 'SEC STAFF LETTER', 'SF-1', 'SF-3', 'SL', 'SP 15D2', 'STOP ORDER', 'SUPPL', 'T-3', 'TA-1', 'TA-2', 'TA-W', 'TACO', 'TH', 'TTW', 'UNDER', 'UPLOAD', 'WDL-REQ', 'X-17A-5']",
-                        "description": "Type of the SEC filing form.",
                         "default": null,
                         "optional": true
                     },
@@ -15483,7 +16174,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true
@@ -15511,42 +16202,42 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "size",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true
@@ -16780,7 +17471,7 @@
                     },
                     {
                         "name": "underlying_shares",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "Number of underlying shares related to this derivative transaction.",
                         "default": null,
                         "optional": true
@@ -17037,7 +17728,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
+            "description": "Get the form 13F.\n\nThe Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.ownership.form_13f(symbol='NVDA', provider='sec')\n# Enter a date (calendar quarter ending) for a specific report.\nobb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30', provider='sec')\n# Example finding Michael Burry's filings.\ncik = obb.regulators.sec.institutions_search(\"Scion Asset Management\").results[0].cik\n# Use the `limit` parameter to return N number of reports from the most recent.\nobb.equity.ownership.form_13f(cik, limit=2).to_df()\n```\n\n",
             "parameters": {
                 "standard": [
@@ -17444,14 +18135,14 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "exchange_volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "Volume of shares exchanged during the trading day on the specific exchange.",
                         "default": null,
                         "optional": true
@@ -18030,7 +18721,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
@@ -18485,6 +19176,13 @@
                         "description": "Skip N number of reports from current. A value of 1 will skip the most recent report.",
                         "default": 0,
                         "optional": true
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether or not to use cache for the request, default is True. Each reporting period is a separate URL, new reports will be added to the cache.",
+                        "default": true,
+                        "optional": true
                     }
                 ]
             },
@@ -18672,8 +19370,8 @@
                         "name": "name",
                         "type": "str",
                         "description": "Name of the company.",
-                        "default": "",
-                        "optional": false
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "intrinio": [
@@ -18716,7 +19414,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Screen for companies meeting various criteria. These criteria include\nmarket cap, price, beta, volume, and dividend yield.",
+            "description": "Screen for companies meeting various criteria.\n\nThese criteria include market cap, price, beta, volume, and dividend yield.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.screener(provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -20358,7 +21056,7 @@
                     },
                     {
                         "name": "volume",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The trading volume.",
                         "default": null,
                         "optional": true
@@ -22566,7 +23264,7 @@
                     },
                     {
                         "name": "balance",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The number of units of the security held, if available.",
                         "default": null,
                         "optional": true
@@ -22891,7 +23589,7 @@
                     {
                         "name": "rate_type_rec",
                         "type": "str",
-                        "description": "The type of rate for reveivable portion of the swap.",
+                        "description": "The type of rate for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
@@ -22912,7 +23610,7 @@
                     {
                         "name": "floating_rate_index_rec",
                         "type": "str",
-                        "description": "The floating rate index for reveivable portion of the swap.",
+                        "description": "The floating rate index for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
@@ -22926,28 +23624,28 @@
                     {
                         "name": "rate_tenor_rec",
                         "type": "str",
-                        "description": "The rate tenor for reveivable portion of the swap.",
+                        "description": "The rate tenor for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[int, str]",
-                        "description": "The rate tenor unit for reveivable portion of the swap.",
+                        "type": "Union[str, int]",
+                        "description": "The rate tenor unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "reset_date_rec",
                         "type": "str",
-                        "description": "The reset date for reveivable portion of the swap.",
+                        "description": "The reset date for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[int, str]",
-                        "description": "The reset date unit for reveivable portion of the swap.",
+                        "type": "Union[str, int]",
+                        "description": "The reset date unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
                     },
@@ -22995,7 +23693,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23009,7 +23707,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23216,8 +23914,8 @@
         },
         "/etf/holdings_performance": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2."
             },
             "description": "Get the recent price performance of each ticker held in the ETF.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings_performance(symbol='XLK', provider='fmp')\n```\n\n",
@@ -23482,7 +24180,7 @@
                     },
                     {
                         "name": "market_value",
-                        "type": "Union[float, int]",
+                        "type": "Union[int, float]",
                         "description": "The market value of the equity position in the ETF.",
                         "default": null,
                         "optional": true
@@ -25566,7 +26264,7 @@
                 "flag": true,
                 "message": "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
             },
-            "description": "Historical Market Indices.",
+            "description": "Get Historical Market Indices.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.market(symbol='^IBEX', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -25750,7 +26448,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Index Constituents.",
+            "description": "Get Index Constituents.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.index.constituents(symbol='dowjones', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -26705,7 +27403,15 @@
                         "optional": true
                     }
                 ],
-                "sec": []
+                "sec": [
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether or not to use cache for the request, default is True.",
+                        "default": true,
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -26769,7 +27475,7 @@
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "Whether or not to use cache. If True, cache will store for seven days.",
+                        "description": "Whether or not to use cache.",
                         "default": true,
                         "optional": true
                     },
@@ -26824,7 +27530,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[int, str]",
+                        "type": "Union[str, int]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true
@@ -26838,7 +27544,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "A tool for navigating the directory of SEC XML schema files by year.",
+            "description": "Use tool for navigating the directory of SEC XML schema files by year.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.schema_files(provider='sec')\n# Get a list of schema files.\ndata = obb.regulators.sec.schema_files().results\ndata.files[0]\n'https://xbrl.fasb.org/us-gaap/'\n# The directory structure can be navigated by constructing a URL from the 'results' list.\nurl = data.files[0]+data.files[-1]\n# The URL base will always be the 0 position in the list, feed  the URL back in as a parameter.\nobb.regulators.sec.schema_files(url=url).results.files\n['https://xbrl.fasb.org/us-gaap/2024/'\n'USGAAP2024FileList.xml'\n'dis/'\n'dqcrules/'\n'ebp/'\n'elts/'\n'entire/'\n'meta/'\n'stm/'\n'us-gaap-2024.zip']\n```\n\n",
             "parameters": {
                 "standard": [
@@ -26852,7 +27558,7 @@
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "Whether or not to use cache. If True, cache will store for seven days.",
+                        "description": "Whether or not to use cache.",
                         "default": true,
                         "optional": true
                     },
@@ -26998,7 +27704,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+            "description": "Get the RSS feed that provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.regulators.sec.rss_litigation(provider='sec')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -27102,7 +27808,7 @@
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "Whether or not to use cache. If True, cache will store for seven days.",
+                        "description": "Whether or not to use cache.",
                         "default": true,
                         "optional": true
                     },

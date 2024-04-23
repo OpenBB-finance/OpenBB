@@ -1,5 +1,7 @@
 """Nasdaq Earnings Calendar Model."""
 
+# pylint: disable=unused-argument
+
 from concurrent.futures import ThreadPoolExecutor
 from datetime import (
     date as dateType,
@@ -137,6 +139,8 @@ class NasdaqCalendarEarningsFetcher(
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
+
+    require_credentials = False
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCalendarEarningsQueryParams:

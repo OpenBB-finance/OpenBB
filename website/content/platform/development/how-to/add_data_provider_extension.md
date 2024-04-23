@@ -212,7 +212,7 @@ The updated endpoint's function signature will now display the additional provid
 ```python
 Signature:
 obb.derivatives.options.chains(
-    symbol: typing.Annotated[str, OpenBBCustomParameter(description='Symbol to get data for.')],
+    symbol: typing.Annotated[str, OpenBBField(description='Symbol to get data for.')],
     provider: Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier']] = None,
     **kwargs,
 ) -> openbb_core.app.model.obbject.OBBject
@@ -270,4 +270,3 @@ Now, you can pip install your package from PyPI with:
 ```bash
 pip install openbb-some_ext
 ```
-

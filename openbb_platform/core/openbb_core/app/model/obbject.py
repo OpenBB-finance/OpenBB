@@ -1,6 +1,5 @@
 """The OBBject."""
 
-from re import sub
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -81,40 +80,6 @@ class OBBject(Tagged, Generic[T]):
             for k, v in self.model_dump().items()
         ]
         return f"{self.__class__.__name__}\n\n" + "\n".join(items)
-
-    @classmethod
-    def results_type_repr(cls, params: Optional[Any] = None) -> str:
-        """Return the results type representation."""
-        results_field = cls.model_fields.get("results")
-        type_repr = "Any"
-        if results_field:
-            type_ = params[0] if params else results_field.annotation
-            type_repr = getattr(type_, "__name__", str(type_))
-
-            if json_schema_extra := getattr(results_field, "json_schema_extra", {}):
-                model = json_schema_extra.get("model", "Any")
-
-                if json_schema_extra.get("is_union"):
-                    return f"Union[List[{model}], {model}]"
-                if json_schema_extra.get("has_list"):
-                    return f"List[{model}]"
-
-                return model
-
-            if "typing." in str(type_):
-                unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
-                type_repr = sub(
-                    r"(\w+\.)*(\w+)?(\, NoneType)?",
-                    r"\2",
-                    unpack_optional,
-                )
-
-        return type_repr
-
-    @classmethod
-    def model_parametrized_name(cls, params: Any) -> str:
-        """Return the model name with the parameters."""
-        return f"OBBject[{cls.results_type_repr(params)}]"
 
     def to_df(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
@@ -276,6 +241,24 @@ class OBBject(Tagged, Generic[T]):
         results = df.to_dict(orient=orient)
         if isinstance(results, dict) and orient == "list" and "index" in results:
             del results["index"]
+        return results
+
+    def to_llm(self) -> Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]:
+        """Convert results field to an LLM compatible output.
+
+        Returns
+        -------
+        Union[Dict[Hashable, Any], List[Dict[Hashable, Any]]]
+            Dictionary of lists or list of dictionaries if orient is "records".
+        """
+        df = self.to_dataframe(index=None)
+
+        results = df.to_json(
+            orient="records",
+            date_format="iso",
+            date_unit="s",
+        )
+
         return results
 
     def show(self, **kwargs: Any) -> None:

@@ -15,6 +15,7 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_charting.core.to_chart import to_chart
 from openbb_charting.styles.colors import LARGE_CYCLER
+from openbb_charting.utils import relative_rotation
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.helpers import (
     calculate_returns,
@@ -289,21 +290,20 @@ def equity_price_historical(  # noqa: PLR0912
         )
         if _volume is True and "atr" in indicators:  # type: ignore
             fig.add_inchart_volume(data)
-        fig.set_title(title)
         fig.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
             plot_bgcolor="rgba(0,0,0,0)",
             font=dict(color=text_color),
             showlegend=True,
             legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                xanchor="auto",
-                y=1.02,
-                x=0.95,
+                orientation="v",
+                yanchor="top",
+                xanchor="right",
+                y=0.95,
+                x=-0.01,
                 xref="paper",
-                bgcolor="rgba(0,0,0,0)",
                 font=dict(size=12),
+                bgcolor="rgba(0,0,0,0)",
             ),
             xaxis=dict(
                 ticklen=0,
@@ -328,6 +328,7 @@ def equity_price_historical(  # noqa: PLR0912
                 zeroline=True,
                 mirror=True,
                 showline=True,
+                tickfont=dict(size=14),
             ),
             yaxis2=dict(
                 ticklen=0,
@@ -341,6 +342,10 @@ def equity_price_historical(  # noqa: PLR0912
             hovermode="x",
         )
 
+        if kwargs.get("title"):
+            title = kwargs["title"]
+        fig.update_layout(title=dict(text=title, x=0.5))
+
         content = fig.to_plotly_json()
 
         return fig, content
@@ -353,7 +358,7 @@ def equity_price_historical(  # noqa: PLR0912
         if "symbol" in data.columns:
             data = data.pivot(columns="symbol", values=target)
 
-        title: str = kwargs.get("title") if "title" in kwargs else title if title else "Historical Prices"  # type: ignore
+        title: str = kwargs.get("title", "Historical Prices")  # type: ignore
 
         y1title = data.iloc[:, 0].name
         y2title = ""
@@ -373,8 +378,6 @@ def equity_price_historical(  # noqa: PLR0912
                 y2title = None  # type: ignore
 
         fig = OpenBBFigure()
-
-        fig.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
         for i, col in enumerate(data.columns):
 
@@ -416,23 +419,35 @@ def equity_price_historical(  # noqa: PLR0912
         y2title = None  # type: ignore
 
     fig.update_layout(
-        title=dict(text=title, x=0.5, font=dict(size=16)),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color=text_color),
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            xanchor="right",
-            y=1.02,
-            x=1,
-            bgcolor="rgba(0,0,0,0)",
+        legend=(
+            dict(
+                orientation="v",
+                yanchor="top",
+                xanchor="right",
+                y=0.95,
+                x=-0.01,
+                bgcolor="rgba(0,0,0,0)",
+            )
+            if len(data.columns) > 2
+            else dict(
+                orientation="h",
+                yanchor="bottom",
+                xanchor="right",
+                y=1.02,
+                x=0.98,
+                bgcolor="rgba(0,0,0,0)",
+            )
         ),
         yaxis1=(
             dict(
                 side="right",
                 ticklen=0,
                 showgrid=True,
+                showline=True,
+                mirror=True,
+                gridcolor="rgba(128,128,128,0.3)",
                 title=dict(
                     text=y1title if y1title else None, standoff=20, font=dict(size=20)
                 ),
@@ -458,11 +473,17 @@ def equity_price_historical(  # noqa: PLR0912
         xaxis=dict(
             ticklen=0,
             showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            showline=True,
+            mirror=True,
         ),
-        margin=dict(l=20, r=20, b=20),
+        margin=dict(l=20, r=20, b=20, t=20),
         dragmode="pan",
         hovermode="x",
     )
+    if kwargs.get("title"):
+        title = kwargs["title"]
+    fig.update_layout(title=dict(text=title, x=0.5))
 
     content = fig.show(external=True).to_plotly_json()
 
@@ -1201,3 +1222,73 @@ def economy_fred_series(  # noqa: PLR0912
     content = fig.to_plotly_json()
 
     return fig, content
+
+
+def technical_relative_rotation(
+    **kwargs: Any,
+) -> Tuple["OpenBBFigure", Dict[str, Any]]:
+    """Relative Rotation Chart."""
+
+    ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
+    momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
+    benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
+    study = kwargs.get("study", None)
+    study = str(kwargs["obbject_item"].study) if study is None else str(study)
+    show_tails = kwargs.get("show_tails")
+    show_tails = True if show_tails is None else show_tails
+    tail_periods = int(kwargs.get("tail_periods")) if "tail_periods" in kwargs else 16  # type: ignore
+    tail_interval = str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"  # type: ignore
+    date = kwargs.get("date") if "date" in kwargs else None  # type: ignore
+    show_tails = False if date is not None else show_tails
+    if ratios_df.empty or momentum_df.empty:
+        raise RuntimeError("Error: No data to plot.")
+
+    if show_tails is True:
+        fig = relative_rotation.create_rrg_with_tails(
+            ratios_df, momentum_df, study, benchmark_symbol, tail_periods, tail_interval  # type: ignore
+        )
+
+    if show_tails is False:
+        fig = relative_rotation.create_rrg_without_tails(
+            ratios_df, momentum_df, benchmark_symbol, study, date  # type: ignore
+        )
+
+    figure = OpenBBFigure(fig)
+    font_color = "black" if ChartStyle().plt_style == "light" else "white"
+    figure.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,1)",
+        font=dict(color=font_color),
+        yaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            side="left",
+            showline=True,
+            zeroline=True,
+            mirror=True,
+            ticklen=0,
+            tickfont=dict(size=14),
+            titlefont=dict(size=16),
+        ),
+        xaxis=dict(
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+            showline=True,
+            zeroline=True,
+            mirror=True,
+            ticklen=0,
+            tickfont=dict(size=14),
+            titlefont=dict(size=16),
+            hoverformat="",
+        ),
+        hoverlabel=dict(
+            font_size=12,
+        ),
+        hovermode="x",
+        hoverdistance=50,
+    )
+    if kwargs.get("title") is not None:
+        figure.set_title(str(kwargs.get("title")))
+    content = figure.to_plotly_json()
+
+    return figure, content
