@@ -69,6 +69,7 @@ PLATFORM_ROUTERS = {
     if "_" not in d
 }
 NON_DATA_ROUTERS = ["coverage", "account", "reference", "system", "user"]
+DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
@@ -241,7 +242,7 @@ class TerminalController(BaseController):
         mt.add_info("Platform CLI")
         mt.add_raw("    data\n")
         for router, value in PLATFORM_ROUTERS.items():
-            if router in NON_DATA_ROUTERS:
+            if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
                 continue
             if value == "menu":
                 menu_description = (
@@ -256,12 +257,38 @@ class TerminalController(BaseController):
             else:
                 mt.add_cmd(router)
 
+        if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
+            mt.add_raw("\n    data processing\n")
+            for router, value in PLATFORM_ROUTERS.items():
+                if router not in DATA_PROCESSING_ROUTERS:
+                    continue
+                if value == "menu":
+                    menu_description = (
+                        obb.reference["routers"]
+                        .get(f"{self.PATH}{router}", {})
+                        .get("description")
+                    ) or ""
+                    mt.add_menu(
+                        key_menu=router,
+                        menu_description=menu_description.split(".")[0].lower(),
+                    )
+                else:
+                    mt.add_cmd(router)
+
         mt.add_raw("\n    configuration\n")
         for router, value in PLATFORM_ROUTERS.items():
             if router not in NON_DATA_ROUTERS or router == "reference":
                 continue
             if value == "menu":
-                mt.add_menu(router)
+                menu_description = (
+                    obb.reference["routers"]
+                    .get(f"{self.PATH}{router}", {})
+                    .get("description")
+                ) or ""
+                mt.add_menu(
+                    key_menu=router,
+                    menu_description=menu_description.split(".")[0].lower(),
+                )
             else:
                 mt.add_cmd(router)
 
