@@ -18,9 +18,10 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
-# IMPORTS INTERNAL
-from openbb_terminal import config_terminal
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+
+# IMPORTS INTERNAL
+from openbb_terminal.core.config import config_terminal
 
 # from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_service as HubService

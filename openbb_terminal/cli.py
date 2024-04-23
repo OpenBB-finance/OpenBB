@@ -1,6 +1,6 @@
 import sys
 
-import openbb_terminal.config_terminal as cfg
+import openbb_terminal.core.config.config_terminal as cfg
 from openbb_terminal.core.session import session_controller
 
 

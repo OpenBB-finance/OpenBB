@@ -4,8 +4,8 @@ from typing import TYPE_CHECKING, Optional, TypeVar
 
 import i18n
 
-from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import I18N_DICT_LOCATION
+from openbb_terminal.core.session.env_handler import load_env_files
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure

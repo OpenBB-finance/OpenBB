@@ -64,7 +64,7 @@ def remove(path: Path) -> bool:
     # TODO: Check why module level import leads to circular import.
     from openbb_terminal.rich_config import (
         console,
-    )  # pylint: disable=import-outside-toplevel
+    )
 
     try:
         if os.path.isfile(path):

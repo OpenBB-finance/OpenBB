@@ -18,9 +18,9 @@ from _pytest.mark.structures import Mark
 
 # IMPORTS INTERNAL
 from openbb_terminal import (
-    config_terminal,
     helper_funcs,
 )
+from openbb_terminal.core.config import config_terminal
 from openbb_terminal.core.session.current_settings import set_settings
 
 # pylint: disable=redefined-outer-name

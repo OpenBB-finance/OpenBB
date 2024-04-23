@@ -10,7 +10,6 @@ from typing import List, Optional
 
 from packaging import version
 
-from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_settings import (
@@ -21,7 +20,7 @@ from openbb_terminal.core.session.current_user import (
     get_platform_user,
     is_local,
 )
-from openbb_terminal.core.session.env_handler import write_to_dotenv
+from openbb_terminal.core.session.env_handler import load_env_files, write_to_dotenv
 from openbb_terminal.core.session.utils import remove
 from openbb_terminal.helper_funcs import request
 from openbb_terminal.rich_config import console
