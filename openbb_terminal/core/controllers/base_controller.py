@@ -20,7 +20,7 @@ from prompt_toolkit.styles import Style
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config import config_terminal
-from openbb_terminal.core.config.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.core.config.completer import NestedCompleter
 from openbb_terminal.core.config.rich_config import console
 from openbb_terminal.core.controllers.choices import build_controller_choice_map
 from openbb_terminal.core.controllers.helper_funcs import (

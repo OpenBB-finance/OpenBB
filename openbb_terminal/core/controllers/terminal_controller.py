@@ -26,7 +26,7 @@ from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
 from argparse_translator.obbject_registry import Registry
-from openbb_terminal.core.config.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.core.config.completer import NestedCompleter
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,

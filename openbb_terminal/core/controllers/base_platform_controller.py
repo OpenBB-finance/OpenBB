@@ -13,7 +13,7 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from argparse_translator.obbject_registry import Registry
-from openbb_terminal.core.config.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.core.config.completer import NestedCompleter
 from openbb_terminal.core.config.rich_config import MenuText, console
 from openbb_terminal.core.controllers.base_controller import BaseController
 from openbb_terminal.core.controllers.helper_funcs import export_data, print_rich_table

@@ -6,7 +6,7 @@ import argparse
 from pathlib import Path
 from typing import List, Optional, Union
 
-from openbb_terminal.core.config.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.core.config.completer import NestedCompleter
 from openbb_terminal.core.config.rich_config import MenuText, console
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
