@@ -52,7 +52,7 @@ from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
 )
 from openbb_terminal.rich_config import MenuText, console
-from openbb_terminal.routine_functions import is_reset, parse_openbb_script
+from openbb_terminal.routines.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,
     first_time_user,
