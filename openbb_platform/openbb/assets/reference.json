@@ -806,7 +806,7 @@
                     {
                         "name": "base",
                         "type": "Union[str, List[str]]",
-                        "description": "The base currency symbol. Multiple items allowed for provider(s): fmp.",
+                        "description": "The base currency symbol. Multiple items allowed for provider(s): fmp, polygon.",
                         "default": "usd",
                         "optional": true
                     },
@@ -826,13 +826,14 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fmp']",
+                        "type": "Literal['fmp', 'polygon']",
                         "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
                         "default": "fmp",
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [],
+                "polygon": []
             },
             "returns": {
                 "OBBject": [
@@ -843,7 +844,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
+                        "type": "Optional[Literal['fmp', 'polygon']]",
                         "description": "Provider name."
                     },
                     {
@@ -978,6 +979,148 @@
                         "description": "The timestamp of the last rate.",
                         "default": null,
                         "optional": true
+                    }
+                ],
+                "polygon": [
+                    {
+                        "name": "vwap",
+                        "type": "float",
+                        "description": "The volume-weighted average price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "change",
+                        "type": "float",
+                        "description": "The change in price from the previous day.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "change_percent",
+                        "type": "float",
+                        "description": "The percentage change in price from the previous day.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_open",
+                        "type": "float",
+                        "description": "The previous day's opening price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_high",
+                        "type": "float",
+                        "description": "The previous day's high price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_low",
+                        "type": "float",
+                        "description": "The previous day's low price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_volume",
+                        "type": "float",
+                        "description": "The previous day's volume.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "prev_vwap",
+                        "type": "float",
+                        "description": "The previous day's VWAP.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "bid",
+                        "type": "float",
+                        "description": "The current bid price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "ask",
+                        "type": "float",
+                        "description": "The current ask price.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_open",
+                        "type": "float",
+                        "description": "The open price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_high",
+                        "type": "float",
+                        "description": "The high price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_low",
+                        "type": "float",
+                        "description": "The low price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_close",
+                        "type": "float",
+                        "description": "The close price from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_volume",
+                        "type": "float",
+                        "description": "The volume from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_vwap",
+                        "type": "float",
+                        "description": "The VWAP from the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_transactions",
+                        "type": "float",
+                        "description": "The number of transactions in the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "quote_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp of the last quote.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "minute_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp for the start of the most recent minute bar.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "datetime",
+                        "description": "The last time the data was updated.",
+                        "default": "",
+                        "optional": false
                     }
                 ]
             },
