@@ -21,9 +21,9 @@ from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from pytz import all_timezones, timezone
 from rich.table import Table
 
+from openbb_terminal.core.config.rich_config import console
 from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.core.session.current_user import get_platform_user
-from openbb_terminal.rich_config import console
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure

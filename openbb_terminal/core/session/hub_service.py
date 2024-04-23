@@ -2,6 +2,7 @@ from typing import List, Optional
 
 import requests
 
+from openbb_terminal.core.config.rich_config import console
 from openbb_terminal.core.session.constants import (
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
@@ -11,7 +12,6 @@ from openbb_terminal.core.session.constants import (
 )
 from openbb_terminal.core.session.current_settings import get_current_settings
 from openbb_terminal.core.session.current_user import get_platform_user
-from openbb_terminal.rich_config import console
 
 
 # pylint: disable=too-many-arguments

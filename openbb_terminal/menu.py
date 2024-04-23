@@ -6,7 +6,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
 
 from openbb_terminal.core.config.paths import HIST_FILE_PATH
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.rich_config import console
 
 logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
 
-from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.rich_config import console
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements

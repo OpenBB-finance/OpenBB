@@ -6,10 +6,10 @@ import numpy as np
 import pandas as pd
 
 import openbb_terminal.core.session.hub_service as HubService
+from openbb_terminal.core.config.rich_config import console
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
 )
-from openbb_terminal.rich_config import console
 
 
 # created dictionaries for personal and default routines with the structure

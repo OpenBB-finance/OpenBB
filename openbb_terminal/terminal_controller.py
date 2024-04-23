@@ -33,6 +33,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
+from openbb_terminal.core.config.rich_config import MenuText, console
 from openbb_terminal.core.session import constants
 from openbb_terminal.core.session.current_settings import (
     get_current_settings,
@@ -51,7 +52,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.routines.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
     bootup,

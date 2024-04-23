@@ -23,6 +23,7 @@ from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config import config_terminal
+from openbb_terminal.core.config.rich_config import console
 
 # from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_service as HubService
@@ -41,7 +42,6 @@ from openbb_terminal.helper_funcs import (
     system_clear,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import print_guest_block_msg
 
 # pylint: disable=R0912

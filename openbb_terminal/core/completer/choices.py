@@ -178,7 +178,7 @@ def __patch_controller_functions(controller):
     )
 
     rich = patch(
-        target="openbb_terminal.rich_config.ConsoleAndPanel.print",
+        target="openbb_terminal.core.config.rich_config.ConsoleAndPanel.print",
         return_value=None,
     )
 
