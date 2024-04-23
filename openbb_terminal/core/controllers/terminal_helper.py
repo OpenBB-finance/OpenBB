@@ -12,6 +12,7 @@ from packaging import version
 
 from openbb_terminal.core.config.paths import SETTINGS_ENV_FILE
 from openbb_terminal.core.config.rich_config import console
+from openbb_terminal.core.controllers.helper_funcs import request
 from openbb_terminal.core.session.constants import BackendEnvironment
 from openbb_terminal.core.session.current_settings import (
     get_current_settings,
@@ -23,7 +24,6 @@ from openbb_terminal.core.session.current_user import (
 )
 from openbb_terminal.core.session.env_handler import load_env_files, write_to_dotenv
 from openbb_terminal.core.session.utils import remove
-from openbb_terminal.helper_funcs import request
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -201,13 +201,13 @@ def reset(queue: Optional[List[str]] = None):
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if is_local():
-            from openbb_terminal.terminal_controller import main
+            from openbb_terminal.core.controllers.terminal_controller import main
 
             main(debug, dev, queue_list, module="")  # type: ignore
         else:
-            from openbb_terminal.core.session import session_controller
+            from openbb_terminal.core.session import launcher
 
-            session_controller.launch_terminal(queue=queue_list)
+            launcher.launch_terminal(queue=queue_list)
 
     except Exception as e:
         console.print(f"Unfortunately, resetting wasn't possible: {e}\n")

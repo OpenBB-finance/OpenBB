@@ -1,7 +1,7 @@
 import sys
 
 import openbb_terminal.core.config.config_terminal as cfg
-from openbb_terminal.core.session import session_controller
+from openbb_terminal.core.session import launcher
 
 
 def main():
@@ -10,7 +10,7 @@ def main():
     dev = "--dev" in sys.argv[1:]
     debug = "--debug" in sys.argv[1:]
 
-    session_controller.launch_terminal(dev=dev, debug=debug)
+    launcher.launch_terminal(dev=dev, debug=debug)
 
 
 if __name__ == "__main__":

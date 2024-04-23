@@ -1,7 +1,9 @@
 import pandas as pd
 
 from openbb_terminal.core.config.rich_config import console
-from openbb_terminal.helper_funcs import print_rich_table
+from openbb_terminal.core.controllers.helper_funcs import print_rich_table
+
+# TODO: Check if this module is still in use
 
 
 def clean_df(df: pd.DataFrame) -> pd.DataFrame:

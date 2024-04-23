@@ -26,7 +26,6 @@ from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
 from argparse_translator.obbject_registry import Registry
-from openbb_terminal.base_controller import BaseController
 from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -35,25 +34,17 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 from openbb_terminal.core.config.rich_config import MenuText, console
-from openbb_terminal.core.session import constants
-from openbb_terminal.core.session.current_settings import (
-    get_current_settings,
-    set_settings,
-)
-from openbb_terminal.core.session.current_user import (
-    get_platform_user,
-)
-from openbb_terminal.helper_funcs import (
+from openbb_terminal.core.controllers.base_controller import BaseController
+from openbb_terminal.core.controllers.helper_funcs import (
     get_flair_and_username,
     parse_and_split_input,
     print_rich_table,
 )
-from openbb_terminal.menu import session
-from openbb_terminal.platform_controller_factory import (
+from openbb_terminal.core.controllers.menu import session
+from openbb_terminal.core.controllers.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from openbb_terminal.routines.routine_functions import is_reset, parse_openbb_script
-from openbb_terminal.terminal_helper import (
+from openbb_terminal.core.controllers.terminal_helper import (
     bootup,
     first_time_user,
     is_installer,
@@ -62,6 +53,15 @@ from openbb_terminal.terminal_helper import (
     suppress_stdout,
     welcome_message,
 )
+from openbb_terminal.core.session import constants
+from openbb_terminal.core.session.current_settings import (
+    get_current_settings,
+    set_settings,
+)
+from openbb_terminal.core.session.current_user import (
+    get_platform_user,
+)
+from openbb_terminal.routines.routine_functions import is_reset, parse_openbb_script
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"

@@ -18,12 +18,21 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
-from openbb_terminal.core.completer.choices import build_controller_choice_map
 from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config import config_terminal
 from openbb_terminal.core.config.rich_config import console
+from openbb_terminal.core.controllers.choices import build_controller_choice_map
+from openbb_terminal.core.controllers.helper_funcs import (
+    check_file_type_saved,
+    check_positive,
+    get_flair_and_username,
+    parse_and_split_input,
+    system_clear,
+)
+from openbb_terminal.core.controllers.menu import session
+from openbb_terminal.core.controllers.terminal_helper import print_guest_block_msg
 
 # from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_service as HubService
@@ -34,15 +43,6 @@ from openbb_terminal.core.session.current_user import (
     is_local,
 )
 from openbb_terminal.core.session.utils import remove
-from openbb_terminal.helper_funcs import (
-    check_file_type_saved,
-    check_positive,
-    get_flair_and_username,
-    parse_and_split_input,
-    system_clear,
-)
-from openbb_terminal.menu import session
-from openbb_terminal.terminal_helper import print_guest_block_msg
 
 # pylint: disable=R0912
 

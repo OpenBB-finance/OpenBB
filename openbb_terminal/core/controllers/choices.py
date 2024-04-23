@@ -5,8 +5,11 @@ from types import MethodType
 from typing import Callable, List, Literal
 from unittest.mock import patch
 
+from openbb_terminal.core.controllers.helper_funcs import (
+    check_file_type_saved,
+    check_positive,
+)
 from openbb_terminal.core.session.current_settings import get_current_settings
-from openbb_terminal.helper_funcs import check_file_type_saved, check_positive
 
 
 def __mock_parse_known_args_and_warn(
