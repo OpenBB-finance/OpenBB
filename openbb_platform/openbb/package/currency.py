@@ -154,7 +154,7 @@ class ROUTER_currency(Container):
         base: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp."
+                description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon."
             ),
         ] = "usd",
         quote_type: Annotated[
@@ -170,7 +170,7 @@ class ROUTER_currency(Container):
             ),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "polygon"]],
             OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -182,12 +182,12 @@ class ROUTER_currency(Container):
         Parameters
         ----------
         base : Union[str, List[str]]
-            The base currency symbol. Multiple comma separated items allowed for provider(s): fmp.
+            The base currency symbol. Multiple comma separated items allowed for provider(s): fmp, polygon.
         quote_type : Literal['direct', 'indirect']
             Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
         counter_currencies : Union[List[str], str, None]
             An optional list of counter currency symbols to filter for. None returns all.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -197,7 +197,7 @@ class ROUTER_currency(Container):
         OBBject
             results : List[CurrencySnapshots]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -227,9 +227,10 @@ class ROUTER_currency(Container):
         prev_close : Optional[float]
             The previous close price.
         change : Optional[float]
-            The change in the price from the previous close. (provider: fmp)
+            The change in the price from the previous close. (provider: fmp, polygon)
         change_percent : Optional[float]
-            The change in the price from the previous close, as a normalized percent. (provider: fmp)
+            The change in the price from the previous close, as a normalized percent. (provider: fmp);
+            The percentage change in price from the previous day. (provider: polygon)
         ma50 : Optional[float]
             The 50-day moving average. (provider: fmp)
         ma200 : Optional[float]
@@ -240,6 +241,42 @@ class ROUTER_currency(Container):
             The 52-week low. (provider: fmp)
         last_rate_timestamp : Optional[datetime]
             The timestamp of the last rate. (provider: fmp)
+        vwap : Optional[float]
+            The volume-weighted average price. (provider: polygon)
+        prev_open : Optional[float]
+            The previous day's opening price. (provider: polygon)
+        prev_high : Optional[float]
+            The previous day's high price. (provider: polygon)
+        prev_low : Optional[float]
+            The previous day's low price. (provider: polygon)
+        prev_volume : Optional[float]
+            The previous day's volume. (provider: polygon)
+        prev_vwap : Optional[float]
+            The previous day's VWAP. (provider: polygon)
+        bid : Optional[float]
+            The current bid price. (provider: polygon)
+        ask : Optional[float]
+            The current ask price. (provider: polygon)
+        minute_open : Optional[float]
+            The open price from the most recent minute bar. (provider: polygon)
+        minute_high : Optional[float]
+            The high price from the most recent minute bar. (provider: polygon)
+        minute_low : Optional[float]
+            The low price from the most recent minute bar. (provider: polygon)
+        minute_close : Optional[float]
+            The close price from the most recent minute bar. (provider: polygon)
+        minute_volume : Optional[float]
+            The volume from the most recent minute bar. (provider: polygon)
+        minute_vwap : Optional[float]
+            The VWAP from the most recent minute bar. (provider: polygon)
+        minute_transactions : Optional[float]
+            The number of transactions in the most recent minute bar. (provider: polygon)
+        quote_timestamp : Optional[datetime]
+            The timestamp of the last quote. (provider: polygon)
+        minute_timestamp : Optional[datetime]
+            The timestamp for the start of the most recent minute bar. (provider: polygon)
+        last_updated : Optional[datetime]
+            The last time the data was updated. (provider: polygon)
 
         Examples
         --------
@@ -256,7 +293,7 @@ class ROUTER_currency(Container):
                     "provider": self._get_provider(
                         provider,
                         "/currency/snapshots",
-                        ("fmp",),
+                        ("fmp", "polygon"),
                     )
                 },
                 standard_params={
@@ -265,6 +302,6 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                info={"base": {"multiple_items_allowed": ["fmp"]}},
+                info={"base": {"multiple_items_allowed": ["fmp", "polygon"]}},
             )
         )
