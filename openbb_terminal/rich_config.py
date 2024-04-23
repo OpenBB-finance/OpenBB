@@ -11,7 +11,7 @@ from rich.console import Console, Theme
 from rich.progress import track
 from rich.text import Text
 
-from openbb_terminal.core.plots.terminal_style import theme
+from openbb_terminal.core.config.terminal_style import theme
 from openbb_terminal.core.session.current_settings import get_current_settings
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors

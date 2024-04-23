@@ -8,7 +8,7 @@ from typing import List, Optional, Union
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
-from openbb_terminal.core.plots.terminal_style import theme
+from openbb_terminal.core.config.terminal_style import theme
 from openbb_terminal.core.session.current_settings import (
     get_current_settings,
     set_settings,
