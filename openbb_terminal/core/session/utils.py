@@ -1,5 +1,4 @@
-from threading import Thread
-from typing import Any, Callable, Dict, Type, TypeVar
+from typing import Any, Type, TypeVar
 
 from pydantic import ValidationError
 
@@ -44,17 +43,3 @@ def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     except Exception:
         print(f"Error loading {model_name}, using defaults.")  # noqa: T201
         return model()  # type: ignore
-
-
-def run_thread(target: Callable, kwargs: Dict[str, Any]):
-    """Run a daemon thread, with the given target and keyword arguments.
-
-    Parameters
-    ----------
-    target : Callable
-        The target function.
-    kwargs : Dict[str, Any]
-        The keyword arguments.
-    """
-    thread = Thread(target=target, kwargs=kwargs, daemon=True)
-    thread.start()
