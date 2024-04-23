@@ -1,8 +1,8 @@
 """Intrinio World News Model."""
 
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.world_news import (
@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.world_news import (
 )
 from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class IntrinioWorldNewsQueryParams(WorldNewsQueryParams):
@@ -29,7 +27,8 @@ class IntrinioWorldNewsData(WorldNewsData):
 
     id: str = Field(description="Article ID.")
     company: Optional[Dict[str, Any]] = Field(
-        description="Company details related to the news article."
+        default=None,
+        description="Company details related to the news article.",
     )
 
     @field_validator("publication_date", mode="before", check_fields=False)
@@ -50,7 +49,7 @@ class IntrinioWorldNewsFetcher(
     def transform_query(params: Dict[str, Any]) -> IntrinioWorldNewsQueryParams:
         """Transform the query params."""
         if params.get("start_date") or params.get("end_date"):
-            _warn("start_date and end_date are not supported for this endpoint.")
+            warn("start_date and end_date are not supported for this endpoint.")
         return IntrinioWorldNewsQueryParams(**params)
 
     @staticmethod
