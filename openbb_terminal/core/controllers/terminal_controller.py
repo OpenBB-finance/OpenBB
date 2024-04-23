@@ -61,7 +61,7 @@ from openbb_terminal.core.session.current_settings import (
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
 )
-from openbb_terminal.routines.routine_functions import is_reset, parse_openbb_script
+from openbb_terminal.core.session.routines.routine_functions import is_reset, parse_openbb_script
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
