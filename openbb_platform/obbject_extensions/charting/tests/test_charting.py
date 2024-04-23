@@ -62,23 +62,36 @@ def test_charting_settings(obbject):
     assert isinstance(cm, Charting)
 
 
-@patch("openbb_charting.ChartIndicators.get_available_indicators")
-def test_indicators(mock_get_available_indicators, obbject):
+def test_indicators(obbject):
     """Test indicators method."""
-    # Arrange
-    mock_get_available_indicators.return_value = [
-        "indicator1",
-        "indicator2",
-        "indicator3",
-    ]
     obj = Charting(obbject)
+    indicators = list(obj.indicators().model_dump().keys())
 
-    # Act
-    result = obj.indicators()
-
-    # Assert
-    assert result == ["indicator1", "indicator2", "indicator3"]
-    mock_get_available_indicators.assert_called_once()
+    assert indicators == [
+        "sma",
+        "ema",
+        "hma",
+        "wma",
+        "zlma",
+        "ad",
+        "adoscillator",
+        "adx",
+        "aroon",
+        "atr",
+        "cci",
+        "clenow",
+        "demark",
+        "donchian",
+        "fib",
+        "fisher",
+        "ichimoku",
+        "kc",
+        "macd",
+        "obv",
+        "rsi",
+        "srlines",
+        "stoch",
+    ]
 
 
 @patch("openbb_charting.get_charting_functions")

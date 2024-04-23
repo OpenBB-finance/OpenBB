@@ -139,7 +139,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[str, int]]
+        cik : Optional[Union[int, str]]
             Central Index Key (CIK) (provider: sec)
 
         Examples

@@ -538,11 +538,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[str, int]]
+        rate_tenor_unit_rec : Optional[Union[int, str]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[str, int]]
+        reset_date_unit_rec : Optional[Union[int, str]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -556,11 +556,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[str, int]]
+        rate_tenor_unit_pmnt : Optional[Union[int, str]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[str, int]]
+        reset_date_unit_pmnt : Optional[Union[int, str]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
