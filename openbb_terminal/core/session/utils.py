@@ -1,8 +1,12 @@
+import os
+import shutil
+from pathlib import Path
 from typing import Any, Type, TypeVar
 
 from pydantic import ValidationError
 
 from openbb_terminal.core.models import BaseModel
+from openbb_terminal.rich_config import console
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -43,3 +47,31 @@ def load_dict_to_model(dictionary: dict, model: Type[T]) -> T:
     except Exception:
         print(f"Error loading {model_name}, using defaults.")  # noqa: T201
         return model()  # type: ignore
+
+
+def remove(path: Path) -> bool:
+    """Remove path.
+
+    Parameters
+    ----------
+    path : Path
+        The file path.
+
+    Returns
+    -------
+    bool
+        The status of the removal.
+    """
+
+    try:
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
+        return True
+    except Exception:
+        console.print(
+            f"\n[bold red]Failed to remove {path}"
+            "\nPlease delete this manually![/bold red]"
+        )
+        return False

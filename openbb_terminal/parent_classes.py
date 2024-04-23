@@ -19,7 +19,6 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 # IMPORTS INTERNAL
-import openbb_terminal.core.session.local_model as Local
 from openbb_terminal import config_terminal
 from openbb_terminal.core.completer.choices import build_controller_choice_map
 
@@ -31,6 +30,7 @@ from openbb_terminal.core.session.current_user import (
     get_platform_user,
     is_local,
 )
+from openbb_terminal.core.session.utils import remove
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
@@ -421,7 +421,7 @@ class BaseController(metaclass=ABCMeta):
 
         if not is_local():
             user = get_platform_user()
-            Local.remove(Path(user.preferences.export_directory, "routines", "hub"))
+            remove(Path(user.preferences.export_directory, "routines", "hub"))
 
     def call_reset(self, _) -> None:
         """Process reset command.
