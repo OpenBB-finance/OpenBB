@@ -79,17 +79,15 @@ class PlatformController(BaseController):
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
-                    # this is purposely making the choices pointing to the registry ids
-                    action.choices = Registry.ids
-                    # also change the action type to str
-                    action.type = str
+                    action.choices = range(len(Registry.obbjects))
+                    action.type = int
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
         if (
             hasattr(ns_parser, "data")
             and ns_parser.data
-            and ns_parser.data in Registry.ids
+            and ns_parser.data in range(len(Registry.obbjects))
         ):
             obbject = Registry.get(ns_parser.data)
             setattr(ns_parser, "data", obbject.results)

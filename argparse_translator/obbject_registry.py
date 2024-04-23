@@ -1,3 +1,5 @@
+"""Registry for OBBjects."""
+
 import json
 from typing import Dict, List
 
@@ -7,43 +9,31 @@ from openbb_core.app.model.obbject import OBBject
 
 class Registry(metaclass=SingletonMeta):
 
-    obbject_instances: List[OBBject] = []
-    ids: List[str] = []
+    obbjects: List[OBBject] = []
+
+    @staticmethod
+    def _contains_obbject(uuid: str, obbjects: List[OBBject]) -> bool:
+        """Check if obbject with uuid is in the registry."""
+        return any(obbject.id == uuid for obbject in obbjects)
 
     @classmethod
     def register(cls, obbject: OBBject):
-        if isinstance(obbject, OBBject):
-            for obbject_ in cls.obbject_instances:
-                if obbject_.id == obbject.id:
-                    return
-            cls.obbject_instances.append(obbject)
-            cls.ids.append(obbject.id)
+        """Designed to add an OBBject instance to the registry."""
+        if isinstance(obbject, OBBject) and not cls._contains_obbject(
+            obbject.id, cls.obbjects
+        ):
+            cls.obbjects.append(obbject)
 
     @classmethod
-    def remove(cls, id_: str):
-        for obbject in cls.obbject_instances:
-            if obbject.id == id_:
-                cls.obbject_instances.remove(obbject)
-                cls.ids.remove(id_)
-
-    @classmethod
-    def get(cls, id_: str) -> OBBject:
-        for obbject in cls.obbject_instances:
-            if obbject.id == id_:
-                return obbject
-        raise ValueError(f"OBBject with id {id_} not found")
-
-    @classmethod
-    def pop(cls, id_: str) -> OBBject:
-        for obbject in cls.obbject_instances:
-            if obbject.id == id_:
-                cls.obbject_instances.remove(obbject)
-                cls.ids.remove(id_)
-                return obbject
-        raise ValueError(f"OBBject with id {id_} not found")
+    def get(cls, idx: int) -> OBBject:
+        """Return the obbject at index idx."""
+        # the list should work as a stack
+        # i.e., the last element needs to be accessed by idx=0 and so on
+        reversed_list = list(reversed(cls.obbjects))
+        return reversed_list[idx]
 
     @property
-    def all(self) -> Dict[str, Dict]:
+    def all(self) -> Dict[int, Dict]:
         """Return all obbjects in the registry"""
 
         def _handle_standard_params(obbject: OBBject) -> str:
@@ -52,28 +42,35 @@ class Registry(metaclass=SingletonMeta):
             std_params = obbject._standard_params  # pylint: disable=protected-access
             if hasattr(std_params, "__dict__"):
                 standard_params = {
-                    k: str(v)[:20] for k, v in std_params.__dict__.items() if v
+                    k: str(v)[:30] for k, v in std_params.__dict__.items() if v
                 }
                 standard_params_json = json.dumps(standard_params)
 
             return standard_params_json
 
+        def _handle_data_repr(obbject: OBBject) -> str:
+            """Handle data representation for obbjects"""
+            data_repr = ""
+            if hasattr(obbject, "results") and obbject.results:
+                data_schema = (
+                    obbject.results[0].model_json_schema()
+                    if obbject.results and isinstance(obbject.results, list)
+                    else ""
+                )
+                if data_schema and "title" in data_schema:
+                    data_repr = f"{data_schema['title']}"
+                if data_schema and "description" in data_schema:
+                    data_repr += f" - {data_schema['description'].split('.')[0]}"
+
+            return data_repr
+
         obbjects = {}
-        for obbject in self.obbject_instances:
-            obbjects[obbject.id] = {
+        for i, obbject in enumerate(list(reversed(self.obbjects))):
+            obbjects[i] = {
                 "route": obbject._route,  # pylint: disable=protected-access
                 "provider": obbject.provider,
+                "standard params": _handle_standard_params(obbject),
+                "data": _handle_data_repr(obbject),
             }
-
-            data_schema = (
-                obbject.results[0].model_json_schema()
-                if obbject.results and isinstance(obbject.results, list)
-                else ""
-            )
-            data_repr = (
-                f"{data_schema['title']} - {data_schema['description'].split('.')[0]}"
-            )
-            obbjects[obbject.id]["standard params"] = _handle_standard_params(obbject)
-            obbjects[obbject.id]["data"] = data_repr
 
         return obbjects

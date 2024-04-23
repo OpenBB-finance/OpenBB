@@ -463,7 +463,7 @@ class TerminalController(BaseController):
         if results:
             df = pd.DataFrame.from_dict(results, orient="index")
             print_rich_table(
-                df, show_index=True, index_name="uuid", title="OBBject Results"
+                df, show_index=True, index_name="stack index", title="OBBject Results"
             )
         else:
             console.print("[info]No results found.[/info]")
