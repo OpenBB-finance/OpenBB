@@ -26,6 +26,7 @@ from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
 from argparse_translator.obbject_registry import Registry
+from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -40,7 +41,6 @@ from openbb_terminal.core.session.current_settings import (
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
 )
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     get_flair_and_username,
     parse_and_split_input,

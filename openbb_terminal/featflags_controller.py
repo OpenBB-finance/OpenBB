@@ -6,6 +6,8 @@ import argparse
 from pathlib import Path
 from typing import List, Optional, Union
 
+from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
+
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
 from openbb_terminal.core.config.terminal_style import theme
@@ -14,7 +16,6 @@ from openbb_terminal.core.session.current_settings import (
     set_settings,
 )
 from openbb_terminal.core.session.env_handler import write_to_dotenv
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     AVAILABLE_FLAIRS,
     all_timezones,

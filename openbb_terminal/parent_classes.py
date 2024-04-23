@@ -19,6 +19,7 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
 from openbb_terminal.core.completer.choices import build_controller_choice_map
+from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.config import config_terminal
@@ -32,7 +33,6 @@ from openbb_terminal.core.session.current_user import (
     is_local,
 )
 from openbb_terminal.core.session.utils import remove
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
