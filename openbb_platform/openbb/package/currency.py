@@ -2,7 +2,7 @@
 
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -33,7 +33,7 @@ class ROUTER_currency(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -153,25 +153,25 @@ class ROUTER_currency(Container):
         self,
         base: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The base currency symbol. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ] = "usd",
         quote_type: Annotated[
             Literal["direct", "indirect"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency."
             ),
         ] = "indirect",
         counter_currencies: Annotated[
             Union[List[str], str, None],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="An optional list of counter currency symbols to filter for. None returns all."
             ),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,

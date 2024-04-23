@@ -1,8 +1,14 @@
 """FMP Equity Quote Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import (
+    date as dateType,
+    datetime,
+    timezone,
+)
+from typing import Any, Dict, List, Optional, Union
 from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
@@ -12,7 +18,7 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_fmp.utils.helpers import get_querystring, response_callback
 from pydantic import Field, field_validator
 
@@ -63,22 +69,22 @@ class FMPEquityQuoteData(EquityQuoteData):
 
     @field_validator("last_timestamp", mode="before", check_fields=False)
     @classmethod
-    def validate_last_timestamp(cls, v):  # pylint: disable=E0213
+    def validate_last_timestamp(cls, v: Union[str, int]) -> Optional[dateType]:
         """Return the date as a datetime object."""
         if v:
             v = int(v) if isinstance(v, str) else v
-            return datetime.fromtimestamp(int(v), tz=timezone.utc)
+            return safe_fromtimestamp(v, tz=timezone.utc)
         return None
 
     @field_validator("earnings_announcement", mode="before", check_fields=False)
     @classmethod
-    def timestamp_validate(cls, v):  # pylint: disable=E0213
+    def timestamp_validate(cls, v: str) -> Optional[dateType]:
         """Return the datetime string as a datetime object."""
         if v:
             dt = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f%z")
             dt = dt.replace(microsecond=0)
             timestamp = dt.timestamp()
-            return datetime.fromtimestamp(timestamp, tz=timezone.utc)
+            return safe_fromtimestamp(timestamp, tz=timezone.utc)
         return None
 
     @field_validator("change_percent", mode="after", check_fields=False)
@@ -115,7 +121,7 @@ class FMPEquityQuoteFetcher(
 
         symbols = query.symbol.split(",")
 
-        results = []
+        results: list = []
 
         async def get_one(symbol):
             """Get data for one symbol."""

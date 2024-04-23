@@ -15,11 +15,17 @@ MAMODES = Literal["ema", "sma", "wma", "hna", "zlma", "rma"]
 
 def _get_type_name(t):
     """Get the type name of a type hint."""
-
-    if hasattr(t, "__origin__") and hasattr(t.__origin__, "__name__"):
-        return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
+    if hasattr(t, "__origin__"):
+        if hasattr(t.__origin__, "__name__"):
+            return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
+        if hasattr(t.__origin__, "_name"):
+            return f"{t.__origin__._name}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"  # pylint: disable=W0212
+    if isinstance(t, str):
+        return t
     if hasattr(t, "__name__"):
         return t.__name__
+    if hasattr(t, "_name"):
+        return t._name  # pylint: disable=W0212
     return str(t)
 
 
@@ -344,6 +350,31 @@ class TechnicalRSIChartQueryParams(ChartQueryParams):
     )
 
 
+class TechnicalRelativeRotationChartQueryParams(ChartQueryParams):
+    """Technical Relative Rotation Chart Query Params."""
+
+    date: Optional[str] = Field(
+        default=None,
+        description="A target end date within the data to use for the chart, by default is the last date in the data.",
+    )
+    show_tails: bool = Field(
+        default=True,
+        description="Show the tails on the chart, by default True.",
+    )
+    tail_periods: Optional[int] = Field(
+        default=16,
+        description="Number of periods to show in the tails, by default 16.",
+    )
+    tail_interval: Literal["day", "week", "month"] = Field(
+        default="week",
+        description="The interval to show the tails, by default 'week'.",
+    )
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+
+
 class ChartParams:
     """Chart Query Params."""
 
@@ -356,16 +387,17 @@ class ChartParams:
     etf_holdings = EtfHoldingsChartQueryParams
     etf_price_performance = EquityPricePerformanceChartQueryParams
     index_price_historical = EquityPriceHistoricalChartQueryParams
-    technical_cones = TechnicalConesChartQueryParams
-    technical_sma = TechnicalSMAChartQueryParams
-    technical_ema = TechnicalEMAChartQueryParams
-    technical_hma = TechnicalHMAChartQueryParams
-    technical_wma = TechnicalWMAChartQueryParams
-    technical_zlma = TechnicalZLMAChartQueryParams
     technical_adx = TechnicalADXChartQueryParams
     technical_aroon = TechnicalArooonChartQueryParams
+    technical_cones = TechnicalConesChartQueryParams
+    technical_ema = TechnicalEMAChartQueryParams
+    technical_hma = TechnicalHMAChartQueryParams
     technical_macd = TechnicalMACDChartQueryParams
+    technical_relative_rotation = TechnicalRelativeRotationChartQueryParams
     technical_rsi = TechnicalRSIChartQueryParams
+    technical_sma = TechnicalSMAChartQueryParams
+    technical_wma = TechnicalWMAChartQueryParams
+    technical_zlma = TechnicalZLMAChartQueryParams
 
 
 class IndicatorsQueryParams(BaseQueryParams):

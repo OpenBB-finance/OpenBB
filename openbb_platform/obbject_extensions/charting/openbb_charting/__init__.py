@@ -27,7 +27,6 @@ from plotly.graph_objs import Figure
 from openbb_charting import charting_router
 from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.to_chart import ChartIndicators
 from openbb_charting.query_params import ChartParams, IndicatorsParams
 from openbb_charting.utils.generic_charts import bar_chart, line_chart
 from openbb_charting.utils.helpers import get_charting_functions
