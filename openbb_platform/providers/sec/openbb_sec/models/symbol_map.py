@@ -1,5 +1,7 @@
 """SEC Symbol Mapping Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, Optional
 
 from openbb_core.provider.abstract.data import Data
@@ -8,8 +10,6 @@ from openbb_core.provider.standard_models.symbol_map import SymbolMapQueryParams
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_sec.utils.helpers import cik_map
 from pydantic import Field
-
-# pylint: disable=unused-argument
 
 
 class SecSymbolMapQueryParams(SymbolMapQueryParams):
@@ -39,7 +39,7 @@ class SecSymbolMapFetcher(
         return SecSymbolMapQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecSymbolMapQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -47,7 +47,9 @@ class SecSymbolMapFetcher(
         """Return the raw data from the SEC endpoint."""
         if not query.query.isdigit():
             raise ValueError("Query is required and must be a valid CIK.")
-        return {"symbol": cik_map(int(query.query))}
+        symbol = await cik_map(int(query.query), query.use_cache)
+        response = {"symbol": symbol}
+        return response
 
     @staticmethod
     def transform_data(
