@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
@@ -31,7 +32,7 @@ GROUPS = Literal[
     "trade",
     "business",
 ]
-TE_COUNTRY_LIMIT = 32
+TE_COUNTRY_LIMIT = 28
 
 
 class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
@@ -49,6 +50,8 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     )
     group: Optional[GROUPS] = Field(default=None, description="Grouping of events")
 
+    _number_of_countries: int = 0
+
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, c: str):  # pylint: disable=E0213
@@ -59,11 +62,11 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
             check_item(v.lower(), COUNTRIES)
             result.append(v.lower())
 
-            if len(result) > TE_COUNTRY_LIMIT:
-                raise ValueError(
-                    "Too many countries. "
-                    "Trading Economics API allows a maximum of 32 countries."
-                )
+        cls._number_of_countries = len(result)
+        if cls._number_of_countries >= TE_COUNTRY_LIMIT:
+            warn(
+                f"Trading Economics API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
+            )
 
         return ",".join(result)
 
@@ -138,7 +141,10 @@ class TEEconomicCalendarFetcher(
         async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
             """Return the response."""
             if response.status != 200:
-                raise RuntimeError(f"Error in TE request -> {await response.text()}")
+                raise RuntimeError(
+                    f"Error in TE request: \n{await response.text()}"
+                    f"\nInfo -> TE API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
+                )
             return await response.json()
 
         return await amake_request(url, response_callback=callback, **kwargs)
