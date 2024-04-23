@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 from typing import List, Optional, Union
 
+from openbb_terminal.base_controller import BaseController
 from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.core.config.rich_config import MenuText, console
 
@@ -23,7 +24,6 @@ from openbb_terminal.helper_funcs import (
     is_timezone_valid,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
 
 
 def set_and_save_preference(name: str, value: Union[bool, Path, str]):

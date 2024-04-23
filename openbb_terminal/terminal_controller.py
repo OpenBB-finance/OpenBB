@@ -26,6 +26,7 @@ from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
 from argparse_translator.obbject_registry import Registry
+from openbb_terminal.base_controller import BaseController
 from openbb_terminal.core.completer.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -48,7 +49,6 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
 )
