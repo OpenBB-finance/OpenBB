@@ -1,3 +1,5 @@
+"""Routine functions for OpenBB Platform CLI."""
+
 import re
 from datetime import datetime, timedelta
 from typing import Dict, List, Match, Optional, Tuple, Union
@@ -37,7 +39,7 @@ WEEKDAY_VALUE = {
 
 
 def is_reset(command: str) -> bool:
-    """Test whether a command is a reset command
+    """Test whether a command is a reset command.
 
     Parameters
     ----------
@@ -59,7 +61,7 @@ def is_reset(command: str) -> bool:
 
 
 def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
-    """Return OpenBB keyword into date
+    """Return OpenBB keyword into date.
 
     Parameters
     ----------
@@ -148,8 +150,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     raw_lines: List[str],
     script_inputs: Optional[List[str]] = None,
 ) -> Tuple[str, str]:
-    """
-    Parse .openbb script
+    """Parse .openbb script.
 
     Parameters
     ----------

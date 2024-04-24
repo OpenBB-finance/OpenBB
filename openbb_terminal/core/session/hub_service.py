@@ -1,3 +1,5 @@
+"""Hub service module."""
+
 from typing import List, Optional
 
 import requests

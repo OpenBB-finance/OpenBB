@@ -1,4 +1,4 @@
-""" Nestedcompleter for completion of OpenBB hierarchical data structures. """
+"""Nestedcompleter for completion of OpenBB hierarchical data structures."""
 
 from typing import (
     Any,
@@ -23,8 +23,7 @@ NestedDict = Mapping[str, Union[Any, Set[str], None, Completer]]
 
 
 class WordCompleter(Completer):
-    """
-    Simple autocompletion on a list of words.
+    """Simple autocompletion on a list of words.
 
     :param words: List of words or callable that returns a list of words.
     :param ignore_case: If True, case-insensitive completion.
@@ -53,6 +52,7 @@ class WordCompleter(Completer):
         match_middle: bool = False,
         pattern: Optional[Pattern[str]] = None,
     ) -> None:
+        """Initialize the WordCompleter."""
         assert not (WORD and sentence)  # noqa: S101
 
         self.words = words
@@ -69,6 +69,7 @@ class WordCompleter(Completer):
         document: Document,
         _complete_event: CompleteEvent,
     ) -> Iterable[Completion]:
+        """Get completions."""
         # Get list of words.
         words = self.words
         if callable(words):
@@ -94,7 +95,7 @@ class WordCompleter(Completer):
             word_before_cursor = word_before_cursor.lower()
 
         def word_matches(word: str) -> bool:
-            """True when the word before the cursor matches."""
+            """Set True when the word before the cursor matches."""
             if self.ignore_case:
                 word = word.lower()
 
@@ -115,8 +116,7 @@ class WordCompleter(Completer):
 
 
 class NestedCompleter(Completer):
-    """
-    Completer which wraps around several other completers, and calls any the
+    """Completer which wraps around several other completers, and calls any the
     one that corresponds with the first word of the input.
 
     By combining multiple `NestedCompleter` instances, we can achieve multiple
@@ -131,6 +131,7 @@ class NestedCompleter(Completer):
     def __init__(
         self, options: Dict[str, Optional[Completer]], ignore_case: bool = True
     ) -> None:
+        """Initialize the NestedCompleter."""
         self.flags_processed: List = list()
         self.original_options = options
         self.options = options
@@ -138,13 +139,14 @@ class NestedCompleter(Completer):
         self.complementary = list()
 
     def __repr__(self) -> str:
+        """Return string representation of NestedCompleter."""
         return f"NestedCompleter({self.options!r}, ignore_case={self.ignore_case!r})"
 
     @classmethod
     def from_nested_dict(cls, data: dict) -> "NestedCompleter":
-        """
-        Create a `NestedCompleter`, starting from a nested dictionary data
-        structure, like this:
+        """Create a `NestedCompleter`.
+
+        It starts from a nested dictionary data structure, like this:
 
         .. code::
 
@@ -190,6 +192,7 @@ class NestedCompleter(Completer):
     def get_completions(  # noqa: PLR0912
         self, document: Document, complete_event: CompleteEvent
     ) -> Iterable[Completion]:
+        """Get completions."""
         # Split document.
         cmd = ""
         text = document.text_before_cursor.lstrip()

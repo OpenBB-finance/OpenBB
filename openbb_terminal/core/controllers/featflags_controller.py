@@ -1,4 +1,4 @@
-"""Feature Flags Controller Module"""
+"""Feature Flags Controller Module."""
 
 __docformat__ = "numpy"
 
@@ -27,7 +27,7 @@ from openbb_terminal.core.session.env_handler import write_to_dotenv
 
 
 def set_and_save_preference(name: str, value: Union[bool, Path, str]):
-    """Set preference and write to .env
+    """Set preference and write to .env file.
 
     Parameters
     ----------
@@ -41,7 +41,7 @@ def set_and_save_preference(name: str, value: Union[bool, Path, str]):
 
 
 class FeatureFlagsController(BaseController):
-    """Feature Flags Controller class"""
+    """Feature Flags Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
         "retryload",
@@ -68,7 +68,7 @@ class FeatureFlagsController(BaseController):
     PATH = "/settings/"
 
     def __init__(self, queue: Optional[List[str]] = None):
-        """Constructor"""
+        """Initialize the Constructor."""
         super().__init__(queue)
 
         if session and get_current_settings().USE_PROMPT_TOOLKIT:
@@ -76,7 +76,7 @@ class FeatureFlagsController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         settings = get_current_settings()
 
         mt = MenuText("settings/")
@@ -105,74 +105,74 @@ class FeatureFlagsController(BaseController):
         console.print(text=mt.menu_text, menu="Feature Flags")
 
     def call_overwrite(self, _):
-        """Process overwrite command"""
+        """Process overwrite command."""
         set_and_save_preference(
             "FILE_OVERWRITE", not get_current_settings().FILE_OVERWRITE
         )
 
     def call_version(self, _):
-        """Process version command"""
+        """Process version command."""
         set_and_save_preference("SHOW_VERSION", not get_current_settings().SHOW_VERSION)
 
     def call_interactive(self, _):
-        """Process interactive command"""
+        """Process interactive command."""
         set_and_save_preference(
             "USE_INTERACTIVE_DF", not get_current_settings().USE_INTERACTIVE_DF
         )
 
     def call_cls(self, _):
-        """Process cls command"""
+        """Process cls command."""
         set_and_save_preference(
             "USE_CLEAR_AFTER_CMD",
             not get_current_settings().USE_CLEAR_AFTER_CMD,
         )
 
     def call_promptkit(self, _):
-        """Process promptkit command"""
+        """Process promptkit command."""
         set_and_save_preference(
             "USE_PROMPT_TOOLKIT",
             not get_current_settings().USE_PROMPT_TOOLKIT,
         )
 
     def call_exithelp(self, _):
-        """Process exithelp command"""
+        """Process exithelp command."""
         set_and_save_preference(
             "ENABLE_EXIT_AUTO_HELP",
             not get_current_settings().ENABLE_EXIT_AUTO_HELP,
         )
 
     def call_quickexit(self, _):
-        """Process quickexit command"""
+        """Process quickexit command."""
         set_and_save_preference(
             "ENABLE_QUICK_EXIT", not get_current_settings().ENABLE_QUICK_EXIT
         )
 
     def call_rcontext(self, _):
-        """Process rcontext command"""
+        """Process rcontext command."""
         set_and_save_preference(
             "REMEMBER_CONTEXTS",
             not get_current_settings().REMEMBER_CONTEXTS,
         )
 
     def call_dt(self, _):
-        """Process dt command"""
+        """Process dt command."""
         set_and_save_preference("USE_DATETIME", not get_current_settings().USE_DATETIME)
 
     def call_richpanel(self, _):
-        """Process richpanel command"""
+        """Process richpanel command."""
         set_and_save_preference(
             "ENABLE_RICH_PANEL",
             not get_current_settings().ENABLE_RICH_PANEL,
         )
 
     def call_tbhint(self, _):
-        """Process tbhint command"""
+        """Process tbhint command."""
         if get_current_settings().TOOLBAR_HINT:
             console.print("Will take effect when running terminal next.")
         set_and_save_preference("TOOLBAR_HINT", not get_current_settings().TOOLBAR_HINT)
 
     def call_console_style(self, other_args: List[str]) -> None:
-        """Process cosole_style command"""
+        """Process cosole_style command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="console_style",
@@ -196,7 +196,7 @@ class FeatureFlagsController(BaseController):
             console.print(f"Current console style: {get_current_settings().RICH_STYLE}")
 
     def call_flair(self, other_args: List[str]) -> None:
-        """Process flair command"""
+        """Process flair command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="flair",
@@ -219,7 +219,7 @@ class FeatureFlagsController(BaseController):
             console.print(f"Current flair: {get_current_settings().FLAIR}")
 
     def call_timezone(self, other_args: List[str]) -> None:
-        """Process timezone command"""
+        """Process timezone command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="timezone",
@@ -246,7 +246,7 @@ class FeatureFlagsController(BaseController):
             console.print(f"Current timezone: {get_current_settings().TIMEZONE}")
 
     def call_language(self, other_args: List[str]) -> None:
-        """Process language command"""
+        """Process language command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="language",
@@ -270,7 +270,7 @@ class FeatureFlagsController(BaseController):
             console.print(f"Current language: {get_current_settings().USE_LANGUAGE}")
 
     def call_n_rows(self, other_args: List[str]) -> None:
-        """Process n_rows command"""
+        """Process n_rows command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="n_rows",
@@ -296,7 +296,7 @@ class FeatureFlagsController(BaseController):
             )
 
     def call_n_cols(self, other_args: List[str]) -> None:
-        """Process n_cols command"""
+        """Process n_cols command."""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="n_cols",

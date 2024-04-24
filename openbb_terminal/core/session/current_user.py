@@ -1,3 +1,5 @@
+"""Module to get current user."""
+
 from copy import deepcopy
 
 from openbb import obb

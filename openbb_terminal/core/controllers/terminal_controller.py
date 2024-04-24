@@ -61,7 +61,10 @@ from openbb_terminal.core.session.current_settings import (
 from openbb_terminal.core.session.current_user import (
     get_platform_user,
 )
-from openbb_terminal.core.session.routines.routine_functions import is_reset, parse_openbb_script
+from openbb_terminal.core.session.routines.routine_functions import (
+    is_reset,
+    parse_openbb_script,
+)
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -135,6 +138,7 @@ class TerminalController(BaseController):
 
         # pylint: disable=unused-argument
         def method_call_command(self, _, router: str):
+            """Call command."""
             mdl = getattr(obb, router)
             df = pd.DataFrame.from_dict(mdl.model_dump(), orient="index")
             return print_rich_table(df, show_index=True)
@@ -144,7 +148,7 @@ class TerminalController(BaseController):
 
             if value == "menu":
                 pcf = PlatformControllerFactory(
-                    target, reference=obb.reference["paths"]
+                    target, reference=obb.reference["paths"]  # type: ignore
                 )
                 DynamicController = pcf.create()
 
@@ -152,7 +156,7 @@ class TerminalController(BaseController):
                 bound_method = MethodType(method_call_class, self)
 
                 # Update the wrapper and set the attribute
-                bound_method = update_wrapper(
+                bound_method = update_wrapper(  # type: ignore
                     partial(
                         bound_method,
                         controller=DynamicController,
@@ -164,7 +168,7 @@ class TerminalController(BaseController):
                 )
             else:
                 bound_method = MethodType(method_call_command, self)
-                bound_method = update_wrapper(
+                bound_method = update_wrapper(  # type: ignore
                     partial(bound_method, router=router),
                     method_call_command,
                 )
@@ -173,7 +177,6 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
-
         user = get_platform_user()
         routines_directory = Path(user.preferences.export_directory, "routines")
 
@@ -184,17 +187,17 @@ class TerminalController(BaseController):
             choices["hold"]["off"] = {"--title": None}
 
             self.ROUTINE_FILES = {
-                filepath.name: filepath
+                filepath.name: filepath  # type: ignore
                 for filepath in routines_directory.rglob("*.openbb")
             }
             self.ROUTINE_DEFAULT_FILES = {
-                filepath.name: filepath
+                filepath.name: filepath  # type: ignore
                 for filepath in Path(routines_directory / "hub" / "default").rglob(
                     "*.openbb"
                 )
             }
             self.ROUTINE_PERSONAL_FILES = {
-                filepath.name: filepath
+                filepath.name: filepath  # type: ignore
                 for filepath in Path(routines_directory / "hub" / "personal").rglob(
                     "*.openbb"
                 )
@@ -246,7 +249,7 @@ class TerminalController(BaseController):
                 continue
             if value == "menu":
                 menu_description = (
-                    obb.reference["routers"]
+                    obb.reference["routers"]  # type: ignore
                     .get(f"{self.PATH}{router}", {})
                     .get("description")
                 ) or ""
@@ -264,7 +267,7 @@ class TerminalController(BaseController):
                     continue
                 if value == "menu":
                     menu_description = (
-                        obb.reference["routers"]
+                        obb.reference["routers"]  # type: ignore
                         .get(f"{self.PATH}{router}", {})
                         .get("description")
                     ) or ""
@@ -281,7 +284,7 @@ class TerminalController(BaseController):
                 continue
             if value == "menu":
                 menu_description = (
-                    obb.reference["routers"]
+                    obb.reference["routers"]  # type: ignore
                     .get(f"{self.PATH}{router}", {})
                     .get("description")
                 ) or ""
@@ -299,9 +302,9 @@ class TerminalController(BaseController):
         self.update_runtime_choices()
 
     def parse_input(self, an_input: str) -> List:
-        """Overwrite the BaseController parse_input for `askobb` and 'exe'
+        """Overwrite the BaseController parse_input for `askobb` and 'exe'.
 
-        This will allow us to search for something like "P/E" ratio
+        This will allow us to search for something like "P/E" ratio.
         """
         # Filtering out sorting parameters with forward slashes like P/E
         sort_filter = r"((\ -q |\ --question|\ ).*?(/))"
@@ -497,6 +500,7 @@ class TerminalController(BaseController):
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
+    """Handle job commands."""
     # If the path selected does not start from the user root,
     # give relative location from terminal root
     if jobs_cmds is not None and jobs_cmds:
@@ -531,7 +535,7 @@ def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
 
 # pylint: disable=unused-argument
 def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
-    """Terminal Menu."""
+    """Run the terminal menu."""
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
@@ -760,7 +764,7 @@ def run_scripts(
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
-    """Replaces ${key=default} with value in special_arguments if it exists, else with default.
+    """Replace ${key=default} with value in special_arguments if it exists, else with default.
 
     Parameters
     ----------

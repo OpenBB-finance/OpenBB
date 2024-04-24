@@ -53,7 +53,7 @@ class PlatformController(BaseController):
 
         self._translated_target = (
             ArgparseClassProcessor(
-                target_class=platform_target, reference=obb.reference["paths"]
+                target_class=platform_target, reference=obb.reference["paths"]  # type: ignore
             )
             if platform_target
             else DummyTranslation()
@@ -140,7 +140,10 @@ class PlatformController(BaseController):
             self._generate_command_call(name=new_name, translator=translator)
 
     def _generate_command_call(self, name, translator):
+        """Generate command call."""
+
         def method(self, other_args: List[str], translator=translator):
+            """Call the translator."""
             parser = translator.parser
 
             if ns_parser := self.parse_known_args_and_warn(
@@ -198,13 +201,16 @@ class PlatformController(BaseController):
         bound_method = MethodType(method, self)
 
         # Update the wrapper and set the attribute
-        bound_method = update_wrapper(
+        bound_method = update_wrapper(  # type: ignore
             partial(bound_method, translator=translator), method
         )
         setattr(self, f"call_{name}", bound_method)
 
     def _generate_controller_call(self, controller, name, parent_path, translators):
+        """Generate controller call."""
+
         def method(self, _, controller, name, parent_path, translators):
+            """Call the controller."""
             self.queue = self.load_class(
                 class_ins=controller,
                 name=name,
@@ -217,7 +223,7 @@ class PlatformController(BaseController):
         bound_method = MethodType(method, self)
 
         # Update the wrapper and set the attribute
-        bound_method = update_wrapper(
+        bound_method = update_wrapper(  # type: ignore
             partial(
                 bound_method,
                 name=name,
@@ -232,7 +238,7 @@ class PlatformController(BaseController):
     def _get_command_description(self, command: str) -> str:
         """Get command description."""
         command_description = (
-            obb.reference["paths"]
+            obb.reference["paths"]  # type: ignore
             .get(f"{self.PATH}{command}", {})
             .get("description", "")
         )
@@ -249,7 +255,7 @@ class PlatformController(BaseController):
     def _get_menu_description(self, menu: str) -> str:
         """Get menu description."""
         menu_description = (
-            obb.reference["routers"]
+            obb.reference["routers"]  # type: ignore
             .get(f"{self.PATH}{menu}", {})
             .get("description", "")
         ) or ""

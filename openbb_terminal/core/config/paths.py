@@ -1,4 +1,5 @@
-# IMPORTATION STANDARD
+"""Paths for the package."""
+
 from pathlib import Path
 
 # Installation related paths

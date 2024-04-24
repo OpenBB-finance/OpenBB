@@ -92,6 +92,7 @@ class BaseController(metaclass=ABCMeta):
 
     @property
     def choices_default(self):
+        """Return the default choices."""
         choices = (
             build_controller_choice_map(controller=self)
             if self.CHOICES_GENERATION
@@ -173,6 +174,7 @@ class BaseController(metaclass=ABCMeta):
         return class_ins(*args, **kwargs).menu()
 
     def call_hold(self, other_args: List[str]) -> None:
+        """Process hold command."""
         self.save_class()
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -815,7 +817,6 @@ class BaseController(metaclass=ABCMeta):
         ns_parser:
             Namespace with parsed arguments
         """
-
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
         )

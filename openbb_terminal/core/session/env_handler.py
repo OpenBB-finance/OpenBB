@@ -1,3 +1,5 @@
+"""Environment handler module."""
+
 # IMPORTS STANDARD
 import sys
 from typing import Any, Dict, Optional
@@ -16,7 +18,8 @@ DEFAULT_ORDER = [SETTINGS_ENV_FILE, PACKAGE_ENV_FILE, REPOSITORY_ENV_FILE]
 
 
 def load_env_files():
-    """
+    """Load .env files.
+
     Loads the dotenv files in the following order:
     1. Repository .env file
     2. Package .env file
@@ -34,8 +37,9 @@ def load_env_files():
 
 
 def get_reading_order() -> list:
-    """Get order of .env files. If we are on frozen app, we reverse the order to
-    read the SETTINGS_ENV_FILE last.
+    """Get order of .env files.
+
+    If we are on frozen app, we reverse the order to read the SETTINGS_ENV_FILE last.
 
     Returns
     -------
@@ -49,6 +53,7 @@ def get_reading_order() -> list:
 
 
 def read_env() -> Dict[str, Any]:
+    """Read .env files."""
     __env_dict: Dict[str, Optional[str]] = {}
 
     for env_file in get_reading_order():

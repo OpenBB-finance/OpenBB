@@ -1,3 +1,5 @@
+"""This module contains functions to build the choice map for the controllers."""
+
 from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
@@ -13,7 +15,7 @@ from openbb_terminal.core.session.current_settings import get_current_settings
 
 
 def __mock_parse_known_args_and_warn(
-    controller,
+    controller,  # pylint: disable=unused-argument
     parser: ArgumentParser,
     other_args: List[str],
     export_allowed: Literal[
@@ -22,7 +24,9 @@ def __mock_parse_known_args_and_warn(
     raw: bool = False,
     limit: int = 0,
 ) -> None:
-    """Add the arguments that would have normally added by :
+    """Add arguments.
+
+    Add the arguments that would have normally added by :
         - openbb_terminal.parent_classes.BaseController.parse_known_args_and_warn
 
     Parameters
@@ -38,7 +42,6 @@ def __mock_parse_known_args_and_warn(
     limit: int
         Add a --limit flag with this number default
     """
-
     _ = other_args
 
     parser.add_argument(
@@ -88,7 +91,9 @@ def __mock_parse_known_args_and_warn(
 
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
-    """Add the arguments that would have normally added by:
+    """Add arguments.
+
+    Add the arguments that would have normally added by:
         - openbb_terminal.parent_classes.BaseController.parse_simple_args
 
     Parameters
@@ -118,7 +123,6 @@ def __get_command_func(controller, command: str):
     -------
     Callable: Command function.
     """
-
     if command not in controller.CHOICES_COMMANDS:
         raise AttributeError(
             f"The following command is not inside `CHOICES_COMMANDS` : '{command}'"
@@ -135,7 +139,9 @@ def __get_command_func(controller, command: str):
 
 
 def contains_functions_to_patch(command_func: Callable) -> bool:
-    """Check if a `command_func` actually contains the functions we want to mock, i.e.:
+    """Check command function.
+
+    Check if a `command_func` actually contains the functions we want to mock, i.e.:
         - parse_simple_args
         - parse_known_args_and_warn
 
@@ -148,7 +154,6 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
     -------
     bool: Whether or not `command_func` contains the mocked functions.
     """
-
     co_names = command_func.__code__.co_names
 
     return bool(
@@ -158,7 +163,9 @@ def contains_functions_to_patch(command_func: Callable) -> bool:
 
 @contextmanager
 def __patch_controller_functions(controller):
-    """Patch the following function from a BaseController instance:
+    """Patch controller functions.
+
+    Patch the following function from a BaseController instance:
         - parse_simple_args
         - parse_known_args_and_warn
 
@@ -174,7 +181,6 @@ def __patch_controller_functions(controller):
     -------
     List[Callable]: List of mocked functions.
     """
-
     bound_mock_parse_known_args_and_warn = MethodType(
         __mock_parse_known_args_and_warn,
         controller,
@@ -236,7 +242,6 @@ def _get_argument_parser(
     -------
     ArgumentParser: ArgumentParser instance from the command function.
     """
-
     command_func: Callable = __get_command_func(controller=controller, command=command)
 
     if not contains_functions_to_patch(command_func=command_func):
@@ -269,6 +274,7 @@ def _get_argument_parser(
 
 
 def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
+    """Build the choice map for a command."""
     choice_map: dict = {}
     for action in argument_parser._actions:  # pylint: disable=protected-access
         if action.help == SUPPRESS:
@@ -294,6 +300,7 @@ def _build_command_choice_map(argument_parser: ArgumentParser) -> dict:
 
 
 def build_controller_choice_map(controller) -> dict:
+    """Build the choice map for a controller."""
     command_list = controller.CHOICES_COMMANDS
     controller_choice_map: dict = {c: {} for c in controller.controller_choices}
 

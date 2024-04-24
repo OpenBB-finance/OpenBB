@@ -1,3 +1,5 @@
+"""Platform controller factory to create a platform controller."""
+
 from typing import Dict, List, Union
 
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
@@ -5,7 +7,10 @@ from openbb_terminal.core.controllers.base_platform_controller import PlatformCo
 
 
 class PlatformControllerFactory:
+    """Factory to create a platform controller."""
+
     def __init__(self, platform_router: type, **kwargs):
+        """Create the controller name."""
         self.platform_router = platform_router
         self._translated_target = ArgparseClassProcessor(
             target_class=self.platform_router, reference=kwargs.get("reference", {})
@@ -20,6 +25,7 @@ class PlatformControllerFactory:
         self.controller_name = f"{self.router_name.capitalize()}Controller"
 
     def create(self) -> type:
+        """Create the platform controller."""
         ClassName = self.controller_name
         Parents = (PlatformController,)
         Attributes: Dict[str, Union[bool, List[str]]] = {"CHOICES_GENERATION": True}
