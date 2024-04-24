@@ -658,6 +658,8 @@ class BaseController(metaclass=ABCMeta):
                         )
 
                 # Writing to file
+                Path(os.path.dirname(routine_file)).mkdir(parents=True, exist_ok=True)
+
                 with open(routine_file, "w") as file1:
                     lines = ["# OpenBB Platform CLI - Routine", "\n"]
 
