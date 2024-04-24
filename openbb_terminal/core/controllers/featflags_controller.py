@@ -86,7 +86,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
         mt.add_setting("exithelp", settings.ENABLE_EXIT_AUTO_HELP)
-        mt.add_setting("quickexit", settings.ENABLE_QUICK_EXIT)
         mt.add_setting("rcontext", settings.REMEMBER_CONTEXTS)
         mt.add_setting("richpanel", settings.ENABLE_RICH_PANEL)
         mt.add_setting("tbhint", settings.TOOLBAR_HINT)
@@ -139,12 +138,6 @@ class FeatureFlagsController(BaseController):
         set_and_save_preference(
             "ENABLE_EXIT_AUTO_HELP",
             not get_current_settings().ENABLE_EXIT_AUTO_HELP,
-        )
-
-    def call_quickexit(self, _):
-        """Process quickexit command."""
-        set_and_save_preference(
-            "ENABLE_QUICK_EXIT", not get_current_settings().ENABLE_QUICK_EXIT
         )
 
     def call_rcontext(self, _):

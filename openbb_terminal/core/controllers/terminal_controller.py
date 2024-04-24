@@ -557,9 +557,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         t_controller.print_help()
 
     while ret_code:
-        if get_current_settings().ENABLE_QUICK_EXIT:
-            console.print("Quick exit enabled")
-            break
 
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
