@@ -191,11 +191,10 @@ class IntrinioCompanyNewsFetcher(
             if "error" in result:
                 raise RuntimeError(f"Intrinio Error Message -> {result['error']}")
             symbol = response.url.parts[-2]
-            articles = 0
             _data = result.get("news", [])
             data = []
             data.extend([{"symbol": symbol, **d} for d in _data])
-            articles += len(data)
+            articles = len(data)
             next_page = result.get("next_page")
             while next_page and query.limit > articles:
                 url = f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}&next_page={next_page}"
