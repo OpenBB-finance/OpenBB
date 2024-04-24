@@ -41,11 +41,14 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     """FMP Financial Ratios Data."""
 
     __alias_dict__ = {
-        "dividend_yield": "dividend_yiel",
-        "dividend_yield_percentage": "dividend_yiel_percentage",
         "period_ending": "date",
         "fiscal_period": "period",
         "fiscal_year": "calendar_year",
+        "dividend_yield": "dividend_yiel",
+        "cash_flow_coverage_ratio": "cash_flow_coverage_ratios",
+        "short_term_coverage_ratio": "short_term_coverage_ratios",
+        "cash_flow_to_debt": "cash_flow_to_debt_ratio",
+        "interest_coverage_ratio": "interest_coverage",
     }
 
     symbol: Optional[str] = Field(
@@ -70,28 +73,44 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         default=None, description="Cash conversion cycle."
     )
     gross_profit_margin: Optional[float] = Field(
-        default=None, description="Gross profit margin."
+        default=None,
+        description="Gross profit margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     operating_profit_margin: Optional[float] = Field(
-        default=None, description="Operating profit margin."
+        default=None,
+        description="Operating profit margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     pretax_profit_margin: Optional[float] = Field(
-        default=None, description="Pretax profit margin."
+        default=None,
+        description="Pretax profit margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     net_profit_margin: Optional[float] = Field(
-        default=None, description="Net profit margin."
+        default=None,
+        description="Net profit margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     effective_tax_rate: Optional[float] = Field(
-        default=None, description="Effective tax rate."
+        default=None,
+        description="Effective tax rate.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_assets: Optional[float] = Field(
-        default=None, description="Return on assets."
+        default=None,
+        description="Return on assets.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_equity: Optional[float] = Field(
-        default=None, description="Return on equity."
+        default=None,
+        description="Return on equity.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_capital_employed: Optional[float] = Field(
-        default=None, description="Return on capital employed."
+        default=None,
+        description="Return on capital employed.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     net_income_per_ebt: Optional[float] = Field(
         default=None, description="Net income per EBT."
@@ -110,10 +129,10 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     total_debt_to_capitalization: Optional[float] = Field(
         default=None, description="Total debt to capitalization."
     )
-    interest_coverage: Optional[float] = Field(
+    interest_coverage_ratio: Optional[float] = Field(
         default=None, description="Interest coverage."
     )
-    cash_flow_to_debt_ratio: Optional[float] = Field(
+    cash_flow_to_debt: Optional[float] = Field(
         default=None, description="Cash flow to debt ratio."
     )
     company_equity_multiplier: Optional[float] = Field(
@@ -146,20 +165,14 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     free_cash_flow_operating_cash_flow_ratio: Optional[float] = Field(
         default=None, description="Free cash flow operating cash flow ratio."
     )
-    cash_flow_coverage_ratios: Optional[float] = Field(
-        default=None, description="Cash flow coverage ratios."
+    cash_flow_coverage_ratio: Optional[float] = Field(
+        default=None, description="Cash flow coverage ratio."
     )
-    short_term_coverage_ratios: Optional[float] = Field(
-        default=None, description="Short term coverage ratios."
+    short_term_coverage_ratio: Optional[float] = Field(
+        default=None, description="Short term coverage ratio."
     )
     capital_expenditure_coverage_ratio: Optional[float] = Field(
         default=None, description="Capital expenditure coverage ratio."
-    )
-    dividend_paid_and_capex_coverage_ratio: Optional[float] = Field(
-        default=None, description="Dividend paid and capex coverage ratio."
-    )
-    dividend_payout_ratio: Optional[float] = Field(
-        default=None, description="Dividend payout ratio."
     )
     price_book_value_ratio: Optional[float] = Field(
         default=None, description="Price book value ratio."
@@ -188,9 +201,16 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     price_sales_ratio: Optional[float] = Field(
         default=None, description="Price sales ratio."
     )
-    dividend_yield: Optional[float] = Field(default=None, description="Dividend yield.")
-    dividend_yield_percentage: Optional[float] = Field(
-        default=None, description="Dividend yield percentage."
+    dividend_paid_and_capex_coverage_ratio: Optional[float] = Field(
+        default=None, description="Dividend paid and capex coverage ratio."
+    )
+    dividend_payout_ratio: Optional[float] = Field(
+        default=None, description="Dividend payout ratio."
+    )
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     dividend_per_share: Optional[float] = Field(
         default=None, description="Dividend per share."
@@ -281,7 +301,7 @@ class FMPFinancialRatiosFetcher(
                 to_snake_case(k).replace("_ttm", "").replace("ttm", ""): v
                 for k, v in item.items()
             }
-            for col in ["dividend_yield", "pe_ratio", "peg_ratio"]:
+            for col in ["dividend_yiel_percentage", "pe_ratio", "peg_ratio"]:
                 if col in new_item:
                     _ = new_item.pop(col)
             if len(query.symbol.split(",")) == 1:
