@@ -78,7 +78,7 @@ class ArgparseClassProcessor:
         if not reference:
             return {}
         rp = ReferenceToCustomArgumentsProcessor(reference)
-        return rp.custom_groups.get(route, {})
+        return rp.custom_groups.get(route, {})  # type: ignore
 
     @classmethod
     def _process_class(
@@ -97,7 +97,7 @@ class ArgparseClassProcessor:
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member,
                     add_help=add_help,
-                    custom_argument_groups=cls._custom_groups_from_reference(
+                    custom_argument_groups=cls._custom_groups_from_reference(  # type: ignore
                         class_name=class_name, function_name=name
                     ),
                 )

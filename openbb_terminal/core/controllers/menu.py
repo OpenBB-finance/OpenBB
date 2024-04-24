@@ -1,3 +1,5 @@
+"""The controllers menu."""
+
 import logging
 import sys
 from typing import Optional

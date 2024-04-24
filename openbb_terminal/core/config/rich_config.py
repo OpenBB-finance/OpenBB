@@ -1,4 +1,4 @@
-"""Rich Module"""
+"""Rich Module."""
 
 __docformat__ = "numpy"
 
@@ -37,16 +37,17 @@ USE_COLOR = True
 
 
 def translate(key: str):
+    """Translate a key to the current language."""
     return i18n.t(key)
 
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
+    """Return the renderable without a panel."""
     return renderable
 
 
 def get_ordered_list_sources(command_path: str) -> List:
-    """
-    Returns the preferred source for the given command.
+    """Return the preferred source for the given command.
 
     Parameters
     ----------
@@ -58,7 +59,7 @@ def get_ordered_list_sources(command_path: str) -> List:
     List
         The list of sources for the given command.
     """
-    command_reference = obb.reference.get("paths", {}).get(command_path, {})
+    command_reference = obb.reference.get("paths", {}).get(command_path, {})  # type: ignore
     if command_reference:
         providers = list(command_reference["parameters"].keys())
         return [provider for provider in providers if provider != "standard"]
@@ -66,10 +67,10 @@ def get_ordered_list_sources(command_path: str) -> List:
 
 
 class MenuText:
-    """Create menu text with rich colors to be displayed by terminal"""
+    """Create menu text with rich colors to be displayed by terminal."""
 
     def __init__(self, path: str = "", column_sources: int = 100):
-        """Initialize menu help
+        """Initialize menu help.
 
         Parameters
         ----------
@@ -84,7 +85,7 @@ class MenuText:
         self.warnings: List[Dict[str, str]] = []
 
     def add_raw(self, raw_text: str):
-        """Append raw text (no translation) to a menu
+        """Append raw text (no translation) to a menu.
 
         Parameters
         ----------
@@ -94,7 +95,7 @@ class MenuText:
         self.menu_text += raw_text
 
     def add_custom(self, key: str):
-        """Append custom text (after translation from key) to a menu
+        """Append custom text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -104,7 +105,7 @@ class MenuText:
         self.menu_text += f"{i18n.t(self.menu_path + key)}"
 
     def add_info(self, key_info: str):
-        """Append info text (after translation from key) to a menu
+        """Append info text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -114,7 +115,7 @@ class MenuText:
         self.menu_text += f"[info]{i18n.t(self.menu_path + key_info)}:[/info]\n"
 
     def add_param(self, key_param: str, value: str, col_align: int = 0):
-        """Append info text (after translation from key) to a menu
+        """Append info text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -134,7 +135,7 @@ class MenuText:
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
     def _adjust_command_length(self, key_command: str) -> str:
-        """Adjust the length of the command if it is too long
+        """Adjust the length of the command if it is too long.
 
         Parameters
         ----------
@@ -176,7 +177,7 @@ class MenuText:
     def _handle_command_description(
         self, key_command: str, command_description: str
     ) -> str:
-        """Handle the command description
+        """Handle the command description.
 
         Parameters
         ----------
@@ -203,7 +204,7 @@ class MenuText:
     def add_cmd(
         self, key_command: str, condition: bool = True, command_description: str = ""
     ):
-        """Append command text (after translation from key) to a menu
+        """Append command text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -236,7 +237,7 @@ class MenuText:
         condition: Optional[Union[bool, str]] = True,
         menu_description: str = "",
     ):
-        """Append menu text (after translation from key) to a menu
+        """Append menu text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -262,7 +263,7 @@ class MenuText:
             self.menu_text += f"[unvl]>   {menu}[/unvl]\n"
 
     def add_setting(self, key_setting: str, status: bool = True):
-        """Append menu text (after translation from key) to a menu
+        """Append menu text (after translation from key) to a menu.
 
         Parameters
         ----------
@@ -279,9 +280,10 @@ class MenuText:
 
 
 class ConsoleAndPanel:
-    """Create a rich console to wrap the console print with a Panel"""
+    """Create a rich console to wrap the console print with a Panel."""
 
     def __init__(self):
+        """Initialize the ConsoleAndPanel class."""
         self.preferences = get_current_settings()
         self.__console = Console(
             theme=Theme(theme.console_style), highlight=False, soft_wrap=True
@@ -290,6 +292,7 @@ class ConsoleAndPanel:
         self.menu_path = ""
 
     def reload_console(self):
+        """Reload the console with the current settings."""
         self.preferences = get_current_settings()
         theme.apply_console_style(self.preferences.RICH_STYLE)
         self.__console = Console(
@@ -297,10 +300,12 @@ class ConsoleAndPanel:
         )
 
     def capture(self):
+        """Capture the console output."""
         return self.__console.capture()
 
     @staticmethod
     def filter_rich_tags(text):
+        """Filter out rich tags from text."""
         for val in RICH_TAGS:
             text = text.replace(val, "")
 
@@ -325,6 +330,7 @@ class ConsoleAndPanel:
         return text
 
     def print(self, *args, **kwargs):
+        """Print the text to the console."""
         self.reload_console()
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not get_current_settings().TEST_MODE:
@@ -355,6 +361,7 @@ class ConsoleAndPanel:
             print(*args, **kwargs)  # noqa: T201
 
     def input(self, *args, **kwargs):
+        """Get input from the user."""
         self.print(*args, **kwargs, end="")
         return input()
 
@@ -368,7 +375,7 @@ def optional_rich_track(
     desc: str = "",
     total: Optional[int] = None,
 ):
-    """Generate a rich track progress bar if desired
+    """Generate a rich track progress bar if desired.
 
     Parameters
     ----------

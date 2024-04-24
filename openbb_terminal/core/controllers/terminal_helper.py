@@ -1,4 +1,4 @@
-"""Terminal helper"""
+"""Terminal helper."""
 
 __docformat__ = "numpy"
 
@@ -29,7 +29,7 @@ from openbb_terminal.core.session.utils import remove
 
 
 def print_goodbye():
-    """Prints a goodbye message when quitting the terminal"""
+    """Print a goodbye message when quitting the terminal."""
     # LEGACY GOODBYE MESSAGES - You'll live in our hearts forever.
     # "An informed ape, is a strong ape."
     # "Remember that stonks only go up."
@@ -85,11 +85,12 @@ def print_guest_block_msg():
 
 
 def is_installer() -> bool:
-    """Tell whether or not it is a packaged version (Windows or Mac installer"""
+    """Check whether or not it is a packaged version (Windows or Mac installer."""
     return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
 
 
 def bootup():
+    """Bootup the terminal."""
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec # noqa: S605,S607
@@ -100,9 +101,9 @@ def bootup():
     try:
         if os.name == "nt":
             # pylint: disable=E1101
-            sys.stdin.reconfigure(encoding="utf-8")
+            sys.stdin.reconfigure(encoding="utf-8")  # type: ignore
             # pylint: disable=E1101
-            sys.stdout.reconfigure(encoding="utf-8")
+            sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
     except Exception as e:
         console.print(e, "\n")
 
@@ -157,6 +158,7 @@ def check_valid_versions(
     latest_version: version.Version,
     current_version: version.Version,
 ) -> bool:
+    """Check if the versions are valid."""
     if (
         not latest_version
         or not current_version
@@ -168,7 +170,7 @@ def check_valid_versions(
 
 
 def welcome_message():
-    """Print the welcome message
+    """Print the welcome message.
 
     Prints first welcome message, help and a notification if updates are available.
     """
@@ -176,7 +178,10 @@ def welcome_message():
 
 
 def reset(queue: Optional[List[str]] = None):
-    """Resets the CLI.  Allows for checking code without quitting"""
+    """Reset the CLI.
+
+    Allows for checking code without quitting.
+    """
     console.print("resetting...")
     load_env_files()
     debug = get_current_settings().DEBUG_MODE
@@ -216,6 +221,7 @@ def reset(queue: Optional[List[str]] = None):
 
 @contextmanager
 def suppress_stdout():
+    """Suppress the stdout."""
     with open(os.devnull, "w") as devnull:
         old_stdout = sys.stdout
         old_stderr = sys.stderr
@@ -229,7 +235,9 @@ def suppress_stdout():
 
 
 def first_time_user() -> bool:
-    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    """Check whether a user is a first time user.
+
+    A first time user is someone with an empty .env file.
     If this is true, it also adds an env variable to make sure this does not run again.
 
     Returns

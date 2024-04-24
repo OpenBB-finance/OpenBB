@@ -1,3 +1,5 @@
+"""Launcher for terminal."""
+
 from typing import List, Optional
 
 
@@ -5,7 +7,7 @@ from typing import List, Optional
 def launch_terminal(
     debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
 ):
-    """Launch terminal"""
+    """Launch terminal."""
     # pylint: disable=import-outside-toplevel
     from openbb_terminal.core.controllers import terminal_controller
 

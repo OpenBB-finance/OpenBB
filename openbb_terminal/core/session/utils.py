@@ -1,3 +1,5 @@
+"""Utility functions for session module."""
+
 import os
 import shutil
 from pathlib import Path
@@ -62,7 +64,7 @@ def remove(path: Path) -> bool:
         The status of the removal.
     """
     # TODO: Check why module level import leads to circular import.
-    from openbb_terminal.core.config.rich_config import (
+    from openbb_terminal.core.config.rich_config import (  # pylint: disable=import-outside-toplevel
         console,
     )
 

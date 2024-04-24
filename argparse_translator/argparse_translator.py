@@ -101,14 +101,14 @@ class ReferenceToCustomArgumentsProcessor:
 
     def _parse_type(self, type_: str) -> type:
         """Parse the type from the string representation."""
-        type_ = self._make_type_parsable(type_)
+        type_ = self._make_type_parsable(type_)  # type: ignore
 
         if get_origin(type_) is Literal:
-            type_ = type(get_args(type_)[0])
+            type_ = type(get_args(type_)[0])  # type: ignore
 
-        return type_
+        return type_  # type: ignore
 
-    def _get_nargs(self, type_: type) -> Union[int, str]:
+    def _get_nargs(self, type_: type) -> Optional[Union[int, str]]:
         """Get the nargs for the given type."""
         if get_origin(type_) is list:
             return "+"
@@ -116,7 +116,7 @@ class ReferenceToCustomArgumentsProcessor:
 
     def _get_choices(self, type_: str) -> Tuple:
         """Get the choices for the given type."""
-        type_ = self._make_type_parsable(type_)
+        type_ = self._make_type_parsable(type_)  # type: ignore
         type_origin = get_origin(type_)
 
         choices = ()
@@ -170,7 +170,7 @@ class ReferenceToCustomArgumentsProcessor:
                             required=not (arg["optional"]),
                             action="store" if type_ != bool else "store_true",
                             help=arg["description"],
-                            nargs=self._get_nargs(type_),
+                            nargs=self._get_nargs(type_),  # type: ignore
                             choices=self._get_choices(arg["type"]),
                         )
                     )
@@ -203,9 +203,9 @@ class ArgparseTranslator:
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
-            description=self._build_description(func.__doc__),
+            description=self._build_description(func.__doc__),  # type: ignore
             formatter_class=argparse.RawTextHelpFormatter,
-            add_help=add_help,
+            add_help=add_help if add_help else False,
         )
         self._required = self._parser.add_argument_group("required arguments")
 
@@ -224,7 +224,7 @@ class ArgparseTranslator:
 
     def _parser_arguments(self) -> List[str]:
         """Get all the arguments from all groups currently defined on the parser."""
-        arguments_in_use = []
+        arguments_in_use: List[str] = []
 
         # pylint: disable=protected-access
         for action_group in self._parser._action_groups:
@@ -275,14 +275,14 @@ class ArgparseTranslator:
 
         if type_origin is Literal:
             choices = get_args(param_type)
-            param_type = type(choices[0])
+            param_type = type(choices[0])  # type: ignore
 
         if type_origin is list:  # TODO: dict should also go here
             param_type = get_args(param_type)[0]
 
             if get_origin(param_type) is Literal:
                 choices = get_args(param_type)
-                param_type = type(choices[0])
+                param_type = type(choices[0])  # type: ignore
 
         if type_origin is Union:
             union_args = get_args(param_type)
@@ -302,10 +302,10 @@ class ArgparseTranslator:
 
                 if get_origin(param_type) is Literal:
                     choices = get_args(param_type)
-                    param_type = type(choices[0])
+                    param_type = type(choices[0])  # type: ignore
 
         # if there are custom choices, override
-        choices = self._get_argument_custom_choices(param) or choices
+        choices = self._get_argument_custom_choices(param) or choices  # type: ignore
 
         return param_type, choices
 

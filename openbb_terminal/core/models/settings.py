@@ -1,10 +1,12 @@
+"""Data model for settings."""
+
 from pydantic.dataclasses import dataclass
 
 from openbb_terminal.core.models import BaseModel
 
 
 @dataclass(config=dict(validate_assignment=True, frozen=True))
-class Settings(BaseModel):
+class Settings(BaseModel):  # pylint: disable=too-many-instance-attributes
     """Data model for settings."""
 
     # Platform CLI version
@@ -41,4 +43,5 @@ class Settings(BaseModel):
     ALLOWED_NUMBER_OF_COLUMNS: int = 15
 
     def __repr__(self) -> str:  # pylint: disable=useless-super-delegation
+        """Return string representation of model."""
         return super().__repr__()

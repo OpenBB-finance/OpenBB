@@ -100,7 +100,9 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
 
 
 def return_colored_value(value: str):
-    """Return the string value with green, yellow, red or white color based on
+    """Return the string value based on condition.
+
+    Return it with green, yellow, red or white color based on
     whether the number is positive, negative, zero or other, respectively.
 
     Parameters
@@ -136,7 +138,7 @@ def _get_backend():
     except ValueError:
         # backend might not be created yet
         charting_settings = ChartingSettings(
-            system_settings=obb.system, user_settings=obb.user
+            system_settings=obb.system, user_settings=obb.user  # type: ignore
         )
         create_backend(charting_settings)
         get_backend().start(debug=charting_settings.debug_mode)
@@ -525,8 +527,7 @@ def check_file_type_saved(valid_types: Optional[List[str]] = None):
 
 
 def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Remove timezone information from a dataframe.
+    """Remove timezone information from a dataframe.
 
     Parameters
     ----------
@@ -603,7 +604,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
 
 
 def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
-    """Helper to provide a prompt for overwriting existing files.
+    """Provide a prompt for overwriting existing files.
 
     Returns two values, the first is a boolean indicating if the file exists and the
     second is a boolean indicating if the user wants to overwrite the file.
@@ -627,7 +628,7 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
 # This is a false positive on pylint and being tracked in pylint #3060
 # pylint: disable=abstract-class-instantiated
 def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=True):
-    """Saves a Pandas DataFrame to an Excel file.
+    """Save a Pandas DataFrame to an Excel file.
 
     Args:
         df: A Pandas DataFrame.
@@ -637,7 +638,6 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
         index: Whether to write the DataFrame index to the Excel file.
         header: Whether to write the DataFrame header to the Excel file.
     """
-
     overwrite_options = {
         "o": "replace",
         "a": "overlay",
@@ -788,7 +788,7 @@ def system_clear():
 def request(
     url: str, method: str = "get", timeout: int = 0, **kwargs
 ) -> requests.Response:
-    """Abstract helper to make requests from a url with potential headers and params.
+    """Make requests from a url with potential headers and params.
 
     Parameters
     ----------

@@ -1,4 +1,9 @@
+"""Constants for the session module."""
+
+
 class HubEnvironment:
+    """The environment for the hub."""
+
     # BASE_URL = "http://127.0.0.1:8000/"
     BASE_URL = "https://payments.openbb.co/"
     HUB_URL = "https://my.openbb.co/"

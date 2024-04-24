@@ -1,3 +1,5 @@
+"""Account view routines."""
+
 import pandas as pd
 
 from openbb_terminal.core.config.rich_config import console
@@ -7,8 +9,7 @@ from openbb_terminal.core.controllers.helper_funcs import print_rich_table
 
 
 def clean_df(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Cleans the dataframe before displaying it.
+    """Clean the dataframe before displaying it.
 
     Parameters
     ----------

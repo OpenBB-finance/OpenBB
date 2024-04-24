@@ -1,3 +1,5 @@
+"""Base model class."""
+
 import dataclasses as dc
 from typing import Any, Dict, Optional
 
@@ -8,6 +10,8 @@ from pydantic.dataclasses import dataclass
 
 @dataclass
 class BaseModel:
+    """Base model class."""
+
     def __repr__(self) -> str:
         """Return string representation of model."""
         dataclass_repr = ""

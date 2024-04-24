@@ -1,3 +1,5 @@
+"""Current settings module."""
+
 from copy import deepcopy
 from typing import Any
 
@@ -24,7 +26,7 @@ def set_settings(
     name: str,
     value: Any,
 ):
-    """Set preference
+    """Set preference.
 
     Parameters
     ----------
