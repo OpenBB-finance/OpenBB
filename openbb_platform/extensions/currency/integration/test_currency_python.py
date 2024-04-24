@@ -168,6 +168,14 @@ def test_currency_reference_rates(params, obb):
                 "quote_type": "indirect",
             }
         ),
+        (
+            {
+                "provider": "polygon",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

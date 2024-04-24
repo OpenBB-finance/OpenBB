@@ -906,7 +906,7 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
             {
                 "symbol": "AAPL",
                 "limit": 3,
-                "type": "8-K",
+                "form_type": "8-K",
                 "cik": None,
                 "provider": "sec",
                 "use_cache": False,
@@ -916,7 +916,7 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
             {
                 "cik": "0001067983",
                 "limit": 3,
-                "type": "10-Q",
+                "form_type": "10-Q",
                 "symbol": None,
                 "provider": "sec",
                 "use_cache": False,
@@ -1711,7 +1711,15 @@ def test_equity_discovery_filings(params, headers):
     "params",
     [
         ({"symbol": "AAPL"}),
-        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+        (
+            {
+                "limit": 24,
+                "provider": "sec",
+                "symbol": "AAPL",
+                "skip_reports": 1,
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

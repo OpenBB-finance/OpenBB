@@ -1,5 +1,7 @@
 """SEC Institutions Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.data import Data
@@ -40,19 +42,17 @@ class SecInstitutionsSearchFetcher(
         """Transform the query."""
         return SecInstitutionsSearchQueryParams(**params)
 
-    # pylint: disable=unused-argument
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: SecInstitutionsSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the SEC endpoint."""
-        institutions = get_all_ciks(use_cache=query.use_cache)
+        institutions = await get_all_ciks(use_cache=query.use_cache)
         hp = institutions["Institution"].str.contains(query.query, case=False)
         return institutions[hp].astype(str).to_dict("records")
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: SecInstitutionsSearchQueryParams, data: List[Dict], **kwargs: Any
