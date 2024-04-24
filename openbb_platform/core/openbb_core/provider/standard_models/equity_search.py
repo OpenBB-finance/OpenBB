@@ -28,4 +28,4 @@ class EquitySearchData(Data):
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    name: str = Field(description="Name of the company.")
+    name: Optional[str] = Field(default=None, description="Name of the company.")

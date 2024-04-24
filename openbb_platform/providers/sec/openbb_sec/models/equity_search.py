@@ -1,5 +1,7 @@
 """SEC Equity Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,7 +32,6 @@ class SecEquitySearchQueryParams(EquitySearchQueryParams):
 class SecEquitySearchData(EquitySearchData):
     """SEC Equity Search Data."""
 
-    name: Optional[str] = Field(default=None)
     cik: str = Field(description="Central Index Key")
 
 
@@ -48,8 +49,8 @@ class SecEquitySearchFetcher(
         return SecEquitySearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
-        query: SecEquitySearchQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: SecEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -57,7 +58,7 @@ class SecEquitySearchFetcher(
         results = DataFrame()
 
         if query.is_fund is True:
-            companies = get_mf_and_etf_map(use_cache=query.use_cache).astype(str)
+            companies = await get_mf_and_etf_map(use_cache=query.use_cache)
             results = companies[
                 companies["cik"].str.contains(query.query, case=False)
                 | companies["seriesId"].str.contains(query.query, case=False)
@@ -66,7 +67,7 @@ class SecEquitySearchFetcher(
             ]
 
         if query.is_fund is False:
-            companies = get_all_companies(use_cache=query.use_cache)
+            companies = await get_all_companies(use_cache=query.use_cache)
 
             results = companies[
                 companies["name"].str.contains(query.query, case=False)

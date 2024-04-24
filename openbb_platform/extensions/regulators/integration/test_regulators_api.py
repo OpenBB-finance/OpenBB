@@ -25,8 +25,8 @@ def headers():
 @parametrize(
     "params",
     [
-        ({"symbol": "TSLA", "provider": "sec"}),
-        ({"symbol": "SQQQ", "provider": "sec"}),
+        ({"symbol": "TSLA", "provider": "sec", "use_cache": None}),
+        ({"symbol": "SQQQ", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration

@@ -50,6 +50,8 @@ class ROUTER_equity_shorts(Container):
 
                 Skip N number of reports from current. A value of 1 will skip the most recent report.
                  (provider: sec)
+        use_cache : Optional[bool]
+            Whether or not to use cache for the request, default is True. Each reporting period is a separate URL, new reports will be added to the cache. (provider: sec)
 
         Returns
         -------

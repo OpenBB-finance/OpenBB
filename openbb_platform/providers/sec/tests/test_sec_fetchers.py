@@ -29,6 +29,26 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+def test_sec_symbol_map_fetcher(credentials=test_credentials):
+    """Test the SEC Symbol Map fetcher."""
+    params = {"query": "0000909832", "use_cache": False}
+
+    fetcher = SecSymbolMapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_schema_files_fetcher(credentials=test_credentials):
+    """Test the SEC Schema Files fetcher."""
+    params = {"query": "2022"}
+
+    fetcher = SecSchemaFilesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_sec_etf_holdings_fetcher(credentials=test_credentials):
     """Test the SEC ETF Holdings fetcher."""
     params = {"symbol": "TQQQ", "use_cache": False}
@@ -49,19 +69,9 @@ def test_sec_sic_search_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_sec_symbol_map_fetcher(credentials=test_credentials):
-    """Test the SEC Symbol Map fetcher."""
-    params = {"query": "0000909832"}
-
-    fetcher = SecSymbolMapFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_sec_equity_ftd_fetcher(credentials=test_credentials):
     """Test the SEC Equity FTD fetcher."""
-    params = {"symbol": "AAPL", "limit": 1}
+    params = {"symbol": "AAPL", "limit": 1, "use_cache": False}
 
     fetcher = SecEquityFtdFetcher()
     result = fetcher.test(params, credentials)
@@ -99,16 +109,6 @@ def test_sec_institutions_search_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_sec_schema_files_fetcher(credentials=test_credentials):
-    """Test the SEC Schema Files fetcher."""
-    params = {"query": "2022"}
-
-    fetcher = SecSchemaFilesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_sec_rss_litigation_fetcher(credentials=test_credentials):
     """Test the SEC RSS Litigation fetcher."""
     params = {}
@@ -121,7 +121,7 @@ def test_sec_rss_litigation_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_sec_cik_map_fetcher(credentials=test_credentials):
     """Test the SEC CIK map fetcher."""
-    params = {"symbol": "OXY"}
+    params = {"symbol": "OXY", "use_cache": False}
 
     fetcher = SecCikMapFetcher()
     result = fetcher.test(params, credentials)
@@ -131,7 +131,7 @@ def test_sec_cik_map_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_sec_form_13FHR_fetcher(credentials=test_credentials):
     """Test the SEC Form 13FHR fetcher."""
-    params = {"symbol": "NVDA"}
+    params = {"symbol": "NVDA", "use_cache": False}
 
     fetcher = SecForm13FHRFetcher()
     result = fetcher.test(params, credentials)

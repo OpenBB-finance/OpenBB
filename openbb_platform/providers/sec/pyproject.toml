@@ -11,7 +11,6 @@ python = ">=3.8,<3.12"
 openbb-core = "^1.1.6"
 requests-cache = "^1.1.0"
 xmltodict = "^0.13.0"
-pytest-freezegun = "^0.4.2"
 
 [build-system]
 requires = ["poetry-core"]

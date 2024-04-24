@@ -7,6 +7,7 @@ from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
 from openbb_polygon.models.currency_historical import PolygonCurrencyHistoricalFetcher
 from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
+from openbb_polygon.models.currency_snapshots import PolygonCurrencySnapshotsFetcher
 from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
 from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
@@ -29,6 +30,7 @@ polygon_provider = Provider(
         "CryptoHistorical": PolygonCryptoHistoricalFetcher,
         "CurrencyHistorical": PolygonCurrencyHistoricalFetcher,
         "CurrencyPairs": PolygonCurrencyPairsFetcher,
+        "CurrencySnapshots": PolygonCurrencySnapshotsFetcher,
         "EquityHistorical": PolygonEquityHistoricalFetcher,
         "EquityNBBO": PolygonEquityNBBOFetcher,
         "EtfHistorical": PolygonEquityHistoricalFetcher,
