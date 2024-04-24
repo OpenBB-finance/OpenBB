@@ -281,10 +281,9 @@ class FMPFinancialRatiosFetcher(
                 to_snake_case(k).replace("_ttm", "").replace("ttm", ""): v
                 for k, v in item.items()
             }
-
-            if new_item.get("period") != "TTM":
-                new_item.pop("dividend_yiel_percentage", None)
-
+            for col in ["dividend_yield", "pe_ratio", "peg_ratio"]:
+                if col in new_item:
+                    _ = new_item.pop(col)
             if len(query.symbol.split(",")) == 1:
                 new_item.pop("symbol", None)
 
