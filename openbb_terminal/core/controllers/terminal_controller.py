@@ -315,7 +315,7 @@ class TerminalController(BaseController):
 
     def call_settings(self, _):
         """Process feature flags command."""
-        from openbb_terminal.featflags_controller import FeatureFlagsController
+        from openbb_terminal.core.controllers.featflags_controller import FeatureFlagsController
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
