@@ -178,7 +178,7 @@ class IntrinioCompanyNewsFetcher(
         base_url = "https://api-v2.intrinio.com/companies"
         ignore = (
             ["symbol", "page_size", "is_spam"]
-            if query.source == "yahoo"
+            if not query.source or query.source == "yahoo"
             else ["symbol", "page_size"]
         )
         query_str = get_querystring(query.model_dump(by_alias=True), ignore)
@@ -188,6 +188,8 @@ class IntrinioCompanyNewsFetcher(
         async def callback(response, session):
             """Callback function."""
             result = await response.json()
+            if "error" in result:
+                raise RuntimeError(f"Intrinio Error Message -> {result['error']}")
             symbol = response.url.parts[-2]
             articles = 0
             _data = result.get("news", [])
@@ -201,7 +203,7 @@ class IntrinioCompanyNewsFetcher(
                 _data = result.get("news", [])
                 if _data:
                     data.extend([{"symbol": symbol, **d} for d in _data])
-                    articles += len(_data)
+                    articles = len(data)
                 next_page = result.get("next_page")
             # Remove duplicates based on URL
             return data
@@ -214,11 +216,12 @@ class IntrinioCompanyNewsFetcher(
             url = f"{base_url}/{symbol}/news?{query_str}&page_size=99&api_key={api_key}"
             data = await amake_request(url, response_callback=callback, **kwargs)
             if data:
-                data = sorted(data, key=lambda x: x["publication_date"], reverse=False)
-                data = [x for x in data if x["url"] not in seen]
-                for x in data:
-                    seen.add(x["url"])
-                news.extend(data[: query.limit])
+                data = [x for x in data if not (x["url"] in seen or seen.add(x["url"]))]  # type: ignore
+                news.extend(
+                    sorted(data, key=lambda x: x["publication_date"], reverse=True)[
+                        : query.limit
+                    ]
+                )
 
         tasks = [get_one(symbol) for symbol in symbols]
 

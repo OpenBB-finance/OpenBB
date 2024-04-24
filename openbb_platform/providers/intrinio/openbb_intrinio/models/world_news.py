@@ -175,7 +175,7 @@ class IntrinioWorldNewsFetcher(
         base_url = "https://api-v2.intrinio.com/companies"
         ignore = (
             ["symbol", "page_size", "is_spam"]
-            if query.source == "yahoo"
+            if not query.source or query.source == "yahoo"
             else ["symbol", "page_size"]
         )
         query_str = get_querystring(query.model_dump(by_alias=True), ignore)
@@ -191,23 +191,25 @@ class IntrinioWorldNewsFetcher(
             _data = result.get("news", [])
             data = []
             data.extend(
-                [x for x in _data if not (x["url"] in seen or seen.add(x["url"]))]
+                [x for x in _data if not (x["url"] in seen or seen.add(x["url"]))]  # type: ignore
             )
-            articles += len(data)
+            articles = len(data)
             next_page = result.get("next_page")
             while next_page and articles < query.limit:
                 url = f"{base_url}/news?{query_str}&page_size=99&api_key={api_key}&next_page={next_page}"
                 result = await get_data(url, session=session, **kwargs)
                 _data = result.get("news", [])
                 if _data:
-                    _data = sorted(_data, key=lambda x: x["publication_date"], reverse=False)
-                    _data = [x for x in _data if x["url"] not in seen]
-                    for x in _data:
-                        seen.add(x["url"])
-                    news.extend(_data[: query.limit])
-                    articles += len(_data)
+                    # Remove duplicates based on URL
+                    data.extend(
+                        [
+                            x
+                            for x in _data
+                            if not (x["url"] in seen or seen.add(x["url"]))  # type: ignore
+                        ]
+                    )
+                    articles = len(data)
                 next_page = result.get("next_page")
-            # Remove duplicates based on URL
             return sorted(data, key=lambda x: x["publication_date"], reverse=True)[
                 : query.limit
             ]
