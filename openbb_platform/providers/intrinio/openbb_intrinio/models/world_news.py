@@ -185,7 +185,7 @@ class IntrinioWorldNewsFetcher(
         seen = set()
 
         async def callback(response, session):
-            """Callback function."""
+            """Response callback."""
             result = await response.json()
             articles = 0
             _data = result.get("news", [])

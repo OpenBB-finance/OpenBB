@@ -186,7 +186,7 @@ class IntrinioCompanyNewsFetcher(
         news: List = []
 
         async def callback(response, session):
-            """Callback function."""
+            """Response callback."""
             result = await response.json()
             if "error" in result:
                 raise RuntimeError(f"Intrinio Error Message -> {result['error']}")
