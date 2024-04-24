@@ -200,13 +200,11 @@ class IntrinioWorldNewsFetcher(
                 result = await get_data(url, session=session, **kwargs)
                 _data = result.get("news", [])
                 if _data:
-                    data.extend(
-                        [
-                            x
-                            for x in _data
-                            if not (x["url"] in seen or seen.add(x["url"]))
-                        ]
-                    )
+                    _data = sorted(_data, key=lambda x: x["publication_date"], reverse=False)
+                    _data = [x for x in _data if x["url"] not in seen]
+                    for x in _data:
+                        seen.add(x["url"])
+                    news.extend(_data[: query.limit])
                     articles += len(_data)
                 next_page = result.get("next_page")
             # Remove duplicates based on URL

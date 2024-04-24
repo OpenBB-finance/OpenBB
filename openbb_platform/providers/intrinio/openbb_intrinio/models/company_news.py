@@ -214,13 +214,10 @@ class IntrinioCompanyNewsFetcher(
             url = f"{base_url}/{symbol}/news?{query_str}&page_size=99&api_key={api_key}"
             data = await amake_request(url, response_callback=callback, **kwargs)
             if data:
-                data = [
-                    x
-                    for x in sorted(
-                        data, key=lambda x: x["publication_date"], reverse=False
-                    )
-                    if not (x["url"] in seen or seen.add(x["url"]))
-                ]
+                data = sorted(data, key=lambda x: x["publication_date"], reverse=False)
+                data = [x for x in data if x["url"] not in seen]
+                for x in data:
+                    seen.add(x["url"])
                 news.extend(data[: query.limit])
 
         tasks = [get_one(symbol) for symbol in symbols]
