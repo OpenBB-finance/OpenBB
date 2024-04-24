@@ -187,7 +187,6 @@ class IntrinioWorldNewsFetcher(
         async def callback(response, session):
             """Response callback."""
             result = await response.json()
-            articles = 0
             _data = result.get("news", [])
             data = []
             data.extend(
