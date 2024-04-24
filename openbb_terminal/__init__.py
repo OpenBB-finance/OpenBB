@@ -1,1 +1,0 @@
-"""OpenBB Platform CLI initialization."""

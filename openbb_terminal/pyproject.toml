@@ -1,0 +1,102 @@
+[tool.poetry]
+name = "openbb-cli"
+version = "1.0.0"
+description = "Investment Research for Everyone, Anywhere."
+license = "MIT"
+authors = ["OpenBB <hello@openbb.co>"]
+packages = [{ include = "src" }]
+include = ["openbb_terminal/.env"]
+readme = "../website/pypi.md"
+homepage = "https://openbb.co"
+repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
+documentation = "https://docs.openbb.co/sdk"
+
+[tool.poetry.scripts]
+openbb = 'openbb_terminal.src.cli:main'
+
+[tool.poetry.dependencies]
+python = "^3.8.1,<3.12"
+
+# OpenBB dependencies
+openbb = "^4.1.6"
+openbb-charting = "^2.0.2"
+
+# Terminal dependencies
+prompt-toolkit = "^3.0.16"
+rich = "^13"
+python-dotenv = "^1.0.0"
+python-i18n = "^0.3.9"
+
+[tool.poetry.group.dev.dependencies]
+openbb-devtools = "^1.1.3"
+
+[build-system]
+requires = ["setuptools<65.5.0", "poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pydocstyle]
+inherit = true
+convention = "numpy"
+match = '((?!test_).)*\.py'
+add-ignore = "D401"
+
+[tool.flake8]
+max-line-length = 122
+ignore = "S101,W503"
+
+[tool.ruff]
+line-length = 122
+target-version = "py38"
+# This is an introductory addition of ruff. We should look to adding:
+# D: pydocstyle, PD: pandas-vet
+# All options here: https://github.com/charliermarsh/ruff#supported-rules
+select = [
+    "E",
+    "W",
+    "F",
+    "Q",
+    "S",
+    "UP",
+    "I",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "SIM",
+    "T20",
+]
+# These ignores should be seen as temporary solutions to problems that will NEED fixed
+ignore = ["PLR2004", "PLR0913", "PLR0915"]
+exclude = [
+    "^openbb_platform/platform/core/openbb_core/app/static/package/.*",
+    "^openbb_platform/openbb/package/.*",
+]
+
+[tool.ruff.per-file-ignores]
+"**/tests/*" = ["S101"]
+"*init*.py" = ["F401"]
+"website/*" = ["T201"]
+"*integration/*" = ["S101"]
+
+[tool.ruff.flake8-import-conventions.aliases]
+"matplotlib.pyplot" = "plt"
+numpy = "np"
+pandas = "pd"
+seaborn = "sns"
+
+[tool.ruff.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.pylint]
+max-args = 8
+max-branches = 25
+max-returns = 9
+max-statements = 30
+
+[tool.isort]
+profile = "black"
+line_length = 122
+skip_gitignore = true
+combine_as_imports = true
+src_paths = ["openbb_terminal"]
