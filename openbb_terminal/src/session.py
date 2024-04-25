@@ -22,11 +22,11 @@ class Session(metaclass=SingletonMeta):
 
     def __init__(self):
         """Initialize system service."""
-        self._user = self._read_platform_user()
+        self._obb = obb
         self._settings = self._read_terminal_settings()
         self._style = Style(
             style=self._settings.RICH_STYLE,
-            directory=Path(self._user.preferences.user_styles_directory),
+            directory=Path(self._obb.user.preferences.user_styles_directory),
         )
         self._console = Console(
             settings=self._settings, style=self._style.console_style
@@ -36,7 +36,7 @@ class Session(metaclass=SingletonMeta):
     @property
     def user(self) -> User:
         """Get platform user."""
-        return self._user
+        return self._obb.user
 
     @property
     def settings(self) -> Settings:

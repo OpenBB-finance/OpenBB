@@ -65,7 +65,7 @@ def upload_routine(
     try:
         response = requests.post(
             headers={"Authorization": auth_header},
-            url=Session().settings.BASE_URL + "terminal/script",
+            url=Session().settings.BASE_URL + "/terminal/script",
             json=data,
             timeout=timeout,
         )
