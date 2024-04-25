@@ -23,7 +23,7 @@ class Session(metaclass=SingletonMeta):
     def __init__(self):
         """Initialize system service."""
         self._obb = obb
-        self._settings = self._read_terminal_settings()
+        self._settings = Settings()
         self._style = Style(
             style=self._settings.RICH_STYLE,
             directory=Path(self._obb.user.preferences.user_styles_directory),
@@ -31,7 +31,7 @@ class Session(metaclass=SingletonMeta):
         self._console = Console(
             settings=self._settings, style=self._style.console_style
         )
-        self._prompt_session = self._get_prompt_session()
+        self._prompt_session = self._init_prompt_session()
 
     @property
     def user(self) -> User:
@@ -65,13 +65,7 @@ class Session(metaclass=SingletonMeta):
             return deepcopy(obb.user)
         raise AttributeError("The 'obb' object has no attribute 'user'")
 
-    @classmethod
-    def _read_terminal_settings(cls) -> Settings:
-        """Get terminal settings."""
-        # read from .env files
-        return Settings()
-
-    def _get_prompt_session(self) -> Optional[PromptSession]:
+    def _init_prompt_session(self) -> Optional[PromptSession]:
         """Initialize prompt session."""
         try:
             if sys.stdin.isatty():
