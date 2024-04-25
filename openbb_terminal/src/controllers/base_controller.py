@@ -1,8 +1,4 @@
-"""Parent Classes."""
-
-__docformat__ = "numpy"
-
-# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
+"""Base controller for the terminal."""
 
 import argparse
 import difflib
@@ -19,25 +15,20 @@ from prompt_toolkit.styles import Style
 from src.config import setup
 from src.config.completer import NestedCompleter
 from src.config.constants import SCRIPT_TAGS
-from src.config.env import BackendEnvironment
 from src.controllers.choices import build_controller_choice_map
-from src.controllers.helper_funcs import (
+from src.controllers.hub_service import upload
+from src.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
     parse_and_split_input,
+    print_guest_block_msg,
+    remove_file,
     system_clear,
 )
-from src.controllers.menu import session
-from src.controllers.terminal_helper import print_guest_block_msg, remove_file
-from src.routines.hub import upload
-from src.session.console import console
-from src.session.settings import get_current_settings
-from src.session.user import (
-    get_platform_user,
-    is_local,
-)
+from src.session import Session
 
+# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 # pylint: disable=R0912
 
 controllers: Dict[str, Any] = {}
@@ -142,7 +133,7 @@ class BaseController(metaclass=ABCMeta):
 
     def load_class(self, class_ins, *args, **kwargs):
         """Check for an existing instance of the controller before creating a new one."""
-        settings = get_current_settings()
+        settings = Session().settings
         self.save_class()
         arguments = len(args) + len(kwargs)
         # Due to the 'arguments == 1' condition, we actually NEVER load a class
@@ -277,7 +268,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
-        if get_current_settings().REMEMBER_CONTEXTS:
+        if Session().settings.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
@@ -331,7 +322,7 @@ class BaseController(metaclass=ABCMeta):
         actions = self.parse_input(an_input)
 
         if an_input and an_input != "reset":
-            console.print()
+            Session().console.print()
 
         # Empty command
         if len(actions) == 0:
@@ -384,7 +375,7 @@ class BaseController(metaclass=ABCMeta):
                 not self.queue or (self.queue and self.queue[0] not in ("quit", "help"))
             )
         ):
-            console.print()
+            Session().console.print()
 
         return self.queue
 
@@ -395,7 +386,7 @@ class BaseController(metaclass=ABCMeta):
     def call_home(self, _) -> None:
         """Process home command."""
         self.save_class()
-        if self.PATH.count("/") == 1 and get_current_settings().ENABLE_EXIT_AUTO_HELP:
+        if self.PATH.count("/") == 1 and Session().settings.ENABLE_EXIT_AUTO_HELP:
             self.print_help()
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
@@ -416,9 +407,10 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
-        if not is_local():
-            user = get_platform_user()
-            remove_file(Path(user.preferences.export_directory, "routines", "hub"))
+        if not Session().is_local():
+            remove_file(
+                Path(Session().user.preferences.export_directory, "routines", "hub")
+            )
 
     def call_reset(self, _) -> None:
         """Process reset command.
@@ -511,7 +503,7 @@ class BaseController(metaclass=ABCMeta):
 
         if ns_parser:
             if not ns_parser.name:
-                console.print(
+                Session().console.print(
                     "[red]Set a routine title by using the '-n' flag. E.g. 'record -n Morning routine'[/red]"
                 )
                 return
@@ -522,7 +514,7 @@ class BaseController(metaclass=ABCMeta):
                 else ns_parser.tag1
             )
             if tag1 and tag1 not in SCRIPT_TAGS:
-                console.print(
+                Session().console.print(
                     f"[red]The parameter 'tag1' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
@@ -533,7 +525,7 @@ class BaseController(metaclass=ABCMeta):
                 else ns_parser.tag2
             )
             if tag2 and tag2 not in SCRIPT_TAGS:
-                console.print(
+                Session().console.print(
                     f"[red]The parameter 'tag2' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
@@ -544,19 +536,19 @@ class BaseController(metaclass=ABCMeta):
                 else ns_parser.tag3
             )
             if tag3 and tag3 not in SCRIPT_TAGS:
-                console.print(
+                Session().console.print(
                     f"[red]The parameter 'tag3' needs to be one of the following {', '.join(SCRIPT_TAGS)}[/red]"
                 )
                 return
 
-            if is_local() and not ns_parser.local:
-                console.print(
+            if Session().is_local() and not ns_parser.local:
+                Session().console.print(
                     "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
                 )
-                console.print(
+                Session().console.print(
                     "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
                 )
-                console.print(
+                Session().console.print(
                     "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
                 )
                 return
@@ -565,7 +557,7 @@ class BaseController(metaclass=ABCMeta):
             title = " ".join(ns_parser.name) if ns_parser.name else ""
             pattern = re.compile(r"^[a-zA-Z0-9\s]+$")
             if not pattern.match(title):
-                console.print(
+                Session().console.print(
                     f"[red]Title '{title}' has invalid format. Please use only digits, characters and whitespaces.[/]"
                 )
                 return
@@ -591,10 +583,10 @@ class BaseController(metaclass=ABCMeta):
 
             SESSION_RECORDED_PUBLIC = ns_parser.public
 
-            console.print(
+            Session().console.print(
                 f"[green]The routine '{title}' is successfully being recorded.[/green]"
             )
-            console.print(
+            Session().console.print(
                 "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
             )
 
@@ -604,15 +596,15 @@ class BaseController(metaclass=ABCMeta):
         global SESSION_RECORDED  # noqa: PLW0603
 
         if not RECORD_SESSION:
-            console.print(
+            Session().console.print(
                 "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
             )
         elif len(SESSION_RECORDED) < 5:
-            console.print(
+            Session().console.print(
                 "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
             )
         else:
-            current_user = get_platform_user()
+            current_user = Session().user
 
             # Check if the user just wants to store routine locally
             # This works regardless of whether they are logged in or not
@@ -629,14 +621,14 @@ class BaseController(metaclass=ABCMeta):
 
                 # If file already exists, add a timestamp to the name
                 if os.path.isfile(routine_file):
-                    i = console.input(
+                    i = Session().console.input(
                         "A local routine with the same name already exists, "
                         "do you want to override it? (y/n): "
                     )
-                    console.print("")
+                    Session().console.print("")
                     while i.lower() not in ["y", "yes", "n", "no"]:
-                        i = console.input("Select 'y' or 'n' to proceed: ")
-                        console.print("")
+                        i = Session().console.input("Select 'y' or 'n' to proceed: ")
+                        Session().console.print("")
 
                     if i.lower() in ["n", "no"]:
                         new_name = (
@@ -648,7 +640,7 @@ class BaseController(metaclass=ABCMeta):
                             "routines",
                             new_name,
                         )
-                        console.print(
+                        Session().console.print(
                             f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
                         )
 
@@ -659,7 +651,7 @@ class BaseController(metaclass=ABCMeta):
                     lines = ["# OpenBB Platform CLI - Routine", "\n"]
 
                     username = getattr(
-                        get_platform_user().profile.hub_session, "username", "local"
+                        Session().user.profile.hub_session, "username", "local"
                     )
 
                     lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
@@ -675,13 +667,13 @@ class BaseController(metaclass=ABCMeta):
                     # Writing data to a file
                     file1.writelines(lines)
 
-                console.print(
+                Session().console.print(
                     f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
                 )
 
             # If user doesn't specify they want to store routine locally
             # Confirm that the user is logged in
-            elif not is_local():
+            elif not Session().is_local():
                 routine = "\n".join(SESSION_RECORDED[:-1])
                 hub_session = current_user.profile.hub_session
 
@@ -698,20 +690,20 @@ class BaseController(metaclass=ABCMeta):
                         "routine": routine,
                         "tags": SESSION_RECORDED_TAGS,
                         "public": SESSION_RECORDED_PUBLIC,
-                        "base_url": BackendEnvironment.BASE_URL,
+                        "base_url": Session().settings.BASE_URL,
                     }
                     response = upload(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
-                        i = console.input(
+                        i = Session().console.input(
                             "A routine with the same name already exists, "
                             "do you want to replace it? (y/n): "
                         )
-                        console.print("")
+                        Session().console.print("")
                         if i.lower() in ["y", "yes"]:
                             kwargs["override"] = True  # type: ignore
                             response = upload(**kwargs)  # type: ignore
                         else:
-                            console.print("[info]Aborted.[/info]")
+                            Session().console.print("[info]Aborted.[/info]")
 
             # Clear session to be recorded again
             RECORD_SESSION = False
@@ -728,14 +720,14 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            current_user = get_platform_user()
-            local_user = is_local()
+            current_user = Session().user
+            local_user = Session().is_local()
             if not local_user:
                 hub_session = current_user.profile.hub_session
-                console.print(
+                Session().console.print(
                     f"[info]email:[/info] {hub_session.email if hub_session else 'N/A'}"
                 )
-                console.print(
+                Session().console.print(
                     f"[info]uuid:[/info] {hub_session.user_uuid if hub_session else 'N/A'}"
                 )
             else:
@@ -761,23 +753,23 @@ class BaseController(metaclass=ABCMeta):
             "-h", "--help", action="store_true", help="show this help message"
         )
 
-        if get_current_settings().USE_CLEAR_AFTER_CMD:
+        if Session().settings.USE_CLEAR_AFTER_CMD:
             system_clear()
 
         try:
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
         except SystemExit:
             # In case the command has required argument that isn't specified
-            console.print("\n")
+            Session().console.print("\n")
             return None
 
         if ns_parser.help:
             txt_help = parser.format_help()
-            console.print(f"[help]{txt_help}[/help]")
+            Session().console.print(f"[help]{txt_help}[/help]")
             return None
 
         if l_unknown_args:
-            console.print(
+            Session().console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}\n"
             )
 
@@ -880,7 +872,7 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-        if get_current_settings().USE_CLEAR_AFTER_CMD:
+        if Session().settings.USE_CLEAR_AFTER_CMD:
             system_clear()
 
         if "--help" in other_args or "-h" in other_args:
@@ -890,7 +882,7 @@ class BaseController(metaclass=ABCMeta):
                     f"For more information and examples, use 'about {parser.prog}' "
                     f"to access the related guide.\n"
                 )
-            console.print(f"[help]{txt_help}[/help]")
+            Session().console.print(f"[help]{txt_help}[/help]")
             return None
 
         try:
@@ -914,14 +906,14 @@ class BaseController(metaclass=ABCMeta):
             setup.set_last_legend(" ".join(ns_parser.hold_legend_str))
 
         if l_unknown_args:
-            console.print(
+            Session().console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
         return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
         """Enter controller menu."""
-        settings = get_current_settings()
+        settings = Session().settings
         an_input = "HELP_ME"
 
         while True:
@@ -952,7 +944,7 @@ class BaseController(metaclass=ABCMeta):
                     and an_input != "help"
                     and an_input.split(" ")[0] in self.controller_choices
                 ):
-                    console.print(
+                    Session().console.print(
                         f"{get_flair_and_username()} {self.PATH} $ {an_input}"
                     )
 
@@ -963,11 +955,11 @@ class BaseController(metaclass=ABCMeta):
                     self.print_help()
 
                 try:
-                    # Get input from user using auto-completion
-                    if session and settings.USE_PROMPT_TOOLKIT:
+                    prompt_session = Session().prompt_session
+                    if prompt_session and settings.USE_PROMPT_TOOLKIT:
                         # Check if toolbar hint was enabled
                         if settings.TOOLBAR_HINT:
-                            an_input = session.prompt(
+                            an_input = prompt_session.prompt(
                                 f"{get_flair_and_username()} {self.PATH} $ ",
                                 completer=self.completer,
                                 search_ignore_case=True,
@@ -985,7 +977,7 @@ class BaseController(metaclass=ABCMeta):
                                 ),
                             )
                         else:
-                            an_input = session.prompt(
+                            an_input = prompt_session.prompt(
                                 f"{get_flair_and_username()} {self.PATH} $ ",
                                 completer=self.completer,
                                 search_ignore_case=True,
@@ -1006,7 +998,7 @@ class BaseController(metaclass=ABCMeta):
                 self.queue = self.switch(an_input)
 
             except SystemExit:
-                console.print(
+                Session().console.print(
                     f"[red]The command '{an_input}' doesn't exist on the {self.PATH} menu.[/red]\n",
                 )
                 similar_cmd = difflib.get_close_matches(
@@ -1023,12 +1015,14 @@ class BaseController(metaclass=ABCMeta):
                         if candidate_input == an_input:
                             an_input = ""
                             self.queue = []
-                            console.print("\n")
+                            Session().console.print("\n")
                             continue
 
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
 
-                    console.print(f"[green]Replacing by '{an_input}'.[/green]\n")
+                    Session().console.print(
+                        f"[green]Replacing by '{an_input}'.[/green]\n"
+                    )
                     self.queue.insert(0, an_input)

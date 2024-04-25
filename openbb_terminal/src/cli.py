@@ -3,7 +3,7 @@
 import sys
 
 from src.config.setup import setup_config_terminal
-from src.session import launch_terminal
+from src.controllers.terminal_controller import launch
 
 
 def main():
@@ -13,7 +13,7 @@ def main():
     dev = "--dev" in sys.argv[1:]
     debug = "--debug" in sys.argv[1:]
 
-    launch_terminal(dev=dev, debug=debug)
+    launch(dev, debug)
 
 
 if __name__ == "__main__":

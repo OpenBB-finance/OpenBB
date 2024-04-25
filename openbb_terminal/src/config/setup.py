@@ -6,8 +6,7 @@ from typing import TYPE_CHECKING, List, Optional, TypeVar
 
 import i18n
 
-from src.config.env import load_env_files
-from src.config.paths import I18N_DICT_LOCATION
+from src.config.constants import I18N_FILE
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -70,7 +69,7 @@ def set_current_figure(fig: Optional[OpenBBFigureT] = None):
     current_figure = fig
 
 
-def setup_i18n(i18n_path: Path = I18N_DICT_LOCATION, lang: str = "en"):
+def setup_i18n(i18n_path: Path = I18N_FILE, lang: str = "en"):
     """Select the terminal translation language."""
     i18n.load_path.append(i18n_path)
     i18n.set("locale", lang)
@@ -78,14 +77,8 @@ def setup_i18n(i18n_path: Path = I18N_DICT_LOCATION, lang: str = "en"):
 
 
 def setup_config_terminal():
-    """Set up the config terminal."""
-    load_env_files()
-
-    # this should be only be imported after loading the env files
-    # so that the settings are loaded correctly
+    """Setup pre-launch configurations for the terminal."""
     # pylint: disable=import-outside-toplevel
-    from src.session.settings import get_current_settings
+    from src.session import Session
 
-    lang = get_current_settings().USE_LANGUAGE
-
-    setup_i18n(lang=lang)
+    setup_i18n(lang=Session().settings.USE_LANGUAGE)

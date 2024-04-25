@@ -6,7 +6,7 @@ from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
 
-from src.session.console import console
+from src.session import Session
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements
@@ -195,7 +195,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                 # Just throw a warning when user uses wrong convention
                 numdollars = len(re.findall(r"\$", line))
                 if numdollars > 1:
-                    console.print(
+                    Session().console.print(
                         f"The variable {VAR_NAME} should not be declared as "
                         f"{'$' * numdollars}{VAR_NAME}. Instead it will be "
                         f"converted into ${VAR_NAME}."
@@ -446,7 +446,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
                             final_lines.append(foreach_line_loop.strip())
 
                 if not varused_inside:
-                    console.print(
+                    Session().console.print(
                         f"The variable {varname} was used in foreach header "
                         "but it wasn't used inside the loop."
                     )

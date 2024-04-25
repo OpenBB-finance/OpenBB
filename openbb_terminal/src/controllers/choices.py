@@ -7,11 +7,11 @@ from types import MethodType
 from typing import Callable, List, Literal
 from unittest.mock import patch
 
-from src.controllers.helper_funcs import (
+from src.controllers.utils import (
     check_file_type_saved,
     check_positive,
 )
-from src.session.settings import get_current_settings
+from src.session import Session
 
 
 def __mock_parse_known_args_and_warn(
@@ -187,7 +187,7 @@ def __patch_controller_functions(controller):
     )
 
     rich = patch(
-        target="src.session.console.Console.print",
+        target="src.config.console.Console.print",
         return_value=None,
     )
 
@@ -206,7 +206,7 @@ def __patch_controller_functions(controller):
         ),
     ]
 
-    if not get_current_settings().DEBUG_MODE:
+    if not Session().settings.DEBUG_MODE:
         rich.start()
     patched_function_list = []
     for patcher in patcher_list:
@@ -214,7 +214,7 @@ def __patch_controller_functions(controller):
 
     yield patched_function_list
 
-    if not get_current_settings().DEBUG_MODE:
+    if not Session().settings.DEBUG_MODE:
         rich.stop()
     for patcher in patcher_list:
         patcher.stop()
@@ -314,7 +314,7 @@ def build_controller_choice_map(controller) -> dict:
                 argument_parser=argument_parser
             )
         except Exception as exception:
-            if get_current_settings().DEBUG_MODE:
+            if Session().settings.DEBUG_MODE:
                 raise Exception(
                     f"On command : `{command}`.\n{str(exception)}"
                 ) from exception

@@ -11,13 +11,13 @@ from src.config.menu_text import RICH_TAGS
 from src.models.settings import Settings
 
 
-class BaseConsole:
+class Console:
     """Create a rich console to wrap the console print with a Panel."""
 
     def __init__(
         self,
+        settings: Settings,
         style: Optional[str] = None,
-        settings: Optional[Settings] = None,
     ):
         """Initialize the ConsoleAndPanel class."""
         self._console = RichConsole(
@@ -25,7 +25,7 @@ class BaseConsole:
             highlight=False,
             soft_wrap=True,
         )
-        self.settings = settings
+        self._settings = settings
         self.menu_text = ""
         self.menu_path = ""
 
@@ -62,10 +62,10 @@ class BaseConsole:
     def print(self, *args, **kwargs):
         """Print the text to the console."""
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
-            if not self.settings.TEST_MODE:
-                if self.settings.ENABLE_RICH_PANEL:
-                    if self.settings.SHOW_VERSION:
-                        version = self.settings.VERSION
+            if not self._settings.TEST_MODE:
+                if self._settings.ENABLE_RICH_PANEL:
+                    if self._settings.SHOW_VERSION:
+                        version = self._settings.VERSION
                         version = f"[param]OpenBB Platform CLI v{version}[/param] (https://openbb.co)"
                     else:
                         version = (
@@ -84,7 +84,7 @@ class BaseConsole:
                     self._console.print(kwargs["text"])
             else:
                 print(self.filter_rich_tags(kwargs["text"]))  # noqa: T201
-        elif not self.settings.TEST_MODE:
+        elif not self._settings.TEST_MODE:
             self._console.print(*args, **kwargs)
         else:
             print(*args, **kwargs)  # noqa: T201

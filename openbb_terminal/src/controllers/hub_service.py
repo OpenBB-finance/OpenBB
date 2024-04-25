@@ -9,10 +9,7 @@ from src.config.constants import (
     CONNECTION_TIMEOUT_MSG,
     TIMEOUT,
 )
-from src.config.env import BackendEnvironment
-from src.session.console import console
-from src.session.settings import get_current_settings
-from src.session.user import get_platform_user
+from src.session import Session
 
 # created dictionaries for personal and default routines with the structure
 # {"file_name" :["script","personal/default"]}
@@ -29,7 +26,6 @@ def upload(
     override: bool = False,
     tags: str = "",
     public: bool = False,
-    base_url: str = BackendEnvironment.BASE_URL,
     timeout: int = TIMEOUT,
 ) -> Optional[requests.Response]:
     """Send a routine to the server.
@@ -48,8 +44,6 @@ def upload(
         The tags of the routine.
     public : bool
         Whether to make the routine public or not.
-    base_url : str
-        The base url, by default BASE_URL
     timeout : int
         The timeout, by default TIMEOUT
 
@@ -64,49 +58,48 @@ def upload(
         "script": routine,
         "override": override,
         "tags": tags,
-        "version": get_current_settings().VERSION,
+        "version": Session().settings.VERSION,
         "public": public,
     }
+    _console = Session().console
     try:
         response = requests.post(
             headers={"Authorization": auth_header},
-            url=base_url + "terminal/script",
+            url=Session().settings.BASE_URL + "terminal/script",
             json=data,
             timeout=timeout,
         )
         if response.status_code == 200:
-            username = getattr(
-                get_platform_user().profile.hub_session, "username", None
-            )
+            username = getattr(Session().user.profile.hub_session, "username", None)
             if not username:
-                console.print("[red]No username found.[/red]")
-                console.print("[red]Failed to upload your routine.[/red]")
+                _console.print("[red]No username found.[/red]")
+                _console.print("[red]Failed to upload your routine.[/red]")
                 return None
-            console.print("[green]Successfully uploaded your routine.[/]")
+            _console.print("[green]Successfully uploaded your routine.[/]")
 
-            run_env = BackendEnvironment.HUB_URL.rstrip("/")
+            hub_url = Session().settings.HUB_URL
 
             if public:
-                console.print(
-                    f"\n[yellow]Share or edit it at {run_env}/u/{username}/routine/{name.replace(' ', '-')}[/]"
+                _console.print(
+                    f"\n[yellow]Share or edit it at {hub_url}/u/{username}/routine/{name.replace(' ', '-')}[/]"
                 )
             else:
-                console.print(f"\n[yellow]Go to {run_env} to edit this script,[/]")
-                console.print(
+                _console.print(f"\n[yellow]Go to {hub_url} to edit this script,[/]")
+                _console.print(
                     f"[yellow]or even make it public so you can access it at "
-                    f"{run_env}/u/{username}/routine/{name.replace(' ', '-')}[/]"
+                    f"{hub_url}/u/{username}/routine/{name.replace(' ', '-')}[/]"
                 )
         elif response.status_code != 409:  # 409: routine already exists
-            console.print(
+            _console.print(
                 "[red]" + response.json().get("detail", "Unknown error.") + "[/red]"
             )
         return response
     except requests.exceptions.ConnectionError:
-        console.print(f"\n{CONNECTION_ERROR_MSG}")
+        _console.print(f"\n{CONNECTION_ERROR_MSG}")
         return None
     except requests.exceptions.Timeout:
-        console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
+        _console.print(f"\n{CONNECTION_TIMEOUT_MSG}")
         return None
     except Exception:
-        console.print("[red]Failed to upload your routine.[/red]")
+        _console.print("[red]Failed to upload your routine.[/red]")
         return None

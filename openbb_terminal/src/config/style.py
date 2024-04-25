@@ -1,32 +1,18 @@
 """Chart and style helpers for Plotly."""
 
 # pylint: disable=C0302,R0902,W3301
-import contextlib
 import json
 from pathlib import Path
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Dict,
-    List,
-    Optional,
-    TypeVar,
-)
+from typing import Any, Dict, List, Optional
 
 from rich.console import Console
 
-from src.config.paths import STYLES_DIRECTORY_REPO
+from src.config.constants import STYLES_DIRECTORY
 
-if TYPE_CHECKING:
-    with contextlib.suppress(ImportError):
-        from darts import TimeSeries  # pylint: disable=W0611 # noqa: F401
-
-
-TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 console = Console()
 
 
-class TerminalStyle:
+class Style:
     """The class that helps with handling of style configurations.
 
     It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
@@ -34,8 +20,7 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    STYLES_REPO = STYLES_DIRECTORY_REPO
-    USER_STYLES_DIRECTORY: Optional[Path] = None
+    STYLES_REPO = STYLES_DIRECTORY
 
     console_styles_available: Dict[str, Path] = {}
     console_style: Dict[str, Any] = {}
@@ -50,16 +35,10 @@ class TerminalStyle:
 
     line_width: float = 1.5
 
-    def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
-        """Create a singleton."""
-        if not hasattr(cls, "instance"):
-            cls.instance = super().__new__(cls)  # pylint: disable=E1120
-        return cls.instance
-
     def __init__(
         self,
         style: Optional[str] = "",
-        user_styles_directory: Optional[Path] = None,
+        directory: Optional[Path] = None,
     ):
         """Initialize the class.
 
@@ -68,17 +47,18 @@ class TerminalStyle:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
-        self.load_available_styles()
-        self.apply_console_style(style)
-        self.USER_STYLES_DIRECTORY = user_styles_directory
+        self._load_available_styles(directory)
+        self.apply_console_style(style, directory)
 
-    def apply_console_style(self, style: Optional[str] = None) -> None:
+    def apply_console_style(
+        self, style: Optional[str] = None, directory: Optional[Path] = None
+    ) -> None:
         """Apply the style to the console."""
         if style:
             if style in self.console_styles_available:
                 json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                self.load_available_styles()
+                self._load_available_styles(directory)
                 if style in self.console_styles_available:
                     json_path = self.console_styles_available[style]
                 else:
@@ -86,11 +66,11 @@ class TerminalStyle:
                     json_path = self.console_styles_available.get("dark", None)
 
             if json_path:
-                self.console_style = self.load_json_style(json_path)
+                self.console_style = self._load_json_style(json_path)
             else:
                 console.print("Error loading default.")
 
-    def load_available_styles_from_folder(self, folder: Optional[Path]) -> None:
+    def _load_available_styles_from_folder(self, folder: Optional[Path]) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -113,12 +93,12 @@ class TerminalStyle:
             for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
-    def load_available_styles(self) -> None:
+    def _load_available_styles(self, directory: Optional[Path] = None) -> None:
         """Load custom styles from default and user folders."""
-        self.load_available_styles_from_folder(self.STYLES_REPO)
-        self.load_available_styles_from_folder(self.USER_STYLES_DIRECTORY)
+        self._load_available_styles_from_folder(self.STYLES_REPO)
+        self._load_available_styles_from_folder(directory)
 
-    def load_json_style(self, file: Path) -> Dict[str, Any]:
+    def _load_json_style(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
