@@ -32,8 +32,7 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     @classmethod
     def validate_period(cls, v):
         """Validate period."""
-        v = "FY" if v == "annual" else "QTR"
-        return v
+        return "FY" if v == "annual" else "QTR"
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
@@ -428,12 +427,11 @@ class IntrinioBalanceSheetFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "balance_sheet_statement"
-        period = "FY" if query.period == "annual" else "QTR"
         fundamentals_data: Dict = {}
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={period}"
+            f"statement_code={statement_code}&type={query.period}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
@@ -444,7 +442,6 @@ class IntrinioBalanceSheetFetcher(
         fundamentals_data = (await get_data_one(fundamentals_url, **kwargs)).get(
             "fundamentals", []
         )
-
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
             for item in fundamentals_data
