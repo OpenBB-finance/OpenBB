@@ -30,7 +30,7 @@ class Session(metaclass=SingletonMeta):
         self._console = Console(
             settings=self._settings, style=self._style.console_style
         )
-        self._prompt_session = self._init_prompt_session()
+        self._prompt_session = self._get_prompt_session()
 
     @property
     def user(self) -> User:
@@ -57,7 +57,7 @@ class Session(metaclass=SingletonMeta):
         """Get prompt session."""
         return self._prompt_session
 
-    def _init_prompt_session(self) -> Optional[PromptSession]:
+    def _get_prompt_session(self) -> Optional[PromptSession]:
         """Initialize prompt session."""
         try:
             if sys.stdin.isatty():
