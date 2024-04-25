@@ -222,6 +222,7 @@ def reset(queue: Optional[List[str]] = None):
     Allows for checking code without quitting.
     """
     Session().console.print("resetting...")
+    Session().reset()
     debug = Session().settings.DEBUG_MODE
     dev = Session().settings.DEV_BACKEND
 
