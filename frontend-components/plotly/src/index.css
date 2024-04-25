@@ -1,0 +1,505 @@
+@font-face {
+  font-family: "Fira Code";
+  src: url("../../fonts/FiraCode-VF.ttf") format("truetype");
+  /* fix Fire Code font width issue that makes Text get cut off in Plotly.js */
+  font-weight: 400 700;
+  font-stretch: 50%;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  ._input {
+    @apply w-full text-xs px-2 py-1 bg-grey-50 dark:bg-grey-900 h-[36px] border-[1.5px] border-grey-300 dark:border-grey-700 rounded outline-none dark:outline-1 focus:border-grey-500 active:border-grey-500 dark:text-white dark:focus:text-white dark:focus:border-white dark:active:border-white dark:hover:border-white disabled:border-grey-600 font-normal;
+  }
+  ._label {
+    @apply text-grey-500 text-xs uppercase tracking-widest font-bold;
+  }
+  ._btn-common {
+    @apply whitespace-nowrap inline-flex w-full items-center justify-center gap-2 rounded py-2 px-6 text-center !no-underline transition duration-150 ease-out md:w-fit;
+  }
+  ._btn {
+    @apply _btn-common text-sm bg-grey-800 text-white hover:bg-grey-600 dark:bg-grey-100 dark:text-grey-800 dark:hover:bg-white focus:outline focus:outline-2 focus:outline-grey-500 dark:active:bg-grey-200 dark:hover:active:text-grey-900 disabled:bg-grey-300 disabled:text-grey-500 active:disabled:bg-grey-300 active:disabled:text-grey-500;
+  }
+  ._btn-secondary {
+    @apply _btn-common border border-grey-300 text-grey-300 outline-offset-0 hover:border-white hover:text-white focus:outline focus:outline-2 focus:outline-grey-500 active:border-white active:bg-grey-800 active:text-white disabled:border-grey-500 disabled:bg-transparent disabled:text-grey-500;
+  }
+  ._btn-tertiary {
+    @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
+  }
+  ._icon-btn {
+    @apply _btn-common bg-grey-900 text-grey-50 hover:bg-grey-800 hover:text-white focus:bg-grey-900 focus:outline focus:outline-2 focus:outline-grey-500 active:bg-grey-700 active:text-white disabled:bg-grey-500 disabled:text-grey-700;
+  }
+  ._hyper-link {
+    @apply underline text-blue-300 hover:text-blue-400 active:text-blue-500 disabled:text-grey-600;
+  }
+  ._modal {
+    @apply card fixed top-1/2 left-1/2 z-50 max-h-[608px] w-[80%] max-w-[500px] -translate-x-1/2 -translate-y-1/2 overflow-auto text-white bg-grey-900 p-2 duration-300 focus:outline-none md:p-10;
+  }
+  ._modal-overlay {
+    @apply bg-grey-900 opacity-60 z-40 inset-0 fixed;
+  }
+  ._modal-close {
+    @apply absolute top-[10px] right-[20px] text-grey-200 hover:text-white rounded-[4px] focus:outline focus:outline-2 focus:outline-grey-500;
+  }
+  ._modal-title {
+    @apply text-white uppercase tracking-widest text-lg font-bold;
+  }
+  .card {
+    @apply w-full rounded border border-grey-600 p-6 shadow bg-grey-850;
+  }
+}
+
+._header {
+  background: #062d48;
+  background: linear-gradient(90deg,
+      #062d48,
+      #0b3054 15%,
+      #0e386c 45%,
+      #0b203d 64%,
+      #06101a 82%,
+      #060709);
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0);
+}
+
+body,
+html {
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Fira Code", monospace, "Arial Black";
+  font-size: 12px;
+  font-size: 1.2rem;
+  color: #ffffff;
+  background-color: #000000;
+  font-stretch: 50%;
+  overflow: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.saving {
+  position: absolute;
+  z-index: 9999999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100px;
+  width: 200px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(250, 250, 250, 0.5);
+  font-size: 0.9em;
+  border-radius: 20px;
+  animation: popup 0.3s ease-in-out;
+}
+
+.saving.show {
+  display: flex;
+}
+
+
+.popup_overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  background: #070707;
+  border: 1px solid #dcdcdc;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  padding: 40px;
+  box-sizing: border-box;
+  display: none;
+  font-family: "Fira Code", monospace, "Arial Black";
+  animation: popup 0.3s ease-in-out;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  z-index: 2;
+  overflow: auto;
+}
+
+.popup_content {
+  position: relative;
+  background-color: transparent;
+  padding: 0px;
+  font-size: 0.75rem !important;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.popup_warning {
+  color: #ff0000;
+  font-size: 12px;
+  font-size: 0.8rem;
+  font-family: "Fira Code", monospace, "Arial Black";
+  display: none;
+  background-color: rgba(255, 0, 0, 0.1);
+  border-radius: 4px;
+  font-weight: bold;
+  margin-top: -18px;
+  margin-left: 45px;
+}
+
+._modal {
+  font-size: 0.65rem !important;
+  animation: popup 0.3s ease-in-out;
+}
+
+#changecolor {
+  position: absolute;
+  z-index: 9;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 60px;
+  background-color: transparent;
+  padding: 10px;
+  box-sizing: border-box;
+  display: none;
+}
+
+#changecolor_header:hover {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  border: 1px solid gold;
+  box-shadow: 0 0 5px gold;
+}
+
+#changecolor_header {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  color: #fff;
+}
+
+#changecolor_header input[type="color"] {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 20px !important;
+  cursor: pointer;
+  border: 1px solid #7d7d7d;
+  padding: 5px;
+  background-color: #131313;
+  color: #ffffff;
+  margin-right: 50px !important;
+}
+
+@keyframes popup {
+  0% {
+    -webkit-transition: all 0.3s ease-in-out;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+
+  40% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  80% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.loader {
+  position: relative;
+  bottom: 0px;
+  right: -5px;
+  border: 4px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 4px solid #00acff;
+  width: 20px;
+  height: 20px;
+  animation: spin 1.5s linear infinite;
+  opacity: 1;
+}
+
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.csv_column_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0px 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.plotly-graph-div .modebar--hover .modebar-group {
+  border: 2px solid #5a5a5a !important;
+  border-radius: 4px;
+  padding: 2px 2px 2px !important;
+}
+
+.modebar-group {
+  display: flex !important;
+  background-color: transparent !important;
+}
+
+.modebar {
+  z-index: 5000 !important;
+  position: fixed !important;
+  bottom: 10px !important;
+  top: auto !important;
+  left: 50% !important;
+  right: auto !important;
+  align-items: center;
+  transform: translate(-50%, 10%) !important;
+}
+
+@media screen and (max-width: 600px) {
+  .modebar-group {
+    display: block !important;
+    background-color: transparent !important;
+  }
+
+  .modebar {
+    bottom: 20px !important;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  ._modal {
+    font-size: 0.65rem !important;
+    animation: popup 0.3s ease-in-out;
+    height: 70% !important;
+    overflow: auto !important;
+  }
+}
+
+.modebar-group {
+  margin-left: 10px;
+  margin-right: 10px;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+}
+
+
+.modebar-group:nth-of-type(1):after {
+  content: "Panning Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(1):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(2):after {
+  content: "Indicator Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(2):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(3):after {
+  content: "Chart Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(3):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(4):after {
+  content: "Drawing Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(4):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar-group:nth-of-type(5):after {
+  content: "Export Tools";
+  height: fit-content;
+  width: fit-content;
+  position: absolute;
+  display: none;
+}
+
+.modebar-group:nth-of-type(5):hover:after {
+  padding: 10px;
+  display: block;
+  font-size: 10px;
+  color: white;
+  cursor: pointer;
+  background: #0f0f0f !important;
+  border: 1px solid #404040;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modebar.vertical {
+  flex-direction: row !important;
+  flex-flow: initial !important;
+  gap: 6px !important;
+}
+
+.js-plotly-plot .plotly .modebar.vertical .modebar-group {
+  padding-bottom: 0px !important;
+}
+
+.modebar-container {
+  position: initial !important;
+}
+
+.modebar-btn:hover .icon path {
+  fill: #00acff !important;
+}
+
+.modebar-btn.active .icon path {
+  fill: #00acff !important;
+}
+
+
+.modebar-btn {
+  padding: 4px !important;
+  margin-left: 4px !important;
+  margin-right: 4px !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+
+.modebar-btn:hover {
+  background-color: #1f1f1f !important;
+  border-radius: 8px;
+}
+
+
+@media screen and (max-height: 1000px) and (max-width: 1100px) {
+  ._header strong {
+    font-size: 0.8rem !important;
+  }
+
+  ._header p {
+    font-size: 0.7rem !important;
+  }
+
+  ._header span {
+    font-size: 0.5rem !important;
+  }
+}
