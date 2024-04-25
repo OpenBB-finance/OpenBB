@@ -2,10 +2,14 @@
 
 from typing import Any
 
-from dotenv import set_key
-from pydantic import BaseModel, ConfigDict
+from dotenv import dotenv_values, set_key
+from pydantic import BaseModel, ConfigDict, model_validator
 
-from src.config.constants import ENV_FILE_SETTINGS
+from src.config.constants import (
+    ENV_FILE_PROJECT,
+    ENV_FILE_REPOSITORY,
+    ENV_FILE_SETTINGS,
+)
 
 
 class Settings(BaseModel):
@@ -56,6 +60,24 @@ class Settings(BaseModel):
         return f"{self.__class__.__name__}\n\n" + "\n".join(
             f"{k}: {v}" for k, v in self.model_dump().items()
         )
+
+    @model_validator(mode="before")
+    @classmethod
+    def from_env(cls, values: dict) -> dict:
+        """Load .env files.
+
+        Loads the dotenv files in the following order:
+        1. Repository .env file
+        2. Package .env file
+        3. User .env file
+        """
+        settings = {}
+        settings.update(dotenv_values(ENV_FILE_REPOSITORY))
+        settings.update(dotenv_values(ENV_FILE_PROJECT))
+        settings.update(dotenv_values(ENV_FILE_SETTINGS))
+        settings.update(values)
+        filtered = {k.replace("OPENBB_", ""): v for k, v in settings.items()}
+        return filtered
 
     def set_item(self, key: str, value: Any) -> None:
         """Set an item in the model and save to .env."""
