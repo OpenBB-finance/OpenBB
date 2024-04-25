@@ -58,13 +58,6 @@ class Session(metaclass=SingletonMeta):
         """Get prompt session."""
         return self._prompt_session
 
-    @classmethod
-    def _read_platform_user(cls) -> User:
-        """Get platform user."""
-        if hasattr(obb, "user"):
-            return deepcopy(obb.user)
-        raise AttributeError("The 'obb' object has no attribute 'user'")
-
     def _init_prompt_session(self) -> Optional[PromptSession]:
         """Initialize prompt session."""
         try:
