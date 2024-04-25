@@ -396,7 +396,7 @@ class TerminalController(BaseController):
                     return
                 routine_text = response.json()["script"]
                 file_path = Path(
-                    Session().user().preferences.export_directory, "routines"
+                    Session().user.preferences.export_directory, "routines"
                 )
                 routine_path = file_path / file_name
                 with open(routine_path, "w") as file:
