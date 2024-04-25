@@ -87,7 +87,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         else:
             filter_input = False
 
-    commands = an_input.split("/")
+    commands = an_input.split("/") if "-t" not in an_input else [an_input]
 
     for command_num, command in enumerate(commands):
         if command == commands[command_num] == commands[-1] == "":
