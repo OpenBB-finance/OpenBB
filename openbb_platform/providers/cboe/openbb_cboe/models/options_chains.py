@@ -63,9 +63,8 @@ class CboeOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the Cboe endpoint"""
-
-        symbol = query.symbol.replace("^", "").split(",")[0]
+        """Return the raw data from the Cboe endpoint."""
+        symbol = query.symbol.replace("^", "").split(",")[0].upper()
         INDEXES = await get_index_directory(use_cache=query.use_cache)
         SYMBOLS = await get_company_directory(use_cache=query.use_cache)
         INDEXES = INDEXES.set_index("index_symbol")
@@ -87,8 +86,7 @@ class CboeOptionsChainsFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[CboeOptionsChainsData]:
-        """Transform the data to the standard format"""
-
+        """Transform the data to the standard format."""
         if not data:
             raise EmptyDataError()
 
