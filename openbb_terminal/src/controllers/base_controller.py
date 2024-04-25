@@ -692,7 +692,7 @@ class BaseController(metaclass=ABCMeta):
                         "public": SESSION_RECORDED_PUBLIC,
                         "base_url": Session().settings.BASE_URL,
                     }
-                    response = upload(**kwargs)  # type: ignore
+                    response = upload_routine(**kwargs)  # type: ignore
                     if response is not None and response.status_code == 409:
                         i = Session().console.input(
                             "A routine with the same name already exists, "
@@ -701,7 +701,7 @@ class BaseController(metaclass=ABCMeta):
                         Session().console.print("")
                         if i.lower() in ["y", "yes"]:
                             kwargs["override"] = True  # type: ignore
-                            response = upload(**kwargs)  # type: ignore
+                            response = upload_routine(**kwargs)  # type: ignore
                         else:
                             Session().console.print("[info]Aborted.[/info]")
 

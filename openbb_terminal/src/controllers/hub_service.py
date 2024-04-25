@@ -18,7 +18,7 @@ from src.session import Session
 
 
 # pylint: disable=too-many-arguments
-def upload(
+def upload_routine(
     auth_header: str,
     name: str = "",
     description: str = "",
