@@ -40,13 +40,7 @@ class Style:
         style: Optional[str] = "",
         directory: Optional[Path] = None,
     ):
-        """Initialize the class.
-
-        Parameters
-        ----------
-        console_style : `str`, optional
-            The name of the Rich style to use, by default ""
-        """
+        """Initialize the class."""
         self._load(directory)
         self.apply(style, directory)
 
@@ -99,18 +93,7 @@ class Style:
         self._from_directory(directory)
 
     def _from_json(self, file: Path) -> Dict[str, Any]:
-        """Load style from json file.
-
-        Parameters
-        ----------
-        file : Path
-            Path to the file containing the style
-
-        Returns
-        -------
-        Dict[str, Any]
-            Style as a dictionary
-        """
+        """Load style from json file."""
         with open(file) as f:
             json_style: dict = json.load(f)
             for key, value in json_style.items():
