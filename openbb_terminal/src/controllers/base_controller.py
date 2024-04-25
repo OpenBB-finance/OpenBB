@@ -16,7 +16,7 @@ from src.config import setup
 from src.config.completer import NestedCompleter
 from src.config.constants import SCRIPT_TAGS
 from src.controllers.choices import build_controller_choice_map
-from src.controllers.hub_service import upload
+from src.controllers.hub_service import upload_routine
 from src.controllers.utils import (
     check_file_type_saved,
     check_positive,
