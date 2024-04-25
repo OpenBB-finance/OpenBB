@@ -28,12 +28,6 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
 
-    @field_validator("period", mode="after", check_fields=False)
-    @classmethod
-    def validate_period(cls, v):
-        """Validate period."""
-        return "FY" if v == "annual" else "QTR"
-
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
     def handle_symbol(cls, v) -> str:
@@ -429,9 +423,10 @@ class IntrinioBalanceSheetFetcher(
         statement_code = "balance_sheet_statement"
         fundamentals_data: Dict = {}
         base_url = "https://api-v2.intrinio.com"
+        period = "FY" if query.period == "annual" else "QTR"
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={query.period}"
+            f"statement_code={statement_code}&type={period}"
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
@@ -459,8 +454,8 @@ class IntrinioBalanceSheetFetcher(
             }
 
         urls = [
-            f"{base_url}/fundamentals/{query.symbol}-{statement_code}-{period}/standardized_financials?api_key={api_key}"
-            for period in fiscal_periods
+            f"{base_url}/fundamentals/{query.symbol}-{statement_code}-{p}/standardized_financials?api_key={api_key}"
+            for p in fiscal_periods
         ]
 
         return await amake_requests(urls, callback, **kwargs)
