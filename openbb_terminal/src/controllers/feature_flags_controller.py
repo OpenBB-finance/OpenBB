@@ -159,7 +159,7 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.style:
-            Session().style.apply_console_style(ns_parser.style)
+            Session().style.apply(ns_parser.style)
             Session().settings.set_item("RICH_STYLE", ns_parser.style)
         elif not other_args:
             Session().console.print(

@@ -47,10 +47,10 @@ class Style:
         console_style : `str`, optional
             The name of the Rich style to use, by default ""
         """
-        self._load_available_styles(directory)
-        self.apply_console_style(style, directory)
+        self._load(directory)
+        self.apply(style, directory)
 
-    def apply_console_style(
+    def apply(
         self, style: Optional[str] = None, directory: Optional[Path] = None
     ) -> None:
         """Apply the style to the console."""
@@ -58,7 +58,7 @@ class Style:
             if style in self.console_styles_available:
                 json_path: Optional[Path] = self.console_styles_available[style]
             else:
-                self._load_available_styles(directory)
+                self._load(directory)
                 if style in self.console_styles_available:
                     json_path = self.console_styles_available[style]
                 else:
@@ -66,11 +66,11 @@ class Style:
                     json_path = self.console_styles_available.get("dark", None)
 
             if json_path:
-                self.console_style = self._load_json_style(json_path)
+                self.console_style = self._from_json(json_path)
             else:
                 console.print("Error loading default.")
 
-    def _load_available_styles_from_folder(self, folder: Optional[Path]) -> None:
+    def _from_directory(self, folder: Optional[Path]) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -93,12 +93,12 @@ class Style:
             for file in folder.rglob(f"*{ext}"):
                 getattr(self, attr)[file.name.replace(ext, "")] = file
 
-    def _load_available_styles(self, directory: Optional[Path] = None) -> None:
+    def _load(self, directory: Optional[Path] = None) -> None:
         """Load custom styles from default and user folders."""
-        self._load_available_styles_from_folder(self.STYLES_REPO)
-        self._load_available_styles_from_folder(directory)
+        self._from_directory(self.STYLES_REPO)
+        self._from_directory(directory)
 
-    def _load_json_style(self, file: Path) -> Dict[str, Any]:
+    def _from_json(self, file: Path) -> Dict[str, Any]:
         """Load style from json file.
 
         Parameters
