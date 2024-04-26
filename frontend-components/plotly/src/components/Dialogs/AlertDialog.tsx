@@ -1,4 +1,4 @@
-import CommonDialog from "./CommonDialog";
+import CommonDialog from "../Dialogs/CommonDialog";
 
 export default function AlertDialog({
 	title,
