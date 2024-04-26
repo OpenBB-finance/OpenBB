@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CommonDialog, { styleDialog } from "../Dialogs/CommonDialog";
+import CommonDialog, { styleDialog } from "./CommonDialog";
 
 const reader = new FileReader();
 

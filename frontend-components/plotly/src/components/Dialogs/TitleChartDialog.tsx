@@ -1,4 +1,4 @@
-import CommonDialog, { styleDialog } from "../Dialogs/CommonDialog";
+import CommonDialog, { styleDialog } from "./CommonDialog";
 import { useState } from "react";
 
 export default function TitleChartDialog({

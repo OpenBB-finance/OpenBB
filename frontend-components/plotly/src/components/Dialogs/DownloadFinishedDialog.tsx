@@ -1,4 +1,4 @@
-import CommonDialog from "../Dialogs/CommonDialog";
+import CommonDialog from "./CommonDialog";
 
 export default function DownloadFinishedDialog({
   open,
