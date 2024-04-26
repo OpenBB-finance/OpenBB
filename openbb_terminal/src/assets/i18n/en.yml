@@ -20,7 +20,6 @@ en:
   settings/thoughts: thoughts of the day
   settings/reporthtml: open report as HTML otherwise notebook
   settings/exithelp: automatically print help when quitting menu
-  settings/quickexit: enable quick exit
   settings/rcontext: remember contexts loaded params during session
   settings/rich: colorful rich CLI
   settings/richpanel: colorful rich CLI panel

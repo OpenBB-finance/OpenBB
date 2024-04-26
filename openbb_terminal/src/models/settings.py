@@ -30,7 +30,6 @@ class Settings(BaseModel):
     USE_CLEAR_AFTER_CMD: bool = False
     USE_DATETIME: bool = True
     USE_PROMPT_TOOLKIT: bool = True
-    ENABLE_QUICK_EXIT: bool = False
     ENABLE_EXIT_AUTO_HELP: bool = True
     REMEMBER_CONTEXTS: bool = True
     ENABLE_RICH_PANEL: bool = True
