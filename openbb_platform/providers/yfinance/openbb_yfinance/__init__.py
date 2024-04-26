@@ -27,9 +27,6 @@ from openbb_yfinance.models.index_historical import (
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
 from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.market_indices import (
-    YFinanceMarketIndicesFetcher,
-)
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
 )

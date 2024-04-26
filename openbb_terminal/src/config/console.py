@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import TYPE_CHECKING, Optional, Tuple
 
 from rich import panel
 from rich.console import (
@@ -8,7 +8,9 @@ from rich.console import (
 from rich.text import Text
 
 from src.config.menu_text import RICH_TAGS
-from src.models.settings import Settings
+
+if TYPE_CHECKING:
+    from src.models.settings import Settings
 
 
 class Console:
@@ -16,7 +18,7 @@ class Console:
 
     def __init__(
         self,
-        settings: Settings,
+        settings: "Settings",
         style: Optional[str] = None,
     ):
         """Initialize the ConsoleAndPanel class."""
