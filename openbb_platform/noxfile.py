@@ -1,3 +1,5 @@
+"""Nox sessions."""
+
 import nox
 
 test_locations = [
