@@ -2,13 +2,14 @@
 
 import glob
 import os
+from pathlib import Path
 
 import toml
 
 
 def test_optional_packages():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
-    data = toml.load("openbb_platform/pyproject.toml")
+    data = toml.load(Path(__file__).parent.parent / "pyproject.toml")
     dependencies = data["tool"]["poetry"]["dependencies"]
     extras = data["tool"]["poetry"]["extras"]
     all_packages = extras["all"]
@@ -32,7 +33,7 @@ def test_optional_packages():
 
 def test_default_package_files():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
-    data = toml.load("openbb_platform/pyproject.toml")
+    data = toml.load(Path(Path(__file__).parent.parent / "pyproject.toml"))
     dependencies = data["tool"]["poetry"]["dependencies"]
     package_files = glob.glob("openbb_platform/openbb/package/*.py")
 
