@@ -20,7 +20,7 @@ from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
-ROOT_DIR = Path(__file__).parent.parent.parent
+ROOT_DIR = Path(__file__).parent.parent.parent.parent
 
 TEST_TEMPLATE = """\n\n@parametrize(
     "params",
