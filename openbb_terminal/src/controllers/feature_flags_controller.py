@@ -40,6 +40,7 @@ class FeatureFlagsController(BaseController):
         "n_cols",
     ]
     PATH = "/settings/"
+    CHOICES_GENERATION = True
 
     def __init__(self, queue: Optional[List[str]] = None):
         """Initialize the Constructor."""
