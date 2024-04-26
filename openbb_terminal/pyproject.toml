@@ -6,7 +6,7 @@ license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
 packages = [{ include = "openbb_terminal" }]
 include = ["openbb_terminal/.env"]
-readme = "../website/pypi.md"
+readme = "README.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://docs.openbb.co/sdk"
