@@ -25,10 +25,5 @@ def tests(session):
     session.install("pytest")
     session.install("pytest-cov")
     session.run(
-        "pytest",
-        *PLATFORM_TESTS,
-        f"--cov={PLATFORM_DIR}",
-        "-m",
-        "not integration",
-        "--collect-only",
+        "pytest", *PLATFORM_TESTS, f"--cov={PLATFORM_DIR}", "-m", "not integration"
     )
