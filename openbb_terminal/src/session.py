@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Optional
 
 from openbb import obb
+from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
@@ -13,7 +14,6 @@ from src.config.console import Console
 from src.config.constants import HIST_FILE_PROMPT
 from src.config.style import Style
 from src.models.settings import Settings
-from src.models.singleton import SingletonMeta
 
 
 class Session(metaclass=SingletonMeta):
