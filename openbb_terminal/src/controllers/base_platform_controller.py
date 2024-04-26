@@ -78,13 +78,12 @@ class PlatformController(BaseController):
                 if action.dest == "data":
                     action.choices = range(len(Registry.obbjects))
                     action.type = int
+                    action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
-        if (
-            hasattr(ns_parser, "data")
-            and ns_parser.data
-            and ns_parser.data in range(len(Registry.obbjects))
+        if hasattr(ns_parser, "data") and ns_parser.data in range(
+            len(Registry.obbjects)
         ):
             obbject = Registry.get(ns_parser.data)
             setattr(ns_parser, "data", obbject.results)
