@@ -7,11 +7,11 @@ from types import MethodType
 from typing import Callable, List, Literal
 from unittest.mock import patch
 
-from src.controllers.utils import (
+from openbb_terminal.controllers.utils import (
     check_file_type_saved,
     check_positive,
 )
-from src.session import Session
+from openbb_terminal.session import Session
 
 
 def __mock_parse_known_args_and_warn(
@@ -187,7 +187,7 @@ def __patch_controller_functions(controller):
     )
 
     rich = patch(
-        target="src.config.console.Console.print",
+        target="openbb_terminal.config.console.Console.print",
         return_value=None,
     )
 

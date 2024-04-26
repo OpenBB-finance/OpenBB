@@ -9,13 +9,15 @@ import pandas as pd
 from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
 
-from src.argparse_translator.argparse_class_processor import ArgparseClassProcessor
-from src.argparse_translator.obbject_registry import Registry
-from src.config.completer import NestedCompleter
-from src.config.menu_text import MenuText
-from src.controllers.base_controller import BaseController
-from src.controllers.utils import export_data, print_rich_table
-from src.session import Session
+from openbb_terminal.argparse_translator.argparse_class_processor import (
+    ArgparseClassProcessor,
+)
+from openbb_terminal.argparse_translator.obbject_registry import Registry
+from openbb_terminal.config.completer import NestedCompleter
+from openbb_terminal.config.menu_text import MenuText
+from openbb_terminal.controllers.base_controller import BaseController
+from openbb_terminal.controllers.utils import export_data, print_rich_table
+from openbb_terminal.session import Session
 
 
 class DummyTranslation:

@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, List, Optional, TypeVar
 
 import i18n
 
-from src.config.constants import I18N_FILE
+from openbb_terminal.config.constants import I18N_FILE
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -79,6 +79,6 @@ def setup_i18n(i18n_path: Path = I18N_FILE, lang: str = "en"):
 def setup_config_terminal():
     """Setup pre-launch configurations for the terminal."""
     # pylint: disable=import-outside-toplevel
-    from src.session import Session
+    from openbb_terminal.session import Session
 
     setup_i18n(lang=Session().settings.USE_LANGUAGE)

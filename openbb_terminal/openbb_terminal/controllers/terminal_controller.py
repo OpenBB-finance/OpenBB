@@ -24,22 +24,22 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
 
-from src.argparse_translator.obbject_registry import Registry
-from src.config import constants
-from src.config.completer import NestedCompleter
-from src.config.constants import (
+from openbb_terminal.argparse_translator.obbject_registry import Registry
+from openbb_terminal.config import constants
+from openbb_terminal.config.completer import NestedCompleter
+from openbb_terminal.config.constants import (
     ASSETS_DIRECTORY,
     ENV_FILE_SETTINGS,
     HOME_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from src.config.menu_text import MenuText
-from src.controllers.base_controller import BaseController
-from src.controllers.platform_controller_factory import (
+from openbb_terminal.config.menu_text import MenuText
+from openbb_terminal.controllers.base_controller import BaseController
+from openbb_terminal.controllers.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from src.controllers.script_parser import is_reset, parse_openbb_script
-from src.controllers.utils import (
+from openbb_terminal.controllers.script_parser import is_reset, parse_openbb_script
+from openbb_terminal.controllers.utils import (
     bootup,
     first_time_user,
     get_flair_and_username,
@@ -51,7 +51,7 @@ from src.controllers.utils import (
     suppress_stdout,
     welcome_message,
 )
-from src.session import Session
+from openbb_terminal.session import Session
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -303,7 +303,7 @@ class TerminalController(BaseController):
 
     def call_settings(self, _):
         """Process feature flags command."""
-        from src.controllers.feature_flags_controller import (
+        from openbb_terminal.controllers.feature_flags_controller import (
             FeatureFlagsController,
         )
 

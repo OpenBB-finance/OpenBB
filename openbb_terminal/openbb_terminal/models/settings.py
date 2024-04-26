@@ -5,7 +5,7 @@ from typing import Any
 from dotenv import dotenv_values, set_key
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from src.config.constants import (
+from openbb_terminal.config.constants import (
     ENV_FILE_PROJECT,
     ENV_FILE_REPOSITORY,
     ENV_FILE_SETTINGS,

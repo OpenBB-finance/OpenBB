@@ -23,8 +23,8 @@ from packaging import version
 from pytz import all_timezones, timezone
 from rich.table import Table
 
-from src.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
-from src.session import Session
+from openbb_terminal.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
+from openbb_terminal.session import Session
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -246,11 +246,11 @@ def reset(queue: Optional[List[str]] = None):
         # pylint: disable=import-outside-toplevel
         # we run the terminal again
         if Session().is_local():
-            from src.controllers.terminal_controller import main
+            from openbb_terminal.controllers.terminal_controller import main
 
             main(debug, dev, queue_list, module="")  # type: ignore
         else:
-            from src.controllers.terminal_controller import launch
+            from openbb_terminal.controllers.terminal_controller import launch
 
             launch(queue=queue_list)
 

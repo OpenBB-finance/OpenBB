@@ -3,15 +3,15 @@
 import argparse
 from typing import List, Optional
 
-from src.config.completer import NestedCompleter
-from src.config.constants import AVAILABLE_FLAIRS
-from src.config.menu_text import MenuText
+from openbb_terminal.config.completer import NestedCompleter
+from openbb_terminal.config.constants import AVAILABLE_FLAIRS
+from openbb_terminal.config.menu_text import MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
-from src.controllers.base_controller import BaseController
-from src.controllers.utils import all_timezones, is_timezone_valid
-from src.session import Session
+from openbb_terminal.controllers.base_controller import BaseController
+from openbb_terminal.controllers.utils import all_timezones, is_timezone_valid
+from openbb_terminal.session import Session
 
 
 class FeatureFlagsController(BaseController):

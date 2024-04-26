@@ -2,8 +2,8 @@
 
 import sys
 
-from src.config.setup import setup_config_terminal
-from src.controllers.terminal_controller import launch
+from openbb_terminal.config.setup import setup_config_terminal
+from openbb_terminal.controllers.terminal_controller import launch
 
 
 def main():

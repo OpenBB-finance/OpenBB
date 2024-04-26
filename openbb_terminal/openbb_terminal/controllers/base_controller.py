@@ -12,12 +12,12 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 
-from src.config import setup
-from src.config.completer import NestedCompleter
-from src.config.constants import SCRIPT_TAGS
-from src.controllers.choices import build_controller_choice_map
-from src.controllers.hub_service import upload_routine
-from src.controllers.utils import (
+from openbb_terminal.config import setup
+from openbb_terminal.config.completer import NestedCompleter
+from openbb_terminal.config.constants import SCRIPT_TAGS
+from openbb_terminal.controllers.choices import build_controller_choice_map
+from openbb_terminal.controllers.hub_service import upload_routine
+from openbb_terminal.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
@@ -26,7 +26,7 @@ from src.controllers.utils import (
     remove_file,
     system_clear,
 )
-from src.session import Session
+from openbb_terminal.session import Session
 
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 # pylint: disable=R0912
