@@ -17,10 +17,10 @@ from src.models.singleton import SingletonMeta
 
 
 class Session(metaclass=SingletonMeta):
-    """Session service."""
+    """Session class."""
 
     def __init__(self):
-        """Initialize system service."""
+        """Initialize session."""
         self._obb = obb
         self._settings = Settings()
         self._style = Style(
