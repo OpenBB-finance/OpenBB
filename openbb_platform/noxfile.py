@@ -1,10 +1,10 @@
 import nox
 
 test_locations = [
-    "openbb_platform/tests",
-    "openbb_platform/core",
-    "openbb_platform/providers",
-    "openbb_platform/extensions",
+    "tests",
+    "core",
+    "providers",
+    "extensions",
 ]
 
 
@@ -13,13 +13,11 @@ def tests(session):
     session.install("poetry", "toml")
     session.run(
         "python",
-        "./openbb_platform/dev_install.py",
+        "dev_install.py",
         "-e",
         "all",
         external=True,
     )
     session.install("pytest")
     session.install("pytest-cov")
-    session.run(
-        "pytest", *test_locations, "--cov=openbb_platform/", "-m", "not integration"
-    )
+    session.run("pytest", *test_locations, "--cov=.", "-m", "not integration")

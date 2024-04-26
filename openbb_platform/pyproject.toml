@@ -1,100 +1,234 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "openbb"
 version = "4.1.7"
 description = "OpenBB"
-authors = ["OpenBB Team <hello@openbb.co>"]
+authors = [ "OpenBB Team <hello@openbb.co>",]
 readme = "README.md"
-packages = [{ include = "openbb" }]
+[[tool.poetry.packages]]
+include = "openbb"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = "^1.1.6"
-
-openbb-benzinga = "^1.1.5"
-openbb-econdb = "^1.0.0"
-openbb-federal-reserve = "^1.1.5"
-openbb-fmp = "^1.1.5"
-openbb-fred = "^1.1.5"
-openbb-intrinio = "^1.1.5"
-openbb-oecd = "^1.1.5"
-openbb-polygon = "^1.1.5"
-openbb-sec = "^1.1.5"
-openbb-tiingo = "^1.1.5"
-openbb-tradingeconomics = "^1.1.5"
-openbb-yfinance = "^1.1.5"
-
-openbb-commodity = "^1.0.4"
-openbb-crypto = "^1.1.5"
-openbb-currency = "^1.1.5"
-openbb-derivatives = "^1.1.5"
-openbb-economy = "^1.1.5"
-openbb-equity = "^1.1.5"
-openbb-etf = "^1.1.5"
-openbb-fixedincome = "^1.1.5"
-openbb-index = "^1.1.5"
-openbb-news = "^1.1.5"
-openbb-regulators = "^1.1.5"
-
-# Community dependencies
-openbb-alpha-vantage = { version = "^1.1.5", optional = true }
-openbb-biztoc = { version = "^1.1.5", optional = true }
-openbb-cboe = { version = "^1.1.5", optional = true }
-openbb-ecb = { version = "^1.1.5", optional = true }
-openbb-finra = { version = "^1.1.5", optional = true }
-openbb-finviz = { version = "^1.0.4", optional = true }
-openbb-government-us = { version = "^1.1.5", optional = true }
-openbb-nasdaq = { version = "^1.1.5", optional = true }
-openbb-seeking-alpha = { version = "^1.1.5", optional = true }
-openbb-stockgrid = { version = "^1.1.5", optional = true }
-openbb-tmx = { version = "^1.0.2", optional = true }
-openbb-tradier = { version = "^1.0.2", optional = true }
-openbb-wsj = { version = "^1.1.5", optional = true }
-
-openbb-charting = { version = "^2.0.3", optional = true }
-openbb-econometrics = { version = "^1.1.5", optional = true }
-openbb-quantitative = { version = "^1.1.5", optional = true }
-openbb-technical = { version = "^1.1.6", optional = true }
 
 [tool.poetry.extras]
-alpha_vantage = ["openbb-alpha-vantage"]
-biztoc = ["openbb-biztoc"]
-cboe = ["openbb-cboe"]
-charting = ["openbb-charting"]
-ecb = ["openbb-ecb"]
-econometrics = ["openbb-econometrics"]
-finra = ["openbb-finra"]
-finviz = ["openbb-finviz"]
-government_us = ["openbb-government-us"]
-nasdaq = ["openbb-nasdaq"]
-quantitative = ["openbb-quantitative"]
-seeking_alpha = ["openbb-seeking-alpha"]
-stockgrid = ["openbb-stockgrid"]
-technical = ["openbb-technical"]
-tmx = ["openbb-tmx"]
-tradier = ["openbb-tradier"]
-wsj = ["openbb-wsj"]
+alpha_vantage = [ "openbb-alpha-vantage",]
+biztoc = [ "openbb-biztoc",]
+cboe = [ "openbb-cboe",]
+charting = [ "openbb-charting",]
+ecb = [ "openbb-ecb",]
+econometrics = [ "openbb-econometrics",]
+finra = [ "openbb-finra",]
+finviz = [ "openbb-finviz",]
+government_us = [ "openbb-government-us",]
+nasdaq = [ "openbb-nasdaq",]
+quantitative = [ "openbb-quantitative",]
+seeking_alpha = [ "openbb-seeking-alpha",]
+stockgrid = [ "openbb-stockgrid",]
+technical = [ "openbb-technical",]
+tmx = [ "openbb-tmx",]
+tradier = [ "openbb-tradier",]
+wsj = [ "openbb-wsj",]
+all = [ "openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-finviz", "openbb-government-us", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-tmx", "openbb-tradier", "openbb-wsj",]
 
+[tool.poetry.dependencies.openbb-core]
+path = "./core"
+develop = true
 
-all = [
-    "openbb-alpha-vantage",
-    "openbb-biztoc",
-    "openbb-cboe",
-    "openbb-charting",
-    "openbb-ecb",
-    "openbb-econometrics",
-    "openbb-finra",
-    "openbb-finviz",
-    "openbb-government-us",
-    "openbb-nasdaq",
-    "openbb-quantitative",
-    "openbb-seeking-alpha",
-    "openbb-stockgrid",
-    "openbb-technical",
-    "openbb-tmx",
-    "openbb-tradier",
-    "openbb-wsj",
-]
+[tool.poetry.dependencies.openbb-benzinga]
+path = "./providers/benzinga"
+develop = true
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.poetry.dependencies.openbb-econdb]
+path = "./providers/econdb"
+develop = true
+
+[tool.poetry.dependencies.openbb-federal-reserve]
+path = "./providers/federal_reserve"
+develop = true
+
+[tool.poetry.dependencies.openbb-fmp]
+path = "./providers/fmp"
+develop = true
+
+[tool.poetry.dependencies.openbb-fred]
+path = "./providers/fred"
+develop = true
+
+[tool.poetry.dependencies.openbb-intrinio]
+path = "./providers/intrinio"
+develop = true
+
+[tool.poetry.dependencies.openbb-oecd]
+path = "./providers/oecd"
+develop = true
+
+[tool.poetry.dependencies.openbb-polygon]
+path = "./providers/polygon"
+develop = true
+
+[tool.poetry.dependencies.openbb-sec]
+path = "./providers/sec"
+develop = true
+
+[tool.poetry.dependencies.openbb-tiingo]
+path = "./providers/tiingo"
+develop = true
+
+[tool.poetry.dependencies.openbb-tradingeconomics]
+path = "./providers/tradingeconomics"
+develop = true
+
+[tool.poetry.dependencies.openbb-yfinance]
+path = "./providers/yfinance"
+develop = true
+
+[tool.poetry.dependencies.openbb-commodity]
+path = "./extensions/commodity"
+develop = true
+
+[tool.poetry.dependencies.openbb-crypto]
+path = "./extensions/crypto"
+develop = true
+
+[tool.poetry.dependencies.openbb-currency]
+path = "./extensions/currency"
+develop = true
+
+[tool.poetry.dependencies.openbb-derivatives]
+path = "./extensions/derivatives"
+develop = true
+
+[tool.poetry.dependencies.openbb-economy]
+path = "./extensions/economy"
+develop = true
+
+[tool.poetry.dependencies.openbb-equity]
+path = "./extensions/equity"
+develop = true
+
+[tool.poetry.dependencies.openbb-etf]
+path = "./extensions/etf"
+develop = true
+
+[tool.poetry.dependencies.openbb-fixedincome]
+path = "./extensions/fixedincome"
+develop = true
+
+[tool.poetry.dependencies.openbb-index]
+path = "./extensions/index"
+develop = true
+
+[tool.poetry.dependencies.openbb-news]
+path = "./extensions/news"
+develop = true
+
+[tool.poetry.dependencies.openbb-regulators]
+path = "./extensions/regulators"
+develop = true
+
+[tool.poetry.dependencies.openbb-alpha-vantage]
+path = "./providers/alpha_vantage"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-biztoc]
+path = "./providers/biztoc"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-cboe]
+path = "./providers/cboe"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-ecb]
+path = "./providers/ecb"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-finra]
+path = "./providers/finra"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-finviz]
+path = "./providers/finviz"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-government-us]
+path = "./providers/government_us"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-nasdaq]
+path = "./providers/nasdaq"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-seeking-alpha]
+path = "./providers/seeking_alpha"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-stockgrid]
+path = "./providers/stockgrid"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-tmx]
+version = "^1.0.2"
+optional = true
+
+[tool.poetry.dependencies.openbb-tradier]
+version = "^1.0.2"
+optional = true
+
+[tool.poetry.dependencies.openbb-wsj]
+path = "./providers/wsj"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-charting]
+path = "./obbject_extensions/charting"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-econometrics]
+path = "./extensions/econometrics"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-quantitative]
+path = "./extensions/quantitative"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-technical]
+path = "./extensions/technical"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb-devtools]
+path = "./extensions/devtools"
+develop = true
+
+[tool.poetry.dependencies.openbb_tmx]
+path = "./providers/tmx"
+optional = true
+develop = true
+
+[tool.poetry.dependencies.openbb_tradier]
+path = "./providers/tradier"
+optional = true
+develop = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+pytest-subtests = "^0.11.0"
+pytest-recorder = "^0.2.4"
+pytest-asyncio = "^0.23.2"
