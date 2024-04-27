@@ -36,8 +36,8 @@ jobs:
       - name: 🧬 Process Changelog
         run: |
           pip install requests openai
-          python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
-          python summarize_changelog.py ${{ secrets.GITHUB_TOKEN }} ${{ secrets.OPENAI_API_KEY }}
+          python .github/scripts/process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+          python .github/scripts/summarize_changelog.py ${{ secrets.GITHUB_TOKEN }} ${{ secrets.OPENAI_API_KEY }}
           cat CHANGELOG.md
 
       - name: 🛫 Create Release
