@@ -268,16 +268,16 @@ class PlatformController(BaseController):
 
         if self.CHOICES_MENUS:
             for menu in self.CHOICES_MENUS:
-                menu_description = self._get_menu_description(menu)
-                mt.add_menu(key_menu=menu, menu_description=menu_description)
+                description = self._get_menu_description(menu)
+                mt.add_menu(name=menu, description=description)
 
         if self.CHOICES_COMMANDS:
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
                 mt.add_cmd(
-                    key_command=command.replace(f"{self._name}_", ""),
-                    command_description=command_description,
+                    name=command.replace(f"{self._name}_", ""),
+                    description=command_description,
                 )
 
         session.console.print(text=mt.menu_text, menu=self._name)

@@ -242,8 +242,8 @@ class TerminalController(BaseController):
                     .get("description")
                 ) or ""
                 mt.add_menu(
-                    key_menu=router,
-                    menu_description=menu_description.split(".")[0].lower(),
+                    name=router,
+                    description=menu_description.split(".")[0].lower(),
                 )
             else:
                 mt.add_cmd(router)
@@ -260,8 +260,8 @@ class TerminalController(BaseController):
                         .get("description")
                     ) or ""
                     mt.add_menu(
-                        key_menu=router,
-                        menu_description=menu_description.split(".")[0].lower(),
+                        name=router,
+                        description=menu_description.split(".")[0].lower(),
                     )
                 else:
                     mt.add_cmd(router)
@@ -277,8 +277,8 @@ class TerminalController(BaseController):
                     .get("description")
                 ) or ""
                 mt.add_menu(
-                    key_menu=router,
-                    menu_description=menu_description.split(".")[0].lower(),
+                    name=router,
+                    description=menu_description.split(".")[0].lower(),
                 )
             else:
                 mt.add_cmd(router)
