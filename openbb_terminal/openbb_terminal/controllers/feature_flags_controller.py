@@ -46,13 +46,15 @@ class FeatureFlagsController(BaseController):
         """Initialize the Constructor."""
         super().__init__(queue)
 
-        if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
+        self._session = Session()
+
+        if self._session.prompt_session and self._session.settings.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help."""
-        settings = Session().settings
+        settings = self._session.settings
 
         mt = MenuText("settings/")
         mt.add_info("_info_")
@@ -76,63 +78,67 @@ class FeatureFlagsController(BaseController):
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
 
-        Session().console.print(text=mt.menu_text, menu="Feature Flags")
+        self._session.console.print(text=mt.menu_text, menu="Feature Flags")
 
     def call_overwrite(self, _):
         """Process overwrite command."""
-        Session().settings.set_item(
-            "FILE_OVERWRITE", not Session().settings.FILE_OVERWRITE
+        self._session.settings.set_item(
+            "FILE_OVERWRITE", not self._session.settings.FILE_OVERWRITE
         )
 
     def call_version(self, _):
         """Process version command."""
-        Session().settings.SHOW_VERSION = not Session().settings.SHOW_VERSION
+        self._session.settings.SHOW_VERSION = not self._session.settings.SHOW_VERSION
 
     def call_interactive(self, _):
         """Process interactive command."""
-        Session().settings.set_item(
-            "USE_INTERACTIVE_DF", not Session().settings.USE_INTERACTIVE_DF
+        self._session.settings.set_item(
+            "USE_INTERACTIVE_DF", not self._session.settings.USE_INTERACTIVE_DF
         )
 
     def call_cls(self, _):
         """Process cls command."""
-        Session().settings.set_item(
-            "USE_CLEAR_AFTER_CMD", not Session().settings.USE_CLEAR_AFTER_CMD
+        self._session.settings.set_item(
+            "USE_CLEAR_AFTER_CMD", not self._session.settings.USE_CLEAR_AFTER_CMD
         )
 
     def call_promptkit(self, _):
         """Process promptkit command."""
-        Session().settings.set_item(
-            "USE_PROMPT_TOOLKIT", not Session().settings.USE_PROMPT_TOOLKIT
+        self._session.settings.set_item(
+            "USE_PROMPT_TOOLKIT", not self._session.settings.USE_PROMPT_TOOLKIT
         )
 
     def call_exithelp(self, _):
         """Process exithelp command."""
-        Session().settings.set_item(
-            "ENABLE_EXIT_AUTO_HELP", not Session().settings.ENABLE_EXIT_AUTO_HELP
+        self._session.settings.set_item(
+            "ENABLE_EXIT_AUTO_HELP", not self._session.settings.ENABLE_EXIT_AUTO_HELP
         )
 
     def call_rcontext(self, _):
         """Process rcontext command."""
-        Session().settings.set_item(
-            "REMEMBER_CONTEXTS", not Session().settings.REMEMBER_CONTEXTS
+        self._session.settings.set_item(
+            "REMEMBER_CONTEXTS", not self._session.settings.REMEMBER_CONTEXTS
         )
 
     def call_dt(self, _):
         """Process dt command."""
-        Session().settings.set_item("USE_DATETIME", not Session().settings.USE_DATETIME)
+        self._session.settings.set_item(
+            "USE_DATETIME", not self._session.settings.USE_DATETIME
+        )
 
     def call_richpanel(self, _):
         """Process richpanel command."""
-        Session().settings.set_item(
-            "ENABLE_RICH_PANEL", not Session().settings.ENABLE_RICH_PANEL
+        self._session.settings.set_item(
+            "ENABLE_RICH_PANEL", not self._session.settings.ENABLE_RICH_PANEL
         )
 
     def call_tbhint(self, _):
         """Process tbhint command."""
-        if Session().settings.TOOLBAR_HINT:
-            Session().console.print("Will take effect when running terminal next.")
-        Session().settings.set_item("TOOLBAR_HINT", not Session().settings.TOOLBAR_HINT)
+        if self._session.settings.TOOLBAR_HINT:
+            self._session.console.print("Will take effect when running terminal next.")
+        self._session.settings.set_item(
+            "TOOLBAR_HINT", not self._session.settings.TOOLBAR_HINT
+        )
 
     def call_console_style(self, other_args: List[str]) -> None:
         """Process cosole_style command."""
@@ -148,16 +154,20 @@ class FeatureFlagsController(BaseController):
             dest="style",
             action="store",
             required=False,
-            choices=Session().style.available_styles,
+            choices=self._session.style.available_styles,
         )
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.style:
-            Session().style.apply(ns_parser.style)
-            Session().settings.set_item("RICH_STYLE", ns_parser.style)
+            self._session.style.apply(ns_parser.style)
+            self._session.settings.set_item("RICH_STYLE", ns_parser.style)
+            self._session.console.print(
+                f"Console style changed to: {self._session.settings.RICH_STYLE}, run 'reset'"
+                " or restart the program to apply the changes."
+            )
         elif not other_args:
-            Session().console.print(
-                f"Current console style: {Session().settings.RICH_STYLE}"
+            self._session.console.print(
+                f"Current console style: {self._session.settings.RICH_STYLE}"
             )
 
     def call_flair(self, other_args: List[str]) -> None:
@@ -179,9 +189,11 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.flair:
-            Session().settings.set_item("FLAIR", ns_parser.flair)
+            self._session.settings.set_item("FLAIR", ns_parser.flair)
         elif not other_args:
-            Session().console.print(f"Current flair: {Session().settings.FLAIR}")
+            self._session.console.print(
+                f"Current flair: {self._session.settings.FLAIR}"
+            )
 
     def call_timezone(self, other_args: List[str]) -> None:
         """Process timezone command."""
@@ -198,21 +210,24 @@ class FeatureFlagsController(BaseController):
             action="store",
             required=False,
             type=str,
+            choices=all_timezones,
         )
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.timezone:
             if is_timezone_valid(ns_parser.timezone):
-                Session().settings.set_item("TIMEZONE", ns_parser.timezone)
+                self._session.settings.set_item("TIMEZONE", ns_parser.timezone)
             else:
-                Session().console.print(
+                self._session.console.print(
                     "Invalid timezone. Please enter a valid timezone."
                 )
-                Session().console.print(
+                self._session.console.print(
                     f"Available timezones are: {', '.join(all_timezones)}"
                 )
         elif not other_args:
-            Session().console.print(f"Current timezone: {Session().settings.TIMEZONE}")
+            self._session.console.print(
+                f"Current timezone: {self._session.settings.TIMEZONE}"
+            )
 
     def call_language(self, other_args: List[str]) -> None:
         """Process language command."""
@@ -233,11 +248,11 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.language:
-            Session().settings.set_item("USE_LANGUAGE", ns_parser.language)
+            self._session.settings.set_item("USE_LANGUAGE", ns_parser.language)
 
         elif not other_args:
-            Session().console.print(
-                f"Current language: {Session().settings.USE_LANGUAGE}"
+            self._session.console.print(
+                f"Current language: {self._session.settings.USE_LANGUAGE}"
             )
 
     def call_n_rows(self, other_args: List[str]) -> None:
@@ -259,11 +274,11 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.rows:
-            Session().settings.set_item("ALLOWED_NUMBER_OF_ROWS", ns_parser.rows)
+            self._session.settings.set_item("ALLOWED_NUMBER_OF_ROWS", ns_parser.rows)
 
         elif not other_args:
-            Session().console.print(
-                f"Current number of rows: {Session().settings.ALLOWED_NUMBER_OF_ROWS}"
+            self._session.console.print(
+                f"Current number of rows: {self._session.settings.ALLOWED_NUMBER_OF_ROWS}"
             )
 
     def call_n_cols(self, other_args: List[str]) -> None:
@@ -285,9 +300,11 @@ class FeatureFlagsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.columns:
-            Session().settings.set_item("ALLOWED_NUMBER_OF_COLUMNS", ns_parser.columns)
+            self._session.settings.set_item(
+                "ALLOWED_NUMBER_OF_COLUMNS", ns_parser.columns
+            )
 
         elif not other_args:
-            Session().console.print(
-                f"Current number of columns: {Session().settings.ALLOWED_NUMBER_OF_COLUMNS}"
+            self._session.console.print(
+                f"Current number of columns: {self._session.settings.ALLOWED_NUMBER_OF_COLUMNS}"
             )
