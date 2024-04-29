@@ -570,7 +570,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
                     # Check if toolbar hint was enabled
                     if Session().settings.TOOLBAR_HINT:
-                        an_input = Session().prompt_session.prompt(
+                        an_input = Session().prompt_session.prompt(  # type: ignore[union-attr]
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
@@ -589,7 +589,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                             ),
                         )
                     else:
-                        an_input = Session().prompt_session.prompt(
+                        an_input = Session().prompt_session.prompt(  # type: ignore[union-attr]
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
@@ -780,7 +780,7 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
 
 def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = Path(Session().user().preferences.export_directory, "routines")
+    user_routine_path = Path(Session().user.preferences.export_directory, "routines")
     default_routine_path = ASSETS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():

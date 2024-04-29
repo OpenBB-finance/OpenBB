@@ -48,7 +48,7 @@ build/nsis/app
 DMG/*
 *.dmg
 *.sh
-openbb_terminal/openbb_terminal/assets/styles/user/hub.richstyle.json
+terminal/openbb_terminal/assets/styles/user/hub.richstyle.json
 
 # Platform
 openbb_platform/openbb/package/*

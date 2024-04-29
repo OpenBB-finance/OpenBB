@@ -25,7 +25,7 @@ class Session(metaclass=SingletonMeta):
         self._settings = Settings()
         self._style = Style(
             style=self._settings.RICH_STYLE,
-            directory=Path(self._obb.user.preferences.user_styles_directory),
+            directory=Path(self._obb.user.preferences.user_styles_directory),  # type: ignore[union-attr]
         )
         self._console = Console(
             settings=self._settings, style=self._style.console_style
@@ -35,7 +35,7 @@ class Session(metaclass=SingletonMeta):
     @property
     def user(self) -> User:
         """Get platform user."""
-        return self._obb.user
+        return self._obb.user  # type: ignore[union-attr]
 
     @property
     def settings(self) -> Settings:
