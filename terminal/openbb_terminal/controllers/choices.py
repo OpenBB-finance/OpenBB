@@ -27,7 +27,7 @@ def __mock_parse_known_args_and_warn(
     """Add arguments.
 
     Add the arguments that would have normally added by :
-        - openbb_terminal.parent_classes.BaseController.parse_known_args_and_warn
+        - openbb_terminal.base_controller.BaseController.parse_known_args_and_warn
 
     Parameters
     ----------
