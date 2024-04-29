@@ -19,6 +19,8 @@ from openbb_terminal.controllers.base_controller import BaseController
 from openbb_terminal.controllers.utils import export_data, print_rich_table
 from openbb_terminal.session import Session
 
+session = Session()
+
 
 class DummyTranslation:
     """Dummy Translation for testing."""
@@ -69,7 +71,7 @@ class PlatformController(BaseController):
             self._generate_commands()
             self._generate_sub_controllers()
 
-            if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
+            if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
                 choices: dict = self.choices_default
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -178,7 +180,7 @@ class PlatformController(BaseController):
                         print_rich_table(df, show_index=True)
 
                     elif obbject:
-                        Session().console.print(obbject)
+                        session.console.print(obbject)
 
                     if hasattr(ns_parser, "export") and ns_parser.export:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
@@ -192,7 +194,7 @@ class PlatformController(BaseController):
                         )
 
                 except Exception as e:
-                    Session().console.print(f"[red]{e}[/]\n")
+                    session.console.print(f"[red]{e}[/]\n")
                     return
 
         # Bind the method to the class
@@ -278,13 +280,13 @@ class PlatformController(BaseController):
                     command_description=command_description,
                 )
 
-        Session().console.print(text=mt.menu_text, menu=self._name)
+        session.console.print(text=mt.menu_text, menu=self._name)
 
-        settings = Session().settings
+        settings = session.settings
         dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
         if mt.warnings and dev_mode:
-            Session().console.print("")
+            session.console.print("")
             for w in mt.warnings:
                 w_str = str(w).replace("{", "").replace("}", "").replace("'", "")
-                Session().console.print(f"[yellow]{w_str}[/yellow]")
-            Session().console.print("")
+                session.console.print(f"[yellow]{w_str}[/yellow]")
+            session.console.print("")
