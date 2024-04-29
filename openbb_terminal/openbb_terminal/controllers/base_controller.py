@@ -885,6 +885,12 @@ class BaseController(metaclass=ABCMeta):
             return None
 
         try:
+            # If the user uses a comma separated list of arguments, split them
+            for index, arg in enumerate(other_args):
+                if "," in arg:
+                    parts = arg.split(",")
+                    other_args[index : index + 1] = parts
+
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
             if export_allowed in [
