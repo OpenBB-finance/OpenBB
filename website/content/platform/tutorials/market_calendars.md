@@ -1,9 +1,7 @@
 ---
 title: Market Calendars
 sidebar_position: 8
-description: This page provides details on the market calendars available in the OpenBB
-  Platform.  Equity and economic calendars keep investors abreast of market activity and events.
-  This guide provides examples for using the variety of calendars, and differences between sources.
+description: This page provides details on the market calendars available in the OpenBB Platform. Equity and economic calendars keep investors abreast of market activity and events. This guide provides examples for using the variety of calendars, and differences between sources.
 keywords:
 - stocks
 - companies
@@ -65,7 +63,7 @@ Do not rely on the economic calendar for real-time updates. Times posted are sch
 
 There are subtle differences between providers, the main consideration will be the timestamp. FMP and TradingEconomics both return the calendar as UTC-0, while Nasdaq posts events in US/Eastern time. Of the three, only TradingEconomics provides a TZ-aware timestamp. The differences can be reconciled with a few lines of code.
 
-To identify the issue, let's look at one event.  First, from FMP:
+To identify the issue, let's look at one event. First, from FMP:
 
 ```python
 fmp_df = obb.economy.calendar(provider="fmp", start_date="2023-11-19", end_date="2023-11-20").to_df()
@@ -105,7 +103,7 @@ fmp_df[fmp_df["event"].str.contains("20-Year Bond Auction")]
 |:--------------------------|:----------|:---------------------|-----------:|------------:|:-------------|:-----------|---------:|-----------------:|
 | 2023-11-20 13:00:00-05:00 | US        | 20-Year Bond Auction |      5.245 |         nan | Low          | USD        |      nan |                0 |
 
-Timestamps can be a factor with start/end dates because the calendar day will roll over at midnight, moving the date.  Converting the timestamp will overcome this, but be aware of when the time is `00:00:00`, signifying an all-day event like a holiday.
+Timestamps can be a factor with start/end dates because the calendar day will roll over at midnight, moving the date. Converting the timestamp will overcome this, but be aware of when the time is `00:00:00`, signifying an all-day event like a holiday.
 
 An exception was added in the code above to maintain the time where applicable, instead of rolling it back five hours.
 
@@ -204,6 +202,7 @@ The dividend calendar uses start/end dates that reflect the ex-dividend date - t
 - The `openbb-nasdaq` provider has US-only data for this endpoint.
 
 - The same markets covered by FMP's earnings calendar are included in their dividend calendar.
+
 :::
 
 ### Calculate Dividend Yield

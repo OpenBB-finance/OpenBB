@@ -1,7 +1,7 @@
 ---
 title: Toolkits
 sidebar_position: 1
-description: This page describes the toolkit extensios  available for the OpenBB Platform.
+description: This page describes the toolkit extensions available for the OpenBB Platform.
 keywords:
 - OpenBB Platform
 - Python client
@@ -77,7 +77,7 @@ To install from source in editable mode, navigate into the folder, `~/openbb_pla
 pip install -e .
 ```
 
-After installation, the Python interface will automatically rebuild on initialization.  This process can also be triggered manually with:
+After installation, the Python interface will automatically rebuild on initialization. This process can also be triggered manually with:
 
 ```python
 import openbb

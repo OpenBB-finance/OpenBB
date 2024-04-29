@@ -27,8 +27,8 @@ See the page [here](https://training.github.com/downloads/github-git-cheat-sheet
 
 If you have installed the OpenBB Platform in editable mode (i.e, with `dev_install.py`), you may encounter merge conflicts when switching branches. They will most likely originate from the static assets automatically generated for the Python interface, and are in the folders:
 
-  - `/openbb_platform/openbb/assets`
-  - `/openbb_platform/openbb/package`
+- `/openbb_platform/openbb/assets`
+- `/openbb_platform/openbb/package`
 
 Discard any changes within and they will be regenerated upon the next initialization.
 
@@ -36,8 +36,7 @@ Alternatively, `git stash` will do the trick.
 
 ## Contributing
 
-Code contributions are made by creating a pull request on GitHub. Branches should typically be created from the `/develop` branch,
-and they should be named according to the conventions described next section below.
+Code contributions are made by creating a pull request on GitHub. Branches should typically be created from the `/develop` branch, and they should be named according to the conventions described next section below.
 
 ### Branch Naming Conventions
 
@@ -61,6 +60,7 @@ These branches can only have PRs pointing to the `develop` branch.
 ### Create Pull Request
 
 A pull request should contain descriptions and details of all proposed changes, with any details maintainers and testers will need to know.
+
 Please use one of the supplied Pull Request Templates.
 
 Linting errors should be cleared, and any tests related to the changed files should be passing.

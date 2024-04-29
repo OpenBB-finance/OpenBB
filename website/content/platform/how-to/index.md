@@ -37,3 +37,6 @@ Topics covered include:
 - [Add new data to an existing endpoint](how-to/add_data_to_existing_endpoint)
 - [Build a new router path](how-to/add_toolkit_extension)
 - [How to make a new standard model](how-to/add_endpoint_to_existing_provider#how-to-build-a-standard-model)
+- [How to Deprecate Endpoints](how-to/deprecating_endpoints)
+- [How to add command examples](how-to/add_command_examples)
+- [How to enable LLM Model](how-to/enable_llm_model)

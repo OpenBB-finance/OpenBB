@@ -1,12 +1,7 @@
 ---
 title: Basic Syntax
 sidebar_position: 5
-description: This page provides comprehensive information about standardized command
-  syntax for an open-source platform. Topics discussed include the structure of command
-  syntax, use of standardized parameters, usage of provider and symbol parameters,
-  handling of date and limit parameters, and more. Also explored, are the methods
-  for selecting data sources, handling different list and ticker symbol formats, and
-  dealing with command responses and warnings.
+description: This page provides comprehensive information about standardized command syntax for an open-source platform. Topics discussed include the structure of command syntax, use of standardized parameters, usage of provider and symbol parameters, handling of date and limit parameters, and more. Also explored, are the methods for selecting data sources, handling different list and ticker symbol formats, and dealing with command responses and warnings.
 keywords:
 - tutorial
 - command syntax
@@ -39,7 +34,7 @@ The structure of command syntax is standardized across common fields. This ensur
 - [date](#dates)
 - [limit](#limit)
 
-When looking at a function's docstring, the standard parameters (shared across multiple providers) are positioned first.  Provider-specific parameters positionally follow the `provider` argument.  The example below is from, `obb.equity.price.quote`:
+When looking at a function's docstring, the standard parameters (shared across multiple providers) are positioned first. Provider-specific parameters positionally follow the `provider` argument. The example below is from, `obb.equity.price.quote`:
 
 ```console
 Parameters
@@ -247,7 +242,7 @@ data_results[-1]
 
 #### Send a POST Request
 
-Next, pass the `data_results` to a function, using the `json` field in the POST headers.  For this example, realized volatiliy cones, the default parameters  assume the time series data is daily and that volatility should be annualized over 252 trading days.
+Next, pass the `data_results` to a function, using the `json` field in the POST headers. For this example, realized volatility cones, the default parameters  assume the time series data is daily and that volatility should be annualized over 252 trading days.
 
 The `index` parameter tells the function which field in the posted data to use as the date index.
 

@@ -34,7 +34,7 @@ The list below is intended to provide some guidance on what the general expectat
 2. Documentation:
    - All code contributions should come with relevant documentation, including the purpose of the contribution, how it works, and any changes it makes to existing functionalities.
    - Update any existing documentation if your contribution alters the behavior of the OpenBB Platform.
-   - New router functions must have usage [examples](contributing/function_examples) defined.
+   - New router functions must have usage [examples](../how-to/add_command_examples) defined.
 
 3. Code Quality:
    - Your code should adhere strictly to the OpenBB Platform's coding standards and [conventions](architecture_overview).

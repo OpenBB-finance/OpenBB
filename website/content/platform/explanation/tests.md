@@ -44,7 +44,6 @@ pytest <path_to_the_unit_test_file> --record=all
 Sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 :::
 
-
 ## Integration tests
 
 The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface. For this, we have two scripts that will help you generate the integration tests.

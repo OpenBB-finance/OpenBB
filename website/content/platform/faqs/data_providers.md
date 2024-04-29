@@ -1,8 +1,7 @@
 ---
 title: Data and Data Providers
 sidebar_position: 2
-description: This page contains some frequently asked questions about OpenBB
-  data and providers.
+description: This page contains some frequently asked questions about OpenBB data and providers.
 keywords:
 - provider
 - data
@@ -54,7 +53,7 @@ python dev_install.py -e
 
 The nightly PyPI distribution is another way to install everything, and to be on the bleeding edge of development:
 
-```bashe
+```bash
 pip install openbb-nightly
 ```
 
@@ -91,7 +90,7 @@ Please  [request a feature](https://openbb.co/request-a-feature), tell us about 
 
 <details><summary>Can I contribute my own data provider extension?</summary>
 
-Yes! Please take a look at our [Development](/platform/development) pages for more information.
+Yes! Please take a look at our [Development](../explanation/development) pages for more information.
 
 </details>
 

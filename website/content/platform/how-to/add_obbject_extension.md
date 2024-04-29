@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="How To Add OBBject Extensions - How-To - Development | OpenBB Platform Docs" />
 
-OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](platform/development/obbject.md)
+OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](platform/development/obbject.md).
 If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data, and the OpenBB Platform provides a way to extend the OBBject class.
 
 The architecture for extensions was designed to be similar to extensions and accessors for Pandas, and relies on plugins through the Poetry dependency management package.
@@ -80,7 +80,7 @@ With this in the file, we can install the extension by running `poetry install` 
 
 ### Using the extension
 
-Now that the extension is installed and built, we can use it!  Because we are extending the `OBBject`, this will be available on any function:
+Now that the extension is installed and built, we can use it! Because we are extending the `OBBject`, this will be available on any function:
 
 ```shell
 >>> from openbb import obb

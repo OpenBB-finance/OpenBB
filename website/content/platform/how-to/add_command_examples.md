@@ -1,7 +1,7 @@
 ---
-title: Function Examples
+title: How to add command examples
 sidebar_position: 7
-description: This guide provides detailed instructions for including function examples in the router endpoints of the OpenBB Platform.
+description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
 keywords:
 - OpenBB community
 - OpenBB Platform
@@ -19,8 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Function Examples - Contributing - Development | OpenBB Platform Docs" />
 
-Usage examples are defined in the router and are expected to provide working syntax,
-with descriptions for complex functions requiring many parameters.
+Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
 
 > When a given provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
 
@@ -39,7 +38,6 @@ All router endpoints must have examples.
 **For Python Examples:**
 
 - Descriptions are mandatory.
-
 
 ## Example Models
 

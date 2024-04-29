@@ -44,8 +44,8 @@ Before getting started, get a few housekeeping items in order:
 
 - Clone the GitHub repo and navigate into the project's folder.
   - If you have already done this, update your local branch:
-      - `git fetch`
-      - `git pull origin develop`
+    - `git fetch`
+    - `git pull origin develop`
 - Install the OpenBB Platform in "editable" mode.
   - `cd openbb_platform`
   - `python dev_install.py -e`
@@ -72,7 +72,7 @@ Quarterly data also includes analyst estimates and surprise metrics.
 
 ### Provider API Documentation
 
-The documentation for this endpoint is, [https://www.alphavantage.co/documentation/#earnings](https://www.alphavantage.co/documentation/#earnings).  This link will be added to the query parameters model docstring.
+The documentation for this endpoint is, [https://www.alphavantage.co/documentation/#earnings](https://www.alphavantage.co/documentation/#earnings). This link will be added to the query parameters model docstring.
 
 ### Base URL
 
@@ -211,9 +211,9 @@ Now we know exactly what is going to be added, and how we should structure our q
 
 So far, we have knocked out three of the outlined tasks.
 
-  - [X] Catalogue the parameters and returned fields from the chosen data provider.
-  - [X] Find the existing standard model that is mapped to the router endpoint.
-  - [X] Identify common parameters and fields to map.
+- [X] Catalogue the parameters and returned fields from the chosen data provider.
+- [X] Find the existing standard model that is mapped to the router endpoint.
+- [X] Identify common parameters and fields to map.
 
 Let's get on with the fun stuff and start building!
 
@@ -439,7 +439,7 @@ class AVHistoricalEpsFetcher(
 
 Combining all of the code blocks above, beginning with the import statements section, makes a complete file and we have finished step 4.
 
-  - [X] Build the provider models and Fetcher class by inheriting from the standard models.
+- [X] Build the provider models and Fetcher class by inheriting from the standard models.
 
 ## Map To Router
 
@@ -473,7 +473,8 @@ alpha_vantage_provider = Provider(
 ```
 
 Step 5 is complete.
-  - [X] Map the new provider model to the router.
+
+- [X] Map the new provider model to the router.
 
 ## Rebuild Static Assets
 
@@ -494,7 +495,8 @@ If changes are only made to the static methods within the Fetcher, rebuilding is
 :::
 
 Step 6 is done.
-  - [X] Rebuild the Python interface and static assets.
+
+- [X] Rebuild the Python interface and static assets.
 
 We can now run the function and test our work.
 
@@ -620,14 +622,15 @@ def test_av_historical_eps_fetcher(credentials=test_credentials):
 
 That's all there is to it, we can capture the cassette now. Open a terminal, navigate into the `tests` folder from above, with the `obb` environment active, and enter:
 
-```
+``` console
 pytest test_alpha_vantage_fetchers.py --record http --record-no-overwrite
 ```
 
 A successful test will result in a file being created in the `record` subfolder. Check the file for any obvious errors.
 
 Step 7 is done.
-  - [X] Add unit tests.
+
+- [X] Add unit tests.
 
 ### Integration Tests
 
@@ -769,8 +772,8 @@ pytest test_equity_api.py
 ```
 
 Step 8 is done.
-  - [X] Add integration tests.
 
+- [X] Add integration tests.
 
 All that's left now is to submit the work as a pull request for review.
 

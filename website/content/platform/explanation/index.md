@@ -77,5 +77,5 @@ The pages in this section cover topics to get started using the OpenBB Platform,
 - [Function Examples](explanation/function_examples)
 - [HTTP Requests](explanation/http_requests)
 - [Validators](explanataion/validators)
-- [Deprecating Endpoints](explanation/deprecating_endpoints)
 - [Tests](explanation/tests)
+- [Toolkit VS Provider](explanation/toolkit)

@@ -1,9 +1,7 @@
 ---
-title: Financial Statements
+title: Introduction to Financial Statements
 sidebar_position: 9
-description: This page provides an introduction to financial statement data available in the OpenBB
-  Platform.  This includes quarterly and annual reports, along with metrics and ratios by company.
-  This guide provides examples for using the variety of sources.
+description: This page provides an introduction to financial statement data available in the OpenBB Platform. This includes quarterly and annual reports, along with metrics and ratios by company. This guide provides examples for using the variety of sources.
 keywords:
 - stocks
 - companies
@@ -64,9 +62,10 @@ The main parameters are:
 - Items within each statement will vary by source and by the type of company reporting.
 - Names of line items will vary by source.
 - "Date" values may differ because they are from the period starting/ending or date of reporting.
+
 :::
 
-This example highlights how different providers will have different labels for compnay facts.
+This example highlights how different providers will have different labels for company facts.
 
 ```python
 import pandas as pd
@@ -109,7 +108,7 @@ This key metric will be found under the income statement. It might also be calle
 
 A company will disclose how many shares are outstanding at the end of the period  as a weighted average over the reporting period - three months.
 
-Let's take a look at Target.  To make the numbers easier to read, we'll divide the entire column by one million.
+Let's take a look at Target. To make the numbers easier to read, we'll divide the entire column by one million.
 
 ```python
 data = (
@@ -140,7 +139,7 @@ shares.tail(1)
 |:--------------------|--------------------------------------:|
 | 2023-10-31 |                           461.6 |
 
-Thirty-seven years later, the share count is approaching a two-thirds reduction.  12.2% over the past five years.
+Thirty-seven years later, the share count is approaching a two-thirds reduction. That is 12.2% over the past five years.
 
 ```python
 shares.pct_change(20).iloc[-1]

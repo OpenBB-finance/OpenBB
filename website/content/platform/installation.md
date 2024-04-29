@@ -40,7 +40,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## General System Requirements
 
-Most systems capable of running Python 3.8-3.11 will be compatible with the OpenBB Platform. A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
+Most systems capable of running Python 3.9-3.11 will be compatible with the OpenBB Platform. A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
 
 - Windows 10
 - Mac OS Big Sur
@@ -49,7 +49,7 @@ Linux users should run the command line update for the package manager, prior to
 
 ## Supported Environments
 
-The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.8 and 3.11, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.9 and 3.11, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
 
 If you're interested in using the [Docker](/platform/installation#docker) container, skip ahead to the specific section [below](/platform/installation#docker).
 
@@ -124,7 +124,7 @@ from openbb import obb
 ```
 
 :::warning
-This import statement is required due to the statefulness of the obb package.  There is currently no support for imports such as
+This import statement is required due to the statefulness of the obb package. There is currently no support for imports such as:
 
 ```console
 from openbb.obb.equity import *
@@ -142,6 +142,24 @@ pip install openbb-core && pip install openbb --no-deps
 ```
 
 :::
+
+To update the package:
+
+```console
+pip install --upgrade openbb
+```
+
+To update all extensions and providers:
+
+```console
+pip install --upgrade openbb[all]
+```
+
+If you want to uninstall the package and all its dependencies:
+
+```console
+pip uninstall openbb[all]
+```
 
 ### Docker
 
@@ -205,7 +223,7 @@ To install all extensions and providers, run: `python dev_install.py -e`
 
 ## Post-Installation
 
-With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built.  This is done automatically, but can be manually triggered if required. Start a Python session and then `import openbb`:
+With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built. This is done automatically, but can be manually triggered if required. Start a Python session and then `import openbb`:
 
 ```console
 python
@@ -234,11 +252,11 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-See more information about using the REST API in the [usage section](/platform/usage/rest_api)
+See more information about using the REST API in the [usage section](/platform/tutorials/rest_api)
 
 ## Hub Synchronization
 
-Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](my.openbb.co). The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance. To login, you can use the `login` method, either using your email and password:
+Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](https://my.openbb.co/app/hub). The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance. To login, you can use the `login` method, either using your email and password:
 
 ```python
 obb.account.login(email='my_email_here', password='my_password_here')

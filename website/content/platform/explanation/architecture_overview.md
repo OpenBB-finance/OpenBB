@@ -17,6 +17,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This page provides a general overview of the OpenBB Platform architecture and the key Python classes most processes interact with.
 
+The structure is as follows:
+
+- [Core Dependencies](#core-dependencies)
+  - [Importance Of A Lean Core](#importance-of-a-lean-core)
+- [Python Interface](#python-interface)
+- [API Interface](#api-interface)
+- [QueryParams Class](#queryparams-class)
+- [Data Class](#data-class)
+- [Fetcher Class](#fetcher-class)
+- [OBBject Class](#obbject-class)
+- [Router Class](#router-class)
+- [Import Statements](#import-statements)
+- [The TET Pattern](#the-tet-pattern)
+- [Data Processing Commands](#data-processing-commands)
+
 ## Core Dependencies
 
 :::note
@@ -30,13 +45,13 @@ The OpenBB Platform core relies on a set of carefully selected Python libraries.
 - Pandas for data manipulation and analysis.
 - Pydantic for data validation and serialization using Python type annotations.
 - Requests/AIOHTTP for making HTTP requests.
-- Websockets for handling WebSocket connections.
+- WebSockets for handling WebSocket connections.
 
 These dependencies are specified in the `pyproject.toml` files.
 
 ### Importance Of A Lean Core
 
-Keeping the OpenBB Platform core as lean as possible is crucial for maintaining the platform's performance, ease of use, and flexibility. A lean core means faster installation times, less memory usage, and overall better performance. It also reduces the risk of conflicts between dependencies and makes the platform easier to maintain and update.
+Keeping the OpenBB Platform core as lean as possible is crucial for maintaining the its performance, ease of use, and flexibility. A lean core means faster installation times, less memory usage, and overall better performance. It also reduces the risk of conflicts between dependencies and makes the platform easier to maintain and update.
 
 Moreover, a lean core allows for greater flexibility. Users of the platform can add additional functionality through extensions without being burdened by unnecessary core dependencies. This makes the OpenBB Platform adaptable to a wide range of use cases and requirements.
 
@@ -77,7 +92,7 @@ When using the OpenBB Platform via an API Interface, the types are a bit more co
 ]
 ```
 
-## `QueryParams` Class
+## QueryParams Class
 
 The QueryParams class is a standardized model for handling query input parameters in the OpenBB platform. It extends the BaseModel from the Pydantic library, which provides runtime data validation and serialization.
 
@@ -85,7 +100,7 @@ The class includes a dictionary, `__alias_dict__`, which can be used to map the 
 
 The `__json_schema_extra__` dictionary can be used to define whether multiple items are accepted by a parameter.
 
-```
+``` python
 __json_schema_extra__ = {
     "symbol": ["multiple_items_allowed"],
     "category": ["multiple_items_allowed"],
@@ -98,8 +113,7 @@ The `model_config` attribute is a `ConfigDict` instance that allows extra fields
 
 The `model_dump` method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
 
-
-## `Data` Class
+## Data Class
 
 The OpenBB Standardized Data Model.
 
@@ -141,7 +155,7 @@ The class is highly extensible and can be subclassed to create more specific mod
 particular datasets or domains, while still benefiting from the base functionality provided by the
 `Data` class.
 
-## `Fetcher` Class
+## Fetcher Class
 
 The `Fetcher` class is an abstract base class designed to provide a structured way to fetch data from various providers. It uses generics to allow for flexibility in the types of queries, data, and return values it handles.
 
@@ -164,7 +178,7 @@ The `Fetcher` class implementation is based on the [TET pattern](/platform/devel
 
 :::
 
-## `OBBject` Class
+## OBBject Class
 
 The OBBject class is a generic class in the OpenBB platform that represents a standardized object for handling and manipulating data fetched from various providers. It extends the `Tagged` class and uses Python's generics to allow flexibility in the type of results it can handle.
 
@@ -174,7 +188,7 @@ The class provides several methods for converting the fetched data into differen
 
 The class also includes a `__repr__` method for a human-readable representation of the object, as well as the familiar Pydantic BaseModel methods like `model_dump()` and `model_json_schema()`.
 
-## `Router` Class
+## Router Class
 
 The `Router` class in the OpenBB platform is responsible for managing and routing API requests. It uses the `APIRouter` from the FastAPI library to handle routing.
 

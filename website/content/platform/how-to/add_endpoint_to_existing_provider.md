@@ -53,8 +53,8 @@ Before getting started, get a few housekeeping items in order:
 
 - Clone the GitHub repo and navigate into the project's folder.
   - If you have already done this, update your local branch:
-      - `git fetch`
-      - `git pull origin develop`
+    - `git fetch`
+    - `git pull origin develop`
 - Install the OpenBB Platform in "editable" mode.
   - `cd openbb_platform`
   - `python dev_install.py -e`
@@ -66,7 +66,7 @@ Before getting started, get a few housekeeping items in order:
 
 :::
 
-## Let's Get Started!
+## Let's Get Started
 
 Currencies, as an asset class, have different data properties than securities.
 For this exercise, we're really only concerned about the differences within the market data we are working with.
@@ -169,7 +169,7 @@ Our `CurrencySnapshotsQueryParams` model is going to be very similar to `MarketS
 If the field will only sometimes accept a list of values, DO NOT define it in the standard model as a Union - `Union[str, List[str]]`.
 Instead, define it for the single value, `str`, and then add the property below to the provider's QueryParams model.
 
-```
+```python
 __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
 ```
 
@@ -219,7 +219,7 @@ This can be a consideration for the data provider models to handle, and country 
 ### Data
 
 Like `QueryParams`, we don't want to attempt to define every potential future field. We want a core foundation for others to build on.
-We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate".  This is enough to communicate our
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
 data parsing requirements for this endpoint:
 
 - Split the six-letter symbol as two symbols.
@@ -266,8 +266,8 @@ class CurrencySnapshotsData(Data):
 
 Combine the three code blocks above to make a complete standard model file, and then we have completed the first two tasks.
 
-  -  [X] With clear objectives, define the requirements for inputs and outputs of this function.
-  -  [X] Create a standard model that will be suitable for any provider to inherit from.
+- [X] With clear objectives, define the requirements for inputs and outputs of this function.
+- [X] Create a standard model that will be suitable for any provider to inherit from.
 
 ## Build Provider Models
 
@@ -277,34 +277,34 @@ Sample output data from the source is pasted below, and we can see that there ar
 
 ```json
 [
-	{
-		"symbol": "AEDAUD",
-		"name": "AED/AUD",
-		"price": 0.40401,
-		"changesPercentage": 0.3901,
-		"change": 0.0016,
-		"dayLow": 0.40211,
-		"dayHigh": 0.40535,
-		"yearHigh": 0.440948,
-		"yearLow": 0.356628,
-		"marketCap": null,
-		"priceAvg50": 0.39494148,
-		"priceAvg200": 0.40097216,
-		"volume": 0,
-		"avgVolume": 0,
-		"exchange": "FOREX",
-		"open": 0.40223,
-		"previousClose": 0.40244,
-		"eps": null,
-		"pe": null,
-		"earningsAnnouncement": null,
-		"sharesOutstanding": null,
-		"timestamp": 1677792573
-	}
+ {
+  "symbol": "AEDAUD",
+  "name": "AED/AUD",
+  "price": 0.40401,
+  "changesPercentage": 0.3901,
+  "change": 0.0016,
+  "dayLow": 0.40211,
+  "dayHigh": 0.40535,
+  "yearHigh": 0.440948,
+  "yearLow": 0.356628,
+  "marketCap": null,
+  "priceAvg50": 0.39494148,
+  "priceAvg200": 0.40097216,
+  "volume": 0,
+  "avgVolume": 0,
+  "exchange": "FOREX",
+  "open": 0.40223,
+  "previousClose": 0.40244,
+  "eps": null,
+  "pe": null,
+  "earningsAnnouncement": null,
+  "sharesOutstanding": null,
+  "timestamp": 1677792573
+ }
 ]
 ```
 
-### Create File
+### Create File For Provider
 
 We need to create a new file in the FMP provider extension. This will have the same name as our standard model.
 
@@ -554,7 +554,6 @@ Steps 4 and 5 are done!
 - [X] Create a new router endpoint in the `openbb-currency` module.
 - [X] Rebuild the Python interface and static assets.
 
-
 ```python
 from openbb import obb
 
@@ -700,10 +699,9 @@ def test_currency_snapshots(params, obb):
 
 Now run `pytest` for both of these files.
 
-
 Step 6 & 7 are done.
-  - [X] Add unit test.
-  - [X] Add integration tests.
+ - [X] Add unit test.
+ - [X] Add integration tests.
 
 ## Submit A Pull Request
 
@@ -791,7 +789,7 @@ A pull request, in general, should have details on why the PR was created, what 
 
     - `obb.currency.snapshots(base="usd,xau,xag", counter_currencies="usd,eur,gbp,chf,aud,jpy,cny,cad", quote_type="indirect"`
 
-6. **Any other information**:
+5. **Any other information**:
 
 ![Screenshot 2024-03-04 at 10 05 00 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7943d2ef-05b9-4a25-9d17-32618e2c57cf)
 

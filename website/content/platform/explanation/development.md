@@ -1,9 +1,7 @@
 ---
 title: Development
 sidebar_position: 5
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: Learn about the OpenBB Platform, an open-source solution built by the community. Understand its use via Python interface and REST API, and acquaint yourself with how to build a custom extension or contribute directly to the OpenBB Platform.
 keywords:
 - OpenBB Platform
 - Open source
@@ -26,14 +24,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 We generalize between two distinct types of users:
 
 1. **Developers**: Those who are building on top of, and extending, the OpenBB Platform for their own purposes and have no intention of contributing the code directly to the GitHub repository. This includes those independently publishing extensions to PyPI or other package managers.
-2. **Contributors**: Those who contribute to the existing codebase, by opening a Pull Request, thus giving back to the community.  This can include bug fixes, enhancements, documentation, and more.
+2. **Contributors**: Those who contribute to the existing codebase, by opening a Pull Request, thus giving back to the community. This can include bug fixes, enhancements, documentation, and more.
 
 **Why Is This Distinction Important?**
 
 The OpenBB Platform has been designed as a foundation for further development of investment research applications. We anticipate a wide range of creative use cases.
 
 Some of them may be highly specific, or detail-oriented, solving particular problems that may not necessarily fit within the OpenBB Platform Github repository. This is entirely acceptable, even encouraged. Regardless of intention, OpenBB is a proponent of building in public and sharing. We love seeing what people are building, so don't be shy about it!
-
 
 ## Before Beginning
 

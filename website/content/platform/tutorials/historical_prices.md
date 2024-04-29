@@ -1,9 +1,7 @@
 ---
-title: Historical Prices
+title: Loading Historical Price Data
 sidebar_position: 7
-description: This page provides an introduction to financial statement data available in the OpenBB
-  Platform.  This includes quarterly and annual reports, along with metrics and ratios by company.
-  This guide provides examples for using the variety of sources.
+description: This page provides an introduction to historical prices, including how to access and use them in the OpenBB Platform.
 keywords:
 - stocks
 - companies
@@ -19,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Historical Prices - Usage | OpenBB Platform Docs" />
 
-Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume.  There may be additional fields returned by a provider, but those are the expected columns. Granularity and amount of historical data will vary by provider and subscription status. Visit their websites to understand what your entitlements are.
+Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume. There may be additional fields returned by a provider, but those are the expected columns. Granularity and amount of historical data will vary by provider and subscription status. Visit their websites to understand what your entitlements are.
 
 :::info
 These examples will assume that the OpenBB Platform is initialized in a Python session.

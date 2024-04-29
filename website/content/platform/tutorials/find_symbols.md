@@ -1,9 +1,7 @@
 ---
-title: Finding Symbols
+title: Finding Ticker Symbols
 sidebar_position: 6
-description: This page provides comprehensive information about finding stocks in the
-  with the OpenBB Platform.  Search companies from different sources, and filter results.
-  This guide is intended to introduce some methods for searching, screening, and discovery.
+description: This page provides comprehensive information about finding stocks in the with the OpenBB Platform. Search companies from different sources, and filter results. This guide is intended to introduce some methods for searching, screening, and discovery.
 keywords:
 - stocks
 - companies
@@ -23,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Finding Symbols - Usage | OpenBB Platform Docs" />
 
-Finding the ticker symbol, security identifier, the sector, and other metadata is easy if you know where to look.  This guide is intended to introduce some methods for searching, screening, and discovery.
+Finding the ticker symbol, security identifier, the sector, and other metadata is easy if you know where to look. This guide is intended to introduce some methods for searching, screening, and discovery.
 
 :::note
 For maximum coverage and functionality, install OpenBB with `[all]` packages.
@@ -50,7 +48,6 @@ obb.equity.search("JPMorgan", provider="nasdaq").to_df().head(3)
 |  0 | AMJB     | JPMorgan Chase & Co. Alerian MLP Index ETNs due January 28, 2044 | Y               | P          |                   | Y     |              100 | N            |                    | AMJB         | AMJB            | N             |
 |  1 | BBAG     | JPMorgan BetaBuilders U.S. Aggregate Bond ETF                    | Y               | P          |                   | Y     |              100 | N            |                    | BBAG         | BBAG            | N             |
 |  2 | BBAX     | JPMorgan BetaBuilders Developed Asia Pacific-ex Japan ETF        | Y               | Z          |                   | Y     |              100 | N            |                    | BBAX         | BBAX            | N             |
-
 
 ## Search Cboe
 
@@ -108,8 +105,6 @@ obb.etf.search("gold", provider="tmx").to_df().iloc[-5:]
 | distribution_yield    | 0.015347                   | 0.016145                   | 0.016212999999999998                  | 0.008305                               | 0.009537                  |
 | dividend_frequency    | Annually                   | Annually                   | Semi-Annually                         | Annually                               | Annually                  |
 | beta_20y              | nan                        | nan                        | 0.560996                              | nan                                    | nan                       |
-
-
 
 ## Search the SEC
 
@@ -381,4 +376,3 @@ With the `openbb-yfinance` extension, index time series can be loaded using the 
 :::
 
 The examples above show demonstrate the most basic ways to find ticker symbols with the OpenBB Platform. Create your own custom scripts for discovery by combining these with other methods.
-

@@ -1,9 +1,7 @@
 ---
 title: Standardization
 sidebar_position: 1
-description: Learn about the OpenBB Platform, an open-source solution built by the
-  community. Understand its use via Python interface and REST API, and acquaint yourself
-  with how to build a custom extension or contribute directly to the platform
+description: Learn about the OpenBB Platform, an open-source solution built by the community. Understand its use via Python interface and REST API, and acquaint yourself with how to build a custom extension or contribute directly to the platform
 keywords:
 - OpenBB Platform
 - Open source
@@ -57,7 +55,6 @@ The standardization framework is a very powerful tool, but it has some caveats t
 - When mapping the column names from a provider-specific model to the standard model, the CamelCase to snake_case conversion is done automatically. If the column names are not the same, you'll need to manually map them.
   - e.g., `__alias_dict__ = {"o": "open"}`
 - The standard models are created and maintained by the OpenBB team. If you want to add or modify a field within a standard model, you'll need to open a PR to the OpenBB Platform.
-
 
 ### QueryParams
 

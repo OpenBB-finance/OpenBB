@@ -56,7 +56,7 @@ Additional class methods are helpers for converting the results to a variety of 
 - `to_numpy()`: converts to a Numpy array.
 - `to_polars()`: converts to a Polars table.
 
-The output from the Fast API is a serialized version of this object, and these methods are lost on conversion.  OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
+The output from the Fast API is a serialized version of this object, and these methods are lost on conversion. OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
 
 ```python
 import requests

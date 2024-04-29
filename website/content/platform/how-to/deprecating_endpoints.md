@@ -1,5 +1,5 @@
 ---
-title: Deprecating Endpoints
+title: How to Deprecate Endpoints
 sidebar_position: 10
 description: This guide provides detailed instructions on how to deprecate an endpoint in the OpenBB Platform.
 keywords:

@@ -68,26 +68,33 @@ To get started:
 
 - Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip) file.
   - If working with a cloned GitHub repo, the folder is:
+
   ```console
   ~/OpenBBTerminal/openbb_platform/providers
   ```
+
 - Rename everything, "template", to suit. File names, models, import statements, docstrings.
 - Add any provider-specific package requirements in the `pyproject.toml` file.
 - Update the Provider information in the `__init__.py` file.
   - If credentials are required, add a line to the Provider class initialization.
+
   ```python
   credentials=["api_key", "account_type"], # account_type is either "sandbox" or "live"
   ```
+
 - From a terminal command line, navigate into the folder where the extension is, then install the empty blank package in "editable" mode.
+
   ```console
   poetry lock
   pip install -e .
   ```
+
 - Start creating data models using the steps outlined [here](add_data_to_existing_endpoint)
 
 ### Cookiecutter
 
 In order to speed up the process of building an extension, we have created a [**Cookiecutter**](https://github.com/OpenBB-finance/openbb-cookiecutter) template.
+
 It serves as a jumpstart for your extension development, and can be used instead of the template ZIP referenced earlier. Instructions are located on the [GitHub page](https://github.com/OpenBB-finance/openbb-cookiecutter).
 
 :::note
@@ -99,11 +106,13 @@ The cookiecutter tool will get you most of the way there, but it still requires 
 The `pyproject.toml` file defines the package itself.
 
 :::tip
+
 - Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
 - If possible, use loose versioning.
+
 :::
 
-```
+``` toml
 [tool.poetry]
 name = "openbb-template"
 version = "1.0.0"
@@ -124,7 +133,7 @@ build-backend = "poetry.core.masonry.api"
 template = "openbb_template:template_provider"
 ```
 
-The last line (poetry.plugins) maps to the provider defined in the __init__.py file.
+The last line (poetry.plugins) maps to the provider defined in the `__init__.py` file.
 
 Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBBTerminal/openbb_platform/`:
 
@@ -138,8 +147,7 @@ Now you can use the `python dev_install.py [-e]` command to install the local ex
 
 ## Authorization Credentials
 
-Access to most data sources is authorized with an API key, issued by the source. Sometimes there are multiple authorization fields,
-and other times there may be a need to change the base URL depending on the type of account.
+Access to most data sources is authorized with an API key, issued by the source. Sometimes there are multiple authorization fields, and other times there may be a need to change the base URL depending on the type of account.
 
 > If no authorization is required, leave out the 'credentials' parameter.
 
@@ -226,7 +234,6 @@ The new extension can be self-published on PyPI and hosted in an independent Git
 
 If not contributing directly to the OpenBB GitHub, we still want to know about your creation. Share it with us on social media, and add `openbb` as a topic tag in your GitHub repo.
 
-
 ## Publish Extension To PyPI
 
 To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
@@ -270,4 +277,3 @@ Now, you can pip install your package from PyPI with:
 ```bash
 pip install openbb-some_ext
 ```
-

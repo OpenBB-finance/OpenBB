@@ -1,5 +1,5 @@
 ---
-title: API Keys
+title: Authorization and API Keys
 sidebar_position: 1
 description: An overview for setting up the OpenBB Platform Python client and Fast API with data provider API keys.
 keywords:
@@ -19,14 +19,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="API Keys - Usage | OpenBB Platform Docs" />
 
-By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys can be stored locally and they can also be securely saved to your OpenBB Hub [account](https://my.openbb.co) for convenient remote access.
+By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys can be stored locally and they can also be securely saved to your OpenBB Hub [account](https://my.openbb.co/app/hub) for convenient remote access.
 
 ### OpenBB Hub
 
 :::info
 The OpenBB Hub is only accessible via the Python Interface. For REST API, store credentials and preferences in the `user_settings.json` file [local](api_keys#local-environment) to the deployment.
 :::
-
 
 Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
@@ -55,7 +54,6 @@ obb.account.logout()
 ```
 
 Set `remember_me` as `False` to discard all credentials at the end of the session.
-
 
 :::tip
 With `remember_me=True`, credentials will be permanently stored in the environment.

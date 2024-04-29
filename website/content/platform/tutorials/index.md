@@ -1,8 +1,7 @@
 ---
 title: Tutorials
 sidebar_position: 1
-description: This section provides tutorials of concepts related to usage and getting started with the OpenBB Platform.
-  The pages include example syntax and outline what you can expect while working with the OpenBB Python interface and REST API.
+description: This section provides tutorials of concepts related to usage and getting started with the OpenBB Platform. The pages include example syntax and outline what you can expect while working with the OpenBB Python interface and REST API.
 keywords:
 - getting started
 - explanation
@@ -34,7 +33,7 @@ Subjects covered include:
 - [Finding Ticker Symbols](tutorials/find_symbols)
 - [Loading Historical Price Data](tutorials/historical_prices)
 - [Market Calendars](tutorials/market_calendars)
-- [Financial Statements](tutorials/financial_statements)
+- [Introduction to Financial Statements](tutorials/financial_statements)
 - [GitHub](tutorials/github)
 
 Jupyter Notebook examples are also hosted in the OpenBB GitHub repository [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/examples)

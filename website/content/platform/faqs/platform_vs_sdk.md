@@ -1,9 +1,7 @@
 ---
 title: Platform vs SDK
 sidebar_position: 1
-description: The OpenBB SDK has evolved to become the OpenBB Platform.
-  This page describes some of the key differences between the legacy version
-  and the new architecture.
+description: The OpenBB SDK has evolved to become the OpenBB Platform. This page describes some of the key differences between the legacy version and the new architecture.
 keywords:
 - what's new
 - v3
