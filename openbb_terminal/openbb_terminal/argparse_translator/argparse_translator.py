@@ -200,6 +200,7 @@ class ArgparseTranslator:
         self.func = func
         self.signature = inspect.signature(func)
         self.type_hints = get_type_hints(func)
+        self.provider_parameters = []
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
@@ -221,6 +222,7 @@ class ArgparseTranslator:
                     # If the argument is already in use, we can't repeat it
                     if f"--{argument.name}" not in self._parser_arguments():
                         argparse_group.add_argument(f"--{argument.name}", **kwargs)
+                        self.provider_parameters.append(argument.name)
 
     def _parser_arguments(self) -> List[str]:
         """Get all the arguments from all groups currently defined on the parser."""
@@ -495,11 +497,11 @@ class ArgparseTranslator:
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
 
-        # remove kwargs that doesn't match the signature
+        # remove kwargs that doesn't match the signature or provider parameters
         kwargs = {
             key: value
             for key, value in kwargs.items()
-            if key in self.signature.parameters
+            if key in self.signature.parameters or key in self.provider_parameters
         }
 
         return self.func(**kwargs)
