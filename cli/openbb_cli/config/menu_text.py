@@ -50,7 +50,7 @@ def get_ordered_providers(command_path: str) -> List:
 
 
 class MenuText:
-    """Create menu text with rich colors to be displayed by terminal."""
+    """Create menu text with rich colors to be displayed by CLI."""
 
     CMD_NAME_LENGTH = 18
     CMD_DESCRIPTION_LENGTH = 50

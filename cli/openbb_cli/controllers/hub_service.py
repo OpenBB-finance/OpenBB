@@ -3,13 +3,12 @@
 from typing import Optional
 
 import requests
-
-from openbb_terminal.config.constants import (
+from openbb_cli.config.constants import (
     CONNECTION_ERROR_MSG,
     CONNECTION_TIMEOUT_MSG,
     TIMEOUT,
 )
-from openbb_terminal.session import Session
+from openbb_cli.session import Session
 
 # created dictionaries for personal and default routines with the structure
 # {"file_name" :["script","personal/default"]}

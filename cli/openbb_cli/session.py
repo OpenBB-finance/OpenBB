@@ -10,10 +10,10 @@ from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
 from prompt_toolkit.history import FileHistory
 
-from openbb_terminal.config.console import Console
-from openbb_terminal.config.constants import HIST_FILE_PROMPT
-from openbb_terminal.config.style import Style
-from openbb_terminal.models.settings import Settings
+from openbb_cli.config.console import Console
+from openbb_cli.config.constants import HIST_FILE_PROMPT
+from openbb_cli.config.style import Style
+from openbb_cli.models.settings import Settings
 
 
 class Session(metaclass=SingletonMeta):
@@ -25,7 +25,7 @@ class Session(metaclass=SingletonMeta):
         self._settings = Settings()
         self._style = Style(
             style=self._settings.RICH_STYLE,
-            directory=Path(self._obb.user.preferences.user_styles_directory),
+            directory=Path(self._obb.user.preferences.user_styles_directory),  # type: ignore[union-attr]
         )
         self._console = Console(
             settings=self._settings, style=self._style.console_style
@@ -35,16 +35,16 @@ class Session(metaclass=SingletonMeta):
     @property
     def user(self) -> User:
         """Get platform user."""
-        return self._obb.user
+        return self._obb.user  # type: ignore[union-attr]
 
     @property
     def settings(self) -> Settings:
-        """Get terminal settings."""
+        """Get CLI settings."""
         return self._settings
 
     @property
     def style(self) -> Style:
-        """Get terminal style."""
+        """Get CLI style."""
         return self._style
 
     @property

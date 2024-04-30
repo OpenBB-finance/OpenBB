@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 
 from rich.console import Console
 
-from openbb_terminal.config.constants import STYLES_DIRECTORY
+from openbb_cli.config.constants import STYLES_DIRECTORY
 
 console = Console()
 

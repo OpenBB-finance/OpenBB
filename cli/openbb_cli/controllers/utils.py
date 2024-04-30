@@ -1,4 +1,4 @@
-"""Terminal utils."""
+"""Utils."""
 
 import argparse
 import os
@@ -18,20 +18,18 @@ import pandas as pd
 import requests
 from openbb import obb
 from openbb_charting.core.backend import create_backend, get_backend
+from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
+from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from packaging import version
 from pytz import all_timezones, timezone
 from rich.table import Table
-
-from openbb_terminal.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
-from openbb_terminal.session import Session
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
 # pylint: disable=R1702,R0912
 
-session = Session()
 
 # pylint: disable=too-many-statements,no-member,too-many-branches,C0302
 
@@ -57,7 +55,7 @@ def remove_file(path: Path) -> bool:
             shutil.rmtree(path)
         return True
     except Exception:
-        session.console.print(
+        Session().console.print(
             f"\n[bold red]Failed to remove {path}"
             "\nPlease delete this manually![/bold red]"
         )
@@ -88,7 +86,7 @@ In the meantime, check out our other products:
 [bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
 [bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
     """
-    session.console.print(text)
+    Session().console.print(text)
 
 
 def hide_splashscreen():
@@ -103,20 +101,20 @@ def hide_splashscreen():
     try:
         import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
 
-        pyi_splash.update_text("Terminal Loaded!")
+        pyi_splash.update_text("CLI Loaded!")
         pyi_splash.close()
     except Exception as e:
-        session.console.print(f"Error: Unable to hide splashscreen: {e}")
+        Session().console.print(f"Error: Unable to hide splashscreen: {e}")
 
 
 def print_guest_block_msg():
-    """Block guest users from using the terminal."""
-    if session.is_local():
-        session.console.print(
+    """Block guest users from using the cli."""
+    if Session().is_local():
+        Session().console.print(
             "[info]You are currently logged as a guest.[/info]\n"
             "[info]Login to use this feature.[/info]\n\n"
             "[info]If you don't have an account, you can create one here: [/info]"
-            f"[cmds]{session.settings.HUB_URL + '/register'}\n[/cmds]"
+            f"[cmds]{Session().settings.HUB_URL + '/register'}\n[/cmds]"
         )
 
 
@@ -126,7 +124,7 @@ def is_installer() -> bool:
 
 
 def bootup():
-    """Bootup the terminal."""
+    """Bootup the cli."""
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec # noqa: S605,S607
@@ -141,7 +139,7 @@ def bootup():
             # pylint: disable=E1101
             sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
     except Exception as e:
-        session.console.print(e, "\n")
+        Session().console.print(e, "\n")
 
 
 def check_for_updates() -> None:
@@ -161,35 +159,35 @@ def check_for_updates() -> None:
     if r and r.status_code == 200:
         latest_tag_name = r.json()["tag_name"]
         latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(session.settings.VERSION)
+        current_version = version.parse(Session().settings.VERSION)
 
         if check_valid_versions(latest_version, current_version):
             if current_version == latest_version:
-                session.console.print(
+                Session().console.print(
                     "[green]You are using the latest stable version[/green]"
                 )
             else:
-                session.console.print(
+                Session().console.print(
                     "[yellow]You are not using the latest stable version[/yellow]"
                 )
                 if current_version < latest_version:
-                    session.console.print(
+                    Session().console.print(
                         "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
                     )
 
                 else:
-                    session.console.print(
+                    Session().console.print(
                         "[yellow]You are using an unreleased version[/yellow]"
                     )
 
         else:
-            session.console.print("[red]You are using an unrecognized version.[/red]")
+            Session().console.print("[red]You are using an unrecognized version.[/red]")
     else:
-        session.console.print(
+        Session().console.print(
             "[yellow]Unable to check for updates... "
             + "Check your internet connection and try again...[/yellow]"
         )
-    session.console.print("\n")
+    Session().console.print("\n")
 
 
 def check_valid_versions(
@@ -212,8 +210,8 @@ def welcome_message():
 
     Prints first welcome message, help and a notification if updates are available.
     """
-    session.console.print(
-        f"\nWelcome to OpenBB Platform CLI v{session.settings.VERSION}"
+    Session().console.print(
+        f"\nWelcome to OpenBB Platform CLI v{Session().settings.VERSION}"
     )
 
 
@@ -222,41 +220,41 @@ def reset(queue: Optional[List[str]] = None):
 
     Allows for checking code without quitting.
     """
-    session.console.print("resetting...")
-    session.reset()
-    debug = session.settings.DEBUG_MODE
-    dev = session.settings.DEV_BACKEND
+    Session().console.print("resetting...")
+    Session().reset()
+    debug = Session().settings.DEBUG_MODE
+    dev = Session().settings.DEV_BACKEND
 
     try:
         # remove the hub routines
-        if not session.is_local():
+        if not Session().is_local():
             remove_file(
-                Path(session.user.preferences.export_directory, "routines", "hub")
+                Path(Session().user.preferences.export_directory, "routines", "hub")
             )
 
             # if not get_current_user().profile.remember:
             #     Local.remove(HIST_FILE_PROMPT)
 
-        # we clear all openbb_terminal modules from sys.modules
+        # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
-            if parts[0] == "openbb_terminal":
+            if parts[0] == "openbb_cli":
                 del sys.modules[module]
 
         queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
-        # we run the terminal again
-        if session.is_local():
-            from openbb_terminal.controllers.terminal_controller import main
+        # we run the cli again
+        if Session().is_local():
+            from openbb_cli.controllers.cli_controller import main
 
             main(debug, dev, queue_list, module="")  # type: ignore
         else:
-            from openbb_terminal.controllers.terminal_controller import launch
+            from openbb_cli.controllers.cli_controller import launch
 
             launch(queue=queue_list)
 
     except Exception as e:
-        session.console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
+        Session().console.print(f"Unfortunately, resetting wasn't possible: {e}\n")
         print_goodbye()
 
 
@@ -287,7 +285,7 @@ def first_time_user() -> bool:
         Whether or not the user is a first time user
     """
     if ENV_FILE_SETTINGS.stat().st_size == 0:
-        session.settings.set_item("PREVIOUS_USE", True)
+        Session().settings.set_item("PREVIOUS_USE", True)
         return True
     return False
 
@@ -483,7 +481,7 @@ def print_rich_table(  # noqa: PLR0912
             raise ValueError("Length of headers does not match length of DataFrame.")
         return output
 
-    if session.settings.USE_INTERACTIVE_DF:
+    if Session().settings.USE_INTERACTIVE_DF:
         df_outgoing = df.copy()
         # If headers are provided, use them
         if headers is not None:
@@ -499,10 +497,13 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        # ensure everything on the dataframe is a string
+        df_outgoing = df_outgoing.applymap(str)
+
         _get_backend().send_table(
             df_table=df_outgoing,
             title=title,
-            theme=session.user.preferences.table_style,
+            theme=Session().user.preferences.table_style,
         )
         return
 
@@ -525,14 +526,14 @@ def print_rich_table(  # noqa: PLR0912
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
     exceeds_allowed_columns = (
-        len(df.columns) > session.settings.ALLOWED_NUMBER_OF_COLUMNS
+        len(df.columns) > Session().settings.ALLOWED_NUMBER_OF_COLUMNS
     )
-    exceeds_allowed_rows = len(df) > session.settings.ALLOWED_NUMBER_OF_ROWS
+    exceeds_allowed_rows = len(df) > Session().settings.ALLOWED_NUMBER_OF_ROWS
 
     if exceeds_allowed_columns:
         original_columns = df.columns.tolist()
         trimmed_columns = df.columns.tolist()[
-            : session.settings.ALLOWED_NUMBER_OF_COLUMNS
+            : Session().settings.ALLOWED_NUMBER_OF_COLUMNS
         ]
         df = df[trimmed_columns]
         trimmed_columns = [
@@ -541,9 +542,9 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_rows:
         n_rows = len(df.index)
-        trimmed_rows = df.index.tolist()[: session.settings.ALLOWED_NUMBER_OF_ROWS]
+        trimmed_rows = df.index.tolist()[: Session().settings.ALLOWED_NUMBER_OF_ROWS]
         df = df.loc[trimmed_rows]
-        trimmed_rows_count = n_rows - session.settings.ALLOWED_NUMBER_OF_ROWS
+        trimmed_rows_count = n_rows - Session().settings.ALLOWED_NUMBER_OF_ROWS
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
@@ -588,24 +589,24 @@ def print_rich_table(  # noqa: PLR0912
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row_idx)
-        session.console.print(table)
+        Session().console.print(table)
     else:
-        session.console.print(df.to_string(col_space=0))
+        Session().console.print(df.to_string(col_space=0))
 
     if exceeds_allowed_columns:
-        session.console.print(
-            f"[yellow]\nAllowed number of columns exceeded ({session.settings.ALLOWED_NUMBER_OF_COLUMNS}).\n"
+        Session().console.print(
+            f"[yellow]\nAllowed number of columns exceeded ({Session().settings.ALLOWED_NUMBER_OF_COLUMNS}).\n"
             f"The following columns were removed from the output: {', '.join(trimmed_columns)}.\n[/yellow]"
         )
 
     if exceeds_allowed_rows:
-        session.console.print(
-            f"[yellow]\nAllowed number of rows exceeded ({session.settings.ALLOWED_NUMBER_OF_ROWS}).\n"
+        Session().console.print(
+            f"[yellow]\nAllowed number of rows exceeded ({Session().settings.ALLOWED_NUMBER_OF_ROWS}).\n"
             f"{trimmed_rows_count} rows were removed from the output.\n[/yellow]"
         )
 
     if exceeds_allowed_columns or exceeds_allowed_rows:
-        session.console.print(
+        Session().console.print(
             "Use the `--export` flag to analyse the full output on a file."
         )
 
@@ -643,7 +644,7 @@ def get_user_agent() -> str:
 
 def get_flair() -> str:
     """Get a flair icon."""
-    current_flair = str(session.settings.FLAIR)
+    current_flair = str(Session().settings.FLAIR)
     flair = AVAILABLE_FLAIRS.get(current_flair, current_flair)
     return flair
 
@@ -651,7 +652,7 @@ def get_flair() -> str:
 def get_dtime() -> str:
     """Get a datetime string."""
     dtime = ""
-    if session.settings.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
+    if Session().settings.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(timezone(get_user_timezone())).strftime("%Y %b %d, %H:%M")
     return dtime
 
@@ -664,7 +665,7 @@ def get_flair_and_username() -> str:
     if dtime:
         dtime = f"{dtime} "
 
-    username = getattr(session.user.profile.hub_session, "username", "")
+    username = getattr(Session().user.profile.hub_session, "username", "")
     if username:
         username = f"[{username}] "
 
@@ -695,7 +696,7 @@ def get_user_timezone() -> str:
     str
         user timezone based on .env file
     """
-    return session.settings.TIMEZONE
+    return Session().settings.TIMEZONE
 
 
 def get_user_timezone_or_invalid() -> str:
@@ -746,7 +747,7 @@ def check_file_type_saved(valid_types: Optional[List[str]] = None):
             if filename.endswith(tuple(valid_types)):
                 valid_filenames.append(filename)
             else:
-                session.console.print(
+                Session().console.print(
                     f"[red]Filename '{filename}' provided is not valid!\nPlease use one of the following file types:"
                     f"{','.join(valid_types)}[/red]\n"
                 )
@@ -817,15 +818,15 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
     # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    # check if this is done in a main context to avoid saving with openbb_terminal
-    if resolve_path.parts[-2] == "openbb_terminal":
+    # check if this is done in a main context to avoid saving with openbb_cli
+    if resolve_path.parts[-2] == "openbb_cli":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
         path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
-    full_path = Path(session.user.preferences.export_directory) / default_filename
+    full_path = Path(Session().user.preferences.export_directory) / default_filename
 
     return full_path
 
@@ -836,9 +837,9 @@ def ask_file_overwrite(file_path: Path) -> Tuple[bool, bool]:
     Returns two values, the first is a boolean indicating if the file exists and the
     second is a boolean indicating if the user wants to overwrite the file.
     """
-    if session.settings.FILE_OVERWRITE:
+    if Session().settings.FILE_OVERWRITE:
         return False, True
-    if session.settings.TEST_MODE:
+    if Session().settings.TEST_MODE:
         return False, True
     if file_path.exists():
         overwrite = input("\nFile already exists. Overwrite? [y/n]: ").lower()
@@ -942,11 +943,9 @@ def export_data(
                 saved_path = saved_path.with_name(exp_type)
             # In this scenario we use the default filename
             else:
-                if ".OpenBB_openbb_terminal" in saved_path.name:
+                if ".OpenBB_openbb_cli" in saved_path.name:
                     saved_path = saved_path.with_name(
-                        saved_path.name.replace(
-                            ".OpenBB_openbb_terminal", "OpenBBTerminal"
-                        )
+                        saved_path.name.replace(".OpenBB_openbb_cli", "OpenBBCLI")
                     )
                 saved_path = saved_path.with_suffix(f".{exp_type}")
 
@@ -993,14 +992,14 @@ def export_data(
 
             elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
                 if figure is None:
-                    session.console.print("No plot to export.")
+                    Session().console.print("No plot to export.")
                     continue
                 figure.show(export_image=saved_path, margin=margin)
             else:
-                session.console.print("Wrong export file specified.")
+                Session().console.print("Wrong export file specified.")
                 continue
 
-            session.console.print(f"Saved file: {saved_path}")
+            Session().console.print(f"Saved file: {saved_path}")
 
         if figure is not None:
             figure._exported = True  # pylint: disable=protected-access
@@ -1044,7 +1043,7 @@ def request(
     # If there are headers, check if there is a user agent, if not add one.
     # Some requests seem to work only with a specific user agent, so we want to be able to override it.
     headers = kwargs.pop("headers", {})
-    timeout = timeout or session.user.preferences.request_timeout
+    timeout = timeout or Session().user.preferences.request_timeout
 
     if "User-Agent" not in headers:
         headers["User-Agent"] = get_user_agent()

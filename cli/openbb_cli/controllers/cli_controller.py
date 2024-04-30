@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Main Terminal Module."""
+"""Main CLI Module."""
 
 import argparse
 import contextlib
@@ -20,26 +20,22 @@ import certifi
 import pandas as pd
 import requests
 from openbb import obb
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.styles import Style
-from pydantic import BaseModel
-
-from openbb_terminal.argparse_translator.obbject_registry import Registry
-from openbb_terminal.config import constants
-from openbb_terminal.config.completer import NestedCompleter
-from openbb_terminal.config.constants import (
+from openbb_cli.argparse_translator.obbject_registry import Registry
+from openbb_cli.config import constants
+from openbb_cli.config.completer import NestedCompleter
+from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
     ENV_FILE_SETTINGS,
     HOME_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
-from openbb_terminal.config.menu_text import MenuText
-from openbb_terminal.controllers.base_controller import BaseController
-from openbb_terminal.controllers.platform_controller_factory import (
+from openbb_cli.config.menu_text import MenuText
+from openbb_cli.controllers.base_controller import BaseController
+from openbb_cli.controllers.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from openbb_terminal.controllers.script_parser import is_reset, parse_openbb_script
-from openbb_terminal.controllers.utils import (
+from openbb_cli.controllers.script_parser import is_reset, parse_openbb_script
+from openbb_cli.controllers.utils import (
     bootup,
     first_time_user,
     get_flair_and_username,
@@ -51,7 +47,10 @@ from openbb_terminal.controllers.utils import (
     suppress_stdout,
     welcome_message,
 )
-from openbb_terminal.session import Session
+from openbb_cli.session import Session
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
+from pydantic import BaseModel
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -68,8 +67,6 @@ logger = logging.getLogger(__name__)
 
 env_file = str(ENV_FILE_SETTINGS)
 
-session = Session()
-
 if is_installer():
     # Necessary for installer so that it can locate the correct certificates for
     # API calls and https
@@ -78,8 +75,8 @@ if is_installer():
     os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
-class TerminalController(BaseController):
-    """Terminal Controller class."""
+class CLIController(BaseController):
+    """CLI Controller class."""
 
     CHOICES_COMMANDS = ["record", "stop", "exe", "results"]
     CHOICES_MENUS = [
@@ -96,7 +93,7 @@ class TerminalController(BaseController):
     CHOICES_GENERATION = False
 
     def __init__(self, jobs_cmds: Optional[List[str]] = None):
-        """Construct terminal controller."""
+        """Construct CLI controller."""
         self.ROUTINE_FILES: Dict[str, str] = dict()
         self.ROUTINE_DEFAULT_FILES: Dict[str, str] = dict()
         self.ROUTINE_PERSONAL_FILES: Dict[str, str] = dict()
@@ -166,9 +163,11 @@ class TerminalController(BaseController):
 
     def update_runtime_choices(self):
         """Update runtime choices."""
-        routines_directory = Path(session.user.preferences.export_directory, "routines")
+        routines_directory = Path(
+            Session().user.preferences.export_directory, "routines"
+        )
 
-        if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
+        if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
@@ -242,8 +241,8 @@ class TerminalController(BaseController):
                     .get("description")
                 ) or ""
                 mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
+                    key_menu=router,
+                    menu_description=menu_description.split(".")[0].lower(),
                 )
             else:
                 mt.add_cmd(router)
@@ -260,8 +259,8 @@ class TerminalController(BaseController):
                         .get("description")
                     ) or ""
                     mt.add_menu(
-                        name=router,
-                        description=menu_description.split(".")[0].lower(),
+                        key_menu=router,
+                        menu_description=menu_description.split(".")[0].lower(),
                     )
                 else:
                     mt.add_cmd(router)
@@ -277,8 +276,8 @@ class TerminalController(BaseController):
                     .get("description")
                 ) or ""
                 mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
+                    key_menu=router,
+                    menu_description=menu_description.split(".")[0].lower(),
                 )
             else:
                 mt.add_cmd(router)
@@ -286,7 +285,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n    cached results (OBBjects)\n")
         mt.add_cmd("results")
 
-        session.console.print(text=mt.menu_text, menu="Home")
+        Session().console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
     def parse_input(self, an_input: str) -> List:
@@ -303,7 +302,7 @@ class TerminalController(BaseController):
 
     def call_settings(self, _):
         """Process feature flags command."""
-        from openbb_terminal.controllers.feature_flags_controller import (
+        from openbb_cli.controllers.feature_flags_controller import (
             FeatureFlagsController,
         )
 
@@ -315,7 +314,7 @@ class TerminalController(BaseController):
         other_args += self.queue
 
         if not other_args:
-            session.console.print(
+            Session().console.print(
                 "[info]Provide a path to the routine you wish to execute. For an example, please use "
                 "`exe --example` and for documentation and to learn how create your own script "
                 "type `about exe`.\n[/info]"
@@ -370,7 +369,7 @@ class TerminalController(BaseController):
         if ns_parser:
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
-                session.console.print(
+                Session().console.print(
                     "[info]Executing an example, please type `about exe` "
                     "to learn how to create your own script.[/info]\n"
                 )
@@ -390,12 +389,14 @@ class TerminalController(BaseController):
                 final_url = f"{url}?raw=true"
                 response = requests.get(final_url, timeout=10)
                 if response.status_code != 200:
-                    session.console.print(
+                    Session().console.print(
                         "[red]Could not find the requested script.[/red]"
                     )
                     return
                 routine_text = response.json()["script"]
-                file_path = Path(session.user.preferences.export_directory, "routines")
+                file_path = Path(
+                    Session().user.preferences.export_directory, "routines"
+                )
                 routine_path = file_path / file_name
                 with open(routine_path, "w") as file:
                     file.write(routine_text)
@@ -440,7 +441,7 @@ class TerminalController(BaseController):
                 # issue in parsing the routine and therefore we don't want to feed it
                 # to the terminal
                 if err:
-                    session.console.print(err)
+                    Session().console.print(err)
                     return
 
                 self.queue = [
@@ -465,12 +466,12 @@ class TerminalController(BaseController):
 
                     # Check if the directory exists
                     if os.path.isdir(export_path):
-                        session.console.print(
+                        Session().console.print(
                             f"Export data to be saved in the selected folder: '{export_path}'"
                         )
                     else:
                         os.makedirs(export_path)
-                        session.console.print(
+                        Session().console.print(
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     self.queue = self.queue[1:]
@@ -484,13 +485,13 @@ class TerminalController(BaseController):
                 df, show_index=True, index_name="stack index", title="OBBject Results"
             )
         else:
-            session.console.print("[info]No results found.[/info]")
+            Session().console.print("[info]No results found.[/info]")
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     """Handle job commands."""
     # If the path selected does not start from the user root,
-    # give relative location from terminal root
+    # give relative location from root
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
@@ -512,22 +513,22 @@ def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
 
     # Check if the directory exists
     if os.path.isdir(export_path):
-        session.console.print(
+        Session().console.print(
             f"Export data to be saved in the selected folder: '{export_path}'"
         )
     else:
         os.makedirs(export_path)
-        session.console.print(
+        Session().console.print(
             f"[green]Folder '{export_path}' successfully created.[/green]"
         )
     return jobs_cmds
 
 
 # pylint: disable=unused-argument
-def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
-    """Run the terminal menu."""
+def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
+    """Run the CLI menu."""
     ret_code = 1
-    t_controller = TerminalController(jobs_cmds)
+    t_controller = CLIController(jobs_cmds)
     an_input = ""
 
     jobs_cmds = handle_job_cmds(jobs_cmds)
@@ -559,23 +560,23 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
             # Print the current location because this was an instruction and we want user to know what was the action
             if an_input and an_input.split(" ")[0] in t_controller.CHOICES_COMMANDS:
-                session.console.print(f"{get_flair_and_username()} / $ {an_input}")
+                Session().console.print(f"{get_flair_and_username()} / $ {an_input}")
 
         # Get input command from user
         else:
             try:
                 # Get input from user using auto-completion
-                if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
+                if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
                     # Check if toolbar hint was enabled
-                    if session.settings.TOOLBAR_HINT:
-                        an_input = session.prompt_session.prompt(
+                    if Session().settings.TOOLBAR_HINT:
+                        an_input = Session().prompt_session.prompt(  # type: ignore[union-attr]
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
                             bottom_toolbar=HTML(
                                 '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                 '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
-                                '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
                                 '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
@@ -587,7 +588,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                             ),
                         )
                     else:
-                        an_input = session.prompt_session.prompt(
+                        an_input = Session().prompt_session.prompt(  # type: ignore[union-attr]
                             f"{get_flair_and_username()} / $ ",
                             completer=t_controller.completer,
                             search_ignore_case=True,
@@ -619,7 +620,7 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 "The command '%s' doesn't exist on the / menu.",
                 an_input,
             )
-            session.console.print(
+            Session().console.print(
                 f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]\n",
             )
             similar_cmd = difflib.get_close_matches(
@@ -637,11 +638,11 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                     if candidate_input == an_input:
                         an_input = ""
                         t_controller.queue = []
-                        session.console.print("\n")
+                        Session().console.print("\n")
                         continue
                     an_input = candidate_input
 
-                session.console.print(f"[green]Replacing by '{an_input}'.[/green]")
+                Session().console.print(f"[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
 
 
@@ -669,7 +670,7 @@ def run_scripts(
     path : str
         The location of the .openbb file
     test_mode : bool
-        Whether the terminal is in test mode
+        Whether the CLI is in test mode
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
@@ -681,11 +682,9 @@ def run_scripts(
         Whether to log tests to txt files
     """
     if not path.exists():
-        session.console.print(
-            f"File '{path}' doesn't exist. Launching base terminal.\n"
-        )
+        Session().console.print(f"File '{path}' doesn't exist. Launching base CLI.\n")
         if not test_mode:
-            terminal()
+            run_cli()
 
     # THIS NEEDS TO BE REFACTORED!!! - ITS USED FOR TESTING
     with path.open() as fp:
@@ -734,10 +733,10 @@ def run_scripts(
         )
 
         if not test_mode or verbose:
-            terminal(file_cmds, test_mode=True)
+            run_cli(file_cmds, test_mode=True)
         else:
             with suppress_stdout():
-                session.console.print(f"To ensure: {output}")
+                Session().console.print(f"To ensure: {output}")
                 if output:
                     timestamp = datetime.now().timestamp()
                     stamp_str = str(timestamp).replace(".", "")
@@ -747,9 +746,9 @@ def run_scripts(
                     with open(
                         whole_path / f"{stamp_str}_{first_cmd}_output.txt", "w"
                     ) as output_file, contextlib.redirect_stdout(output_file):
-                        terminal(file_cmds, test_mode=True)
+                        run_cli(file_cmds, test_mode=True)
                 else:
-                    terminal(file_cmds, test_mode=True)
+                    run_cli(file_cmds, test_mode=True)
 
 
 def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
@@ -778,7 +777,7 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
 
 def run_routine(file: str, routines_args=Optional[str]):
     """Execute command routine from .openbb file."""
-    user_routine_path = Path(session.user.preferences.export_directory, "routines")
+    user_routine_path = Path(Session().user.preferences.export_directory, "routines")
     default_routine_path = ASSETS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():
@@ -786,7 +785,7 @@ def run_routine(file: str, routines_args=Optional[str]):
     elif default_routine_path.exists():
         run_scripts(path=default_routine_path, routines_args=routines_args)
     else:
-        session.console.print(
+        Session().console.print(
             f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
         )
 
@@ -799,16 +798,16 @@ def main(
     routines_args: Optional[List[str]] = None,
     **kwargs,
 ):
-    """Run the terminal with various options.
+    """Run the CLI with various options.
 
     Parameters
     ----------
     debug : bool
-        Whether to run the terminal in debug mode
+        Whether to run the CLI in debug mode
     dev:
         Points backend towards development environment instead of production
     test : bool
-        Whether to run the terminal in integrated test mode
+        Whether to run the CLI in integrated test mode
     filtert : str
         Filter test files with given string in name
     paths : List[str]
@@ -820,28 +819,28 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
     if debug:
-        session.settings.DEBUG_MODE = True
+        Session().settings.DEBUG_MODE = True
 
     if dev:
-        session.settings.DEV_BACKEND = True
-        session.settings.BASE_URL = "https://payments.openbb.dev/"
-        session.settings.HUB_URL = "https://my.openbb.dev"
+        Session().settings.DEV_BACKEND = True
+        Session().settings.BASE_URL = "https://payments.openbb.dev/"
+        Session().settings.HUB_URL = "https://my.openbb.dev"
 
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)
     elif path_list:
         argv_cmds = list([" ".join(path_list).replace(" /", "/home/")])
         argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-        terminal(argv_cmds)
+        run_cli(argv_cmds)
     else:
-        terminal()
+        run_cli()
 
 
 def parse_args_and_run():
-    """Parse input arguments and run terminal."""
+    """Parse input arguments and run CLI."""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        prog="terminal",
+        prog="cli",
         description="The OpenBB Platform CLI.",
     )
     parser.add_argument(
@@ -883,7 +882,7 @@ def parse_args_and_run():
         "--test",
         action="store_true",
         help=(
-            "Run the terminal in testing mode. Also run this option and '-h'"
+            "Run the CLI in testing mode. Also run this option and '-h'"
             " to see testing argument options."
         ),
     )
@@ -914,11 +913,11 @@ def parse_args_and_run():
         sys.argv.insert(1, "--file")
     ns_parser, unknown = parser.parse_known_args()
 
-    # This ensures that if terminal.py receives unknown args it will not start.
+    # This ensures that if cli.py receives unknown args it will not start.
     # Use -d flag if you want to see the unknown args.
     if unknown:
         if ns_parser.debug:
-            session.console.print(unknown)
+            Session().console.print(unknown)
         else:
             sys.exit(-1)
 
@@ -936,7 +935,7 @@ def parse_args_and_run():
 def launch(
     debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
 ) -> None:
-    """Launch terminal."""
+    """Launch CLI."""
 
     if queue:
         main(debug, dev, queue, module="")
