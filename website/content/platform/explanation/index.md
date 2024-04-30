@@ -68,7 +68,7 @@ Refer to [Extensions](extensions) for the list of extensions hosted in the OpenB
 
 The pages in this section cover topics to get started using the OpenBB Platform, including:
 
-- [Data Stanardization](explanation/standardization)
+- [Data Standardization](explanation/standardization)
 - [Architecture Overview](explanation/architecture_overview)
 - [OBBject](explanation/obbject)
 - [Development](explanation/development)

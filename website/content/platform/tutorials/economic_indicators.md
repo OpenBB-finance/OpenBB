@@ -20,7 +20,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Economic Indicators - Usage | OpenBB Platform Docs" />
+<HeadTitle title="Economic Indicators - Tutorials | OpenBB Platform Docs" />
 
 This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint, with the `openbb-econdb` provider extension.
 The command provides access to over 100 standardized indicator symbols, covering countries around the world.
