@@ -562,3 +562,74 @@ def test_economy_fred_regional(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "symbol": "GDP,GDEBT",
+                "transform": None,
+                "start_date": "2022-01-01",
+                "end_date": "2024-01-01",
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_indicators(params, headers):
+    """Test the economy indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/indicators?{query_str}"
+    result = requests.get(url, headers=headers, timeout=20)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "econdb", "use_cache": False}),
+    ],
+)
+@pytest.mark.integration
+def test_economy_available_indicators(params, headers):
+    """Test the economy available indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/available_indicators?{query_str}"
+    result = requests.get(url, headers=headers, timeout=5)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "latest": True,
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_country_profile(params, headers):
+    """Test the economy country profile."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/country_profile?{query_str}"
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
