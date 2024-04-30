@@ -1,0 +1,21 @@
+# Go into the equity context
+equity
+
+# Get the company's profile
+profile --symbol aapl
+
+# Get company's statements
+fundamental
+balance --symbol aapl
+cash --symbol aapl
+transcript --symbol aapl --year 2023
+
+# Load company's historical data
+../price
+historical --symbol aapl
+
+# Get its performance
+performance --symbol aapl
+
+# Export the candle as an image and the historical data into a csv
+historical --symbol aapl --chart --export csv,jpg

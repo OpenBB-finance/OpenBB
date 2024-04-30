@@ -43,4 +43,4 @@ jobs:
       - name: Run tests
         run: |
           pip install nox
-          nox -s tests --python ${{ matrix.python_version }}
+          nox -f .github/scripts/noxfile.py -s tests --python ${{ matrix.python_version }}

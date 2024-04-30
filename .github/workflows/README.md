@@ -115,7 +115,7 @@ The first job, `code-linting`, runs on an Ubuntu machine and performs several li
 The second job, `markdown-link-check`, runs on an Ubuntu machine and performs linting of the markdown files in the repository. It uses a Docker container `avtodev/markdown-lint` to perform the linting.
 
 ## MacOS Build Workflow
-This GitHub Actions workflow is used to build a version of the OpenBB Terminal for M1 MacOS. The build process includes installing necessary dependencies, building the terminal application using PyInstaller, creating a DMG file for distribution, and running integration tests on the built application.
+This GitHub Actions workflow is used to build a version of the OpenBB Platform CLI for M1 MacOS. The build process includes installing necessary dependencies, building the terminal application using PyInstaller, creating a DMG file for distribution, and running integration tests on the built application.
 
 Jobs
 ----
@@ -161,13 +161,13 @@ The job includes the following steps:
 This workflow also uses a concurrency setting that groups the jobs by the workflow and ref, and cancels any in-progress jobs.
 
 ## Nightly PyPI Publish Workflow
-This workflow is used to publish the latest version of the OpenBB Terminal to PyPI. The workflow is triggered at UTC+0 daily by the GitHub Action schedule event.
+This workflow is used to publish the latest version of the OpenBB Platform CLI to PyPI. The workflow is triggered at UTC+0 daily by the GitHub Action schedule event.
 
 It does this by first updating the `pyproject.toml` file with a pre-determined version string of the form `<currentVersion>.dev<date>`, where `<date>` represents the current day's date as a 8 digit number.
 
 Then, the code installs `pypa/build` and uses `python -m build` to create a binary wheel and a source tarball in the `dist/` directory.
 
-Finally, it uses the PyPA specific action `gh-action-pypi-publish` to publish the created files to PyPI. 
+Finally, it uses the PyPA specific action `gh-action-pypi-publish` to publish the created files to PyPI.
 
 ## PYPI publish Workflow
 The Github Action code `Deploy to PyPI` is used to deploy a Python project to PyPI (Python Package Index) and TestPyPI, which is a separate package index for testing purposes. The code is triggered on two events:
@@ -187,7 +187,7 @@ Similarly, the `deploy-pypi` job is triggered only if the pushed branch starts w
 Note: The code uses the `pypa/build` package for building the binary wheel and source tarball, and the `pypa/gh-action-pypi-publish@release/v1` Github Action for publishing the distributions to PyPI and TestPyPI.
 
 ## Unit Tests Workflow
-This workflow is used to run unit tests on the OpenBB Terminal. The workflow is triggered on the following events:
+This workflow is used to run unit tests on the OpenBB Platform CLI. The workflow is triggered on the following events:
 The events this workflow will respond to are:
 
 1.  Pull requests that are opened, synchronized, edited, or closed. The pull request must be made to the `develop` or `main` branches.
@@ -207,7 +207,7 @@ The next job, `full-test`, uses the GitHub Actions `checkout` action to checkout
 The last job, `tests-conda`, sets up a Miniconda environment using the `setup-miniconda` action. The environment is specified using a YAML file and is activated. Then, the tests are run.
 
 ## Windows 10 Build Workflow
-This is a GitHub Actions workflow file that automates the build and testing process for the OpenBB Terminal on Windows 10. The workflow consists of two jobs:
+This is a GitHub Actions workflow file that automates the build and testing process for the OpenBB Platform CLI on Windows 10. The workflow consists of two jobs:
 
 1.  Windows-Build
 2.  Build-Exe
