@@ -11,7 +11,7 @@ en:
   _configure_: Configure your own CLI
   _main_menu_: Main menu
   settings/_info_: Feature flags
-  settings/_settings_: Terminal settings and preferences
+  settings/_settings_: Settings and preferences
   settings/retryload: retry misspelled commands with load first
   settings/interactive: open dataframes in interactive window
   settings/cls: clear console after each command

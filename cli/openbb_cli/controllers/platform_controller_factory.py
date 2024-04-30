@@ -2,10 +2,10 @@
 
 from typing import Dict, List, Union
 
-from openbb_terminal.argparse_translator.argparse_class_processor import (
+from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
-from openbb_terminal.controllers.base_platform_controller import PlatformController
+from openbb_cli.controllers.base_platform_controller import PlatformController
 
 
 class PlatformControllerFactory:

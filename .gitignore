@@ -40,15 +40,15 @@ lightning_logs/
 */mocked_path
 *.pem
 
-# Terminal
+# CLI
 *.pyo
 **/dist/*
-build/terminal
+build/cli
 build/nsis/app
 DMG/*
 *.dmg
 *.sh
-openbb_terminal/openbb_terminal/assets/styles/user/hub.richstyle.json
+cli/openbb_cli/assets/styles/user/hub.richstyle.json
 
 # Platform
 openbb_platform/openbb/package/*

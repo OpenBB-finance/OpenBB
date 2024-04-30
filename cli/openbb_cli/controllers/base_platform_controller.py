@@ -8,16 +8,15 @@ from typing import Dict, List, Optional
 import pandas as pd
 from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
-
-from openbb_terminal.argparse_translator.argparse_class_processor import (
+from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
-from openbb_terminal.argparse_translator.obbject_registry import Registry
-from openbb_terminal.config.completer import NestedCompleter
-from openbb_terminal.config.menu_text import MenuText
-from openbb_terminal.controllers.base_controller import BaseController
-from openbb_terminal.controllers.utils import export_data, print_rich_table
-from openbb_terminal.session import Session
+from openbb_cli.argparse_translator.obbject_registry import Registry
+from openbb_cli.config.completer import NestedCompleter
+from openbb_cli.config.menu_text import MenuText
+from openbb_cli.controllers.base_controller import BaseController
+from openbb_cli.controllers.utils import export_data, print_rich_table
+from openbb_cli.session import Session
 
 
 class DummyTranslation:

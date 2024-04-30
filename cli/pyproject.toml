@@ -4,15 +4,15 @@ version = "1.0.0"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
-packages = [{ include = "openbb_terminal" }]
-include = ["openbb_terminal/.env"]
+packages = [{ include = "openbb_cli" }]
+include = ["cli/.env"]
 readme = "README.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
-documentation = "https://docs.openbb.co/sdk"
+documentation = "https://docs.openbb.co/terminal"
 
 [tool.poetry.scripts]
-openbb = 'openbb_terminal.cli:main'
+openbb = 'openbb_cli.cli:main'
 
 [tool.poetry.dependencies]
 python = "^3.8.1,<3.12"

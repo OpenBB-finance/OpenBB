@@ -7,11 +7,11 @@ from types import MethodType
 from typing import Callable, List, Literal
 from unittest.mock import patch
 
-from openbb_terminal.controllers.utils import (
+from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
 )
-from openbb_terminal.session import Session
+from openbb_cli.session import Session
 
 
 def __mock_parse_known_args_and_warn(
@@ -27,7 +27,7 @@ def __mock_parse_known_args_and_warn(
     """Add arguments.
 
     Add the arguments that would have normally added by :
-        - openbb_terminal.parent_classes.BaseController.parse_known_args_and_warn
+        - openbb_cli.base_controller.BaseController.parse_known_args_and_warn
 
     Parameters
     ----------
@@ -94,7 +94,7 @@ def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> N
     """Add arguments.
 
     Add the arguments that would have normally added by:
-        - openbb_terminal.parent_classes.BaseController.parse_simple_args
+        - openbb_cli.parent_classes.BaseController.parse_simple_args
 
     Parameters
     ----------
@@ -115,7 +115,7 @@ def __get_command_func(controller, command: str):
     Parameters
     ----------
     controller: BaseController
-        Instance of the Terminal Controller.
+        Instance of the CLI Controller.
     command: str
         A name from controller.CHOICES_COMMANDS
 
@@ -187,7 +187,7 @@ def __patch_controller_functions(controller):
     )
 
     rich = patch(
-        target="openbb_terminal.config.console.Console.print",
+        target="openbb_cli.config.console.Console.print",
         return_value=None,
     )
 
@@ -234,7 +234,7 @@ def _get_argument_parser(
     Parameters
     ----------
     controller: BaseController
-        Instance of the Terminal Controller.
+        Instance of the CLI Controller.
     command: str
         A name from `controller.CHOICES_COMMANDS`.
 

@@ -5,8 +5,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Match, Optional, Tuple, Union
 
 from dateutil.relativedelta import relativedelta
-
-from openbb_terminal.session import Session
+from openbb_cli.session import Session
 
 # pylint: disable=too-many-statements,eval-used,consider-iterating-dictionary
 # pylint: disable=too-many-branches,too-many-return-statements

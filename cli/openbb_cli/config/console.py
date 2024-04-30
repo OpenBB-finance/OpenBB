@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 
 from rich import panel
 from rich.console import (
@@ -7,10 +7,10 @@ from rich.console import (
 )
 from rich.text import Text
 
-from openbb_terminal.config.menu_text import RICH_TAGS
+from openbb_cli.config.menu_text import RICH_TAGS
 
 if TYPE_CHECKING:
-    from openbb_terminal.models.settings import Settings
+    from openbb_cli.models.settings import Settings
 
 
 class Console:
@@ -19,11 +19,11 @@ class Console:
     def __init__(
         self,
         settings: "Settings",
-        style: Optional[str] = None,
+        style: Optional[Dict[str, Any]] = None,
     ):
         """Initialize the ConsoleAndPanel class."""
         self._console = RichConsole(
-            theme=Theme(style),  # type: ignore[arg-type]
+            theme=Theme(style),
             highlight=False,
             soft_wrap=True,
         )

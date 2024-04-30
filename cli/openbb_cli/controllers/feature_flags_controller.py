@@ -3,15 +3,15 @@
 import argparse
 from typing import List, Optional
 
-from openbb_terminal.config.completer import NestedCompleter
-from openbb_terminal.config.constants import AVAILABLE_FLAIRS
-from openbb_terminal.config.menu_text import MenuText
+from openbb_cli.config.completer import NestedCompleter
+from openbb_cli.config.constants import AVAILABLE_FLAIRS
+from openbb_cli.config.menu_text import MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
 # pylint:disable=import-outside-toplevel
-from openbb_terminal.controllers.base_controller import BaseController
-from openbb_terminal.controllers.utils import all_timezones, is_timezone_valid
-from openbb_terminal.session import Session
+from openbb_cli.controllers.base_controller import BaseController
+from openbb_cli.controllers.utils import all_timezones, is_timezone_valid
+from openbb_cli.session import Session
 
 
 class FeatureFlagsController(BaseController):
@@ -131,7 +131,7 @@ class FeatureFlagsController(BaseController):
     def call_tbhint(self, _):
         """Process tbhint command."""
         if Session().settings.TOOLBAR_HINT:
-            Session().console.print("Will take effect when running terminal next.")
+            Session().console.print("Will take effect when running CLI again.")
         Session().settings.set_item("TOOLBAR_HINT", not Session().settings.TOOLBAR_HINT)
 
     def call_console_style(self, other_args: List[str]) -> None:
