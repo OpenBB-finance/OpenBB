@@ -171,6 +171,8 @@ class PlatformController(BaseController):
 
                     elif hasattr(obbject, "to_dataframe"):
                         df = obbject.to_dataframe()
+                        if isinstance(df.columns, pd.RangeIndex):
+                            df.columns = [str(i) for i in df.columns]
                         print_rich_table(df, show_index=True)
 
                     elif isinstance(obbject, dict):
