@@ -498,6 +498,9 @@ def print_rich_table(  # noqa: PLR0912
             if col == "":
                 df_outgoing = df_outgoing.rename(columns={col: "  "})
 
+        # ensure everything on the dataframe is a string
+        df_outgoing = df_outgoing.applymap(str)
+
         _get_backend().send_table(
             df_table=df_outgoing,
             title=title,
