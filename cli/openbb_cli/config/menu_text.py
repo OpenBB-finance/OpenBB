@@ -53,7 +53,7 @@ class MenuText:
     """Create menu text with rich colors to be displayed by CLI."""
 
     CMD_NAME_LENGTH = 18
-    CMD_DESCRIPTION_LENGTH = 50
+    CMD_DESCRIPTION_LENGTH = 65
     CMD_PROVIDERS_LENGTH = 23
     SECTION_SPACING = 4
 
@@ -121,12 +121,12 @@ class MenuText:
         )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def _format_cmd_name(self, cmd_name: str) -> str:
+    def _format_cmd_name(self, name: str) -> str:
         """Adjust the length of the command if it is too long.
 
         Parameters
         ----------
-        cmd_name : str
+        name : str
             command to be formatted
 
         Returns
@@ -134,58 +134,60 @@ class MenuText:
         str
             formatted command
         """
-        if len(cmd_name) > self.CMD_NAME_LENGTH:
-            new_cmd_name = cmd_name[
+        if len(name) > self.CMD_NAME_LENGTH:
+            new_name = name[
                 : self.CMD_NAME_LENGTH
             ]  # Default to trimming to 18 characters
 
-            if "_" in cmd_name:
-                cmd_name_split = cmd_name.split("_")
+            if "_" in name:
+                name_split = name.split("_")
 
-                new_cmd_name = (
-                    "_".join(cmd_name_split[:2])
-                    if len(cmd_name_split) > 2
-                    else cmd_name_split[0]
+                new_name = (
+                    "_".join(name_split[:2]) if len(name_split) > 2 else name_split[0]
                 )
 
-                if len(new_cmd_name) > self.CMD_NAME_LENGTH:
-                    new_cmd_name = new_cmd_name[: self.CMD_NAME_LENGTH]
+                if len(new_name) > self.CMD_NAME_LENGTH:
+                    new_name = new_name[: self.CMD_NAME_LENGTH]
 
-            if new_cmd_name != cmd_name:
+            if new_name != name:
                 self.warnings.append(
                     {
                         "warning": "Command name too long",
-                        "command": cmd_name,
-                        "trimmed_command": new_cmd_name,
+                        "command": name,
+                        "trimmed_command": new_name,
                     }
                 )
-                cmd_name = new_cmd_name
+                name = new_name
 
-        return cmd_name
+        return name
 
-    def _format_cmd_description(self, cmd_name: str, command_description: str) -> str:
+    def _format_cmd_description(
+        self, name: str, description: str, trim: bool = True
+    ) -> str:
         """Handle the command description.
 
         Parameters
         ----------
-        cmd_name : str
+        name : str
             command to be adjusted
-        command_description : str
+        description : str
             description of the command
+        trim : bool
+            If true, the description will be trimmed to the maximum length
 
         Returns
         -------
         str
             adjusted command description
         """
-        if not command_description:
-            command_description = i18n.t(self.menu_path + cmd_name)
-            if command_description == self.menu_path + cmd_name:
-                command_description = ""
+        if not description:
+            description = i18n.t(self.menu_path + name)
+            if description == self.menu_path + name:
+                description = ""
         return (
-            command_description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
-            if len(command_description) > self.CMD_DESCRIPTION_LENGTH
-            else command_description
+            description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
+            if len(description) > self.CMD_DESCRIPTION_LENGTH and trim
+            else description
         )
 
     def add_cmd(self, name: str, description: str = "", disable: bool = False):
@@ -201,33 +203,24 @@ class MenuText:
             If disable is true, the command line is greyed out.
         """
         formatted_name = self._format_cmd_name(name)
-        formatted_description = self._format_cmd_description(
-            formatted_name, description
-        )
-        spacing = (
-            max(
-                (self.CMD_NAME_LENGTH - len(formatted_name) - self.SECTION_SPACING),
-                self.SECTION_SPACING,
-            )
-            * " "
-        )
-        cmd = f"{formatted_name}{spacing}{formatted_description}"
-        cmd = f"[unvl]    {cmd}[/unvl]" if disable else f"[cmds]    {cmd}[/cmds]"
-
+        name_padding = (self.CMD_NAME_LENGTH - len(formatted_name)) * " "
         providers = get_ordered_providers(f"{self.menu_path}{formatted_name}")
+        formatted_description = self._format_cmd_description(
+            formatted_name,
+            description,
+            bool(providers),
+        )
+        description_padding = (
+            self.CMD_DESCRIPTION_LENGTH - len(formatted_description)
+        ) * " "
+        spacing = self.SECTION_SPACING * " "
+        description_padding = (
+            self.CMD_DESCRIPTION_LENGTH - len(formatted_description)
+        ) * " "
+        cmd = f"{spacing}{formatted_name + name_padding}{spacing}{formatted_description+description_padding}"
+        cmd = f"[unvl]{cmd}[/unvl]" if disable else f"[cmds]{cmd}[/cmds]"
 
         if providers:
-            spacing = (
-                max(
-                    (
-                        self.CMD_DESCRIPTION_LENGTH
-                        - len(formatted_description)
-                        + self.SECTION_SPACING
-                    ),
-                    self.SECTION_SPACING,
-                )
-                * " "
-            )
             cmd += rf"{spacing}[src]\[{', '.join(providers)}][/src]"
 
         self.menu_text += cmd + "\n"
@@ -247,7 +240,7 @@ class MenuText:
         disable : bool
             If disable is true, the menu line is greyed out.
         """
-        spacing = (23 - (len(name) + 4)) * " "
+        spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
 
         if description:
             menu = f"{name}{spacing}{description}"
@@ -262,18 +255,19 @@ class MenuText:
         else:
             self.menu_text += f"[menu]>   {menu}[/menu]\n"
 
-    def add_setting(self, key_setting: str, status: bool = True):
+    def add_setting(self, name: str, status: bool = True):
         """Append menu text (after translation from key) to a menu.
 
         Parameters
         ----------
-        key_setting : str
+        name : str
             key setting to be set by user. It is also used as a key to get description of the setting.
         status : bool
             status of the current setting. If true the line will be green, otherwise red.
         """
-        spacing = (23 - (len(key_setting) + 4)) * " "
+        spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
+        indentation = self.SECTION_SPACING * " "
         if status:
-            self.menu_text += f"[green]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/green]\n"
+            self.menu_text += f"[green]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/green]\n"
         else:
-            self.menu_text += f"[red]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/red]\n"
+            self.menu_text += f"[red]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/red]\n"
