@@ -7,10 +7,10 @@ from rich.console import (
 )
 from rich.text import Text
 
-from openbb_terminal.config.menu_text import RICH_TAGS
+from openbb_cli.config.menu_text import RICH_TAGS
 
 if TYPE_CHECKING:
-    from openbb_terminal.models.settings import Settings
+    from openbb_cli.models.settings import Settings
 
 
 class Console:

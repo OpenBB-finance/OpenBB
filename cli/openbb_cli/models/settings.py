@@ -3,13 +3,12 @@
 from typing import Any
 
 from dotenv import dotenv_values, set_key
-from pydantic import BaseModel, ConfigDict, model_validator
-
-from openbb_terminal.config.constants import (
+from openbb_cli.config.constants import (
     ENV_FILE_PROJECT,
     ENV_FILE_REPOSITORY,
     ENV_FILE_SETTINGS,
 )
+from pydantic import BaseModel, ConfigDict, model_validator
 
 
 class Settings(BaseModel):

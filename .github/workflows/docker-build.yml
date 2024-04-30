@@ -26,9 +26,9 @@ jobs:
 
       - name: Build env file
         run: |
-          echo "OPENBB_LOGGING_APP_NAME='${OPENBB_LOGGING_APP_NAME}'" > openbb_terminal/.env
-          echo "OPENBB_LOGGING_COMMIT_HASH='${OPENBB_LOGGING_COMMIT_HASH}'" >> openbb_terminal/.env
-          cat openbb_terminal/.env
+          echo "OPENBB_LOGGING_APP_NAME='${OPENBB_LOGGING_APP_NAME}'" > cli/openbb_cli/.env
+          echo "OPENBB_LOGGING_COMMIT_HASH='${OPENBB_LOGGING_COMMIT_HASH}'" >> cli/openbb_cli/.env
+          cat cli/openbb_cli/.env
 
       - name: Building the Docker image
         run: |

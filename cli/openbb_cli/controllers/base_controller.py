@@ -1,4 +1,4 @@
-"""Base controller for the terminal."""
+"""Base controller for the CLI."""
 
 import argparse
 import difflib
@@ -9,15 +9,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.styles import Style
-
-from openbb_terminal.config import setup
-from openbb_terminal.config.completer import NestedCompleter
-from openbb_terminal.config.constants import SCRIPT_TAGS
-from openbb_terminal.controllers.choices import build_controller_choice_map
-from openbb_terminal.controllers.hub_service import upload_routine
-from openbb_terminal.controllers.utils import (
+from openbb_cli.config import setup
+from openbb_cli.config.completer import NestedCompleter
+from openbb_cli.config.constants import SCRIPT_TAGS
+from openbb_cli.controllers.choices import build_controller_choice_map
+from openbb_cli.controllers.hub_service import upload_routine
+from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
     get_flair_and_username,
@@ -26,7 +23,9 @@ from openbb_terminal.controllers.utils import (
     remove_file,
     system_clear,
 )
-from openbb_terminal.session import Session
+from openbb_cli.session import Session
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
 
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
 # pylint: disable=R0912
@@ -45,7 +44,7 @@ SESSION_RECORDED_PUBLIC = False
 
 
 class BaseController(metaclass=ABCMeta):
-    """Base class for a terminal controller."""
+    """Base class for a cli controller."""
 
     CHOICES_COMMON = [
         "cls",
@@ -114,7 +113,7 @@ class BaseController(metaclass=ABCMeta):
 
         self.parser = argparse.ArgumentParser(
             add_help=False,
-            prog=self.path[-1] if self.PATH != "/" else "terminal",
+            prog=self.path[-1] if self.PATH != "/" else "cli",
         )
         self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
@@ -402,7 +401,7 @@ class BaseController(metaclass=ABCMeta):
 
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
-        """Process exit terminal command."""
+        """Process exit cli command."""
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
@@ -493,7 +492,7 @@ class BaseController(metaclass=ABCMeta):
             "--local",
             dest="local",
             action="store_true",
-            help="Only save the routine locally - this is necessary if you are running terminal in guest mode.",
+            help="Only save the routine locally - this is necessary if you are running in guest mode.",
             default=False,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -971,7 +970,7 @@ class BaseController(metaclass=ABCMeta):
                                 bottom_toolbar=HTML(
                                     '<style bg="ansiblack" fg="ansiwhite">[h]</style> help menu    '
                                     '<style bg="ansiblack" fg="ansiwhite">[q]</style> return to previous menu    '
-                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit terminal    '
+                                    '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
                                     f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '

@@ -1,4 +1,4 @@
-"""Configuration for the terminal."""
+"""Configuration for the CLI."""
 
 import copy
 from pathlib import Path
@@ -6,7 +6,8 @@ from typing import TYPE_CHECKING, List, Optional, TypeVar
 
 import i18n
 
-from openbb_terminal.config.constants import I18N_FILE
+from openbb_cli.config.constants import ENV_FILE_SETTINGS, I18N_FILE, SETTINGS_DIRECTORY
+from openbb_cli.session import Session
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -70,15 +71,15 @@ def set_current_figure(fig: Optional[OpenBBFigureT] = None):
 
 
 def setup_i18n(i18n_path: Path = I18N_FILE, lang: str = "en"):
-    """Select the terminal translation language."""
+    """Select the CLI translation language."""
     i18n.load_path.append(i18n_path)
     i18n.set("locale", lang)
     i18n.set("filename_format", "{locale}.{format}")
 
 
-def setup_config_terminal():
-    """Setup pre-launch configurations for the terminal."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_terminal.session import Session
+def bootstrap():
+    """Setup pre-launch configurations for the CLI."""
+    SETTINGS_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    Path(ENV_FILE_SETTINGS).touch(exist_ok=True)
 
     setup_i18n(lang=Session().settings.USE_LANGUAGE)

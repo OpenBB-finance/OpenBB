@@ -50,7 +50,7 @@ def get_ordered_list_sources(command_path: str) -> List:
 
 
 class MenuText:
-    """Create menu text with rich colors to be displayed by terminal."""
+    """Create menu text with rich colors to be displayed by CLI."""
 
     def __init__(self, path: str = "", column_sources: int = 100):
         """Initialize menu help.

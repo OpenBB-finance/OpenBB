@@ -1,4 +1,4 @@
-"""Terminal utils."""
+"""Utils."""
 
 import argparse
 import os
@@ -18,13 +18,12 @@ import pandas as pd
 import requests
 from openbb import obb
 from openbb_charting.core.backend import create_backend, get_backend
+from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
+from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from packaging import version
 from pytz import all_timezones, timezone
 from rich.table import Table
-
-from openbb_terminal.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
-from openbb_terminal.session import Session
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -102,14 +101,14 @@ def hide_splashscreen():
     try:
         import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
 
-        pyi_splash.update_text("Terminal Loaded!")
+        pyi_splash.update_text("CLI Loaded!")
         pyi_splash.close()
     except Exception as e:
         Session().console.print(f"Error: Unable to hide splashscreen: {e}")
 
 
 def print_guest_block_msg():
-    """Block guest users from using the terminal."""
+    """Block guest users from using the cli."""
     if Session().is_local():
         Session().console.print(
             "[info]You are currently logged as a guest.[/info]\n"
@@ -125,7 +124,7 @@ def is_installer() -> bool:
 
 
 def bootup():
-    """Bootup the terminal."""
+    """Bootup the cli."""
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec # noqa: S605,S607
@@ -236,21 +235,21 @@ def reset(queue: Optional[List[str]] = None):
             # if not get_current_user().profile.remember:
             #     Local.remove(HIST_FILE_PROMPT)
 
-        # we clear all openbb_terminal modules from sys.modules
+        # we clear all openbb_cli modules from sys.modules
         for module in list(sys.modules.keys()):
             parts = module.split(".")
-            if parts[0] == "openbb_terminal":
+            if parts[0] == "openbb_cli":
                 del sys.modules[module]
 
         queue_list = ["/".join(queue) if len(queue) > 0 else ""]  # type: ignore
         # pylint: disable=import-outside-toplevel
-        # we run the terminal again
+        # we run the cli again
         if Session().is_local():
-            from openbb_terminal.controllers.terminal_controller import main
+            from openbb_cli.controllers.cli_controller import main
 
             main(debug, dev, queue_list, module="")  # type: ignore
         else:
-            from openbb_terminal.controllers.terminal_controller import launch
+            from openbb_cli.controllers.cli_controller import launch
 
             launch(queue=queue_list)
 
@@ -819,8 +818,8 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     # Resolving all symlinks and also normalizing path.
     resolve_path = Path(dir_path).resolve()
     # Getting the directory names from the path. Instead of using split/replace (Windows doesn't like that)
-    # check if this is done in a main context to avoid saving with openbb_terminal
-    if resolve_path.parts[-2] == "openbb_terminal":
+    # check if this is done in a main context to avoid saving with openbb_cli
+    if resolve_path.parts[-2] == "openbb_cli":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
         path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
@@ -944,11 +943,9 @@ def export_data(
                 saved_path = saved_path.with_name(exp_type)
             # In this scenario we use the default filename
             else:
-                if ".OpenBB_openbb_terminal" in saved_path.name:
+                if ".OpenBB_openbb_cli" in saved_path.name:
                     saved_path = saved_path.with_name(
-                        saved_path.name.replace(
-                            ".OpenBB_openbb_terminal", "OpenBBTerminal"
-                        )
+                        saved_path.name.replace(".OpenBB_openbb_cli", "OpenBBCLI")
                     )
                 saved_path = saved_path.with_suffix(f".{exp_type}")
 

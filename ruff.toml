@@ -31,20 +31,20 @@ exclude = [
 "website/*" = ["T201"]
 "*integration/*" = ["S101"]
 
-[lint.isort]
+[isort]
 combine-as-imports = true
 force-wrap-aliases = true
 
-[lint.pylint]
+[pylint]
 max-args = 8
 max-branches = 25
 max-returns = 9
 max-statements = 30
 
-[lint.pydocstyle]
+[pydocstyle]
 convention = "numpy"
 
-[lint.flake8-import-conventions.aliases]
+[flake8-import-conventions.aliases]
 "matplotlib.pyplot" = "plt"
 numpy = "np"
 pandas = "pd"

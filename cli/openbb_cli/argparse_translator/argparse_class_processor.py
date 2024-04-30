@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Type
 # TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
 
-from openbb_terminal.argparse_translator.argparse_translator import (
+from openbb_cli.argparse_translator.argparse_translator import (
     ArgparseTranslator,
     ReferenceToCustomArgumentsProcessor,
 )
