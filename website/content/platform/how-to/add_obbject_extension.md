@@ -1,5 +1,5 @@
 ---
-title: How To Add OBBject Extensions
+title: Add OBBject Extensions
 sidebar_position: 8
 description: This page provides information about how to write extensions for the OpenBB OBBject class.
 keywords:
@@ -17,9 +17,9 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add OBBject Extensions - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Add OBBject Extensions - How-To | OpenBB Platform Docs" />
 
-OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](platform/development/obbject.md).
+OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute of the [`OBBject`](platform/explanation/obbject.md).
 If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data, and the OpenBB Platform provides a way to extend the OBBject class.
 
 The architecture for extensions was designed to be similar to extensions and accessors for Pandas, and relies on plugins through the Poetry dependency management package.

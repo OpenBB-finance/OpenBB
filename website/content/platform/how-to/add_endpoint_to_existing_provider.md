@@ -1,5 +1,5 @@
 ---
-title: How To Add A New Data Endpoint With An Existing Provider
+title: Add A New Data Endpoint With An Existing Provider
 sidebar_position: 2
 description: This guide outlines the process for adding a new endpoint to an existing data provider, that does not yet have a standard model.
 keywords:
@@ -26,7 +26,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add A New Data Endpoint With An Existing Provider - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Add A New Data Endpoint With An Existing Provider - How-To | OpenBB Platform Docs" />
 
 This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
 

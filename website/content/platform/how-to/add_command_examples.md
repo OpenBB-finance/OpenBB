@@ -1,5 +1,5 @@
 ---
-title: How to add command examples
+title: Add Command Examples
 sidebar_position: 7
 description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
 keywords:
@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Function Examples - Contributing - Development | OpenBB Platform Docs" />
+<HeadTitle title="Add Command Examples - How-To | OpenBB Platform Docs" />
 
 Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
 

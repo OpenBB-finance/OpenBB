@@ -45,7 +45,7 @@ The OpenBB Charting Extension supplies charting infrastructure and services to t
 Functions with dedicated views return figures to the `chart` attribute of the `OBBject` response object. They are displayed with the class method, `show()`.
 
 :::tip
-The `openbb-charting` is an [`OBBject` extension](platform/development/how-to/add_obbject_extension.md), which means the general functionality is exposed in every command result.
+The `openbb-charting` is an [`OBBject` extension](platform/how-to/add_obbject_extension.md), which means the general functionality is exposed in every command result.
 :::
 
 The following packages are dependencies of the `openbb-charting` extension:

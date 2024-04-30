@@ -1,5 +1,5 @@
 ---
-title: How to Deprecate Endpoints
+title: Deprecating Endpoints
 sidebar_position: 10
 description: This guide provides detailed instructions on how to deprecate an endpoint in the OpenBB Platform.
 keywords:
@@ -14,7 +14,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Deprecating Endpoints - Contributor Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Deprecating Endpoints - How-To | OpenBB Platform Docs" />
 
 Deprecating commands is essential to maintaining the OpenBB Platform. This guide outlines the process for deprecating an endpoint.
 

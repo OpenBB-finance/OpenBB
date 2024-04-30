@@ -1,5 +1,5 @@
 ---
-title: How To Add Toolkit Extensions
+title: Add Toolkit Extensions
 sidebar_position: 4
 description: This guide outlines the process for adding a new toolkit extension and router path to the OpenBB Platform.
 keywords:
@@ -22,7 +22,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add Toolkit Extensions - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Add Toolkit Extensions - How-To | OpenBB Platform Docs" />
 
 Before adding a new toolkit extension and router path to the OpenBB Platform using a supplied template, it is important to understand the difference between a toolkit and a provider extension. You can find more information on this in the [Toolkit VS Provider](/platform/explanation/toolkit) section.
 

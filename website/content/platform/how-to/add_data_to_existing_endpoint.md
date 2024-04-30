@@ -1,5 +1,5 @@
 ---
-title: How To Add A Data Provider To An Existing Endpoint
+title: Add A Data Provider To An Existing Endpoint
 sidebar_position: 1
 description: This guide outlines the process for adding an endpoint to an existing data provider and router endpoint.
 keywords:
@@ -24,7 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Add A Data Provider To An Existing Endpoint - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Add A Data Provider To An Existing Endpoint - How-To | OpenBB Platform Docs" />
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 
@@ -233,7 +233,7 @@ The first line of the file should be a docstring, followed by the import stateme
 
 ### Import Statements
 
-Every model will be different, but most items below will be typical of nearly every data provider model. Variations will come from design choices for [HTTP requests](platform/development/contributing/http_requests.md), or other requirements. We won't get into that here though.
+Every model will be different, but most items below will be typical of nearly every data provider model. Variations will come from design choices for [HTTP requests](platform/explanation/http_requests.md), or other requirements. We won't get into that here though.
 
 ```python
 """AlphaVantage Historical EPS Model."""

@@ -1,5 +1,5 @@
 ---
-title: How to Enable LLM Mode
+title: Enable LLM Mode
 sidebar_position: 8
 description: This guide provides detailed instructions on how to enable LLM mode in the OpenBB Platform.
 keywords:
@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="How To Enable LLM Mode - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Enable LLM Mode - How-To | OpenBB Platform Docs" />
 
 The OpenBB Platform provides a way to enable the Large Language Model (LLM) mode, which allows you to use LLM frameworks such as [Magentic](https://github.com/jackmpcollins/magentic), [Langchain](https://github.com/langchain-ai/langchain), [Haystack](https://github.com/deepset-ai/haystack), and more.
 
