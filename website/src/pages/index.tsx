@@ -94,52 +94,6 @@ export default function Home(): JSX.Element {
             </Link>
           </div>
           <div className="my-4 md:my-0" />
-          <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0">
-            <Link
-              style={{
-                backgroundSize: "100% 110%",
-              }}
-              to="/terminal"
-              className="!bg-grey-900 bg-[url('/img/terminal_bg.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
-            >
-              <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
-                OpenBB Terminal
-              </h3>
-              <p className="text-sm lg:text-base dark:text-grey-300">
-                The OpenBB Terminal is an open source investment research platform accessible to everyone, everywhere.
-              </p>
-              <p
-                className={clsx(
-                  "mt-auto inline-flex items-center gap-1 font-normal text-sm",
-                )}
-              >
-                See more
-                <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
-              </p>
-            </Link>
-            <Link
-              style={{
-                backgroundSize: "100% 130%",
-              }}
-              to="/bot"
-              className="!bg-grey-900 bg-[url('/img/bot_bg.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
-            >
-              <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
-                OpenBB Bot
-              </h3>
-              <p className="text-sm lg:text-base text-grey-300">
-                The OpenBB Bot bring market data directly to your financial groups, such as on Discord, Telegram and more.
-              </p>
-              <p
-                className={clsx(
-                  "mt-auto inline-flex items-center gap-1 font-normal text-sm",
-                )}
-              >
-                See more
-                <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
-              </p>
-            </Link>
-          </div>
           <p className="z-20">
             Looking for our website?{" "}
             <a
