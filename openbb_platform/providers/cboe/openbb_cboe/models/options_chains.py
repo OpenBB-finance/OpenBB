@@ -48,7 +48,7 @@ class CboeOptionsChainsData(OptionsChainsData):
 class CboeOptionsChainsFetcher(
     Fetcher[
         CboeOptionsChainsQueryParams,
-        AnnotatedResult[List[CboeOptionsChainsData]],
+        List[CboeOptionsChainsData],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
@@ -90,7 +90,7 @@ class CboeOptionsChainsFetcher(
         """Transform the data to the standard format."""
         if not data:
             raise EmptyDataError()
-        metadata = {}
+        results_metadata = {}
         options = data.get("data", {}).pop("options", [])
         change_percent = data["data"].get("percent_change")
         iv30_percent = data["data"].get("iv30_change_percent")
@@ -103,7 +103,7 @@ class CboeOptionsChainsFetcher(
             last_timestamp = to_datetime(
                 last_timestamp, format="%Y-%m-%dT%H:%M:%S"
             ).strftime("%Y-%m-%d %H:%M:%S")
-        metadata.update(
+        results_metadata.update(
             {
                 "symbol": data["data"].get("symbol"),
                 "security_type": data["data"].get("security_type"),
@@ -188,8 +188,10 @@ class CboeOptionsChainsFetcher(
         quotes["prev_close"] = round(quotes["prev_close"], 2)
         quotes["change_percent"] = round(quotes["change_percent"] / 100, 4)
 
-        records = [
-            CboeOptionsChainsData.model_validate(d)
-            for d in quotes.reset_index().to_dict("records")
-        ]
-        return AnnotatedResult(result=records, metadata=metadata)
+        return AnnotatedResult(
+            result=[
+                CboeOptionsChainsData.model_validate(d)
+                for d in quotes.reset_index().to_dict("records")
+            ],
+            metadata=results_metadata,
+        )
