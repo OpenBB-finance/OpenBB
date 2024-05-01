@@ -10,6 +10,7 @@ from openbb_cboe.utils.helpers import (
     get_company_directory,
     get_index_directory,
 )
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
@@ -47,7 +48,7 @@ class CboeOptionsChainsData(OptionsChainsData):
 class CboeOptionsChainsFetcher(
     Fetcher[
         CboeOptionsChainsQueryParams,
-        List[CboeOptionsChainsData],
+        AnnotatedResult[List[CboeOptionsChainsData]],
     ]
 ):
     """Transform the query, extract and transform the data from the CBOE endpoints."""
@@ -62,7 +63,7 @@ class CboeOptionsChainsFetcher(
         query: CboeOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> Dict:
         """Return the raw data from the Cboe endpoint."""
         symbol = query.symbol.replace("^", "").split(",")[0].upper()
         INDEXES = await get_index_directory(use_cache=query.use_cache)
@@ -77,20 +78,57 @@ class CboeOptionsChainsFetcher(
             if symbol in TICKER_EXCEPTIONS or symbol in INDEXES.index
             else f"https://cdn.cboe.com/api/global/delayed_quotes/options/{symbol}.json"
         )
-
-        return await amake_request(quotes_url)
+        results = await amake_request(quotes_url)
+        return results  # type: ignore
 
     @staticmethod
     def transform_data(
         query: CboeOptionsChainsQueryParams,
-        data: List[Dict],
+        data: Dict,
         **kwargs: Any,
-    ) -> List[CboeOptionsChainsData]:
+    ) -> AnnotatedResult[List[CboeOptionsChainsData]]:
         """Transform the data to the standard format."""
         if not data:
             raise EmptyDataError()
+        metadata = {}
+        options = data.get("data", {}).pop("options", [])
+        change_percent = data["data"].get("percent_change")
+        iv30_percent = data["data"].get("iv30_change_percent")
+        if change_percent:
+            change_percent = change_percent / 100
+        if iv30_percent:
+            iv30_percent = iv30_percent / 100
+        last_timestamp = data["data"].get("last_trade_time")
+        if last_timestamp:
+            last_timestamp = to_datetime(
+                last_timestamp, format="%Y-%m-%dT%H:%M:%S"
+            ).strftime("%Y-%m-%d %H:%M:%S")
+        metadata.update(
+            {
+                "symbol": data["data"].get("symbol"),
+                "security_type": data["data"].get("security_type"),
+                "bid": data["data"].get("bid"),
+                "bid_size": data["data"].get("bid_size"),
+                "ask": data["data"].get("ask"),
+                "ask_size": data["data"].get("ask_size"),
+                "open": data["data"].get("open"),
+                "high": data["data"].get("high"),
+                "low": data["data"].get("low"),
+                "close": data["data"].get("close"),
+                "volume": data["data"].get("volume"),
+                "current_price": data["data"].get("current_price"),
+                "prev_close": data["data"].get("prev_day_close"),
+                "change": data["data"].get("price_change"),
+                "change_percent": change_percent,
+                "iv30": data["data"].get("iv30"),
+                "iv30_change": data["data"].get("iv30_change"),
+                "iv30_change_percent": iv30_percent,
+                "last_tick": data["data"].get("tick"),
+                "last_trade_timestamp": last_timestamp,
+            }
+        )
 
-        options_df = DataFrame.from_records(data["data"]["options"])
+        options_df = DataFrame.from_records(options)
 
         options_df = options_df.rename(
             columns={
@@ -150,7 +188,8 @@ class CboeOptionsChainsFetcher(
         quotes["prev_close"] = round(quotes["prev_close"], 2)
         quotes["change_percent"] = round(quotes["change_percent"] / 100, 4)
 
-        return [
+        records = [
             CboeOptionsChainsData.model_validate(d)
             for d in quotes.reset_index().to_dict("records")
         ]
+        return AnnotatedResult(result=records, metadata=metadata)
