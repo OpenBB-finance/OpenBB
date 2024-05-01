@@ -2,7 +2,7 @@
 
 __docformat__ = "numpy"
 
-from typing import Dict, List, Optional, Union
+from typing import Dict, List
 
 import i18n
 from openbb import obb
@@ -29,18 +29,18 @@ RICH_TAGS = [
 USE_COLOR = True
 
 
-def get_ordered_list_sources(command_path: str) -> List:
-    """Return the preferred source for the given command.
+def get_ordered_providers(command_path: str) -> List:
+    """Return the preferred provider for the given command.
 
     Parameters
     ----------
     command_path: str
-        The command to find the source for. E.g. "/equity/price/historical
+        The command to find the provider for. E.g. "/equity/price/historical
 
     Returns
     -------
     List
-        The list of sources for the given command.
+        The list of providers for the given command.
     """
     command_reference = obb.reference.get("paths", {}).get(command_path, {})  # type: ignore
     if command_reference:
@@ -52,7 +52,12 @@ def get_ordered_list_sources(command_path: str) -> List:
 class MenuText:
     """Create menu text with rich colors to be displayed by CLI."""
 
-    def __init__(self, path: str = "", column_sources: int = 100):
+    CMD_NAME_LENGTH = 18
+    CMD_DESCRIPTION_LENGTH = 65
+    CMD_PROVIDERS_LENGTH = 23
+    SECTION_SPACING = 4
+
+    def __init__(self, path: str = ""):
         """Initialize menu help.
 
         Parameters
@@ -64,7 +69,6 @@ class MenuText:
         """
         self.menu_text = ""
         self.menu_path = path
-        self.col_src = column_sources
         self.warnings: List[Dict[str, str]] = []
 
     def add_raw(self, raw_text: str):
@@ -117,146 +121,153 @@ class MenuText:
         )
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def _adjust_command_length(self, key_command: str) -> str:
+    def _format_cmd_name(self, name: str) -> str:
         """Adjust the length of the command if it is too long.
 
         Parameters
         ----------
-        key_command : str
-            command to be adjusted
+        name : str
+            command to be formatted
 
         Returns
         -------
         str
-            adjusted command
+            formatted command
         """
-        if len(key_command) > 18:
-            new_key_command = key_command[:18]  # Default to trimming to 18 characters
+        if len(name) > self.CMD_NAME_LENGTH:
+            new_name = name[
+                : self.CMD_NAME_LENGTH
+            ]  # Default to trimming to 18 characters
 
-            if "_" in key_command:
-                key_command_split = key_command.split("_")
+            if "_" in name:
+                name_split = name.split("_")
 
-                new_key_command = (
-                    "_".join(key_command_split[:2])
-                    if len(key_command_split) > 2
-                    else key_command_split[0]
+                new_name = (
+                    "_".join(name_split[:2]) if len(name_split) > 2 else name_split[0]
                 )
 
-                if len(new_key_command) > 18:
-                    new_key_command = new_key_command[:18]
+                if len(new_name) > self.CMD_NAME_LENGTH:
+                    new_name = new_name[: self.CMD_NAME_LENGTH]
 
-            if new_key_command != key_command:
+            if new_name != name:
                 self.warnings.append(
                     {
                         "warning": "Command name too long",
-                        "command": key_command,
-                        "trimmed_command": new_key_command,
+                        "command": name,
+                        "trimmed_command": new_name,
                     }
                 )
-                key_command = new_key_command
+                name = new_name
 
-        return key_command
+        return name
 
-    def _handle_command_description(
-        self, key_command: str, command_description: str
+    def _format_cmd_description(
+        self, name: str, description: str, trim: bool = True
     ) -> str:
         """Handle the command description.
 
         Parameters
         ----------
-        key_command : str
+        name : str
             command to be adjusted
-        command_description : str
+        description : str
             description of the command
+        trim : bool
+            If true, the description will be trimmed to the maximum length
 
         Returns
         -------
         str
             adjusted command description
         """
-        if not command_description:
-            command_description = i18n.t(self.menu_path + key_command)
-            if command_description == self.menu_path + key_command:
-                command_description = ""
+        if not description:
+            description = i18n.t(self.menu_path + name)
+            if description == self.menu_path + name:
+                description = ""
         return (
-            command_description[:88] + "..."
-            if len(command_description) > 91
-            else command_description
+            description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
+            if len(description) > self.CMD_DESCRIPTION_LENGTH and trim
+            else description
         )
 
-    def add_cmd(
-        self, key_command: str, condition: bool = True, command_description: str = ""
-    ):
+    def add_cmd(self, name: str, description: str = "", disable: bool = False):
         """Append command text (after translation from key) to a menu.
 
         Parameters
         ----------
-        key_command : str
+        name : str
             key command to be executed by user. It is also used as a key to get description of command.
-        condition : bool
-            condition in which command is available to user. I.e. displays command and description.
-            If condition is false, the command line is greyed out.
+        description : str
+            description of the command
+        disable : bool
+            If disable is true, the command line is greyed out.
         """
-        key_command = self._adjust_command_length(key_command)
-        command_description = self._handle_command_description(
-            key_command, command_description
+        formatted_name = self._format_cmd_name(name)
+        name_padding = (self.CMD_NAME_LENGTH - len(formatted_name)) * " "
+        providers = get_ordered_providers(f"{self.menu_path}{formatted_name}")
+        formatted_description = self._format_cmd_description(
+            formatted_name,
+            description,
+            bool(providers),
         )
-        spacing = (23 - (len(key_command) + 4)) * " "
+        description_padding = (
+            self.CMD_DESCRIPTION_LENGTH - len(formatted_description)
+        ) * " "
+        spacing = self.SECTION_SPACING * " "
+        description_padding = (
+            self.CMD_DESCRIPTION_LENGTH - len(formatted_description)
+        ) * " "
+        cmd = f"{spacing}{formatted_name + name_padding}{spacing}{formatted_description+description_padding}"
+        cmd = f"[unvl]{cmd}[/unvl]" if disable else f"[cmds]{cmd}[/cmds]"
 
-        cmd = f"{key_command}{spacing}{command_description}"
-        cmd = f"[cmds]    {cmd}[/cmds]" if condition else f"[unvl]    {cmd}[/unvl]"
-
-        sources = get_ordered_list_sources(f"{self.menu_path}{key_command}")
-
-        if sources:
-            space = (self.col_src - len(cmd)) * " " if self.col_src > len(cmd) else " "
-            cmd += f"{space}[src][{', '.join(sources)}][/src]"
+        if providers:
+            cmd += rf"{spacing}[src]\[{', '.join(providers)}][/src]"
 
         self.menu_text += cmd + "\n"
 
     def add_menu(
         self,
-        key_menu: str,
-        condition: Optional[Union[bool, str]] = True,
-        menu_description: str = "",
+        name: str,
+        description: str = "",
+        disable: bool = False,
     ):
         """Append menu text (after translation from key) to a menu.
 
         Parameters
         ----------
-        key_menu : str
+        name : str
             key menu to be executed by user. It is also used as a key to get description of menu.
-        condition : bool
-            condition in which menu is available to user. I.e. displays menu and description.
-            If condition is false, the menu line is greyed out.
+        disable : bool
+            If disable is true, the menu line is greyed out.
         """
-        spacing = (23 - (len(key_menu) + 4)) * " "
+        spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
 
-        if menu_description:
-            menu = f"{key_menu}{spacing}{menu_description}"
+        if description:
+            menu = f"{name}{spacing}{description}"
         else:
-            menu_description = i18n.t(self.menu_path + key_menu)
-            if menu_description == self.menu_path + key_menu:
-                menu_description = ""
-            menu = f"{key_menu}{spacing}{menu_description}"
+            description = i18n.t(self.menu_path + name)
+            if description == self.menu_path + name:
+                description = ""
+            menu = f"{name}{spacing}{description}"
 
-        if condition:
-            self.menu_text += f"[menu]>   {menu}[/menu]\n"
-        else:
+        if disable:
             self.menu_text += f"[unvl]>   {menu}[/unvl]\n"
+        else:
+            self.menu_text += f"[menu]>   {menu}[/menu]\n"
 
-    def add_setting(self, key_setting: str, status: bool = True):
+    def add_setting(self, name: str, status: bool = True):
         """Append menu text (after translation from key) to a menu.
 
         Parameters
         ----------
-        key_setting : str
+        name : str
             key setting to be set by user. It is also used as a key to get description of the setting.
         status : bool
             status of the current setting. If true the line will be green, otherwise red.
         """
-        spacing = (23 - (len(key_setting) + 4)) * " "
+        spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
+        indentation = self.SECTION_SPACING * " "
         if status:
-            self.menu_text += f"[green]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/green]\n"
+            self.menu_text += f"[green]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/green]\n"
         else:
-            self.menu_text += f"[red]    {key_setting}{spacing}{i18n.t(self.menu_path + key_setting)}[/red]\n"
+            self.menu_text += f"[red]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/red]\n"

@@ -16,6 +16,9 @@ from openbb_cli.session import Session
 # created new directory structure to account for personal and default routines
 
 
+session = Session()
+
+
 # pylint: disable=too-many-arguments
 def upload_routine(
     auth_header: str,
@@ -57,26 +60,26 @@ def upload_routine(
         "script": routine,
         "override": override,
         "tags": tags,
-        "version": Session().settings.VERSION,
+        "version": session.settings.VERSION,
         "public": public,
     }
-    _console = Session().console
+    _console = session.console
     try:
         response = requests.post(
             headers={"Authorization": auth_header},
-            url=Session().settings.BASE_URL + "/terminal/script",
+            url=session.settings.BASE_URL + "/terminal/script",
             json=data,
             timeout=timeout,
         )
         if response.status_code == 200:
-            username = getattr(Session().user.profile.hub_session, "username", None)
+            username = getattr(session.user.profile.hub_session, "username", None)
             if not username:
                 _console.print("[red]No username found.[/red]")
                 _console.print("[red]Failed to upload your routine.[/red]")
                 return None
             _console.print("[green]Successfully uploaded your routine.[/]")
 
-            hub_url = Session().settings.HUB_URL
+            hub_url = session.settings.HUB_URL
 
             if public:
                 _console.print(
