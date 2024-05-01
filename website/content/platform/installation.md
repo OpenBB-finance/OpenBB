@@ -147,7 +147,13 @@ pip install openbb-core && pip install openbb --no-deps
 
 OpenBB provides a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
 
-Run the following command from the repo root to build the image:
+Run the following command to download it:
+
+```bash
+curl -o Dockerfile https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/develop/openbb_platform/api.dockerfile
+
+docker build -t openbb-platform:latest .
+```
 
 ```bash
 docker build -f build/docker/api.dockerfile -t openbb-platform:latest .
