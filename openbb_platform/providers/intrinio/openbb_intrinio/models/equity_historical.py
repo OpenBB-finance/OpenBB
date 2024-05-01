@@ -73,9 +73,9 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         }
 
         if values.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]:
-            values._interval_size = values.interval
+            values._interval_size = values.interval  # type: ignore
         elif values.interval in ["1d", "1W", "1M", "1Q", "1Y"]:
-            values._frequency = frequency_dict[values.interval]
+            values._frequency = frequency_dict[values.interval]  # type: ignore
 
         return values
 
