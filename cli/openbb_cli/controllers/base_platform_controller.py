@@ -154,6 +154,7 @@ class PlatformController(BaseController):
                     obbject = translator.execute_func(parsed_args=ns_parser)
                     df: pd.DataFrame = None
                     fig: OpenBBFigure = None
+                    title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
                         Registry.register(obbject)
@@ -172,11 +173,11 @@ class PlatformController(BaseController):
                         df = obbject.to_dataframe()
                         if isinstance(df.columns, pd.RangeIndex):
                             df.columns = [str(i) for i in df.columns]
-                        print_rich_table(df, show_index=True)
+                        print_rich_table(df=df, show_index=True, title=title)
 
                     elif isinstance(obbject, dict):
                         df = pd.DataFrame.from_dict(obbject, orient="index")
-                        print_rich_table(df, show_index=True)
+                        print_rich_table(df=df, show_index=True, title=title)
 
                     elif obbject:
                         Session().console.print(obbject)
