@@ -18,6 +18,8 @@ from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
 
+session = Session()
+
 
 class DummyTranslation:
     """Dummy Translation for testing."""
@@ -68,7 +70,7 @@ class PlatformController(BaseController):
             self._generate_commands()
             self._generate_sub_controllers()
 
-            if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
+            if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
                 choices: dict = self.choices_default
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -180,7 +182,7 @@ class PlatformController(BaseController):
                         print_rich_table(df=df, show_index=True, title=title)
 
                     elif obbject:
-                        Session().console.print(obbject)
+                        session.console.print(obbject)
 
                     if hasattr(ns_parser, "export") and ns_parser.export:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
@@ -194,7 +196,7 @@ class PlatformController(BaseController):
                         )
 
                 except Exception as e:
-                    Session().console.print(f"[red]{e}[/]\n")
+                    session.console.print(f"[red]{e}[/]\n")
                     return
 
         # Bind the method to the class
@@ -268,25 +270,25 @@ class PlatformController(BaseController):
 
         if self.CHOICES_MENUS:
             for menu in self.CHOICES_MENUS:
-                menu_description = self._get_menu_description(menu)
-                mt.add_menu(key_menu=menu, menu_description=menu_description)
+                description = self._get_menu_description(menu)
+                mt.add_menu(name=menu, description=description)
 
         if self.CHOICES_COMMANDS:
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
                 mt.add_cmd(
-                    key_command=command.replace(f"{self._name}_", ""),
-                    command_description=command_description,
+                    name=command.replace(f"{self._name}_", ""),
+                    description=command_description,
                 )
 
-        Session().console.print(text=mt.menu_text, menu=self._name)
+        session.console.print(text=mt.menu_text, menu=self._name)
 
-        settings = Session().settings
+        settings = session.settings
         dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
         if mt.warnings and dev_mode:
-            Session().console.print("")
+            session.console.print("")
             for w in mt.warnings:
                 w_str = str(w).replace("{", "").replace("}", "").replace("'", "")
-                Session().console.print(f"[yellow]{w_str}[/yellow]")
-            Session().console.print("")
+                session.console.print(f"[yellow]{w_str}[/yellow]")
+            session.console.print("")

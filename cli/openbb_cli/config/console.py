@@ -31,12 +31,8 @@ class Console:
         self.menu_text = ""
         self.menu_path = ""
 
-    def capture(self):
-        """Capture the console output."""
-        return self._console.capture()
-
     @staticmethod
-    def filter_rich_tags(text):
+    def _filter_rich_tags(text):
         """Filter out rich tags from text."""
         for val in RICH_TAGS:
             text = text.replace(val, "")
@@ -44,7 +40,7 @@ class Console:
         return text
 
     @staticmethod
-    def blend_text(
+    def _blend_text(
         message: str, color1: Tuple[int, int, int], color2: Tuple[int, int, int]
     ) -> Text:
         """Blend text from one color to another."""
@@ -85,7 +81,7 @@ class Console:
                 else:
                     self._console.print(kwargs["text"])
             else:
-                print(self.filter_rich_tags(kwargs["text"]))  # noqa: T201
+                print(self._filter_rich_tags(kwargs["text"]))  # noqa: T201
         elif not self._settings.TEST_MODE:
             self._console.print(*args, **kwargs)
         else:

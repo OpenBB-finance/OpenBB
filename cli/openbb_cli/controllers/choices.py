@@ -13,6 +13,8 @@ from openbb_cli.controllers.utils import (
 )
 from openbb_cli.session import Session
 
+session = Session()
+
 
 def __mock_parse_known_args_and_warn(
     controller,  # pylint: disable=unused-argument
@@ -206,7 +208,7 @@ def __patch_controller_functions(controller):
         ),
     ]
 
-    if not Session().settings.DEBUG_MODE:
+    if not session.settings.DEBUG_MODE:
         rich.start()
     patched_function_list = []
     for patcher in patcher_list:
@@ -214,7 +216,7 @@ def __patch_controller_functions(controller):
 
     yield patched_function_list
 
-    if not Session().settings.DEBUG_MODE:
+    if not session.settings.DEBUG_MODE:
         rich.stop()
     for patcher in patcher_list:
         patcher.stop()
@@ -314,7 +316,7 @@ def build_controller_choice_map(controller) -> dict:
                 argument_parser=argument_parser
             )
         except Exception as exception:
-            if Session().settings.DEBUG_MODE:
+            if session.settings.DEBUG_MODE:
                 raise Exception(
                     f"On command : `{command}`.\n{str(exception)}"
                 ) from exception
