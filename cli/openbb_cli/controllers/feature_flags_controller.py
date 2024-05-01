@@ -198,6 +198,7 @@ class FeatureFlagsController(BaseController):
             action="store",
             required=False,
             type=str,
+            choices=all_timezones,
         )
         ns_parser = self.parse_simple_args(parser, other_args)
 
