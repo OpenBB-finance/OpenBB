@@ -2,7 +2,7 @@
 
 from abc import abstractmethod
 from datetime import date, datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias
+from typing import Any, Dict, List, Literal, Optional, Union, _GenericAlias  # type: ignore
 
 from pydantic import (
     BaseModel,
@@ -58,7 +58,7 @@ class APIEx(Example):
 
     @staticmethod
     def _unpack_type(type_: type) -> set:
-        """Unpack types from types, example Union[List[str], int] -> {str, int}."""
+        """Unpack types from types, example Union[List[str], int] -> {typing._GenericAlias, int}."""
         if (
             hasattr(type_, "__args__")
             and type(type_)  # pylint: disable=unidiomatic-typecheck

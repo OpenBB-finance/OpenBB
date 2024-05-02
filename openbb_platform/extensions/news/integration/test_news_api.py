@@ -1,3 +1,5 @@
+"""Test News API."""
+
 import base64
 
 import pytest
@@ -9,6 +11,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Generate headers for API requests with basic authentication."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -56,6 +59,15 @@ def headers():
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
+                "source": "yahoo",
+                "topic": None,
+                "is_spam": False,
+                "sentiment": None,
+                "language": None,
+                "word_count_greater_than": None,
+                "word_count_less_than": None,
+                "business_relevance_greater_than": None,
+                "business_relevance_less_than": None,
             }
         ),
         (
@@ -83,6 +95,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_news_world(params, headers):
+    """Test retrieval of world news with various parameters."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -160,8 +173,17 @@ def test_news_world(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "limit": 20,
-                "start_date": None,
-                "end_date": None,
+                "start_date": "2024-01-02",
+                "end_date": "2024-01-03",
+                "source": "yahoo",
+                "topic": None,
+                "is_spam": False,
+                "sentiment": None,
+                "language": None,
+                "word_count_greater_than": None,
+                "word_count_less_than": None,
+                "business_relevance_greater_than": None,
+                "business_relevance_less_than": None,
             }
         ),
         (
@@ -187,6 +209,7 @@ def test_news_world(params, headers):
 )
 @pytest.mark.integration
 def test_news_company(params, headers):
+    """Test retrieval of company-specific news with various parameters."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

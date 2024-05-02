@@ -1,3 +1,5 @@
+"""OpenBB Platform Core app utils tests."""
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -14,6 +16,8 @@ from openbb_core.app.utils import (
 )
 from openbb_core.provider.abstract.data import Data
 
+# pylint: disable=W0621
+
 df = pd.DataFrame(
     {
         "x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -25,11 +29,11 @@ df = pd.DataFrame(
 df_multiindex = df.set_index(["x", "y"])
 
 simple_base_model = [
-    Data(x=i, y=j, z=k) for i in range(2) for j in range(6, 8) for k in range(10, 12)
+    Data(x=i, y=j, z=k) for i in range(2) for j in range(6, 8) for k in range(10, 12)  # type: ignore[call-arg]
 ]
 
 multi_index_base_model = [
-    Data(x=i, y=j, z=k, is_multiindex=True, multiindex_names="['x','y']")
+    Data(x=i, y=j, z=k, is_multiindex=True, multiindex_names="['x','y']")  # type: ignore[call-arg]
     for i in range(2)
     for j in range(6, 8)
     for k in range(10, 12)
@@ -37,36 +41,42 @@ multi_index_base_model = [
 
 
 def test_df_to_basemodel():
+    """Test the df_to_basemodel helper."""
     base_model = df_to_basemodel(df)
     assert isinstance(base_model, list)
-    assert base_model[0].x == 1
+    assert base_model[0].x == 1  # type: ignore[attr-defined]
 
 
 def test_df_to_basemodel_multiindex():
+    """Test the df_to_basemodel helper with a multi-index DataFrame."""
     base_model = df_to_basemodel(df_multiindex)
     assert isinstance(base_model, list)
     assert hasattr(base_model[0], "is_multiindex")
 
 
 def test_basemodel_to_df():
+    """Test the basemodel_to_df helper."""
     df = basemodel_to_df(simple_base_model)
     assert isinstance(df, pd.DataFrame)
     assert df.shape == (8, 3)
 
 
 def test_basemodel_to_multiindex_df():
+    """Test the basemodel_to_df helper with a multi-index DataFrame."""
     df = basemodel_to_df(multi_index_base_model)
     assert isinstance(df, pd.DataFrame)
     assert isinstance(df.index, pd.MultiIndex)
 
 
 def test_get_target_column():
+    """Test the get_target_column helper."""
     target = get_target_column(df, "x")
     assert isinstance(target, pd.Series)
     assert target[0] == 1
 
 
 def test_get_target_columns():
+    """Test the get_target_columns helper."""
     targets = get_target_columns(df, ["x", "y"])
     assert isinstance(targets, pd.DataFrame)
     assert targets.shape == (10, 2)
@@ -84,6 +94,7 @@ def test_get_target_columns():
     ],
 )
 def test_list_to_basemodel(data_list, expected):
+    """Test the list_to_basemodel helper."""
     result = list_to_basemodel(data_list)
     for r, e in zip(result, expected):
         assert r.model_dump() == e.model_dump()
@@ -93,14 +104,15 @@ def test_list_to_basemodel(data_list, expected):
     "data_dict, expected",
     [
         # Simple dictionary
-        ({"a": 10}, Data(a=10)),
+        ({"a": 10}, Data(a=10)),  # type: ignore[call-arg]
         # Nested dictionary (assuming Data can handle nested dicts)
-        ({"b": {"c": 20}}, Data(b={"c": 20})),
+        ({"b": {"c": 20}}, Data(b={"c": 20})),  # type: ignore[call-arg]
         # Dictionary with list (assuming Data can handle lists)
-        ({"d": [30, 40]}, Data(d=[30, 40])),
+        ({"d": [30, 40]}, Data(d=[30, 40])),  # type: ignore[call-arg]
     ],
 )
 def test_dict_to_basemodel(data_dict, expected):
+    """Test the dict_to_basemodel helper."""
     result = dict_to_basemodel(data_dict)
     assert result.model_dump() == expected.model_dump()
 
@@ -123,6 +135,7 @@ def test_dict_to_basemodel(data_dict, expected):
     ],
 )
 def test_ndarray_to_basemodel(array, expected):
+    """Test the ndarray_to_basemodel helper."""
     result = ndarray_to_basemodel(array)
     for r, e in zip(result, expected):
         assert r.model_dump() == e.model_dump()
@@ -139,6 +152,7 @@ def test_ndarray_to_basemodel(array, expected):
     ],
 )
 def test_check_single_item(item, expected):
+    """Test the check_single_item helper."""
     if expected is OpenBBError:
         with pytest.raises(OpenBBError):
             check_single_item(item)

@@ -5,6 +5,7 @@
 from dataclasses import dataclass
 from inspect import _empty
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
@@ -27,6 +28,7 @@ from typing_extensions import Annotated
 
 @pytest.fixture(scope="module")
 def tmp_openbb_dir(tmp_path_factory):
+    """Return a temporary openbb directory."""
     return tmp_path_factory.mktemp("openbb")
 
 
@@ -206,17 +208,57 @@ def test_is_annotated_dc_annotated(method_definition):
     assert result
 
 
-def test_reorder_params(method_definition):
-    """Test reorder params."""
-    params = {
-        "provider": Parameter.empty,
-        "extra_params": Parameter.empty,
-        "param1": Parameter.empty,
-        "param2": Parameter.empty,
-    }
-    result = method_definition.reorder_params(params=params)
+@pytest.mark.parametrize(
+    "params, var_kw, expected",
+    [
+        (
+            {
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            None,
+            ["extra_params", "param1", "param2", "provider"],
+        ),
+        (
+            {
+                "param1": Parameter.empty,
+                "provider": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["extra_params"],
+            ["param1", "param2", "provider", "extra_params"],
+        ),
+        (
+            {
+                "param2": Parameter.empty,
+                "any_kwargs": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+            },
+            ["any_kwargs"],
+            ["param2", "param1", "provider", "any_kwargs"],
+        ),
+        (
+            {
+                "any_kwargs": Parameter.empty,
+                "extra_params": Parameter.empty,
+                "provider": Parameter.empty,
+                "param1": Parameter.empty,
+                "param2": Parameter.empty,
+            },
+            ["any_kwargs", "extra_params"],
+            ["param1", "param2", "provider", "any_kwargs", "extra_params"],
+        ),
+    ],
+)
+def test_reorder_params(method_definition, params, var_kw, expected):
+    """Test reorder params, ensure var_kw are last after 'provider'."""
+    result = method_definition.reorder_params(params, var_kw)
     assert result
-    assert list(result.keys()) == ["param1", "param2", "provider", "extra_params"]
+    assert list(result.keys()) == expected
 
 
 def test_build_func_params(method_definition):
@@ -492,6 +534,7 @@ def test_generate_model_docstring(docstring_generator):
     docstring = ""
     model_name = "WorldNews"
     summary = "This is a summary."
+    sections = ["description", "parameters", "returns", "examples"]
 
     pi = docstring_generator.provider_interface
     kwarg_params = pi.params[model_name]["extra"].__dataclass_fields__
@@ -511,6 +554,7 @@ def test_generate_model_docstring(docstring_generator):
         kwarg_params=kwarg_params,
         returns=returns,
         results_type="List[WorldNews]",
+        sections=sections,
     )
 
     assert docstring
@@ -520,11 +564,46 @@ def test_generate_model_docstring(docstring_generator):
     assert "WorldNews" in docstring
 
 
+@pytest.mark.parametrize(
+    "type_, expected",
+    [
+        (Any, []),
+        (List[str], ["List"]),
+        (Dict[str, str], ["Dict"]),
+        (Tuple[str], ["Tuple"]),
+        (Union[List[str], Dict[str, str], Tuple[str]], ["List", "Dict", "Tuple"]),
+    ],
+)
+def test__get_generic_types(docstring_generator, type_, expected):
+    """Test get generic types."""
+    output = docstring_generator._get_generic_types(type_, [])
+    assert output == expected
+
+
+@pytest.mark.parametrize(
+    "items, model, expected",
+    [
+        ([], "test_model", "test_model"),
+        (["List"], "test_model", "List[test_model]"),
+        (["Dict"], "test_model", "Dict[str, test_model]"),
+        (["Tuple"], "test_model", "Tuple[test_model]"),
+        (
+            ["List", "Dict", "Tuple"],
+            "test_model",
+            "Union[List[test_model], Dict[str, test_model], Tuple[test_model]]",
+        ),
+    ],
+)
+def test__get_repr(docstring_generator, items, model, expected):
+    output = docstring_generator._get_repr(items, model)
+    assert output == expected
+
+
 def test_generate(docstring_generator):
     """Test generate docstring."""
 
     def some_func():
-        """Some func docstring."""
+        """Define Some func docstring."""
 
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -542,15 +621,15 @@ def test_generate(docstring_generator):
     assert "Returns" in doc
 
 
-def test_read_extension_map(package_builder, tmp_openbb_dir):
-    """Test read extension map."""
+def test__read(package_builder, tmp_openbb_dir):
+    """Test read."""
 
     PATH = "openbb_core.app.static.package_builder."
     open_mock = mock_open()
     with patch(PATH + "open", open_mock), patch(PATH + "load") as mock_load:
-        package_builder._read(Path(tmp_openbb_dir / "assets" / "extension_map.json"))
+        package_builder._read(Path(tmp_openbb_dir / "assets" / "reference.json"))
         open_mock.assert_called_once_with(
-            Path(tmp_openbb_dir / "assets" / "extension_map.json")
+            Path(tmp_openbb_dir / "assets" / "reference.json")
         )
         mock_load.assert_called_once()
 
@@ -606,7 +685,6 @@ def test_read_extension_map(package_builder, tmp_openbb_dir):
 )
 def test_package_diff(
     package_builder,
-    tmp_openbb_dir,
     ext_built,
     ext_installed,
     ext_inst_version,
@@ -616,22 +694,20 @@ def test_package_diff(
     """Test package differences."""
 
     def mock_entry_points(group):
+        """Mock entry points."""
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."
-    with patch.object(PackageBuilder, "_read") as mock_read, patch(
-        PATH + "entry_points", mock_entry_points
-    ), patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj:
+    with patch(PATH + "entry_points", mock_entry_points), patch.object(
+        EntryPoint, "dist", new_callable=PropertyMock
+    ) as mock_obj:
 
         class MockPathDistribution:
             version = ext_inst_version
 
         mock_obj.return_value = MockPathDistribution()
-        mock_read.return_value = ext_built
 
-        add, remove = package_builder._diff(
-            Path(tmp_openbb_dir, "assets", "extension_map.json")
-        )
+        add, remove = package_builder._diff(ext_built)
 
         # We add whatever is not built, but is installed
         assert add == expected_add
@@ -649,7 +725,7 @@ def test_package_diff(
         ({"this"}, {"that"}, False),
     ],
 )
-def test_auto_build(package_builder, tmp_openbb_dir, add, remove, openbb_auto_build):
+def test_auto_build(package_builder, add, remove, openbb_auto_build):
     """Test auto build."""
 
     with patch.object(PackageBuilder, "_diff") as mock_assets_diff, patch.object(
@@ -660,9 +736,6 @@ def test_auto_build(package_builder, tmp_openbb_dir, add, remove, openbb_auto_bu
         package_builder.auto_build()
 
     if openbb_auto_build:
-        mock_assets_diff.assert_called_once_with(
-            Path(tmp_openbb_dir, "assets", "extension_map.json")
-        )
         if add or remove:
             mock_build.assert_called_once()
     else:

@@ -1,7 +1,10 @@
+"""Tests for the expired_files module."""
+
 import os
 import tempfile
 from pathlib import Path
 from time import time
+from typing import List
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -11,9 +14,12 @@ from openbb_core.app.logs.utils.expired_files import (
     remove_file_list,
 )
 
+# pylint: disable=W0621
+
 
 @pytest.fixture
 def temp_test_files():
+    """Create temporary files for testing."""
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_files = [
             Path(temp_dir) / "file1.txt",
@@ -29,12 +35,14 @@ def temp_test_files():
 
 
 def test_get_timestamp_from_x_days():
+    """Test get_timestamp_from_x_days."""
     result = get_timestamp_from_x_days(0)
     assert isinstance(result, float)
 
 
 # Test case when all files are expired
 def test_all_files_expired(temp_test_files):
+    """Test get_expired_file_list when all files are expired."""
     temp_dir, temp_files = temp_test_files
     before_timestamp = time() + 3 * 86400  # timestamp 3 days from now
     expired_files = get_expired_file_list(Path(temp_dir), before_timestamp)
@@ -43,14 +51,16 @@ def test_all_files_expired(temp_test_files):
 
 # Test case when no files are expired
 def test_no_files_expired(temp_test_files):
+    """Test get_expired_file_list when no files are expired."""
     temp_dir, _ = temp_test_files
     before_timestamp = 0
     expired_files = get_expired_file_list(Path(temp_dir), before_timestamp)
-    assert expired_files == []
+    assert not expired_files
 
 
 # Test case when some files are expired and some are not
 def test_some_files_expired(temp_test_files):
+    """Test get_expired_file_list when some files are expired and some are not."""
     temp_dir, _ = temp_test_files
 
     # add temp file to temp_dir with timestamp in the future
@@ -69,30 +79,34 @@ def test_some_files_expired(temp_test_files):
 
 # Test case when the directory does not exist
 def test_directory_not_exists():
+    """Test get_expired_file_list when the directory does not exist."""
     directory = Path("/path/that/does/not/exist")
     before_timestamp = time()
     expired_files = get_expired_file_list(directory, before_timestamp)
-    assert expired_files == []
+    assert not expired_files
 
 
 # Test case when the directory is not a directory
 def test_directory_not_dir(temp_test_files):
+    """Test get_expired_file_list when the directory is not a directory."""
     _, temp_files = temp_test_files
     before_timestamp = time()
     expired_files = get_expired_file_list(temp_files[0], before_timestamp)
-    assert expired_files == []
+    assert not expired_files
 
 
 @pytest.fixture
 def mock_path():
+    """Return a MagicMock for the Path class."""
     # Create a MagicMock for the Path class to represent a file path
     return MagicMock()
 
 
 def test_remove_file_list_no_files(mock_path):
+    """Test remove_file_list when there are no files to remove."""
     # Arrange
     # Let's assume the file list is empty, meaning there are no files to remove
-    file_list = []
+    file_list: List[Path] = []
 
     # Act
     remove_file_list(file_list)
@@ -103,6 +117,7 @@ def test_remove_file_list_no_files(mock_path):
 
 
 def test_remove_file_list_remove_files_successfully(mock_path):
+    """Test remove_file_list when unlink is successful."""
     # Arrange
     # Let's assume we have three files in the file list
     file_list = [mock_path, mock_path, mock_path]
@@ -119,6 +134,7 @@ def test_remove_file_list_remove_files_successfully(mock_path):
 
 
 def test_remove_file_list_ignore_permission_error(mock_path):
+    """Test remove_file_list when unlink raises a PermissionError."""
     # Arrange
     # Let's assume we have three files in the file list
     file_list = [mock_path, mock_path, mock_path]
@@ -135,6 +151,7 @@ def test_remove_file_list_ignore_permission_error(mock_path):
 
 
 def test_remove_file_list_other_exception(mock_path):
+    """Test remove_file_list when unlink raises an exception other than PermissionError."""
     # Arrange
     # Let's assume we have three files in the file list
     file_list = [mock_path, mock_path, mock_path]

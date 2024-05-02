@@ -20,6 +20,8 @@ from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
+ROOT_DIR = Path(__file__).parent.parent.parent.parent
+
 TEST_TEMPLATE = """\n\n@parametrize(
     "params",
     [
@@ -43,9 +45,9 @@ def find_extensions(filter_chart: Optional[bool] = True):
     filter_ext = ["tests", "__pycache__"]
     if filter_chart:
         filter_ext.append("charting")
-    extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
+    extensions = [x for x in (ROOT_DIR / "extensions").iterdir() if x.is_dir()]
     extensions.extend(
-        [x for x in Path("openbb_platform/obbject_extensions").iterdir() if x.is_dir()]
+        [x for x in (ROOT_DIR / "obbject_extensions").iterdir() if x.is_dir()]
     )
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions

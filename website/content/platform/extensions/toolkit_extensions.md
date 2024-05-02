@@ -40,14 +40,12 @@ The sections below outline any specific installation considerations for the exte
 
 ## Charting
 
-The OpenBB Charting Extension supplies charting infrastructure and services to the OpenBB Platform. Figure objects are served via REST API or Python Client.  It utilizes [PyWry](https://github.com/OpenBB-finance/pywry) for handling the display of interactive charts and tables in a separate window, with a Plotly library. The extension framework allows developers to easily insert other Python charting libraries into the router pipeline.
+The OpenBB Charting Extension supplies charting infrastructure and services to the OpenBB Platform. Figure objects are served via REST API or Python Client.  It utilizes [PyWry](https://github.com/OpenBB-finance/pywry) for handling the display of interactive charts and tables in a separate window, with a Plotly library.
 
-Functions with charting enabled return figures to a field (`chart`) in the `OBBject` response object. They are displayed with the class method, `show()`.
-
-> Additional Python libraries are installed with this extension: `aiohttp`, `nbformat`, `pandas-ta`, `plotly`, `pywry`, `reportlab`, `scipy`, `statsmodels`, and `svglib`.
+Functions with dedicated views return figures to the `chart` attribute of the `OBBject` response object. They are displayed with the class method, `show()`.
 
 :::tip
-The `openbb-charting` is in fact an [`OBBject` extension](/website/content/platform/development/developer-guidelines/obbject_extensions.md) which means you'll have the functionality it exposes on every command result.
+The `openbb-charting` is an [`OBBject` extension](platform/development/how-to/add_obbject_extension.md), which means the general functionality is exposed in every command result.
 :::
 
 The following packages are dependencies of the `openbb-charting` extension:
@@ -63,47 +61,7 @@ The following packages are dependencies of the `openbb-charting` extension:
 
 ### Installation
 
-To install the extension, run the following command in this folder:
-
-```bash
-pip install openbb-charting
-```
-
-> Find the latest version on [PyPI](https://pypi.org/project/openbb-charting/).
-
-To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/charting`, and enter:
-
-```console
-pip install -e .
-```
-
-After installation, the Python interface will automatically rebuild on initialization.  This process can also be triggered manually with:
-
-```python
-import openbb
-openbb.build()
-```
-
-The Python interpreter may require a restart.
-
-### PyWry dependency in Linux
-
-When using Linux distributions, the PyWry dependency requires certain dependencies to be installed first.
-
-- Debian-based / Ubuntu / Mint:
-`sudo apt install libwebkit2gtk-4.0-dev`
-
-- Arch Linux / Manjaro:
-`sudo pacman -S webkit2gtk`
-
-- Fedora:
-`sudo dnf install gtk3-devel webkit2gtk3-devel`
-
-If Rust (Cargo) is required, install it:
-
-```console
-curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
-```
+See the [charting](charting) section for more details and [installation](charting/installation) instructions.
 
 ## Devtools
 

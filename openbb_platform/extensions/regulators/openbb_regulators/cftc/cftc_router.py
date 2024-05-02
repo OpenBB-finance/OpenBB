@@ -59,5 +59,5 @@ async def cot(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Commitment of Traders Reports."""
+    """Get Commitment of Traders Reports."""
     return await OBBject.from_query(Query(**locals()))

@@ -15,10 +15,11 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    amake_requests,
+    amake_request,
     get_querystring,
 )
 from pydantic import Field, PrivateAttr, model_validator
@@ -72,9 +73,9 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         }
 
         if values.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]:
-            values._interval_size = values.interval
+            values._interval_size = values.interval  # type: ignore
         elif values.interval in ["1d", "1W", "1M", "1Q", "1Y"]:
-            values._frequency = frequency_dict[values.interval]
+            values._frequency = frequency_dict[values.interval]  # type: ignore
 
         return values
 
@@ -195,7 +196,6 @@ class IntrinioEquityHistoricalFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-
         base_url = f"https://api-v2.intrinio.com/securities/{query.symbol}/prices"
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["symbol", "interval"]
@@ -211,6 +211,10 @@ class IntrinioEquityHistoricalFetcher(
         async def callback(response: ClientResponse, session: ClientSession) -> list:
             """Return the response."""
             init_response = await response.json()
+            if "error" in init_response:
+                raise RuntimeError(
+                    f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"
+                )
 
             all_data: list = init_response.get(data_key, [])
 
@@ -226,7 +230,7 @@ class IntrinioEquityHistoricalFetcher(
 
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
-        return await amake_requests([url], callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)
 
     @staticmethod
     def transform_data(
@@ -235,6 +239,8 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
         date_col = (
             "time"
             if query.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]

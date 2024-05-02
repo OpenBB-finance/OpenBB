@@ -1,3 +1,5 @@
+"""OpenBB Charting Styles."""
+
 from typing import Any, List, Optional
 
 import pandas as pd
@@ -35,10 +37,10 @@ PLT_CANDLESTICKS = dict(
     increasing=dict(line_color=PLT_STYLE_INCREASING, fillcolor=PLT_STYLE_INCREASING),
     decreasing=dict(line_color=PLT_STYLE_DECREASING, fillcolor=PLT_STYLE_DECREASING),
 )
-PLT_STYLE_INCREASING_GREEN = "#009600"
-PLT_STYLE_DECREASING_RED = "#c80000"
-PLT_FONT = dict(family="Fira Code", size=16)
-PLOTLY_FONT = dict(family="Fira Code", size=18)
+PLT_STYLE_INCREASING_GREEN = "#00ACFF"
+PLT_STYLE_DECREASING_RED = "#e4003a"
+PLT_FONT = dict(family="Arial", size=16)
+PLOTLY_FONT = dict(family="Arial", size=16)
 
 PLT_COLORWAY = [
     "#ffed00",
@@ -153,8 +155,9 @@ def de_increasing_color_list(
     increasing_color: str = PLT_STYLE_INCREASING,
     decreasing_color: str = PLT_STYLE_DECREASING,
 ) -> List[str]:
-    """Makes a colorlist for decrease/increase if value in df_column
-    contains "{contains_str}" default is "-"
+    """Make a colorlist for decrease/increase if value in df_column.
+
+    Contains "{contains_str}" default is "-"
 
     Parameters
     ----------
@@ -197,8 +200,10 @@ PLOTLY_THEME = dict(
             nticks=15,
             showline=True,
             showgrid=True,
+            ticklen=0,
         ),
         yaxis2=dict(
+            side="left",
             zeroline=False,
             fixedrange=False,
             anchor="x",
@@ -207,8 +212,9 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
-            showline=True,
+            tickfont=dict(size=12),
+            showline=False,
+            ticklen=0,
         ),
         yaxis3=dict(
             zeroline=False,
@@ -219,8 +225,9 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
+            tickfont=dict(size=12),
             showline=True,
+            ticklen=0,
         ),
         yaxis4=dict(
             zeroline=False,
@@ -231,24 +238,53 @@ PLOTLY_THEME = dict(
             nticks=6,
             tick0=0.5,
             title_standoff=10,
-            tickfont=dict(size=15),
+            tickfont=dict(size=12),
             showline=True,
+            ticklen=0,
         ),
         xaxis=dict(
             showgrid=True,
-            zeroline=True,
+            zeroline=False,
             showline=True,
             rangeslider=dict(visible=False),
             tickfont=dict(size=16),
             title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis2=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis3=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
+        ),
+        xaxis4=dict(
+            showgrid=True,
+            zeroline=False,
+            showline=True,
+            rangeslider=dict(visible=False),
+            tickfont=dict(size=12),
+            title_standoff=20,
+            ticklen=0,
         ),
         legend=dict(
-            yanchor="top",
-            y=0.99,
-            xanchor="left",
-            font_size=15,
-            bgcolor="rgba(0, 0, 0, 0)",
-            x=0.01,
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=0.95,
+            font=dict(size=12),
         ),
         dragmode="pan",
         hovermode="x",

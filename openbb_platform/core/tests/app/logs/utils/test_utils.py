@@ -1,3 +1,5 @@
+"""OpenBB Platform Core tests."""
+
 import uuid
 from pathlib import Path
 from unittest.mock import patch
@@ -9,12 +11,14 @@ from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_sessio
 
 
 def test_get_session_id_return_type():
+    """Test if the returned value is a string."""
     # Test if the returned value is a string
     session_id = get_session_id()
     assert isinstance(session_id, str)
 
 
 def test_get_session_id_format():
+    """Test if the returned string has the format "UUID-current_time."""
     # Test if the returned string has the format "UUID-current_time"
     session_id = get_session_id()
 
@@ -33,6 +37,7 @@ def test_get_session_id_format():
 
 
 def test_get_session_id_uniqueness():
+    """Test if subsequent calls return different session IDs."""
     # Test if subsequent calls return different session IDs
     session_id1 = get_session_id()
     session_id2 = get_session_id()
@@ -43,9 +48,10 @@ def test_get_session_id_uniqueness():
 
 
 def test_get_app_id_success():
+    """Test get_app_id function."""
     # Mock the return value of get_log_dir to simulate a successful scenario
     with patch("openbb_core.app.logs.utils.utils.get_log_dir") as mock_get_log_dir:
-        mock_get_log_dir
+        mock_get_log_dir  # pylint: disable=pointless-statement
         mock_get_log_dir.return_value = Path(
             "/path/to/contextual_user_data_directory/app_id.log"
         )
@@ -54,6 +60,7 @@ def test_get_app_id_success():
 
 
 def test_get_app_id_os_error():
+    """Test handling of OSError with errno 30."""
     # Test handling of OSError with errno 30 (Read-only file system)
     with patch("openbb_core.app.logs.utils.utils.get_log_dir") as mock_get_log_dir:
         mock_get_log_dir.side_effect = OSError(30, "Read-only file system")
@@ -62,6 +69,7 @@ def test_get_app_id_os_error():
 
 
 def test_get_app_id_other_exception():
+    """Test handling of other exceptions."""
     # Test handling of other exceptions
     with patch("openbb_core.app.logs.utils.utils.get_log_dir") as mock_get_log_dir:
         mock_get_log_dir.side_effect = Exception("Some other error")
@@ -73,6 +81,7 @@ def test_get_app_id_other_exception():
 
 
 def test_get_log_dir():
+    """Test get_log_dir function."""
     with patch(
         "openbb_core.app.logs.utils.utils.create_log_dir_if_not_exists",
         return_value="/test_dir",

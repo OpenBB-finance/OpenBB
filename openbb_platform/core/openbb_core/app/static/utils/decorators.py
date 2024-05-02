@@ -18,7 +18,7 @@ def validate(func: Callable[P, R]) -> Callable[P, R]:
 
 
 @overload
-def validate(**dec_kwargs) -> Callable[P, R]:
+def validate(**dec_kwargs) -> Callable[[Callable[P, R]], Callable[P, R]]:
     pass
 
 
@@ -29,7 +29,7 @@ def validate(
     """Validate function calls."""
 
     def decorated(f: Callable[P, R]):
-        """Decorated function."""
+        """Use for decorating functions."""
 
         @wraps(f)
         def wrapper(*f_args, **f_kwargs):
@@ -54,8 +54,9 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
 
             # Get the last traceback object from the exception
             tb = e.__traceback__
-            while tb.tb_next is not None:
-                tb = tb.tb_next
+            if tb:
+                while tb.tb_next is not None:
+                    tb = tb.tb_next
 
             if isinstance(e, ValidationError):
                 error_list = []
@@ -70,7 +71,10 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                         f"input_type={type(error['input']).__name__}, "
                         f"input_value={error['input']}]\n"
                     )
-                    error_info = f"    For further information visit {error['url']}\n"
+                    url = error.get("url")
+                    error_info = (
+                        f"    For further information visit {url}\n" if url else ""
+                    )
                     error_list.append(arg_error + error_details + error_info)
 
                 error_list.insert(0, validation_error)

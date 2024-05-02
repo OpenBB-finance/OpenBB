@@ -30,22 +30,26 @@
         },
         "autotypenumbers": "strict",
         "colorway": [
-            "#ffed00",
-            "#ef7d00",
-            "#e4003a",
-            "#c13246",
-            "#822661",
-            "#48277c",
-            "#005ca9",
-            "#00aaff",
-            "#9b30d9",
-            "#af005f",
-            "#5f00af",
-            "#af87ff"
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#d62728",
+            "#9467bd",
+            "#8c564b",
+            "#e377c2",
+            "#bcbd22",
+            "#17becf",
+            "#aec7e8",
+            "#ffbb78",
+            "#ff9896",
+            "#c5b0d5",
+            "#f7b6d2",
+            "#dbdb8d",
+            "#9edae5"
         ],
         "dragmode": "pan",
         "font": {
-            "family": "Fira Code",
+            "family": "Arial",
             "size": 18
         },
         "hoverlabel": {
@@ -56,13 +60,13 @@
         },
         "hovermode": "x",
         "legend": {
-            "bgcolor": "rgba(0, 0, 0, 0.5)",
-            "x": 0.01,
-            "xanchor": "left",
-            "y": 0.99,
-            "yanchor": "top",
+            "bgcolor": "rgba(0, 0, 0, 0)",
+            "x": 1,
+            "xanchor": "right",
+            "y": 1.02,
+            "yanchor": "bottom",
             "font": {
-                "size": 15
+                "size": 12
             }
         },
         "legend2": {
@@ -105,7 +109,10 @@
             "zeroline": false,
             "tick0": 1,
             "title": {
-                "standoff": 20
+                "standoff": 20,
+                "font": {
+                    "size": 16
+                }
             },
             "linecolor": "#F5EFF3",
             "mirror": true,
@@ -121,9 +128,13 @@
             "side": "right",
             "tick0": 0.5,
             "title": {
-                "standoff": 20
+                "standoff": 20,
+                "font": {
+                    "size": 16
+                }
             },
-            "gridcolor": "#283442",
+
+            "gridcolor": "rgba(128, 128, 128, 0.33)",
             "linecolor": "#F5EFF3",
             "mirror": true,
             "ticks": "outside"

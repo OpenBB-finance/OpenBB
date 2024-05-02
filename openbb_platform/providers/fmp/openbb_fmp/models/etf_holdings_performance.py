@@ -54,7 +54,7 @@ class FMPEtfHoldingsPerformanceFetcher(
         # Split into chunks of 500
         chunks = [holdings_list[i : i + 500] for i in range(0, len(holdings_list), 500)]
         # Get price performance for the holdings
-        holdings_performance: list = []
+        holdings_performance: List[Dict] = []
         for holding_chunk in chunks:
             holdings_str = (
                 ",".join(holding_chunk) if len(holding_chunk) > 1 else holding_chunk[0]

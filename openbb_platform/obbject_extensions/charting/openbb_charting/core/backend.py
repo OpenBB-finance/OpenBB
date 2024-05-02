@@ -74,6 +74,7 @@ class Backend(PyWry):
         max_retries: int = 30,
         proc_name: str = "OpenBB Terminal",
     ):
+        """Create a new instance of the backend."""
         self.charting_settings = charting_settings
 
         has_version = hasattr(PyWry, "__version__")
@@ -152,7 +153,6 @@ class Backend(PyWry):
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
-
         posthog: Dict[str, Any] = dict(collect_logs=self.charting_settings.log_collect)
         if (
             self.charting_settings.log_collect
@@ -222,6 +222,11 @@ class Backend(PyWry):
         self.send_outgoing(outgoing)
 
         if export_image and isinstance(export_image, Path):
+            if self.loop.is_closed():  # type: ignore[has-type]
+                # Create a new event loop
+                self.loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(self.loop)
+
             self.loop.run_until_complete(self.process_image(export_image))
 
     async def process_image(self, export_image: Path):
@@ -507,6 +512,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 
 def create_backend(charting_settings: Optional["ChartingSettings"] = None):
+    """Create the backend."""
     # # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
@@ -517,6 +523,7 @@ def create_backend(charting_settings: Optional["ChartingSettings"] = None):
 
 
 def get_backend() -> Backend:
+    """Get the backend instance."""
     if BACKEND is None:
         raise ValueError("Backend not created")
     return BACKEND

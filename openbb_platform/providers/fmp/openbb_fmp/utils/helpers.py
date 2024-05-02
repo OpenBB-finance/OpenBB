@@ -1,9 +1,7 @@
 """FMP Helpers Module."""
 
-import json
 from datetime import date as dateType
-from io import StringIO
-from typing import Any, Dict, List, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -15,61 +13,19 @@ from openbb_core.provider.utils.helpers import (
 )
 from pydantic import BaseModel
 
-T = TypeVar("T", bound=BaseModel)
-
-
-class BasicResponse:
-    """Basic Response class."""
-
-    def __init__(self, response: StringIO):
-        """Initialize the BasicResponse class."""
-        # Find a way to get the status code
-        self.status_code = 200
-        response.seek(0)
-        self.text = response.read()
-
-    def json(self) -> dict:
-        """Return the response as a dictionary."""
-        return json.loads(self.text)
-
-
-def request(url: str) -> BasicResponse:
-    """Request function for PyScript.
-
-    Pass in Method and make sure to await!
-
-    Parameters
-    ----------
-    url: str
-        URL to make request to
-
-    Return
-    ------
-    response: BasicRequest
-        BasicRequest object with status_code and text attributes
-    """
-    # pylint: disable=import-outside-toplevel
-    from pyodide.http import open_url  # type: ignore
-
-    response = open_url(url)
-    return BasicResponse(response)
-
 
 async def response_callback(
     response: ClientResponse, _: ClientSession
-) -> Union[dict, List[dict]]:
-    """Callback for make_request."""
-
+) -> Union[Dict, List[Dict]]:
+    """Use callback for make_request."""
     data = await response.json()
-    if response.status != 200:
-        message = data.get("message", None) or data.get("error", "unknown error")
-        raise RuntimeError(f"Error in FMP request -> {message}")
-
-    if "Error Message" in data:
+    if isinstance(data, dict) and "Error Message" in data:
         raise RuntimeError(f"FMP Error Message -> {data['Error Message']}")
 
-    if len(data) == 0:
-        raise EmptyDataError()
+    if isinstance(data, dict) and "error" in data:
+        raise RuntimeError(
+            f"FMP Error Message -> {data['error']}. Status code: {response.status}"
+        )
 
     return data
 

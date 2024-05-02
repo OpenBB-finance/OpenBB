@@ -42,6 +42,8 @@ if TYPE_CHECKING:
 
 TimeSeriesT = TypeVar("TimeSeriesT", bound="TimeSeries")
 
+pio.default_renderers = "notebook"
+
 
 class OpenBBFigure(go.Figure):
     """Custom Figure class for OpenBB Terminal.
@@ -84,6 +86,7 @@ class OpenBBFigure(go.Figure):
     plotlyjs_path: Path = PLOTLYJS_PATH
 
     def __init__(self, fig: Optional[go.Figure] = None, **kwargs) -> None:
+        """Initialize the OpenBBFigure."""
         super().__init__()
         if fig:
             self.__dict__ = fig.__dict__
@@ -238,8 +241,7 @@ class OpenBBFigure(go.Figure):
         secondary_y: bool = False,
         **kwargs,
     ):
-        """
-        Add a trend line to the figure.
+        """Add a trend line to the figure.
 
         Parameters
         ----------
@@ -291,8 +293,7 @@ class OpenBBFigure(go.Figure):
         row: int = 1,
         col: int = 1,
     ) -> None:
-        """
-        Add a histogram with a curve and rug plot if desired.
+        """Add a histogram with a curve and rug plot if desired.
 
         Parameters
         ----------
@@ -560,8 +561,7 @@ class OpenBBFigure(go.Figure):
         legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
-        """
-        Add a horizontal line with a legend label.
+        """Add a horizontal line with a legend label.
 
         Parameters
         ----------
@@ -598,8 +598,7 @@ class OpenBBFigure(go.Figure):
         legendrank: Optional[int] = None,
         **kwargs,
     ) -> None:
-        """
-        Add a vertical line with a legend label.
+        """Add a vertical line with a legend label.
 
         Parameters
         ----------
@@ -667,8 +666,7 @@ class OpenBBFigure(go.Figure):
     def chart_volume_scaling(
         df_volume: pd.DataFrame, volume_ticks_x: int = 7
     ) -> Dict[str, list]:
-        """
-        Takes df_volume and returns volume_ticks, tickvals for chart volume scaling.
+        """Take df_volume and returns volume_ticks, tickvals for chart volume scaling.
 
         Parameters
         ----------
@@ -716,8 +714,7 @@ class OpenBBFigure(go.Figure):
         col: Optional[int] = 1,
         volume_ticks_x: int = 7,
     ) -> None:
-        """
-        Add in-chart volume to a subplot.
+        """Add in-chart volume to a subplot.
 
         Parameters
         ----------
@@ -748,15 +745,18 @@ class OpenBBFigure(go.Figure):
             yaxis="y2",
             row=row,
             col=col,
-            opacity=0.7,
+            opacity=0.5,
             secondary_y=True,
+            showlegend=False,
+            hovertemplate="%{y}<extra></extra>",
         )
         ticksize = 13 - (self.subplots_kwargs["rows"] // 2)
         self.update_layout(
             yaxis2=dict(
-                fixedrange=True,
+                fixedrange=False,
                 side="left",
-                nticks=10,
+                nticks=8,
+                autorange=False,
                 range=vol_scale["range"],
                 tickvals=vol_scale["ticks"],
                 showgrid=False,
@@ -846,8 +846,7 @@ class OpenBBFigure(go.Figure):
         export_image: Optional[Union[Path, str]] = "",
         **kwargs,
     ) -> "OpenBBFigure":
-        """
-        Show the figure.
+        """Show the figure.
 
         Parameters
         ----------
@@ -923,11 +922,7 @@ class OpenBBFigure(go.Figure):
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
 
-                if getattr(self._charting_settings, "debug_mode", False):
-                    warn(f"Failed to show figure with backend: {e}")
-                warn(
-                    f"Failed to show figure with backend: {e}"
-                )  # remove this line when the above lines are figured out
+                warn(f"Failed to show figure with backend. {e}")
 
                 # We check if any figures were initialized before the backend failed
                 # If so, we show them with the default plotly backend
@@ -1238,8 +1233,7 @@ class OpenBBFigure(go.Figure):
     def to_plotly_json(
         self, ndarray: bool = False, np_nan: bool = False
     ) -> Dict[str, Any]:
-        """
-        Convert figure to a JSON representation as a Python dict.
+        """Convert figure to a JSON representation as a Python dict.
 
         Parameters
         ----------

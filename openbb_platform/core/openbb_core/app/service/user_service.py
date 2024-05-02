@@ -20,6 +20,7 @@ class UserService(metaclass=SingletonMeta):
         self,
         default_user_settings: Optional[UserSettings] = None,
     ):
+        """Initialize user service."""
         self._default_user_settings = (
             default_user_settings or self.read_default_user_settings()
         )

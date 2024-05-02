@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
@@ -31,6 +32,7 @@ GROUPS = Literal[
     "trade",
     "business",
 ]
+TE_COUNTRY_LIMIT = 28
 
 
 class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
@@ -48,6 +50,8 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     )
     group: Optional[GROUPS] = Field(default=None, description="Grouping of events")
 
+    _number_of_countries: int = 0
+
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, c: str):  # pylint: disable=E0213
@@ -57,11 +61,19 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         for v in values:
             check_item(v.lower(), COUNTRIES)
             result.append(v.lower())
+
+        cls._number_of_countries = len(result)
+        if cls._number_of_countries >= TE_COUNTRY_LIMIT:
+            warn(
+                f"Trading Economics API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
+            )
+
         return ",".join(result)
 
     @field_validator("importance")
     @classmethod
     def importance_to_number(cls, v):
+        """Convert importance to number."""
         string_to_value = {"Low": 1, "Medium": 2, "High": 3}
         return string_to_value.get(v, None)
 
@@ -93,6 +105,7 @@ class TEEconomicCalendarData(EconomicCalendarData):
     @field_validator("date", mode="before")
     @classmethod
     def validate_date(cls, v: str) -> datetime:
+        """Validate the date."""
         return to_datetime(v, utc=True)
 
 
@@ -128,11 +141,15 @@ class TEEconomicCalendarFetcher(
         async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
             """Return the response."""
             if response.status != 200:
-                raise RuntimeError(f"Error in TE request -> {await response.text()}")
+                raise RuntimeError(
+                    f"Error in TE request: \n{await response.text()}"
+                    f"\nInfo -> TE API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
+                )
             return await response.json()
 
         return await amake_request(url, response_callback=callback, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: TEEconomicCalendarQueryParams, data: List[Dict], **kwargs: Any

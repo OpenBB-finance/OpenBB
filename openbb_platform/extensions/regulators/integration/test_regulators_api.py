@@ -1,3 +1,5 @@
+"""Integration tests for the regulators API."""
+
 import base64
 
 import pytest
@@ -9,6 +11,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -22,12 +25,13 @@ def headers():
 @parametrize(
     "params",
     [
-        ({"symbol": "TSLA", "provider": "sec"}),
-        ({"symbol": "SQQQ", "provider": "sec"}),
+        ({"symbol": "TSLA", "provider": "sec", "use_cache": None}),
+        ({"symbol": "SQQQ", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
 def test_regulators_sec_cik_map(params, headers):
+    """Test the SEC CIK map endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -45,6 +49,7 @@ def test_regulators_sec_cik_map(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_sec_institutions_search(params, headers):
+    """Test the SEC institutions search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -70,6 +75,7 @@ def test_regulators_sec_institutions_search(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_sec_schema_files(params, headers):
+    """Test the SEC schema files endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -88,6 +94,7 @@ def test_regulators_sec_schema_files(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_sec_symbol_map(params, headers):
+    """Test the SEC symbol map endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -103,6 +110,7 @@ def test_regulators_sec_symbol_map(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_sec_rss_litigation(params, headers):
+    """Test the SEC RSS litigation endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -118,6 +126,7 @@ def test_regulators_sec_rss_litigation(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_sec_sic_search(params, headers):
+    """Test the SEC SIC search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -135,6 +144,7 @@ def test_regulators_sec_sic_search(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_cftc_cot_search(params, headers):
+    """Test the CFTC COT search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -165,6 +175,7 @@ def test_regulators_cftc_cot_search(params, headers):
 )
 @pytest.mark.integration
 def test_regulators_cftc_cot(params, headers):
+    """Test the CFTC COT endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

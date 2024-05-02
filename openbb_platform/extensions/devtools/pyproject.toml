@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-devtools"
-version = "1.1.4"
+version = "1.1.6"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_devtools" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"               # scipy forces <4.0 explicitly
-ruff = "^0.1.5"
+ruff = "^0.1.6"
 pylint = "^3.0.2"
 mypy = "^1.6.1"
 pydocstyle = "^6.3.0"

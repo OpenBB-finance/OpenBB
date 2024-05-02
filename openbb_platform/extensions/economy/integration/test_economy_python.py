@@ -44,6 +44,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 )
 @pytest.mark.integration
 def test_economy_calendar(params, obb):
+    """Test economy calendar."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.calendar(**params)
@@ -69,6 +70,7 @@ def test_economy_calendar(params, obb):
 )
 @pytest.mark.integration
 def test_economy_cpi(params, obb):
+    """Test economy cpi."""
     result = obb.economy.cpi(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -83,6 +85,7 @@ def test_economy_cpi(params, obb):
 )
 @pytest.mark.integration
 def test_economy_risk_premium(params, obb):
+    """Test economy risk premium."""
     result = obb.economy.risk_premium(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -114,6 +117,7 @@ def test_economy_risk_premium(params, obb):
 )
 @pytest.mark.integration
 def test_economy_gdp_forecast(params, obb):
+    """Test economy gdp forecast."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.gdp.forecast(**params)
@@ -139,6 +143,7 @@ def test_economy_gdp_forecast(params, obb):
 )
 @pytest.mark.integration
 def test_economy_gdp_nominal(params, obb):
+    """Test economy gdp nominal."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.gdp.nominal(**params)
@@ -164,6 +169,7 @@ def test_economy_gdp_nominal(params, obb):
 )
 @pytest.mark.integration
 def test_economy_gdp_real(params, obb):
+    """Test economy gdp real."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.gdp.real(**params)
@@ -203,6 +209,7 @@ def test_economy_gdp_real(params, obb):
 )
 @pytest.mark.integration
 def test_economy_balance_of_payments(params, obb):
+    """Test economy balance of payments."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.balance_of_payments(**params)
@@ -278,6 +285,7 @@ def test_economy_balance_of_payments(params, obb):
 )
 @pytest.mark.integration
 def test_economy_fred_search(params, obb):
+    """Test economy fred search."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.fred_search(**params)
@@ -316,6 +324,7 @@ def test_economy_fred_search(params, obb):
 )
 @pytest.mark.integration
 def test_economy_fred_series(params, obb):
+    """Test economy fred series."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.fred_series(**params)
@@ -340,6 +349,7 @@ def test_economy_fred_series(params, obb):
 )
 @pytest.mark.integration
 def test_economy_money_measures(params, obb):
+    """Test economy money measures."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.money_measures(**params)
@@ -368,6 +378,7 @@ def test_economy_money_measures(params, obb):
 )
 @pytest.mark.integration
 def test_economy_unemployment(params, obb):
+    """Test economy unemployment."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.unemployment(**params)
@@ -392,6 +403,7 @@ def test_economy_unemployment(params, obb):
 )
 @pytest.mark.integration
 def test_economy_composite_leading_indicator(params, obb):
+    """Test economy composite leading indicator."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.composite_leading_indicator(**params)
@@ -417,6 +429,7 @@ def test_economy_composite_leading_indicator(params, obb):
 )
 @pytest.mark.integration
 def test_economy_short_term_interest_rate(params, obb):
+    """Test economy short term interest rate."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.short_term_interest_rate(**params)
@@ -442,6 +455,7 @@ def test_economy_short_term_interest_rate(params, obb):
 )
 @pytest.mark.integration
 def test_economy_long_term_interest_rate(params, obb):
+    """Test economy long term interest rate."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.long_term_interest_rate(**params)
@@ -489,9 +503,78 @@ def test_economy_long_term_interest_rate(params, obb):
 )
 @pytest.mark.integration
 def test_economy_fred_regional(params, obb):
+    """Test economy fred regional."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.economy.fred_regional(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "latest": True,
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_country_profile(params, obb):
+    """Test economy country profile."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.country_profile(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "econdb", "use_cache": False}),
+    ],
+)
+@pytest.mark.integration
+def test_economy_available_indicators(params, obb):
+    """Test economy available indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.available_indicators(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "us,uk,jp",
+                "symbol": "GDP,GDEBT",
+                "transform": None,
+                "start_date": "2022-01-01",
+                "end_date": "2024-01-01",
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_indicators(params, obb):
+    """Test economy indicators."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.indicators(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

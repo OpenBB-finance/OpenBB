@@ -1,4 +1,4 @@
-"""TMX Equity Profile fetcher"""
+"""TMX Equity Profile fetcher."""
 
 # pylint: disable=unused-argument
 
@@ -237,7 +237,7 @@ class TmxEquityQuoteData(EquityQuoteData):
     )
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
+        """Return the datetime object from the date string."""
         if v:
             try:
                 return datetime.strptime(v, "%Y-%m-%d").date()
@@ -281,18 +281,16 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
-        results = []
+        results: List[Dict] = []
         user_agent = get_random_agent()
 
         url = "https://app-money.tmx.com/graphql"
 
         async def create_task(symbol: str, results) -> None:
-            """Makes a POST request to the TMX GraphQL endpoint for a single symbol."""
-
+            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
             symbol = (
                 symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
             )
@@ -332,7 +330,6 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityQuoteData]:
         """Return the transformed data."""
-
         # Remove the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",

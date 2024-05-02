@@ -13,6 +13,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -29,6 +30,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_crypto_search(params, headers):
+    """Test the crypto search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -48,6 +50,15 @@ def test_crypto_search(params, headers):
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
+            }
+        ),
+        (
+            {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "BTCUSD,ETHUSD",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -105,6 +116,7 @@ def test_crypto_search(params, headers):
 )
 @pytest.mark.integration
 def test_crypto_price_historical(params, headers):
+    """Test the crypto historical price endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

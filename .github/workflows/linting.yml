@@ -68,8 +68,9 @@ jobs:
       - run: |
           # Run linters for openbb_platform
           if [ -n "${{ env.platform_files }}" ]; then
-            # TODO: Add mypy to this part of the linting workflow once we're ready
             pylint ${{ env.platform_files }}
+            mypy ${{ env.platform_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
+            pydocstyle ${{ env.platform_files }}
           else
             echo "No Python files changed in openbb_platform"
           fi
@@ -94,5 +95,3 @@ jobs:
       - name: json-yaml-validate
         id: json-yaml-validate
         uses: GrantBirki/json-yaml-validate@v2.0.0
-        with:
-          exclude_file: json_validate_exclude.txt

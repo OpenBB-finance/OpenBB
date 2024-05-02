@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-commodity"
-version = "1.0.1"
+version = "1.0.4"
 description = "Commodity extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_commodity" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = "^1.1.3"
+openbb-core = "^1.1.6"
 
 [build-system]
 requires = ["poetry-core"]

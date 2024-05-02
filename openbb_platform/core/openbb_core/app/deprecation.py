@@ -12,10 +12,10 @@ from openbb_core.app.version import VERSION, get_major_minor
 class DeprecationSummary(str):
     """A string subclass that can be used to store deprecation metadata."""
 
-    def __new__(cls, value, metadata):
+    def __new__(cls, value: str, metadata: DeprecationWarning):
         """Create a new instance of the class."""
         obj = str.__new__(cls, value)
-        obj.metadata = metadata
+        setattr(obj, "metadata", metadata)
         return obj
 
 
@@ -50,6 +50,7 @@ class OpenBBDeprecationWarning(DeprecationWarning):
         since: Optional[Tuple[int, int]] = None,
         expected_removal: Optional[Tuple[int, int]] = None,
     ) -> None:
+        """Initialize the warning."""
         super().__init__(message, *args)
         self.message = message.rstrip(".")
         self.since = since or get_major_minor(VERSION)
