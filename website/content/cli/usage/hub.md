@@ -54,7 +54,7 @@ If an API key is updated in the Hub while the OpenBB Terminal is running, you wi
 
 Theme styles correspond to the ability to change your terminal "skin" (i.e. coloring of the `menu`, `commands`, `data source`, `parameters`, `information` and `help`), the charts and tables style.
 
-In the OpenBB Hub, you have the ability to change your preferred themes for the CLI. After costumizing as intended, you can then download the theme and apply it to the CLI by adding it to you styles directory (`/home/your-user/OpenBBUserData/styles/user`).
+In the OpenBB Hub, you have the ability to change your preferred themes for the CLI. After customizing as intended, you can then download the theme and apply it to the CLI by adding it to you styles directory (`/home/your-user/OpenBBUserData/styles/user`).
 
 ## Script Routines
 
