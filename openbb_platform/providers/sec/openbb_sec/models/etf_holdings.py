@@ -343,7 +343,7 @@ class SecEtfHoldingsFetcher(
             except Exception as e:
                 if i < retries - 1:
                     warn(f"Error: {e}. Retrying...")
-                    asyncio.sleep(1)
+                    await asyncio.sleep(1)
                     continue
                 raise e
         filing_candidates = pd.DataFrame.from_records(filings)
