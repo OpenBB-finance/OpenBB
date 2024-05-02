@@ -28,6 +28,10 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     videoLegend="Short video on where you can find community routines"
 />
 
+:::note
+Note that the commands and menus may vary.
+:::
+
 Community routines will enable the community to share their investment research routines and streamline everyone's investment research workflow.
 
 This is where you can find them: [https://my.openbb.co/app/terminal/community-routines/new](https://my.openbb.co/app/terminal/community-routines/new?size=25&tags=&page=1)

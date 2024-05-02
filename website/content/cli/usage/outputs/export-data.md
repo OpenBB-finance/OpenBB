@@ -24,6 +24,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB Terminal offers a variety of ways to export financial data. This can be to a text-based file - XLSX, CSV or JSON -  or as images - PNG, JPG, PDF and SVG.
 
+:::note
+Note that the commands and menus may vary.
+:::
+
 To export as a spreadsheet, `xlsx`,  add `--export xlsx` to the  command.
 
 ```console

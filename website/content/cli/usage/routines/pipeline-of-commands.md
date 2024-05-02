@@ -1,7 +1,7 @@
 ---
 title: The Pipeline of Commands
 sidebar_position: 1
-description: This page provides a detailed explanation of the OpenBB Terminal command pipeline.
+description: This page provides a detailed explanation of the OpenBB Platform CLI command pipeline.
   The tutorial video and walkthrough guides users in automating their investment
   research process by using single commands, and sequences of commands,
   to manipulate and study data.
@@ -28,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="The Pipeline of Commands - Routines - Usage | OpenBB Terminal Docs" />
+<HeadTitle title="The Pipeline of Commands - Routines - Usage | OpenBB Platform CLI Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -37,60 +37,42 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     videoLegend="Short video on pipeline of commands"
 />
 
+:::note
+Note that the commands and menus may vary.
+:::
+
 ## Single Command
 
-If you have a good understanding of the Terminal's architecture, you will recognize that commands and menus are organized in the form of a tree.
+If you have a good understanding of the Platform CLI's architecture, you will recognize that commands and menus are organized in the form of a tree.
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a5f10833-9693-4b39-9491-b431919db828)
 
-If the intention is to explore an equity, enter at base of the menu (`/stocks/`), then browse or navigate towards the point of interest - for example, Dark Pools (`/stocks/dps`).
+If the intention is to explore an equity, enter at base of the menu (`/equity/`), then browse or navigate towards the point of interest - for example, Dark Pools (`/equity/darkpool`).
 
 While all the information is in one place, having to type one command at a time is far from optimal.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/41737800-7c60-48ad-a43d-814016d81762)
-
 ## Pipeline of Commands
 
-One of the main objectives of the OpenBB Terminal was the ability to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
+One of the main objectives of the OpenBB Platform CLI was the ability to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
 
-The example above can be recreated by running:
-
-```console
-/stocks/load GME/dps/psi
-```
-
-Which looks like:
-
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c21c5452-5a67-4384-851c-d2801b60f8cd)
-
-Another example is:
+An example of a pipeline of commands is:
 
 ```console
-/stocks/load GME/dps/psi/../fa/pt/income/../ins/stats
+/equity/price/historical --symbol AAPL/../../technical/ema --data 0 --length 50
 ```
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/61db4010-bdc2-4851-9e47-79fb4425b816)
+Which will perform a exponential moving average (`ema`) on the historical price of Apple (`AAPL`).
 
 ### Step-by-Step Explanation
 
-```console
-/stocks/load amzn/ta/macd/ema -l 50,200/../dps/psi
-```
-
 This will do the following:
 
-1. `stocks` - Go into `stocks` menu
+1. `equity` - Go into `equity` menu
 
-2. `load amzn` - Load Amazon's stock inside stock menu
+2. `price` - Go into `price` sub-menu
 
-3. `ta` - Go into Technical Analysis (`ta`) menu
+3. `historical --symbol AAPL` - Load historical price data for Apple
 
-4. `macd` - Run the moving average convergence/divergence indicator (`macd`) on the stock price loaded (i.e. `amzn`)
+4. `technical` -  Go into Technical Analysis (`technical`) menu
 
-5. `ema -l 50,200` - Run the exponential moving average indicator with windows of length 50 and 200 (`ema -l 50,200`) on the stock price loaded (i.e. `amzn`)
-
-6. `..` - Go one menu up
-
-7. `dps` - Go into Dark pool and Short (`dps`) menu
-
-8. `psi` - Go into Price vs Short interest (`psi`) menu
+5. `ema --data 0 --length 50` - Run the exponential moving average indicator with windows of length 50 (`--length 50`) on the last cached result (`--data 0`)

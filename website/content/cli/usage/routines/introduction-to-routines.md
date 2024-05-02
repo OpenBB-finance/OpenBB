@@ -17,7 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines - Usage | OpenBB Terminal Docs" />
+<HeadTitle title="Introduction to Routines - Routines - Usage | OpenBB Platform CLI Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -25,6 +25,10 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     youtubeLink="https://www.youtube.com/embed/p1pY6Zujvnc?si=HWStqbVnkU_Lw_P-"
     videoLegend="Show short introduction to OpenBB routines"
 />
+
+:::note
+Note that the commands and menus may vary.
+:::
 
 ## Introduction
 
@@ -68,31 +72,28 @@ For more information and examples, use 'about exe' to access the related guide.
 The most basic script style contains 2 main elements:
 
 - **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
-- **Commands**: any text *without* a hashtag is being run inside the OpenBB Terminal as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `stocks/load AAPL/candle --ma 20` is a valid line for the script.
+- **Commands**: any text *without* a hashtag is being run inside the OpenBB Terminal as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `equity/price/historical --symbol --provider fmp` is a valid line for the script.
 
 For instance, the text below corresponds to the example file that OpenBB provides.
 
 ```console
 # Go into the stocks context
-stocks
+equity/price
 
 # Load a company ticker, e.g. Apple
-load AAPL
+historical --symbol AAPL
 
 # Show a candle chart with a 20 day Moving Average
-candle --ma 20
+/technical/ema --length 20
 
 # Switch over to the Fundamental Analysis menu
-fa
+/equity/fundamental
 
-# Show Earnings per Share (EPS) estimates
-epsfc
+# Show balance sheet
+balance --symbol aapl
 
-# Show price targets charts
-pt
-
-# Show future estimations
-est
+# Show cash flow statement
+cash --symbol aapl
 
 # Return to home
 home
@@ -107,7 +108,3 @@ As a starting point, let's use the example above.
 2. Move the file inside the `routines` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
 
 3. Open up the OpenBB Terminal, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, OpenBB Terminal's auto-completer will provide it as a choice.
-
-When this routine is run, a candle chart with a moving average of 20 days, expectations and price targets from analysts and estimated future performance should pop up before returning to the home window.
-
-![OpenBB Routine Script Execution](https://user-images.githubusercontent.com/46355364/223207167-dfab3a74-d34d-47d4-bf6e-44944e8fbfa2.png)

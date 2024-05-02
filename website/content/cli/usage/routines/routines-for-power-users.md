@@ -23,7 +23,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Routines for Power Users - Routines - Usage | OpenBB Terminal Docs" />
+<HeadTitle title="Routines for Power Users - Routines - Usage | OpenBB Platform CLI Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -32,21 +32,25 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     videoLegend="Short video on what power users can do with routines"
 />
 
+:::note
+Note that the commands and menus may vary.
+:::
+
 ## Input Variables
 
 When utilizing basic routines capabilities, users had to create separate routines for each specific ticker, such as `my_due_diligence_AAPL.openbb` or `my_due_diligence_TSLA.openbb`. This approach was suboptimal, considering that we had control over reading these scripts and they were meant to be used within our ecosystem.
 
-To address this limitation, we introduced the concept of arguments, inspired by the Perl language. These arguments are variables referenced within the `.openbb` script as `$ARGV` or `$ARGV[0]`, `$ARGV[1]`, and so on. They are provided in the terminal when running `exe` by adding the `--input` flag, followed by the variables separated by commas.
+To address this limitation, we introduced the concept of arguments, inspired by the Perl language. These arguments are variables referenced within the `.openbb` script as `$ARGV` or `$ARGV[0]`, `$ARGV[1]`, and so on. They are provided in the CLI when running `exe` by adding the `--input` flag, followed by the variables separated by commas.
 
 For instance, if a routine file called `script_with_input.openbb` had the following format:
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5b0f558e-ace0-423d-a3db-b6369755cffb)
 
-And we run it in the terminal with `exe —file script_with_input.openbb —input MSFT`, what would be run would be `stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200` and so you could use the same routine for multiple tickers - **making it a more powerful automated workflow**.
+And we run it in the CLI with `exe —file script_with_input.openbb —input MSFT`, what would be run would be `stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200` and so you could use the same routine for multiple tickers - **making it a more powerful automated workflow**.
 
 For instance, the example below shows how you can run the same script for MSFT but also TSLA ticker.
 
-And we run it in the terminal with exe —file script_with_input.openbb —input MSFT, what would be run would be stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200 and so you could use the same routine for multiple tickers - making it a more powerful automated workflow.
+And we run it in the CLI with exe —file script_with_input.openbb —input MSFT, what would be run would be stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200 and so you could use the same routine for multiple tickers - making it a more powerful automated workflow.
 
 For instance, the example below shows how you can run the same script for `MSFT` but also `TSLA` ticker.
 
