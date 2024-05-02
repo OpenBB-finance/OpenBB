@@ -128,6 +128,8 @@ class CLIController(BaseController):
             """Call command."""
             mdl = getattr(obb, router)
             df = pd.DataFrame.from_dict(mdl.model_dump(), orient="index")
+            if isinstance(df.columns, pd.RangeIndex):
+                df.columns = [str(i) for i in df.columns]
             return print_rich_table(df, show_index=True)
 
         for router, value in PLATFORM_ROUTERS.items():
