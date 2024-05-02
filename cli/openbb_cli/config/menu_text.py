@@ -204,7 +204,7 @@ class MenuText:
         """
         formatted_name = self._format_cmd_name(name)
         name_padding = (self.CMD_NAME_LENGTH - len(formatted_name)) * " "
-        providers = get_ordered_providers(f"{self.menu_path}{formatted_name}")
+        providers = get_ordered_providers(f"{self.menu_path}{name}")
         formatted_description = self._format_cmd_description(
             formatted_name,
             description,

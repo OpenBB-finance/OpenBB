@@ -8,8 +8,8 @@ from openbb import obb
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
-from prompt_toolkit.history import FileHistory
 
+from openbb_cli.config.completer import CustomFileHistory
 from openbb_cli.config.console import Console
 from openbb_cli.config.constants import HIST_FILE_PROMPT
 from openbb_cli.config.style import Style
@@ -62,7 +62,7 @@ class Session(metaclass=SingletonMeta):
         try:
             if sys.stdin.isatty():
                 prompt_session: Optional[PromptSession] = PromptSession(
-                    history=FileHistory(str(HIST_FILE_PROMPT))
+                    history=CustomFileHistory(str(HIST_FILE_PROMPT))
                 )
             else:
                 prompt_session = None
