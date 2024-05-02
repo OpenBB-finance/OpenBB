@@ -21,13 +21,9 @@ class FeatureFlagsController(BaseController):
 
     CHOICES_COMMANDS: List[str] = [
         "retryload",
-        "tab",
         "interactive",
         "cls",
-        "watermark",
         "promptkit",
-        "thoughts",
-        "reporthtml",
         "exithelp",
         "rcontext",
         "richpanel",
