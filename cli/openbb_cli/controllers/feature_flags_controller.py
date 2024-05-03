@@ -39,6 +39,8 @@ class FeatureFlagsController(BaseController):
         "language",
         "n_rows",
         "n_cols",
+        "obbject_registry_msg",
+        "obbject_registry_res",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
@@ -65,6 +67,7 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("tbhint", settings.TOOLBAR_HINT)
         mt.add_setting("overwrite", settings.FILE_OVERWRITE)
         mt.add_setting("version", settings.SHOW_VERSION)
+        mt.add_setting("obbject_msg", settings.SHOW_MSG_OBBJECT_REGISTRY)
         mt.add_raw("\n")
         mt.add_info("_settings_")
         mt.add_raw("\n")
@@ -74,6 +77,7 @@ class FeatureFlagsController(BaseController):
         mt.add_cmd("language")
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
+        mt.add_cmd("obbject_res")
 
         session.console.print(text=mt.menu_text, menu="Feature Flags")
 
@@ -130,6 +134,13 @@ class FeatureFlagsController(BaseController):
         if session.settings.TOOLBAR_HINT:
             session.console.print("Will take effect when running CLI again.")
         session.settings.set_item("TOOLBAR_HINT", not session.settings.TOOLBAR_HINT)
+
+    def call_obbject_msg(self, _):
+        """Process obbject_msg command."""
+        session.settings.set_item(
+            "SHOW_MSG_OBBJECT_REGISTRY",
+            not session.settings.SHOW_MSG_OBBJECT_REGISTRY,
+        )
 
     def call_console_style(self, other_args: List[str]) -> None:
         """Process cosole_style command."""
@@ -286,4 +297,31 @@ class FeatureFlagsController(BaseController):
         elif not other_args:
             session.console.print(
                 f"Current number of columns: {session.settings.ALLOWED_NUMBER_OF_COLUMNS}"
+            )
+
+    def call_obbject_res(self, other_args: List[str]):
+        """Process obbject_res command."""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="obbject_res",
+            description="Maximum allowed number of results to keep in the OBBject Registry.",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            dest="number",
+            action="store",
+            required=False,
+            type=int,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser and ns_parser.number:
+            session.settings.set_item("N_TO_KEEP_OBBJECT_REGISTRY", ns_parser.columns)
+
+        elif not other_args:
+            session.console.print(
+                f"Current maximum allowed number of results to keep in the OBBject registry:"
+                f" {session.settings.N_TO_KEEP_OBBJECT_REGISTRY}"
             )
