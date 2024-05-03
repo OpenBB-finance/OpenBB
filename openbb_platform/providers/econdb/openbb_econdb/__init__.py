@@ -4,6 +4,7 @@ from openbb_core.provider.abstract.provider import Provider
 from openbb_econdb.models.available_indicators import EconDbAvailableIndicatorsFetcher
 from openbb_econdb.models.country_profile import EconDbCountryProfileFetcher
 from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFetcher
+from openbb_econdb.models.yield_curve import EconDbYieldCurveFetcher
 
 econdb_provider = Provider(
     name="EconDB",
@@ -16,5 +17,6 @@ econdb_provider = Provider(
         "AvailableIndicators": EconDbAvailableIndicatorsFetcher,
         "CountryProfile": EconDbCountryProfileFetcher,
         "EconomicIndicators": EconDbEconomicIndicatorsFetcher,
+        "YieldCurve": EconDbYieldCurveFetcher,
     },
 )

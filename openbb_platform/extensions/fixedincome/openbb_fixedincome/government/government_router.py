@@ -17,6 +17,23 @@ router = Router(prefix="/government")
 
 
 @router.command(
+    model="YieldCurve",
+    examples=[
+        APIEx(parameters={"provider": "econdb"}),
+        APIEx(parameters={"date": "2023-05-01", "country": "united_kingdom", "provider": "econdb"}),
+    ],
+)
+async def yield_curve(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Get yield curve data by country and date."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="USYieldCurve",
     examples=[
         APIEx(parameters={"provider": "fred"}),
