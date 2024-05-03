@@ -11,7 +11,6 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
-from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
@@ -79,16 +78,16 @@ class PlatformController(BaseController):
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
-                    action.choices = range(len(Registry.obbjects))
+                    action.choices = range(len(session.obbject_registry.obbjects))
                     action.type = int
                     action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
         if hasattr(ns_parser, "data") and ns_parser.data in range(
-            len(Registry.obbjects)
+            len(session.obbject_registry.obbjects)
         ):
-            obbject = Registry.get(ns_parser.data)
+            obbject = session.obbject_registry.get(ns_parser.data)
             setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
@@ -159,7 +158,7 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        Registry.register(obbject)
+                        session.obbject_registry.register(obbject)
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()

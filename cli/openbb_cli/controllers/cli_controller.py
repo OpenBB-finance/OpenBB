@@ -20,7 +20,6 @@ import certifi
 import pandas as pd
 import requests
 from openbb import obb
-from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_cli.config import constants
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import (
@@ -477,7 +476,7 @@ class CLIController(BaseController):
 
     def call_results(self, _):
         """Process results command."""
-        results = Registry().all
+        results = session.obbject_registry.all
         if results:
             df = pd.DataFrame.from_dict(results, orient="index")
             print_rich_table(
