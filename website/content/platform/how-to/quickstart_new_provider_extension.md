@@ -1,5 +1,5 @@
 ---
-title: Quickstart - New Provider Extension
+title: Quick Start - New Provider Extension
 sidebar_position: 1
 description: This page will walk through creating a new OpenBB Provider Extension from scratch. By the end, you will have the shell structure for holding models that connect to the Router through the Provider Interface.
 keywords:
@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quickstart - New Provider Extension - How-To - Development | OpenBB Platform Docs" />
+<HeadTitle title="Quick Start - New Provider Extension - How-To - Development | OpenBB Platform Docs" />
 
 This page will walk through creating a new OpenBB Provider Extension from scratch. By the end, you will have the shell structure for holding models that connect to the Router through the Provider Interface.
 

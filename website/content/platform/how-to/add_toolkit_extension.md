@@ -1,6 +1,6 @@
 ---
 title: Add Toolkit Extensions
-sidebar_position: 4
+sidebar_position: 5
 description: This guide outlines the process for adding a new toolkit extension and router path to the OpenBB Platform.
 keywords:
 - OpenBB Platform
