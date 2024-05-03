@@ -1,6 +1,6 @@
 ---
 title: Add A Data Provider To An Existing Endpoint
-sidebar_position: 1
+sidebar_position: 2
 description: This guide outlines the process for adding an endpoint to an existing data provider and router endpoint.
 keywords:
 - OpenBB Platform
