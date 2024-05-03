@@ -3,11 +3,7 @@
 from typing import Any
 
 from dotenv import dotenv_values, set_key
-from openbb_cli.config.constants import (
-    ENV_FILE_PROJECT,
-    ENV_FILE_REPOSITORY,
-    ENV_FILE_SETTINGS,
-)
+from openbb_cli.config.constants import ENV_FILE_SETTINGS
 from pydantic import BaseModel, ConfigDict, model_validator
 
 
@@ -62,16 +58,8 @@ class Settings(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def from_env(cls, values: dict) -> dict:
-        """Load .env files.
-
-        Loads the dotenv files in the following order:
-        1. Repository .env file
-        2. Package .env file
-        3. User .env file
-        """
+        """Load settings from .env."""
         settings = {}
-        settings.update(dotenv_values(ENV_FILE_REPOSITORY))
-        settings.update(dotenv_values(ENV_FILE_PROJECT))
         settings.update(dotenv_values(ENV_FILE_SETTINGS))
         settings.update(values)
         filtered = {k.replace("OPENBB_", ""): v for k, v in settings.items()}
@@ -79,7 +67,5 @@ class Settings(BaseModel):
 
     def set_item(self, key: str, value: Any) -> None:
         """Set an item in the model and save to .env."""
-        # TODO: Check if this is ok, we are just saving into the settings .env
-        # Same behavior as before...
         setattr(self, key, value)
         set_key(str(ENV_FILE_SETTINGS), "OPENBB_" + key, str(value))
