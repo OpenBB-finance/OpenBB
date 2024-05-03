@@ -32,6 +32,14 @@ class Registry:
         reversed_list = list(reversed(self._obbjects))
         return reversed_list[idx]
 
+    def remove(self, idx: int = -1):
+        """Remove the obbject at index idx, default is the last element."""
+        # the list should work as a stack
+        # i.e., the last element needs to be accessed by idx=0 and so on
+        reversed_list = list(reversed(self._obbjects))
+        del reversed_list[idx]
+        self._obbjects = list(reversed(reversed_list))
+
     @property
     def all(self) -> Dict[int, Dict]:
         """Return all obbjects in the registry"""
