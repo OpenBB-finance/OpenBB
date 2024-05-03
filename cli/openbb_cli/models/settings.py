@@ -67,7 +67,5 @@ class Settings(BaseModel):
 
     def set_item(self, key: str, value: Any) -> None:
         """Set an item in the model and save to .env."""
-        # TODO: Check if this is ok, we are just saving into the settings .env
-        # Same behavior as before...
         setattr(self, key, value)
         set_key(str(ENV_FILE_SETTINGS), "OPENBB_" + key, str(value))
