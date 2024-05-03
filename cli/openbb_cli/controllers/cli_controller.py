@@ -21,7 +21,6 @@ import pandas as pd
 import requests
 from openbb import obb
 from openbb_cli.config import constants
-from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
     ENV_FILE_SETTINGS,
@@ -216,7 +215,7 @@ class CLIController(BaseController):
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
             }
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.update_completer(choices)
 
     def print_help(self):
         """Print help."""

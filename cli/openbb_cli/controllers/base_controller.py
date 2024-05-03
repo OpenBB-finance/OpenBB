@@ -122,6 +122,11 @@ class BaseController(metaclass=ABCMeta):
         self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
+    def update_completer(self, choices) -> None:
+        """Update the completer with new choices."""
+        if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
+            self.completer = NestedCompleter.from_nested_dict(choices)
+
     def check_path(self) -> None:
         """Check if command path is valid."""
         path = self.PATH

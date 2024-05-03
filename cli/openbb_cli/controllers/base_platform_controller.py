@@ -11,7 +11,6 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
-from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
@@ -68,10 +67,7 @@ class PlatformController(BaseController):
             self._link_obbject_to_data_processing_commands()
             self._generate_commands()
             self._generate_sub_controllers()
-
-            if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
-                choices: dict = self.choices_default
-                self.completer = NestedCompleter.from_nested_dict(choices)
+            self.update_completer(self.choices_default)
 
     def _link_obbject_to_data_processing_commands(self):
         """Link data processing commands to OBBject registry."""
@@ -159,6 +155,11 @@ class PlatformController(BaseController):
 
                     if obbject:
                         session.obbject_registry.register(obbject)
+                        # we need to force to re-link so that the new obbject
+                        # is immediately available for data processing commands
+                        self._link_obbject_to_data_processing_commands()
+                        # also update the completer
+                        self.update_completer(self.choices_default)
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()

@@ -3,7 +3,6 @@
 import argparse
 from typing import List, Optional
 
-from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import AVAILABLE_FLAIRS
 from openbb_cli.config.menu_text import MenuText
 
@@ -48,9 +47,7 @@ class FeatureFlagsController(BaseController):
         """Initialize the Constructor."""
         super().__init__(queue)
 
-        if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
-            choices: dict = self.choices_default
-            self.completer = NestedCompleter.from_nested_dict(choices)
+        self.update_completer(self.choices_default)
 
     def print_help(self):
         """Print help."""
