@@ -154,12 +154,25 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
+                        if (
+                            len(session.obbject_registry.obbjects)
+                            >= session.settings.N_TO_KEEP_OBBJECT_REGISTRY
+                        ):
+                            session.console.print(
+                                "Maximum number of OBBjects reached. Removing oldest."
+                            )
+
                         session.obbject_registry.register(obbject)
                         # we need to force to re-link so that the new obbject
                         # is immediately available for data processing commands
                         self._link_obbject_to_data_processing_commands()
                         # also update the completer
                         self.update_completer(self.choices_default)
+
+                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY:
+                            session.console.print(
+                                f"Added OBBject to registry. Total: {len(session.obbject_registry.obbjects)}"
+                            )
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()
