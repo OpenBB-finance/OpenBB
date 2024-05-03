@@ -26,28 +26,6 @@ RICH_TAGS = [
     "[/help]",
 ]
 
-USE_COLOR = True
-
-
-def get_ordered_providers(command_path: str) -> List:
-    """Return the preferred provider for the given command.
-
-    Parameters
-    ----------
-    command_path: str
-        The command to find the provider for. E.g. "/equity/price/historical
-
-    Returns
-    -------
-    List
-        The list of providers for the given command.
-    """
-    command_reference = obb.reference.get("paths", {}).get(command_path, {})  # type: ignore
-    if command_reference:
-        providers = list(command_reference["parameters"].keys())
-        return [provider for provider in providers if provider != "standard"]
-    return []
-
 
 class MenuText:
     """Create menu text with rich colors to be displayed by CLI."""
@@ -58,82 +36,33 @@ class MenuText:
     SECTION_SPACING = 4
 
     def __init__(self, path: str = ""):
-        """Initialize menu help.
-
-        Parameters
-        ----------
-        path : str
-            path to the menu that is being created
-        column_sources : int
-            column width from which to start displaying sources
-        """
+        """Initialize menu help."""
         self.menu_text = ""
         self.menu_path = path
         self.warnings: List[Dict[str, str]] = []
 
-    def add_raw(self, raw_text: str):
-        """Append raw text (no translation) to a menu.
+    @staticmethod
+    def _get_providers(command_path: str) -> List:
+        """Return the preferred provider for the given command.
 
         Parameters
         ----------
-        raw_text : str
-            raw text to be appended to the menu
-        """
-        self.menu_text += raw_text
-
-    def add_custom(self, key: str):
-        """Append custom text (after translation from key) to a menu.
-
-        Parameters
-        ----------
-        key : str
-            key to get translated text and add to the menu
-        """
-        self.menu_text += f"{i18n.t(self.menu_path + key)}"
-
-    def add_info(self, key_info: str):
-        """Append info text (after translation from key) to a menu.
-
-        Parameters
-        ----------
-        key_info : str
-            key to get translated text and add to the menu as info
-        """
-        self.menu_text += f"[info]{i18n.t(self.menu_path + key_info)}:[/info]\n"
-
-    def add_param(self, key_param: str, value: str, col_align: int = 0):
-        """Append info text (after translation from key) to a menu.
-
-        Parameters
-        ----------
-        key_param : str
-            key to get translated text and add to the menu as parameter
-        value : str
-            value to display in front of the parameter
-        col_align : int
-            column alignment for the value. This allows for a better UX experience.
-        """
-        parameter_translated = i18n.t(self.menu_path + key_param)
-        space = (
-            (col_align - len(parameter_translated)) * " "
-            if col_align > len(parameter_translated)
-            else ""
-        )
-        self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
-
-    def _format_cmd_name(self, name: str) -> str:
-        """Adjust the length of the command if it is too long.
-
-        Parameters
-        ----------
-        name : str
-            command to be formatted
+        command_path: str
+            The command to find the provider for. E.g. "/equity/price/historical
 
         Returns
         -------
-        str
-            formatted command
+        List
+            The list of providers for the given command.
         """
+        command_reference = obb.reference.get("paths", {}).get(command_path, {})  # type: ignore
+        if command_reference:
+            providers = list(command_reference["parameters"].keys())
+            return [provider for provider in providers if provider != "standard"]
+        return []
+
+    def _format_cmd_name(self, name: str) -> str:
+        """Truncate command name length if it is too long."""
         if len(name) > self.CMD_NAME_LENGTH:
             new_name = name[
                 : self.CMD_NAME_LENGTH
@@ -164,22 +93,7 @@ class MenuText:
     def _format_cmd_description(
         self, name: str, description: str, trim: bool = True
     ) -> str:
-        """Handle the command description.
-
-        Parameters
-        ----------
-        name : str
-            command to be adjusted
-        description : str
-            description of the command
-        trim : bool
-            If true, the description will be trimmed to the maximum length
-
-        Returns
-        -------
-        str
-            adjusted command description
-        """
+        """Truncate command description length if it is too long."""
         if not description:
             description = i18n.t(self.menu_path + name)
             if description == self.menu_path + name:
@@ -190,21 +104,33 @@ class MenuText:
             else description
         )
 
-    def add_cmd(self, name: str, description: str = "", disable: bool = False):
-        """Append command text (after translation from key) to a menu.
+    def add_raw(self, text: str):
+        """Append raw text (without translation)."""
+        self.menu_text += text
 
-        Parameters
-        ----------
-        name : str
-            key command to be executed by user. It is also used as a key to get description of command.
-        description : str
-            description of the command
-        disable : bool
-            If disable is true, the command line is greyed out.
-        """
+    def add_custom(self, name: str):
+        """Append custom text (after translation)."""
+        self.menu_text += f"{i18n.t(self.menu_path + name)}"
+
+    def add_info(self, text: str):
+        """Append information text (after translation)."""
+        self.menu_text += f"[info]{i18n.t(self.menu_path + text)}:[/info]\n"
+
+    def add_param(self, name: str, value: str, col_align: int = 0):
+        """Append parameter (after translation)."""
+        parameter_translated = i18n.t(self.menu_path + name)
+        space = (
+            (col_align - len(parameter_translated)) * " "
+            if col_align > len(parameter_translated)
+            else ""
+        )
+        self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
+
+    def add_cmd(self, name: str, description: str = "", disable: bool = False):
+        """Append command text (after translation)."""
         formatted_name = self._format_cmd_name(name)
         name_padding = (self.CMD_NAME_LENGTH - len(formatted_name)) * " "
-        providers = get_ordered_providers(f"{self.menu_path}{name}")
+        providers = self._get_providers(f"{self.menu_path}{name}")
         formatted_description = self._format_cmd_description(
             formatted_name,
             description,
@@ -231,43 +157,21 @@ class MenuText:
         description: str = "",
         disable: bool = False,
     ):
-        """Append menu text (after translation from key) to a menu.
-
-        Parameters
-        ----------
-        name : str
-            key menu to be executed by user. It is also used as a key to get description of menu.
-        disable : bool
-            If disable is true, the menu line is greyed out.
-        """
+        """Append menu text (after translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
 
-        if description:
-            menu = f"{name}{spacing}{description}"
-        else:
+        if not description:
             description = i18n.t(self.menu_path + name)
             if description == self.menu_path + name:
                 description = ""
-            menu = f"{name}{spacing}{description}"
 
-        if disable:
-            self.menu_text += f"[unvl]>   {menu}[/unvl]\n"
-        else:
-            self.menu_text += f"[menu]>   {menu}[/menu]\n"
+        menu = f"{name}{spacing}{description}"
+        tag = "unvl" if disable else "menu"
+        self.menu_text += f"[{tag}]>   {menu}[/{tag}]\n"
 
     def add_setting(self, name: str, status: bool = True):
-        """Append menu text (after translation from key) to a menu.
-
-        Parameters
-        ----------
-        name : str
-            key setting to be set by user. It is also used as a key to get description of the setting.
-        status : bool
-            status of the current setting. If true the line will be green, otherwise red.
-        """
+        """Append menu text (after translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
         indentation = self.SECTION_SPACING * " "
-        if status:
-            self.menu_text += f"[green]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/green]\n"
-        else:
-            self.menu_text += f"[red]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/red]\n"
+        color = "green" if status else "red"
+        self.menu_text += f"[{color}]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/{color}]\n"
