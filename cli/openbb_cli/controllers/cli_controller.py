@@ -474,17 +474,6 @@ class CLIController(BaseController):
                         )
                     self.queue = self.queue[1:]
 
-    def call_results(self, _):
-        """Process results command."""
-        results = session.obbject_registry.all
-        if results:
-            df = pd.DataFrame.from_dict(results, orient="index")
-            print_rich_table(
-                df, show_index=True, index_name="stack index", title="OBBject Results"
-            )
-        else:
-            session.console.print("[info]No results found.[/info]")
-
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     """Handle job commands."""
