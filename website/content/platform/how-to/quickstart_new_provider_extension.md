@@ -85,7 +85,7 @@ empty = "openbb_empty_provider:empty_provider"
 from openbb_core.provider.abstract.provider import Provider
 
 empty_provider = Provider(
-    name="empty",
+    name="empty", # This should be the same as the assigned name at the bottom of the pyproject.toml file
     website="http://empty.io",
     description="""The empty provider is a supplier of promises.""",
     #credentials=["api_key"], # uncomment to require credentials
