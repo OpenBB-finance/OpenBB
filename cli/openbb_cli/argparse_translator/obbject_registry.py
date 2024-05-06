@@ -3,34 +3,42 @@
 import json
 from typing import Dict, List
 
-from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.obbject import OBBject
 
 
-class Registry(metaclass=SingletonMeta):
+class Registry:
+    """Registry for OBBjects."""
 
-    obbjects: List[OBBject] = []
+    def __init__(self):
+        """Initialize the registry."""
+        self._obbjects: List[OBBject] = []
 
     @staticmethod
     def _contains_obbject(uuid: str, obbjects: List[OBBject]) -> bool:
         """Check if obbject with uuid is in the registry."""
         return any(obbject.id == uuid for obbject in obbjects)
 
-    @classmethod
-    def register(cls, obbject: OBBject):
+    def register(self, obbject: OBBject):
         """Designed to add an OBBject instance to the registry."""
-        if isinstance(obbject, OBBject) and not cls._contains_obbject(
-            obbject.id, cls.obbjects
+        if isinstance(obbject, OBBject) and not self._contains_obbject(
+            obbject.id, self._obbjects
         ):
-            cls.obbjects.append(obbject)
+            self._obbjects.append(obbject)
 
-    @classmethod
-    def get(cls, idx: int) -> OBBject:
+    def get(self, idx: int) -> OBBject:
         """Return the obbject at index idx."""
         # the list should work as a stack
         # i.e., the last element needs to be accessed by idx=0 and so on
-        reversed_list = list(reversed(cls.obbjects))
+        reversed_list = list(reversed(self._obbjects))
         return reversed_list[idx]
+
+    def remove(self, idx: int = -1):
+        """Remove the obbject at index idx, default is the last element."""
+        # the list should work as a stack
+        # i.e., the last element needs to be accessed by idx=0 and so on
+        reversed_list = list(reversed(self._obbjects))
+        del reversed_list[idx]
+        self._obbjects = list(reversed(reversed_list))
 
     @property
     def all(self) -> Dict[int, Dict]:
@@ -65,7 +73,7 @@ class Registry(metaclass=SingletonMeta):
             return data_repr
 
         obbjects = {}
-        for i, obbject in enumerate(list(reversed(self.obbjects))):
+        for i, obbject in enumerate(list(reversed(self._obbjects))):
             obbjects[i] = {
                 "route": obbject._route,  # pylint: disable=protected-access
                 "provider": obbject.provider,
@@ -74,3 +82,8 @@ class Registry(metaclass=SingletonMeta):
             }
 
         return obbjects
+
+    @property
+    def obbjects(self) -> List[OBBject]:
+        """Return all obbjects in the registry"""
+        return self._obbjects

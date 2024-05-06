@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
+import pandas as pd
 from openbb_cli.config import setup
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import SCRIPT_TAGS
@@ -20,6 +21,7 @@ from openbb_cli.controllers.utils import (
     get_flair_and_username,
     parse_and_split_input,
     print_guest_block_msg,
+    print_rich_table,
     remove_file,
     system_clear,
 )
@@ -64,6 +66,7 @@ class BaseController(metaclass=ABCMeta):
         "stop",
         "hold",
         "whoami",
+        "results",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -118,6 +121,11 @@ class BaseController(metaclass=ABCMeta):
         )
         self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
+
+    def update_completer(self, choices) -> None:
+        """Update the completer with new choices."""
+        if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_path(self) -> None:
         """Check if command path is valid."""
@@ -731,6 +739,30 @@ class BaseController(metaclass=ABCMeta):
                 )
             else:
                 print_guest_block_msg()
+
+    def call_results(self, other_args: List[str]):
+        """Process results command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="results",
+            description="Process results command. This command displays a registry of "
+            "'OBBjects' where all execution results are stored. "
+            "It is organized as a stack, with the most recent result at index 0.",
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+        if ns_parser:
+            results = session.obbject_registry.all
+            if results:
+                df = pd.DataFrame.from_dict(results, orient="index")
+                print_rich_table(
+                    df,
+                    show_index=True,
+                    index_name="stack index",
+                    title="OBBject Results",
+                )
+            else:
+                session.console.print("[info]No results found.[/info]")
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
