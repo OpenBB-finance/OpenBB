@@ -301,11 +301,11 @@ class CLIController(BaseController):
 
     def call_settings(self, _):
         """Process feature flags command."""
-        from openbb_cli.controllers.feature_flags_controller import (
-            FeatureFlagsController,
+        from openbb_cli.controllers.settings_controller import (
+            SettingsController,
         )
 
-        self.queue = self.load_class(FeatureFlagsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""

@@ -15,7 +15,7 @@ from openbb_cli.session import Session
 session = Session()
 
 
-class FeatureFlagsController(BaseController):
+class SettingsController(BaseController):
     """Feature Flags Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
