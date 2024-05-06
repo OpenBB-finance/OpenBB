@@ -8,8 +8,9 @@ from openbb import obb
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
-from prompt_toolkit.history import FileHistory
 
+from openbb_cli.argparse_translator.obbject_registry import Registry
+from openbb_cli.config.completer import CustomFileHistory
 from openbb_cli.config.console import Console
 from openbb_cli.config.constants import HIST_FILE_PROMPT
 from openbb_cli.config.style import Style
@@ -31,6 +32,7 @@ class Session(metaclass=SingletonMeta):
             settings=self._settings, style=self._style.console_style
         )
         self._prompt_session = self._get_prompt_session()
+        self._obbject_registry = Registry()
 
     @property
     def user(self) -> User:
@@ -53,6 +55,11 @@ class Session(metaclass=SingletonMeta):
         return self._console
 
     @property
+    def obbject_registry(self) -> Registry:
+        """Get obbject registry."""
+        return self._obbject_registry
+
+    @property
     def prompt_session(self) -> Optional[PromptSession]:
         """Get prompt session."""
         return self._prompt_session
@@ -62,7 +69,7 @@ class Session(metaclass=SingletonMeta):
         try:
             if sys.stdin.isatty():
                 prompt_session: Optional[PromptSession] = PromptSession(
-                    history=FileHistory(str(HIST_FILE_PROMPT))
+                    history=CustomFileHistory(str(HIST_FILE_PROMPT))
                 )
             else:
                 prompt_session = None

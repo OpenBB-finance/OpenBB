@@ -11,12 +11,12 @@ from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
 )
-from openbb_cli.argparse_translator.obbject_registry import Registry
-from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
+
+session = Session()
 
 
 class DummyTranslation:
@@ -67,26 +67,23 @@ class PlatformController(BaseController):
             self._link_obbject_to_data_processing_commands()
             self._generate_commands()
             self._generate_sub_controllers()
-
-            if Session().prompt_session and Session().settings.USE_PROMPT_TOOLKIT:
-                choices: dict = self.choices_default
-                self.completer = NestedCompleter.from_nested_dict(choices)
+            self.update_completer(self.choices_default)
 
     def _link_obbject_to_data_processing_commands(self):
         """Link data processing commands to OBBject registry."""
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
-                    action.choices = range(len(Registry.obbjects))
+                    action.choices = range(len(session.obbject_registry.obbjects))
                     action.type = int
                     action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
         if hasattr(ns_parser, "data") and ns_parser.data in range(
-            len(Registry.obbjects)
+            len(session.obbject_registry.obbjects)
         ):
-            obbject = Registry.get(ns_parser.data)
+            obbject = session.obbject_registry.get(ns_parser.data)
             setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
@@ -157,7 +154,22 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        Registry.register(obbject)
+                        max_obbjects_exceeded = (
+                            len(session.obbject_registry.obbjects)
+                            >= session.settings.N_TO_KEEP_OBBJECT_REGISTRY
+                        )
+                        if max_obbjects_exceeded:
+                            session.obbject_registry.remove()
+
+                        session.obbject_registry.register(obbject)
+                        # we need to force to re-link so that the new obbject
+                        # is immediately available for data processing commands
+                        self._link_obbject_to_data_processing_commands()
+                        # also update the completer
+                        self.update_completer(self.choices_default)
+
+                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY:
+                            session.console.print("Added OBBject to registry.")
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()
@@ -180,7 +192,7 @@ class PlatformController(BaseController):
                         print_rich_table(df=df, show_index=True, title=title)
 
                     elif obbject:
-                        Session().console.print(obbject)
+                        session.console.print(obbject)
 
                     if hasattr(ns_parser, "export") and ns_parser.export:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
@@ -193,8 +205,13 @@ class PlatformController(BaseController):
                             figure=fig,
                         )
 
+                    if max_obbjects_exceeded:
+                        session.console.print(
+                            "[yellow]\nMaximum number of OBBjects reached. The oldest entry was removed.[yellow]"
+                        )
+
                 except Exception as e:
-                    Session().console.print(f"[red]{e}[/]\n")
+                    session.console.print(f"[red]{e}[/]\n")
                     return
 
         # Bind the method to the class
@@ -268,25 +285,25 @@ class PlatformController(BaseController):
 
         if self.CHOICES_MENUS:
             for menu in self.CHOICES_MENUS:
-                menu_description = self._get_menu_description(menu)
-                mt.add_menu(key_menu=menu, menu_description=menu_description)
+                description = self._get_menu_description(menu)
+                mt.add_menu(name=menu, description=description)
 
         if self.CHOICES_COMMANDS:
             mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
                 mt.add_cmd(
-                    key_command=command.replace(f"{self._name}_", ""),
-                    command_description=command_description,
+                    name=command.replace(f"{self._name}_", ""),
+                    description=command_description,
                 )
 
-        Session().console.print(text=mt.menu_text, menu=self._name)
+        session.console.print(text=mt.menu_text, menu=self._name)
 
-        settings = Session().settings
+        settings = session.settings
         dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
         if mt.warnings and dev_mode:
-            Session().console.print("")
+            session.console.print("")
             for w in mt.warnings:
                 w_str = str(w).replace("{", "").replace("}", "").replace("'", "")
-                Session().console.print(f"[yellow]{w_str}[/yellow]")
-            Session().console.print("")
+                session.console.print(f"[yellow]{w_str}[/yellow]")
+            session.console.print("")

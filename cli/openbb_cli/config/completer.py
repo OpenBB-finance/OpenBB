@@ -16,6 +16,7 @@ from typing import (
 from prompt_toolkit.completion import CompleteEvent, Completer, Completion
 from prompt_toolkit.document import Document
 from prompt_toolkit.formatted_text import AnyFormattedText
+from prompt_toolkit.history import FileHistory
 
 NestedDict = Mapping[str, Union[Any, Set[str], None, Completer]]
 
@@ -401,3 +402,26 @@ class NestedCompleter(Completer):
 
             # This is a WordCompleter
             yield from completer.get_completions(document, complete_event)
+
+
+class CustomFileHistory(FileHistory):
+    """Filtered file history."""
+
+    def sanitize_input(self, string: str) -> str:
+        """Sanitize sensitive information from the input string by parsing arguments."""
+        keywords = ["--password", "--email", "--pat"]
+        string_list = string.split(" ")
+
+        for kw in keywords:
+            if kw in string_list:
+                index = string_list.index(kw)
+                if len(string_list) > index + 1:
+                    string_list[index + 1] = "********"
+
+        result = " ".join(string_list)
+        return result
+
+    def store_string(self, string: str) -> None:
+        """Store string in history."""
+        string = self.sanitize_input(string)
+        super().store_string(string)
