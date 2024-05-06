@@ -39,8 +39,8 @@ class FeatureFlagsController(BaseController):
         "language",
         "n_rows",
         "n_cols",
-        "obbject_registry_msg",
-        "obbject_registry_res",
+        "obbject_msg",
+        "obbject_res",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
