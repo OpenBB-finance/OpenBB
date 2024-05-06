@@ -746,8 +746,8 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="results",
-            description="Process results command. This command displays a registry of"
-            "'OBBjects' where all execution results are stored."
+            description="Process results command. This command displays a registry of "
+            "'OBBjects' where all execution results are stored. "
             "It is organized as a stack, with the most recent result at index 0.",
         )
         ns_parser = self.parse_simple_args(parser, other_args)
