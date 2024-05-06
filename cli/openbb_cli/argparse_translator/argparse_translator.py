@@ -21,6 +21,8 @@ from openbb_core.app.model.field import OpenBBField
 from pydantic import BaseModel, model_validator
 from typing_extensions import Annotated
 
+# pylint: disable=protected-access
+
 SEP = "__"
 
 
@@ -200,7 +202,7 @@ class ArgparseTranslator:
         self.func = func
         self.signature = inspect.signature(func)
         self.type_hints = get_type_hints(func)
-        self.provider_parameters = []
+        self.provider_parameters: List[str] = []
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
@@ -217,23 +219,59 @@ class ArgparseTranslator:
             for group in custom_argument_groups:
                 argparse_group = self._parser.add_argument_group(group.name)
                 for argument in group.arguments:
-                    kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+                    self._handle_argument_in_groups(argument, argparse_group)
 
-                    # If the argument is already in use, we can't repeat it
-                    if f"--{argument.name}" not in self._parser_arguments():
-                        argparse_group.add_argument(f"--{argument.name}", **kwargs)
-                        self.provider_parameters.append(argument.name)
+    def _handle_argument_in_groups(self, argument, group):
+        """Handle the argument and add it to the parser."""
 
-    def _parser_arguments(self) -> List[str]:
-        """Get all the arguments from all groups currently defined on the parser."""
-        arguments_in_use: List[str] = []
+        def _in_optional_arguments(arg):
+            for action_group in self._parser._action_groups:
+                if action_group.title == "optional arguments":
+                    for action in action_group._group_actions:
+                        opts = action.option_strings
+                        if (opts and opts[0] == arg) or action.dest == arg:
+                            return True
+            return False
 
-        # pylint: disable=protected-access
-        for action_group in self._parser._action_groups:
-            for action in action_group._group_actions:
-                arguments_in_use.extend(action.option_strings)
+        def _remove_argument(arg):
+            # remove the argument from the parser
+            for action in self._parser._actions:
+                opts = action.option_strings
+                if (opts and opts[0] == arg) or action.dest == arg:
+                    self._parser._remove_action(action)
+                    break
 
-        return arguments_in_use
+            # remove from all groups
+            for action_group in self._parser._action_groups:
+                for action in action_group._group_actions:
+                    opts = action.option_strings
+                    if (opts and opts[0] == arg) or action.dest == arg:
+                        action_group._group_actions.remove(action)
+
+            # remove from _action_groups dict
+            self._parser._option_string_actions.pop(f"--{arg}", None)
+
+            # remove from the provider_parameters
+            if arg in self.provider_parameters:
+                self.provider_parameters.remove(arg)
+
+        # check if the argument is already in use, if not, add it
+        if f"--{argument.name}" not in self._parser._option_string_actions:
+            kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+            group.add_argument(f"--{argument.name}", **kwargs)
+            self.provider_parameters.append(argument.name)
+
+        else:
+            # check if the argument is in the optional arguments
+            if _in_optional_arguments(argument.name):
+                return
+            # if the argument is in use, remove it and add it to the optional arguments group
+            _remove_argument(argument.name)
+
+            self._parser.add_argument(
+                f"--{argument.name}",
+                **argument.model_dump(exclude={"name"}, exclude_none=True),
+            )
 
     @property
     def parser(self) -> argparse.ArgumentParser:
