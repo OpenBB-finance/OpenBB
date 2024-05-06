@@ -2,19 +2,16 @@
 
 # pylint: disable =unused-argument
 
-from datetime import timedelta
 from io import BytesIO
 from typing import Dict, List, Optional, Union
 from zipfile import ZipFile
 
 import pandas as pd
-import requests
-import requests_cache
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, make_request
-from openbb_sec.utils.definitions import HEADERS, QUARTERS, SEC_HEADERS, TAXONOMIES
+from openbb_sec.utils.definitions import HEADERS, SEC_HEADERS
 
 
 async def sec_callback(response, session):
@@ -165,89 +162,6 @@ async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
         return f"Error: CIK, {_cik}, does not have a unique ticker."
 
     return symbol
-
-
-def get_frame(  # pylint: disable =too-many-arguments
-    year: int,
-    quarter: Optional[QUARTERS] = None,
-    taxonomy: TAXONOMIES = "us-gaap",
-    units: str = "USD",
-    fact: str = "Revenues",
-    instantaneous: bool = False,
-    use_cache: bool = True,
-) -> Dict:
-    """Get a frame of data for a given fact.
-
-    The xbrl/frames API aggregates one fact for each reporting entity
-    that is last filed that most closely fits the calendrical period requested.
-
-    This API supports for annual, quarterly and instantaneous data:
-
-    https://data.sec.gov/api/xbrl/frames/us-gaap/AccountsPayableCurrent/USD/CY2019Q1I.json
-
-    Where the units of measure specified in the XBRL contains a numerator and a denominator,
-    these are separated by “-per-” such as “USD-per-shares”. Note that the default unit in XBRL is “pure”.
-
-    CY####Q# for quarterly data (duration 91 days +/- 30 days).
-    Because company financial calendars can start and end on any month or day and even change in length from quarter to
-    quarter according to the day of the week, the frame data is assembled by the dates that best align with a calendar
-    quarter or year. Data users should be mindful different reporting start and end dates for facts contained in a frame.
-
-    Example facts:
-    Revenues
-    GrossProfit
-    CostOfRevenue
-    DividendsCash
-    DistributedEarnings
-    AccountsPayableCurrent
-    OperatingExpenses
-    OperatingIncomeLoss
-    NoninterestIncome
-    InterestAndDebtExpense
-    IncomeTaxExpenseBenefit
-    NetIncomeLoss
-
-    Facts where units are, "shares":
-    WeightedAverageNumberOfDilutedSharesOutstanding
-    """
-    if fact in ["WeightedAverageNumberOfDilutedSharesOutstanding"]:
-        units = "shares"
-    sec_session_frames = requests_cache.CachedSession(
-        f"{get_user_cache_directory()}/http/sec_frames", expire_after=timedelta(days=2)
-    )
-    url = f"https://data.sec.gov/api/xbrl/frames/{taxonomy}/{fact}/{units}/CY{year}"
-
-    if quarter:
-        url = url + f"Q{quarter}"
-
-    if instantaneous:
-        url = url + "I"
-    url = url + ".json"
-    r = (
-        requests.get(url, headers=HEADERS, timeout=5)
-        if use_cache is False
-        else sec_session_frames.get(url, headers=HEADERS, timeout=5)
-    )
-
-    if r.status_code != 200:
-        raise RuntimeError(f"Request failed with status code {r.status_code}")
-
-    response = r.json()
-
-    data = sorted(response["data"], key=lambda x: x["val"], reverse=True)
-    metadata = {
-        "frame": response["ccp"],
-        "tag": response["tag"],
-        "label": response["label"],
-        "description": response["description"],
-        "taxonomy": response["taxonomy"],
-        "unit": response["uom"],
-        "count": response["pts"],
-    }
-
-    results = {"metadata": metadata, "data": data}
-
-    return results
 
 
 def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> List:
