@@ -153,7 +153,7 @@ class EconDbEconomicIndicatorsFetcher(
         if (
             countries is not None
             and len(countries.split(",")) > 1
-            and new_params.get("symbol").upper() == "MAIN"
+            and new_params.get("symbol", "").upper() == "MAIN"
         ):
             raise ValueError(
                 "The 'main' indicator cannot be combined with multiple countries."
