@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each provider data model should inherit from an already defined [standard](/platform/data_models) model. All standard models are created and maintained by the OpenBB team. If a standard model needs to be created, please open a pull request and detail its use.
+Each provider data model should inherit from an already defined [standard](https://docs.openbb.co/platform/data_models) model. All standard models are created and maintained by the OpenBB team. If a standard model needs to be created, please open a pull request and detail its use.
 
 Standardizing provider query parameters and response data enhances the user experience by overcoming things like:
 
@@ -61,7 +61,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 
 ### QueryParams
 
-The `QueryParams` is an abstract class that defines what parameters will be needed to make a query to a data source. Below is the [EquityHistorical](data_models/EquityHistorical) standard model.
+The `QueryParams` is an abstract class that defines what parameters will be needed to make a query to a data source. Below is the [EquityHistorical](https://docs.openbb.co/platform/data_models/EquityHistorical) standard model.
 
 ```python
 """Equity Historical Price Standard Model."""
