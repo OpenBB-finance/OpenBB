@@ -318,7 +318,7 @@ class SettingsController(BaseController):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser and ns_parser.number:
-            session.settings.set_item("N_TO_KEEP_OBBJECT_REGISTRY", ns_parser.columns)
+            session.settings.set_item("N_TO_KEEP_OBBJECT_REGISTRY", ns_parser.number)
 
         elif not other_args:
             session.console.print(
