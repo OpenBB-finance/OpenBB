@@ -1,6 +1,6 @@
 ---
 title: Add Toolkit Extensions
-sidebar_position: 5
+sidebar_position: 7
 description: This guide outlines the process for adding a new toolkit extension and router path to the OpenBB Platform.
 keywords:
 - OpenBB Platform
@@ -59,9 +59,9 @@ readme = "README.md"
 packages = [{ include = "openbb_dashboards" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
-openbb-core = "^1.1.2"
-openbb-charting = "^2.0.0"
+python = ">=3.8,<3.12"
+openbb = "^4.1.7"
+openbb-charting = "^2.0.3"
 
 [build-system]
 requires = ["poetry-core"]

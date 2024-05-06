@@ -1,6 +1,6 @@
 ---
 title: Add A New Data Endpoint With An Existing Provider
-sidebar_position: 4
+sidebar_position: 5
 description: This guide outlines the process for adding a new endpoint to an existing data provider, that does not yet have a standard model.
 keywords:
 - OpenBB Platform

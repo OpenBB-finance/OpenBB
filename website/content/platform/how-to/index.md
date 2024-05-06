@@ -32,6 +32,8 @@ The pages in this section provide practical examples for getting started buildin
 Topics covered include:
 
 - [Creating a new data provider extension](how-to/quickstart_new_provider_extension)
+- [Creating a new router extension](how-to/quickstart_new_router_extension)
+- [Mapping the Provider Interface][(how-to/quickstart_mapping_the_provider_interface)]
 - [Extending the OBBject class](how-to/add_obbject_extension)
 - [Add new data to an existing endpoint](how-to/add_data_to_existing_endpoint)
 - [Build a new router path](how-to/add_toolkit_extension)

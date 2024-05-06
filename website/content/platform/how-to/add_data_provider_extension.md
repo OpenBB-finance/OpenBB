@@ -1,6 +1,6 @@
 ---
 title: Add Data Provider Extensions
-sidebar_position: 3
+sidebar_position: 6
 description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
 keywords:
 - OpenBB Platform
@@ -122,8 +122,8 @@ readme = "README.md"
 packages = [{ include = "openbb_template" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-openbb-core = "^1.1.2"
+python = ">=3.8,<3.12"
+openbb = "^4.1.7"
 
 [build-system]
 requires = ["poetry-core"]

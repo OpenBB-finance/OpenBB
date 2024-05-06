@@ -1,6 +1,6 @@
 ---
 title: Add Command Examples
-sidebar_position: 7
+sidebar_position: 8
 description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
 keywords:
 - OpenBB community
