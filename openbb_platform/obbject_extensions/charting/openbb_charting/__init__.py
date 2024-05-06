@@ -61,6 +61,8 @@ class Charting:
         Create a line chart from external data.
     create_bar_chart
         Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
+    toggle_chart_style
+        Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
     def __init__(self, obbject):
