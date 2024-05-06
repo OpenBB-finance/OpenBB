@@ -37,14 +37,14 @@ Standardizing provider query parameters and response data enhances the user expe
 - Transparently defined schemas for the data and query parameters.
 - Outputs from multiple sources are comparable with each other and easily interchanged.
 
-The standard models are all defined in the `/OpenBBTerminal/openbb_platform/platform/core/provider/standard_models/` [directory](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/standard_models).
+The standard models are all defined in the `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/` [directory](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_platform/core/openbb_core/provider/standard_models).
 
 ### What Is A Standard Model?
 
 Every standard model consists of two classes, with each being a Pydantic model.
 
-- [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py)
-- [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/data.py)
+- [`QueryParams`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/openbb_platform/core/openbb_core/provider/abstract/query_params.py)
+- [`Data`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/openbb_platform/core/openbb_core/provider/abstract/data.py)
 
 Any parameter or field can be assigned a custom `field_validator`, or the entire model can be passed through a `model_validator` on creation.
 
