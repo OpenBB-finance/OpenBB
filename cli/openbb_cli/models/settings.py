@@ -29,19 +29,21 @@ class Settings(BaseModel):
     REMEMBER_CONTEXTS: bool = True
     ENABLE_RICH_PANEL: bool = True
     TOOLBAR_HINT: bool = True
+    SHOW_MSG_OBBJECT_REGISTRY: bool = False
 
     # GENERAL
     TIMEZONE: str = "America/New_York"
     FLAIR: str = ":openbb"
     USE_LANGUAGE: str = "en"
     PREVIOUS_USE: bool = False
+    N_TO_KEEP_OBBJECT_REGISTRY: int = 10
 
     # STYLE
     RICH_STYLE: str = "dark"
 
     # OUTPUT
-    ALLOWED_NUMBER_OF_ROWS: int = 366
-    ALLOWED_NUMBER_OF_COLUMNS: int = 15
+    ALLOWED_NUMBER_OF_ROWS: int = 20
+    ALLOWED_NUMBER_OF_COLUMNS: int = 5
 
     # OPENBB
     HUB_URL: str = "https://my.openbb.co"
