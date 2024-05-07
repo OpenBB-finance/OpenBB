@@ -22,7 +22,7 @@ class GovernmentUSTreasuryPricesQueryParams(TreasuryPricesQueryParams):
     """US Government Treasury Prices Query."""
 
     cusip: Optional[str] = Field(description="Filter by CUSIP.", default=None)
-    security_type: Literal[None, "bill", "note", "bond", "tips", "frn"] = Field(
+    security_type: Optional[Literal["bill", "note", "bond", "tips", "frn"]] = Field(
         description="Filter by security type.",
         default=None,
     )
