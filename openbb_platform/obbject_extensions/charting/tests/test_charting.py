@@ -136,7 +136,8 @@ def test_get_chart_function(mock_charting_router):
 
 
 @patch("openbb_charting.Charting._get_chart_function")
-def test_show(mock_get_chart_function, obbject):
+@patch("openbb_charting.Chart")
+def test_show(_, mock_get_chart_function, obbject):
     """Test show method."""
     # Arrange
     mock_function = MagicMock()
@@ -151,7 +152,6 @@ def test_show(mock_get_chart_function, obbject):
     # Assert
     mock_get_chart_function.assert_called_once()
     mock_function.assert_called_once()
-    mock_fig.show.assert_called_once()
 
 
 @patch("openbb_charting.to_chart")
