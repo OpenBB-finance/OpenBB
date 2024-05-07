@@ -106,9 +106,8 @@ class PolygonCurrencyPairsFetcher(
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
         now = datetime.now().date().isoformat()
-        transform_params["symbol"] = (
-            f"ticker=C:{params.get('symbol').upper()}" if params.get("symbol") else ""
-        )
+        symbol = params.get("symbol")
+        transform_params["symbol"] = f"ticker=C:{symbol.upper()}" if symbol else ""
         if params.get("date") is None:
             transform_params["date"] = now
 
