@@ -92,13 +92,13 @@ class CboeOptionsChainsFetcher(
             raise EmptyDataError()
         results_metadata = {}
         options = data.get("data", {}).pop("options", [])
-        change_percent = data["data"].get("percent_change")
-        iv30_percent = data["data"].get("iv30_change_percent")
+        change_percent = data["data"].get("percent_change", None)
+        iv30_percent = data["data"].get("iv30_change_percent", None)
         if change_percent:
             change_percent = change_percent / 100
         if iv30_percent:
             iv30_percent = iv30_percent / 100
-        last_timestamp = data["data"].get("last_trade_time")
+        last_timestamp = data["data"].get("last_trade_time", None)
         if last_timestamp:
             last_timestamp = to_datetime(
                 last_timestamp, format="%Y-%m-%dT%H:%M:%S"
@@ -106,24 +106,24 @@ class CboeOptionsChainsFetcher(
         results_metadata.update(
             {
                 "symbol": data["data"].get("symbol"),
-                "security_type": data["data"].get("security_type"),
-                "bid": data["data"].get("bid"),
-                "bid_size": data["data"].get("bid_size"),
-                "ask": data["data"].get("ask"),
-                "ask_size": data["data"].get("ask_size"),
-                "open": data["data"].get("open"),
-                "high": data["data"].get("high"),
-                "low": data["data"].get("low"),
-                "close": data["data"].get("close"),
-                "volume": data["data"].get("volume"),
-                "current_price": data["data"].get("current_price"),
-                "prev_close": data["data"].get("prev_day_close"),
-                "change": data["data"].get("price_change"),
+                "security_type": data["data"].get("security_type", None),
+                "bid": data["data"].get("bid", None),
+                "bid_size": data["data"].get("bid_size", None),
+                "ask": data["data"].get("ask", None),
+                "ask_size": data["data"].get("ask_size", None),
+                "open": data["data"].get("open", None),
+                "high": data["data"].get("high", None),
+                "low": data["data"].get("low", None),
+                "close": data["data"].get("close", None),
+                "volume": data["data"].get("volume", None),
+                "current_price": data["data"].get("current_price", None),
+                "prev_close": data["data"].get("prev_day_close", None),
+                "change": data["data"].get("price_change", None),
                 "change_percent": change_percent,
-                "iv30": data["data"].get("iv30"),
-                "iv30_change": data["data"].get("iv30_change"),
+                "iv30": data["data"].get("iv30", None),
+                "iv30_change": data["data"].get("iv30_change", None),
                 "iv30_change_percent": iv30_percent,
-                "last_tick": data["data"].get("tick"),
+                "last_tick": data["data"].get("tick", None),
                 "last_trade_timestamp": last_timestamp,
             }
         )
