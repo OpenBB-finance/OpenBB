@@ -1083,19 +1083,21 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
-        transform : Literal['toya', 'tpop', 'tusd', 'tpgp']
+        transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
             The transformation to apply to the data, default is None.
 
-                tpop: Change from previous period
-                toya: Change from one year ago
-                tusd: Values as US dollars
-                tpgp: Values as a percent of GDP
+            tpop: Change from previous period
+            toya: Change from one year ago
+            tusd: Values as US dollars
+            tpgp: Values as a percent of GDP
 
-             Only 'tpop' and 'toya' are applicable to all indicators.     Applying transformations across multiple indicators/countries     may produce unexpected results.
-             This is because not all indicators are compatible with all transformations,     and the original units and scale differ between entities.
-             `tusd` should only be used where values are currencies. (provider: econdb)
+            Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
+            This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
+            `tusd` should only be used where values are currencies. (provider: econdb)
+        frequency : Literal['annual', 'quarter', 'month']
+            The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb)
         use_cache : bool
-            If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
 
         Returns
         -------
@@ -1130,6 +1132,8 @@ class ROUTER_economy(Container):
         >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
         >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
         >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
+        >>> # Use the `main` symbol to get the group of main indicators for a country.
+        >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
         """  # noqa: E501
 
         return self._run(
