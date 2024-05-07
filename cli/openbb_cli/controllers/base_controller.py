@@ -908,11 +908,6 @@ class BaseController(metaclass=ABCMeta):
 
         if "--help" in other_args or "-h" in other_args:
             txt_help = parser.format_help() + "\n"
-            if parser.prog != "about":
-                txt_help += (
-                    f"For more information and examples, use 'about {parser.prog}' "
-                    f"to access the related guide.\n"
-                )
             session.console.print(f"[help]{txt_help}[/help]")
             return None
 
