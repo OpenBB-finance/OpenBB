@@ -24,7 +24,7 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Price-Target
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     with_grade: bool = Field(
         False,

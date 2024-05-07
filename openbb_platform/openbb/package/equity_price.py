@@ -117,7 +117,7 @@ class ROUTER_equity_price(Container):
             The low price.
         close : float
             The close price.
-        volume : Optional[Union[float, int]]
+        volume : Optional[Union[int, float]]
             The trading volume.
         vwap : Optional[float]
             Volume Weighted Average Price over the period.
@@ -186,12 +186,17 @@ class ROUTER_equity_price(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": [
-                            "fmp",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
+                        "fmp": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                        "tiingo": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
+                    },
+                    "interval": {
+                        "fmp": {},
+                        "intrinio": {},
+                        "polygon": {},
+                        "tiingo": {},
+                        "yfinance": {},
                     },
                     "adjusted": {"deprecated": True},
                     "prepost": {"deprecated": True},
@@ -312,7 +317,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -328,7 +333,7 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -405,7 +410,7 @@ class ROUTER_equity_price(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -508,9 +513,9 @@ class ROUTER_equity_price(Container):
             The low price.
         close : Optional[float]
             The close price.
-        volume : Optional[Union[float, int]]
+        volume : Optional[Union[int, float]]
             The trading volume.
-        exchange_volume : Optional[Union[float, int]]
+        exchange_volume : Optional[Union[int, float]]
             Volume of shares exchanged during the trading day on the specific exchange.
         prev_close : Optional[float]
             The previous close price.
@@ -579,7 +584,9 @@ class ROUTER_equity_price(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )

@@ -30,7 +30,7 @@ class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1m", "1d"] = Field(
         default="1d",

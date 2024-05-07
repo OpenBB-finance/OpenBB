@@ -30,13 +30,13 @@ class ROUTER_equity_estimates(Container):
         analyst_name: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
+                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed."
             ),
         ] = None,
         firm_name: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
+                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed."
             ),
         ] = None,
         provider: Annotated[
@@ -52,9 +52,9 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         analyst_name : Union[str, None, List[Optional[str]]]
-            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
+            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed.
         firm_name : Union[str, None, List[Optional[str]]]
-            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
+            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed.
         provider : Optional[Literal['benzinga']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
@@ -222,11 +222,11 @@ class ROUTER_equity_estimates(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "analyst_name": {"multiple_items_allowed": ["benzinga"]},
-                    "firm_name": {"multiple_items_allowed": ["benzinga"]},
-                    "analyst_ids": {"multiple_items_allowed": ["benzinga"]},
-                    "firm_ids": {"multiple_items_allowed": ["benzinga"]},
-                    "fields": {"multiple_items_allowed": ["benzinga"]},
+                    "analyst_name": {"benzinga": {"multiple_items_allowed": True}},
+                    "firm_name": {"benzinga": {"multiple_items_allowed": True}},
+                    "analyst_ids": {"benzinga": {"multiple_items_allowed": True}},
+                    "firm_ids": {"benzinga": {"multiple_items_allowed": True}},
+                    "fields": {"benzinga": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -336,7 +336,9 @@ class ROUTER_equity_estimates(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -457,7 +459,12 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )
 
@@ -468,7 +475,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ] = None,
         provider: Annotated[
@@ -484,7 +491,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -580,7 +587,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
+                info={"symbol": {"intrinio": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -591,7 +598,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -607,7 +614,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -698,7 +705,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -854,6 +861,11 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
+                info={
+                    "symbol": {
+                        "benzinga": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )

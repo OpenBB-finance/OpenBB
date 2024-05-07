@@ -245,7 +245,7 @@ class ROUTER_equity_ownership(Container):
             Expiration date of the derivative. (provider: intrinio)
         underlying_security_title : Optional[str]
             Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio)
-        underlying_shares : Optional[Union[float, int]]
+        underlying_shares : Optional[Union[int, float]]
             Number of underlying shares related to this derivative transaction. (provider: intrinio)
         nature_of_ownership : Optional[str]
             Nature of ownership of the insider trading. (provider: intrinio)
@@ -590,7 +590,7 @@ class ROUTER_equity_ownership(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -606,7 +606,7 @@ class ROUTER_equity_ownership(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -685,6 +685,6 @@ class ROUTER_equity_ownership(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
+                info={"symbol": {"yfinance": {"multiple_items_allowed": True}}},
             )
         )

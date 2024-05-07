@@ -97,10 +97,7 @@ class ROUTER_regulators_sec(Container):
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
-            Optional[bool],
-            OpenBBField(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            Optional[bool], OpenBBField(description="Whether or not to use cache.")
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
@@ -141,7 +138,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[str, int]]
+        cik : Optional[Union[int, str]]
             Central Index Key (CIK) (provider: sec)
 
         Examples
@@ -244,10 +241,7 @@ class ROUTER_regulators_sec(Container):
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
-            Optional[bool],
-            OpenBBField(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            Optional[bool], OpenBBField(description="Whether or not to use cache.")
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],
@@ -339,10 +333,7 @@ class ROUTER_regulators_sec(Container):
         self,
         query: Annotated[str, OpenBBField(description="Search query.")] = "",
         use_cache: Annotated[
-            Optional[bool],
-            OpenBBField(
-                description="Whether or not to use cache. If True, cache will store for seven days."
-            ),
+            Optional[bool], OpenBBField(description="Whether or not to use cache.")
         ] = True,
         provider: Annotated[
             Optional[Literal["sec"]],

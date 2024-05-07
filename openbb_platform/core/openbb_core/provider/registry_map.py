@@ -104,11 +104,11 @@ class RegistryMap:
                     }
                 )
 
-                self._merge_json_schema_extra(p, fetcher, standard_extra[model_name])
+                self._update_json_schema_extra(p, fetcher, standard_extra[model_name])
 
         return standard_extra, original_models
 
-    def _merge_json_schema_extra(
+    def _update_json_schema_extra(
         self,
         provider: str,
         fetcher: Fetcher,
@@ -116,26 +116,30 @@ class RegistryMap:
     ):
         """Merge json schema extra for different providers."""
         model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
-        std_fields = model_map["openbb"]["QueryParams"]["fields"]
+        standard_fields = model_map["openbb"]["QueryParams"]["fields"]
         extra_fields = model_map[provider]["QueryParams"]["fields"]
-        for f, props in getattr(model, "__json_schema_extra__", {}).items():
-            for p in props:
-                if f in std_fields:
-                    model_field = std_fields[f]
-                elif f in extra_fields:
-                    model_field = extra_fields[f]
-                else:
-                    continue
 
-                if model_field.json_schema_extra is None:
-                    model_field.json_schema_extra = {}
+        for field, properties in getattr(model, "__json_schema_extra__", {}).items():
+            if field in standard_fields:
+                model_field = standard_fields[field]
+            elif field in extra_fields:
+                model_field = extra_fields[field]
+            else:
+                continue
 
-                if p not in model_field.json_schema_extra:
-                    model_field.json_schema_extra[p] = []
+            if model_field.json_schema_extra is None:
+                model_field.json_schema_extra = {}
 
-                providers = model_field.json_schema_extra[p]
-                if provider not in providers:
-                    providers.append(provider)
+            model_field.json_schema_extra[provider] = properties
+
+        # Register annotation for standard fields edited in the provider
+        for cf in set(standard_fields).intersection(set(extra_fields)):
+            if standard_fields[cf].json_schema_extra is None:
+                standard_fields[cf].json_schema_extra = {}
+            if extra_fields[cf].annotation != standard_fields[cf].annotation:
+                standard_fields[cf].json_schema_extra.setdefault(provider, {}).update(
+                    {"annotation": extra_fields[cf].annotation}
+                )
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -152,33 +156,28 @@ class RegistryMap:
     ) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, type_)
-        all_fields = {}
         standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
-        found_top_level = False
+        extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
+        found_first_standard = False
 
         for c in RegistryMap._class_hierarchy(model):
             if c.__name__ in SKIP:
                 continue
-            if (Path(getfile(c)).parent == STANDARD_MODELS_FOLDER) or found_top_level:
-                if not found_top_level:
-                    # We might update the standard_info more than once to account for
-                    # nested standard models, but we only want to update the docstring
-                    # once with the __doc__ of the top-level standard model.
+
+            fields = {
+                name: field
+                for name, field in c.model_fields.items()
+                # This ensures fields inherited by c are discarded
+                if name in c.__annotations__
+            }
+
+            if Path(getfile(c)).parent == STANDARD_MODELS_FOLDER:
+                if not found_first_standard:
                     standard_info["docstring"] = c.__doc__
-                    found_top_level = True
-                standard_info["fields"].update(c.model_fields)
+                    found_first_standard = True
+                standard_info["fields"].update(fields)
             else:
-                all_fields.update(c.model_fields)
-
-        extra_info: Dict[str, Any] = {
-            "fields": {},
-            "docstring": model.__doc__,
-        }
-
-        # We ignore fields that are already in the standard model
-        for name, field in all_fields.items():
-            if name not in standard_info["fields"]:
-                extra_info["fields"][name] = field
+                extra_info["fields"].update(fields)
 
         return standard_info, extra_info
 

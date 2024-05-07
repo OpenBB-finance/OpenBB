@@ -427,13 +427,13 @@ class ROUTER_fixedincome_corporate(Container):
         maturity: Annotated[
             Union[float, str, List[Union[float, str]]],
             OpenBBField(
-                description="Maturities in years. Multiple comma separated items allowed for provider(s): fred."
+                description="Maturities in years. Multiple comma separated items allowed."
             ),
         ] = 10.0,
         category: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.",
+                description="Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed.",
                 choices=["par_yield", "spot_rate"],
             ),
         ] = "spot_rate",
@@ -460,9 +460,9 @@ class ROUTER_fixedincome_corporate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         maturity : Union[float, str, List[Union[float, str]]]
-            Maturities in years. Multiple comma separated items allowed for provider(s): fred.
+            Maturities in years. Multiple comma separated items allowed.
         category : Union[str, List[str]]
-            Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
+            Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
@@ -514,8 +514,8 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"multiple_items_allowed": ["fred"]},
-                    "category": {"multiple_items_allowed": ["fred"]},
+                    "maturity": {"fred": {"multiple_items_allowed": True}},
+                    "category": {"fred": {"multiple_items_allowed": True}},
                 },
             )
         )

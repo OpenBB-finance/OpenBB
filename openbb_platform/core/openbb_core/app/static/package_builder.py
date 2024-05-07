@@ -524,6 +524,9 @@ class MethodDefinition:
             # Getting json_schema_extra without changing the original dict
             json_schema_extra = getattr(field_default, "json_schema_extra", {}).copy()
             json_schema_extra.pop("choices", None)
+            for v in json_schema_extra.values():
+                if isinstance(v, dict):
+                    v.pop("annotation", None)
             return json_schema_extra
         return {}
 
@@ -864,7 +867,15 @@ class MethodDefinition:
         original_type: Optional[type] = None,
     ) -> object:
         """Expand the original field type."""
-        if extra and "multiple_items_allowed" in extra:
+        if extra and any(
+            (
+                v.get("multiple_items_allowed")
+                if isinstance(v, dict)
+                # For backwards compatibility, before this was a list
+                else "multiple_items_allowed" in v
+            )
+            for v in extra.values()
+        ):
             if original_type is None:
                 raise ValueError(
                     "multiple_items_allowed requires the original type to be specified."

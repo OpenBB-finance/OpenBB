@@ -29,7 +29,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         "limit": "page_size",
         "source": "specific_source",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     source: Optional[
         Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]

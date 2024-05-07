@@ -24,7 +24,7 @@ class FMPEtfEquityExposureQueryParams(EtfEquityExposureQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/etf-stock-exposure-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEtfEquityExposureData(EtfEquityExposureData):

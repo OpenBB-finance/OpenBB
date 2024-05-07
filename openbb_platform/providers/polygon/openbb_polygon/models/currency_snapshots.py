@@ -23,7 +23,7 @@ class PolygonCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     Source: https://polygon.io/docs/forex/get_v2_snapshot_locale_global_markets_forex_tickers
     """
 
-    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"base": {"multiple_items_allowed": True}}
 
 
 class PolygonCurrencySnapshotsData(CurrencySnapshotsData):

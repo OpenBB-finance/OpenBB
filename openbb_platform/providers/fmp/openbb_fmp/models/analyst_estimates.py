@@ -22,7 +22,7 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     period: Literal["quarter", "annual"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")

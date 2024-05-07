@@ -403,6 +403,9 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
+                },
             )
         )
 
@@ -826,6 +829,9 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
+                },
             )
         )
 
@@ -1197,7 +1203,7 @@ class ROUTER_equity_fundamental(Container):
             End date of the data, in YYYY-MM-DD format. (provider: intrinio)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
-        cik : Optional[Union[str, int]]
+        cik : Optional[Union[int, str]]
             Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)
         use_cache : bool
             Whether or not to use cache.  If True, cache will store for one day. (provider: sec)
@@ -1246,7 +1252,7 @@ class ROUTER_equity_fundamental(Container):
             Industry category of the company. (provider: intrinio)
         report_date : Optional[date]
             The date of the filing. (provider: sec)
-        act : Optional[Union[str, int]]
+        act : Optional[Union[int, str]]
             The SEC Act number. (provider: sec)
         items : Optional[Union[str, float]]
             The SEC Item numbers. (provider: sec)
@@ -1254,17 +1260,17 @@ class ROUTER_equity_fundamental(Container):
             The description of the primary document. (provider: sec)
         primary_doc : Optional[str]
             The filename of the primary document. (provider: sec)
-        accession_number : Optional[Union[str, int]]
+        accession_number : Optional[Union[int, str]]
             The accession number. (provider: sec)
-        file_number : Optional[Union[str, int]]
+        file_number : Optional[Union[int, str]]
             The file number. (provider: sec)
-        film_number : Optional[Union[str, int]]
+        film_number : Optional[Union[int, str]]
             The film number. (provider: sec)
-        is_inline_xbrl : Optional[Union[str, int]]
+        is_inline_xbrl : Optional[Union[int, str]]
             Whether the filing is an inline XBRL filing. (provider: sec)
-        is_xbrl : Optional[Union[str, int]]
+        is_xbrl : Optional[Union[int, str]]
             Whether the filing is an XBRL filing. (provider: sec)
-        size : Optional[Union[str, int]]
+        size : Optional[Union[int, str]]
             The size of the filing. (provider: sec)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
@@ -1294,6 +1300,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={"form_type": {"sec": {}}},
             )
         )
 
@@ -1304,13 +1311,13 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed."
             ),
         ],
         start_date: Annotated[
@@ -1348,9 +1355,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+            Symbol to get data for. Multiple comma separated items allowed.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
+            Intrinio data tag ID or code. Multiple comma separated items allowed.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -1421,8 +1428,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -1944,6 +1951,9 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={
+                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
+                },
             )
         )
 
@@ -2090,13 +2100,13 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -2112,9 +2122,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+            Symbol to get data for. Multiple comma separated items allowed.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
+            Intrinio data tag ID or code. Multiple comma separated items allowed.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -2165,8 +2175,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -2260,7 +2270,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -2276,7 +2286,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2351,7 +2361,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -2670,7 +2680,9 @@ class ROUTER_equity_fundamental(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -2683,7 +2695,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
+                description="Symbol to get data for. Multiple comma separated items allowed."
             ),
         ],
         provider: Annotated[
@@ -2699,7 +2711,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2864,7 +2876,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -3209,6 +3221,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={"period": {"fmp": {}, "intrinio": {}}},
             )
         )
 
@@ -3311,6 +3324,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                info={"period": {"intrinio": {}}, "statement_type": {"intrinio": {}}},
             )
         )
 

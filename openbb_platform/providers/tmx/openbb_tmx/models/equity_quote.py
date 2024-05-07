@@ -28,7 +28,7 @@ _warn = warnings.warn
 class TmxEquityQuoteQueryParams(EquityQuoteQueryParams):
     """TMX Equity Profile query params."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class TmxEquityQuoteData(EquityQuoteData):

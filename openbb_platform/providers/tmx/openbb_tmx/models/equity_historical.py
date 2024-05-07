@@ -44,7 +44,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     source: https://money.tmx.com
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Union[
         Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
