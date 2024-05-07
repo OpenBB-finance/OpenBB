@@ -52,7 +52,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
             "last_updated_utc",
             "delisted_utc",
         ]
-    ] = Field(default="", description="Sort field used for ordering.")
+    ] = Field(default=None, description="Sort field used for ordering.")
     limit: Optional[PositiveInt] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
