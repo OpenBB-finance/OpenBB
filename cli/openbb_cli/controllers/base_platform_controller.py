@@ -291,8 +291,10 @@ class PlatformController(BaseController):
                 description = self._get_menu_description(menu)
                 mt.add_menu(name=menu, description=description)
 
+            if self.CHOICES_COMMANDS:
+                mt.add_raw("\n")
+
         if self.CHOICES_COMMANDS:
-            mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
                 mt.add_cmd(
