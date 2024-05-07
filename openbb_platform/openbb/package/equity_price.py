@@ -117,7 +117,7 @@ class ROUTER_equity_price(Container):
             The low price.
         close : float
             The close price.
-        volume : Optional[Union[float, int]]
+        volume : Optional[Union[int, float]]
             The trading volume.
         vwap : Optional[float]
             Volume Weighted Average Price over the period.
@@ -508,9 +508,9 @@ class ROUTER_equity_price(Container):
             The low price.
         close : Optional[float]
             The close price.
-        volume : Optional[Union[float, int]]
+        volume : Optional[Union[int, float]]
             The trading volume.
-        exchange_volume : Optional[Union[float, int]]
+        exchange_volume : Optional[Union[int, float]]
             Volume of shares exchanged during the trading day on the specific exchange.
         prev_close : Optional[float]
             The previous close price.
