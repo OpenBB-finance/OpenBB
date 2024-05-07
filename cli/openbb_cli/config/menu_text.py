@@ -108,6 +108,21 @@ class MenuText:
         """Append raw text (without translation)."""
         self.menu_text += text
 
+    def add_section(
+        self, text: str, description: str = "", leading_new_line: bool = False
+    ):
+        """Append raw text (without translation)."""
+        spacing = (self.CMD_NAME_LENGTH - len(text) + self.SECTION_SPACING) * " "
+        left_spacing = self.SECTION_SPACING * " "
+        if description:
+            text = f"{left_spacing}{text}{spacing}{description}\n"
+
+        if leading_new_line:
+            self.menu_text += "\n" + text
+
+        else:
+            self.menu_text += text
+
     def add_custom(self, name: str):
         """Append custom text (after translation)."""
         self.menu_text += f"{i18n.t(self.menu_path + name)}"

@@ -57,7 +57,6 @@ class SettingsController(BaseController):
 
         mt = MenuText("settings/")
         mt.add_info("_feature_flags_")
-        mt.add_raw("\n")
         mt.add_setting("interactive", settings.USE_INTERACTIVE_DF)
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
@@ -70,7 +69,6 @@ class SettingsController(BaseController):
         mt.add_setting("obbject_msg", settings.SHOW_MSG_OBBJECT_REGISTRY)
         mt.add_raw("\n")
         mt.add_info("_preferences_")
-        mt.add_raw("\n")
         mt.add_cmd("console_style")
         mt.add_cmd("flair")
         mt.add_cmd("timezone")

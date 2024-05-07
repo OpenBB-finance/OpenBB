@@ -229,7 +229,12 @@ class CLIController(BaseController):
         mt.add_cmd("exe")
         mt.add_raw("\n")
         mt.add_info("Platform CLI")
-        mt.add_raw("    data\n")
+
+        mt.add_section(
+            "data",
+            description="retrieve data from different asset classes and providers",
+        )
+
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
                 continue
@@ -247,7 +252,11 @@ class CLIController(BaseController):
                 mt.add_cmd(router)
 
         if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
-            mt.add_raw("\n    data processing\n")
+            mt.add_section(
+                "data processing",
+                description="analyze and process previously obtained data",
+                leading_new_line=True,
+            )
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
                     continue
@@ -264,9 +273,13 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_raw("\n    configuration\n")
+        mt.add_section(
+            "configuration",
+            description="configure the platform and manage your account",
+            leading_new_line=True,
+        )
         for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router == "reference":
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
                 continue
             if value == "menu":
                 menu_description = (
@@ -281,7 +294,11 @@ class CLIController(BaseController):
             else:
                 mt.add_cmd(router)
 
-        mt.add_raw("\n    cached results (OBBjects)\n")
+        mt.add_section(
+            "OBBject registry",
+            description="access and manage your cached results",
+            leading_new_line=True,
+        )
         mt.add_cmd("results")
 
         session.console.print(text=mt.menu_text, menu="Home")
