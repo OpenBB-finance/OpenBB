@@ -1,9 +1,8 @@
-"""TMX Treasury Prices Fetcher"""
+"""TMX Treasury Prices Fetcher."""
 
 # pylint: disable=unused-argument
 from datetime import (
     date as dateType,
-    datetime,
     timedelta,
 )
 from typing import Any, Dict, List, Literal, Optional
@@ -19,8 +18,7 @@ from pydantic import Field, field_validator
 
 
 class TmxTreasuryPricesQueryParams(TreasuryPricesQueryParams):
-    """
-    TMX Treasury Prices Query Params.
+    """TMX Treasury Prices Query Params.
 
     Data will be made available by 5:00 EST on T+1
 
@@ -99,13 +97,14 @@ class TmxTreasuryPricesFetcher(
     def transform_query(params: Dict[str, Any]) -> TmxTreasuryPricesQueryParams:
         """Transform query params."""
         transformed_params = params.copy()
-        now = datetime.now()
-        if now.date().weekday() > 4:
-            now = now - timedelta(now.date().weekday() - 4)
+        yesterday = dateType.today() - timedelta(days=1)
+        last_bd = (
+            yesterday - timedelta(yesterday.weekday() - 4)
+            if yesterday.weekday() > 4
+            else yesterday
+        )
         if "maturity_date_min" not in transformed_params:
-            transformed_params["maturity_date_min"] = (
-                now - timedelta(days=1)
-            ).strftime("%Y-%m-%d")
+            transformed_params["maturity_date_min"] = last_bd
         return TmxTreasuryPricesQueryParams(**transformed_params)
 
     @staticmethod

@@ -794,7 +794,7 @@ class ROUTER_economy(Container):
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
             Offset the results in conjunction with limit. (provider: fred)
-        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+        filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
             Filter by an attribute. (provider: fred)
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
@@ -931,7 +931,7 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert high frequency data to lower frequency.
                     None = No change
@@ -950,7 +950,7 @@ class ROUTER_economy(Container):
                     bwew = Biweekly, Ending Wednesday
                     bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal[None, 'avg', 'sum', 'eop']
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
                 A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
@@ -958,7 +958,7 @@ class ROUTER_economy(Container):
                     sum = Sum
                     eop = End of Period
                  (provider: fred)
-        transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
                 Transformation type
                     None = No transformation

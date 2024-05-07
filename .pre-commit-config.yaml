@@ -28,7 +28,7 @@ repos:
         types: [python]
         files: '^openbb_platform/.*\.py$'
         exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
-        args: ["--config=pyproject.toml"]
+        args: ["--config=ruff.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
     hooks:
