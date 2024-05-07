@@ -3,7 +3,1349 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-05-07&dateStart=2013-05-21&freq=Q&parent_id=IP&transform=3
+    uri: https://www.econdb.com/trends/country_forecast/?country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "137 199",
+        "is_forecast": false, "indicator": "RGDP", "country": "JP", "agency_id": null},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "134 320", "is_forecast":
+        false, "indicator": "RGDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "135 904", "is_forecast": false, "indicator":
+        "RGDP", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "140 952", "is_forecast": false, "indicator": "RGDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "140 744", "is_forecast": false, "indicator": "RGDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "137 403", "is_forecast":
+        false, "indicator": "RGDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "138 137", "is_forecast": false, "indicator":
+        "RGDP", "country": "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "142 637", "is_forecast": false, "indicator": "RGDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "138 061", "is_forecast": false, "indicator": "GDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "138 067", "is_forecast":
+        false, "indicator": "GDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "135 735", "is_forecast": false, "indicator":
+        "GDP", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "147 847", "is_forecast": false, "indicator": "GDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "144 832", "is_forecast": false, "indicator": "GDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "146 477", "is_forecast":
+        false, "indicator": "GDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "145 121", "is_forecast": false, "indicator":
+        "GDP", "country": "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "155 451", "is_forecast": false, "indicator": "GDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        101.0, "is_forecast": false, "indicator": "CPI", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 102.0, "is_forecast":
+        false, "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": 103.0, "is_forecast": false, "indicator":
+        "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": 104.0, "is_forecast": false, "indicator": "CPI", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 104.0,
+        "is_forecast": false, "indicator": "CPI", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 105.0, "is_forecast": false,
+        "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 106.0, "is_forecast": false, "indicator": "CPI", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 107.0,
+        "is_forecast": false, "indicator": "CPI", "country": "JP", "agency_id": null},
+        {"obs_time": "2024-01-01T00:00:00Z", "obs_value": 107.0, "is_forecast": false,
+        "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "2.6", "is_forecast": false, "indicator": "URATE", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "2.7", "is_forecast": false, "indicator": "URATE", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "2.6", "is_forecast":
+        false, "indicator": "URATE", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "2.4", "is_forecast": false, "indicator":
+        "URATE", "country": "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "2.6", "is_forecast": false, "indicator": "URATE", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value":
+        "2.7", "is_forecast": false, "indicator": "URATE", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": "2.6", "is_forecast":
+        false, "indicator": "URATE", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-10-01T00:00:00Z", "obs_value": "2.4", "is_forecast": false, "indicator":
+        "URATE", "country": "JP", "agency_id": null}, {"obs_time": "2024-01-01T00:00:00Z",
+        "obs_value": "2.6", "is_forecast": false, "indicator": "URATE", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        103.0, "is_forecast": false, "indicator": "RETA", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 104.0, "is_forecast":
+        false, "indicator": "RETA", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": 105.0, "is_forecast": false, "indicator":
+        "RETA", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": 106.0, "is_forecast": false, "indicator": "RETA", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        109.0, "is_forecast": false, "indicator": "RETA", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 110.0, "is_forecast":
+        false, "indicator": "RETA", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": 112.0, "is_forecast": false, "indicator":
+        "RETA", "country": "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": 111.0, "is_forecast": false, "indicator": "RETA", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        105.0, "is_forecast": false, "indicator": "IP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 104.0, "is_forecast":
+        false, "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": 107.0, "is_forecast": false, "indicator":
+        "IP", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": 105.0, "is_forecast": false, "indicator": "IP", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 104.0,
+        "is_forecast": false, "indicator": "IP", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 105.0, "is_forecast": false,
+        "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 103.0, "is_forecast": false, "indicator": "IP", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 104.0,
+        "is_forecast": false, "indicator": "IP", "country": "JP", "agency_id": null},
+        {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "98.8", "is_forecast": false,
+        "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "-7.6", "is_forecast": false, "indicator": "GBAL", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "-2.9", "is_forecast": false, "indicator": "GBAL", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "-3.4", "is_forecast":
+        false, "indicator": "GBAL", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "-2.9", "is_forecast": false, "indicator":
+        "GBAL", "country": "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "-5.0", "is_forecast": false, "indicator": "GBAL", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        225.0, "is_forecast": false, "indicator": "GDEBT", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 227.0, "is_forecast":
+        false, "indicator": "GDEBT", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": 230.0, "is_forecast": false, "indicator":
+        "GDEBT", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": 213.0, "is_forecast": false, "indicator": "GDEBT", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        219.0, "is_forecast": false, "indicator": "GDEBT", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 218.0, "is_forecast":
+        false, "indicator": "GDEBT", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": 220.0, "is_forecast": false, "indicator":
+        "GDEBT", "country": "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": 207.0, "is_forecast": false, "indicator": "GDEBT", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "3.6", "is_forecast": false, "indicator": "CA", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "1.7", "is_forecast":
+        false, "indicator": "CA", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "1.6", "is_forecast": false, "indicator":
+        "CA", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "1.4", "is_forecast": false, "indicator": "CA", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "1.8",
+        "is_forecast": false, "indicator": "CA", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "3.7", "is_forecast": false,
+        "indicator": "CA", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "5.4", "is_forecast": false, "indicator": "CA", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "3.6",
+        "is_forecast": false, "indicator": "CA", "country": "JP", "agency_id": null},
+        {"obs_time": "2022-01-01T00:00:00Z", "obs_value": "77.6", "is_forecast": false,
+        "indicator": "NIIP", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "82.4", "is_forecast": false, "indicator": "NIIP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "85.0", "is_forecast": false, "indicator": "NIIP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "70.8", "is_forecast":
+        false, "indicator": "NIIP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "76.1", "is_forecast": false, "indicator":
+        "NIIP", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "80.9", "is_forecast": false, "indicator": "NIIP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "82.1", "is_forecast": false, "indicator": "NIIP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "78.5", "is_forecast":
+        false, "indicator": "NIIP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "0.2", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "0.2", "is_forecast": false, "indicator": "Y10YD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "0.2", "is_forecast": false, "indicator": "Y10YD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "0.3", "is_forecast":
+        false, "indicator": "Y10YD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "0.5", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "0.4", "is_forecast": false, "indicator": "Y10YD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "0.6", "is_forecast": false, "indicator": "Y10YD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "0.8", "is_forecast":
+        false, "indicator": "Y10YD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2024-01-01T00:00:00Z", "obs_value": "0.7", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}, {"obs_time": "2024-04-01T00:00:00Z",
+        "obs_value": "0.8", "is_forecast": false, "indicator": "Y10YD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        129.0, "is_forecast": false, "indicator": "HOU", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 131.0, "is_forecast":
+        false, "indicator": "HOU", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": 132.0, "is_forecast": false, "indicator":
+        "HOU", "country": "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": 131.0, "is_forecast": false, "indicator": "HOU", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 135.0,
+        "is_forecast": false, "indicator": "HOU", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 135.0, "is_forecast": false,
+        "indicator": "HOU", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 135.0, "is_forecast": false, "indicator": "HOU", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 135.0,
+        "is_forecast": false, "indicator": "HOU", "country": "JP", "agency_id": null},
+        {"obs_time": "2022-01-01T00:00:00Z", "obs_value": "3.6", "is_forecast": false,
+        "indicator": "OILPROD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "3.3", "is_forecast": false, "indicator":
+        "OILPROD", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "3.0", "is_forecast": false, "indicator": "OILPROD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "3.0", "is_forecast": false, "indicator": "OILPROD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "3.1", "is_forecast":
+        false, "indicator": "OILPROD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "2.8", "is_forecast": false, "indicator":
+        "OILPROD", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "2.9", "is_forecast": false, "indicator": "OILPROD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "3.4", "is_forecast": false, "indicator": "OILPROD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value": "12 520", "is_forecast":
+        false, "indicator": "POP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "12 508", "is_forecast": false, "indicator":
+        "POP", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "12 506", "is_forecast": false, "indicator": "POP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "12 491", "is_forecast": false, "indicator": "POP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "12 465", "is_forecast":
+        false, "indicator": "POP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "12 451", "is_forecast": false, "indicator":
+        "POP", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "12 443", "is_forecast": false, "indicator": "POP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "12 431", "is_forecast": false, "indicator": "POP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "12 402", "is_forecast":
+        false, "indicator": "POP", "country": "JP", "agency_id": null}], "index_array":
+        [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, -1.0, -1.0], [8.0, 9.0, 10.0, 11.0,
+        12.0, 13.0, 14.0, 15.0, -1.0, -1.0], [16.0, 17.0, 18.0, 19.0, 20.0, 21.0,
+        22.0, 23.0, 24.0, -1.0], [25.0, 26.0, 27.0, 28.0, 29.0, 30.0, 31.0, 32.0,
+        33.0, -1.0], [34.0, 35.0, 36.0, 37.0, 38.0, 39.0, 40.0, 41.0, -1.0, -1.0],
+        [42.0, 43.0, 44.0, 45.0, 46.0, 47.0, 48.0, 49.0, 50.0, -1.0], [51.0, 52.0,
+        53.0, 54.0, 55.0, -1.0, -1.0, -1.0, -1.0, -1.0], [56.0, 57.0, 58.0, 59.0,
+        60.0, 61.0, 62.0, 63.0, -1.0, -1.0], [64.0, 65.0, 66.0, 67.0, 68.0, 69.0,
+        70.0, 71.0, -1.0, -1.0], [72.0, 73.0, 74.0, 75.0, 76.0, 77.0, 78.0, 79.0,
+        -1.0, -1.0], [80.0, 81.0, 82.0, 83.0, 84.0, 85.0, 86.0, 87.0, 88.0, 89.0],
+        [90.0, 91.0, 92.0, 93.0, 94.0, 95.0, 96.0, 97.0, -1.0, -1.0], [98.0, 99.0,
+        100.0, 101.0, 102.0, 103.0, 104.0, 105.0, -1.0, -1.0], [106.0, 107.0, 108.0,
+        109.0, 110.0, 111.0, 112.0, 113.0, 114.0, -1.0]], "new_data": [{"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "137 199", "is_forecast": false, "indicator":
+        "RGDP", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "134 320", "is_forecast": false, "indicator": "RGDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "135 904", "is_forecast": false, "indicator": "RGDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "140 952", "is_forecast":
+        false, "indicator": "RGDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "140 744", "is_forecast": false, "indicator":
+        "RGDP", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "137 403", "is_forecast": false, "indicator": "RGDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "138 137", "is_forecast": false, "indicator": "RGDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "142 637", "is_forecast":
+        false, "indicator": "RGDP", "country": "JP", "agency_id": null}, [], []],
+        "row_name": {"code": "RGDP", "verbose": "Real gross domestic product", "padding":
+        "0px", "span-class": "", "is_parent": true}, "units": "Bn. JPY", "ticker":
+        {"text": "RGDPJP", "url": "/series/RGDPJP/japan-real-gross-domestic-product/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "138 061", "is_forecast":
+        false, "indicator": "GDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "138 067", "is_forecast": false, "indicator":
+        "GDP", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "135 735", "is_forecast": false, "indicator": "GDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "147 847", "is_forecast": false, "indicator": "GDP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "144 832", "is_forecast":
+        false, "indicator": "GDP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "146 477", "is_forecast": false, "indicator":
+        "GDP", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "145 121", "is_forecast": false, "indicator": "GDP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "155 451", "is_forecast": false, "indicator": "GDP", "country": "JP", "agency_id":
+        null}, [], []], "row_name": {"code": "GDP", "verbose": "Gross domestic product",
+        "padding": "0px", "span-class": "", "is_parent": true}, "units": "Bn. JPY",
+        "ticker": {"text": "GDPJP", "url": "/series/GDPJP/japan-gross-domestic-product/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 101.0, "is_forecast":
+        false, "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 102.0, "is_forecast": false, "indicator":
+        "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 103.0, "is_forecast": false, "indicator": "CPI", "country": "JP",
+        "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 104.0,
+        "is_forecast": false, "indicator": "CPI", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false,
+        "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 105.0, "is_forecast": false, "indicator": "CPI", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 106.0,
+        "is_forecast": false, "indicator": "CPI", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 107.0, "is_forecast": false,
+        "indicator": "CPI", "country": "JP", "agency_id": null}, {"obs_time": "2024-01-01T00:00:00Z",
+        "obs_value": 107.0, "is_forecast": false, "indicator": "CPI", "country": "JP",
+        "agency_id": null}, []], "row_name": {"code": "CPI", "verbose": "Consumer
+        price index", "padding": "0px", "span-class": "", "is_parent": true}, "units":
+        "Index", "ticker": {"text": "CPIJP", "url": "/series/CPIJP/japan-consumer-price-index/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "2.6", "is_forecast":
+        false, "indicator": "URATE", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "2.7", "is_forecast": false, "indicator":
+        "URATE", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "2.6", "is_forecast": false, "indicator": "URATE", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "2.4", "is_forecast": false, "indicator": "URATE", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "2.6", "is_forecast":
+        false, "indicator": "URATE", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "2.7", "is_forecast": false, "indicator":
+        "URATE", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "2.6", "is_forecast": false, "indicator": "URATE", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "2.4", "is_forecast": false, "indicator": "URATE", "country": "JP", "agency_id":
+        null}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "2.6", "is_forecast":
+        false, "indicator": "URATE", "country": "JP", "agency_id": null}, []], "row_name":
+        {"code": "URATE", "verbose": "Unemployment", "padding": "0px", "span-class":
+        "", "is_parent": true}, "units": "%", "ticker": {"text": "URATEJP", "url":
+        "/series/URATEJP/japan-unemployment/"}}, {"cells": [{"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": 103.0, "is_forecast": false, "indicator": "RETA", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        104.0, "is_forecast": false, "indicator": "RETA", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": 105.0, "is_forecast":
+        false, "indicator": "RETA", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": 106.0, "is_forecast": false, "indicator":
+        "RETA", "country": "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": 109.0, "is_forecast": false, "indicator": "RETA", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value":
+        110.0, "is_forecast": false, "indicator": "RETA", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 112.0, "is_forecast":
+        false, "indicator": "RETA", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-10-01T00:00:00Z", "obs_value": 111.0, "is_forecast": false, "indicator":
+        "RETA", "country": "JP", "agency_id": null}, [], []], "row_name": {"code":
+        "RETA", "verbose": "Retail trade", "padding": "0px", "span-class": "", "is_parent":
+        true}, "units": "Index", "ticker": {"text": "RETAJP", "url": "/series/RETAJP/japan-retail-trade/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 105.0, "is_forecast":
+        false, "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false, "indicator":
+        "IP", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 107.0, "is_forecast": false, "indicator": "IP", "country": "JP",
+        "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 105.0,
+        "is_forecast": false, "indicator": "IP", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false,
+        "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 105.0, "is_forecast": false, "indicator": "IP", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 103.0,
+        "is_forecast": false, "indicator": "IP", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false,
+        "indicator": "IP", "country": "JP", "agency_id": null}, {"obs_time": "2024-01-01T00:00:00Z",
+        "obs_value": "98.8", "is_forecast": false, "indicator": "IP", "country": "JP",
+        "agency_id": null}, []], "row_name": {"code": "IP", "verbose": "Industrial
+        production", "padding": "0px", "span-class": "", "is_parent": true}, "units":
+        "Index", "ticker": {"text": "IPJP", "url": "/series/IPJP/japan-industrial-production/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "-7.6", "is_forecast":
+        false, "indicator": "GBAL", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "-2.9", "is_forecast": false, "indicator":
+        "GBAL", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "-3.4", "is_forecast": false, "indicator": "GBAL", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "-2.9", "is_forecast": false, "indicator": "GBAL", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "-5.0", "is_forecast":
+        false, "indicator": "GBAL", "country": "JP", "agency_id": null}, [], [], [],
+        [], []], "row_name": {"code": "GBAL", "verbose": "Government balance", "padding":
+        "0px", "span-class": "", "is_parent": true}, "units": "% GDP", "ticker": {"text":
+        "GBALJP", "url": "/series/GBALJP/japan-government-balance/"}}, {"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": 225.0, "is_forecast": false, "indicator":
+        "GDEBT", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": 227.0, "is_forecast": false, "indicator": "GDEBT", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        230.0, "is_forecast": false, "indicator": "GDEBT", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 213.0, "is_forecast":
+        false, "indicator": "GDEBT", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": 219.0, "is_forecast": false, "indicator":
+        "GDEBT", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 218.0, "is_forecast": false, "indicator": "GDEBT", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        220.0, "is_forecast": false, "indicator": "GDEBT", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 207.0, "is_forecast":
+        false, "indicator": "GDEBT", "country": "JP", "agency_id": null}, [], []],
+        "row_name": {"code": "GDEBT", "verbose": "Government debt", "padding": "0px",
+        "span-class": "", "is_parent": false}, "units": "% GDP", "ticker": {"text":
+        "GDEBTJP", "url": "/series/GDEBTJP/japan-government-debt/"}}, {"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "3.6", "is_forecast": false, "indicator":
+        "CA", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "1.7", "is_forecast": false, "indicator": "CA", "country": "JP",
+        "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "1.6",
+        "is_forecast": false, "indicator": "CA", "country": "JP", "agency_id": null},
+        {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "1.4", "is_forecast": false,
+        "indicator": "CA", "country": "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "1.8", "is_forecast": false, "indicator": "CA", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "3.7",
+        "is_forecast": false, "indicator": "CA", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-07-01T00:00:00Z", "obs_value": "5.4", "is_forecast": false,
+        "indicator": "CA", "country": "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "3.6", "is_forecast": false, "indicator": "CA", "country": "JP",
+        "agency_id": null}, [], []], "row_name": {"code": "CA", "verbose": "Current
+        account balance", "padding": "0px", "span-class": "", "is_parent": true},
+        "units": "% GDP", "ticker": {"text": "CAJP", "url": "/series/CAJP/japan-current-account-balance/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "77.6", "is_forecast":
+        false, "indicator": "NIIP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "82.4", "is_forecast": false, "indicator":
+        "NIIP", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "85.0", "is_forecast": false, "indicator": "NIIP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "70.8", "is_forecast": false, "indicator": "NIIP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "76.1", "is_forecast":
+        false, "indicator": "NIIP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "80.9", "is_forecast": false, "indicator":
+        "NIIP", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "82.1", "is_forecast": false, "indicator": "NIIP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "78.5", "is_forecast": false, "indicator": "NIIP", "country": "JP", "agency_id":
+        null}, [], []], "row_name": {"code": "NIIP", "verbose": "Net international
+        investment position", "padding": "0px", "span-class": "", "is_parent": true},
+        "units": "% GDP", "ticker": {"text": "NIIPJP", "url": "/series/NIIPJP/japan-net-international-investment-position/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "0.2", "is_forecast":
+        false, "indicator": "Y10YD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "0.2", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "0.2", "is_forecast": false, "indicator": "Y10YD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "0.3", "is_forecast": false, "indicator": "Y10YD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "0.5", "is_forecast":
+        false, "indicator": "Y10YD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "0.4", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "0.6", "is_forecast": false, "indicator": "Y10YD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "0.8", "is_forecast": false, "indicator": "Y10YD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "0.7", "is_forecast":
+        false, "indicator": "Y10YD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2024-04-01T00:00:00Z", "obs_value": "0.8", "is_forecast": false, "indicator":
+        "Y10YD", "country": "JP", "agency_id": null}], "row_name": {"code": "Y10YD",
+        "verbose": "Long term yield", "padding": "0px", "span-class": "", "is_parent":
+        true}, "units": "%", "ticker": {"text": "Y10YDJP", "url": "/series/Y10YDJP/japan-long-term-yield/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 129.0, "is_forecast":
+        false, "indicator": "HOU", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 131.0, "is_forecast": false, "indicator":
+        "HOU", "country": "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 132.0, "is_forecast": false, "indicator": "HOU", "country": "JP",
+        "agency_id": null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 131.0,
+        "is_forecast": false, "indicator": "HOU", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 135.0, "is_forecast": false,
+        "indicator": "HOU", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 135.0, "is_forecast": false, "indicator": "HOU", "country": "JP",
+        "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 135.0,
+        "is_forecast": false, "indicator": "HOU", "country": "JP", "agency_id": null},
+        {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 135.0, "is_forecast": false,
+        "indicator": "HOU", "country": "JP", "agency_id": null}, [], []], "row_name":
+        {"code": "HOU", "verbose": "House price", "padding": "0px", "span-class":
+        "", "is_parent": false}, "units": "Index", "ticker": {"text": "HOUJP", "url":
+        "/series/HOUJP/japan-house-price/"}}, {"cells": [{"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "3.6", "is_forecast": false, "indicator": "OILPROD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "3.3", "is_forecast": false, "indicator": "OILPROD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "3.0", "is_forecast":
+        false, "indicator": "OILPROD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "3.0", "is_forecast": false, "indicator":
+        "OILPROD", "country": "JP", "agency_id": null}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "3.1", "is_forecast": false, "indicator": "OILPROD", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value":
+        "2.8", "is_forecast": false, "indicator": "OILPROD", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": "2.9", "is_forecast":
+        false, "indicator": "OILPROD", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-10-01T00:00:00Z", "obs_value": "3.4", "is_forecast": false, "indicator":
+        "OILPROD", "country": "JP", "agency_id": null}, [], []], "row_name": {"code":
+        "OILPROD", "verbose": "Oil production", "padding": "0px", "span-class": "",
+        "is_parent": false}, "units": "Thou. Bbl/day", "ticker": {"text": "OILPRODJP",
+        "url": "/series/OILPRODJP/japan-oil-production/"}}, {"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "12 520", "is_forecast": false, "indicator":
+        "POP", "country": "JP", "agency_id": null}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "12 508", "is_forecast": false, "indicator": "POP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "12 506", "is_forecast": false, "indicator": "POP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "12 491", "is_forecast":
+        false, "indicator": "POP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "12 465", "is_forecast": false, "indicator":
+        "POP", "country": "JP", "agency_id": null}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "12 451", "is_forecast": false, "indicator": "POP", "country":
+        "JP", "agency_id": null}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "12 443", "is_forecast": false, "indicator": "POP", "country": "JP", "agency_id":
+        null}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "12 431", "is_forecast":
+        false, "indicator": "POP", "country": "JP", "agency_id": null}, {"obs_time":
+        "2024-01-01T00:00:00Z", "obs_value": "12 402", "is_forecast": false, "indicator":
+        "POP", "country": "JP", "agency_id": null}, []], "row_name": {"code": "POP",
+        "verbose": "Population", "padding": "0px", "span-class": "", "is_parent":
+        false}, "units": "10 thou. Persons", "ticker": {"text": "POPJP", "url": "/series/POPJP/japan-population/"}}],
+        "row_names": [{"code": "RGDP", "verbose": "Real gross domestic product", "padding":
+        "0px", "span-class": "", "is_parent": true}, {"code": "GDP", "verbose": "Gross
+        domestic product", "padding": "0px", "span-class": "", "is_parent": true},
+        {"code": "CPI", "verbose": "Consumer price index", "padding": "0px", "span-class":
+        "", "is_parent": true}, {"code": "URATE", "verbose": "Unemployment", "padding":
+        "0px", "span-class": "", "is_parent": true}, {"code": "RETA", "verbose": "Retail
+        trade", "padding": "0px", "span-class": "", "is_parent": true}, {"code": "IP",
+        "verbose": "Industrial production", "padding": "0px", "span-class": "", "is_parent":
+        true}, {"code": "GBAL", "verbose": "Government balance", "padding": "0px",
+        "span-class": "", "is_parent": true}, {"code": "GDEBT", "verbose": "Government
+        debt", "padding": "0px", "span-class": "", "is_parent": false}, {"code": "CA",
+        "verbose": "Current account balance", "padding": "0px", "span-class": "",
+        "is_parent": true}, {"code": "NIIP", "verbose": "Net international investment
+        position", "padding": "0px", "span-class": "", "is_parent": true}, {"code":
+        "Y10YD", "verbose": "Long term yield", "padding": "0px", "span-class": "",
+        "is_parent": true}, {"code": "HOU", "verbose": "House price", "padding": "0px",
+        "span-class": "", "is_parent": false}, {"code": "OILPROD", "verbose": "Oil
+        production", "padding": "0px", "span-class": "", "is_parent": false}, {"code":
+        "POP", "verbose": "Population", "padding": "0px", "span-class": "", "is_parent":
+        false}], "units_col": ["Bn. JPY", "Bn. JPY", "Index", "%", "Index", "Index",
+        "% GDP", "% GDP", "% GDP", "% GDP", "%", "Index", "Thou. Bbl/day", "10 thou.
+        Persons"], "ticker_col": [{"text": "RGDPJP", "url": "/series/RGDPJP/japan-real-gross-domestic-product/"},
+        {"text": "GDPJP", "url": "/series/GDPJP/japan-gross-domestic-product/"}, {"text":
+        "CPIJP", "url": "/series/CPIJP/japan-consumer-price-index/"}, {"text": "URATEJP",
+        "url": "/series/URATEJP/japan-unemployment/"}, {"text": "RETAJP", "url": "/series/RETAJP/japan-retail-trade/"},
+        {"text": "IPJP", "url": "/series/IPJP/japan-industrial-production/"}, {"text":
+        "GBALJP", "url": "/series/GBALJP/japan-government-balance/"}, {"text": "GDEBTJP",
+        "url": "/series/GDEBTJP/japan-government-debt/"}, {"text": "CAJP", "url":
+        "/series/CAJP/japan-current-account-balance/"}, {"text": "NIIPJP", "url":
+        "/series/NIIPJP/japan-net-international-investment-position/"}, {"text": "Y10YDJP",
+        "url": "/series/Y10YDJP/japan-long-term-yield/"}, {"text": "HOUJP", "url":
+        "/series/HOUJP/japan-house-price/"}, {"text": "OILPRODJP", "url": "/series/OILPRODJP/japan-oil-production/"},
+        {"text": "POPJP", "url": "/series/POPJP/japan-population/"}], "col_names":
+        ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23", "Q4 23", "Q1
+        24", "Q2 24"], "footnote": [{"label": "Bank for International Settlements",
+        "source_id": "BIS", "datasets": [{"code": "BIS_SPP", "slug": "bis-property-prices-selected-series"}]},
+        {"label": "Ministry of Finance, Japan", "source_id": "MFJP", "datasets": [{"code":
+        "MFJP_IR", "slug": "japanese-government-bond-yields"}]}, {"label": "Ministry
+        of Economy, Trade, and Ind., Japan", "source_id": "METI", "datasets": [{"code":
+        "METI_SALES", "slug": "monthly-report-on-the-current-survey-of-commerce"}]},
+        {"label": "Official Statistics of Japan", "source_id": "SJ", "datasets": [{"code":
+        "SJ_LF", "slug": "labour-force-participation-rate-employment-rate-and-unemployment-rate"},
+        {"code": "SJ_GDP", "slug": "national-accounts-quarterly-gdp"}, {"code": "SJ_IND_00M",
+        "slug": "production-index"}, {"code": "SJ_POP_00M", "slug": "population-estimates-on-all-japan-population-by-sex"},
+        {"code": "SJ_RGDP", "slug": "national-accounts-quarterly-gdp-constant-prices"},
+        {"code": "SJ_CGD", "slug": "central-government-debt"}, {"code": "SJ_CPI",
+        "slug": "consumer-price-index-2020-base"}, {"code": "SJ_GGO_01Q", "slug":
+        "general-government-operations-quarterly"}]}, {"label": "Joint Organisations
+        Data Initiative", "source_id": "JODI", "datasets": [{"code": "JODI_OIL", "slug":
+        "jodi-oil-world-database"}]}, {"label": "Bank of Japan", "source_id": "BOJ",
+        "datasets": [{"code": "BOJ_IIP", "slug": "international-investment-position-and-gross-external-debt-position-of-japan"},
+        {"code": "BOJ_BP", "slug": "balance-of-payments"}]}], "min_date": "2022-01-01T00:00:00Z",
+        "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8802203a6d918449-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:33 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=yHIj%2BQFdR4hBinZuZhtdX1pPZLGXN7pghYdb4HX%2BAYC0Jgm7l0nqm96MpxhNfgsld2tSVZLku3wpR%2B9t9cRJIY68cwh%2B46sHq99JYNhWplcjmR%2F8jF3wBAuPTkhczzq%2FB2xZ3cMOVmPeTjH4"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=RGDP&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "72 692",
+        "is_forecast": false, "indicator": "RPRC", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "73 223", "is_forecast":
+        false, "indicator": "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "74 027", "is_forecast": false, "indicator":
+        "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "75 916", "is_forecast": false, "indicator": "RPRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "74 948", "is_forecast": false, "indicator": "RPRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "73 386", "is_forecast":
+        false, "indicator": "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "73 881", "is_forecast": false, "indicator":
+        "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "75 534", "is_forecast": false, "indicator": "RPRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "29 679", "is_forecast": false, "indicator": "RPUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "29 852", "is_forecast":
+        false, "indicator": "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "29 362", "is_forecast": false, "indicator":
+        "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "29 964", "is_forecast": false, "indicator": "RPUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "30 149", "is_forecast": false, "indicator": "RPUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "30 095", "is_forecast":
+        false, "indicator": "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "29 650", "is_forecast": false, "indicator":
+        "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "29 996", "is_forecast": false, "indicator": "RPUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "36 093", "is_forecast": false, "indicator": "RGFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "29 869", "is_forecast":
+        false, "indicator": "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "32 720", "is_forecast": false, "indicator":
+        "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "33 964", "is_forecast": false, "indicator": "RGFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "37 286", "is_forecast": false, "indicator": "RGFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "30 596", "is_forecast":
+        false, "indicator": "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "32 823", "is_forecast": false, "indicator":
+        "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "34 693", "is_forecast": false, "indicator": "RGFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "26 327", "is_forecast": false, "indicator": "REXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "26 266", "is_forecast":
+        false, "indicator": "REXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "26 944", "is_forecast": false, "indicator":
+        "REXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "28 678", "is_forecast": false, "indicator": "REXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "26 851", "is_forecast": false, "indicator": "REXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "27 232", "is_forecast":
+        false, "indicator": "REXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "27 714", "is_forecast": false, "indicator":
+        "REXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "29 686", "is_forecast": false, "indicator": "REXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "26 598", "is_forecast": false, "indicator": "RIMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "26 585", "is_forecast":
+        false, "indicator": "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "27 832", "is_forecast": false, "indicator":
+        "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "28 557", "is_forecast": false, "indicator": "RIMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "27 607", "is_forecast": false, "indicator": "RIMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "26 164", "is_forecast":
+        false, "indicator": "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "26 454", "is_forecast": false, "indicator":
+        "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "27 884", "is_forecast": false, "indicator": "RIMP", "country":
+        "JP", "agency_id": "3"}], "index_array": [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+        7.0, -1.0, -1.0], [8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, -1.0, -1.0],
+        [16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, -1.0, -1.0], [24.0, 25.0,
+        26.0, 27.0, 28.0, 29.0, 30.0, 31.0, -1.0, -1.0], [32.0, 33.0, 34.0, 35.0,
+        36.0, 37.0, 38.0, 39.0, -1.0, -1.0]], "new_data": [{"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "72 692", "is_forecast": false, "indicator":
+        "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "73 223", "is_forecast": false, "indicator": "RPRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "74 027", "is_forecast": false, "indicator": "RPRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "75 916", "is_forecast":
+        false, "indicator": "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "74 948", "is_forecast": false, "indicator":
+        "RPRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "73 386", "is_forecast": false, "indicator": "RPRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "73 881", "is_forecast": false, "indicator": "RPRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "75 534", "is_forecast":
+        false, "indicator": "RPRC", "country": "JP", "agency_id": "3"}, [], []], "row_name":
+        {"code": "RPRC", "verbose": "Real private consumption", "padding": "12px",
+        "span-class": "", "is_parent": false}, "units": "Bn. JPY", "ticker": {"text":
+        "RPRCJP", "url": "/series/RPRCJP/japan-real-private-consumption/"}}, {"cells":
+        [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "29 679", "is_forecast":
+        false, "indicator": "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "29 852", "is_forecast": false, "indicator":
+        "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "29 362", "is_forecast": false, "indicator": "RPUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "29 964", "is_forecast": false, "indicator": "RPUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "30 149", "is_forecast":
+        false, "indicator": "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "30 095", "is_forecast": false, "indicator":
+        "RPUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "29 650", "is_forecast": false, "indicator": "RPUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "29 996", "is_forecast": false, "indicator": "RPUC", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "RPUC", "verbose": "Real public consumption",
+        "padding": "12px", "span-class": "", "is_parent": false}, "units": "Bn. JPY",
+        "ticker": {"text": "RPUCJP", "url": "/series/RPUCJP/japan-real-public-consumption/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "36 093", "is_forecast":
+        false, "indicator": "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "29 869", "is_forecast": false, "indicator":
+        "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "32 720", "is_forecast": false, "indicator": "RGFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "33 964", "is_forecast": false, "indicator": "RGFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "37 286", "is_forecast":
+        false, "indicator": "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "30 596", "is_forecast": false, "indicator":
+        "RGFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "32 823", "is_forecast": false, "indicator": "RGFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "34 693", "is_forecast": false, "indicator": "RGFCF", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "RGFCF", "verbose": "Real gross fixed
+        capital formation", "padding": "12px", "span-class": "", "is_parent": false},
+        "units": "Bn. JPY", "ticker": {"text": "RGFCFJP", "url": "/series/RGFCFJP/japan-real-gross-fixed-capital-formation/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "26 327", "is_forecast":
+        false, "indicator": "REXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "26 266", "is_forecast": false, "indicator":
+        "REXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "26 944", "is_forecast": false, "indicator": "REXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "28 678", "is_forecast": false, "indicator": "REXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "26 851", "is_forecast":
+        false, "indicator": "REXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "27 232", "is_forecast": false, "indicator":
+        "REXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "27 714", "is_forecast": false, "indicator": "REXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "29 686", "is_forecast": false, "indicator": "REXP", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "REXP", "verbose": "Real exports of goods
+        and services", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "Bn. JPY", "ticker": {"text": "REXPJP", "url": "/series/REXPJP/japan-real-exports-of-goods-and-services/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "26 598", "is_forecast":
+        false, "indicator": "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "26 585", "is_forecast": false, "indicator":
+        "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "27 832", "is_forecast": false, "indicator": "RIMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "28 557", "is_forecast": false, "indicator": "RIMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "27 607", "is_forecast":
+        false, "indicator": "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "26 164", "is_forecast": false, "indicator":
+        "RIMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "26 454", "is_forecast": false, "indicator": "RIMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "27 884", "is_forecast": false, "indicator": "RIMP", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "RIMP", "verbose": "Real imports of goods
+        and services", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "Bn. JPY", "ticker": {"text": "RIMPJP", "url": "/series/RIMPJP/japan-real-imports-of-goods-and-services/"}}],
+        "row_names": [{"code": "RPRC", "verbose": "Real private consumption", "padding":
+        "12px", "span-class": "", "is_parent": false}, {"code": "RPUC", "verbose":
+        "Real public consumption", "padding": "12px", "span-class": "", "is_parent":
+        false}, {"code": "RGFCF", "verbose": "Real gross fixed capital formation",
+        "padding": "12px", "span-class": "", "is_parent": false}, {"code": "REXP",
+        "verbose": "Real exports of goods and services", "padding": "12px", "span-class":
+        "", "is_parent": false}, {"code": "RIMP", "verbose": "Real imports of goods
+        and services", "padding": "12px", "span-class": "", "is_parent": false}],
+        "units_col": ["Bn. JPY", "Bn. JPY", "Bn. JPY", "Bn. JPY", "Bn. JPY"], "ticker_col":
+        [{"text": "RPRCJP", "url": "/series/RPRCJP/japan-real-private-consumption/"},
+        {"text": "RPUCJP", "url": "/series/RPUCJP/japan-real-public-consumption/"},
+        {"text": "RGFCFJP", "url": "/series/RGFCFJP/japan-real-gross-fixed-capital-formation/"},
+        {"text": "REXPJP", "url": "/series/REXPJP/japan-real-exports-of-goods-and-services/"},
+        {"text": "RIMPJP", "url": "/series/RIMPJP/japan-real-imports-of-goods-and-services/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Official Statistics of
+        Japan", "source_id": "SJ", "datasets": [{"code": "SJ_RGDP", "slug": "national-accounts-quarterly-gdp-constant-prices"}]}],
+        "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 88022044dc00842f-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:33 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=OezSPNl73HWmZXaZAm60NMds9zO3iZb6asRGxojdaxFhnWKSLhSXg82Yx9UG2rJC6By3dRJo3zxkKODx0f5wQAgyDfTd1dWsKotZ%2Bgf9nuTSghWGlqiLOzCTziC1oGaZwuraTJV9u7RSOBXi"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=GDP&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "74 991",
+        "is_forecast": false, "indicator": "PRC", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "76 864", "is_forecast":
+        false, "indicator": "PRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "77 745", "is_forecast": false, "indicator":
+        "PRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "81 462", "is_forecast": false, "indicator": "PRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "79 771", "is_forecast": false, "indicator": "PRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "79 364", "is_forecast":
+        false, "indicator": "PRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "80 032", "is_forecast": false, "indicator":
+        "PRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "83 243", "is_forecast": false, "indicator": "PRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "28 478", "is_forecast": false, "indicator": "PUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "31 508", "is_forecast":
+        false, "indicator": "PUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "28 155", "is_forecast": false, "indicator":
+        "PUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "32 740", "is_forecast": false, "indicator": "PUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "29 689", "is_forecast": false, "indicator": "PUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "32 466", "is_forecast":
+        false, "indicator": "PUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "28 718", "is_forecast": false, "indicator":
+        "PUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "33 016", "is_forecast": false, "indicator": "PUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "38 718", "is_forecast": false, "indicator": "GFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "32 624", "is_forecast":
+        false, "indicator": "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "36 102", "is_forecast": false, "indicator":
+        "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "37 870", "is_forecast": false, "indicator": "GFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "41 371", "is_forecast": false, "indicator": "GFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "34 310", "is_forecast":
+        false, "indicator": "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "37 134", "is_forecast": false, "indicator":
+        "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "39 604", "is_forecast": false, "indicator": "GFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "27 194", "is_forecast": false, "indicator": "EXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "29 399", "is_forecast":
+        false, "indicator": "EXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "31 012", "is_forecast": false, "indicator":
+        "EXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "32 966", "is_forecast": false, "indicator": "EXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "29 868", "is_forecast": false, "indicator": "EXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "30 989", "is_forecast":
+        false, "indicator": "EXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "32 433", "is_forecast": false, "indicator":
+        "EXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "35 370", "is_forecast": false, "indicator": "EXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value":
+        "30 341", "is_forecast": false, "indicator": "IMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "34 439", "is_forecast":
+        false, "indicator": "IMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "38 218", "is_forecast": false, "indicator":
+        "IMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "38 620", "is_forecast": false, "indicator": "IMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "34 940", "is_forecast": false, "indicator": "IMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "33 006", "is_forecast":
+        false, "indicator": "IMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "33 651", "is_forecast": false, "indicator":
+        "IMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "36 323", "is_forecast": false, "indicator": "IMP", "country":
+        "JP", "agency_id": "3"}], "index_array": [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0,
+        7.0, -1.0, -1.0], [8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, -1.0, -1.0],
+        [16.0, 17.0, 18.0, 19.0, 20.0, 21.0, 22.0, 23.0, -1.0, -1.0], [24.0, 25.0,
+        26.0, 27.0, 28.0, 29.0, 30.0, 31.0, -1.0, -1.0], [32.0, 33.0, 34.0, 35.0,
+        36.0, 37.0, 38.0, 39.0, -1.0, -1.0]], "new_data": [{"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "74 991", "is_forecast": false, "indicator":
+        "PRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "76 864", "is_forecast": false, "indicator": "PRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "77 745", "is_forecast": false, "indicator": "PRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "81 462", "is_forecast":
+        false, "indicator": "PRC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "79 771", "is_forecast": false, "indicator":
+        "PRC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "79 364", "is_forecast": false, "indicator": "PRC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "80 032", "is_forecast": false, "indicator": "PRC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "83 243", "is_forecast":
+        false, "indicator": "PRC", "country": "JP", "agency_id": "3"}, [], []], "row_name":
+        {"code": "PRC", "verbose": "Private consumption", "padding": "12px", "span-class":
+        "", "is_parent": false}, "units": "Bn. JPY", "ticker": {"text": "PRCJP", "url":
+        "/series/PRCJP/japan-private-consumption/"}}, {"cells": [{"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "28 478", "is_forecast": false, "indicator": "PUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "31 508", "is_forecast": false, "indicator": "PUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "28 155", "is_forecast":
+        false, "indicator": "PUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "32 740", "is_forecast": false, "indicator":
+        "PUC", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "29 689", "is_forecast": false, "indicator": "PUC", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value":
+        "32 466", "is_forecast": false, "indicator": "PUC", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": "28 718", "is_forecast":
+        false, "indicator": "PUC", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-10-01T00:00:00Z", "obs_value": "33 016", "is_forecast": false, "indicator":
+        "PUC", "country": "JP", "agency_id": "3"}, [], []], "row_name": {"code": "PUC",
+        "verbose": "Public consumption", "padding": "12px", "span-class": "", "is_parent":
+        false}, "units": "Bn. JPY", "ticker": {"text": "PUCJP", "url": "/series/PUCJP/japan-public-consumption/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "38 718", "is_forecast":
+        false, "indicator": "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "32 624", "is_forecast": false, "indicator":
+        "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "36 102", "is_forecast": false, "indicator": "GFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "37 870", "is_forecast": false, "indicator": "GFCF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "41 371", "is_forecast":
+        false, "indicator": "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "34 310", "is_forecast": false, "indicator":
+        "GFCF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "37 134", "is_forecast": false, "indicator": "GFCF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "39 604", "is_forecast": false, "indicator": "GFCF", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "GFCF", "verbose": "Gross fixed capital
+        formation", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "Bn. JPY", "ticker": {"text": "GFCFJP", "url": "/series/GFCFJP/japan-gross-fixed-capital-formation/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "27 194", "is_forecast":
+        false, "indicator": "EXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "29 399", "is_forecast": false, "indicator":
+        "EXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "31 012", "is_forecast": false, "indicator": "EXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "32 966", "is_forecast": false, "indicator": "EXP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "29 868", "is_forecast":
+        false, "indicator": "EXP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "30 989", "is_forecast": false, "indicator":
+        "EXP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "32 433", "is_forecast": false, "indicator": "EXP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "35 370", "is_forecast": false, "indicator": "EXP", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "EXP", "verbose": "Exports of goods and
+        services", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "Bn. JPY", "ticker": {"text": "EXPJP", "url": "/series/EXPJP/japan-exports-of-goods-and-services/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "30 341", "is_forecast":
+        false, "indicator": "IMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "34 439", "is_forecast": false, "indicator":
+        "IMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "38 218", "is_forecast": false, "indicator": "IMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "38 620", "is_forecast": false, "indicator": "IMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "34 940", "is_forecast":
+        false, "indicator": "IMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "33 006", "is_forecast": false, "indicator":
+        "IMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "33 651", "is_forecast": false, "indicator": "IMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "36 323", "is_forecast": false, "indicator": "IMP", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "IMP", "verbose": "Imports of goods and
+        services", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "Bn. JPY", "ticker": {"text": "IMPJP", "url": "/series/IMPJP/japan-imports-of-goods-and-services/"}}],
+        "row_names": [{"code": "PRC", "verbose": "Private consumption", "padding":
+        "12px", "span-class": "", "is_parent": false}, {"code": "PUC", "verbose":
+        "Public consumption", "padding": "12px", "span-class": "", "is_parent": false},
+        {"code": "GFCF", "verbose": "Gross fixed capital formation", "padding": "12px",
+        "span-class": "", "is_parent": false}, {"code": "EXP", "verbose": "Exports
+        of goods and services", "padding": "12px", "span-class": "", "is_parent":
+        false}, {"code": "IMP", "verbose": "Imports of goods and services", "padding":
+        "12px", "span-class": "", "is_parent": false}], "units_col": ["Bn. JPY", "Bn.
+        JPY", "Bn. JPY", "Bn. JPY", "Bn. JPY"], "ticker_col": [{"text": "PRCJP", "url":
+        "/series/PRCJP/japan-private-consumption/"}, {"text": "PUCJP", "url": "/series/PUCJP/japan-public-consumption/"},
+        {"text": "GFCFJP", "url": "/series/GFCFJP/japan-gross-fixed-capital-formation/"},
+        {"text": "EXPJP", "url": "/series/EXPJP/japan-exports-of-goods-and-services/"},
+        {"text": "IMPJP", "url": "/series/IMPJP/japan-imports-of-goods-and-services/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Official Statistics of
+        Japan", "source_id": "SJ", "datasets": [{"code": "SJ_GDP", "slug": "national-accounts-quarterly-gdp"}]}],
+        "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 88022046b8412dad-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:33 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=A30mV0l%2BHeu8GtFAt%2BBSZITsavFLRWQSiTsgrG0WKOyq0Br8e5a8lwR%2Ftp%2BNNbaheFYE3AfLVJczfVWxGtL84TwYHM%2BQTsKZ64%2FVuVWbFDwNvHS9rfcZ9XSGYJOhLOFN6iSIJ69Fyvo6iasH"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=CPI&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 110.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 113.0, "is_forecast": false,
+        "indicator": "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 115.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 118.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 119.0, "is_forecast": false,
+        "indicator": "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 119.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 119.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 120.0, "is_forecast": false,
+        "indicator": "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2024-01-01T00:00:00Z",
+        "obs_value": 120.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value": "99.2",
+        "is_forecast": false, "indicator": "CORE", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 100.0, "is_forecast": false,
+        "indicator": "CORE", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 101.0, "is_forecast": false, "indicator": "CORE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        102.0, "is_forecast": false, "indicator": "CORE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 103.0, "is_forecast":
+        false, "indicator": "CORE", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false, "indicator":
+        "CORE", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 105.0, "is_forecast": false, "indicator": "CORE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        106.0, "is_forecast": false, "indicator": "CORE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": 106.0, "is_forecast":
+        false, "indicator": "CORE", "country": "JP", "agency_id": "3"}], "index_array":
+        [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, -1.0], [9.0, 10.0, 11.0, 12.0,
+        13.0, 14.0, 15.0, 16.0, 17.0, -1.0]], "new_data": [{"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": 110.0, "is_forecast": false, "indicator":
+        "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": 113.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": 115.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 118.0, "is_forecast": false,
+        "indicator": "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": 119.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": 119.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2023-07-01T00:00:00Z", "obs_value": 119.0, "is_forecast": false,
+        "indicator": "PPI", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": 120.0, "is_forecast": false, "indicator": "PPI", "country": "JP",
+        "agency_id": "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": 120.0,
+        "is_forecast": false, "indicator": "PPI", "country": "JP", "agency_id": "3"},
+        []], "row_name": {"code": "PPI", "verbose": "Producer price index", "padding":
+        "12px", "span-class": "", "is_parent": false}, "units": "Index", "ticker":
+        {"text": "PPIJP", "url": "/series/PPIJP/japan-producer-price-index/"}}, {"cells":
+        [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "99.2", "is_forecast":
+        false, "indicator": "CORE", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 100.0, "is_forecast": false, "indicator":
+        "CORE", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 101.0, "is_forecast": false, "indicator": "CORE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        102.0, "is_forecast": false, "indicator": "CORE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 103.0, "is_forecast":
+        false, "indicator": "CORE", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": 104.0, "is_forecast": false, "indicator":
+        "CORE", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 105.0, "is_forecast": false, "indicator": "CORE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        106.0, "is_forecast": false, "indicator": "CORE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": 106.0, "is_forecast":
+        false, "indicator": "CORE", "country": "JP", "agency_id": "3"}, []], "row_name":
+        {"code": "CORE", "verbose": "Core consumer price index", "padding": "12px",
+        "span-class": "", "is_parent": false}, "units": "Index", "ticker": {"text":
+        "COREJP", "url": "/series/COREJP/japan-core-consumer-price-index/"}}], "row_names":
+        [{"code": "PPI", "verbose": "Producer price index", "padding": "12px", "span-class":
+        "", "is_parent": false}, {"code": "CORE", "verbose": "Core consumer price
+        index", "padding": "12px", "span-class": "", "is_parent": false}], "units_col":
+        ["Index", "Index"], "ticker_col": [{"text": "PPIJP", "url": "/series/PPIJP/japan-producer-price-index/"},
+        {"text": "COREJP", "url": "/series/COREJP/japan-core-consumer-price-index/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Bank of Japan", "source_id":
+        "BOJ", "datasets": [{"code": "BOJ_PPICWI", "slug": "producer-price-index-using-chain-weighted-index-formula"}]},
+        {"label": "Official Statistics of Japan", "source_id": "SJ", "datasets": [{"code":
+        "SJ_CPI", "slug": "consumer-price-index-2020-base"}]}], "min_date": "2022-01-01T00:00:00Z",
+        "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 88022048daa92dab-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:34 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=56QB%2BXq57T4F2%2B2uYoScm5g%2F%2FDVvKnhkeeZu1WQfDWb0qM46xazIakEdQDneqnSJWc7jXa%2F8dwPPqyK04tONXRn7zFY45Pu5d7KPIzPRRa6ZNy6P2KAaC3w5nMaPUaqKUEaTWkciD2FsSs35"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=URATE&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "6 663",
+        "is_forecast": false, "indicator": "EMP", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "6 739", "is_forecast":
+        false, "indicator": "EMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-07-01T00:00:00Z", "obs_value": "6 757", "is_forecast": false, "indicator":
+        "EMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z",
+        "obs_value": "6 732", "is_forecast": false, "indicator": "EMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value":
+        "6 685", "is_forecast": false, "indicator": "EMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value": "6 757", "is_forecast":
+        false, "indicator": "EMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-07-01T00:00:00Z", "obs_value": "6 777", "is_forecast": false, "indicator":
+        "EMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z",
+        "obs_value": "6 768", "is_forecast": false, "indicator": "EMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value":
+        "6 723", "is_forecast": false, "indicator": "EMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value": "6 844", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "6 927", "is_forecast": false, "indicator":
+        "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "6 938", "is_forecast": false, "indicator": "ACPOP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "6 899", "is_forecast": false, "indicator": "ACPOP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "6 862", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "6 942", "is_forecast": false, "indicator":
+        "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "6 961", "is_forecast": false, "indicator": "ACPOP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "6 935", "is_forecast": false, "indicator": "ACPOP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "6 898", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "60.2", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "61.1", "is_forecast": false, "indicator": "EMRATIO", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "61.3", "is_forecast": false, "indicator": "EMRATIO", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "61.0", "is_forecast":
+        false, "indicator": "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "60.7", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "61.3", "is_forecast": false, "indicator": "EMRATIO", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "61.5", "is_forecast": false, "indicator": "EMRATIO", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "61.5", "is_forecast":
+        false, "indicator": "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2024-01-01T00:00:00Z", "obs_value": "61.1", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}], "index_array": [[0.0, 1.0,
+        2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, -1.0], [9.0, 10.0, 11.0, 12.0, 13.0, 14.0,
+        15.0, 16.0, 17.0, -1.0], [18.0, 19.0, 20.0, 21.0, 22.0, 23.0, 24.0, 25.0,
+        26.0, -1.0]], "new_data": [{"cells": [{"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "6 663", "is_forecast": false, "indicator": "EMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "6 739", "is_forecast": false, "indicator": "EMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "6 757", "is_forecast":
+        false, "indicator": "EMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "6 732", "is_forecast": false, "indicator":
+        "EMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "6 685", "is_forecast": false, "indicator": "EMP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z", "obs_value":
+        "6 757", "is_forecast": false, "indicator": "EMP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value": "6 777", "is_forecast":
+        false, "indicator": "EMP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-10-01T00:00:00Z", "obs_value": "6 768", "is_forecast": false, "indicator":
+        "EMP", "country": "JP", "agency_id": "3"}, {"obs_time": "2024-01-01T00:00:00Z",
+        "obs_value": "6 723", "is_forecast": false, "indicator": "EMP", "country":
+        "JP", "agency_id": "3"}, []], "row_name": {"code": "EMP", "verbose": "Total
+        employment", "padding": "12px", "span-class": "", "is_parent": false}, "units":
+        "10 thou. Persons", "ticker": {"text": "EMPJP", "url": "/series/EMPJP/japan-total-employment/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "6 844", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "6 927", "is_forecast": false, "indicator":
+        "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "6 938", "is_forecast": false, "indicator": "ACPOP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "6 899", "is_forecast": false, "indicator": "ACPOP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "6 862", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "6 942", "is_forecast": false, "indicator":
+        "ACPOP", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "6 961", "is_forecast": false, "indicator": "ACPOP", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "6 935", "is_forecast": false, "indicator": "ACPOP", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "6 898", "is_forecast":
+        false, "indicator": "ACPOP", "country": "JP", "agency_id": "3"}, []], "row_name":
+        {"code": "ACPOP", "verbose": "Active population", "padding": "12px", "span-class":
+        "", "is_parent": false}, "units": "10 thou. Persons", "ticker": {"text": "ACPOPJP",
+        "url": "/series/ACPOPJP/japan-active-population/"}}, {"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "60.2", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "61.1", "is_forecast": false, "indicator": "EMRATIO", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "61.3", "is_forecast": false, "indicator": "EMRATIO", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "61.0", "is_forecast":
+        false, "indicator": "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "60.7", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": "61.3", "is_forecast": false, "indicator": "EMRATIO", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        "61.5", "is_forecast": false, "indicator": "EMRATIO", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": "61.5", "is_forecast":
+        false, "indicator": "EMRATIO", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2024-01-01T00:00:00Z", "obs_value": "61.1", "is_forecast": false, "indicator":
+        "EMRATIO", "country": "JP", "agency_id": "3"}, []], "row_name": {"code": "EMRATIO",
+        "verbose": "Employment to working age population", "padding": "12px", "span-class":
+        "", "is_parent": false}, "units": "%", "ticker": {"text": "EMRATIOJP", "url":
+        "/series/EMRATIOJP/japan-employment-to-working-age-population/"}}], "row_names":
+        [{"code": "EMP", "verbose": "Total employment", "padding": "12px", "span-class":
+        "", "is_parent": false}, {"code": "ACPOP", "verbose": "Active population",
+        "padding": "12px", "span-class": "", "is_parent": false}, {"code": "EMRATIO",
+        "verbose": "Employment to working age population", "padding": "12px", "span-class":
+        "", "is_parent": false}], "units_col": ["10 thou. Persons", "10 thou. Persons",
+        "%"], "ticker_col": [{"text": "EMPJP", "url": "/series/EMPJP/japan-total-employment/"},
+        {"text": "ACPOPJP", "url": "/series/ACPOPJP/japan-active-population/"}, {"text":
+        "EMRATIOJP", "url": "/series/EMRATIOJP/japan-employment-to-working-age-population/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Official Statistics of
+        Japan", "source_id": "SJ", "datasets": [{"code": "SJ_LFS", "slug": "labour-force-survey"},
+        {"code": "SJ_EMP_00M", "slug": "employment"}]}], "min_date": "2022-01-01T00:00:00Z",
+        "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8802204a4d9d2d84-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:34 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=TvQW47z6bnTRcKPU306bRN8yM56RUpmm5n83%2Bbqpc3fJKp9gQMO%2FbiMoKBSuVdLSJTy3DqS7x9sGYXrJamVEAmpTzq%2FpDmURRFHAmSDu2DU6u0eXEQhfhXVzQj5PWMiD4ki%2BBZISj6StvPdt"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=RETA&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "34.9",
+        "is_forecast": false, "indicator": "CONF", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "32.3", "is_forecast": false,
+        "indicator": "CONF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "31.1", "is_forecast": false, "indicator": "CONF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "30.6", "is_forecast": false, "indicator": "CONF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "32.1", "is_forecast":
+        false, "indicator": "CONF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "35.7", "is_forecast": false, "indicator":
+        "CONF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "36.2", "is_forecast": false, "indicator": "CONF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "36.5", "is_forecast": false, "indicator": "CONF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "38.9", "is_forecast":
+        false, "indicator": "CONF", "country": "JP", "agency_id": "3"}], "index_array":
+        [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, -1.0]], "new_data": [{"cells":
+        [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "34.9", "is_forecast":
+        false, "indicator": "CONF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "32.3", "is_forecast": false, "indicator":
+        "CONF", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "31.1", "is_forecast": false, "indicator": "CONF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "30.6", "is_forecast": false, "indicator": "CONF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "32.1", "is_forecast":
+        false, "indicator": "CONF", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "35.7", "is_forecast": false, "indicator":
+        "CONF", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "36.2", "is_forecast": false, "indicator": "CONF", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "36.5", "is_forecast": false, "indicator": "CONF", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "38.9", "is_forecast":
+        false, "indicator": "CONF", "country": "JP", "agency_id": "3"}, []], "row_name":
+        {"code": "CONF", "verbose": "Consumer confidence index", "padding": "12px",
+        "span-class": "", "is_parent": false}, "units": "Index", "ticker": {"text":
+        "CONFJP", "url": "/series/CONFJP/japan-consumer-confidence-index/"}}], "row_names":
+        [{"code": "CONF", "verbose": "Consumer confidence index", "padding": "12px",
+        "span-class": "", "is_parent": false}], "units_col": ["Index"], "ticker_col":
+        [{"text": "CONFJP", "url": "/series/CONFJP/japan-consumer-confidence-index/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Cabinet Office, Japan",
+        "source_id": "ESRI", "datasets": [{"code": "ESRI_CONF", "slug": "consumer-confidence-survey"}]}],
+        "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8802204be9248417-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:34 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=e8sme0zqS2RoDoSqD5%2FjinCFQ6EZNWjQTfv8y4jZuezkL46qRdO3%2BKK2ZjkHuEEStpxg87W2ASrjxvcuzfeoJ05AuFu4F0bOWwGygrnSG4MoniAE7ayX6CRZu5HheblnnJFXpzl6GlrEuYV9"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=IP&transform=3
   response:
     body:
       string: '
@@ -31,19 +1373,19 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 880102263ecb8eca-FRA
+      - 8802204d0d862d9c-YVR
       Connection:
       - keep-alive
       Content-Type:
       - text/html
       Date:
-      - Tue, 07 May 2024 11:53:14 GMT
+      - Tue, 07 May 2024 15:08:34 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Ele3umr%2F7wpLBSp84G5DTEtt4MDXnrSslbYxLpWqm7kHLrQTaPGRlRQ%2Bv2fTUsyGJlp3v8oU2hogYVDm1UDfItywTnKDpX4zU5JO1MR%2FkQXlteErBVaYu92dT%2BcP4Nw1"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=oFwm2tS6ahWEvy5YQ0QdiZ%2FKBTa6jqxZcqMc9cFTFM5tQiaWIs0mGZd1P2c%2BlgEY3Bu5a4UwtBpTBN%2FwRK24xJ6eNTBWPjj42BQhx9BdaoKYl3gquD3mpvLjK9eCM59fIrIxw51AyMpV8Tdb"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -61,7 +1403,101 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-05-07&dateStart=2013-05-21&freq=Q&parent_id=CA&transform=3
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=GBAL&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "36.4",
+        "is_forecast": false, "indicator": "GREV", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "40.2", "is_forecast": false,
+        "indicator": "GREV", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "38.2", "is_forecast": false, "indicator": "GREV", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "39.7", "is_forecast": false, "indicator": "GREV", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "37.0", "is_forecast":
+        false, "indicator": "GREV", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "43.3", "is_forecast": false, "indicator":
+        "GSPE", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "43.7", "is_forecast": false, "indicator": "GSPE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "41.7", "is_forecast": false, "indicator": "GSPE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "41.6", "is_forecast":
+        false, "indicator": "GSPE", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "41.2", "is_forecast": false, "indicator":
+        "GSPE", "country": "JP", "agency_id": "3"}], "index_array": [[0.0, 1.0, 2.0,
+        3.0, 4.0, -1.0, -1.0, -1.0, -1.0, -1.0], [5.0, 6.0, 7.0, 8.0, 9.0, -1.0, -1.0,
+        -1.0, -1.0, -1.0]], "new_data": [{"cells": [{"obs_time": "2022-01-01T00:00:00Z",
+        "obs_value": "36.4", "is_forecast": false, "indicator": "GREV", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z", "obs_value":
+        "40.2", "is_forecast": false, "indicator": "GREV", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value": "38.2", "is_forecast":
+        false, "indicator": "GREV", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-10-01T00:00:00Z", "obs_value": "39.7", "is_forecast": false, "indicator":
+        "GREV", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-01-01T00:00:00Z",
+        "obs_value": "37.0", "is_forecast": false, "indicator": "GREV", "country":
+        "JP", "agency_id": "3"}, [], [], [], [], []], "row_name": {"code": "GREV",
+        "verbose": "General government total revenue", "padding": "12px", "span-class":
+        "", "is_parent": false}, "units": "% GDP", "ticker": {"text": "GREVJP", "url":
+        "/series/GREVJP/japan-general-government-total-revenue/"}}, {"cells": [{"obs_time":
+        "2022-01-01T00:00:00Z", "obs_value": "43.3", "is_forecast": false, "indicator":
+        "GSPE", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": "43.7", "is_forecast": false, "indicator": "GSPE", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        "41.7", "is_forecast": false, "indicator": "GSPE", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": "41.6", "is_forecast":
+        false, "indicator": "GSPE", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": "41.2", "is_forecast": false, "indicator":
+        "GSPE", "country": "JP", "agency_id": "3"}, [], [], [], [], []], "row_name":
+        {"code": "GSPE", "verbose": "General government total expenditure", "padding":
+        "12px", "span-class": "", "is_parent": false}, "units": "% GDP", "ticker":
+        {"text": "GSPEJP", "url": "/series/GSPEJP/japan-general-government-total-expenditure/"}}],
+        "row_names": [{"code": "GREV", "verbose": "General government total revenue",
+        "padding": "12px", "span-class": "", "is_parent": false}, {"code": "GSPE",
+        "verbose": "General government total expenditure", "padding": "12px", "span-class":
+        "", "is_parent": false}], "units_col": ["% GDP", "% GDP"], "ticker_col": [{"text":
+        "GREVJP", "url": "/series/GREVJP/japan-general-government-total-revenue/"},
+        {"text": "GSPEJP", "url": "/series/GSPEJP/japan-general-government-total-expenditure/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Official Statistics of
+        Japan", "source_id": "SJ", "datasets": [{"code": "SJ_GGO_01Q", "slug": "general-government-operations-quarterly"}]}],
+        "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8802204dee798408-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:35 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=NtIo1JhsV2%2BJy6rVRKUDy%2FQ7r9Nmhme9IbKEPnV%2BTNznr0dRBNUc3KC7QdOWT2fmCkXSi4srW%2B4pXInZRabkJtIrTmqhQgeyF633HpciPnJdVW2UiR%2FnsWGEuccnnbiwmcdtKtmKtKbgtFrn"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=CA&transform=3
   response:
     body:
       string: '
@@ -89,19 +1525,19 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 880102283f6a9205-FRA
+      - 880220501ee6844a-YVR
       Connection:
       - keep-alive
       Content-Type:
       - text/html
       Date:
-      - Tue, 07 May 2024 11:53:14 GMT
+      - Tue, 07 May 2024 15:08:35 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Referrer-Policy:
       - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=YKSZkIaw1P7NtavC5p%2B4ktA%2ByPescfVKUzvwiIVQy8dZ7j3JJIx6WB9l2FMEt5hwuM4K5V9n4oI4buuGy5G7bp%2FfekaaWksSHtrYOT2naW%2B0yzo7t%2BX%2FvCzgr3EKJMOT"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=S3PZ2W%2BdhL%2BjOjYdg7BvLpd73KUVRJxjTjmjawtvEw5%2FpPtkjbe5nsdPOGINzLq2k09GKfO7SsfGQ55h%2BAMN8yV0%2Fvxrt1J3yKbKUfsVJ6sXkNyujdX6VuYiUWzp3M67NvbPnm%2BZ3AlK%2Fy2e"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
@@ -115,4 +1551,200 @@ interactions:
     status:
       code: 500
       message: Internal Server Error
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=NIIP&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 236.0,
+        "is_forecast": false, "indicator": "IIPA", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": 249.0, "is_forecast": false,
+        "indicator": "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 261.0, "is_forecast": false, "indicator": "IIPA", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        226.0, "is_forecast": false, "indicator": "IIPA", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 238.0, "is_forecast":
+        false, "indicator": "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": 255.0, "is_forecast": false, "indicator":
+        "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 263.0, "is_forecast": false, "indicator": "IIPA", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        243.0, "is_forecast": false, "indicator": "IIPA", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-01-01T00:00:00Z", "obs_value": 159.0, "is_forecast":
+        false, "indicator": "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 166.0, "is_forecast": false, "indicator":
+        "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 176.0, "is_forecast": false, "indicator": "IIPL", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        155.0, "is_forecast": false, "indicator": "IIPL", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 162.0, "is_forecast":
+        false, "indicator": "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": 174.0, "is_forecast": false, "indicator":
+        "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 181.0, "is_forecast": false, "indicator": "IIPL", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        164.0, "is_forecast": false, "indicator": "IIPL", "country": "JP", "agency_id":
+        "3"}], "index_array": [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, -1.0, -1.0],
+        [8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, -1.0, -1.0]], "new_data": [{"cells":
+        [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 236.0, "is_forecast": false,
+        "indicator": "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-04-01T00:00:00Z",
+        "obs_value": 249.0, "is_forecast": false, "indicator": "IIPA", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z", "obs_value":
+        261.0, "is_forecast": false, "indicator": "IIPA", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value": 226.0, "is_forecast":
+        false, "indicator": "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-01-01T00:00:00Z", "obs_value": 238.0, "is_forecast": false, "indicator":
+        "IIPA", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-04-01T00:00:00Z",
+        "obs_value": 255.0, "is_forecast": false, "indicator": "IIPA", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z", "obs_value":
+        263.0, "is_forecast": false, "indicator": "IIPA", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value": 243.0, "is_forecast":
+        false, "indicator": "IIPA", "country": "JP", "agency_id": "3"}, [], []], "row_name":
+        {"code": "IIPA", "verbose": "International investment position: Assets", "padding":
+        "12px", "span-class": "", "is_parent": false}, "units": "% GDP", "ticker":
+        {"text": "IIPAJP", "url": "/series/IIPAJP/japan-international-investment-position-assets/"}},
+        {"cells": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": 159.0, "is_forecast":
+        false, "indicator": "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": 166.0, "is_forecast": false, "indicator":
+        "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": 176.0, "is_forecast": false, "indicator": "IIPL", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        155.0, "is_forecast": false, "indicator": "IIPL", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": 162.0, "is_forecast":
+        false, "indicator": "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": 174.0, "is_forecast": false, "indicator":
+        "IIPL", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": 181.0, "is_forecast": false, "indicator": "IIPL", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        164.0, "is_forecast": false, "indicator": "IIPL", "country": "JP", "agency_id":
+        "3"}, [], []], "row_name": {"code": "IIPL", "verbose": "International investment
+        position: Liabilities", "padding": "12px", "span-class": "", "is_parent":
+        false}, "units": "% GDP", "ticker": {"text": "IIPLJP", "url": "/series/IIPLJP/japan-international-investment-position-liabilities/"}}],
+        "row_names": [{"code": "IIPA", "verbose": "International investment position:
+        Assets", "padding": "12px", "span-class": "", "is_parent": false}, {"code":
+        "IIPL", "verbose": "International investment position: Liabilities", "padding":
+        "12px", "span-class": "", "is_parent": false}], "units_col": ["% GDP", "%
+        GDP"], "ticker_col": [{"text": "IIPAJP", "url": "/series/IIPAJP/japan-international-investment-position-assets/"},
+        {"text": "IIPLJP", "url": "/series/IIPLJP/japan-international-investment-position-liabilities/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Bank of Japan", "source_id":
+        "BOJ", "datasets": [{"code": "BOJ_IIP", "slug": "international-investment-position-and-gross-external-debt-position-of-japan"}]}],
+        "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 88022050ee60841a-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:35 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=HUZGjrLbke%2FJQ2GJ766xVvISob3JFCwX6QypwuWWdcWrvTpnio9wZjhBH2QMSsCLWcOMAPQicj1zKdMwWH%2BZ4BKmtKN6sIkkM4KpJWVltZZEg%2FV07kbR014QtmvOVIjUsQV%2Blrxm5GYqtTo9"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-04-01&dateStart=2022-01-01&freq=Q&parent_id=Y10YD&transform=3
+  response:
+    body:
+      string: '{"data": [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "-0.1",
+        "is_forecast": false, "indicator": "M3YD", "country": "JP", "agency_id": "3"},
+        {"obs_time": "2022-04-01T00:00:00Z", "obs_value": "-0.1", "is_forecast": false,
+        "indicator": "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "-0.1", "is_forecast": false, "indicator": "M3YD", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "-0.1", "is_forecast": false, "indicator": "M3YD", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "-0.1", "is_forecast":
+        false, "indicator": "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "-0.2", "is_forecast": false, "indicator":
+        "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "-0.1", "is_forecast": false, "indicator": "M3YD", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "-0.2", "is_forecast": false, "indicator": "M3YD", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "-0.1", "is_forecast":
+        false, "indicator": "M3YD", "country": "JP", "agency_id": "3"}], "index_array":
+        [[0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, -1.0]], "new_data": [{"cells":
+        [{"obs_time": "2022-01-01T00:00:00Z", "obs_value": "-0.1", "is_forecast":
+        false, "indicator": "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2022-04-01T00:00:00Z", "obs_value": "-0.1", "is_forecast": false, "indicator":
+        "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time": "2022-07-01T00:00:00Z",
+        "obs_value": "-0.1", "is_forecast": false, "indicator": "M3YD", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2022-10-01T00:00:00Z", "obs_value":
+        "-0.1", "is_forecast": false, "indicator": "M3YD", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2023-01-01T00:00:00Z", "obs_value": "-0.1", "is_forecast":
+        false, "indicator": "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time":
+        "2023-04-01T00:00:00Z", "obs_value": "-0.2", "is_forecast": false, "indicator":
+        "M3YD", "country": "JP", "agency_id": "3"}, {"obs_time": "2023-07-01T00:00:00Z",
+        "obs_value": "-0.1", "is_forecast": false, "indicator": "M3YD", "country":
+        "JP", "agency_id": "3"}, {"obs_time": "2023-10-01T00:00:00Z", "obs_value":
+        "-0.2", "is_forecast": false, "indicator": "M3YD", "country": "JP", "agency_id":
+        "3"}, {"obs_time": "2024-01-01T00:00:00Z", "obs_value": "-0.1", "is_forecast":
+        false, "indicator": "M3YD", "country": "JP", "agency_id": "3"}, []], "row_name":
+        {"code": "M3YD", "verbose": "3 month yield", "padding": "12px", "span-class":
+        "", "is_parent": false}, "units": "%", "ticker": {"text": "M3YDJP", "url":
+        "/series/M3YDJP/japan-3-month-yield/"}}], "row_names": [{"code": "M3YD", "verbose":
+        "3 month yield", "padding": "12px", "span-class": "", "is_parent": false}],
+        "units_col": ["%"], "ticker_col": [{"text": "M3YDJP", "url": "/series/M3YDJP/japan-3-month-yield/"}],
+        "col_names": ["Q1 22", "Q2 22", "Q3 22", "Q4 22", "Q1 23", "Q2 23", "Q3 23",
+        "Q4 23", "Q1 24", "Q2 24"], "footnote": [{"label": "Japan Securities Dealers
+        Association", "source_id": "JSDA", "datasets": [{"code": "JSDA_REPO", "slug":
+        "tokyo-repo-rate"}]}], "min_date": "2022-01-01T00:00:00Z", "max_date": "2024-04-01T00:00:00Z"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 880220524dfb842b-YVR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 May 2024 15:08:35 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=vW66UY0p15xt1zZtKOUp4cPfnM5Egb0Ad5oY1kbnkjDXSlSL7nSzcIL1ToQFylbya%2F3sF6Ij4hHiSxzNj729Z14TXwWWMa6Y5%2BWdQ%2BwjophoP7SbGpCUGK2ZmI9wF0cAPjx9IaAyXKnIcd96"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
 version: 1

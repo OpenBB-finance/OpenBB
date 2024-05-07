@@ -66,8 +66,8 @@ def test_econdb_economic_indicators_main_fetcher(credentials=test_credentials):
     params = {
         "symbol": "main",
         "country": "jp",
-        "start_date": datetime.date(2013, 5, 21),
-        "end_date": datetime.date(2024, 5, 7),
+        "start_date": datetime.date(2022, 1, 1),
+        "end_date": datetime.date(2024, 4, 1),
         "transform": None,
         "frequency": "quarter",
         "use_cache": True,
