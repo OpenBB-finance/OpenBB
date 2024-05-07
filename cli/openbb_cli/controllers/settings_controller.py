@@ -1,4 +1,4 @@
-"""Feature Flags Controller Module."""
+"""Settings Controller Module."""
 
 import argparse
 from typing import List, Optional
@@ -16,7 +16,7 @@ session = Session()
 
 
 class SettingsController(BaseController):
-    """Feature Flags Controller class."""
+    """Settings Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
         "retryload",
@@ -56,7 +56,7 @@ class SettingsController(BaseController):
         settings = session.settings
 
         mt = MenuText("settings/")
-        mt.add_info("_info_")
+        mt.add_info("_feature_flags_")
         mt.add_raw("\n")
         mt.add_setting("interactive", settings.USE_INTERACTIVE_DF)
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
@@ -69,7 +69,7 @@ class SettingsController(BaseController):
         mt.add_setting("version", settings.SHOW_VERSION)
         mt.add_setting("obbject_msg", settings.SHOW_MSG_OBBJECT_REGISTRY)
         mt.add_raw("\n")
-        mt.add_info("_settings_")
+        mt.add_info("_preferences_")
         mt.add_raw("\n")
         mt.add_cmd("console_style")
         mt.add_cmd("flair")
@@ -79,7 +79,7 @@ class SettingsController(BaseController):
         mt.add_cmd("n_cols")
         mt.add_cmd("obbject_res")
 
-        session.console.print(text=mt.menu_text, menu="Feature Flags")
+        session.console.print(text=mt.menu_text, menu="Settings")
 
     def call_overwrite(self, _):
         """Process overwrite command."""
