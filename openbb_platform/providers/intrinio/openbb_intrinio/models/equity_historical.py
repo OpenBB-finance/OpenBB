@@ -97,7 +97,7 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
         default=None,
         description="Percent change in the price of the symbol from the previous day.",
         alias="percent_change",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     adj_open: Optional[float] = Field(
         default=None,
