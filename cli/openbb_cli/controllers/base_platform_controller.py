@@ -315,7 +315,7 @@ class PlatformController(BaseController):
                     description=command_description,
                 )
 
-        session.console.print(text=mt.menu_text, menu=self._name)
+        session.console.print(text=mt.menu_text, menu=self.PATH)
 
         settings = session.settings
         dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
