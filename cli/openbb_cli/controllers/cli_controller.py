@@ -277,7 +277,7 @@ class CLIController(BaseController):
             description="configure the platform and manage your account",
         )
         for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router == "reference":
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
                 continue
             if value == "menu":
                 menu_description = (
