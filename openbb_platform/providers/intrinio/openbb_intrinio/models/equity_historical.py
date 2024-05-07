@@ -212,8 +212,8 @@ class IntrinioEquityHistoricalFetcher(
             """Return the response."""
             init_response = await response.json()
             if "error" in init_response:
-                raise RuntimeError(  # type: ignore
-                    f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"
+                raise RuntimeError(
+                    f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"  # type: ignore
                 )
 
             all_data: list = init_response.get(data_key, [])  # type: ignore

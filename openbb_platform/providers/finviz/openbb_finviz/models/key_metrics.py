@@ -122,7 +122,7 @@ class FinvizKeyMetricsFetcher(
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
-            result = {}
+            result: Dict = {}
             try:
                 data = finvizfinance(symbol)
                 fundament = data.ticker_fundament()
