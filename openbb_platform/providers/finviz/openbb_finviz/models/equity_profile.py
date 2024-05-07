@@ -1,8 +1,9 @@
 """Finviz Equity Profile Model."""
 
 # pylint: disable=unused-argument
-import warnings
+
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from finvizfinance.quote import finvizfinance
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,8 +12,6 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoQueryParams,
 )
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FinvizEquityProfileQueryParams(EquityInfoQueryParams):
@@ -99,17 +98,17 @@ class FinvizEquityProfileFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
 
-        results = []
+        results: List = []
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
-            result = {}
+            result: Dict = {}
             try:
                 data = finvizfinance(symbol)
                 fundament = data.ticker_fundament()
                 description = data.ticker_description()
             except Exception as e:  # pylint: disable=W0718
-                _warn(f"Failed to get data for {symbol} -> {e}")
+                warn(f"Failed to get data for {symbol} -> {e}")
                 return result
             div_yield = (
                 float(str(fundament.get("Dividend %", None)).replace("%", "")) / 100

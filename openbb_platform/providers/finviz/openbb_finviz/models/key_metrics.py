@@ -118,7 +118,7 @@ class FinvizKeyMetricsFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
 
-        results = []
+        results: List = []
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""

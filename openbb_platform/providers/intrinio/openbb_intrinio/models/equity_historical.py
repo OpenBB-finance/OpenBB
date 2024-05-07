@@ -212,25 +212,25 @@ class IntrinioEquityHistoricalFetcher(
             """Return the response."""
             init_response = await response.json()
             if "error" in init_response:
-                raise RuntimeError(
+                raise RuntimeError(  # type: ignore
                     f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"
                 )
 
-            all_data: list = init_response.get(data_key, [])
+            all_data: list = init_response.get(data_key, [])  # type: ignore
 
-            next_page = init_response.get("next_page", None)
+            next_page = init_response.get("next_page", None)  # type: ignore
             while next_page:
                 url = response.url.update_query(next_page=next_page).human_repr()
                 response_data = await session.get_json(url)
 
-                all_data.extend(response_data.get(data_key, []))
-                next_page = response_data.get("next_page", None)
+                all_data.extend(response_data.get(data_key, []))  # type: ignore
+                next_page = response_data.get("next_page", None)  # type: ignore
 
             return all_data
 
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
