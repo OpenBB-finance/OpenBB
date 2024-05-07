@@ -477,7 +477,7 @@ class ROUTER_fixedincome_government(Container):
         date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(
-                description="A specific date to get data for. No date will return the current posted data."
+                description="A specific date to get data for. Defaults to the last business day."
             ),
         ] = None,
         provider: Annotated[
@@ -493,7 +493,7 @@ class ROUTER_fixedincome_government(Container):
         Parameters
         ----------
         date : Union[datetime.date, None, str]
-            A specific date to get data for. No date will return the current posted data.
+            A specific date to get data for. Defaults to the last business day.
         provider : Optional[Literal['government_us', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'government_us' if there is

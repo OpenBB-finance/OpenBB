@@ -807,7 +807,7 @@
                         "name": "sort",
                         "type": "Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']",
                         "description": "Sort field used for ordering.",
-                        "default": "",
+                        "default": null,
                         "optional": true
                     },
                     {
@@ -32178,7 +32178,7 @@
                     {
                         "name": "date",
                         "type": "Union[date, str]",
-                        "description": "A specific date to get data for. No date will return the current posted data.",
+                        "description": "A specific date to get data for. Defaults to the last business day.",
                         "default": null,
                         "optional": true
                     },
@@ -37468,7 +37468,7 @@
                 "message": null
             },
             "description": "Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.\nstock_data = obb.equity.price.historical(symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')\nrr_data = obb.technical.relative_rotation(data=stock_data.results, benchmark='SPY')\nrs_ratios = rr_data.results.rs_ratios\nrs_momentum = rr_data.results.rs_momentum\n# When the assets are not traded 252 days per year,adjust the momentum and volatility periods accordingly.\ncrypto_data = obb.crypto.price.historical( symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')\nrr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTCUSD', long_period=365, short_period=30, window=30, trading_periods=365)\n# Note that the mock data displayed here is insufficient. It must contain multiple symbols, with the benchmark, and be daily data at least 1 year in length.\nobb.technical.relative_rotation(benchmark='SPY', data=[{'date': '2023-01-02', 'open': 110.0, 'high': 120.0, 'low': 100.0, 'close': 115.0, 'volume': 10000.0}, {'date': '2023-01-03', 'open': 165.0, 'high': 180.0, 'low': 150.0, 'close': 172.5, 'volume': 15000.0}, {'date': '2023-01-04', 'open': 146.67, 'high': 160.0, 'low': 133.33, 'close': 153.33, 'volume': 13333.33}, {'date': '2023-01-05', 'open': 137.5, 'high': 150.0, 'low': 125.0, 'close': 143.75, 'volume': 12500.0}, {'date': '2023-01-06', 'open': 132.0, 'high': 144.0, 'low': 120.0, 'close': 138.0, 'volume': 12000.0}])\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.\nstock_data = obb.equity.price.historical(symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')\nrr_data = obb.technical.relative_rotation(data=stock_data.results, benchmark='SPY')\nrs_ratios = rr_data.results.rs_ratios\nrs_momentum = rr_data.results.rs_momentum\n# When the assets are not traded 252 days per year,adjust the momentum and volatility periods accordingly.\ncrypto_data = obb.crypto.price.historical( symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')\nrr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTCUSD', long_period=365, short_period=30, window=30, trading_periods=365)\n```\n\n",
             "parameters": {
                 "standard": [
                     {
