@@ -15,6 +15,7 @@ from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
+from openbb_core.app.model.obbject import OBBject
 
 session = Session()
 
@@ -168,7 +169,9 @@ class PlatformController(BaseController):
                         # also update the completer
                         self.update_completer(self.choices_default)
 
-                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY:
+                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY and isinstance(
+                            obbject, OBBject
+                        ):
                             session.console.print("Added OBBject to registry.")
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
