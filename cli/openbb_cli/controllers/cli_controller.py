@@ -292,7 +292,6 @@ class CLIController(BaseController):
             else:
                 mt.add_cmd(router)
 
-        # mt.add_raw("\n    cached results (OBBjects)\n")
         mt.add_section(
             "OBBject registry",
             description="access and manage your cached results",
