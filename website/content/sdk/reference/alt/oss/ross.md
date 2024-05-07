@@ -1,19 +1,20 @@
 ---
 title: ross
-description: This documentation page provides detailed information about the 'ross'
+description:
+  This documentation page provides detailed information about the 'ross'
   functions of the OpenBB Terminal. These functions help to retrieve and visualize
   data about startups from the ROSS index.
 keywords:
-- ross function
-- data retrieval
-- startups data
-- ROSS index
-- visualization
-- dataframe
-- chart
-- data sort
-- growth line chart
-- data export
+  - ross function
+  - data retrieval
+  - startups data
+  - ROSS index
+  - visualization
+  - dataframe
+  - chart
+  - data sort
+  - growth line chart
+  - data export
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -44,9 +45,10 @@ This function does not take any parameters.
 
 ## Returns
 
-| Type | Description |
-| ---- | ----------- |
+| Type         | Description      |
+| ------------ | ---------------- |
 | pd.DataFrame | list of startups |
+
 ---
 
 </TabItem>
@@ -64,17 +66,16 @@ openbb.alt.oss.ross_chart(limit: int = 10, sortby: str = "Stars AGR [%]", ascend
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| limit | int | Number of startups to search | 10 | True |
-| sortby | str | Key by which to sort data. Default: Stars AGR [%] | Stars AGR [%] | True |
-| ascend | bool | Flag to sort data descending | False | True |
-| show_chart | bool | Flag to show chart with startups | False | True |
-| show_growth | bool | Flag to show growth line chart | True | True |
-| chart_type | str | Chart type {stars,forks} | stars | True |
-| export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
-
+| Name          | Type                     | Description                                                     | Default       | Optional |
+| ------------- | ------------------------ | --------------------------------------------------------------- | ------------- | -------- |
+| limit         | int                      | Number of startups to search                                    | 10            | True     |
+| sortby        | str                      | Key by which to sort data. Default: Stars AGR [%]               | Stars AGR [%] | True     |
+| ascend        | bool                     | Flag to sort data descending                                    | False         | True     |
+| show_chart    | bool                     | Flag to show chart with startups                                | False         | True     |
+| show_growth   | bool                     | Flag to show growth line chart                                  | True          | True     |
+| chart_type    | str                      | Chart type \{stars,forks\}                                      | stars         | True     |
+| export        | str                      | Export dataframe data to csv,json,xlsx file                     |               | True     |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None          | True     |
 
 ---
 

@@ -3,10 +3,10 @@ title: API Keys
 sidebar_position: 2
 description: This documentation page describes how you can set your own API keys from each data vendor on OpenBB to leverage their datasets.
 keywords:
-- API keys
-- datasets
-- data vendors
-- subscription
+  - API keys
+  - datasets
+  - data vendors
+  - subscription
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -66,7 +66,6 @@ OpenBB recommends users to gradually obtaining API keys from data vendors based 
 In addition by accessing our [data vendor affiliate program](https://my.openbb.co/app/hub/affiliate) you can get discounts upon sign-up.
 :::
 
-
 ## Supported data vendors
 
 This section covers all API keys listed above and include detailed instructions how to obtain each API key. By clicking on each name, the section will expand and instructions are provided.
@@ -116,7 +115,7 @@ These instructions should provide clear guidance for obtaining an API Key. Enter
 <details>
 <summary>Instructions</summary>
 
-Go to: https://bitquery.io/<
+Go to: [https://bitquery.io/](https://bitquery.io/)
 
 ![Bitquery](https://user-images.githubusercontent.com/46355364/207840322-5532a3f9-739f-4e28-9839-a58db932882e.png)
 
@@ -143,15 +142,15 @@ Enter this API key into the OpenBB Terminal by typing:
 <details>
 <summary>Instructions</summary>
 
-The BizToc API is hosted on RapidAPI.  To set up, go to: https://rapidapi.com/thma/api/biztoc.
+The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.
 
 ![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)
 
-In the top right, select "Sign Up".  After answering some questions, you will be prompted to select one of their plans.
+In the top right, select "Sign Up". After answering some questions, you will be prompted to select one of their plans.
 
 ![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)
 
-After signing up, navigate back to https://rapidapi.com/thma/api/biztoc.  If you are logged in, you will see a header called X-RapidAPI-Key.
+After signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key.
 
 ![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)
 
@@ -561,7 +560,6 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 
 </details>
 
-
 ### OpenAI
 
 > An API for accessing new AI models developed by OpenAI.
@@ -576,10 +574,8 @@ Go to: https://openai.com/blog/openai-api
 Click sign up and create an account. Once done, you will be logged into the home page:
 ![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/34976dce-bdf0-48cd-a9db-9e41eacdbc04)
 
-
 Click the top right "Personal" button to find the following drop down:
 ![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/95987173-3884-462e-a03b-dff040f0acb4)
-
 
 Click `View API Keys`. This will take you to the api Keys menu. Then click `Create new secret key`:
 ![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
@@ -591,9 +587,6 @@ Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 ```
 
 </details>
-
-
-
 
 ### Polygon
 
