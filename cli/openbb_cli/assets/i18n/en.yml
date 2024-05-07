@@ -10,8 +10,8 @@ en:
   exe: execute .openbb routine scripts (use exe --example for an example)
   _configure_: Configure your own CLI
   _main_menu_: Main menu
-  settings/_info_: Feature flags
-  settings/_settings_: Settings and preferences
+  settings/_feature_flags_: Feature flags
+  settings/_preferences_: Preferences
   settings/retryload: retry misspelled commands with load first
   settings/interactive: open dataframes in interactive window
   settings/cls: clear console after each command

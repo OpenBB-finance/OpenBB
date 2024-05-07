@@ -317,7 +317,7 @@ class CLIController(BaseController):
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def call_settings(self, _):
-        """Process feature flags command."""
+        """Process settings command."""
         from openbb_cli.controllers.settings_controller import (
             SettingsController,
         )
