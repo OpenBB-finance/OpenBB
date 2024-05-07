@@ -58,3 +58,21 @@ def test_econdb_economic_indicators_fetcher(credentials=test_credentials):
     fetcher = EconDbEconomicIndicatorsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.record_http
+def test_econdb_economic_indicators_main_fetcher(credentials=test_credentials):
+    """Test EconDB Economic Indicators Fetcher with main."""
+    params = {
+        "symbol": "main",
+        "country": "jp",
+        "start_date": datetime.date(2013, 5, 21),
+        "end_date": datetime.date(2024, 5, 7),
+        "transform": None,
+        "frequency": "quarter",
+        "use_cache": True,
+    }
+
+    fetcher = EconDbEconomicIndicatorsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None

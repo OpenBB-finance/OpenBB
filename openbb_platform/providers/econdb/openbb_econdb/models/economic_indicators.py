@@ -108,7 +108,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                     raise ValueError(
                         "The 'main' indicator cannot be combined with other indicators."
                     )
-                return symbol.upper()
+                return symbol
             if not any(
                 (
                     symbol.upper().startswith(indicator)
@@ -167,10 +167,10 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
-        if query.symbol == "MAIN":
-            query.country = query.country.upper() if query.country else "US"
+        if query.symbol.upper() == "MAIN" and query.start_date and query.end_date:
+            country = query.country.upper() if query.country else "US"
             return await get_main_indicators(
-                query.country,
+                country,
                 query.start_date.strftime("%Y-%m-%d"),
                 query.end_date.strftime("%Y-%m-%d"),
                 query.frequency,
@@ -331,7 +331,7 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[EconDbEconomicIndicatorsData]]:
         """Transform the data."""
-        if query.symbol == "MAIN":
+        if query.symbol.upper() == "MAIN":
             return AnnotatedResult(
                 result=[
                     EconDbEconomicIndicatorsData.model_validate(r)

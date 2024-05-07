@@ -1,0 +1,118 @@
+interactions:
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-05-07&dateStart=2013-05-21&freq=Q&parent_id=IP&transform=3
+  response:
+    body:
+      string: '
+
+        <!doctype html>
+
+        <html lang="en">
+
+        <head>
+
+        <title>Server Error (500)</title>
+
+        </head>
+
+        <body>
+
+        <h1>Server Error (500)</h1><p></p>
+
+        </body>
+
+        </html>
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 880102263ecb8eca-FRA
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html
+      Date:
+      - Tue, 07 May 2024 11:53:14 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Ele3umr%2F7wpLBSp84G5DTEtt4MDXnrSslbYxLpWqm7kHLrQTaPGRlRQ%2Bv2fTUsyGJlp3v8oU2hogYVDm1UDfItywTnKDpX4zU5JO1MR%2FkQXlteErBVaYu92dT%2BcP4Nw1"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 500
+      message: Internal Server Error
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://www.econdb.com/trends/get_topic_children/?agency=3&country=JP&dateEnd=2024-05-07&dateStart=2013-05-21&freq=Q&parent_id=CA&transform=3
+  response:
+    body:
+      string: '
+
+        <!doctype html>
+
+        <html lang="en">
+
+        <head>
+
+        <title>Server Error (500)</title>
+
+        </head>
+
+        <body>
+
+        <h1>Server Error (500)</h1><p></p>
+
+        </body>
+
+        </html>
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 880102283f6a9205-FRA
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/html
+      Date:
+      - Tue, 07 May 2024 11:53:14 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=YKSZkIaw1P7NtavC5p%2B4ktA%2ByPescfVKUzvwiIVQy8dZ7j3JJIx6WB9l2FMEt5hwuM4K5V9n4oI4buuGy5G7bp%2FfekaaWksSHtrYOT2naW%2B0yzo7t%2BX%2FvCzgr3EKJMOT"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 500
+      message: Internal Server Error
+version: 1
