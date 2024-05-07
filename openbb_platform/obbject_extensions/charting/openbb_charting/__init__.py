@@ -61,6 +61,8 @@ class Charting:
         Create a line chart from external data.
     create_bar_chart
         Create a bar chart, on a single x-axis with one or more values for the y-axis, from external data.
+    toggle_chart_style
+        Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
     def __init__(self, obbject):
@@ -234,6 +236,7 @@ class Charting:
             same_axis=same_axis,
             **kwargs,
         )
+        fig = self._set_chart_style(fig)
         if render:
             return fig.show(**kwargs)
 
@@ -298,7 +301,6 @@ class Charting:
         OpenBBFigure
             The OpenBBFigure object.
         """
-
         fig = bar_chart(
             data=data,
             x=x,
@@ -313,7 +315,7 @@ class Charting:
             bar_kwargs=bar_kwargs,
             layout_kwargs=layout_kwargs,
         )
-
+        fig = self._set_chart_style(fig)
         if render:
             return fig.show(**kwargs)
 
@@ -322,7 +324,6 @@ class Charting:
     # pylint: disable=inconsistent-return-statements
     def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
-
         try:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
@@ -345,14 +346,17 @@ class Charting:
                 _kwargs = kwargs.pop("kwargs")
                 kwargs.update(_kwargs.get("chart_params", {}))
             fig, content = charting_function(**kwargs)
+            fig = self._set_chart_style(fig)
+            content = fig.show(external=True, **kwargs).to_plotly_json()
             self._obbject.chart = Chart(
                 fig=fig, content=content, format=charting_router.CHART_FORMAT
             )
             if render:
                 fig.show(**kwargs)
-        except Exception:
+        except Exception:  # pylint: disable=W0718
             try:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
+                fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=charting_router.CHART_FORMAT
@@ -467,19 +471,48 @@ class Charting:
                 self.show(data=data_as_df, render=render, **kwargs)
             else:
                 self.show(**kwargs, render=render)
-        except Exception:
+        except Exception:  # pylint: disable=W0718
             try:
                 fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
+                fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
                 self._obbject.chart = Chart(
                     fig=fig, content=content, format=charting_router.CHART_FORMAT
                 )
                 if render:
                     return fig.show(**kwargs)  # type: ignore
-            except Exception as e:
+            except Exception as e:  # pylint: disable=W0718
                 raise RuntimeError(
                     "Failed to automatically create a generic chart with the data provided."
                 ) from e
+
+    def _set_chart_style(self, figure: Figure):
+        """Set the user preference for light or dark mode."""
+        style = self._charting_settings.chart_style  # pylint: disable=protected-access
+        font_color = "black" if style == "light" else "white"
+        paper_bgcolor = "white" if style == "light" else "black"
+        figure = figure.update_layout(
+            dict(  # pylint: disable=R1735
+                font_color=font_color, paper_bgcolor=paper_bgcolor
+            )
+        )
+        return figure
+
+    def toggle_chart_style(self):  # pylint: disable=protected-access
+        """Toggle the chart style between light and dark mode."""
+        if not hasattr(self._obbject.chart, "fig"):
+            raise ValueError(
+                "Error: No chart has been created. Please create a chart first."
+            )
+        current = self._charting_settings.chart_style
+        new = "light" if current == "dark" else "dark"
+        self._charting_settings.chart_style = new
+        figure = self._obbject.chart.fig
+        updated_figure = self._set_chart_style(figure)
+        self._obbject.chart.fig = updated_figure
+        self._obbject.chart.content = updated_figure.show(
+            external=True
+        ).to_plotly_json()
 
     def table(
         self,
@@ -510,7 +543,7 @@ class Charting:
                     or self._obbject._route,  # pylint: disable=protected-access
                     theme=self._charting_settings.table_style,
                 )
-            except Exception as e:
+            except Exception as e:  # pylint: disable=W0718
                 warn(f"Failed to show figure with backend. {e}")
 
         else:
