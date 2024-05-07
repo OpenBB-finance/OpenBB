@@ -126,12 +126,13 @@ class PolygonCurrencyPairsFetcher(
             f"https://api.polygon.io/v3/reference/"
             f"tickers?{query.symbol}&market=fx&date={query.date}&"
             f"search={query.search}&active={query.active}&order={query.order}&"
-            f"limit={query.limit}&sort={query.sort}&apiKey={api_key}"
+            f"limit={query.limit}"
         )
-
+        if query.sort:
+            request_url += f"&sort={query.sort}"
+        request_url = f"{request_url}&apiKey={api_key}"
         data = {"next_url": request_url}
         all_data: List[Dict] = []
-
         while "next_url" in data:
             data = await get_data(request_url, **kwargs)
 
