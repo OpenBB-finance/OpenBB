@@ -48,6 +48,7 @@ def obbject():
             self.provider = "mock_provider"
             self.extra = "mock_extra"
             self.warnings = "mock_warnings"
+            self.chart = MagicMock()
 
         def to_dataframe(self):
             """Mock to_dataframe."""
@@ -154,25 +155,22 @@ def test_show(_, mock_get_chart_function, obbject):
     mock_function.assert_called_once()
 
 
-@patch("openbb_charting.to_chart")
-def test_to_chart(mock_to_chart, obbject):
+@patch("openbb_charting.Charting._prepare_data_as_df")
+@patch("openbb_charting.Charting._get_chart_function")
+@patch("openbb_charting.Chart")
+def test_to_chart(_, mock_get_chart_function, mock_prepare_data_as_df, obbject):
     """Test to_chart method."""
     # Arrange
+    mock_prepare_data_as_df.return_value = (mock_dataframe, True)
+    mock_function = MagicMock()
+    mock_get_chart_function.return_value = mock_function
     mock_fig = MagicMock()
-    mock_to_chart.return_value = (mock_fig, {"content": "mock_content"})
+    mock_function.return_value = (mock_fig, {"content": "mock_content"})
     obj = Charting(obbject)
 
     # Act
     obj.to_chart()
 
     # Assert
-    assert obj._obbject.chart.fig == mock_fig
-    mock_to_chart.assert_called_once_with(
-        mock_dataframe,
-        indicators=None,
-        symbol="",
-        candles=True,
-        volume=True,
-        prepost=False,
-        volume_ticks_x=7,
-    )
+    mock_get_chart_function.assert_called_once()
+    mock_function.assert_called_once()
