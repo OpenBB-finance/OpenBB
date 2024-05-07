@@ -629,7 +629,7 @@
                         "name": "sort",
                         "type": "Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']",
                         "description": "Sort field used for ordering.",
-                        "default": "",
+                        "default": null,
                         "optional": true
                     },
                     {
@@ -2681,7 +2681,7 @@
                     },
                     {
                         "name": "filter_variable",
-                        "type": "Literal[None, 'frequency', 'units', 'seasonal_adjustment']",
+                        "type": "Literal['frequency', 'units', 'seasonal_adjustment']",
                         "description": "Filter by an attribute.",
                         "default": null,
                         "optional": true
@@ -2941,21 +2941,21 @@
                 "fred": [
                     {
                         "name": "frequency",
-                        "type": "Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
                         "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "aggregation_method",
-                        "type": "Literal[None, 'avg', 'sum', 'eop']",
+                        "type": "Literal['avg', 'sum', 'eop']",
                         "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
                         "default": "eop",
                         "optional": true
                     },
                     {
                         "name": "transform",
-                        "type": "Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
                         "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
                         "default": null,
                         "optional": true
@@ -4108,7 +4108,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol='main', country='eu')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4151,14 +4151,21 @@
                     {
                         "name": "transform",
                         "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
-                        "description": "The transformation to apply to the data, default is None.     tpop: Change from previous period     toya: Change from one year ago     tusd: Values as US dollars     tpgp: Values as a percent of GDP    Only 'tpop' and 'toya' are applicable to all indicators.   Applying transformations across multiple indicators/countries   may produce unexpected results.   This is because not all indicators are compatible with all transformations,   and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "description": "The transformation to apply to the data, default is None.   tpop: Change from previous period   toya: Change from one year ago   tusd: Values as US dollars   tpgp: Values as a percent of GDP   Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.   This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
                         "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'month']",
+                        "description": "The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'.",
+                        "default": "quarter",
                         "optional": true
                     },
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
                         "default": true,
                         "optional": true
                     }
@@ -10092,14 +10099,14 @@
                     },
                     {
                         "name": "order",
-                        "type": "Literal[None, 'asc', 'desc']",
+                        "type": "Literal['asc', 'desc']",
                         "description": "Order of the financial statement.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "sort",
-                        "type": "Literal[None, 'filing_date', 'period_of_report_date']",
+                        "type": "Literal['filing_date', 'period_of_report_date']",
                         "description": "Sort of the financial statement.",
                         "default": null,
                         "optional": true
@@ -16024,7 +16031,7 @@
                 "sec": [
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
                         "default": null,
                         "optional": true
@@ -16174,7 +16181,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true
@@ -16202,42 +16209,42 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "size",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true
@@ -23630,7 +23637,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23644,7 +23651,7 @@
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23693,7 +23700,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23707,7 +23714,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -26788,7 +26795,71 @@
                     }
                 ],
                 "fmp": [],
-                "intrinio": [],
+                "intrinio": [
+                    {
+                        "name": "source",
+                        "type": "Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases']",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "Literal['positive', 'neutral', 'negative']",
+                        "description": "Return news only from this source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "Filter by language. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Filter by topic. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_greater_than",
+                        "type": "int",
+                        "description": "News stories will have a word count greater than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_less_than",
+                        "type": "int",
+                        "description": "News stories will have a word count less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "is_spam",
+                        "type": "bool",
+                        "description": "Filter whether it is marked as spam or not. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_greater_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_less_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "tiingo": [
                     {
                         "name": "offset",
@@ -26935,6 +27006,76 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "summary",
+                        "type": "str",
+                        "description": "The summary of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topics",
+                        "type": "str",
+                        "description": "The topics related to the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count",
+                        "type": "int",
+                        "description": "The word count of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance",
+                        "type": "float",
+                        "description": "How strongly correlated the news article is to the business",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "str",
+                        "description": "The sentiment of the news article - i.e, negative, positive.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment_confidence",
+                        "type": "float",
+                        "description": "The confidence score of the sentiment rating.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "The language of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "spam",
+                        "type": "bool",
+                        "description": "Whether the news article is spam.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "copyright",
+                        "type": "str",
+                        "description": "The copyright notice of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "id",
                         "type": "str",
                         "description": "Article ID.",
@@ -26943,10 +27084,17 @@
                     },
                     {
                         "name": "company",
-                        "type": "Dict[str, Any]",
-                        "description": "Company details related to the news article.",
-                        "default": "",
-                        "optional": false
+                        "type": "IntrinioCompany",
+                        "description": "The Intrinio Company object. Contains details company reference data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "security",
+                        "type": "IntrinioSecurity",
+                        "description": "The Intrinio Security object. Contains the security details related to the news article.",
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "tiingo": [
@@ -27129,7 +27277,71 @@
                         "optional": true
                     }
                 ],
-                "intrinio": [],
+                "intrinio": [
+                    {
+                        "name": "source",
+                        "type": "Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases']",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "Literal['positive', 'neutral', 'negative']",
+                        "description": "Return news only from this source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "Filter by language. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Filter by topic. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_greater_than",
+                        "type": "int",
+                        "description": "News stories will have a word count greater than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_less_than",
+                        "type": "int",
+                        "description": "News stories will have a word count less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "is_spam",
+                        "type": "bool",
+                        "description": "Filter whether it is marked as spam or not. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_greater_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_less_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "polygon": [
                     {
                         "name": "order",
@@ -27293,11 +27505,88 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "summary",
+                        "type": "str",
+                        "description": "The summary of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topics",
+                        "type": "str",
+                        "description": "The topics related to the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count",
+                        "type": "int",
+                        "description": "The word count of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance",
+                        "type": "float",
+                        "description": "How strongly correlated the news article is to the business",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "str",
+                        "description": "The sentiment of the news article - i.e, negative, positive.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment_confidence",
+                        "type": "float",
+                        "description": "The confidence score of the sentiment rating.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "The language of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "spam",
+                        "type": "bool",
+                        "description": "Whether the news article is spam.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "copyright",
+                        "type": "str",
+                        "description": "The copyright notice of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "id",
                         "type": "str",
                         "description": "Article ID.",
                         "default": "",
                         "optional": false
+                    },
+                    {
+                        "name": "security",
+                        "type": "IntrinioSecurity",
+                        "description": "The Intrinio Security object. Contains the security details related to the news article.",
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "polygon": [
@@ -27530,7 +27819,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true

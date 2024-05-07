@@ -576,6 +576,19 @@ def test_economy_fred_regional(params, headers):
                 "start_date": "2022-01-01",
                 "end_date": "2024-01-01",
                 "use_cache": False,
+                "frequency": None,
+            }
+        ),
+        (
+            {
+                "provider": "econdb",
+                "country": None,
+                "symbol": "MAIN",
+                "transform": None,
+                "start_date": "2022-01-01",
+                "end_date": "2024-01-01",
+                "use_cache": False,
+                "frequency": "quarter",
             }
         ),
     ],

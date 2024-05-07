@@ -52,7 +52,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
             "last_updated_utc",
             "delisted_utc",
         ]
-    ] = Field(default="", description="Sort field used for ordering.")
+    ] = Field(default=None, description="Sort field used for ordering.")
     limit: Optional[PositiveInt] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
@@ -106,9 +106,8 @@ class PolygonCurrencyPairsFetcher(
         """Transform the query parameters. Ticker is set if symbol is provided."""
         transform_params = params
         now = datetime.now().date().isoformat()
-        transform_params["symbol"] = (
-            f"ticker=C:{params.get('symbol').upper()}" if params.get("symbol") else ""
-        )
+        symbol = params.get("symbol")
+        transform_params["symbol"] = f"ticker=C:{symbol.upper()}" if symbol else ""
         if params.get("date") is None:
             transform_params["date"] = now
 
@@ -127,12 +126,13 @@ class PolygonCurrencyPairsFetcher(
             f"https://api.polygon.io/v3/reference/"
             f"tickers?{query.symbol}&market=fx&date={query.date}&"
             f"search={query.search}&active={query.active}&order={query.order}&"
-            f"limit={query.limit}&sort={query.sort}&apiKey={api_key}"
+            f"limit={query.limit}"
         )
-
+        if query.sort:
+            request_url += f"&sort={query.sort}"
+        request_url = f"{request_url}&apiKey={api_key}"
         data = {"next_url": request_url}
         all_data: List[Dict] = []
-
         while "next_url" in data:
             data = await get_data(request_url, **kwargs)
 
