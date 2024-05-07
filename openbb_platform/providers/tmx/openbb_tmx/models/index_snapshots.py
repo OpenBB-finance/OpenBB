@@ -24,7 +24,7 @@ from pydantic import Field, field_validator
 class TmxIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     """TMX Index Snapshots Query Params."""
 
-    region: Literal[None, "ca", "us"] = Field(default="ca")  # type: ignore
+    region: Optional[Literal["ca", "us"]] = Field(default="ca")  # type: ignore
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request."
