@@ -171,8 +171,8 @@ class EconDbEconomicIndicatorsFetcher(
             country = query.country.upper() if query.country else "US"
             return await get_main_indicators(
                 country,
-                query.start_date.strftime("%Y-%m-%d"),
-                query.end_date.strftime("%Y-%m-%d"),
+                query.start_date.strftime("%Y-%m-%d"),  # type: ignore
+                query.end_date.strftime("%Y-%m-%d"),  # type: ignore
                 query.frequency,
                 query.transform,
                 query.use_cache,
