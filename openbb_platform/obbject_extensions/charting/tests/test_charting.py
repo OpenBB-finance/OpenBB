@@ -108,8 +108,8 @@ def test_functions(mock_get_charting_functions):
     mock_get_charting_functions.assert_called_once()
 
 
-@patch("openbb_charting.core.backend.get_backend")
-@patch("openbb_charting.core.backend.create_backend")
+@patch("openbb_charting.get_backend")
+@patch("openbb_charting.create_backend")
 def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
