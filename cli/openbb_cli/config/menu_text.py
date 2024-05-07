@@ -30,7 +30,7 @@ RICH_TAGS = [
 class MenuText:
     """Create menu text with rich colors to be displayed by CLI."""
 
-    CMD_NAME_LENGTH = 18
+    CMD_NAME_LENGTH = 23
     CMD_DESCRIPTION_LENGTH = 65
     CMD_PROVIDERS_LENGTH = 23
     SECTION_SPACING = 4
@@ -64,9 +64,7 @@ class MenuText:
     def _format_cmd_name(self, name: str) -> str:
         """Truncate command name length if it is too long."""
         if len(name) > self.CMD_NAME_LENGTH:
-            new_name = name[
-                : self.CMD_NAME_LENGTH
-            ]  # Default to trimming to 18 characters
+            new_name = name[: self.CMD_NAME_LENGTH]
 
             if "_" in name:
                 name_split = name.split("_")
