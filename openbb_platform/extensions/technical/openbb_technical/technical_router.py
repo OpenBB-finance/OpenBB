@@ -57,11 +57,6 @@ router = Router(prefix="", description="Technical Analysis tools.")
                 + " long_period=365, short_period=30, window=30, trading_periods=365)",
             ],
         ),
-        APIEx(
-            description="Note that the mock data displayed here is insufficient."
-            + " It must contain multiple symbols, with the benchmark, and be daily data at least 1 year in length.",
-            parameters={"benchmark": "SPY", "data": APIEx.mock_data("timeseries")},
-        ),
     ],
 )
 async def relative_rotation(
