@@ -180,6 +180,9 @@ class MenuText:
             if description == self.menu_path + name:
                 description = ""
 
+        if len(description) > self.CMD_DESCRIPTION_LENGTH:
+            description = description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
+
         menu = f"{name}{spacing}{description}"
         tag = "unvl" if disable else "menu"
         self.menu_text += f"[{tag}]>   {menu}[/{tag}]\n"

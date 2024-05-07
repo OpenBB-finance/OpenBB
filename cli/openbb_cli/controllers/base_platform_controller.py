@@ -274,13 +274,26 @@ class PlatformController(BaseController):
 
     def _get_menu_description(self, menu: str) -> str:
         """Get menu description."""
+
+        def _get_sub_menu_commands():
+            """Get sub menu commands."""
+            sub_path = f"{self.PATH[1:].replace('/','_')}{menu}"
+            commands = []
+            for trl in self.translators:
+                if sub_path in trl:
+                    commands.append(trl.replace(f"{sub_path}_", ""))
+            return commands
+
         menu_description = (
             obb.reference["routers"]  # type: ignore
             .get(f"{self.PATH}{menu}", {})
             .get("description", "")
         ) or ""
+        if menu_description:
+            return menu_description.split(".")[0].lower()
 
-        return menu_description.split(".")[0].lower()
+        # If no description is found, return the sub menu commands
+        return ", ".join(_get_sub_menu_commands())
 
     def print_help(self):
         """Print help."""
