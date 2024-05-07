@@ -64,10 +64,10 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default=False,
         description="Whether to include the sources of the financial statement.",
     )
-    order: Literal[None, "asc", "desc"] = Field(
+    order: Optional[Literal["asc", "desc"]] = Field(
         default=None, description="Order of the financial statement."
     )
-    sort: Literal[None, "filing_date", "period_of_report_date"] = Field(
+    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
         default=None, description="Sort of the financial statement."
     )
 

@@ -21,7 +21,7 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Literal[None, "us", "eu"] = Field(
+    region: Optional[Literal["us", "eu"]] = Field(
         default="us",
     )
 
