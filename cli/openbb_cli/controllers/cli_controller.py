@@ -255,6 +255,7 @@ class CLIController(BaseController):
             mt.add_section(
                 "data processing",
                 description="analyze and process previously obtained data",
+                leading_new_line=True,
             )
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
@@ -275,6 +276,7 @@ class CLIController(BaseController):
         mt.add_section(
             "configuration",
             description="configure the platform and manage your account",
+            leading_new_line=True,
         )
         for router, value in PLATFORM_ROUTERS.items():
             if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
@@ -295,6 +297,7 @@ class CLIController(BaseController):
         mt.add_section(
             "OBBject registry",
             description="access and manage your cached results",
+            leading_new_line=True,
         )
         mt.add_cmd("results")
 
