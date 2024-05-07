@@ -89,7 +89,7 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
@@ -104,7 +104,9 @@ class CboeIndexSnapshotsFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSnapshotsQueryParams, data: dict, **kwargs: Any
+        query: CboeIndexSnapshotsQueryParams,  # pylint: disable=unused-argument
+        data: dict,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         if not data:

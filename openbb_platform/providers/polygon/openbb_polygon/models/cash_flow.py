@@ -160,9 +160,9 @@ class PolygonCashFlowStatementFetcher(
 
     @staticmethod
     def transform_data(
-        query: PolygonCashFlowStatementQueryParams,
+        query: PolygonCashFlowStatementQueryParams,  # pylint: disable=unused-argument
         data: dict,
-        **kwargs: Any,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[PolygonCashFlowStatementData]:
         """Return the transformed data."""
         transformed_data = []
