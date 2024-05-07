@@ -167,7 +167,7 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
-        if query.symbol.upper() == "MAIN" and query.start_date and query.end_date:
+        if query.symbol.upper() == "MAIN":
             country = query.country.upper() if query.country else "US"
             return await get_main_indicators(
                 country,
@@ -175,6 +175,7 @@ class EconDbEconomicIndicatorsFetcher(
                 query.end_date.strftime("%Y-%m-%d"),
                 query.frequency,
                 query.transform,
+                query.use_cache,
             )
         token = credentials.get("econdb_api_key", "")  # type: ignore
         # Attempt to create a temporary token if one is not supplied.

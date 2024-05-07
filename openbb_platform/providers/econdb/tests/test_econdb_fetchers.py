@@ -70,7 +70,7 @@ def test_econdb_economic_indicators_main_fetcher(credentials=test_credentials):
         "end_date": datetime.date(2024, 4, 1),
         "transform": None,
         "frequency": "quarter",
-        "use_cache": True,
+        "use_cache": False,
     }
 
     fetcher = EconDbEconomicIndicatorsFetcher()
