@@ -594,9 +594,6 @@ def generate_platform_markdown(paths: Dict) -> None:
 
     for path, path_data in paths.items():
 
-        if path != "/equity/price/historical":
-            continue
-
         reference_markdown_content = ""
         data_markdown_content = ""
 
