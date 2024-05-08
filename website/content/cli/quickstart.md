@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 
-![CLI Home](cli_home.png)
+![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
 ## Login
 
@@ -51,7 +51,7 @@ Enter a menu by typing it out and pressing return.
 economy
 ```
 
-![Economy Menu](economy_menu.png)
+![Economy Menu](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
 
 ## Help Dialogues
 
