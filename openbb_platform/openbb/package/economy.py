@@ -155,7 +155,7 @@ class ROUTER_economy(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         country : Optional[str]
-            Country of the event. Multiple comma separated items allowed for provider(s): tradingeconomics. (provider: tradingeconomics)
+            Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]

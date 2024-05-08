@@ -60,15 +60,15 @@ class ROUTER_equity_estimates(Container):
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         analyst_ids : Optional[str]
-            List of analyst IDs to return. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
+            List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         firm_ids : Optional[str]
-            Firm IDs to return. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
+            Firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         limit : Optional[int]
             Number of results returned. Limit 1000. (provider: benzinga)
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. (provider: benzinga)
         fields : Optional[str]
-            Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
+            Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
 
         Returns
         -------
