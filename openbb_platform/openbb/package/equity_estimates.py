@@ -30,13 +30,13 @@ class ROUTER_equity_estimates(Container):
         analyst_name: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed."
+                description="Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         firm_name: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed."
+                description="Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga."
             ),
         ] = None,
         provider: Annotated[
@@ -52,23 +52,23 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         analyst_name : Union[str, None, List[Optional[str]]]
-            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed.
+            Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.
         firm_name : Union[str, None, List[Optional[str]]]
-            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed.
+            Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
         provider : Optional[Literal['benzinga']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
         analyst_ids : Optional[str]
-            List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
+            List of analyst IDs to return. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
         firm_ids : Optional[str]
-            Firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)
+            Firm IDs to return. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
         limit : Optional[int]
             Number of results returned. Limit 1000. (provider: benzinga)
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. (provider: benzinga)
         fields : Optional[str]
-            Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
+            Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed for provider(s): benzinga. (provider: benzinga)
 
         Returns
         -------
@@ -475,7 +475,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ] = None,
         provider: Annotated[
@@ -491,7 +491,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[Optional[str]]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -598,7 +598,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -614,7 +614,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

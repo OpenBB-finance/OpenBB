@@ -262,9 +262,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                     # For backwards compatibility, before this was a list
                     providers.append(p)
 
-            if len(providers) == 1:
-                additional_description += " Multiple comma separated items allowed."
-            elif len(providers) > 1:
+            if providers:
                 additional_description += (
                     " Multiple comma separated items allowed for provider(s): "
                     + ", ".join(providers)  # type: ignore[arg-type]

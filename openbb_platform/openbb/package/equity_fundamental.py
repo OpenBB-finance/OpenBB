@@ -1304,13 +1304,13 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed."
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         start_date: Annotated[
@@ -1348,9 +1348,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple comma separated items allowed.
+            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -2090,13 +2090,13 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Intrinio data tag ID or code. Multiple comma separated items allowed."
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         provider: Annotated[
@@ -2112,9 +2112,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple comma separated items allowed.
+            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -2260,7 +2260,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -2276,7 +2276,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2685,7 +2685,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -2701,7 +2701,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
