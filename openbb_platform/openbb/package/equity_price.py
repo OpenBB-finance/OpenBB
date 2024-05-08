@@ -191,13 +191,6 @@ class ROUTER_equity_price(Container):
                         "tiingo": {"multiple_items_allowed": True},
                         "yfinance": {"multiple_items_allowed": True},
                     },
-                    "interval": {
-                        "fmp": {},
-                        "intrinio": {},
-                        "polygon": {},
-                        "tiingo": {},
-                        "yfinance": {},
-                    },
                     "adjusted": {"deprecated": True},
                     "prepost": {"deprecated": True},
                 },

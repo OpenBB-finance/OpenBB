@@ -1026,10 +1026,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {"fred": {"multiple_items_allowed": True}},
-                    "limit": {"fred": {}},
-                },
+                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 

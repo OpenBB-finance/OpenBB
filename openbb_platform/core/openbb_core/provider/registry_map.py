@@ -120,17 +120,18 @@ class RegistryMap:
         extra_fields = model_map[provider]["QueryParams"]["fields"]
 
         for field, properties in getattr(model, "__json_schema_extra__", {}).items():
-            if field in standard_fields:
-                model_field = standard_fields[field]
-            elif field in extra_fields:
-                model_field = extra_fields[field]
-            else:
-                continue
+            if properties:
+                if field in standard_fields:
+                    model_field = standard_fields[field]
+                elif field in extra_fields:
+                    model_field = extra_fields[field]
+                else:
+                    continue
 
-            if model_field.json_schema_extra is None:
-                model_field.json_schema_extra = {}
+                if model_field.json_schema_extra is None:
+                    model_field.json_schema_extra = {}
 
-            model_field.json_schema_extra[provider] = properties
+                model_field.json_schema_extra[provider] = properties
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""

@@ -403,9 +403,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
-                },
             )
         )
 
@@ -829,9 +826,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
-                },
             )
         )
 
@@ -1300,7 +1294,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"form_type": {"sec": {}}},
             )
         )
 
@@ -1951,9 +1944,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "period": {"fmp": {}, "intrinio": {}, "polygon": {}, "yfinance": {}}
-                },
             )
         )
 
@@ -3221,7 +3211,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"period": {"fmp": {}, "intrinio": {}}},
             )
         )
 
@@ -3324,7 +3313,6 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"period": {"intrinio": {}}, "statement_type": {"intrinio": {}}},
             )
         )
 
