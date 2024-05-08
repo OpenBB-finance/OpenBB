@@ -152,7 +152,7 @@ class RegistryMap:
         extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
         found_first_standard = False
 
-        family = RegistryMap._class_hierarchy(model)
+        family = RegistryMap._get_class_hierarchy(model)
         for i, child in enumerate(family):
             if child.__name__ in SKIP:
                 continue
@@ -205,6 +205,6 @@ class RegistryMap:
             )
 
     @staticmethod
-    def _class_hierarchy(class_) -> tuple:
+    def _get_class_hierarchy(class_) -> tuple:
         """Return the class hierarchy starting with the class itself until `object`."""
         return getattr(class_, "__mro__", ())
