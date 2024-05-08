@@ -228,12 +228,7 @@ class CLIController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
-        mt.add_info("Platform CLI")
-
-        mt.add_section(
-            "data",
-            description="retrieve data from different asset classes and providers",
-        )
+        mt.add_info("Retrieve data from different asset classes and providers")
 
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
@@ -252,11 +247,8 @@ class CLIController(BaseController):
                 mt.add_cmd(router)
 
         if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
-            mt.add_section(
-                "data processing",
-                description="analyze and process previously obtained data",
-                leading_new_line=True,
-            )
+            mt.add_info("\nAnalyze and process previously obtained data")
+
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
                     continue
@@ -273,11 +265,8 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_section(
-            "configuration",
-            description="configure the platform and manage your account",
-            leading_new_line=True,
-        )
+        mt.add_info("\nConfigure the platform and manage your account")
+
         for router, value in PLATFORM_ROUTERS.items():
             if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
                 continue
@@ -294,12 +283,12 @@ class CLIController(BaseController):
             else:
                 mt.add_cmd(router)
 
-        mt.add_section(
-            "OBBject registry",
-            description="access and manage your cached results",
-            leading_new_line=True,
-        )
+        mt.add_info("\nAccess and manage your cached results")
         mt.add_cmd("results")
+        if session.obbject_registry.obbjects:
+            mt.add_section("Cached Results:\n", leading_new_line=True)
+            for key, value in session.obbject_registry.all.items():
+                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
