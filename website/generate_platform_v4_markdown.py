@@ -593,7 +593,6 @@ def generate_platform_markdown(paths: Dict) -> None:
     console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in paths.items():
-
         reference_markdown_content = ""
         data_markdown_content = ""
 
