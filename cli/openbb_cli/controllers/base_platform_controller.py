@@ -318,6 +318,11 @@ class PlatformController(BaseController):
                     description=command_description,
                 )
 
+        if session.obbject_registry.obbjects:
+            mt.add_section("Cached Results:\n", leading_new_line=True)
+            for key, value in session.obbject_registry.all.items():
+                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+
         session.console.print(text=mt.menu_text, menu=self.PATH)
 
         settings = session.settings
