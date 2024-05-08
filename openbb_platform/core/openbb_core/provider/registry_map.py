@@ -156,12 +156,19 @@ class RegistryMap:
             if c.__name__ in SKIP:
                 continue
 
+            parent = c.__mro__[1] if c.__mro__[1] not in SKIP else BaseModel
+
             fields = {
                 name: field
                 for name, field in c.model_fields.items()
-                # This ensures fields inherited by c are discarded
-                # => Only fields defined in c are included
+                # This ensures fields inherited by c are discarded.
+                # We need to compare child and parent __annotations__
+                # because this attribute is redirected to the parent class
+                # when the model simply inherits the parent and does not
+                # define any attributes.
+                # TLDR: Only fields defined in c are included
                 if name in c.__annotations__
+                and c.__annotations__ is not parent.__annotations__
             }
 
             if Path(getfile(c)).parent == STANDARD_MODELS_FOLDER:
