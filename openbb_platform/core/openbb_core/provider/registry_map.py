@@ -152,12 +152,12 @@ class RegistryMap:
         extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
         found_first_standard = False
 
-        hierarchy = RegistryMap._class_hierarchy(model)
-        for i, child in enumerate(hierarchy):
+        family = RegistryMap._class_hierarchy(model)
+        for i, child in enumerate(family):
             if child.__name__ in SKIP:
                 continue
 
-            parent = hierarchy[i + 1] if hierarchy[i + 1] not in SKIP else BaseModel
+            parent = family[i + 1] if family[i + 1] not in SKIP else BaseModel
 
             fields = {
                 name: field
