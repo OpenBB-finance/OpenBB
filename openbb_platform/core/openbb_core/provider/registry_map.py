@@ -132,15 +132,6 @@ class RegistryMap:
 
             model_field.json_schema_extra[provider] = properties
 
-        # Register annotation for standard fields refined in the provider class
-        for f in set(standard_fields).intersection(set(extra_fields)):
-            if standard_fields[f].json_schema_extra is None:
-                standard_fields[f].json_schema_extra = {}
-            if extra_fields[f].annotation != standard_fields[f].annotation:
-                standard_fields[f].json_schema_extra.setdefault(provider, {}).update(
-                    {"annotation": extra_fields[f].annotation}
-                )
-
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
         return list(map_.keys())
