@@ -162,6 +162,9 @@ class PlatformController(BaseController):
                         if max_obbjects_exceeded:
                             session.obbject_registry.remove()
 
+                        # use the obbject to store the command so we can display it later on results
+                        obbject.extra["command"] = f"{title} {' '.join(other_args)}"
+
                         session.obbject_registry.register(obbject)
                         # we need to force to re-link so that the new obbject
                         # is immediately available for data processing commands
