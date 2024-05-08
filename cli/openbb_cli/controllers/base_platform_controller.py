@@ -75,17 +75,20 @@ class PlatformController(BaseController):
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
-                    action.choices = range(len(session.obbject_registry.obbjects))
-                    action.type = int
+                    action.choices = [
+                        "OBB" + str(i)
+                        for i in range(len(session.obbject_registry.obbjects))
+                    ]
+                    action.type = str
                     action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
-        if hasattr(ns_parser, "data") and ns_parser.data in range(
-            len(session.obbject_registry.obbjects)
-        ):
-            obbject = session.obbject_registry.get(ns_parser.data)
-            setattr(ns_parser, "data", obbject.results)
+        if hasattr(ns_parser, "data"):
+            ns_parser.data = int(ns_parser.data.replace("OBB", ""))
+            if ns_parser.data in range(len(session.obbject_registry.obbjects)):
+                obbject = session.obbject_registry.get(ns_parser.data)
+                setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
 
