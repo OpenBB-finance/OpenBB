@@ -524,9 +524,6 @@ class MethodDefinition:
             # Getting json_schema_extra without changing the original dict
             json_schema_extra = getattr(field_default, "json_schema_extra", {}).copy()
             json_schema_extra.pop("choices", None)
-            for v in json_schema_extra.values():
-                if isinstance(v, dict):
-                    v.pop("annotation", None)
             return json_schema_extra
         return {}
 
