@@ -65,7 +65,7 @@ class TmxBondPricesData(BondReferenceData):
         + " coupons are reinvested at the same rate."
         + " Values are returned as a normalized percent.",
         alias="lastYield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
