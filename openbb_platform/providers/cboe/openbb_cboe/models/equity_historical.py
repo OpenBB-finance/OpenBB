@@ -199,7 +199,7 @@ class CboeEquityHistoricalFetcher(
             (to_datetime(output["date"]) >= to_datetime(query.start_date))
             & (
                 to_datetime(output["date"])
-                <= to_datetime(query.end_date + timedelta(days=1))
+                <= to_datetime(query.end_date + timedelta(days=1))  # type: ignore[operator]
             )
         ]
         return [
