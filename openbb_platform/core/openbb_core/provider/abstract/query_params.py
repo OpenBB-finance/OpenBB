@@ -19,22 +19,23 @@ class QueryParams(BaseModel):
         Merge different json schema extra, identified by provider.
         Example:
             FMP fetcher:
-                __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+                __json_schema_extra__ = {"symbol":  {"multiple_items_allowed": True}}
             Intrinio fetcher
-                __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+                __json_schema_extra__ = {"symbol":  {"multiple_items_allowed": False}}
 
-            Creates a new field in the `symbol` schema with:
+            Creates new fields in the `symbol` schema:
             {
                 ...,
-                "multiple_items_allowed": ["fmp", "intrinio"],
+                "fmp": {"multiple_items_allowed": True},
+                "intrinio": {"multiple_items_allowed": False}
                 ...,
             }
 
         Multiple fields can be tagged with the same or multiple properties.
         Example:
         __json_schema_extra__ = {
-            "<field_name_A>": ["some_prop", "another_prop"],
-            "<field_name_B>": ["yet_another_prop"]
+            "<field_name_A>": {"foo": 123, "bar": 456},
+            "<field_name_B>": {"foo": 789}
         }
 
     Attributes:
