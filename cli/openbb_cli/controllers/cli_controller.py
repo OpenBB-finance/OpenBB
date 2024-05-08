@@ -287,7 +287,9 @@ class CLIController(BaseController):
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
             mt.add_section("Cached Results:\n", leading_new_line=True)
-            for key, value in session.obbject_registry.all.items():
+            for key, value in list(session.obbject_registry.all.items())[
+                : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
+            ]:
                 mt.add_raw(f"\tOBB{key}: {value['command']}\n")
 
         session.console.print(text=mt.menu_text, menu="Home")

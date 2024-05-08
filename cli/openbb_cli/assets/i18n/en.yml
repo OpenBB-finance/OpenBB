@@ -36,3 +36,4 @@ en:
   settings/n_cols: number of columns to show on non interactive tables
   settings/obbject_msg: show obbject registry message after a new result is added
   settings/obbject_res: define the maximum number of obbjects allowed in the registry
+  settings/obbject_display: define the maximum number of cached results to display on the help menu

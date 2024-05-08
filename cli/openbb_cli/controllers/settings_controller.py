@@ -41,6 +41,7 @@ class SettingsController(BaseController):
         "n_cols",
         "obbject_msg",
         "obbject_res",
+        "obbject_display",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
@@ -76,6 +77,7 @@ class SettingsController(BaseController):
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
         mt.add_cmd("obbject_res")
+        mt.add_cmd("obbject_display")
 
         session.console.print(text=mt.menu_text, menu="Settings")
 
@@ -322,4 +324,31 @@ class SettingsController(BaseController):
             session.console.print(
                 f"Current maximum allowed number of results to keep in the OBBject registry:"
                 f" {session.settings.N_TO_KEEP_OBBJECT_REGISTRY}"
+            )
+
+    def call_obbject_display(self, other_args: List[str]):
+        """Process obbject_display command."""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="obbject_display",
+            description="Number of results to display from the OBBject Registry.",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            dest="number",
+            action="store",
+            required=False,
+            type=int,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser and ns_parser.number:
+            session.settings.set_item("N_TO_DISPLAY_OBBJECT_REGISTRY", ns_parser.number)
+
+        elif not other_args:
+            session.console.print(
+                f"Current number of results to display from the OBBject registry:"
+                f" {session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY}"
             )
