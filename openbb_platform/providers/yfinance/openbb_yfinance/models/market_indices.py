@@ -61,7 +61,7 @@ class YFinanceMarketIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        tickers = params.get("symbol").lower().split(",")
+        tickers = params.get("symbol", "").lower().split(",")
 
         new_tickers = []
         for ticker in tickers:
@@ -123,7 +123,7 @@ class YFinanceMarketIndicesFetcher(
 
             data = data[
                 (data.index >= to_datetime(query.start_date))
-                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
+                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))  # type: ignore[operator]
             ]
 
         data.reset_index(inplace=True)

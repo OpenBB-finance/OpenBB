@@ -67,12 +67,12 @@ class FinvizPriceTargetFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Finviz endpoint."""
 
-        results = []
+        results: List[dict] = []
 
         def get_one(symbol) -> List[Dict]:
             """Get the data for one symbol."""
             price_targets = DataFrame()
-            result = []
+            result: List[dict] = []
             try:
                 data = finvizfinance(symbol)
                 price_targets = data.ticker_outer_ratings()
@@ -100,7 +100,7 @@ class FinvizPriceTargetFetcher(
             result = price_targets.to_dict(orient="records")
             return result
 
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.split(",") if query.symbol else []
         for symbol in symbols:
             result = get_one(symbol)
             if result is not None and result != []:

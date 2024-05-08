@@ -141,7 +141,7 @@ class CboeEquityHistoricalFetcher(
             return url
 
         urls = [
-            _generate_historical_prices_url(symbol, INTERVAL_DICT[query.interval])
+            _generate_historical_prices_url(symbol, INTERVAL_DICT[query.interval])  # type: ignore[arg-type]
             for symbol in symbols
         ]
         return await amake_requests(urls, **kwargs)

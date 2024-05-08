@@ -89,7 +89,7 @@ class FMPPriceTargetFetcher(
 
         symbols = query.symbol.split(",")  # type: ignore
 
-        results = []
+        results: List[dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""

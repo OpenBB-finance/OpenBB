@@ -86,7 +86,7 @@ class FMPExecutiveCompensationFetcher(
 
         symbols = query.symbol.split(",")
 
-        results = []
+        results: List[dict] = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
