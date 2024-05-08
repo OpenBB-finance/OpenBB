@@ -164,7 +164,7 @@ class RegistryMap:
                 # This ensures fields inherited by c are discarded.
                 # We need to compare child and parent __annotations__
                 # because this attribute is redirected to the parent class
-                # when the model simply inherits the parent and does not
+                # when the child simply inherits the parent and does not
                 # define any attributes.
                 # TLDR: Only fields defined in c are included
                 if name in c.__annotations__
