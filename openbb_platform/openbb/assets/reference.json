@@ -47,8 +47,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -432,8 +432,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -963,8 +963,8 @@
                 "standard": [
                     {
                         "name": "base",
-                        "type": "str",
-                        "description": "The base currency symbol.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The base currency symbol. Multiple items allowed for provider(s): fmp, polygon.",
                         "default": "usd",
                         "optional": true
                     },
@@ -1915,8 +1915,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -2589,8 +2589,8 @@
                 "tradingeconomics": [
                     {
                         "name": "country",
-                        "type": "str",
-                        "description": "Country of the event.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Country of the event. Multiple items allowed for provider(s): tradingeconomics.",
                         "default": null,
                         "optional": true
                     },
@@ -2884,8 +2884,8 @@
                 "standard": [
                     {
                         "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): fred.",
                         "default": "",
                         "optional": false
                     },
@@ -3418,8 +3418,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
                         "default": "",
                         "optional": false
                     },
@@ -4479,8 +4479,8 @@
                 "standard": [
                     {
                         "name": "country",
-                        "type": "str",
-                        "description": "The country to get data.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): econdb.",
                         "default": "",
                         "optional": false
                     },
@@ -4915,15 +4915,15 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.).",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple items allowed for provider(s): econdb.",
                         "default": "",
                         "optional": false
                     },
                     {
                         "name": "country",
-                        "type": "str",
-                        "description": "The country to get data. The country represented by the indicator, if available.",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. The country represented by the indicator, if available. Multiple items allowed for provider(s): econdb.",
                         "default": null,
                         "optional": true
                     },
@@ -5894,8 +5894,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp.",
                         "default": null,
                         "optional": true
                     },
@@ -6249,8 +6249,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -6635,8 +6635,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": null,
                         "optional": true
                     },
@@ -6889,15 +6889,15 @@
                 "standard": [
                     {
                         "name": "analyst_name",
-                        "type": "str",
-                        "description": "Analyst names to return. Omitting will return all available analysts.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Analyst names to return. Omitting will return all available analysts. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "firm_name",
-                        "type": "str",
-                        "description": "Firm names to return. Omitting will return all available firms.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Firm names to return. Omitting will return all available firms. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true
                     },
@@ -6912,15 +6912,15 @@
                 "benzinga": [
                     {
                         "name": "analyst_ids",
-                        "type": "str",
-                        "description": "List of analyst IDs to return.",
+                        "type": "Union[str, List[str]]",
+                        "description": "List of analyst IDs to return. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "firm_ids",
-                        "type": "str",
-                        "description": "Firm IDs to return.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Firm IDs to return. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true
                     },
@@ -6940,8 +6940,8 @@
                     },
                     {
                         "name": "fields",
-                        "type": "str",
-                        "description": "Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true
                     }
@@ -7387,8 +7387,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
                         "default": null,
                         "optional": true
                     },
@@ -7633,8 +7633,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                         "default": null,
                         "optional": true
                     },
@@ -9081,8 +9081,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -14527,15 +14527,15 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
                         "default": "",
                         "optional": false
                     },
                     {
                         "name": "tag",
-                        "type": "str",
-                        "description": "Intrinio data tag ID or code.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
                         "default": "",
                         "optional": false
                     },
@@ -14654,15 +14654,15 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
                         "default": "",
                         "optional": false
                     },
                     {
                         "name": "tag",
-                        "type": "str",
-                        "description": "Intrinio data tag ID or code.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
                         "default": "",
                         "optional": false
                     },
@@ -16727,8 +16727,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -17980,8 +17980,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -21683,8 +21683,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -22127,8 +22127,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -22774,8 +22774,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -23267,8 +23267,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -24052,8 +24052,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -25236,8 +25236,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -25729,8 +25729,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. (ETF)",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, intrinio, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -27048,8 +27048,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. (ETF)",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -27133,8 +27133,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
                         "default": "",
                         "optional": false
                     },
@@ -28443,8 +28443,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -28640,8 +28640,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for. (Stock)",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false
                     },
@@ -31031,15 +31031,15 @@
                     },
                     {
                         "name": "maturity",
-                        "type": "Union[float, str]",
-                        "description": "Maturities in years.",
+                        "type": "Union[Union[float, str], List[Union[float, str]]]",
+                        "description": "Maturities in years. Multiple items allowed for provider(s): fred.",
                         "default": 10.0,
                         "optional": true
                     },
                     {
                         "name": "category",
-                        "type": "str",
-                        "description": "Rate category. Options: spot_rate, par_yield.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Rate category. Options: spot_rate, par_yield. Multiple items allowed for provider(s): fred.",
                         "default": "spot_rate",
                         "optional": true
                     },
@@ -31419,8 +31419,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -31712,8 +31712,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, polygon, yfinance.",
                         "default": "",
                         "optional": false
                     },
@@ -32722,8 +32722,8 @@
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.",
                         "default": null,
                         "optional": true
                     },
