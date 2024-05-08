@@ -112,8 +112,9 @@ class MenuText:
         """Append raw text (without translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(text) + self.SECTION_SPACING) * " "
         left_spacing = self.SECTION_SPACING * " "
+        text = f"{left_spacing}{text}"
         if description:
-            text = f"{left_spacing}{text}{spacing}{description}\n"
+            text = f"{text}{spacing}{description}\n"
 
         if leading_new_line:
             self.menu_text += "\n" + text
