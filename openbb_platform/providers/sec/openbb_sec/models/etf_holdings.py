@@ -2,6 +2,7 @@
 
 # pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
+import asyncio
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 from warnings import warn
@@ -329,9 +330,22 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
-        filings = await get_nport_candidates(
-            symbol=query.symbol, use_cache=query.use_cache
-        )
+        # Implement a retry mechanism in case of RemoteDiconnected Error.
+        retries = 3
+        for i in range(retries):
+            filings = []
+            try:
+                filings = await get_nport_candidates(
+                    symbol=query.symbol, use_cache=query.use_cache
+                )
+                if filings:
+                    break
+            except Exception as e:
+                if i < retries - 1:
+                    warn(f"Error: {e}. Retrying...")
+                    await asyncio.sleep(1)
+                    continue
+                raise e
         filing_candidates = pd.DataFrame.from_records(filings)
         if filing_candidates.empty:
             raise ValueError(f"No N-Port records found for {query.symbol}.")

@@ -622,9 +622,9 @@ class ROUTER_equity_fundamental(Container):
             Period of report date greater than or equal to the given date. (provider: polygon)
         include_sources : bool
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Literal[None, 'asc', 'desc']
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Literal[None, 'filing_date', 'period_of_report_date']
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns

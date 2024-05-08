@@ -787,7 +787,7 @@
                         "name": "sort",
                         "type": "Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']",
                         "description": "Sort field used for ordering.",
-                        "default": "",
+                        "default": null,
                         "optional": true
                     },
                     {
@@ -3195,7 +3195,7 @@
                     },
                     {
                         "name": "filter_variable",
-                        "type": "Literal[None, 'frequency', 'units', 'seasonal_adjustment']",
+                        "type": "Literal['frequency', 'units', 'seasonal_adjustment']",
                         "description": "Filter by an attribute.",
                         "default": null,
                         "optional": true
@@ -3462,21 +3462,21 @@
                     },
                     {
                         "name": "frequency",
-                        "type": "Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
                         "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "aggregation_method",
-                        "type": "Literal[None, 'avg', 'sum', 'eop']",
+                        "type": "Literal['avg', 'sum', 'eop']",
                         "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
                         "default": "eop",
                         "optional": true
                     },
                     {
                         "name": "transform",
-                        "type": "Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
                         "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
                         "default": null,
                         "optional": true
@@ -4910,7 +4910,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol='main', country='eu')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4953,14 +4953,21 @@
                     {
                         "name": "transform",
                         "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
-                        "description": "The transformation to apply to the data, default is None.     tpop: Change from previous period     toya: Change from one year ago     tusd: Values as US dollars     tpgp: Values as a percent of GDP    Only 'tpop' and 'toya' are applicable to all indicators.   Applying transformations across multiple indicators/countries   may produce unexpected results.   This is because not all indicators are compatible with all transformations,   and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "description": "The transformation to apply to the data, default is None.   tpop: Change from previous period   toya: Change from one year ago   tusd: Values as US dollars   tpgp: Values as a percent of GDP   Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.   This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
                         "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'month']",
+                        "description": "The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'.",
+                        "default": "quarter",
                         "optional": true
                     },
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
                         "default": true,
                         "optional": true
                     }
@@ -12259,14 +12266,14 @@
                     },
                     {
                         "name": "order",
-                        "type": "Literal[None, 'asc', 'desc']",
+                        "type": "Literal['asc', 'desc']",
                         "description": "Order of the financial statement.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "sort",
-                        "type": "Literal[None, 'filing_date', 'period_of_report_date']",
+                        "type": "Literal['filing_date', 'period_of_report_date']",
                         "description": "Sort of the financial statement.",
                         "default": null,
                         "optional": true
