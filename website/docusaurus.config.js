@@ -1,13 +1,15 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require("prism-react-renderer/themes/vsLight");
-const darkCodeTheme = require("prism-react-renderer/themes/vsDark");
-const math = require("remark-math");
-const katex = require("rehype-katex");
+import lightCodeTheme from "prism-react-renderer/themes/vsLight";
+import darkCodeTheme from "prism-react-renderer/themes/vsDark";
+import math from "remark-math";
+import katex from "rehype-katex";
+import tailwind from "tailwindcss";
+import autoprefixer from "autoprefixer";
 
 /** @type {import('@docusaurus/types').Config} */
-const config = {
+export default {
   title: "OpenBB Docs",
   tagline: "OpenBB Docs",
   url: "https://docs.openbb.co", // Your website URL
@@ -46,43 +48,22 @@ const config = {
         name: "docusaurus-tailwindcss",
         configurePostCss(postcssOptions) {
           // Appends TailwindCSS and AutoPrefixer.
-          postcssOptions.plugins.push(require("tailwindcss"));
-          postcssOptions.plugins.push(require("autoprefixer"));
+          postcssOptions.plugins.push(tailwind);
+          postcssOptions.plugins.push(autoprefixer);
           return postcssOptions;
         },
       };
     },
-    /*[
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "sdk",
-        path: "content/sdk",
-        routeBasePath: "sdk",
-        editUrl:
-          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "bot",
-        path: "content/bot",
-        routeBasePath: "bot",
-        editUrl:
-          "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
-        sidebarPath: require.resolve("./sidebars.js"),
-      },
-    ],*/
   ],
   presets: [
     [
       "classic",
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      /* @type {import('@docusaurus/preset-classic').Options} */
+      {
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          sidebarPath: "./sidebars.js",
+          editUrl:
+            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           routeBasePath: "/",
@@ -91,9 +72,9 @@ const config = {
           rehypePlugins: [katex],
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: "./src/css/custom.css",
         },
-      }),
+      },
     ],
   ],
 
@@ -113,7 +94,7 @@ const config = {
       },
       algolia: {
         appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",  // pragma: allowlist secret
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd", // pragma: allowlist secret
         indexName: "openbbterminal",
         contextualSearch: false,
       },
@@ -125,5 +106,3 @@ const config = {
     },
   ],
 };
-
-module.exports = config;
