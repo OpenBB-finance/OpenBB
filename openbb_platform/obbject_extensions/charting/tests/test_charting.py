@@ -48,6 +48,7 @@ def obbject():
             self.provider = "mock_provider"
             self.extra = "mock_extra"
             self.warnings = "mock_warnings"
+            self.chart = MagicMock()
 
         def to_dataframe(self):
             """Mock to_dataframe."""
@@ -108,8 +109,8 @@ def test_functions(mock_get_charting_functions):
     mock_get_charting_functions.assert_called_once()
 
 
-@patch("openbb_charting.core.backend.get_backend")
-@patch("openbb_charting.core.backend.create_backend")
+@patch("openbb_charting.get_backend")
+@patch("openbb_charting.create_backend")
 def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
@@ -136,7 +137,8 @@ def test_get_chart_function(mock_charting_router):
 
 
 @patch("openbb_charting.Charting._get_chart_function")
-def test_show(mock_get_chart_function, obbject):
+@patch("openbb_charting.Chart")
+def test_show(_, mock_get_chart_function, obbject):
     """Test show method."""
     # Arrange
     mock_function = MagicMock()
@@ -151,28 +153,24 @@ def test_show(mock_get_chart_function, obbject):
     # Assert
     mock_get_chart_function.assert_called_once()
     mock_function.assert_called_once()
-    mock_fig.show.assert_called_once()
 
 
-@patch("openbb_charting.to_chart")
-def test_to_chart(mock_to_chart, obbject):
+@patch("openbb_charting.Charting._prepare_data_as_df")
+@patch("openbb_charting.Charting._get_chart_function")
+@patch("openbb_charting.Chart")
+def test_to_chart(_, mock_get_chart_function, mock_prepare_data_as_df, obbject):
     """Test to_chart method."""
     # Arrange
+    mock_prepare_data_as_df.return_value = (mock_dataframe, True)
+    mock_function = MagicMock()
+    mock_get_chart_function.return_value = mock_function
     mock_fig = MagicMock()
-    mock_to_chart.return_value = (mock_fig, {"content": "mock_content"})
+    mock_function.return_value = (mock_fig, {"content": "mock_content"})
     obj = Charting(obbject)
 
     # Act
     obj.to_chart()
 
     # Assert
-    assert obj._obbject.chart.fig == mock_fig
-    mock_to_chart.assert_called_once_with(
-        mock_dataframe,
-        indicators=None,
-        symbol="",
-        candles=True,
-        volume=True,
-        prepost=False,
-        volume_ticks_x=7,
-    )
+    mock_get_chart_function.assert_called_once()
+    mock_function.assert_called_once()

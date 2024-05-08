@@ -34,3 +34,5 @@ en:
   settings/language: translation language
   settings/n_rows: number of rows to show on non interactive tables
   settings/n_cols: number of columns to show on non interactive tables
+  settings/obbject_msg: show obbject registry message after a new result is added
+  settings/obbject_res: define the maximum number of obbjects allowed in the registry
