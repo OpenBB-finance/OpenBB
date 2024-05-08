@@ -17,18 +17,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines - Usage | OpenBB Platform CLI Docs" />
-
-import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
-
-<TutorialVideo
-    youtubeLink="https://www.youtube.com/embed/p1pY6Zujvnc?si=HWStqbVnkU_Lw_P-"
-    videoLegend="Show short introduction to OpenBB routines"
-/>
-
-:::note
-Note that the commands and menus may vary.
-:::
+<HeadTitle title="Introduction to Routines - Routines - Usage | OpenBB CLI Docs" />
 
 ## Introduction
 
@@ -67,12 +56,10 @@ For more information and examples, use 'about exe' to access the related guide.
 
 ## Basic Script
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/eaeb3511-d544-4579-8d76-f7a4fd7bb1d3)
-
 The most basic script style contains 2 main elements:
 
 - **Comments**: any text after a hashtag (`#`) is referred to as a comment. This is used to explain what is happening within the line below and is ignored when the file is executed.
-- **Commands**: any text *without* a hashtag is being run inside the OpenBB Terminal as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `equity/price/historical --symbol --provider fmp` is a valid line for the script.
+- **Commands**: any text *without* a hashtag is being run inside the CLI as if the user had prompted that line in the terminal. Note that this means that you are able to create a pipeline of commands in a single line, i.e. `equity/price/historical --symbol AAPL --provider fmp` is a valid line for the script.
 
 For instance, the text below corresponds to the example file that OpenBB provides.
 
@@ -105,6 +92,6 @@ As a starting point, let's use the example above.
 
 1. Create a new text file with the name `routines_template.openbb` and copy and paste the routine above.
 
-2. Move the file inside the `routines` folder within the [OpenBBUserData](/terminal/usage/data/custom-data) folder and, optionally, adjust the name to your liking.
+2. Move the file inside the `routines` folder within the [OpenBBUserData](/data/openbbuserdata) folder and, optionally, adjust the name to your liking.
 
-3. Open up the OpenBB Terminal, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, OpenBB Terminal's auto-completer will provide it as a choice.
+3. Open up the CLI, and type `exe --file routines_template`.  If you changed the name of the file, then replace, `routines_template`, with that.  As long as the file remains in the `~/OpenBBUserData/routines` folder, the CLI's auto-completer will provide it as a choice.

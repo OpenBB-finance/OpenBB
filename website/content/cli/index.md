@@ -17,10 +17,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OpenBB Platform CLI Docs" />
 
-The OpenBB Platform CLI is a command line interface that enhances the OpenBB Platform by providing easy access to its comprehensive data connectors and libraries. These tools are essential for designing and constructing financial reports and applications. As a robust tool, the CLI facilitates interaction with the platform, enabling users to retrieve and process data from third-party providers and create customized financial reports and applications.
-
-![Platform Docs pic](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/74520441-5e95-4ba6-9d16-6a2d5c966cf9)
-
 ## What is the OpenBB Platform CLI?
 
 The OpenBB Platform CLI is a wrapper around the OpenBB Platform, this means that one can expect it to have the same functionalities that the OpenBB Platform offers with the enhancements and limitations that a command line interface brings. The CLI is designed to be user-friendly and intuitive, making it easy for users to interact with the platform and access its pre-built data connectors and libraries.

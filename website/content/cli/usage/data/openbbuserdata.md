@@ -1,9 +1,7 @@
 ---
-title: Custom Data
+title: OpenBBUserData Folder
 sidebar_position: 3
-description: Documentation detailing usage of the OpenBB Platform CLI for financial data
-  aggregation, standardization, and user data import. It explains the OpenBBUserData
-  folder functions, how to modify settings, and how to import or export user data.
+description: This page outlines the OpenBBUserData folder.
 keywords:
 - financial data
 - data aggregation
@@ -23,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Custom Data - Data - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="OpenBBUserData Folder - Data - Usage | OpenBB CLI Docs" />
 
 The OpenBB Platform CLI not only allows access to a world of financial data through our data aggregation and standardization.
 
@@ -34,8 +32,6 @@ The `OpenBBUserData` folder's default location is the home of the system user ac
 - Windows: `C:/Users/<YOUR_USERNAME>/OpenBBUserData`
 
 Within the folder you can find files that you have exported.
-
-![OpenBBUserData Folder](https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png)
 
 This folder contains all things user-created. For example:
 

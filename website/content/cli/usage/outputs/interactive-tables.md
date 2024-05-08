@@ -23,18 +23,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Interactive Tables - Outputs - Usage | OpenBB Platform CLI Docs" />
 
-import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<TutorialVideo
-    youtubeLink="https://www.youtube.com/embed/knIYEvziZXQ?si=_2h8-xcodRm-qU6Y"
-    videoLegend="Short introduction on interactive tables"
-/>
-
-:::note
-Note that the commands and menus may vary.
-:::
-
-A common type of output in OpenBB are interactive tables which open in a separated window (utilizing our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
+Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
 
 :::tip
 All OpenBB Platform CLI results are displayed in interactive tables by default, unless the interactive model is disabled.

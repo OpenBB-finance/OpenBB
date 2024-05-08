@@ -1,9 +1,7 @@
 ---
 title: Customization
 sidebar_position: 4
-description: This documentation page details the functionality of the Settings Menu
-  and the Feature Flags Menu in the OpenBB Platform CLI. It instructs users how to customize
-  the CLI, alter its behaviour, and manipulate various environment variables.
+description: This documentation page details the settings and feature flags that can be defined under the `/settings` menu.
 keywords:
 - Settings Menu
 - Feature Flags Menu
@@ -12,11 +10,13 @@ keywords:
 - environment variables
 - Documentation
 - OpenBB Platform CLI
+- preferences
+- user
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Customization - Overview - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Customization - Overview - Usage | OpenBB CLI Docs" />
 
 ## Settings Menu
 

@@ -75,24 +75,15 @@ and then run on the terminal utilizing:
 
 The OpenBB Hub allows users to manage their own script routines to be run in the OpenBB Platform CLI.
 
-<img width="1442" alt="Screenshot 2023-04-14 at 7 13 11 PM" src="https://user-images.githubusercontent.com/25267873/232178264-61f383ef-242f-48da-bd32-83fd013a094c.png"/>
-
-In addition, a few script routines will be distributed by the OpenBB Team on [this page](https://my.openbb.co/app/terminal/routines/default). These come primarily from academic content that the team is releasing, but can serve as an example of what you can do.
-
-<img width="1443" alt="Screenshot 2023-04-14 at 7 17 44 PM" src="https://user-images.githubusercontent.com/25267873/232178430-1e870571-26b7-4513-9d14-5ef2e97090b2.png"/>
-
 Note that the "Download" button allows you to download the example file and share with co-workers / colleagues.
 
 To run a routine on the CLI, select `exe --file` from the main menu and the available routines will pop up as auto-completions. For example:
 
-<img width="576" alt="Screenshot 2023-04-14 at 7 23 16 PM" src="https://user-images.githubusercontent.com/25267873/232178635-4626c686-dafb-40c0-911f-60a1d3f8fd13.png"/>
 
 ## Personal Access Tokens
 
 Setting up API keys on the OpenBB Hub has an additional benefit: it allows you to generate a personal access token (PAT) that can be used with the OpenBB SDK. With this token, you can programmatically access the data that powers the OpenBB Terminal, without the need to add individual API keys for each user.
 
 You can find and manage your OpenBB PAT [here](https://my.openbb.co/app/platform/pat).
-
-<img width="1427" alt="Screenshot 2023-04-14 at 10 37 44 PM" src="https://user-images.githubusercontent.com/25267873/232185425-672a7eb0-e4ba-4863-8dbb-dd951afd25cc.png"/>
 
 You can log in to the OpenBB Platform CLI using your PAT by running the `login` command on the `account` menu.

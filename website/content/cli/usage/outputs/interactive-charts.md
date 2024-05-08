@@ -22,18 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Interactive Charts - Outputs - Usage | OpenBB Platform CLI Docs" />
 
-import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
-
-<TutorialVideo
-    youtubeLink="https://www.youtube.com/embed/6lqyTZGJ_GU?si=vvtDuJfaf66eTlXe"
-    videoLegend="Short introduction on interactive charts"
-/>
-
-:::note
-Note that the commands and menus may vary.
-:::
-
-A common type of output in OpenBB are interactive charts which open in a separated window (due to our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). The OpenBB charting library provides interactive and highly customizable charts.
+Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
 
 :::tip
 Not all commands have a charting output, the ones that do, will display a chart argument (`--chart`), which will trigger the charting output instead of the default table output.
