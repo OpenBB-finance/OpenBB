@@ -132,13 +132,13 @@ class RegistryMap:
 
             model_field.json_schema_extra[provider] = properties
 
-        # Register annotation for standard fields edited in the provider
-        for cf in set(standard_fields).intersection(set(extra_fields)):
-            if standard_fields[cf].json_schema_extra is None:
-                standard_fields[cf].json_schema_extra = {}
-            if extra_fields[cf].annotation != standard_fields[cf].annotation:
-                standard_fields[cf].json_schema_extra.setdefault(provider, {}).update(
-                    {"annotation": extra_fields[cf].annotation}
+        # Register annotation for standard fields refined in the provider class
+        for f in set(standard_fields).intersection(set(extra_fields)):
+            if standard_fields[f].json_schema_extra is None:
+                standard_fields[f].json_schema_extra = {}
+            if extra_fields[f].annotation != standard_fields[f].annotation:
+                standard_fields[f].json_schema_extra.setdefault(provider, {}).update(
+                    {"annotation": extra_fields[f].annotation}
                 )
 
     def _get_models(self, map_: MapType) -> List[str]:
@@ -168,11 +168,13 @@ class RegistryMap:
                 name: field
                 for name, field in c.model_fields.items()
                 # This ensures fields inherited by c are discarded
+                # => Only fields defined in c are included
                 if name in c.__annotations__
             }
 
             if Path(getfile(c)).parent == STANDARD_MODELS_FOLDER:
                 if not found_first_standard:
+                    # If standard uses inheritance we just use the first docstring
                     standard_info["docstring"] = c.__doc__
                     found_first_standard = True
                 standard_info["fields"].update(fields)
