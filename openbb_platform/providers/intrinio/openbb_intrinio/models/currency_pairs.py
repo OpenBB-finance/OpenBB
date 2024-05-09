@@ -7,7 +7,9 @@ from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsData,
     CurrencyPairsQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_intrinio.utils.helpers import get_data_many
+from pandas import DataFrame
 from pydantic import Field
 
 
@@ -21,9 +23,8 @@ class IntrinioCurrencyPairsQueryParams(CurrencyPairsQueryParams):
 class IntrinioCurrencyPairsData(CurrencyPairsData):
     """Intrinio Currency Available Pairs Data."""
 
-    __alias_dict__ = {"name": "code"}
+    __alias_dict__ = {"symbol": "code"}
 
-    code: str = Field(description="Code of the currency pair.", alias="name")
     base_currency: str = Field(
         description="ISO 4217 currency code of the base currency."
     )
@@ -56,7 +57,6 @@ class IntrinioCurrencyPairsFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         url = f"{base_url}/forex/pairs?api_key={api_key}"
-
         return await get_data_many(url, "pairs", **kwargs)
 
     @staticmethod
@@ -64,4 +64,21 @@ class IntrinioCurrencyPairsFetcher(
         query: IntrinioCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCurrencyPairsData]:
         """Return the transformed data."""
-        return [IntrinioCurrencyPairsData.model_validate(d) for d in data]
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
+        df = DataFrame(data)
+        if query.query:
+            df = df[
+                df["code"].str.contains(query.query, case=False)
+                | df["base_currency"].str.contains(query.query, case=False)
+                | df["quote_currency"].str.contains(query.query, case=False)
+            ]
+        if len(df) == 0:
+            raise EmptyDataError(
+                f"No results were found with the query supplied. -> {query.query}"
+                + " Hint: Names and descriptions are not searchable from Intrinio, try 3-letter symbols."
+            )
+        return [
+            IntrinioCurrencyPairsData.model_validate(d)
+            for d in df.to_dict(orient="records")
+        ]

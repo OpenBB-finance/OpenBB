@@ -3,11 +3,7 @@
 from typing import Any
 
 from dotenv import dotenv_values, set_key
-from openbb_cli.config.constants import (
-    ENV_FILE_PROJECT,
-    ENV_FILE_REPOSITORY,
-    ENV_FILE_SETTINGS,
-)
+from openbb_cli.config.constants import ENV_FILE_SETTINGS
 from pydantic import BaseModel, ConfigDict, model_validator
 
 
@@ -33,19 +29,21 @@ class Settings(BaseModel):
     REMEMBER_CONTEXTS: bool = True
     ENABLE_RICH_PANEL: bool = True
     TOOLBAR_HINT: bool = True
+    SHOW_MSG_OBBJECT_REGISTRY: bool = False
 
     # GENERAL
     TIMEZONE: str = "America/New_York"
     FLAIR: str = ":openbb"
     USE_LANGUAGE: str = "en"
     PREVIOUS_USE: bool = False
+    N_TO_KEEP_OBBJECT_REGISTRY: int = 10
 
     # STYLE
     RICH_STYLE: str = "dark"
 
     # OUTPUT
-    ALLOWED_NUMBER_OF_ROWS: int = 366
-    ALLOWED_NUMBER_OF_COLUMNS: int = 15
+    ALLOWED_NUMBER_OF_ROWS: int = 20
+    ALLOWED_NUMBER_OF_COLUMNS: int = 5
 
     # OPENBB
     HUB_URL: str = "https://my.openbb.co"
@@ -62,16 +60,8 @@ class Settings(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def from_env(cls, values: dict) -> dict:
-        """Load .env files.
-
-        Loads the dotenv files in the following order:
-        1. Repository .env file
-        2. Package .env file
-        3. User .env file
-        """
+        """Load settings from .env."""
         settings = {}
-        settings.update(dotenv_values(ENV_FILE_REPOSITORY))
-        settings.update(dotenv_values(ENV_FILE_PROJECT))
         settings.update(dotenv_values(ENV_FILE_SETTINGS))
         settings.update(values)
         filtered = {k.replace("OPENBB_", ""): v for k, v in settings.items()}
@@ -79,7 +69,5 @@ class Settings(BaseModel):
 
     def set_item(self, key: str, value: Any) -> None:
         """Set an item in the model and save to .env."""
-        # TODO: Check if this is ok, we are just saving into the settings .env
-        # Same behavior as before...
         setattr(self, key, value)
         set_key(str(ENV_FILE_SETTINGS), "OPENBB_" + key, str(value))

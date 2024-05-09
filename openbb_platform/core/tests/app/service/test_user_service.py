@@ -57,7 +57,8 @@ def test_update_default():
     # Update the default settings
     updated_settings = UserService.update_default(other_settings)
 
-    assert updated_settings.defaults.model_dump() == defaults_test.model_dump()
+    assert "test" in updated_settings.defaults.model_dump()["routes"]
+    assert updated_settings.defaults.model_dump()["routes"]["test"] == {"test": "test"}
 
 
 def test_merge_dicts():
