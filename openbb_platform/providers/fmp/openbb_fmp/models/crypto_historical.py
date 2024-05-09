@@ -100,7 +100,7 @@ class FMPCryptoHistoricalFetcher(
             url_params = f"{symbol}?{query_str}&apikey={api_key}"
             url = f"{base_url}/historical-chart/{interval}/{url_params}"
             if interval == "1day":
-                url = f"{base_url}/historical-price-full/crypto/{url_params}"
+                url = f"{base_url}/historical-price-full/{url_params}"
             return url
 
         symbols = query.symbol.split(",")
