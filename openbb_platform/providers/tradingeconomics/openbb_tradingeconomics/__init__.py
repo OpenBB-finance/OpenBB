@@ -5,7 +5,7 @@ from openbb_tradingeconomics.models.economic_calendar import TEEconomicCalendarF
 
 tradingeconomics_provider = Provider(
     name="tradingeconomics",
-    website="https://tradingeconomics.com/",
+    website="https://tradingeconomics.com",
     description="""Trading Economics""",
     credentials=["api_key"],
     fetcher_dict={"EconomicCalendar": TEEconomicCalendarFetcher},
