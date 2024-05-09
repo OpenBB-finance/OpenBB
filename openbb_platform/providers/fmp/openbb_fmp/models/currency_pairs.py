@@ -1,5 +1,7 @@
 """FMP Currency Available Pairs Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,7 +9,9 @@ from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsData,
     CurrencyPairsQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fmp.utils.helpers import get_data_many
+from pandas import DataFrame
 from pydantic import Field
 
 
@@ -53,7 +57,6 @@ class FMPCurrencyPairsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/symbol/available-forex-currency-pairs?apikey={api_key}"
 
@@ -64,4 +67,20 @@ class FMPCurrencyPairsFetcher(
         query: FMPCurrencyPairsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCurrencyPairsData]:
         """Return the transformed data."""
-        return [FMPCurrencyPairsData.model_validate(d) for d in data]
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
+        df = DataFrame(data)
+        if query.query:
+            df = df[
+                df["name"].str.contains(query.query, case=False)
+                | df["symbol"].str.contains(query.query, case=False)
+                | df["currency"].str.contains(query.query, case=False)
+                | df["stockExchange"].str.contains(query.query, case=False)
+                | df["exchangeShortName"].str.contains(query.query, case=False)
+            ]
+        if len(df) == 0:
+            raise EmptyDataError(
+                f"No results were found with the query supplied. -> {query.query}"
+                + " Hint: Names and descriptions are not searchable from FMP, try 3-letter symbols."
+            )
+        return [FMPCurrencyPairsData.model_validate(d) for d in df.to_dict("records")]
