@@ -27,7 +27,7 @@ class YFinanceMarketIndicesQueryParams(MarketIndicesQueryParams):
     Source: https://finance.yahoo.com/world-indices
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
@@ -61,7 +61,7 @@ class YFinanceMarketIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        tickers = params.get("symbol").lower().split(",")
+        tickers = params.get("symbol", "").lower().split(",")
 
         new_tickers = []
         for ticker in tickers:
@@ -123,7 +123,7 @@ class YFinanceMarketIndicesFetcher(
 
             data = data[
                 (data.index >= to_datetime(query.start_date))
-                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
+                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))  # type: ignore[operator]
             ]
 
         data.reset_index(inplace=True)
