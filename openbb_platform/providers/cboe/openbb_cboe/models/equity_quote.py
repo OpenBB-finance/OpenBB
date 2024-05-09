@@ -25,7 +25,7 @@ class CboeEquityQuoteQueryParams(EquityQuoteQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     use_cache: bool = Field(
         default=True,

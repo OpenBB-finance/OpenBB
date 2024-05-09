@@ -39,7 +39,7 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: str = Field(
         default="1d",
