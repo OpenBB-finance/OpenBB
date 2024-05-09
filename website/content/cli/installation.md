@@ -1,137 +1,72 @@
 ---
 title: Installation
-sidebar_position: 1
-description: This page presents the general system requirements, supported environments,
-  installation procedures, and setup for running the OpenBB Platform. It discusses
-  the prerequisites including Python version, operating system requirements, Docker
-  usage, and the process of building the platform from source.
+sidebar_position: 2
+description: This page provides installation instructions for the OpenBB CLI.
 keywords:
 - OpenBB Platform
 - Python
-- System requirements
-- Supported environments
-- Installation
-- Docker
-- Python virtual environment
-- Installation from source
-- Windows 10
-- Mac OS Big Sur
-- Linux
-- Package installation
-- VS Code
-- PyCharm
-- Jupyter
-- GitHub
-- Conda
-- venv
-- API
-- Repository
+- CLI
+- installation
 - pip
-- Poetry
-- Toml
-- PyPI
-- Node.js
-- npm
+- pypi
+
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation | OpenBB Platform Docs" />
+<HeadTitle title="Installation | OpenBB CLI Docs" />
 
-## General Requirements and Environments
+## Pre-Requisites
 
-Since the OpenBB Platform CLI is a wrapper around the OpenBB Platform, its requirements are the same. Please refer to the [OpenBB Platform install documentation](/platform/installation) for more information.
+The OpenBB CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
 
-## Installation
+- A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
 
-Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python.
+Please refer to the [OpenBB Platform install documentation](/platform/installation) for instructions and more information.
 
-:::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
-
-```bash
-conda create -n openbb-cli python=3.11
-conda activate openbb-cli
-```
-
+:::info
+If the OpenBB Platform is not already installed, the `openbb-cli` package  will install the default components.
 :::
 
-### PyPI
+## PyPI
 
-Install from PyPI with:
+Within your existing OpenBB environment, install `openbb-cli` with:
 
 ```console
 pip install openbb-cli
 ```
 
-This will install the core OpenBB Platform CLI, along with officially supported Platform's extensions and providers.
 
-#### Extensions
-
-To install all extensions and providers (both officially supported and community maintained ones):
+The installation script adds `openbb` to the PATH within your Python environment. The application can be launched from any path, as long as the environment is active.
 
 ```console
-pip install openbb[all]
+openbb
+
+Welcome to OpenBB Platform CLI v1.0.0
 ```
 
-To install a single extension:
+## Source
 
-```console
-pip install openbb[charting]
+Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
+
+Next, navigate into the folder: `~/OpenBBTerminal/cli`
+
+:::tip
+The Python environment should have `toml` and `poetry` installed.
+
+```bash
+pip install toml poetry
 ```
+:::
 
-```console
-pip install openbb[ta]
-```
-
-Or install a single provider:
-
-```console
-pip install openbb[yfinance]
-```
-
-### Source
-
-To build the OpenBB Platform from the source code, first install `git`:
-
-```console
-pip install git
-```
-
-Next, clone the repository from GitHub:
-
-```console
-git clone git@github.com:OpenBB-finance/OpenBBTerminal.git
-```
-
-When it is done, checkout the branch where the code is living:
-
-```console
-git checkout develop
-```
-
-Then, `cd` into the directory:
-
-```console
-cd cli
-```
-
-Install required packages
-
-```console
-pip install poetry
-```
-
-Finally, run `poetry` to install all dependencies:
+Finally, enter:
 
 ```console
 poetry install
 ```
 
-## Post-Installation
+Alternatively, install locally with `pip`:
 
-You're ready to launch the OpenBB Platform CLI. To do so, run the following command:
-
-```console
-openbb
+```bash
+pip install -e .
 ```

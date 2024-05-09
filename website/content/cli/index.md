@@ -1,34 +1,63 @@
 ---
-title: Introduction
+id: index
+title: OpenBB CLI
 sidebar_position: 0
-description: Introduction to the OpenBB Platform CLI; a command line interface that wraps around the OpenBB Platform, offering convenient access to its pre-built data connectors and libraries for designing and building financial reports and applications. Discover how you can contribute to the platform.
+description: The OpenBB CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
-- OpenBB Platform CLI
-- OpenBB Platform
+- OpenBB
+- CLI
+- Platform
 - data connectors
 - data access
 - data processing
 - third-party data providers
+- introduction
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
+import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Platform CLI Docs" />
+<HeadTitle title="OpenBB CLI Docs" />
 
-The OpenBB Platform CLI is a command line interface that enhances the OpenBB Platform by providing easy access to its comprehensive data connectors and libraries. These tools are essential for designing and constructing financial reports and applications. As a robust tool, the CLI facilitates interaction with the platform, enabling users to retrieve and process data from third-party providers and create customized financial reports and applications.
+## Overview
 
-![Platform Docs pic](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/74520441-5e95-4ba6-9d16-6a2d5c966cf9)
+The OpenBB CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
 
-## What is the OpenBB Platform CLI?
+The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
 
-The OpenBB Platform CLI is a wrapper around the OpenBB Platform, this means that one can expect it to have the same functionalities that the OpenBB Platform offers with the enhancements and limitations that a command line interface brings. The CLI is designed to be user-friendly and intuitive, making it easy for users to interact with the platform and access its pre-built data connectors and libraries.
+![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
-The OpenBB Platform CLI is the OpenBB's sub product that intends to offer a replacement for the former [OpenBB Terminal](/terminal). This means that the navigation and usage of the CLI are similar to the Terminal, but with the added benefit of being able to access the OpenBB Platform's data connectors and libraries, i.e., the OpenBB Core and OpenBB Extensions.
+## Guides & Documentation
 
-Starting with V4, we have completely restructured the previous version of the OpenBB SDK.
-Instead of a single monolithic SDK, that comes with dependency nightmares and compatibility issues with things you may not need, we have morphed into the OpenBB Platform, which serves as a collection of building blocks to be used for your own need.
+<ul className="grid grid-cols-1 gap-4 -ml-6">
+<NewReferenceCard
+    title="Installation"
+    description="An installation guide for the OpenBB CLI."
+    url="cli/installation"
+/>
+<NewReferenceCard
+    title="Quick Start"
+    description="A quick start guide for the OpenBB CLI."
+    url="cli/quickstart"
+/>
+<NewReferenceCard
+    title="Structure and Navigation"
+    description="Understand the terminal structure and how to navigate in it efficiently"
+    url="overview/structure-and-navigation"
+/>
+<NewReferenceCard
+    title="Commands and arguments"
+    description="Understand what argument can be added to each command and leverage the auto-complete functionality"
+    url="overview/commands-and-arguments"
+/>
+<NewReferenceCard
+    title="Customization"
+    description="Customize the OpenBB Terminal settings and feature flags"
+    url="overview/customizing-the-terminal"
+/>
+</ul>
 
 ---
 

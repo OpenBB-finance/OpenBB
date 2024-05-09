@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="API Keys - Data - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="API Keys - Data - Usage | OpenBB CLI Docs" />
 
 API (Application Programming Interface) keys are access credentials for obtaining data from a particular data vendor. They are a string of random characters assigned, by the data provider, to an individual account.
 
@@ -20,4 +20,4 @@ API (Application Programming Interface) keys are access credentials for obtainin
 
 Most vendors offer a free tier requiring only a valid email address, some will require an account with proper KYC (Know Your Customer).
 
-Find all data providers [here](https://my.openbb.co/app/platform/data-providers), and manage all you credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+Find all data providers [here](https://docs.openbb.co/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
