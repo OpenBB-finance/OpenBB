@@ -8,6 +8,7 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 class Provider:
     """Serves as provider extension entry point and must be created by each provider."""
 
+    # pylint: disable=too-many-arguments
     def __init__(
         self,
         name: str,
