@@ -198,7 +198,11 @@ class Backend(PyWry):
         self.check_backend()
         # pylint: disable=C0415
 
-        paper_bg = "rgba(0,0,0,0)" if self.charting_settings.chart_style == "dark" else "rgba(255,255,255,0)"
+        paper_bg = (
+            "rgba(0,0,0,0)"
+            if self.charting_settings.chart_style == "dark"
+            else "rgba(255,255,255,0)"
+        )
 
         title = "Interactive Chart"
 
