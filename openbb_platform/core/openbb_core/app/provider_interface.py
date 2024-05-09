@@ -253,17 +253,24 @@ class ProviderInterface(metaclass=SingletonMeta):
         annotation = field.annotation
 
         additional_description = ""
-        if (extra := field.json_schema_extra) and (
-            multiple := extra.get("multiple_items_allowed")  # type: ignore
-        ):
-            if provider_name:
-                additional_description += " Multiple comma separated items allowed."
-            else:
-                additional_description += (
-                    " Multiple comma separated items allowed for provider(s): "
-                    + ", ".join(multiple)  # type: ignore[arg-type]
-                    + "."
-                )
+        if extra := field.json_schema_extra:
+            providers = []
+            for p, v in extra.items():  # type: ignore[union-attr]
+                if isinstance(v, dict) and v.get("multiple_items_allowed"):
+                    providers.append(p)
+                elif isinstance(v, list) and "multiple_items_allowed" in v:
+                    # For backwards compatibility, before this was a list
+                    providers.append(p)
+
+            if providers:
+                if provider_name:
+                    additional_description += " Multiple comma separated items allowed."
+                else:
+                    additional_description += (
+                        " Multiple comma separated items allowed for provider(s): "
+                        + ", ".join(providers)  # type: ignore[arg-type]
+                        + "."
+                    )
 
         provider_field = (
             f"(provider: {provider_name})" if provider_name != "openbb" else ""

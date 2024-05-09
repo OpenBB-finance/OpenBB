@@ -237,7 +237,9 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["tradingeconomics"]}},
+                info={
+                    "country": {"tradingeconomics": {"multiple_items_allowed": True}}
+                },
             )
         )
 
@@ -430,7 +432,7 @@ class ROUTER_economy(Container):
                     "country": country,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["econdb"]}},
+                info={"country": {"econdb": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -603,7 +605,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["fred"]}},
+                info={"country": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1024,7 +1026,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fred"]}},
+                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1154,8 +1156,8 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["econdb"]},
-                    "country": {"multiple_items_allowed": ["econdb"]},
+                    "symbol": {"econdb": {"multiple_items_allowed": True}},
+                    "country": {"econdb": {"multiple_items_allowed": True}},
                 },
             )
         )

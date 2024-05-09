@@ -14,7 +14,7 @@ from openbb_fred.utils.fred_helpers import all_cpi_options
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     """FRED Consumer Price Index Query."""
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"country": {"multiple_items_allowed": True}}
 
 
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
@@ -75,8 +75,7 @@ class FREDConsumerPriceIndexFetcher(
                 transformed_data[item["date"]].update({country: item["value"]})
 
         # Convert the dictionary to a list of dictionaries
-        transformed_data = list(transformed_data.values())
-
         return [
-            FREDConsumerPriceIndexData.model_validate(item) for item in transformed_data
+            FREDConsumerPriceIndexData.model_validate(item)
+            for item in list(transformed_data.values())
         ]
