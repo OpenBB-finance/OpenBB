@@ -554,7 +554,7 @@ class BaseController(metaclass=ABCMeta):
                     "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
                 )
                 session.console.print(
-                    "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
+                    "\n[yellow]Sign to OpenBB Hub to register: http://my.openbb.co[/yellow]"
                 )
                 session.console.print(
                     "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
