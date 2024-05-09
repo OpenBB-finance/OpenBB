@@ -40,13 +40,16 @@ export default function NewReferenceCard({
             cleanedPath.startsWith("/platform"),
           "hover:bg-[#16A34A] border-[#16A34A] dark:hover:bg-[#14532D] dark:border-[#14532D]":
             cleanedPath.startsWith("/excel"),
+          "hover:bg-[#D3D3D3] border-[#D3D3D3] dark:hover:bg-[#5c5c5c] dark:border-[#5c5c5c]":
+            cleanedPath.startsWith("/cli"),
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/pro") &&
             !cleanedPath.startsWith("/excel") &&
             !cleanedPath.startsWith("/sdk") &&
             !cleanedPath.startsWith("/platform") &&
-            !cleanedPath.startsWith("/bot"),
+            !cleanedPath.startsWith("/bot") &&
+            !cleanedPath.startsWith("/cli"),
         },
       )}
       to={url}
