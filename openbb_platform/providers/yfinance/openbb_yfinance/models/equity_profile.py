@@ -91,7 +91,7 @@ class YFinanceEquityProfileData(EquityInfoData):
     dividend_yield: Optional[float] = Field(
         description="The dividend yield of the asset, as a normalized percent.",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="yield",
     )
     beta: Optional[float] = Field(
