@@ -45,7 +45,7 @@ class TmxCalendarEarningsData(CalendarEarningsData):
     surprise_percent: Optional[float] = Field(
         default=None,
         description="The EPS surprise as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     reporting_time: Optional[str] = Field(
         default=None,

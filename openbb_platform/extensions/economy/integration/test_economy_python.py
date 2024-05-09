@@ -565,6 +565,19 @@ def test_economy_available_indicators(params, obb):
                 "start_date": "2022-01-01",
                 "end_date": "2024-01-01",
                 "use_cache": False,
+                "frequency": None,
+            }
+        ),
+        (
+            {
+                "provider": "econdb",
+                "country": None,
+                "symbol": "MAIN",
+                "transform": None,
+                "start_date": "2022-01-01",
+                "end_date": "2024-01-01",
+                "use_cache": False,
+                "frequency": "quarter",
             }
         ),
     ],

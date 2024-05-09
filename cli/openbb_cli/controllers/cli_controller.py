@@ -20,9 +20,7 @@ import certifi
 import pandas as pd
 import requests
 from openbb import obb
-from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_cli.config import constants
-from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
     ENV_FILE_SETTINGS,
@@ -217,7 +215,7 @@ class CLIController(BaseController):
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
             }
 
-            self.completer = NestedCompleter.from_nested_dict(choices)
+            self.update_completer(choices)
 
     def print_help(self):
         """Print help."""
@@ -303,11 +301,11 @@ class CLIController(BaseController):
 
     def call_settings(self, _):
         """Process feature flags command."""
-        from openbb_cli.controllers.feature_flags_controller import (
-            FeatureFlagsController,
+        from openbb_cli.controllers.settings_controller import (
+            SettingsController,
         )
 
-        self.queue = self.load_class(FeatureFlagsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_exe(self, other_args: List[str]):
         """Process exe command."""
@@ -474,17 +472,6 @@ class CLIController(BaseController):
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     self.queue = self.queue[1:]
-
-    def call_results(self, _):
-        """Process results command."""
-        results = Registry().all
-        if results:
-            df = pd.DataFrame.from_dict(results, orient="index")
-            print_rich_table(
-                df, show_index=True, index_name="stack index", title="OBBject Results"
-            )
-        else:
-            session.console.print("[info]No results found.[/info]")
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:

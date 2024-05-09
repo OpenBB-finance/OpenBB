@@ -97,7 +97,7 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
         default=None,
         description="Percent change in the price of the symbol from the previous day.",
         alias="percent_change",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     adj_open: Optional[float] = Field(
         default=None,
@@ -213,24 +213,24 @@ class IntrinioEquityHistoricalFetcher(
             init_response = await response.json()
             if "error" in init_response:
                 raise RuntimeError(
-                    f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"
+                    f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"  # type: ignore
                 )
 
-            all_data: list = init_response.get(data_key, [])
+            all_data: list = init_response.get(data_key, [])  # type: ignore
 
-            next_page = init_response.get("next_page", None)
+            next_page = init_response.get("next_page", None)  # type: ignore
             while next_page:
                 url = response.url.update_query(next_page=next_page).human_repr()
                 response_data = await session.get_json(url)
 
-                all_data.extend(response_data.get(data_key, []))
-                next_page = response_data.get("next_page", None)
+                all_data.extend(response_data.get(data_key, []))  # type: ignore
+                next_page = response_data.get("next_page", None)  # type: ignore
 
             return all_data
 
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(

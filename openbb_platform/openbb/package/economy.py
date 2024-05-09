@@ -794,7 +794,7 @@ class ROUTER_economy(Container):
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
             Offset the results in conjunction with limit. (provider: fred)
-        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+        filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
             Filter by an attribute. (provider: fred)
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
@@ -931,7 +931,7 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert high frequency data to lower frequency.
                     None = No change
@@ -950,7 +950,7 @@ class ROUTER_economy(Container):
                     bwew = Biweekly, Ending Wednesday
                     bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal[None, 'avg', 'sum', 'eop']
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
                 A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
@@ -958,7 +958,7 @@ class ROUTER_economy(Container):
                     sum = Sum
                     eop = End of Period
                  (provider: fred)
-        transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
                 Transformation type
                     None = No transformation
@@ -1083,19 +1083,21 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
-        transform : Literal['toya', 'tpop', 'tusd', 'tpgp']
+        transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
             The transformation to apply to the data, default is None.
 
-                tpop: Change from previous period
-                toya: Change from one year ago
-                tusd: Values as US dollars
-                tpgp: Values as a percent of GDP
+            tpop: Change from previous period
+            toya: Change from one year ago
+            tusd: Values as US dollars
+            tpgp: Values as a percent of GDP
 
-             Only 'tpop' and 'toya' are applicable to all indicators.     Applying transformations across multiple indicators/countries     may produce unexpected results.
-             This is because not all indicators are compatible with all transformations,     and the original units and scale differ between entities.
-             `tusd` should only be used where values are currencies. (provider: econdb)
+            Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
+            This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
+            `tusd` should only be used where values are currencies. (provider: econdb)
+        frequency : Literal['annual', 'quarter', 'month']
+            The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb)
         use_cache : bool
-            If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
 
         Returns
         -------
@@ -1130,6 +1132,8 @@ class ROUTER_economy(Container):
         >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
         >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
         >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
+        >>> # Use the `main` symbol to get the group of main indicators for a country.
+        >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
         """  # noqa: E501
 
         return self._run(
