@@ -576,9 +576,16 @@
                 "message": null
             },
             "description": "Currency Search.\n\nSearch available currency pairs.\nCurrency pairs are the national currencies from two countries coupled for trading on\nthe foreign exchange (FX) marketplace.\nBoth currencies will have exchange rates on which the trade will have its position basis.\nAll trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.\n(ref: Investopedia)\nMajor currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='intrinio')\n# Search for 'EURUSD' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', symbol=EURUSD)\n# Search for actively traded currency pairs on the queried date using 'polygon' as provider.\nobb.currency.search(provider='polygon', date=2024-01-02, active=True)\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', search=Euro zone)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='fmp')\n# Search for 'EUR' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', query='EUR')\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', query='Euro zone')\n```\n\n",
             "parameters": {
                 "standard": [
+                    {
+                        "name": "query",
+                        "type": "str",
+                        "description": "Query to search for currency pairs.",
+                        "default": null,
+                        "optional": true
+                    },
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon']",
@@ -589,57 +596,7 @@
                 ],
                 "fmp": [],
                 "intrinio": [],
-                "polygon": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol of the pair to search.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "search",
-                        "type": "str",
-                        "description": "Search for terms within the ticker and/or company name.",
-                        "default": "",
-                        "optional": true
-                    },
-                    {
-                        "name": "active",
-                        "type": "bool",
-                        "description": "Specify if the tickers returned should be actively traded on the queried date.",
-                        "default": true,
-                        "optional": true
-                    },
-                    {
-                        "name": "order",
-                        "type": "Literal['asc', 'desc']",
-                        "description": "Order data by ascending or descending.",
-                        "default": "asc",
-                        "optional": true
-                    },
-                    {
-                        "name": "sort",
-                        "type": "Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']",
-                        "description": "Sort field used for ordering.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "limit",
-                        "type": "Annotated[int, Gt(gt=0)]",
-                        "description": "The number of data entries to return.",
-                        "default": 1000,
-                        "optional": true
-                    }
-                ]
+                "polygon": []
             },
             "returns": {
                 "OBBject": [
@@ -673,21 +630,21 @@
             "data": {
                 "standard": [
                     {
-                        "name": "name",
-                        "type": "str",
-                        "description": "Name of the currency pair.",
-                        "default": "",
-                        "optional": false
-                    }
-                ],
-                "fmp": [
-                    {
                         "name": "symbol",
                         "type": "str",
-                        "description": "Symbol of the currency pair.",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false
                     },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the currency pair.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fmp": [
                     {
                         "name": "currency",
                         "type": "str",
@@ -712,13 +669,6 @@
                 ],
                 "intrinio": [
                     {
-                        "name": "code",
-                        "type": "str",
-                        "description": "Code of the currency pair.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
                         "name": "base_currency",
                         "type": "str",
                         "description": "ISO 4217 currency code of the base currency.",
@@ -735,30 +685,9 @@
                 ],
                 "polygon": [
                     {
-                        "name": "market",
-                        "type": "str",
-                        "description": "Name of the trading market. Always 'fx'.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
-                        "name": "locale",
-                        "type": "str",
-                        "description": "Locale of the currency pair.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
                         "name": "currency_symbol",
                         "type": "str",
                         "description": "The symbol of the quote currency.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "currency_name",
-                        "type": "str",
-                        "description": "Name of the quote currency.",
                         "default": null,
                         "optional": true
                     },
@@ -777,16 +706,30 @@
                         "optional": true
                     },
                     {
-                        "name": "last_updated_utc",
-                        "type": "datetime",
-                        "description": "The last updated timestamp in UTC.",
+                        "name": "market",
+                        "type": "str",
+                        "description": "Name of the trading market. Always 'fx'.",
                         "default": "",
                         "optional": false
                     },
                     {
-                        "name": "delisted_utc",
-                        "type": "datetime",
-                        "description": "The delisted timestamp in UTC.",
+                        "name": "locale",
+                        "type": "str",
+                        "description": "Locale of the currency pair.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "date",
+                        "description": "The date the reference data was last updated.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "delisted",
+                        "type": "date",
+                        "description": "The date the item was delisted.",
                         "default": null,
                         "optional": true
                     }
