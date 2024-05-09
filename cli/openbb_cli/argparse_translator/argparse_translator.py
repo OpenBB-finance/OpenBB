@@ -301,10 +301,11 @@ class ArgparseTranslator:
                         # update choices
                         if choices:
                             action.choices = choices
-                        # update help
-                        action.help = _update_providers(
-                            action.help or "", [group.title]
-                        )
+                        if argument.name not in self.signature.parameters:
+                            # update help
+                            action.help = _update_providers(
+                                action.help or "", [group.title]
+                            )
                 return
 
             # if the argument is in use, remove it from all groups
