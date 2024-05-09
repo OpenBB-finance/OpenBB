@@ -1,6 +1,5 @@
 import "@docsearch/css";
 import {
-  DocSearch,
   DocSearchButton,
   useDocSearchKeyboardEvents,
 } from "@docsearch/react";
@@ -44,7 +43,7 @@ function mergeFacetFilters(f1, f2) {
   return [...normalize(f1), ...normalize(f2)];
 }
 
-function _DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
+function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const location = useLocation();
   const { siteMetadata } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
