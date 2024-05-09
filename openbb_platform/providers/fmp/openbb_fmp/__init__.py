@@ -66,7 +66,7 @@ from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 
 fmp_provider = Provider(
     name="fmp",
-    website="https://financialmodelingprep.com/",
+    website="https://financialmodelingprep.com",
     description="""Financial Modeling Prep is a new concept that informs you about
     stock market information (news, currencies, and stock prices).""",
     credentials=["api_key"],

@@ -10,7 +10,7 @@ from openbb_tiingo.models.world_news import TiingoWorldNewsFetcher
 
 tiingo_provider = Provider(
     name="tiingo",
-    website="https://tiingo.com/",
+    website="https://tiingo.com",
     description="""""",
     credentials=["token"],
     fetcher_dict={

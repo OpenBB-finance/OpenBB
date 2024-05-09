@@ -6,7 +6,7 @@ from openbb_core.provider.abstract.provider import Provider
 
 alpha_vantage_provider = Provider(
     name="alpha_vantage",
-    website="https://www.alphavantage.co/documentation/",
+    website="https://www.alphavantage.co",
     description="""Alpha Vantage provides realtime and historical
     financial market data through a set of powerful and developer-friendly data APIs
     and spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds)

@@ -18,7 +18,7 @@ from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 
 polygon_provider = Provider(
     name="polygon",
-    website="https://polygon.io/",
+    website="https://polygon.io",
     description="""The Polygon.io Stocks API provides REST endpoints that let you query
      the latest market data from all US stock exchanges. You can also find data on
      company financials, stock market holidays, corporate actions, and more.""",

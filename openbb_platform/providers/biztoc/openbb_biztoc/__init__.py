@@ -5,7 +5,7 @@ from openbb_core.provider.abstract.provider import Provider
 
 biztoc_provider = Provider(
     name="biztoc",
-    website="https://api.biztoc.com/#biztoc-default",
+    website="https://api.biztoc.com",
     description="""BizToc uses Rapid API for its REST API.
     You may sign up for your free account at https://rapidapi.com/thma/api/biztoc.
 

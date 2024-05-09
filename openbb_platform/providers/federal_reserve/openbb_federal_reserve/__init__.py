@@ -11,8 +11,8 @@ from openbb_federal_reserve.models.treasury_rates import (
 
 federal_reserve_provider = Provider(
     name="federal_reserve",
-    website="https://www.federalreserve.gov/data.htm",
-    description=(),
+    website="https://www.federalreserve.gov/data.html",
+    description="",
     fetcher_dict={
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,

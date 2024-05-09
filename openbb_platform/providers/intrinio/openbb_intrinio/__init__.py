@@ -55,7 +55,7 @@ from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 intrinio_provider = Provider(
     name="intrinio",
-    website="https://intrinio.com/",
+    website="https://intrinio.com",
     description="""Intrinio is a financial data platform that provides real-time and
     historical financial market data to businesses and developers through an API.""",
     credentials=["api_key"],

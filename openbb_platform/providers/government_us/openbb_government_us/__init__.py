@@ -10,7 +10,7 @@ from openbb_government_us.models.treasury_prices import (
 
 government_us_provider = Provider(
     name="government_us",
-    website="https://data.gov/",
+    website="https://data.gov",
     description=(
         "Data.gov is the United States government's open data website."
         + " It provides access to datasets published by agencies across the federal government. "

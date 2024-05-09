@@ -7,7 +7,7 @@ from openbb_wsj.models.losers import WSJLosersFetcher
 
 wsj_provider = Provider(
     name="wsj",
-    website="www.wsj.com",
+    website="https://www.wsj.com",
     description="""WSJ (Wall Street Journal) is a business-focused, English-language
     international daily newspaper based in New York City. The Journal is published six
     days a week by Dow Jones & Company, a division of News Corp, along with its Asian

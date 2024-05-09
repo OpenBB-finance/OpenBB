@@ -7,7 +7,7 @@ from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFet
 
 econdb_provider = Provider(
     name="EconDB",
-    website="https://econdb.com/",
+    website="https://econdb.com",
     description="""EconDB is a provider of data.""",
     credentials=[
         "api_key"
