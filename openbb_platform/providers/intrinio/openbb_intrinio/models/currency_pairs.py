@@ -57,7 +57,6 @@ class IntrinioCurrencyPairsFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         url = f"{base_url}/forex/pairs?api_key={api_key}"
-        print(url)
         return await get_data_many(url, "pairs", **kwargs)
 
     @staticmethod
