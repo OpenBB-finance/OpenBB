@@ -191,13 +191,6 @@ class ROUTER_equity_price(Container):
                         "tiingo": {"multiple_items_allowed": True},
                         "yfinance": {"multiple_items_allowed": True},
                     },
-                    "interval": {
-                        "fmp": {},
-                        "intrinio": {},
-                        "polygon": {},
-                        "tiingo": {},
-                        "yfinance": {},
-                    },
                     "adjusted": {"deprecated": True},
                     "prepost": {"deprecated": True},
                 },
@@ -317,7 +310,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
@@ -333,7 +326,7 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

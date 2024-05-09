@@ -106,7 +106,7 @@ class TiingoCurrencyHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=False), ["tickers", "resampleFreq"]
         )
-        results = []
+        results: List[dict] = []
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             result = await response.json()

@@ -120,26 +120,18 @@ class RegistryMap:
         extra_fields = model_map[provider]["QueryParams"]["fields"]
 
         for field, properties in getattr(model, "__json_schema_extra__", {}).items():
-            if field in standard_fields:
-                model_field = standard_fields[field]
-            elif field in extra_fields:
-                model_field = extra_fields[field]
-            else:
-                continue
+            if properties:
+                if field in standard_fields:
+                    model_field = standard_fields[field]
+                elif field in extra_fields:
+                    model_field = extra_fields[field]
+                else:
+                    continue
 
-            if model_field.json_schema_extra is None:
-                model_field.json_schema_extra = {}
+                if model_field.json_schema_extra is None:
+                    model_field.json_schema_extra = {}
 
-            model_field.json_schema_extra[provider] = properties
-
-        # Register annotation for standard fields edited in the provider
-        for cf in set(standard_fields).intersection(set(extra_fields)):
-            if standard_fields[cf].json_schema_extra is None:
-                standard_fields[cf].json_schema_extra = {}
-            if extra_fields[cf].annotation != standard_fields[cf].annotation:
-                standard_fields[cf].json_schema_extra.setdefault(provider, {}).update(
-                    {"annotation": extra_fields[cf].annotation}
-                )
+                model_field.json_schema_extra[provider] = properties
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -160,20 +152,30 @@ class RegistryMap:
         extra_info: Dict[str, Any] = {"fields": {}, "docstring": model.__doc__}
         found_first_standard = False
 
-        for c in RegistryMap._class_hierarchy(model):
-            if c.__name__ in SKIP:
+        family = RegistryMap._get_class_family(model)
+        for i, child in enumerate(family):
+            if child.__name__ in SKIP:
                 continue
+
+            parent = family[i + 1] if family[i + 1] not in SKIP else BaseModel
 
             fields = {
                 name: field
-                for name, field in c.model_fields.items()
-                # This ensures fields inherited by c are discarded
-                if name in c.__annotations__
+                for name, field in child.model_fields.items()
+                # This ensures fields inherited by c are discarded.
+                # We need to compare child and parent __annotations__
+                # because this attribute is redirected to the parent class
+                # when the child simply inherits the parent and does not
+                # define any attributes.
+                # TLDR: Only fields defined in c are included
+                if name in child.__annotations__
+                and child.__annotations__ is not parent.__annotations__
             }
 
-            if Path(getfile(c)).parent == STANDARD_MODELS_FOLDER:
+            if Path(getfile(child)).parent == STANDARD_MODELS_FOLDER:
                 if not found_first_standard:
-                    standard_info["docstring"] = c.__doc__
+                    # If standard uses inheritance we just use the first docstring
+                    standard_info["docstring"] = child.__doc__
                     found_first_standard = True
                 standard_info["fields"].update(fields)
             else:
@@ -203,6 +205,6 @@ class RegistryMap:
             )
 
     @staticmethod
-    def _class_hierarchy(class_) -> tuple:
-        """Return the class hierarchy starting with the class itself until `object`."""
+    def _get_class_family(class_) -> tuple:
+        """Return the class family starting with the class itself until `object`."""
         return getattr(class_, "__mro__", ())

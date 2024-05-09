@@ -339,7 +339,7 @@ class ROUTER_economy(Container):
         country: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="The country to get data. Multiple comma separated items allowed."
+                description="The country to get data. Multiple comma separated items allowed for provider(s): econdb."
             ),
         ],
         provider: Annotated[
@@ -355,7 +355,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple comma separated items allowed.
+            The country to get data. Multiple comma separated items allowed for provider(s): econdb.
         provider : Optional[Literal['econdb']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
@@ -443,7 +443,7 @@ class ROUTER_economy(Container):
         country: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="The country to get data. Multiple comma separated items allowed.",
+                description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
                 choices=[
                     "australia",
                     "austria",
@@ -536,7 +536,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple comma separated items allowed.
+            The country to get data. Multiple comma separated items allowed for provider(s): fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -894,7 +894,7 @@ class ROUTER_economy(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
@@ -922,7 +922,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -1026,10 +1026,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={
-                    "symbol": {"fred": {"multiple_items_allowed": True}},
-                    "limit": {"fred": {}},
-                },
+                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1047,13 +1044,13 @@ class ROUTER_economy(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed."
+                description="Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb."
             ),
         ],
         country: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed."
+                description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb."
             ),
         ] = None,
         start_date: Annotated[
@@ -1077,9 +1074,9 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed.
+            Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb.
         country : Union[str, None, List[Optional[str]]]
-            The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed.
+            The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]

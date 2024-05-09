@@ -142,7 +142,7 @@ class TiingoEquityHistoricalFetcher(
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             data = await response.json()
             symbol = response.url.parts[-2]
-            results = []
+            results: List[dict] = []
             if not data:
                 _warn(f"No data found the the symbol: {symbol}")
                 return results

@@ -590,7 +590,7 @@ class ROUTER_equity_ownership(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance."
             ),
         ],
         provider: Annotated[
@@ -606,7 +606,7 @@ class ROUTER_equity_ownership(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

@@ -173,7 +173,6 @@ class ROUTER_index(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"fmp": {}}},
             )
         )
 
@@ -305,8 +304,7 @@ class ROUTER_index(Container):
                         "intrinio": {"multiple_items_allowed": True},
                         "polygon": {"multiple_items_allowed": True},
                         "yfinance": {"multiple_items_allowed": True},
-                    },
-                    "interval": {"fmp": {}, "polygon": {}, "yfinance": {}},
+                    }
                 },
             )
         )

@@ -75,8 +75,7 @@ class FREDConsumerPriceIndexFetcher(
                 transformed_data[item["date"]].update({country: item["value"]})
 
         # Convert the dictionary to a list of dictionaries
-        transformed_data = list(transformed_data.values())
-
         return [
-            FREDConsumerPriceIndexData.model_validate(item) for item in transformed_data
+            FREDConsumerPriceIndexData.model_validate(item)
+            for item in list(transformed_data.values())
         ]
