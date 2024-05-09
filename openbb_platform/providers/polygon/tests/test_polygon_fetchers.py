@@ -152,7 +152,7 @@ def test_polygon_currency_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_polygon_currency_pairs_fetcher(credentials=test_credentials):
     """Test the Polygon Currency Pairs fetcher."""
-    params = {"date": date(2023, 1, 1)}
+    params = {}
 
     fetcher = PolygonCurrencyPairsFetcher()
     result = fetcher.test(params, credentials)
