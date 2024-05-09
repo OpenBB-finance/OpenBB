@@ -1,14 +1,14 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-import lightCodeTheme from "prism-react-renderer/themes/vsLight";
-import darkCodeTheme from "prism-react-renderer/themes/vsDark";
-import math from "remark-math";
-import katex from "rehype-katex";
-import tailwind from "tailwindcss";
+import { Options, ThemeConfig } from "@docusaurus/preset-classic";
+import { Config } from "@docusaurus/types";
 import autoprefixer from "autoprefixer";
+import { themes } from "prism-react-renderer";
+import katex from "rehype-katex";
+import math from "remark-math";
+import tailwind from "tailwindcss";
 
-/** @type {import('@docusaurus/types').Config} */
 export default {
   title: "OpenBB Docs",
   tagline: "OpenBB Docs",
@@ -58,7 +58,6 @@ export default {
   presets: [
     [
       "classic",
-      /* @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
           sidebarPath: "./sidebars.js",
@@ -74,35 +73,33 @@ export default {
         theme: {
           customCss: "./src/css/custom.css",
         },
-      },
+      } satisfies Options,
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      image: "img/banner.png",
-      prism: {
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
-      },
-      // TODO - Jose can you make this so we get lighter color on main view - like bot docs
-      colorMode: {
-        defaultMode: "dark",
-        disableSwitch: false,
-        respectPrefersColorScheme: false,
-      },
-      algolia: {
-        appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd", // pragma: allowlist secret
-        indexName: "openbbterminal",
-        contextualSearch: false,
-      },
-    }),
+  themeConfig: {
+    image: "img/banner.png",
+    prism: {
+      theme: themes.vsLight,
+      darkTheme: themes.vsDark,
+    },
+    // TODO - Jose can you make this so we get lighter color on main view - like bot docs
+    colorMode: {
+      defaultMode: "dark",
+      disableSwitch: false,
+      respectPrefersColorScheme: false,
+    },
+    algolia: {
+      appId: "7D1HQ0IXAS",
+      apiKey: "a2e289977b4b663ed9cf3d4635a438fd", // pragma: allowlist secret
+      indexName: "openbbterminal",
+      contextualSearch: false,
+    },
+  } satisfies ThemeConfig,
   stylesheets: [
     {
       href: "/katex/katex.min.css",
       type: "text/css",
     },
   ],
-};
+} satisfies Config;

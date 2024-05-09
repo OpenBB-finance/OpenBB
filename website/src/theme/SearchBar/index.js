@@ -1,4 +1,9 @@
-import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
+import "@docsearch/css";
+import {
+  DocSearch,
+  DocSearchButton,
+  useDocSearchKeyboardEvents,
+} from "@docsearch/react";
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
@@ -16,9 +21,11 @@ import { createPortal } from "react-dom";
 import { useIFrameContext } from "../Root.tsx";
 
 let DocSearchModal = null;
+
 function Hit({ hit, children }) {
   return <Link to={hit.url}>{children}</Link>;
 }
+
 function ResultsFooter({ state, onClose }) {
   return (
     <Link to={`/search?q=${state.query}`} onClick={onClose}>
@@ -31,11 +38,13 @@ function ResultsFooter({ state, onClose }) {
     </Link>
   );
 }
+
 function mergeFacetFilters(f1, f2) {
   const normalize = (f) => (typeof f === "string" ? [f] : f);
   return [...normalize(f1), ...normalize(f2)];
 }
-function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
+
+function _DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const location = useLocation();
   const { siteMetadata } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
@@ -61,7 +70,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       return Promise.resolve();
     }
     return Promise.all([
-      // import("@docsearch/react/modal"),
+      import("@docsearch/react/modal"),
       // import("@docsearch/react/style"),
       import("./styles.css"),
     ]).then(([{ DocSearchModal: Modal }]) => {
