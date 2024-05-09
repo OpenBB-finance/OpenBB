@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Developer Issues - Faqs | OpenBB SDK Docs" />
 
 <details>
-<summary>How do I launch in debug mode?</summary>
+<summary mdxType="summary">How do I launch in debug mode?</summary>
 
 The PyWry window can be run in debug mode for identifying specific issues. Use the code block below - with the `obb` Python environment active - to import the OpenBB SDK in debug mode.
 
@@ -42,7 +42,7 @@ The charts and tables will now include a developer tools button, located at the 
 </details>
 
 <details>
-<summary>What branch on GitHub should pull requests be submitted to?</summary>
+<summary mdxType="summary">What branch on GitHub should pull requests be submitted to?</summary>
 
 Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.
 
@@ -62,7 +62,7 @@ Branches must also follow the naming convention:
 </details>
 
 <details>
-<summary>Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
+<summary mdxType="summary">Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
 
 If the error message looks something like:
 
@@ -80,7 +80,7 @@ git pull
 </details>
 
 <details>
-<summary>What does it mean if it says wheel is missing?</summary>
+<summary mdxType="summary">What does it mean if it says wheel is missing?</summary>
 
 If you receive any notifications regarding `wheel` missing, this could be due to this dependency missing.
 
@@ -89,7 +89,7 @@ If you receive any notifications regarding `wheel` missing, this could be due to
 </details>
 
 <details>
-<summary>Why do these .whl files not exist?</summary>
+<summary mdxType="summary">Why do these .whl files not exist?</summary>
 
 If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
 Just removing the 'artifacts' folder could also be enough:
@@ -127,7 +127,7 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
 </details>
 
 <details>
-<summary>What does the JSONDecodeError mean during poetry install?</summary>
+<summary mdxType="summary">What does the JSONDecodeError mean during poetry install?</summary>
 
 Sometimes poetry can throw a `JSONDecodeError` on random packages while running `poetry install`. This can be observed on macOS 10.14+ running python 3.8+. This is because of the use of an experimental installer that can be switched off to avoid the mentioned error. Run the code below as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it should fix the installation process.
 
@@ -144,7 +144,7 @@ _Commands that may help you in case of an error:_
 </details>
 
 <details>
-<summary>How do I deal with errors regarding CRLF?</summary>
+<summary mdxType="summary">How do I deal with errors regarding CRLF?</summary>
 
 When trying to commit code changes, pylint will prevent you from doing so if your line break settings are set to
 CRLF (default for Windows).
@@ -168,7 +168,7 @@ git reset --hard
 </details>
 
 <details>
-<summary>Why can't I run OpenBB via the VS Code integrated terminal?</summary>
+<summary mdxType="summary">Why can't I run OpenBB via the VS Code integrated terminal?</summary>
 
 This occurs when VS Code terminal python version/path is different from the terminal version.
 

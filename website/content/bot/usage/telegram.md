@@ -36,7 +36,8 @@ To use it, you need to type slash commands in the chat. A slash command starts w
 </div>
 
 <details>
-<summary>How do I select commands instead of typing?</summary>
+<summary mdxType="summary">How do I select commands instead of typing?</summary>
+
 If you are On mobile press and hold to select the command.
 
 On desktop press `tab` to select the command.

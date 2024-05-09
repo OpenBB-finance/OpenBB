@@ -85,7 +85,7 @@ This section covers all API keys listed above and include detailed instructions 
 > Alpha Vantage provides enterprise-grade financial market data through a set of powerful and developer-friendly data APIs and spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds) to economic indicators, from foreign exchange rates to commodities, from fundamental data to technical indicators, Alpha Vantage is your one-stop-shop for real-time and historical global market data delivered through cloud-based APIs, Excel, and Google Sheets.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://www.alphavantage.co/support/#api-key
 
@@ -106,7 +106,7 @@ openbb.keys.av(key = 'REPLACE_WITH_KEY', persist = True)
 > Binance cryptocurrency exchange - We operate the worlds biggest bitcoin exchange and altcoin crypto exchange in the world by volume
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://www.binance.com/en/support/faq/how-to-create-api-360002502072
 
@@ -129,7 +129,7 @@ openbb.keys.binance(
 > Bitquery is an API-first product company dedicated to power and solve blockchain data problems using the ground truth of on-chain data.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: [https://bitquery.io/](https://bitquery.io/)
 
@@ -156,7 +156,7 @@ openbb.keys.bitquery(key = 'REPLACE_WITH_KEY', persist = True)
 > BizToc is the one-stop business and finance news hub, encapsulating the top 200 US news providers in real time.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.
 
@@ -183,7 +183,7 @@ openbb.keys.biztoc(key = "REPLACE_WITH_KEY", persist=True)
 > CoinMarketCap is the world's most-referenced price-tracking website for cryptoassets in the rapidly growing cryptocurrency space. Its mission is to make crypto discoverable and efficient globally by empowering retail users with unbiased, high quality and accurate information for drawing their own informed conclusions.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://coinmarketcap.com/api
 
@@ -210,7 +210,7 @@ openbb.keys.cmc(key = 'REPLACE_WITH_KEY', persist = True)
 > Coinbase is a secure online platform for buying, selling, transferring, and storing cryptocurrency.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://help.coinbase.com/en/exchange/managing-my-account/how-to-create-an-api-key
 
@@ -234,7 +234,7 @@ openbb.keys.coinbase(
 > Coinglass is a cryptocurrency futures trading & information platform,where you can find the Bitcoin Liquidations ,Bitcoin open interest, Grayscale Bitcoin Trust，Bitcoin longs vs shorts ratio and actively compare funding rates for crypto futures.Above all the quantities are shown as per their respective contract value.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://www.coinglass.com/
 
@@ -257,7 +257,7 @@ openbb.keys.coinglass(key = 'REPLACE_WITH_KEY', persist = True)
 > The Companies House API lets you retrieve information about limited companies (and other companies that fall within the Companies Act 2006). The data returned is live and real-time, and is simple to use and understand.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Setup an account by following the instructions [here](https://developer-specs.company-information.service.gov.uk/guides/gettingStarted#set-up-a-companies-house-account).
 
@@ -280,7 +280,7 @@ openbb.keys.companieshouse('REPLACE_WITH_KEY', persist = True)
 > CryptoPanic is a news aggregator platform indicating impact on price and market for traders and cryptocurrency enthusiasts.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://cryptopanic.com/developers/api/
 
@@ -303,7 +303,7 @@ openbb.keys.cpanic(key = 'REPLACE_WITH_KEY', persist = True)
 > Databento eliminates tens of thousands of dollars in upfront expenses per dataset without sacrificing data integrity. We give you the flexibility to pick up real-time full exchange feeds and terabytes of historical data, whenever you need it.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://docs.databento.com/getting-started
 
@@ -326,7 +326,7 @@ openbb.keys.databento(key = 'REPLACE_WITH_KEY')
 > DEGIRO is Europe's fastest growing online stock broker. DEGIRO distinguishes itself from its competitors by offering extremely low trading commissions.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://www.degiro.com/
 
@@ -351,7 +351,7 @@ Instructions for setting up 2FA authorization are [here](https://github.com/Chav
 > Historical End of Day, Intraday, and Live prices API, with Fundamental Financial data API for more than 120000 stocks, ETFs and funds all over the world.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://eodhistoricaldata.com/r/?ref=869U7F4J
 
@@ -378,7 +378,7 @@ openbb.keys.eodhd(key = 'REPLACE_WITH_KEY', persist = True)
 > With the sole mission of democratizing financial data, we are proud to offer a FREE realtime API for stocks, forex and cryptocurrency.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://finnhub.io/
 
@@ -405,7 +405,7 @@ openbb.keys.finnhub(key = 'REPLACE_WITH_KEY', persist = True)
 > Enhance your application with our data that goes up to 30 years back in history. Earnings calendar, financial statements, multiple exchanges and more!
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://site.financialmodelingprep.com/developer/docs
 
@@ -434,7 +434,7 @@ openbb.keys.fmp(key = 'REPLACE_WITH_KEY', persist = True)
 > FRED is the trusted source for economic data since 1991. Download, graph, and track 819,000 US and international time series from 110 sources.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://fred.stlouisfed.org
 
@@ -465,7 +465,7 @@ openbb.keys.fred(key = 'REPLACE_WITH_KEY', persist = True)
 > GitHub is where over 100 million developers shape the future of software.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 ![GitHub](https://user-images.githubusercontent.com/46355364/207846953-7feae777-3c3b-4f21-9dcf-84817c732618.png)
 
@@ -490,7 +490,7 @@ openbb.keys.github(key = 'REPLACE_WITH_KEY', persist = True)
 > Glassnode makes blockchain data accessible for everyone. We source and carefully dissect on-chain data, to deliver contextualized and actionable insights.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://studio.glassnode.com
 
@@ -517,7 +517,7 @@ openbb.keys.glassnode(key = 'REPLACE_WITH_KEY', persist = True)
 > Intrinio is more than a financial data API provider – we're a real time data partner. That means we're your guide to every step of the financial data.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://intrinio.com/starter-plan
 
@@ -536,7 +536,7 @@ openbb.keys.intrinio(key = 'REPLACE_WITH_KEY', persist = True)
 > Gain an edge over the crypto market with professional grade data, tools, and research.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://messari.io
 
@@ -563,7 +563,7 @@ openbb.keys.messari(key = 'REPLACE_WITH_KEY', persist = True)
 > News API is a simple, easy-to-use REST API that returns JSON search results for current and historic news articles published by over 80,000 worldwide sources.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://newsapi.org
 
@@ -590,7 +590,7 @@ openbb.keys.news(key = 'REPLACE_WITH_KEY', persist = True)
 > OANDA's Currency Converter allows you to check the latest foreign exchange average bid/ask rates and convert all major world currencies.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://developer.oanda.com
 
@@ -618,7 +618,7 @@ openbb.keys.oanda(
 > Live & historical data for US stocks for all 19 exchanges. Instant access to real-time and historical stock market data.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://polygon.io
 
@@ -645,7 +645,7 @@ openbb.keys.polygon(key = 'REPLACE_WITH_KEY', persist = True)
 > The premier source for financial, economic, and alternative datasets, serving investment professionals. Quandl’s platform is used by over 400,000 people, including analysts from the world’s top hedge funds, asset managers and investment banks.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 ![Quandl](https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png)
 
@@ -670,7 +670,7 @@ openbb.keys.quandl(key = 'REPLACE_WITH_KEY', persist = True)
 > Reddit is a network of communities where people can dive into their interests, hobbies and passions.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Sign in to Reddit, and then go to: https://old.reddit.com/prefs/apps/
 
@@ -708,7 +708,7 @@ openbb.keys.reddit(
 > Robinhood has commission-free investing, and tools to help shape your financial future.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://robinhood.com/us/en
 
@@ -732,7 +732,7 @@ The first login will request 2FA authorization from the device connected to the 
 > We provide tools to help you analyze crypto markets and find data-driven opportunities to optimize your investing.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://app.santiment.net
 
@@ -759,7 +759,7 @@ openbb.keys.santiment(key = 'REPLACE_WITH_KEY', persist = True)
 > Empowering investors to take advantage of alternative data. We track trending tickers on social media and provide alternative data for easy due-diligence & analysis.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://stocksera.pythonanywhere.com
 
@@ -786,7 +786,7 @@ openbb.keys.stocksera(key = 'REPLACE_WITH_KEY', persist = True)
 > Token Terminal is a platform that aggregates financial data on the leading blockchains and decentralized applications.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://tokenterminal.com
 
@@ -813,7 +813,7 @@ openbb.keys.tokenterminal(key = 'REPLACE_WITH_KEY', persist = True)
 > Tradier, the home of active traders. Our open collaboration platform allows investors to truly customize their trading experience like never before.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://documentation.tradier.com
 
@@ -832,7 +832,7 @@ openbb.keys.tradier(key = 'REPLACE_WITH_KEY', persist = True)
 > From breaking news and entertainment to sports and politics, get the full story with all the live commentary.
 
 <details>
-<summary>Upcoming changes to the Twitter API will deprecate the current functionality, it is uncertain if the features will continue to work. </summary>
+<summary mdxType="summary">Upcoming changes to the Twitter API will deprecate the current functionality, it is uncertain if the features will continue to work. </summary>
 
 ![Twitter API](https://pbs.twimg.com/media/FooIJF3agAIU8SN?format=png&name=medium)
 
@@ -843,7 +843,7 @@ openbb.keys.tradier(key = 'REPLACE_WITH_KEY', persist = True)
 > Whale Alert continuously collects and analyzes billions of blockchain transactions and related-off chain data from hundreds of reliable sources and converts it into an easy to use standardized format. Our world-class analytics and custom high speed database solutions process transactions the moment they are made, resulting in the largest and most up-to-date blockchain dataset in the world.
 
 <details>
-<summary>Instructions</summary>
+<summary mdxType="summary">Instructions</summary>
 
 Go to: https://docs.whale-alert.io
 ![Whale Alert](https://user-images.githubusercontent.com/46355364/207842892-3f71ee7a-6cd3-48a2-82e4-fa5ec5b13807.png)

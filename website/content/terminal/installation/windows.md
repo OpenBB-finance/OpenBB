@@ -24,7 +24,7 @@ This section provides you with the installation file as well as the guide to ins
 <InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/Windows.OpenBB.Terminal.v3.2.5.exe" label="Windows Installer" />
 
 <details>
-<summary>Minimum Requirements</summary>
+<summary mdxType="summary">Minimum Requirements</summary>
 
 - Windows 10 or newer
 - Modern CPU (Intel or AMD processor made in the last 5 years)

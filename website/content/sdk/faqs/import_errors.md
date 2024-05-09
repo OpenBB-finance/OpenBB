@@ -28,7 +28,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 When packages not included in the OpenBB installation are installed to the same environment as the SDK, it is possible that an incompatible build of a specific library (like SciPy) has overwritten the existing and creating a conflict. In this event, try creating a new environment containing only the OpenBB dependencies.
 
 <details>
-<summary>ModuleNotFoundError: No module named '______'</summary>
+<summary mdxType="summary">ModuleNotFoundError: No module named '______'</summary>
 
 Before troubleshooting please verify that the recommended installation instructions were followed. These errors often can occur when the virtual environment has not been activated, or the `poetry install` command was skipped. Activate the OpenBB virtual environment created during the installation process prior to launching or importing the SDK.
 
@@ -64,7 +64,7 @@ poetry install -E all
 </details>
 
 <details>
-<summary>SSL certificates fail to authorize</summary>
+<summary mdxType="summary">SSL certificates fail to authorize</summary>
 
 ```console
 SSL: CERTIFICATE_VERIFY_FAILED
@@ -81,7 +81,7 @@ pip install pip-system-certs
 </details>
 
 <details>
-<summary>Cannot connect due to proxy connection.</summary>
+<summary mdxType="summary">Cannot connect due to proxy connection.</summary>
 
 Find the `.env` file (located at the root of the user account folder: (`~/.openbb_terminal/.env`), and add a line at the bottom of the file with:
 

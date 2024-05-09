@@ -43,14 +43,14 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 - Windows Terminal
 
 <details>
-<summary>An example code block does not work.</summary>
+<summary mdxType="summary">An example code block does not work.</summary>
 
 We try to keep example code up-to-date, but sometimes a specific example is left behind. Please submit a bug report and so that we are aware of the issue. Submit a bug report [here](https://openbb.co/support)
 
 </details>
 
 <details>
-<summary>Why does a specific menu or command not exist?</summary>
+<summary mdxType="summary">Why does a specific menu or command not exist?</summary>
 
 It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://my.openbb.co/app/sdk/installation) to download the most recent release.
 
@@ -59,21 +59,21 @@ Do note that it is also possible that the menu or command has been deprecated. I
 </details>
 
 <details>
-<summary>What is the correct format for entering dates to function variables?</summary>
+<summary mdxType="summary">What is the correct format for entering dates to function variables?</summary>
 
 Dates should be entered as a string variable, inside of quotation marks, formatted as `%Y-%m-%d` - YYYY-MM-DD.
 
 </details>
 
 <details>
-<summary>Does the portfolio menu allow for dividends, interest, or other distributions?</summary>
+<summary mdxType="summary">Does the portfolio menu allow for dividends, interest, or other distributions?</summary>
 
 Currently, this is only possible by manually updating the portfolio file.
 
 </details>
 
 <details>
-<summary>Why does my Portfolio file fail to load?</summary>
+<summary mdxType="summary">Why does my Portfolio file fail to load?</summary>
 
 This can be the result of a formatting error, check the file in a simple text editor to observe any abnormalities in the formatting; or, it could be a bug - check the [GitHub issues page](https://github.com/OpenBB-finance/OpenBBTerminal/issues) for similar errors.
 
@@ -94,7 +94,7 @@ See the guide [here](/sdk/data-available/portfolio/introduction) for more inform
 </details>
 
 <details>
-<summary>How do I change the chart styles?</summary>
+<summary mdxType="summary">How do I change the chart styles?</summary>
 
 Place style sheets in this folder: `OpenBBUserData/styles/user`
 
@@ -115,7 +115,7 @@ theme = TerminalStyle("dark", "dark", "dark")
 </details>
 
 <details>
-<summary>Where are the included stock screener presets located?</summary>
+<summary mdxType="summary">Where are the included stock screener presets located?</summary>
 
 The files are located in the folder with the code, under:
 
