@@ -864,7 +864,15 @@ class MethodDefinition:
         original_type: Optional[type] = None,
     ) -> object:
         """Expand the original field type."""
-        if extra and "multiple_items_allowed" in extra:
+        if extra and any(
+            (
+                v.get("multiple_items_allowed")
+                if isinstance(v, dict)
+                # For backwards compatibility, before this was a list
+                else "multiple_items_allowed" in v
+            )
+            for v in extra.values()
+        ):
             if original_type is None:
                 raise ValueError(
                     "multiple_items_allowed requires the original type to be specified."
@@ -1450,6 +1458,10 @@ class ReferenceGenerator:
         expanded_types = MethodDefinition.TYPE_EXPANSION
         model_map = cls.pi.map[model]
 
+        # TODO: Change this to read the package data instead of pi.map directly
+        # We change some items (types, descriptions), so the reference.json
+        # does not reflect entirely the package code.
+
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
             field_type = field_info.annotation
@@ -1470,12 +1482,18 @@ class ReferenceGenerator:
             )  # fmt: skip
 
             # Add information for the providers supporting multiple symbols
-            if params_type == "QueryParams" and field_info.json_schema_extra:
-                multiple_items_list = field_info.json_schema_extra.get(
-                    "multiple_items_allowed", None
-                )
-                if multiple_items_list:
-                    multiple_items = ", ".join(multiple_items_list)
+            if params_type == "QueryParams" and (extra := field_info.json_schema_extra):
+
+                providers = []
+                for p, v in extra.items():  # type: ignore[union-attr]
+                    if isinstance(v, dict) and v.get("multiple_items_allowed"):
+                        providers.append(p)
+                    elif isinstance(v, list) and "multiple_items_allowed" in v:
+                        # For backwards compatibility, before this was a list
+                        providers.append(p)
+
+                if providers:
+                    multiple_items = ", ".join(providers)
                     cleaned_description += (
                         f" Multiple items allowed for provider(s): {multiple_items}."
                     )
