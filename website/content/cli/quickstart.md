@@ -154,5 +154,5 @@ Saved file: /Users/myusername/OpenBBUserData/20240508_145308_controllers_search.
 A chain of commands can be run from a single line, separate each process with `/`.
 
 ```
-equity/fundamental/balance --symbol MSFT --period quarter --export msft_financials.xlsx --sheet-name balance
+equity/fundamental/balance --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name balance/cash --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name cash/income --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name income
 ```
