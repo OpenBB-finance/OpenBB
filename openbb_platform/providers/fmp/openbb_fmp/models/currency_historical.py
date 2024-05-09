@@ -98,7 +98,7 @@ class FMPCurrencyHistoricalFetcher(
             url_params = f"{symbol}?{query_str}&apikey={api_key}"
             url = f"{base_url}/historical-chart/{interval}/{url_params}"
             if interval == "1day":
-                url = f"{base_url}/historical-price-full/forex/{url_params}"
+                url = f"{base_url}/historical-price-full/{url_params}"
             return url
 
         symbols = query.symbol.split(",")
@@ -108,11 +108,8 @@ class FMPCurrencyHistoricalFetcher(
 
         async def get_one(symbol):
             """Get data for one symbol."""
-
             url = get_url_params(symbol)
-
             data = []
-
             response = await amake_request(url, **kwargs)
 
             if isinstance(response, dict) and response.get("Error Message"):
