@@ -35,7 +35,7 @@ warnings.filterwarnings(
     "ignore", category=UserWarning, module="openbb_core.app.model.extension", lineno=47
 )
 
-ext = Extension(name="charting")
+ext = Extension(name="charting", description="Create custom charts from OBBject data.")
 
 
 @ext.obbject_accessor

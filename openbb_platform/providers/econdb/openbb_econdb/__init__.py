@@ -17,4 +17,5 @@ econdb_provider = Provider(
         "CountryProfile": EconDbCountryProfileFetcher,
         "EconomicIndicators": EconDbEconomicIndicatorsFetcher,
     },
+    repr_name="EconDB",
 )

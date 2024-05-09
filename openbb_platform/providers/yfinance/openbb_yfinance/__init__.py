@@ -72,4 +72,5 @@ yfinance_provider = Provider(
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },
+    repr_name="Yahoo Finance",
 )

@@ -18,4 +18,5 @@ benzinga_provider = Provider(
         "WorldNews": BenzingaWorldNewsFetcher,
         "PriceTarget": BenzingaPriceTargetFetcher,
     },
+    repr_name="Benzinga",
 )

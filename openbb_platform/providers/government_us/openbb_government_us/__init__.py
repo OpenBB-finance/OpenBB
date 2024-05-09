@@ -22,4 +22,5 @@ government_us_provider = Provider(
         "TreasuryAuctions": GovernmentUSTreasuryAuctionsFetcher,
         "TreasuryPrices": GovernmentUSTreasuryPricesFetcher,
     },
+    repr_name="Government US",
 )

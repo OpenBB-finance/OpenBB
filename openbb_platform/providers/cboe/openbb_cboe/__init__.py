@@ -37,4 +37,5 @@ cboe_provider = Provider(
         "MarketIndices": CboeIndexHistoricalFetcher,
         "OptionsChains": CboeOptionsChainsFetcher,
     },
+    repr_name="CBOE",
 )

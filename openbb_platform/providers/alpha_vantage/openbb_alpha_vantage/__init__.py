@@ -20,4 +20,7 @@ alpha_vantage_provider = Provider(
         "HistoricalEps": AVHistoricalEpsFetcher,
         "EtfHistorical": AVEquityHistoricalFetcher,
     },
+    repr_name="Alpha Vantage",
+    v3_credentials=["API_KEY_ALPHAVANTAGE"],
+    instructions='Go to: https://www.alphavantage.co/support/#api-key\n\n![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)\n\nFill out the form, pass Captcha, and click on, "GET FREE API KEY".',
 )

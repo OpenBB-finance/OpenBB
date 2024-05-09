@@ -18,4 +18,5 @@ federal_reserve_provider = Provider(
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "FEDFUNDS": FederalReserveFEDFetcher,
     },
+    repr_name="Federal Reserve",
 )

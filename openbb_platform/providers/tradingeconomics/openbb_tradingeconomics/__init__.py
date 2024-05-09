@@ -9,4 +9,5 @@ tradingeconomics_provider = Provider(
     description="""Trading Economics""",
     credentials=["api_key"],
     fetcher_dict={"EconomicCalendar": TEEconomicCalendarFetcher},
+    repr_name="Trading Economics",
 )

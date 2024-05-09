@@ -32,4 +32,5 @@ sec_provider = Provider(
         "SicSearch": SecSicSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
     },
+    repr_name="SEC",
 )

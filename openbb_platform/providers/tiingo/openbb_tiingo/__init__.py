@@ -22,4 +22,5 @@ tiingo_provider = Provider(
         "CurrencyHistorical": TiingoCurrencyHistoricalFetcher,
         "TrailingDividendYield": TiingoTrailingDivYieldFetcher,
     },
+    repr_name="Tiingo",
 )

@@ -67,4 +67,5 @@ tmx_provider = Provider(
         "PriceTargetConsensus": TmxPriceTargetConsensusFetcher,
         "TreasuryPrices": TmxTreasuryPricesFetcher,
     },
+    repr_name="TMX",
 )

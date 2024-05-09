@@ -16,4 +16,5 @@ ecb_provider = Provider(
         "CurrencyReferenceRates": ECBCurrencyReferenceRatesFetcher,
         "EUYieldCurve": ECBEUYieldCurveFetcher,
     },
+    repr_name="ECB",
 )

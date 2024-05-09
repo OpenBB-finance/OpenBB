@@ -22,4 +22,5 @@ oecd_provider = Provider(
         "STIR": OECDSTIRFetcher,
         "LTIR": OECDLTIRFetcher,
     },
+    repr_name="OECD",
 )

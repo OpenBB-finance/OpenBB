@@ -13,4 +13,5 @@ finra_provider = Provider(
         "OTCAggregate": FinraOTCAggregateFetcher,
         "EquityShortInterest": FinraShortInterestFetcher,
     },
+    repr_name="FINRA",
 )

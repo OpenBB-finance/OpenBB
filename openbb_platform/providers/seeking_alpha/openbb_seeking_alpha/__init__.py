@@ -13,4 +13,5 @@ seeking_alpha_provider = Provider(
     fetcher_dict={
         "UpcomingReleaseDays": SAUpcomingReleaseDaysFetcher,
     },
+    repr_name="Seeking Alpha",
 )

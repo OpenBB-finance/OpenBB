@@ -21,4 +21,5 @@ wsj_provider = Provider(
         "ETFLosers": WSJLosersFetcher,
         "ETFActive": WSJActiveFetcher,
     },
+    repr_name="Wall Street Journal",
 )
