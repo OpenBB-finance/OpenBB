@@ -40,8 +40,8 @@ def write(filename: str, data: Any):
         dump(data, json_file, indent=4)
 
 
-def generate_providers() -> None:
-    """Generate providers.json."""
+def generate_provider_extensions() -> None:
+    """Generate providers_extensions.json."""
     packages = get_packages(PROVIDERS_PATH, "openbb_provider_extension")
     data: List[Dict[str, Optional[str]]] = []
     for pkg_name, plugin in sorted(packages.items()):
@@ -65,11 +65,11 @@ def generate_providers() -> None:
                     "instructions": provider_obj.instructions,
                 }
             )
-    write("providers", data)
+    write("provider_extensions", data)
 
 
-def generate_extensions() -> None:
-    """Generate extensions.json."""
+def generate_router_extensions() -> None:
+    """Generate router_extensions.json."""
     packages = get_packages(EXTENSIONS_PATH, "openbb_core_extension")
     data: List[Dict[str, Optional[str]]] = []
     for pkg_name, plugin in sorted(packages.items()):
@@ -80,7 +80,7 @@ def generate_extensions() -> None:
             router_obj = getattr(module, obj)
             description = router_obj.description
             data.append({"package_name": pkg_name, "description": description})
-    write("extensions", data)
+    write("router_extensions", data)
 
 
 def generate_obbject_extensions() -> None:
@@ -99,6 +99,6 @@ def generate_obbject_extensions() -> None:
 
 
 if __name__ == "__main__":
-    generate_providers()
-    generate_extensions()
+    generate_provider_extensions()
+    generate_router_extensions()
     generate_obbject_extensions()
