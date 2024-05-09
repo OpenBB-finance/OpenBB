@@ -332,7 +332,7 @@ class StaticCommandRunner:
             if chart_params:
                 kwargs.update(chart_params)
             obbject.charting.show(render=False, **kwargs)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e
             warn(str(e), OpenBBWarning)
