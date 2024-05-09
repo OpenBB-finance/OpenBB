@@ -225,9 +225,9 @@ class ArgparseTranslator:
     def _handle_argument_in_groups(self, argument, group):
         """Handle the argument and add it to the parser."""
 
-        def _in_optional_arguments(arg):
+        def _in_group(arg, group_title):
             for action_group in self._parser._action_groups:
-                if action_group.title == "optional arguments":
+                if action_group.title == group_title:
                     for action in action_group._group_actions:
                         opts = action.option_strings
                         if (opts and opts[0] == arg) or action.dest == arg:
@@ -286,16 +286,26 @@ class ArgparseTranslator:
             # extend choices
             choices = tuple(set(_get_arg_choices(argument.name) + model_choices))
 
+            # check if the argument is in the required arguments
+            if _in_group(argument.name, group_title="required arguments"):
+                for action in self._required._group_actions:
+                    if action.dest == argument.name and choices:
+                        # update choices
+                        action.choices = choices
+                return
+
             # check if the argument is in the optional arguments
-            if _in_optional_arguments(argument.name):
+            if _in_group(argument.name, group_title="optional arguments"):
                 for action in self._parser._actions:
                     if action.dest == argument.name:
                         # update choices
-                        action.choices = choices
-                        # update help
-                        action.help = _update_providers(
-                            action.help or "", [group.title]
-                        )
+                        if choices:
+                            action.choices = choices
+                        if argument.name not in self.signature.parameters:
+                            # update help
+                            action.help = _update_providers(
+                                action.help or "", [group.title]
+                            )
                 return
 
             # if the argument is in use, remove it from all groups

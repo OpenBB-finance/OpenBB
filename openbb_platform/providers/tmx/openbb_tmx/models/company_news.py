@@ -20,7 +20,7 @@ from pydantic import Field, field_validator
 class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
     """TMX Stock News query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     page: Optional[int] = Field(
         default=1, description="The page number to start from. Use with limit."

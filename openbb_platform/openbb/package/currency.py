@@ -290,6 +290,11 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                info={"base": {"multiple_items_allowed": ["fmp", "polygon"]}},
+                info={
+                    "base": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )

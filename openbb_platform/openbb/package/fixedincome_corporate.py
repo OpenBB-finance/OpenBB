@@ -514,8 +514,8 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "maturity": {"multiple_items_allowed": ["fred"]},
-                    "category": {"multiple_items_allowed": ["fred"]},
+                    "maturity": {"fred": {"multiple_items_allowed": True}},
+                    "category": {"fred": {"multiple_items_allowed": True}},
                 },
             )
         )

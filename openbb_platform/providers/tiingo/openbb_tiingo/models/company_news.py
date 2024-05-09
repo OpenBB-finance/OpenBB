@@ -27,7 +27,7 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
         "start_date": "startDate",
         "end_date": "endDate",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     offset: Optional[int] = Field(
         default=0, description="Page offset, used in conjunction with limit."
