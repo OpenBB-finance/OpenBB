@@ -222,11 +222,11 @@ class ROUTER_equity_estimates(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "analyst_name": {"multiple_items_allowed": ["benzinga"]},
-                    "firm_name": {"multiple_items_allowed": ["benzinga"]},
-                    "analyst_ids": {"multiple_items_allowed": ["benzinga"]},
-                    "firm_ids": {"multiple_items_allowed": ["benzinga"]},
-                    "fields": {"multiple_items_allowed": ["benzinga"]},
+                    "analyst_name": {"benzinga": {"multiple_items_allowed": True}},
+                    "firm_name": {"benzinga": {"multiple_items_allowed": True}},
+                    "analyst_ids": {"benzinga": {"multiple_items_allowed": True}},
+                    "firm_ids": {"benzinga": {"multiple_items_allowed": True}},
+                    "fields": {"benzinga": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -336,7 +336,9 @@ class ROUTER_equity_estimates(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -457,7 +459,12 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )
 
@@ -580,7 +587,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
+                info={"symbol": {"intrinio": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -698,7 +705,7 @@ class ROUTER_equity_estimates(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -854,6 +861,11 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp"]}},
+                info={
+                    "symbol": {
+                        "benzinga": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )
