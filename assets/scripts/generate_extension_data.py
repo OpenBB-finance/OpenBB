@@ -36,7 +36,7 @@ def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
 
 def write(filename: str, data: Any):
     """Write to json."""
-    with open(Path(THIS_DIR, "..", f"{filename}.json"), "w") as json_file:
+    with open(Path(THIS_DIR, "..", "extensions", f"{filename}.json"), "w") as json_file:
         dump(data, json_file, indent=4)
 
 
@@ -65,7 +65,7 @@ def generate_provider_extensions() -> None:
                     "instructions": provider_obj.instructions,
                 }
             )
-    write("provider_extensions", data)
+    write("provider", data)
 
 
 def generate_router_extensions() -> None:
@@ -80,7 +80,7 @@ def generate_router_extensions() -> None:
             router_obj = getattr(module, obj)
             description = router_obj.description
             data.append({"package_name": pkg_name, "description": description})
-    write("router_extensions", data)
+    write("router", data)
 
 
 def generate_obbject_extensions() -> None:
@@ -95,7 +95,7 @@ def generate_obbject_extensions() -> None:
             ext_obj = getattr(module, obj)
             description = ext_obj.description
             data.append({"package_name": pkg_name, "description": description})
-    write("obbject_extensions", data)
+    write("obbject", data)
 
 
 if __name__ == "__main__":
