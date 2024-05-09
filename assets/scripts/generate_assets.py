@@ -8,9 +8,11 @@ from typing import Any, Dict, List, Optional
 from poetry.core.pyproject.toml import PyProjectTOML
 
 THIS_DIR = Path(__file__).parent
-PROVIDERS_PATH = Path(THIS_DIR, "..", "openbb_platform/providers")
-EXTENSIONS_PATH = Path(THIS_DIR, "..", "openbb_platform/extensions")
-OBBJECT_EXTENSIONS_PATH = Path(THIS_DIR, "..", "openbb_platform/obbject_extensions")
+PROVIDERS_PATH = Path(THIS_DIR, "..", "..", "openbb_platform/providers")
+EXTENSIONS_PATH = Path(THIS_DIR, "..", "..", "openbb_platform/extensions")
+OBBJECT_EXTENSIONS_PATH = Path(
+    THIS_DIR, "..", "..", "openbb_platform/obbject_extensions"
+)
 
 
 def to_title(string: str) -> str:
@@ -34,7 +36,7 @@ def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
 
 def write(filename: str, data: Any):
     """Write to json."""
-    with open(Path(THIS_DIR, f"{filename}.json"), "w") as json_file:
+    with open(Path(THIS_DIR, "..", f"{filename}.json"), "w") as json_file:
         dump(data, json_file, indent=4)
 
 
