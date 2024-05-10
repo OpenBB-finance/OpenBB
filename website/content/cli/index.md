@@ -44,7 +44,7 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
 <NewReferenceCard
     title="Configuration & Settings"
     description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB CLI."
-    url="cli/configuartion"
+    url="cli/configuration"
 />
 <NewReferenceCard
     title="Data Sources"
