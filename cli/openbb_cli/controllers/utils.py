@@ -78,9 +78,11 @@ def print_goodbye():
     text = """
 [param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
 
-We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+We hope you'll find the new OpenBB Platform CLI a valuable tool.
 
-In the meantime, check out our other products:
+To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+
+Please feel free to check out our other products:
 
 [bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
 [bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
