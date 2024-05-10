@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-price-full/crypto/BTCUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/BTCUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
   response:
     body:
       string: !!binary |
@@ -48,7 +48,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 29 Feb 2024 04:42:50 GMT
+      - Thu, 09 May 2024 15:33:03 GMT
       Etag:
       - W/"ee3-iGBRI0WlQUT/ED3Q3GcS73lQbMw"
       Server:
