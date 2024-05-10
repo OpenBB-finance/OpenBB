@@ -120,7 +120,7 @@
         "description": "Data.gov is the United States government's open data website.\nIt provides access to datasets published by agencies across the federal government.\nData.gov is intended to provide access to government open data to the public, achieve\nagency missions, drive innovation, fuel economic activity, and uphold the ideals of\nan open and transparent government.",
         "credentials": [],
         "website": "https://data.gov",
-        "logoUrl": "https://en.wikipedia.org/wiki/Data.gov#/media/File:Muq55HrN_400x400.png"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/06/Muq55HrN_400x400.png"
     },
     {
         "packageName": "openbb-intrinio",
