@@ -10,7 +10,7 @@ benzinga_provider = Provider(
     name="benzinga",
     website="https://www.benzinga.com",
     description="""Benzinga is a financial data provider that offers an API
-    focused on information that moves the market.""",
+focused on information that moves the market.""",
     credentials=["api_key"],
     fetcher_dict={
         "AnalystSearch": BenzingaAnalystSearchFetcher,

@@ -9,7 +9,7 @@ seeking_alpha_provider = Provider(
     name="seeking_alpha",
     website="https://seekingalpha.com",
     description="""Seeking Alpha is a data provider with access to news, analysis, and
-    real-time alerts on stocks.""",
+real-time alerts on stocks.""",
     fetcher_dict={
         "UpcomingReleaseDays": SAUpcomingReleaseDaysFetcher,
     },

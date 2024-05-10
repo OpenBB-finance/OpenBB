@@ -40,8 +40,8 @@ yfinance_provider = Provider(
     name="yfinance",
     website="https://finance.yahoo.com",
     description="""Yahoo! Finance is a web-based platform that offers financial news,
-    data, and tools for investors and individuals interested in tracking and analyzing
-    financial markets and assets.""",
+data, and tools for investors and individuals interested in tracking and analyzing
+financial markets and assets.""",
     fetcher_dict={
         "AvailableIndices": YFinanceAvailableIndicesFetcher,
         "BalanceSheet": YFinanceBalanceSheetFetcher,

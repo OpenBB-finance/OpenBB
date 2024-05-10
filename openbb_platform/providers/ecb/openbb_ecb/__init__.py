@@ -9,8 +9,8 @@ ecb_provider = Provider(
     name="ECB",
     website="https://data.ecb.europa.eu",
     description="""The ECB Data Portal provides access to all official ECB statistics.
-    The portal also provides options to download data and comprehensive metadata for each dataset.
-    Statistical publications and dashboards offer a compilation of key data on selected topics.""",
+The portal also provides options to download data and comprehensive metadata for each dataset.
+Statistical publications and dashboards offer a compilation of key data on selected topics.""",
     fetcher_dict={
         "BalanceOfPayments": ECBBalanceOfPaymentsFetcher,
         "CurrencyReferenceRates": ECBCurrencyReferenceRatesFetcher,

@@ -12,7 +12,8 @@ from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 oecd_provider = Provider(
     name="oecd",
     website="https://stats.oecd.org",
-    description="""OECD""",
+    description="""OECD.Stat includes data and metadata for OECD countries and selected
+non-member economies.""",
     fetcher_dict={
         "GdpNominal": OECDGdpNominalFetcher,
         "GdpReal": OECDGdpRealFetcher,
