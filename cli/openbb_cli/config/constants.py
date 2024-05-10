@@ -65,7 +65,7 @@ AVAILABLE_FLAIRS = {
     ":mercury": "(☿)",
     ":hidden": "",
     ":sun": "(☼)",
-    ":moon": "(☾)",
+    ":moon": "(🌕)",
     ":nuke": "(☢)",
     ":hazard": "(☣)",
     ":tunder": "(☈)",
@@ -76,6 +76,6 @@ AVAILABLE_FLAIRS = {
     ":scales": "(⚖)",
     ":ball": "(⚽)",
     ":golf": "(⛳)",
-    ":piece": "(☮)",
+    ":peace": "(☮)",
     ":yy": "(☯)",
 }

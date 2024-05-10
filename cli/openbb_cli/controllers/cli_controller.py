@@ -228,8 +228,8 @@ class CLIController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
-        mt.add_info("Platform CLI")
-        mt.add_raw("    data\n")
+        mt.add_info("Retrieve data from different asset classes and providers")
+
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
                 continue
@@ -247,7 +247,8 @@ class CLIController(BaseController):
                 mt.add_cmd(router)
 
         if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
-            mt.add_raw("\n    data processing\n")
+            mt.add_info("\nAnalyze and process previously obtained data")
+
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
                     continue
@@ -264,9 +265,10 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_raw("\n    configuration\n")
+        mt.add_info("\nConfigure the platform and manage your account")
+
         for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router == "reference":
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
                 continue
             if value == "menu":
                 menu_description = (
@@ -281,8 +283,14 @@ class CLIController(BaseController):
             else:
                 mt.add_cmd(router)
 
-        mt.add_raw("\n    cached results (OBBjects)\n")
+        mt.add_info("\nAccess and manage your cached results")
         mt.add_cmd("results")
+        if session.obbject_registry.obbjects:
+            mt.add_section("Cached Results:\n", leading_new_line=True)
+            for key, value in list(session.obbject_registry.all.items())[  # type: ignore
+                : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
+            ]:
+                mt.add_raw(f"\tOBB{key}: {value['command']}\n")  # type: ignore
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -300,7 +308,7 @@ class CLIController(BaseController):
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def call_settings(self, _):
-        """Process feature flags command."""
+        """Process settings command."""
         from openbb_cli.controllers.settings_controller import (
             SettingsController,
         )
@@ -315,8 +323,7 @@ class CLIController(BaseController):
         if not other_args:
             session.console.print(
                 "[info]Provide a path to the routine you wish to execute. For an example, please use "
-                "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/info]"
+                "`exe --example`.\n[/info]"
             )
             return
         parser = argparse.ArgumentParser(
@@ -324,8 +331,7 @@ class CLIController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
             description="Execute automated routine script. For an example, please use "
-            "`exe --example` and for documentation and to learn how create your own script "
-            "type `about exe`.",
+            "`exe --example`.",
         )
         parser.add_argument(
             "--file",
@@ -368,8 +374,8 @@ class CLIController(BaseController):
         if ns_parser:
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
-                session.console.print(
-                    "[info]Executing an example, please type `about exe` "
+                session.console.print(  # TODO: Point to docs when ready
+                    "[info]Executing an example, please visit our docs "
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
@@ -525,9 +531,7 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             with contextlib.suppress(EOFError):
-                webbrowser.open(
-                    "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
-                )
+                webbrowser.open("https://docs.openbb.co/cli")
 
         t_controller.print_help()
 
@@ -565,7 +569,6 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                             ),
                             style=Style.from_dict(
                                 {

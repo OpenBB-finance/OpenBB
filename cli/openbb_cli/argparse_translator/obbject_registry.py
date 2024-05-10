@@ -79,6 +79,7 @@ class Registry:
                 "provider": obbject.provider,
                 "standard params": _handle_standard_params(obbject),
                 "data": _handle_data_repr(obbject),
+                "command": obbject.extra.get("command", ""),
             }
 
         return obbjects

@@ -52,7 +52,6 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMON = [
         "cls",
         "home",
-        "about",
         "h",
         "?",
         "help",
@@ -496,14 +495,7 @@ class BaseController(metaclass=ABCMeta):
             help="Whether the routine should be public or not",
             default=False,
         )
-        parser.add_argument(
-            "-l",
-            "--local",
-            dest="local",
-            action="store_true",
-            help="Only save the routine locally - this is necessary if you are running in guest mode.",
-            default=False,
-        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
@@ -549,17 +541,16 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            if session.is_local() and not ns_parser.local:
+            if session.is_local():
                 session.console.print(
                     "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
                 )
                 session.console.print(
-                    "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
+                    "\n[yellow]Visit the OpenBB Hub to register: http://my.openbb.co[/yellow]"
                 )
                 session.console.print(
-                    "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
+                    "\n[yellow]Your routine will be saved locally.[/yellow]\n"
                 )
-                return
 
             # Check if title has a valid format
             title = " ".join(ns_parser.name) if ns_parser.name else ""
@@ -577,8 +568,8 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_TAGS  # noqa: PLW0603
             global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
+            RECORD_SESSION_LOCAL_ONLY = session.is_local()
             RECORD_SESSION = True
-            RECORD_SESSION_LOCAL_ONLY = ns_parser.local
             SESSION_RECORDED_NAME = title
             SESSION_RECORDED_DESCRIPTION = (
                 " ".join(ns_parser.description)
@@ -871,6 +862,7 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
+                nargs="+",
             )
 
             # If excel is an option, add the sheet name
@@ -1001,7 +993,6 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
-                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
