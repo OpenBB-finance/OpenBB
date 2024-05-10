@@ -78,9 +78,11 @@ def print_goodbye():
     text = """
 [param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
 
-We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+We hope you'll find the new OpenBB Platform CLI a valuable tool.
 
-In the meantime, check out our other products:
+To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+
+Please feel free to check out our other products:
 
 [bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
 [bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
@@ -454,6 +456,9 @@ def print_rich_table(  # noqa: PLR0912
     if export:
         return
 
+    MAX_COLS = Session().settings.ALLOWED_NUMBER_OF_COLUMNS
+    MAX_ROWS = Session().settings.ALLOWED_NUMBER_OF_ROWS
+
     # Make a copy of the dataframe to avoid SettingWithCopyWarning
     df = df.copy()
 
@@ -525,16 +530,12 @@ def print_rich_table(  # noqa: PLR0912
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
-    exceeds_allowed_columns = (
-        len(df.columns) > Session().settings.ALLOWED_NUMBER_OF_COLUMNS
-    )
-    exceeds_allowed_rows = len(df) > Session().settings.ALLOWED_NUMBER_OF_ROWS
+    exceeds_allowed_columns = len(df.columns) > MAX_COLS
+    exceeds_allowed_rows = len(df) > MAX_ROWS
 
     if exceeds_allowed_columns:
         original_columns = df.columns.tolist()
-        trimmed_columns = df.columns.tolist()[
-            : Session().settings.ALLOWED_NUMBER_OF_COLUMNS
-        ]
+        trimmed_columns = df.columns.tolist()[:MAX_COLS]
         df = df[trimmed_columns]
         trimmed_columns = [
             col for col in original_columns if col not in trimmed_columns
@@ -542,9 +543,9 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_rows:
         n_rows = len(df.index)
-        trimmed_rows = df.index.tolist()[: Session().settings.ALLOWED_NUMBER_OF_ROWS]
-        df = df.loc[trimmed_rows]
-        trimmed_rows_count = n_rows - Session().settings.ALLOWED_NUMBER_OF_ROWS
+        max_rows = MAX_ROWS
+        df = df[:max_rows]
+        trimmed_rows_count = n_rows - max_rows
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)
