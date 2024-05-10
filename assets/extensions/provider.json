@@ -37,14 +37,14 @@
     },
     {
         "packageName": "openbb-cboe",
-        "reprName": "CBOE",
+        "reprName": "Chicago Board Options Exchange (CBOE)",
         "description": "Cboe is the world's go-to derivatives and exchange network,\ndelivering cutting-edge trading, clearing and investment solutions to people\naround the world.",
         "credentials": [],
         "website": "https://www.cboe.com"
     },
     {
         "packageName": "openbb-ecb",
-        "reprName": "ECB",
+        "reprName": "European Central Bank (ECB)",
         "description": "The ECB Data Portal provides access to all official ECB statistics.\nThe portal also provides options to download data and comprehensive metadata for each dataset.\nStatistical publications and dashboards offer a compilation of key data on selected topics.",
         "credentials": [],
         "website": "https://data.ecb.europa.eu"
@@ -60,7 +60,7 @@
     },
     {
         "packageName": "openbb-federal-reserve",
-        "reprName": "Federal Reserve",
+        "reprName": "Federal Reserve (FED)",
         "description": "Access data provided by the Federal Reserve System,\nthe Central Bank of the United States.",
         "credentials": [],
         "website": "https://www.federalreserve.gov/data.htm"
@@ -81,7 +81,7 @@
     },
     {
         "packageName": "openbb-fmp",
-        "reprName": "Financial Modeling Prep",
+        "reprName": "Financial Modeling Prep (FMP)",
         "description": "Financial Modeling Prep is a new concept that informs you about\nstock market information (news, currencies, and stock prices).",
         "credentials": [
             "fmp_api_key"
@@ -94,7 +94,7 @@
     },
     {
         "packageName": "openbb-fred",
-        "reprName": "FRED",
+        "reprName": "Federal Reserve Economic Data St. Louis FED (FRED)",
         "description": "Federal Reserve Economic Data is a database maintained by the\nResearch division of the Federal Reserve Bank of St. Louis that has more than\n816,000 economic time series from various sources.",
         "credentials": [
             "fred_api_key"
@@ -107,7 +107,7 @@
     },
     {
         "packageName": "openbb-government-us",
-        "reprName": "Government US",
+        "reprName": "US Government",
         "description": "Data.gov is the United States government's open data website.\nIt provides access to datasets published by agencies across the federal government.\nData.gov is intended to provide access to government open data to the public, achieve\nagency missions, drive innovation, fuel economic activity, and uphold the ideals of\nan open and transparent government.",
         "credentials": [],
         "website": "https://data.gov"
@@ -140,7 +140,7 @@
     },
     {
         "packageName": "openbb-oecd",
-        "reprName": "OECD",
+        "reprName": "Organization for Economic Co-operation and Development (OECD)",
         "description": "OECD.Stat includes data and metadata for OECD countries and selected\nnon-member economies.",
         "credentials": [],
         "website": "https://stats.oecd.org"
@@ -160,7 +160,7 @@
     },
     {
         "packageName": "openbb-sec",
-        "reprName": "SEC",
+        "reprName": "Securities and Exchange Commission (SEC)",
         "description": "SEC is the public listings regulatory body for the United States.",
         "credentials": [],
         "website": "https://www.sec.gov/data"
@@ -220,7 +220,7 @@
     },
     {
         "packageName": "openbb-wsj",
-        "reprName": "Wall Street Journal",
+        "reprName": "Wall Street Journal (WSJ)",
         "description": "WSJ (Wall Street Journal) is a business-focused, English-language\ninternational daily newspaper based in New York City. The Journal is published six\ndays a week by Dow Jones & Company, a division of News Corp, along with its Asian\nand European editions. The newspaper is published in the broadsheet format and\nonline. The Journal has been printed continuously since its inception on\nJuly 8, 1889, by Charles Dow, Edward Jones, and Charles Bergstresser.\nThe WSJ is the largest newspaper in the United States, by circulation.\n    ",
         "credentials": [],
         "website": "https://www.wsj.com"

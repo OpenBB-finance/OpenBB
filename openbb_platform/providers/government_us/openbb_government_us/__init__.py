@@ -20,5 +20,5 @@ an open and transparent government.""",
         "TreasuryAuctions": GovernmentUSTreasuryAuctionsFetcher,
         "TreasuryPrices": GovernmentUSTreasuryPricesFetcher,
     },
-    repr_name="Government US",
+    repr_name="US Government",
 )

@@ -19,5 +19,5 @@ the Central Bank of the United States.""",
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "FEDFUNDS": FederalReserveFEDFetcher,
     },
-    repr_name="Federal Reserve",
+    repr_name="Federal Reserve (FED)",
 )

@@ -37,5 +37,5 @@ around the world.""",
         "MarketIndices": CboeIndexHistoricalFetcher,
         "OptionsChains": CboeOptionsChainsFetcher,
     },
-    repr_name="CBOE",
+    repr_name="Chicago Board Options Exchange (CBOE)",
 )

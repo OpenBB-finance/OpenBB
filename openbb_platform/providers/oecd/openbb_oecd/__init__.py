@@ -23,5 +23,5 @@ non-member economies.""",
         "STIR": OECDSTIRFetcher,
         "LTIR": OECDLTIRFetcher,
     },
-    repr_name="OECD",
+    repr_name="Organization for Economic Co-operation and Development (OECD)",
 )

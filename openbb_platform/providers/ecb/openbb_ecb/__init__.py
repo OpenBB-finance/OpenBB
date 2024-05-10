@@ -16,5 +16,5 @@ Statistical publications and dashboards offer a compilation of key data on selec
         "CurrencyReferenceRates": ECBCurrencyReferenceRatesFetcher,
         "EUYieldCurve": ECBEUYieldCurveFetcher,
     },
-    repr_name="ECB",
+    repr_name="European Central Bank (ECB)",
 )

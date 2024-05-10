@@ -32,5 +32,5 @@ sec_provider = Provider(
         "SicSearch": SecSicSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
     },
-    repr_name="SEC",
+    repr_name="Securities and Exchange Commission (SEC)",
 )

@@ -21,5 +21,5 @@ The WSJ is the largest newspaper in the United States, by circulation.
         "ETFLosers": WSJLosersFetcher,
         "ETFActive": WSJActiveFetcher,
     },
-    repr_name="Wall Street Journal",
+    repr_name="Wall Street Journal (WSJ)",
 )
