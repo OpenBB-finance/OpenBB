@@ -3,7 +3,7 @@
 from importlib import import_module
 from json import dump
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from poetry.core.pyproject.toml import PyProjectTOML
 
@@ -40,61 +40,72 @@ def write(filename: str, data: Any):
         dump(data, json_file, indent=4)
 
 
+def to_camel(string: str):
+    """Convert string to camel case."""
+    components = string.split("_")
+    return components[0] + "".join(x.title() for x in components[1:])
+
+
+def createItem(package_name: str, obj: object, attrs: List[str]) -> Dict[str, str]:
+    """Create dictionary item from object attributes."""
+    item = {"packageName": package_name}
+    item.update(
+        {to_camel(a): getattr(obj, a) for a in attrs if getattr(obj, a) is not None}
+    )
+    return item
+
+
 def generate_provider_extensions() -> None:
     """Generate providers_extensions.json."""
     packages = get_packages(PROVIDERS_PATH, "openbb_provider_extension")
-    data: List[Dict[str, Optional[str]]] = []
+    data: List[Dict[str, str]] = []
+    attrs = [
+        "repr_name",
+        "description",
+        "credentials",
+        "v3_credentials",
+        "website",
+        "instructions",
+        "logo_url",
+    ]
+
     for pkg_name, plugin in sorted(packages.items()):
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             provider_obj = getattr(module, obj)
-            data.append(
-                {
-                    "packageName": pkg_name,
-                    "name": (
-                        provider_obj.repr_name
-                        if provider_obj.repr_name
-                        else to_title(provider_obj.name)
-                    ),
-                    "description": provider_obj.description,
-                    "credentials": provider_obj.credentials or None,
-                    "v3Credentials": provider_obj.v3_credentials,
-                    "website": provider_obj.website,
-                    "instructions": provider_obj.instructions,
-                }
-            )
+            data.append(createItem(pkg_name, provider_obj, attrs))
     write("provider", data)
 
 
 def generate_router_extensions() -> None:
     """Generate router_extensions.json."""
     packages = get_packages(EXTENSIONS_PATH, "openbb_core_extension")
-    data: List[Dict[str, Optional[str]]] = []
+    data: List[Dict[str, str]] = []
+    attrs = ["description"]
     for pkg_name, plugin in sorted(packages.items()):
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             router_obj = getattr(module, obj)
-            description = router_obj.description
-            data.append({"packageName": pkg_name, "description": description})
+            data.append(createItem(pkg_name, router_obj, attrs))
     write("router", data)
 
 
 def generate_obbject_extensions() -> None:
     """Generate obbject_extensions.json."""
     packages = get_packages(OBBJECT_EXTENSIONS_PATH, "openbb_obbject_extension")
-    data: List[Dict[str, Optional[str]]] = []
+    data: List[Dict[str, str]] = []
+    attrs = ["description"]
     for pkg_name, plugin in sorted(packages.items()):
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             ext_obj = getattr(module, obj)
-            description = ext_obj.description
-            data.append({"packageName": pkg_name, "description": description})
+            data.append(createItem(pkg_name, ext_obj, attrs))
     write("obbject", data)
 
 
