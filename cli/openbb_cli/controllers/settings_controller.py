@@ -1,4 +1,4 @@
-"""Feature Flags Controller Module."""
+"""Settings Controller Module."""
 
 import argparse
 from typing import List, Optional
@@ -16,7 +16,7 @@ session = Session()
 
 
 class SettingsController(BaseController):
-    """Feature Flags Controller class."""
+    """Settings Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
         "retryload",
@@ -32,11 +32,11 @@ class SettingsController(BaseController):
         "console_style",
         "flair",
         "timezone",
-        "language",
         "n_rows",
         "n_cols",
         "obbject_msg",
         "obbject_res",
+        "obbject_display",
     ]
     PATH = "/settings/"
     CHOICES_GENERATION = True
@@ -52,8 +52,7 @@ class SettingsController(BaseController):
         settings = session.settings
 
         mt = MenuText("settings/")
-        mt.add_info("_info_")
-        mt.add_raw("\n")
+        mt.add_info("_feature_flags_")
         mt.add_setting("interactive", settings.USE_INTERACTIVE_DF)
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
@@ -65,17 +64,16 @@ class SettingsController(BaseController):
         mt.add_setting("version", settings.SHOW_VERSION)
         mt.add_setting("obbject_msg", settings.SHOW_MSG_OBBJECT_REGISTRY)
         mt.add_raw("\n")
-        mt.add_info("_settings_")
-        mt.add_raw("\n")
+        mt.add_info("_preferences_")
         mt.add_cmd("console_style")
         mt.add_cmd("flair")
         mt.add_cmd("timezone")
-        mt.add_cmd("language")
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
         mt.add_cmd("obbject_res")
+        mt.add_cmd("obbject_display")
 
-        session.console.print(text=mt.menu_text, menu="Feature Flags")
+        session.console.print(text=mt.menu_text, menu="Settings")
 
     def call_overwrite(self, _):
         """Process overwrite command."""
@@ -219,30 +217,6 @@ class SettingsController(BaseController):
         elif not other_args:
             session.console.print(f"Current timezone: {session.settings.TIMEZONE}")
 
-    def call_language(self, other_args: List[str]) -> None:
-        """Process language command."""
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="language",
-            description="Change your custom language.",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--language",
-            dest="language",
-            action="store",
-            required=False,
-            type=str,
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser and ns_parser.language:
-            session.settings.set_item("USE_LANGUAGE", ns_parser.language)
-
-        elif not other_args:
-            session.console.print(f"Current language: {session.settings.USE_LANGUAGE}")
-
     def call_n_rows(self, other_args: List[str]) -> None:
         """Process n_rows command."""
         parser = argparse.ArgumentParser(
@@ -320,4 +294,31 @@ class SettingsController(BaseController):
             session.console.print(
                 f"Current maximum allowed number of results to keep in the OBBject registry:"
                 f" {session.settings.N_TO_KEEP_OBBJECT_REGISTRY}"
+            )
+
+    def call_obbject_display(self, other_args: List[str]):
+        """Process obbject_display command."""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="obbject_display",
+            description="Number of results to display from the OBBject Registry.",
+            add_help=False,
+        )
+        parser.add_argument(
+            "-n",
+            "--number",
+            dest="number",
+            action="store",
+            required=False,
+            type=int,
+        )
+        ns_parser = self.parse_simple_args(parser, other_args)
+
+        if ns_parser and ns_parser.number:
+            session.settings.set_item("N_TO_DISPLAY_OBBJECT_REGISTRY", ns_parser.number)
+
+        elif not other_args:
+            session.console.print(
+                f"Current number of results to display from the OBBject registry:"
+                f" {session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY}"
             )

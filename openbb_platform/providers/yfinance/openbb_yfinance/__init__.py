@@ -38,10 +38,10 @@ from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCaps
 
 yfinance_provider = Provider(
     name="yfinance",
-    website="https://finance.yahoo.com/",
+    website="https://finance.yahoo.com",
     description="""Yahoo! Finance is a web-based platform that offers financial news,
-    data, and tools for investors and individuals interested in tracking and analyzing
-    financial markets and assets.""",
+data, and tools for investors and individuals interested in tracking and analyzing
+financial markets and assets.""",
     fetcher_dict={
         "AvailableIndices": YFinanceAvailableIndicesFetcher,
         "BalanceSheet": YFinanceBalanceSheetFetcher,
@@ -72,4 +72,6 @@ yfinance_provider = Provider(
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },
+    repr_name="Yahoo Finance",
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/8/8f/Yahoo%21_Finance_logo_2021.png",
 )

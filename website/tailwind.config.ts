@@ -1,3 +1,7 @@
+import typographyPlugin from "@tailwindcss/typography";
+import { Config } from "tailwindcss";
+import radixPlugin from "tailwindcss-radix";
+
 const disabledCss = {
   "code::before": false,
   "code::after": false,
@@ -6,11 +10,9 @@ const disabledCss = {
   pre: false,
   code: false,
   "pre code": false,
-  "code::before": false,
-  "code::after": false,
 };
 
-module.exports = {
+export default {
   darkMode: ["class", '[data-theme="dark"]'],
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./content/**/*.{mdx,md}"],
   theme: {
@@ -68,5 +70,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("tailwindcss-radix")()],
-};
+  plugins: [typographyPlugin, radixPlugin],
+} satisfies Config;

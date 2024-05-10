@@ -30,7 +30,7 @@ RICH_TAGS = [
 class MenuText:
     """Create menu text with rich colors to be displayed by CLI."""
 
-    CMD_NAME_LENGTH = 18
+    CMD_NAME_LENGTH = 23
     CMD_DESCRIPTION_LENGTH = 65
     CMD_PROVIDERS_LENGTH = 23
     SECTION_SPACING = 4
@@ -64,9 +64,7 @@ class MenuText:
     def _format_cmd_name(self, name: str) -> str:
         """Truncate command name length if it is too long."""
         if len(name) > self.CMD_NAME_LENGTH:
-            new_name = name[
-                : self.CMD_NAME_LENGTH
-            ]  # Default to trimming to 18 characters
+            new_name = name[: self.CMD_NAME_LENGTH]
 
             if "_" in name:
                 name_split = name.split("_")
@@ -107,6 +105,22 @@ class MenuText:
     def add_raw(self, text: str):
         """Append raw text (without translation)."""
         self.menu_text += text
+
+    def add_section(
+        self, text: str, description: str = "", leading_new_line: bool = False
+    ):
+        """Append raw text (without translation)."""
+        spacing = (self.CMD_NAME_LENGTH - len(text) + self.SECTION_SPACING) * " "
+        left_spacing = self.SECTION_SPACING * " "
+        text = f"{left_spacing}{text}"
+        if description:
+            text = f"{text}{spacing}{description}\n"
+
+        if leading_new_line:
+            self.menu_text += "\n" + text
+
+        else:
+            self.menu_text += text
 
     def add_custom(self, name: str):
         """Append custom text (after translation)."""
@@ -164,6 +178,9 @@ class MenuText:
             description = i18n.t(self.menu_path + name)
             if description == self.menu_path + name:
                 description = ""
+
+        if len(description) > self.CMD_DESCRIPTION_LENGTH:
+            description = description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
 
         menu = f"{name}{spacing}{description}"
         tag = "unvl" if disable else "menu"

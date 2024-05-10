@@ -1,19 +1,20 @@
 ---
 title: Bugs, Support, and Feedback
 sidebar_position: 5
-description: Familiarize yourself with common issues and bug reports within our OpenBB
+description:
+  Familiarize yourself with common issues and bug reports within our OpenBB
   Terminal, explore our patch release process and learn how to report issues or get
   support for OpenBB Terminal. You'll also learn how to provide feedback and request
   specific features within the platform.
 keywords:
-- GitHub
-- bugs
-- patches
-- issue reporting
-- support
-- Discord
-- feature requests
-- machine learning
+  - GitHub
+  - bugs
+  - patches
+  - issue reporting
+  - support
+  - Discord
+  - feature requests
+  - machine learning
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -22,7 +23,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.
 
-<details><summary>How often are patches for bugs released?</summary>
+<details>
+<summary mdxType="summary">How often are patches for bugs released?</summary>
 
 The installer versions are packaged approximately every two-weeks. Those working with a cloned GitHub version can checkout the Develop branch to get the latest fixes and releases before they are pushed to the main branch.
 
@@ -32,19 +34,22 @@ git checkout develop
 
 </details>
 
-<details><summary>How do I report a bug?</summary>
+<details>
+<summary mdxType="summary">How do I report a bug?</summary>
 
 First, search the open issues for another report. If one already exists, attach any relevant information and screenshots as a comment. If one does not exist, start one with this [link](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=type%3Abug&template=bug_report.md&title=%5BBug%5D)
 
 </details>
 
-<details><summary>How can I get help with OpenBB Terminal?</summary>
+<details>
+<summary mdxType="summary">How can I get help with OpenBB Terminal?</summary>
 
 You can get help with OpenBB Terminal by joining our [Discord server](https://openbb.co/discord) or contact us in our support form [here](https://openbb.co/support).
 
 </details>
 
-<details><summary>How can I give feedback about the OpenBB Terminal, or request specific functionality?</summary>
+<details>
+<summary mdxType="summary">How can I give feedback about the OpenBB Terminal, or request specific functionality?</summary>
 
 Being an open source platform that wishes to tailor to the needs of any type of investor, we highly encourage anyone to share with us their experience and/or how we can further improve the OpenBB Terminal. This can be anything from a very small bug, a new feature, or the implementation of a highly advanced Machine Learning model.
 
