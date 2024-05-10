@@ -158,11 +158,7 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        max_obbjects_exceeded = (
-                            len(session.obbject_registry.obbjects)
-                            >= session.settings.N_TO_KEEP_OBBJECT_REGISTRY
-                        )
-                        if max_obbjects_exceeded:
+                        if session.max_obbjects_exceeded():
                             session.obbject_registry.remove()
 
                         # use the obbject to store the command so we can display it later on results
@@ -214,7 +210,7 @@ class PlatformController(BaseController):
                             figure=fig,
                         )
 
-                    if max_obbjects_exceeded:
+                    if session.max_obbjects_exceeded():
                         session.console.print(
                             "[yellow]\nMaximum number of OBBjects reached. The oldest entry was removed.[yellow]"
                         )
