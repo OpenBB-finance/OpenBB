@@ -15,6 +15,7 @@ class Extension:
         self,
         name: str,
         credentials: Optional[List[str]] = None,
+        description: Optional[str] = None,
     ) -> None:
         """Initialize the extension.
 
@@ -24,9 +25,12 @@ class Extension:
             Name of the extension.
         credentials : Optional[List[str]], optional
             List of required credentials, by default None
+        description: Optional[str]
+            Extension description.
         """
         self.name = name
         self.credentials = credentials or []
+        self.description = description
 
     @property
     def obbject_accessor(self) -> Callable:
