@@ -15,6 +15,7 @@ def check_args(query_args: Dict, to_include: List[str]):
         field not in query_args for field in available_args if field not in to_include
     )
 
+
 # pylint: disable = R0912
 def generate_url(in_query):
     """Generate the url for trading economimcs.

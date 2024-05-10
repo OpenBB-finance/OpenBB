@@ -38,6 +38,7 @@ class EconomicCalendarData(Data):
     country: Optional[str] = Field(default=None, description="Country of event.")
     category: Optional[str] = Field(default=None, description="Category of event.")
     event: Optional[str] = Field(default=None, description="Event name.")
+    importance: Optional[str] = Field(default=None, description="The importance level for the event.")
     source: Optional[str] = Field(default=None, description="Source of the data.")
     currency: Optional[str] = Field(default=None, description="Currency of the data.")
     unit: Optional[str] = Field(default=None, description="Unit of the data.")

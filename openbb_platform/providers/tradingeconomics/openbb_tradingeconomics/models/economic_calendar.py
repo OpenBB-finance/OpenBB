@@ -118,9 +118,6 @@ class TEEconomicCalendarData(EconomicCalendarData):
     forecast: Optional[Union[str, float]] = Field(
         default=None, description="TradingEconomics projections."
     )
-    importance: Literal["Low", "Medium", "High", None] = Field(
-        default=None, description="Importance of the event. 1-Low, 2-Medium, 3-High"
-    )
     reference: Optional[str] = Field(
         default=None,
         description="Abbreviated period for which released data refers to.",

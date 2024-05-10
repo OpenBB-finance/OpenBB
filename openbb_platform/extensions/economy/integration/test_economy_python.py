@@ -37,7 +37,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "country": "mexico,sweden",
                 "importance": "low",
                 "group": "gdp",
-                "calendar_id" : None,
+                "calendar_id": None,
             }
         ),
         (

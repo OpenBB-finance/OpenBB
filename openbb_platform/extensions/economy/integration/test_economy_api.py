@@ -41,7 +41,7 @@ def headers():
                 "country": "mexico,sweden",
                 "importance": "low",
                 "group": "gdp",
-                "calendar_id" : None,
+                "calendar_id": None,
             }
         ),
         (
