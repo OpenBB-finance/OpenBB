@@ -29,8 +29,8 @@ class IntrinioHistoricalAttributesQueryParams(HistoricalAttributesQueryParams):
 
     __alias_dict__ = {"sort": "sort_order", "limit": "page_size", "tag_type": "type"}
     __json_schema_extra__ = {
-        "tag": ["multiple_items_allowed"],
-        "symbol": ["multiple_items_allowed"],
+        "tag": {"multiple_items_allowed": True},
+        "symbol": {"multiple_items_allowed": True},
     }
 
 

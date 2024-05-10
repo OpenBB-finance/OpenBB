@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from openbb_core.provider import standard_models
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
@@ -141,7 +141,7 @@ def create_reference_markdown_intro(
 
 
 def create_reference_markdown_tabular_section(
-    parameters: Dict[str, List[Dict[str, str]]], heading: str
+    parameters: Dict[str, List[Dict[str, Optional[str]]]], heading: str
 ) -> str:
     """Create the tabular section for the markdown file.
 
@@ -158,45 +158,41 @@ def create_reference_markdown_tabular_section(
         Tabular section for the markdown file
     """
 
-    standard_params_list = []
     tables_list = []
 
     # params_list is a list of dictionaries containing the
     # information for all the parameters of the provider.
     for provider, params_list in parameters.items():
-        # Exclude the standard parameters from the table
-        filtered_params = [
-            {k: v for k, v in params.items() if k != "standard"}
-            for params in params_list
-        ]
+
+        if provider != "standard":
+            result = {v.get("name"): v for v in parameters["standard"]}
+            provider_params = {v.get("name"): v for v in params_list}
+            result.update(provider_params)
+            params = [{**{"name": k}, **v} for k, v in result.items()]
+        else:
+            params = params_list
 
         # Exclude default and optional columns in the Data section
-        if heading == "Data":
-            filtered_params = [
-                {k: v for k, v in params.items() if k not in ["default", "optional"]}
-                for params in filtered_params
+        filtered = (
+            [
+                {k: v for k, v in p.items() if k not in ["default", "optional"]}
+                for p in params
             ]
-
-        if provider == "standard":
-            standard_params_list = filtered_params
-        else:
-            filtered_params = standard_params_list + filtered_params
+            if heading == "Data"
+            else params
+        )
 
         # Parameter information for every provider is extracted from the dictionary
         # and joined to form a row of the table.
         # A `|` is added at the start and end of the row to create the table cell.
-        params_table_rows = [
-            f"| {' | '.join(map(str, params.values()))} |" for params in filtered_params
-        ]
-        # All rows are joined to form the table.
-        params_table_rows_str = "\n".join(params_table_rows)
+        rows = "\n".join([f"| {' | '.join(map(str, p.values()))} |" for p in filtered])
 
         if heading == "Parameters":
             tables_list.append(
                 f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
                 "| Name | Type | Description | Default | Optional |\n"
                 "| ---- | ---- | ----------- | ------- | -------- |\n"
-                f"{params_table_rows_str}\n"
+                f"{rows}\n"
                 "</TabItem>\n"
             )
         elif heading == "Data":
@@ -204,7 +200,7 @@ def create_reference_markdown_tabular_section(
                 f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
                 "| Name | Type | Description |\n"
                 "| ---- | ---- | ----------- |\n"
-                f"{params_table_rows_str}\n"
+                f"{rows}\n"
                 "</TabItem>\n"
             )
 
