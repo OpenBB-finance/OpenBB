@@ -40,8 +40,7 @@ ext = Extension(name="charting", description="Create custom charts from OBBject 
 
 @ext.obbject_accessor
 class Charting:
-    """
-    Charting extension.
+    """Charting extension.
 
     Methods
     -------
@@ -100,7 +99,6 @@ class Charting:
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
-
         if route is None:
             raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
@@ -109,7 +107,8 @@ class Charting:
     def get_params(self) -> ChartParams:
         """Return the ChartQueryParams class for the function the OBBject was created from.
 
-        Without assigning to a variable, it will print the docstring to the console."""
+        Without assigning to a variable, it will print the docstring to the console.
+        """
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
         charting_function = (
@@ -126,7 +125,7 @@ class Charting:
     ) -> Tuple[pd.DataFrame, bool]:
         """Convert supplied data to a DataFrame."""
         has_data = (
-            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty
+            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty  # type: ignore
         ) or (bool(data))
         index = (
             data.index.name
@@ -516,8 +515,7 @@ class Charting:
         data: Optional[Union[pd.DataFrame, pd.Series]] = None,
         title: str = "",
     ):
-        """
-        Display an interactive table.
+        """Display an interactive table.
 
         Parameters
         ----------
