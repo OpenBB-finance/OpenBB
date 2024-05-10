@@ -1,23 +1,24 @@
 ---
 title: dex
-description: The dex page displays information about top decentralized exchanges.
+description:
+  The dex page displays information about top decentralized exchanges.
   It provides usage, parameters, and examples of how to fetch and sort the data.
 keywords:
-- Decentralized Exchanges
-- Dex command
-- Crypto Data Sorting
-- Crypto Trading Volume
-- Dex Parameters
-- Dex Examples
-- DappRadar
-- Cryptocurrency
+  - Decentralized Exchanges
+  - Dex command
+  - Crypto Data Sorting
+  - Crypto Trading Volume
+  - Dex Parameters
+  - Dex Examples
+  - DappRadar
+  - Cryptocurrency
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="crypto/disc/dex - Reference | OpenBB Terminal Docs" />
 
-Shows top decentralized exchanges [Source: https://dappradar.com/] Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
+Shows top decentralized exchanges [Source: https://dappradar.com/] Accepts --sort \{Name,Daily Users,Daily Volume [$]\} to sort by column
 
 ### Usage
 
@@ -29,11 +30,10 @@ dex [-l LIMIT] [-s SORTBY [SORTBY ...]]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of records to display | 15 | True | None |
-| sortby | Sort by given column. Default: Daily Volume [$] | Daily Volume [$] | True | Name, Category, Daily Users, Daily Volume [$] |
-
+| Name   | Description                                     | Default          | Optional | Choices                                       |
+| ------ | ----------------------------------------------- | ---------------- | -------- | --------------------------------------------- |
+| limit  | Number of records to display                    | 15               | True     | None                                          |
+| sortby | Sort by given column. Default: Daily Volume [$] | Daily Volume [$] | True     | Name, Category, Daily Users, Daily Volume [$] |
 
 ---
 
@@ -66,4 +66,5 @@ dex [-l LIMIT] [-s SORTBY [SORTBY ...]]
 │ Magic Eden    │ 40.2K       │ 18.5M            │
 └───────────────┴─────────────┴──────────────────┘
 ```
+
 ---

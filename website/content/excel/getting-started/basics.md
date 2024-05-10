@@ -3,11 +3,11 @@ title: Basics
 sidebar_position: 2
 description: This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
 keywords:
-- Microsoft Excel
-- Add-in
-- Basics
-- Examples
-- Functions
+  - Microsoft Excel
+  - Add-in
+  - Basics
+  - Examples
+  - Functions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -19,28 +19,28 @@ The OpenBB Add-in for Excel provides direct access to the OpenBB platform, where
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
 :::tip
-Use the <TAB\> key to autocomplete the function name after typing `=OBB.`
+Use the &lt;TAB&gt; key to autocomplete the function name after typing `=OBB.`
 :::
 
 Examples:
 
 1. Getting balance sheet data for a stock:
 
-    ```excel
-    =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
-    ```
+   ```excel
+   =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
+   ```
 
 2. Getting the latest news for a stock:
 
-    ```excel
-    =OBB.NEWS.COMPANY("AAPL")
-    ```
+   ```excel
+   =OBB.NEWS.COMPANY("AAPL")
+   ```
 
 3. Getting the earnings calendar:
 
-    ```excel
-    =OBB.EQUITY.CALENDAR.IPO(,"2023-11-20")
-    ```
+   ```excel
+   =OBB.EQUITY.CALENDAR.IPO(,"2023-11-20")
+   ```
 
 :::tip
 If you want to skip a parameter use comma (or semi-colon depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
