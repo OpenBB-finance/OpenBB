@@ -28,7 +28,6 @@ class SettingsController(BaseController):
         "thoughts",
         "reporthtml",
         "exithelp",
-        "rcontext",
         "richpanel",
         "tbhint",
         "overwrite",
@@ -61,7 +60,6 @@ class SettingsController(BaseController):
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
         mt.add_setting("exithelp", settings.ENABLE_EXIT_AUTO_HELP)
-        mt.add_setting("rcontext", settings.REMEMBER_CONTEXTS)
         mt.add_setting("richpanel", settings.ENABLE_RICH_PANEL)
         mt.add_setting("tbhint", settings.TOOLBAR_HINT)
         mt.add_setting("overwrite", settings.FILE_OVERWRITE)
@@ -109,12 +107,6 @@ class SettingsController(BaseController):
         """Process exithelp command."""
         session.settings.set_item(
             "ENABLE_EXIT_AUTO_HELP", not session.settings.ENABLE_EXIT_AUTO_HELP
-        )
-
-    def call_rcontext(self, _):
-        """Process rcontext command."""
-        session.settings.set_item(
-            "REMEMBER_CONTEXTS", not session.settings.REMEMBER_CONTEXTS
         )
 
     def call_dt(self, _):
