@@ -73,4 +73,5 @@ financial markets and assets.""",
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },
     repr_name="Yahoo Finance",
+    logo_url="https://en.m.wikipedia.org/wiki/File:Yahoo!_Finance_logo_2021.png"
 )

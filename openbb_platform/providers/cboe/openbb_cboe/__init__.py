@@ -38,4 +38,5 @@ around the world.""",
         "OptionsChains": CboeOptionsChainsFetcher,
     },
     repr_name="Chicago Board Options Exchange (CBOE)",
+    logo_url="https://www.cboe.com/res/_img/logos/cboe_logo_inv_50th.svg"
 )

@@ -15,4 +15,5 @@ makes available to the public, media, researchers and member firms.""",
         "EquityShortInterest": FinraShortInterestFetcher,
     },
     repr_name="Financial Industry Regulatory Authority (FINRA)",
+    logo_url="https://en.m.wikipedia.org/wiki/File:FINRA_logo.svg"
 )
