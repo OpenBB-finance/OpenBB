@@ -563,11 +563,13 @@ class BaseController(metaclass=ABCMeta):
                 return
 
             global RECORD_SESSION  # noqa: PLW0603
+            global RECORD_SESSION_LOCAL_ONLY  # noqa: PLW0603
             global SESSION_RECORDED_NAME  # noqa: PLW0603
             global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
             global SESSION_RECORDED_TAGS  # noqa: PLW0603
             global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
+            RECORD_SESSION_LOCAL_ONLY = session.is_local()
             RECORD_SESSION = True
             SESSION_RECORDED_NAME = title
             SESSION_RECORDED_DESCRIPTION = (
