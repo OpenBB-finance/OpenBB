@@ -1323,7 +1323,6 @@ This class contains both important variables and methods that are common across 
 
 - `cls`: clear screen
 - `home`: go back to the main root
-- `about`: allows to open our documentation directly on the menu or command
 - `h`, `?` and `help`: display the help menu the user is in
 - `q`, `quit` and `..`: go back to one menu above
 - `exit`: exit the platform
