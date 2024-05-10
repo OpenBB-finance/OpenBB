@@ -111,7 +111,7 @@ After the first parameter has been set, remaining parameters will be triggered b
 historical --symbol AAPL --start_date 2024-01-01 --
 ```
 
-![Auto Complete](autocomplete1.png)
+![Auto Complete](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/78e68bbd-094e-4558-bce0-92b8d556fcaf)
 
 ### Data Processing Commands
 
@@ -129,7 +129,7 @@ Outputs from functions are stored as `results` and are selected with the `--data
 /technical/rsi --data 0 --chart
 ```
 
-![SPY RSI](rsi1.png)
+![SPY RSI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
 
 ## Help Dialogues
 
