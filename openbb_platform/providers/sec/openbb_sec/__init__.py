@@ -15,7 +15,7 @@ from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
 sec_provider = Provider(
     name="sec",
-    website="https://sec.gov",
+    website="https://www.sec.gov/data",
     description="SEC is the public listings regulatory body for the United States.",
     credentials=None,
     fetcher_dict={
@@ -32,4 +32,6 @@ sec_provider = Provider(
         "SicSearch": SecSicSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
     },
+    repr_name="Securities and Exchange Commission (SEC)",
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Seal_of_the_United_States_Securities_and_Exchange_Commission.svg/1920px-Seal_of_the_United_States_Securities_and_Exchange_Commission.svg.png",  # noqa: E501  pylint: disable=line-too-long
 )

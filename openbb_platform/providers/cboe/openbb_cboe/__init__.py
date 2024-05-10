@@ -18,10 +18,10 @@ from openbb_core.provider.abstract.provider import Provider
 
 cboe_provider = Provider(
     name="cboe",
-    website="https://www.cboe.com/",
+    website="https://www.cboe.com",
     description="""Cboe is the world's go-to derivatives and exchange network,
-    delivering cutting-edge trading, clearing and investment solutions to people
-    around the world.""",
+delivering cutting-edge trading, clearing and investment solutions to people
+around the world.""",
     credentials=None,
     fetcher_dict={
         "AvailableIndices": CboeAvailableIndicesFetcher,
@@ -37,4 +37,6 @@ cboe_provider = Provider(
         "MarketIndices": CboeIndexHistoricalFetcher,
         "OptionsChains": CboeOptionsChainsFetcher,
     },
+    repr_name="Chicago Board Options Exchange (CBOE)",
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cboe_Global_Markets_Logo.svg/2880px-Cboe_Global_Markets_Logo.svg.png",  # noqa: E501  pylint: disable=line-too-long
 )
