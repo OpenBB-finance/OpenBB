@@ -1,22 +1,23 @@
 ---
 title: MacOS
 sidebar_position: 2
-description: Step-by-step instructions for installing the OpenBB Terminal on MacOS.
+description:
+  Step-by-step instructions for installing the OpenBB Terminal on MacOS.
   This guide covers installation for both Intel-based computers and Apple Silicon
   (M1) devices, and includes instructions for preliminaries like installing Rosetta
   for M1 users.
 keywords:
-- OpenBB Terminal Installation
-- MacOS installation guide
-- OpenBB on Mac Intel
-- OpenBB on Mac M1
-- Rosetta installation
-- PKG installer
-- OpenBB Terminal application
-- MacOS Big Sur installation
-- MacOS Monterey installation
-- Apple Silicon installation
-- Unverified developer warning
+  - OpenBB Terminal Installation
+  - MacOS installation guide
+  - OpenBB on Mac Intel
+  - OpenBB on Mac M1
+  - Rosetta installation
+  - PKG installer
+  - OpenBB Terminal application
+  - MacOS Big Sur installation
+  - MacOS Monterey installation
+  - Apple Silicon installation
+  - Unverified developer warning
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -33,7 +34,8 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/x86.64.MacOS.OpenBB.Terminal.v3.2.5.pkg" label="Mac Intel Installer" />  <InstallerButton href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/ARM64.MacOS.OpenBB.Terminal.v3.2.5.pkg" label="Mac M1 Installer" />
 </div>
 
-<details><summary>Minimum Requirements</summary>
+<details>
+<summary mdxType="summary">Minimum Requirements</summary>
 
 - MacOS Monterey or newer
 - Modern CPU (Intel processor made in the last 5 years or Apple Silicon chip)
@@ -46,14 +48,15 @@ Install the OpenBB Terminal on MacOS (Big Sur or later). There are two versions 
 :::info Apple Silicon users will need to install Rosetta prior to installation
 To understand whether you are using an Apple Sillicon (M1) device or an Intel-based device click on the Apple Icon at the top left of your MacBook and select "About This Mac". Then under "Chip" if it says something like "Apple M1 Pro" or "Apple M1 Max", you know you have an Apple Silicon MacBook. If it says for example "2,3 GHz Quad-Core Intel Core i7" you know that you have an Intel-based MacBook and you can continue by clicking on the "Mac Intel Installer" button.
 
-<details><summary>Rosetta Installation Instructions (Apple Sillicon users only)</summary>
+<details>
+<summary mdxType="summary">Rosetta Installation Instructions (Apple Sillicon users only)</summary>
 
 1. Press ⌘ (Command) + SPACE to open spotlight search, and type "Terminal" and hit Return (⏎).
 2. Copy and paste the following code in the Terminal and hit ENTER (⏎):
 
-  ```console
-  softwareupdate --install-rosetta
-  ```
+```console
+softwareupdate --install-rosetta
+```
 
 3. This will start up the Rosetta installation process and you will receive a message regarding the Licence Agreement. Type `A` and hit Return (⏎).
 4. After the installation process has finished, you can proceed by clicking on the "Mac M1 Installer" button.
@@ -66,13 +69,13 @@ Step by step instructions:
 1. Download the PKG file from the links above.
 
 2. Launch the PKG installer by double-clicking on it.
-<img width="634" alt="image" src="https://user-images.githubusercontent.com/11668535/234018847-f3e76345-7d4e-445d-a462-64e0d6d902bd.png"></img>
+   <img width="634" alt="image" src="https://user-images.githubusercontent.com/11668535/234018847-f3e76345-7d4e-445d-a462-64e0d6d902bd.png"></img>
 
 3. Follow the Installer prompt. You will be asked to enter your system password.
-<img width="638" alt="image" src="https://user-images.githubusercontent.com/11668535/234032407-8ca009a7-0545-4196-b671-5bcc4c5cea9b.png"></img>
+   <img width="638" alt="image" src="https://user-images.githubusercontent.com/11668535/234032407-8ca009a7-0545-4196-b671-5bcc4c5cea9b.png"></img>
 
 4. This process installs the application into the `/Application/OpenBB Terminal` folder.
-<img width="618" alt="image" src="https://user-images.githubusercontent.com/11668535/234034347-cb2a80a0-81bb-4e8d-b91e-b636e161cf32.png"></img>
+   <img width="618" alt="image" src="https://user-images.githubusercontent.com/11668535/234034347-cb2a80a0-81bb-4e8d-b91e-b636e161cf32.png"></img>
 
 5. Launch the application by double-clicking on the `OpenBB Terminal` application. If everything was successful you should see a screen like the one below:
 

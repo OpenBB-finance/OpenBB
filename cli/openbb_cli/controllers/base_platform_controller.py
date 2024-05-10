@@ -15,6 +15,7 @@ from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
+from openbb_core.app.model.obbject import OBBject
 
 session = Session()
 
@@ -74,17 +75,20 @@ class PlatformController(BaseController):
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
-                    action.choices = range(len(session.obbject_registry.obbjects))
-                    action.type = int
+                    action.choices = [
+                        "OBB" + str(i)
+                        for i in range(len(session.obbject_registry.obbjects))
+                    ]
+                    action.type = str
                     action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
-        if hasattr(ns_parser, "data") and ns_parser.data in range(
-            len(session.obbject_registry.obbjects)
-        ):
-            obbject = session.obbject_registry.get(ns_parser.data)
-            setattr(ns_parser, "data", obbject.results)
+        if hasattr(ns_parser, "data"):
+            ns_parser.data = int(ns_parser.data.replace("OBB", ""))
+            if ns_parser.data in range(len(session.obbject_registry.obbjects)):
+                obbject = session.obbject_registry.get(ns_parser.data)
+                setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
 
@@ -154,12 +158,11 @@ class PlatformController(BaseController):
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        max_obbjects_exceeded = (
-                            len(session.obbject_registry.obbjects)
-                            >= session.settings.N_TO_KEEP_OBBJECT_REGISTRY
-                        )
-                        if max_obbjects_exceeded:
+                        if session.max_obbjects_exceeded():
                             session.obbject_registry.remove()
+
+                        # use the obbject to store the command so we can display it later on results
+                        obbject.extra["command"] = f"{title} {' '.join(other_args)}"
 
                         session.obbject_registry.register(obbject)
                         # we need to force to re-link so that the new obbject
@@ -168,7 +171,9 @@ class PlatformController(BaseController):
                         # also update the completer
                         self.update_completer(self.choices_default)
 
-                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY:
+                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY and isinstance(
+                            obbject, OBBject
+                        ):
                             session.console.print("Added OBBject to registry.")
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
@@ -197,7 +202,7 @@ class PlatformController(BaseController):
                     if hasattr(ns_parser, "export") and ns_parser.export:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
                         export_data(
-                            export_type=ns_parser.export,
+                            export_type=",".join(ns_parser.export),
                             dir_path=os.path.dirname(os.path.abspath(__file__)),
                             func_name=translator.func.__name__,
                             df=df,
@@ -205,7 +210,7 @@ class PlatformController(BaseController):
                             figure=fig,
                         )
 
-                    if max_obbjects_exceeded:
+                    if session.max_obbjects_exceeded():
                         session.console.print(
                             "[yellow]\nMaximum number of OBBjects reached. The oldest entry was removed.[yellow]"
                         )
@@ -271,13 +276,26 @@ class PlatformController(BaseController):
 
     def _get_menu_description(self, menu: str) -> str:
         """Get menu description."""
+
+        def _get_sub_menu_commands():
+            """Get sub menu commands."""
+            sub_path = f"{self.PATH[1:].replace('/','_')}{menu}"
+            commands = []
+            for trl in self.translators:
+                if sub_path in trl:
+                    commands.append(trl.replace(f"{sub_path}_", ""))
+            return commands
+
         menu_description = (
             obb.reference["routers"]  # type: ignore
             .get(f"{self.PATH}{menu}", {})
             .get("description", "")
         ) or ""
+        if menu_description:
+            return menu_description.split(".")[0].lower()
 
-        return menu_description.split(".")[0].lower()
+        # If no description is found, return the sub menu commands
+        return ", ".join(_get_sub_menu_commands())
 
     def print_help(self):
         """Print help."""
@@ -288,8 +306,10 @@ class PlatformController(BaseController):
                 description = self._get_menu_description(menu)
                 mt.add_menu(name=menu, description=description)
 
+            if self.CHOICES_COMMANDS:
+                mt.add_raw("\n")
+
         if self.CHOICES_COMMANDS:
-            mt.add_raw("\n")
             for command in self.CHOICES_COMMANDS:
                 command_description = self._get_command_description(command)
                 mt.add_cmd(
@@ -297,7 +317,14 @@ class PlatformController(BaseController):
                     description=command_description,
                 )
 
-        session.console.print(text=mt.menu_text, menu=self._name)
+        if session.obbject_registry.obbjects:
+            mt.add_section("Cached Results:\n", leading_new_line=True)
+            for key, value in list(session.obbject_registry.all.items())[
+                : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
+            ]:
+                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+
+        session.console.print(text=mt.menu_text, menu=self.PATH)
 
         settings = session.settings
         dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
