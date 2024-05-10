@@ -20,6 +20,6 @@ an open and transparent government.""",
         "TreasuryAuctions": GovernmentUSTreasuryAuctionsFetcher,
         "TreasuryPrices": GovernmentUSTreasuryPricesFetcher,
     },
-    repr_name="US Government",
+    repr_name="Data.gov | United States Government",
     logo_url="https://upload.wikimedia.org/wikipedia/commons/0/06/Muq55HrN_400x400.png",
 )
