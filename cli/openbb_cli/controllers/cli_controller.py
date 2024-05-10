@@ -287,10 +287,10 @@ class CLIController(BaseController):
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
             mt.add_section("Cached Results:\n", leading_new_line=True)
-            for key, value in list(session.obbject_registry.all.items())[
+            for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+                mt.add_raw(f"\tOBB{key}: {value['command']}\n")  # type: ignore
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -533,9 +533,7 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             with contextlib.suppress(EOFError):
-                webbrowser.open(
-                    "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
-                )
+                webbrowser.open("https://docs.openbb.co/cli")
 
         t_controller.print_help()
 
