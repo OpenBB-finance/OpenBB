@@ -25,8 +25,8 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     """EconDB Economic Indicators Query."""
 
     __json_schema_extra__ = {
-        "symbol": ["multiple_items_allowed"],
-        "country": ["multiple_items_allowed"],
+        "symbol": {"multiple_items_allowed": True},
+        "country": {"multiple_items_allowed": True},
     }
 
     transform: Union[None, Literal["toya", "tpop", "tusd", "tpgp"]] = Field(

@@ -30,7 +30,7 @@ class AlphaVantageHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     Source: https://www.alphavantage.co/documentation/#earnings
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     period: Literal["annual", "quarter"] = Field(
         default="quarter", description=QUERY_DESCRIPTIONS.get("period", "")
