@@ -1,10 +1,7 @@
 ---
 title: Interactive Tables
-sidebar_position: 1
-description: Learn how to navigate and utilize OpenBB's interactive tables using our
-  open source PyWry technology. Understand how to sort and filter columns, hide or
-  remove columns, select number of rows per page, freeze index and column headers,
-  and export the data.
+sidebar_position: 7
+description: This page explains how to navigate and utilize OpenBB's interactive tables. Understand how to sort and filter columns, hide or remove columns, select number of rows per page, freeze index and column headers, and export the data.
 keywords:
 - interactive tables
 - PyWry technology
@@ -21,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Tables - Outputs - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Tables - | OpenBB CLI Docs" />
 
 
 Interactive tables open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
 
 :::tip
-All OpenBB Platform CLI results are displayed in interactive tables by default, unless the interactive model is disabled.
+All OpenBB CLI results are displayed in interactive tables by default, unless the interactive model is disabled from the `/settings` menu.
 :::
 
 <details>

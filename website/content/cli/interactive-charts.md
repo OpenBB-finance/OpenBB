@@ -1,14 +1,15 @@
 ---
 title: Interactive Charts
-sidebar_position: 2
-description: Explore how to effectively utilize OpenBB's interactive charts backed
-  by open source PyWry technology. Understand various capabilities including annotation,
-  color modification, drawing tools, data export, and supplementary data overlay.
+sidebar_position: 6
+description: This page provides a detailed explanation of the OpenBB Interactive Charts. Understand various capabilities including annotation, color modification, drawing tools, data export, and supplementary data overlay.
 keywords:
 - interactive charts
-- PyWry technology
-- chart annotation
-- drawing tools
+- PyWry
+- annotation
+- drawing
+- lines
+- modebar
+- plotly
 - data export
 - data overlay
 - editing chart title
@@ -20,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Charts - Outputs - Usage | OpenBB Platform CLI Docs" />
+<HeadTitle title="Interactive Charts - | OpenBB CLI Docs" />
 
 Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
 

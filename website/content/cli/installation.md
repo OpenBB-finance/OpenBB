@@ -70,3 +70,7 @@ Alternatively, install locally with `pip`:
 ```bash
 pip install -e .
 ```
+
+## Installing New Modules
+
+New extensions, or removals, are automatically added (removed) to the CLI on the next launch.

@@ -56,6 +56,16 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
     description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
     url="cli/openbbuserdata"
 />
+<NewReferenceCard
+    title="Interactive Tables"
+    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables"
+    url="cli/interactive-tables"
+/>
+<NewReferenceCard
+    title="Interactive Charts"
+    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts"
+    url="cli/interactive-charts"
+/>
 </ul>
 
 ---

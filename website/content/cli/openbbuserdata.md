@@ -22,6 +22,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
 
+## Default Location
+
 Its default location is the home of the system user account, similar to the following paths:
 - macOS: `Macintosh HD/Users/<YOUR_USERNAME>/OpenBBUserData`
 - Windows: `C:/Users/<YOUR_USERNAME>/OpenBBUserData`
@@ -37,7 +39,7 @@ This folder contains all things user-created. For example:
 **Note:** With a WSL-enabled Windows installation, this folder will be under the Linux partition
 :::
 
-### Update Export Folder Location
+## Update Folder Location
 
 The location of this folder can be set by the user by changing the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`.
 
