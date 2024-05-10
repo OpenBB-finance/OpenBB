@@ -1,6 +1,5 @@
 en:
   intro: introduction on the OpenBB Platform CLI
-  about: discover the capabilities of the OpenBB Platform CLI (https://openbb.co/docs)
   support: pre-populate a support ticket for our team to evaluate
   survey: fill in our 2-minute survey so we better understand how we can improve the CLI
   settings: enable and disable feature flags, preferences and settings
@@ -20,7 +19,6 @@ en:
   settings/thoughts: thoughts of the day
   settings/reporthtml: open report as HTML otherwise notebook
   settings/exithelp: automatically print help when quitting menu
-  settings/rcontext: remember contexts loaded params during session
   settings/rich: colorful rich CLI
   settings/richpanel: colorful rich CLI panel
   settings/watermark: watermark in figures
@@ -31,7 +29,6 @@ en:
   settings/console_style: apply a custom rich style to the CLI
   settings/flair: choose flair icon
   settings/timezone: pick timezone
-  settings/language: translation language
   settings/n_rows: number of rows to show on non interactive tables
   settings/n_cols: number of columns to show on non interactive tables
   settings/obbject_msg: show obbject registry message after a new result is added

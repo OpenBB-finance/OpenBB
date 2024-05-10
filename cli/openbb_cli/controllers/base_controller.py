@@ -52,7 +52,6 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMON = [
         "cls",
         "home",
-        "about",
         "h",
         "?",
         "help",
@@ -994,7 +993,6 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
-                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(
