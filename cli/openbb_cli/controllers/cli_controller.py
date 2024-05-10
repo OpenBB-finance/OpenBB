@@ -323,8 +323,7 @@ class CLIController(BaseController):
         if not other_args:
             session.console.print(
                 "[info]Provide a path to the routine you wish to execute. For an example, please use "
-                "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/info]"
+                "`exe --example`.\n[/info]"
             )
             return
         parser = argparse.ArgumentParser(
@@ -332,8 +331,7 @@ class CLIController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
             description="Execute automated routine script. For an example, please use "
-            "`exe --example` and for documentation and to learn how create your own script "
-            "type `about exe`.",
+            "`exe --example`.",
         )
         parser.add_argument(
             "--file",
@@ -376,8 +374,8 @@ class CLIController(BaseController):
         if ns_parser:
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
-                session.console.print(
-                    "[info]Executing an example, please type `about exe` "
+                session.console.print(  # TODO: Point to docs when ready
+                    "[info]Executing an example, please visit our docs "
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
@@ -571,7 +569,6 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                             ),
                             style=Style.from_dict(
                                 {
