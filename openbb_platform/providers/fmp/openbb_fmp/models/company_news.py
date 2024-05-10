@@ -19,7 +19,7 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-news-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     page: Optional[int] = Field(
         default=0,

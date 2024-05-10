@@ -27,7 +27,7 @@ class FMPEquityProfileQueryParams(EquityInfoQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEquityProfileData(EquityInfoData):
@@ -48,7 +48,7 @@ class FMPEquityProfileData(EquityInfoData):
         "long_description": "description",
         "first_stock_price_date": "ipoDate",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     is_etf: bool = Field(description="If the symbol is an ETF.")
     is_actively_trading: bool = Field(description="If the company is actively trading.")
