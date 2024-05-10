@@ -105,6 +105,9 @@ class OBBject(Tagged, Generic[T]):
         - Dict[str, List]
         - Dict[str, BaseModel]
 
+        Other supported formats:
+        - str
+
         Parameters
         ----------
         index : Optional[str]
@@ -155,6 +158,9 @@ class OBBject(Tagged, Generic[T]):
                 dt: Union[List[Data], Data] = res  # type: ignore
                 df = basemodel_to_df(dt, index)
                 sort_columns = False
+            # str
+            elif isinstance(res, str):
+                df = pd.DataFrame([res])
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
