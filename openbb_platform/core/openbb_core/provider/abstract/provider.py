@@ -19,6 +19,7 @@ class Provider:
         repr_name: Optional[str] = None,
         v3_credentials: Optional[List[str]] = None,
         instructions: Optional[str] = None,
+        logo_url: Optional[str] = None,
     ) -> None:
         """Initialize the provider.
 
@@ -40,6 +41,8 @@ class Provider:
             List of corresponding v3 credentials, by default None.
         instructions: Optional[str]
             Instructions on how to setup the provider. For example, how to get an API key.
+        logo_url: Optional[str]
+            Provider logo URL.
         """
         self.name = name
         self.description = description
@@ -54,3 +57,4 @@ class Provider:
         self.repr_name = repr_name
         self.v3_credentials = v3_credentials
         self.instructions = instructions
+        self.logo_url = logo_url

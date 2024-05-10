@@ -19,7 +19,8 @@
         "credentials": [
             "benzinga_api_key"
         ],
-        "website": "https://www.benzinga.com"
+        "website": "https://www.benzinga.com",
+        "logoUrl": "https://www.benzinga.com/sites/all/themes/bz2/images/Benzinga-logo-navy.svg"
     },
     {
         "packageName": "openbb-biztoc",
