@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 
 from typing import Dict, List
 
-import i18n
 from openbb import obb
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
@@ -92,10 +91,8 @@ class MenuText:
         self, name: str, description: str, trim: bool = True
     ) -> str:
         """Truncate command description length if it is too long."""
-        if not description:
-            description = i18n.t(self.menu_path + name)
-            if description == self.menu_path + name:
-                description = ""
+        if not description or description == f"{self.menu_path}{name}":
+            description = ""
         return (
             description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
             if len(description) > self.CMD_DESCRIPTION_LENGTH and trim
@@ -122,23 +119,9 @@ class MenuText:
         else:
             self.menu_text += text
 
-    def add_custom(self, name: str):
-        """Append custom text (after translation)."""
-        self.menu_text += f"{i18n.t(self.menu_path + name)}"
-
     def add_info(self, text: str):
         """Append information text (after translation)."""
-        self.menu_text += f"[info]{i18n.t(self.menu_path + text)}:[/info]\n"
-
-    def add_param(self, name: str, value: str, col_align: int = 0):
-        """Append parameter (after translation)."""
-        parameter_translated = i18n.t(self.menu_path + name)
-        space = (
-            (col_align - len(parameter_translated)) * " "
-            if col_align > len(parameter_translated)
-            else ""
-        )
-        self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
+        self.menu_text += f"[info]{text}:[/info]\n"
 
     def add_cmd(self, name: str, description: str = "", disable: bool = False):
         """Append command text (after translation)."""
@@ -174,10 +157,8 @@ class MenuText:
         """Append menu text (after translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
 
-        if not description:
-            description = i18n.t(self.menu_path + name)
-            if description == self.menu_path + name:
-                description = ""
+        if not description or description == f"{self.menu_path}{name}":
+            description = ""
 
         if len(description) > self.CMD_DESCRIPTION_LENGTH:
             description = description[: self.CMD_DESCRIPTION_LENGTH - 3] + "..."
@@ -186,9 +167,12 @@ class MenuText:
         tag = "unvl" if disable else "menu"
         self.menu_text += f"[{tag}]>   {menu}[/{tag}]\n"
 
-    def add_setting(self, name: str, status: bool = True):
+    def add_setting(self, name: str, status: bool = True, description: str = ""):
         """Append menu text (after translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(name) + self.SECTION_SPACING) * " "
         indentation = self.SECTION_SPACING * " "
         color = "green" if status else "red"
-        self.menu_text += f"[{color}]{indentation}{name}{spacing}{i18n.t(self.menu_path + name)}[/{color}]\n"
+
+        self.menu_text += (
+            f"[{color}]{indentation}{name}{spacing}{description}[/{color}]\n"
+        )
