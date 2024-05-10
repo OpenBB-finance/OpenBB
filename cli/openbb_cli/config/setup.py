@@ -4,9 +4,7 @@ import copy
 from pathlib import Path
 from typing import TYPE_CHECKING, List, Optional, TypeVar
 
-import i18n
-
-from openbb_cli.config.constants import ENV_FILE_SETTINGS, I18N_FILE, SETTINGS_DIRECTORY
+from openbb_cli.config.constants import ENV_FILE_SETTINGS, SETTINGS_DIRECTORY
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -67,13 +65,6 @@ def set_current_figure(fig: Optional[OpenBBFigureT] = None):
     # pylint: disable=global-statement
     global current_figure
     current_figure = fig
-
-
-def setup_i18n(i18n_path: Path = I18N_FILE, lang: str = "en"):
-    """Select the CLI translation language."""
-    i18n.load_path.append(i18n_path)
-    i18n.set("locale", lang)
-    i18n.set("filename_format", "{locale}.{format}")
 
 
 def bootstrap():
