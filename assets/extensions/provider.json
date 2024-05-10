@@ -42,7 +42,7 @@
         "description": "Cboe is the world's go-to derivatives and exchange network,\ndelivering cutting-edge trading, clearing and investment solutions to people\naround the world.",
         "credentials": [],
         "website": "https://www.cboe.com",
-        "logoUrl": "https://www.cboe.com/res/_img/logos/cboe_logo_inv_50th.svg"
+        "logoUrl": "https://en.wikipedia.org/wiki/Cboe_Global_Markets#/media/File:Cboe_Global_Markets_Logo.svg"
     },
     {
         "packageName": "openbb-ecb",
@@ -50,7 +50,7 @@
         "description": "The ECB Data Portal provides access to all official ECB statistics.\nThe portal also provides options to download data and comprehensive metadata for each dataset.\nStatistical publications and dashboards offer a compilation of key data on selected topics.",
         "credentials": [],
         "website": "https://data.ecb.europa.eu",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:Logo_European_Central_Bank.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Logo_European_Central_Bank.svg/720px-Logo_European_Central_Bank.svg.png"
     },
     {
         "packageName": "openbb-econdb",
@@ -68,7 +68,7 @@
         "description": "Access data provided by the Federal Reserve System,\nthe Central Bank of the United States.",
         "credentials": [],
         "website": "https://www.federalreserve.gov/data.htm",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:Seal_of_the_United_States_Federal_Reserve_System.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg/498px-Seal_of_the_United_States_Federal_Reserve_System.svg.png"
     },
     {
         "packageName": "openbb-finra",
@@ -76,7 +76,7 @@
         "description": "FINRA Data provides centralized access to the abundance of data FINRA\nmakes available to the public, media, researchers and member firms.",
         "credentials": [],
         "website": "https://www.finra.org/finra-data",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:FINRA_logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/FINRA_logo.svg/1024px-FINRA_logo.svg.png"
     },
     {
         "packageName": "openbb-finviz",
@@ -148,7 +148,7 @@
         ],
         "website": "https://data.nasdaq.com",
         "instructions": "Go to: https://www.quandl.com\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png)\n\nClick on, \"Sign Up\", and register a new account.\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207824214-4b6b2b74-e709-4ed4-adf2-14803e6f3568.png)\n\nFollow the sign-up instructions, and upon completion the API key will be assigned.\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207824664-3c82befb-9c69-42df-8a82-510d85c19a97.png)",
-        "logoUrl": "https://en.wikipedia.org/wiki/File:NASDAQ_logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/NASDAQ_logo.svg/1600px-NASDAQ_logo.svg.png"
     },
     {
         "packageName": "openbb-oecd",
@@ -156,7 +156,7 @@
         "description": "OECD.Stat includes data and metadata for OECD countries and selected\nnon-member economies.",
         "credentials": [],
         "website": "https://stats.oecd.org",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:OECD_logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/OECD_logo.svg/400px-OECD_logo.svg.png"
     },
     {
         "packageName": "openbb-polygon",
@@ -178,7 +178,7 @@
         "description": "SEC is the public listings regulatory body for the United States.",
         "credentials": [],
         "website": "https://www.sec.gov/data",
-        "logoUrl": "https://en.wikipedia.org/wiki/File:Flag_of_the_U.S._Securities_and_Exchange_Commission.png"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Flag_of_the_U.S._Securities_and_Exchange_Commission.png/1600px-Flag_of_the_U.S._Securities_and_Exchange_Commission.png"
     },
     {
         "packageName": "openbb-seeking-alpha",
@@ -186,7 +186,7 @@
         "description": "Seeking Alpha is a data provider with access to news, analysis, and\nreal-time alerts on stocks.",
         "credentials": [],
         "website": "https://seekingalpha.com",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:Seeking_Alpha_Logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Seeking_Alpha_Logo.svg/280px-Seeking_Alpha_Logo.svg.png"
     },
     {
         "packageName": "openbb-stockgrid",
@@ -245,7 +245,7 @@
         "description": "WSJ (Wall Street Journal) is a business-focused, English-language\ninternational daily newspaper based in New York City. The Journal is published six\ndays a week by Dow Jones & Company, a division of News Corp, along with its Asian\nand European editions. The newspaper is published in the broadsheet format and\nonline. The Journal has been printed continuously since its inception on\nJuly 8, 1889, by Charles Dow, Edward Jones, and Charles Bergstresser.\nThe WSJ is the largest newspaper in the United States, by circulation.\n    ",
         "credentials": [],
         "website": "https://www.wsj.com",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:WSJ_Logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/WSJ_Logo.svg/1594px-WSJ_Logo.svg.png"
     },
     {
         "packageName": "openbb-yfinance",
@@ -253,6 +253,6 @@
         "description": "Yahoo! Finance is a web-based platform that offers financial news,\ndata, and tools for investors and individuals interested in tracking and analyzing\nfinancial markets and assets.",
         "credentials": [],
         "website": "https://finance.yahoo.com",
-        "logoUrl": "https://en.m.wikipedia.org/wiki/File:Yahoo!_Finance_logo_2021.png"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Yahoo%21_Finance_logo_2021.png"
     }
 ]

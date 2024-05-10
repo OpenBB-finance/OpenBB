@@ -33,5 +33,5 @@ sec_provider = Provider(
         "SymbolMap": SecSymbolMapFetcher,
     },
     repr_name="Securities and Exchange Commission (SEC)",
-    logo_url="https://en.wikipedia.org/wiki/File:Flag_of_the_U.S._Securities_and_Exchange_Commission.png"
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Flag_of_the_U.S._Securities_and_Exchange_Commission.png/1600px-Flag_of_the_U.S._Securities_and_Exchange_Commission.png"
 )
