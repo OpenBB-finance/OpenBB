@@ -109,9 +109,7 @@ class FMPEconomicCalendarFetcher(
                 yield current_date, next_date
                 current_date = next_date + timedelta(days=1)
 
-        date_ranges = [
-            (start, end) for start, end in date_range(query.start_date, query.end_date)
-        ]
+        date_ranges = list(date_range(query.start_date, query.end_date))
         urls = [
             f"{base_url}from={start_date.strftime('%Y-%m-%d')}&to={end_date.strftime('%Y-%m-%d')}&apikey={api_key}"
             for start_date, end_date in date_ranges
@@ -129,8 +127,7 @@ class FMPEconomicCalendarFetcher(
             except Exception as e:
                 if len(urls) == 1 or (len(urls) > 1 and n_urls == len(urls)):
                     raise e from e
-                else:
-                    warn(f"Error in fetching part of the data from FMP -> {e}")
+                warn(f"Error in fetching part of the data from FMP -> {e}")
 
         await asyncio.gather(*[get_one(url) for url in urls])
 
