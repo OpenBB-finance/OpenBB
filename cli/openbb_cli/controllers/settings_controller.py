@@ -36,7 +36,6 @@ class SettingsController(BaseController):
         "console_style",
         "flair",
         "timezone",
-        "language",
         "n_rows",
         "n_cols",
         "obbject_msg",
@@ -73,7 +72,6 @@ class SettingsController(BaseController):
         mt.add_cmd("console_style")
         mt.add_cmd("flair")
         mt.add_cmd("timezone")
-        mt.add_cmd("language")
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
         mt.add_cmd("obbject_res")
@@ -222,30 +220,6 @@ class SettingsController(BaseController):
                 )
         elif not other_args:
             session.console.print(f"Current timezone: {session.settings.TIMEZONE}")
-
-    def call_language(self, other_args: List[str]) -> None:
-        """Process language command."""
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="language",
-            description="Change your custom language.",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--language",
-            dest="language",
-            action="store",
-            required=False,
-            type=str,
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser and ns_parser.language:
-            session.settings.set_item("USE_LANGUAGE", ns_parser.language)
-
-        elif not other_args:
-            session.console.print(f"Current language: {session.settings.USE_LANGUAGE}")
 
     def call_n_rows(self, other_args: List[str]) -> None:
         """Process n_rows command."""
