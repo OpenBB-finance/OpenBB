@@ -116,7 +116,7 @@ class FMPEconomicCalendarFetcher(
         ]
         results: List[Dict] = []
 
-        # We need to do this because Pytest does not seem to be able to handle amake_requests`.
+        # We need to do this because Pytest does not seem to be able to handle `amake_requests`.
         async def get_one(url):
             """Get data for one URL."""
             n_urls = 1
@@ -128,6 +128,7 @@ class FMPEconomicCalendarFetcher(
                 if len(urls) == 1 or (len(urls) > 1 and n_urls == len(urls)):
                     raise e from e
                 warn(f"Error in fetching part of the data from FMP -> {e}")
+            n_urls += 1
 
         await asyncio.gather(*[get_one(url) for url in urls])
 
