@@ -14,5 +14,5 @@ makes available to the public, media, researchers and member firms.""",
         "OTCAggregate": FinraOTCAggregateFetcher,
         "EquityShortInterest": FinraShortInterestFetcher,
     },
-    repr_name="FINRA",
+    repr_name="Financial Industry Regulatory Authority (FINRA)",
 )

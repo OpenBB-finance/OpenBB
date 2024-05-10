@@ -67,7 +67,7 @@
     },
     {
         "packageName": "openbb-finra",
-        "reprName": "FINRA",
+        "reprName": "Financial Industry Regulatory Authority (FINRA)",
         "description": "FINRA Data provides centralized access to the abundance of data FINRA\nmakes available to the public, media, researchers and member firms.",
         "credentials": [],
         "website": "https://www.finra.org/finra-data"
