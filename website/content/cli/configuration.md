@@ -20,9 +20,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/usage/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
 
+:::important
+API credentials are defined in the `user_settings.json` file.
+
+Find all data providers [here](/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+
+Define default data sources by following the pattern outlined [here](data-sources)
+:::
+
 ## Settings Menu
 
-The `/settings` menu provides methods for customizing the look of the CLI. The menu is divided into two sections:
+The `/settings` menu provides methods for customizing the look and feel of the CLI. The menu is divided into two sections:
 
 - Feature Flags
   - On/Off status is reflected by red/green text.

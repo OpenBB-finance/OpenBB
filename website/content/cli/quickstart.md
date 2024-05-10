@@ -23,11 +23,15 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## Login
 
-Login to your [OpenBB Hub account](https://my.openbb.co) to add your stored keys to the session.
+Login to your [OpenBB Hub account](https://my.openbb.co) to add stored keys to the session.
 
 ```console
 /account/login --pat REPLACE_WITH_YOUR_PAT
 ```
+
+:::tip
+Add `--remember-me` to the command to persist the login until actively logging out.
+:::
 
 Login by email & password is also possible.
 
@@ -35,13 +39,11 @@ Login by email & password is also possible.
 /account/login --email my@emailaddress.com --password n0Ts3CuR3L!kEPAT
 ```
 
-:::tip
-Add `--remember-me` to the command to persist the login until actively logging out.
-:::
+Find all data providers [here](https://docs.openbb.co/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
 
 ## Menus
 
-:::tip
+:::info
 Menus are distinguishable from commands by the character, `>`, on the left of the screen.
 :::
 
@@ -53,11 +55,87 @@ economy
 
 ![Economy Menu](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
 
+### Go Back One Level
+
+Return to the parent menu by entering either:
+
+- `..`
+- `q`
+
+### Go Back To Home
+
+Return to the base menu by entering either:
+
+- `/`
+- `home`
+
+### Jump Between Menus
+
+Use absolute paths to navigate from anywhere, to anywhere.
+
+From:
+
+```console
+/equity/calendar/earnings
+```
+
+To:
+
+```console
+/economy/calendar
+```
+
+## Commands
+
+Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not have, `>`.
+
+Functions have a variety of parameters that differ by endpoint and provider. Use the `--help` dialogue to understand the nuances of any particular command.
+
+### How To Enter Parameters
+
+Parameters are all defined through the same pattern, `--argument`, followed by a space, and then the value.
+
+If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the pararmeter to be the opposite of its default state.
+
+:::danger
+The use of positional arguments (i.e, `historical AAPL --start_date 2024-01-01`) is not currently supported.
+:::
+
+### Use Auto Complete
+
+The auto completion engine is triggered when the spacebar is pressed following any command, or parameter with a defined set of choices.
+
+After the first parameter has been set, remaining parameters will be triggered by entering `--`.
+
+```console
+historical --symbol AAPL --start_date 2024-01-01 --
+```
+
+![Auto Complete](autocomplete1.png)
+
+### Data Processing Commands
+
+Extensions such as, `openbb-technical`
+
+Data processing extensions, like `openbb-technical` accept `data` as an input.
+
+:::info
+Outputs from functions are stored as `results` and are selected with the `--data` parameter.
+:::
+
+```console
+/equity/price/historical --symbol SPY --start_date 2024-01-01 --provider yfinance
+
+/technical/rsi --data 0 --chart
+```
+
+![SPY RSI](rsi1.png)
+
 ## Help Dialogues
 
 Display the help dialogue by attaching, `--help` or `-h`, to any command.
 
-:::tip
+:::info
 Use this to identify the providers compatible with each parameter, if applicable.
 :::
 
@@ -65,7 +143,7 @@ Use this to identify the providers compatible with each parameter, if applicable
 calendar --help
 ```
 
-```bash
+```console
 usage: calendar [--start_date START_DATE] [--end_date END_DATE] [--provider {fmp,nasdaq,tradingeconomics}] [--country COUNTRY] [--importance {Low,Medium,High}]
                 [--group {interest rate,inflation,bonds,consumer,gdp,government,housing,labour,markets,money,prices,trade,business}] [-h] [--export EXPORT]
                 [--sheet-name SHEET_NAME [SHEET_NAME ...]]
@@ -105,25 +183,9 @@ If the source selected was Nasdaq, `--provider nasdaq`, the `--importance` and `
 | 2024-05-08 13:30:00 | United States | Fed Governor Cook Speaks | -        | -          | -           |               |
 | cont... | | | | | | |
 
-## Jump Between Menus
-
-Use absolute paths to navigate from anywhere, to anywhere.
-
-From:
-
-```console
-/equity/calendar/earnings
-```
-
-To:
-
-```console
-/economy/calendar
-```
-
 ## Export Data
 
-Data can be exported as a CSV, JSON, or XLSX file.
+Data can be exported as a CSV, JSON, or XLSX file, and can also be exported directly from the interactive tables and charts.
 
 ### Named File
 
@@ -147,6 +209,14 @@ If only supplied with the file type, the export will be given a generic name beg
 
 ```
 Saved file: /Users/myusername/OpenBBUserData/20240508_145308_controllers_search.csv
+```
+
+### Specify Sheet Name
+
+Exports can share the same `.xlsx` file by providing a `--sheet-name`.
+
+```console
+/equity/search --provider nasdaq --export directory.xlsx --sheet-name nasdaq
 ```
 
 ## Run Multiple Commands

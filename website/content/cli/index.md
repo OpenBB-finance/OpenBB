@@ -1,6 +1,5 @@
 ---
-id: index
-title: OpenBB CLI
+title: Introduction
 sidebar_position: 0
 description: The OpenBB CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
@@ -43,19 +42,19 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
     url="cli/quickstart"
 />
 <NewReferenceCard
-    title="Structure and Navigation"
-    description="Understand the terminal structure and how to navigate in it efficiently"
-    url="overview/structure-and-navigation"
+    title="Configuration & Settings"
+    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB CLI."
+    url="cli/configuartion"
 />
 <NewReferenceCard
-    title="Commands and arguments"
-    description="Understand what argument can be added to each command and leverage the auto-complete functionality"
-    url="overview/commands-and-arguments"
+    title="Data Sources"
+    description="How-to switch providers for a command, and define the default source for a function."
+    url="cli/data-sources"
 />
 <NewReferenceCard
-    title="Customization"
-    description="Customize the OpenBB Terminal settings and feature flags"
-    url="overview/customizing-the-terminal"
+    title="OpenBBUserData Folder"
+    description="The OpenBBUserData folder is where exports, routines, and other related files are saved."
+    url="cli/openbbuserdata"
 />
 </ul>
 

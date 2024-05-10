@@ -1,38 +1,37 @@
 ---
-title: Data sources
-sidebar_position: 1
-description: This page provides useful information on dealing with different data
-  vendors when using the OpenBB Platform CLI. It outlines how to select a default data source,
-  acquire API keys, and switch the data vendor using specific commands, all in an
-  effort to streamline and improve the user's experience.
+title: Data Sources
+sidebar_position: 4
+description: This page explains how to select a provider for any specific command, and set a default souce for a route.
 keywords:
 - Terminal
 - CLI
-- data vendors
+- provider
 - API keys
-- data sources
 - FinancialModelingPrep
 - Polygon
 - AlphaVantage
-- EODHD
+- Intrinio
 - YahooFinance
 - source
-- stocks/fa/income
-- changing data source
-- Default data source
-- /sources
-- get --cmd
-- set --cmd
+- data
+- default
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data sources - Data - Usage | OpenBB CLI Docs" />
+<HeadTitle title="Data Sources | OpenBB CLI Docs" />
 
+Many commands have multiple data sources associated with it.
 
-## Selecting The Data Source In-Command
+:::important
+API credentials are defined in the `user_settings.json` file.
 
-Many commands have multiple data sources associated with it. In order to specify the data vendor for that particular command, use the `--provider` argument.
+Find all data providers [here](/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+:::
+
+## Data Source In-Command
+
+To specify the data vendor for that particular command, use the `--provider` argument.
 
 Parameter choices can be viewed from the help dialogue, `-h` or `--help`.
 
@@ -87,8 +86,11 @@ yfinance:
   --include_actions     Include dividends and stock splits in results.
 ```
 
+:::note
+Provider-specific parameters are listed at the bottom of the print out. They are ignored when entered, if it is not supported by the selected provider.
+:::
 
-### Setting The Default Source
+## Setting The Default Source
 
 The default data source for each command (where multiple sources are available) can be defined within the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`.
 
