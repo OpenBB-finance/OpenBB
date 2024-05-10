@@ -202,7 +202,7 @@ class PlatformController(BaseController):
                     if hasattr(ns_parser, "export") and ns_parser.export:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
                         export_data(
-                            export_type=ns_parser.export,
+                            export_type=",".join(ns_parser.export),
                             dir_path=os.path.dirname(os.path.abspath(__file__)),
                             func_name=translator.func.__name__,
                             df=df,

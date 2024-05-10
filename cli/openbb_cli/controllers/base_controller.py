@@ -863,6 +863,7 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
+                nargs="+",
             )
 
             # If excel is an option, add the sheet name
