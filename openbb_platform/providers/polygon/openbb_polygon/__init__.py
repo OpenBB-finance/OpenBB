@@ -42,5 +42,5 @@ company financials, stock market holidays, corporate actions, and more.""",
     repr_name="Polygon",
     v3_credentials=["API_POLYGON_KEY"],
     instructions='Go to: https://polygon.io\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)\n\nClick on, "Get your Free API Key".\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825952-ca5540ec-6ed2-4cef-a0ed-bb50b813932c.png)\n\nAfter signing up, the API Key is found at the bottom of the account dashboard page.\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png)',  # noqa: E501  pylint: disable=line-too-long
-    logo_url="https://polygon.io/_next/image?url=%2Flogo.svg&w=640&q=75"
+    logo_url="https://polygon.io/_next/image?url=%2Flogo.svg&w=640&q=75",
 )

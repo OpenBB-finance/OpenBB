@@ -24,5 +24,5 @@ power hedge funds, tech companies, and individuals.""",
         "TrailingDividendYield": TiingoTrailingDivYieldFetcher,
     },
     repr_name="Tiingo",
-    logo_url="https://www.tiingo.com/dist/images/tiingo/logos/tiingo_full_light_color.svg"
+    logo_url="https://www.tiingo.com/dist/images/tiingo/logos/tiingo_full_light_color.svg",
 )

@@ -14,5 +14,5 @@ real-time alerts on stocks.""",
         "UpcomingReleaseDays": SAUpcomingReleaseDaysFetcher,
     },
     repr_name="Seeking Alpha",
-    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Seeking_Alpha_Logo.svg/280px-Seeking_Alpha_Logo.svg.png"
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Seeking_Alpha_Logo.svg/280px-Seeking_Alpha_Logo.svg.png",
 )

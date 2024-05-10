@@ -42,7 +42,7 @@
         "description": "Cboe is the world's go-to derivatives and exchange network,\ndelivering cutting-edge trading, clearing and investment solutions to people\naround the world.",
         "credentials": [],
         "website": "https://www.cboe.com",
-        "logoUrl": "https://en.wikipedia.org/wiki/Cboe_Global_Markets#/media/File:Cboe_Global_Markets_Logo.svg"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cboe_Global_Markets_Logo.svg/2880px-Cboe_Global_Markets_Logo.svg.png"
     },
     {
         "packageName": "openbb-ecb",
@@ -178,7 +178,7 @@
         "description": "SEC is the public listings regulatory body for the United States.",
         "credentials": [],
         "website": "https://www.sec.gov/data",
-        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Flag_of_the_U.S._Securities_and_Exchange_Commission.png/1600px-Flag_of_the_U.S._Securities_and_Exchange_Commission.png"
+        "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Seal_of_the_United_States_Securities_and_Exchange_Commission.svg/1920px-Seal_of_the_United_States_Securities_and_Exchange_Commission.svg.png"
     },
     {
         "packageName": "openbb-seeking-alpha",

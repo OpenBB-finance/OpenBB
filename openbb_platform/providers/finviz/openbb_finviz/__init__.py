@@ -21,5 +21,5 @@ finviz_provider = Provider(
         "PriceTarget": FinvizPriceTargetFetcher,
     },
     repr_name="FinViz",
-    logo_url="https://finviz.com/img/logo_3_2x.png"
+    logo_url="https://finviz.com/img/logo_3_2x.png",
 )

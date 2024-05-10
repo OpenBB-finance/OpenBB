@@ -20,5 +20,5 @@ the Central Bank of the United States.""",
         "FEDFUNDS": FederalReserveFEDFetcher,
     },
     repr_name="Federal Reserve (FED)",
-    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg/498px-Seal_of_the_United_States_Federal_Reserve_System.svg.png"
+    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_Federal_Reserve_System.svg/498px-Seal_of_the_United_States_Federal_Reserve_System.svg.png",
 )
