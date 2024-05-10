@@ -28,7 +28,6 @@ class SettingsController(BaseController):
         "thoughts",
         "reporthtml",
         "exithelp",
-        "rcontext",
         "richpanel",
         "tbhint",
         "overwrite",
@@ -36,7 +35,6 @@ class SettingsController(BaseController):
         "console_style",
         "flair",
         "timezone",
-        "language",
         "n_rows",
         "n_cols",
         "obbject_msg",
@@ -62,7 +60,6 @@ class SettingsController(BaseController):
         mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
         mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
         mt.add_setting("exithelp", settings.ENABLE_EXIT_AUTO_HELP)
-        mt.add_setting("rcontext", settings.REMEMBER_CONTEXTS)
         mt.add_setting("richpanel", settings.ENABLE_RICH_PANEL)
         mt.add_setting("tbhint", settings.TOOLBAR_HINT)
         mt.add_setting("overwrite", settings.FILE_OVERWRITE)
@@ -73,7 +70,6 @@ class SettingsController(BaseController):
         mt.add_cmd("console_style")
         mt.add_cmd("flair")
         mt.add_cmd("timezone")
-        mt.add_cmd("language")
         mt.add_cmd("n_rows")
         mt.add_cmd("n_cols")
         mt.add_cmd("obbject_res")
@@ -111,12 +107,6 @@ class SettingsController(BaseController):
         """Process exithelp command."""
         session.settings.set_item(
             "ENABLE_EXIT_AUTO_HELP", not session.settings.ENABLE_EXIT_AUTO_HELP
-        )
-
-    def call_rcontext(self, _):
-        """Process rcontext command."""
-        session.settings.set_item(
-            "REMEMBER_CONTEXTS", not session.settings.REMEMBER_CONTEXTS
         )
 
     def call_dt(self, _):
@@ -222,30 +212,6 @@ class SettingsController(BaseController):
                 )
         elif not other_args:
             session.console.print(f"Current timezone: {session.settings.TIMEZONE}")
-
-    def call_language(self, other_args: List[str]) -> None:
-        """Process language command."""
-        parser = argparse.ArgumentParser(
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="language",
-            description="Change your custom language.",
-            add_help=False,
-        )
-        parser.add_argument(
-            "-l",
-            "--language",
-            dest="language",
-            action="store",
-            required=False,
-            type=str,
-        )
-        ns_parser = self.parse_simple_args(parser, other_args)
-
-        if ns_parser and ns_parser.language:
-            session.settings.set_item("USE_LANGUAGE", ns_parser.language)
-
-        elif not other_args:
-            session.console.print(f"Current language: {session.settings.USE_LANGUAGE}")
 
     def call_n_rows(self, other_args: List[str]) -> None:
         """Process n_rows command."""

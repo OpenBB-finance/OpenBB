@@ -34,7 +34,6 @@ class Settings(BaseModel):
     # GENERAL
     TIMEZONE: str = "America/New_York"
     FLAIR: str = ":openbb"
-    USE_LANGUAGE: str = "en"
     PREVIOUS_USE: bool = False
     N_TO_KEEP_OBBJECT_REGISTRY: int = 10
     N_TO_DISPLAY_OBBJECT_REGISTRY: int = 5
