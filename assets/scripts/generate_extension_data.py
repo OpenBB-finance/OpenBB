@@ -52,7 +52,7 @@ def generate_provider_extensions() -> None:
             provider_obj = getattr(module, obj)
             data.append(
                 {
-                    "package_name": pkg_name,
+                    "packageName": pkg_name,
                     "name": (
                         provider_obj.repr_name
                         if provider_obj.repr_name
@@ -60,7 +60,7 @@ def generate_provider_extensions() -> None:
                     ),
                     "description": provider_obj.description,
                     "credentials": provider_obj.credentials or None,
-                    "v3_credentials": provider_obj.v3_credentials,
+                    "v3Credentials": provider_obj.v3_credentials,
                     "website": provider_obj.website,
                     "instructions": provider_obj.instructions,
                 }
@@ -79,7 +79,7 @@ def generate_router_extensions() -> None:
             module = import_module(file)
             router_obj = getattr(module, obj)
             description = router_obj.description
-            data.append({"package_name": pkg_name, "description": description})
+            data.append({"packageName": pkg_name, "description": description})
     write("router", data)
 
 
@@ -94,7 +94,7 @@ def generate_obbject_extensions() -> None:
             module = import_module(file)
             ext_obj = getattr(module, obj)
             description = ext_obj.description
-            data.append({"package_name": pkg_name, "description": description})
+            data.append({"packageName": pkg_name, "description": description})
     write("obbject", data)
 
 

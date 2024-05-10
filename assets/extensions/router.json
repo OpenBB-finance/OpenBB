@@ -1,58 +1,58 @@
 [
     {
-        "package_name": "openbb-commodity",
+        "packageName": "openbb-commodity",
         "description": "Commodity market data."
     },
     {
-        "package_name": "openbb-crypto",
+        "packageName": "openbb-crypto",
         "description": "Cryptocurrency market data."
     },
     {
-        "package_name": "openbb-currency",
+        "packageName": "openbb-currency",
         "description": "Foreign exchange (FX) market data."
     },
     {
-        "package_name": "openbb-derivatives",
+        "packageName": "openbb-derivatives",
         "description": "Derivatives market data."
     },
     {
-        "package_name": "openbb-econometrics",
+        "packageName": "openbb-econometrics",
         "description": "Econometrics analysis tools."
     },
     {
-        "package_name": "openbb-economy",
+        "packageName": "openbb-economy",
         "description": "Economic data."
     },
     {
-        "package_name": "openbb-equity",
+        "packageName": "openbb-equity",
         "description": "Equity market data."
     },
     {
-        "package_name": "openbb-etf",
+        "packageName": "openbb-etf",
         "description": "Exchange Traded Funds market data."
     },
     {
-        "package_name": "openbb-fixedincome",
+        "packageName": "openbb-fixedincome",
         "description": "Fixed Income market data."
     },
     {
-        "package_name": "openbb-index",
+        "packageName": "openbb-index",
         "description": "Indices data."
     },
     {
-        "package_name": "openbb-news",
+        "packageName": "openbb-news",
         "description": "Financial market news data."
     },
     {
-        "package_name": "openbb-quantitative",
+        "packageName": "openbb-quantitative",
         "description": "Quantitative analysis tools."
     },
     {
-        "package_name": "openbb-regulators",
+        "packageName": "openbb-regulators",
         "description": "Financial market regulators data."
     },
     {
-        "package_name": "openbb-technical",
+        "packageName": "openbb-technical",
         "description": "Technical Analysis tools."
     }
 ]
