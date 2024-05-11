@@ -24,7 +24,6 @@ openbb-charting = "^2.0.2"
 prompt-toolkit = "^3.0.16"
 rich = "^13"
 python-dotenv = "^1.0.0"
-python-i18n = "^0.3.9"
 
 [tool.poetry.group.dev.dependencies]
 openbb-devtools = "^1.1.3"
