@@ -55,7 +55,8 @@ class FMPEconomicCalendarData(EconomicCalendarData):
     @field_validator(
         "date", "last_updated", "created_at", mode="before", check_fields=False
     )
-    def date_validate(cls, v: str):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v: str):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S") if v else None
 
