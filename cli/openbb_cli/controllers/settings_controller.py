@@ -19,7 +19,7 @@ class SettingsController(BaseController):
     """Settings Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
-        "retryload",
+        "tab",
         "interactive",
         "cls",
         "promptkit",
@@ -52,26 +52,76 @@ class SettingsController(BaseController):
         settings = session.settings
 
         mt = MenuText("settings/")
-        mt.add_info("_feature_flags_")
-        mt.add_setting("interactive", settings.USE_INTERACTIVE_DF)
-        mt.add_setting("cls", settings.USE_CLEAR_AFTER_CMD)
-        mt.add_setting("promptkit", settings.USE_PROMPT_TOOLKIT)
-        mt.add_setting("exithelp", settings.ENABLE_EXIT_AUTO_HELP)
-        mt.add_setting("rcontext", settings.REMEMBER_CONTEXTS)
-        mt.add_setting("richpanel", settings.ENABLE_RICH_PANEL)
-        mt.add_setting("tbhint", settings.TOOLBAR_HINT)
-        mt.add_setting("overwrite", settings.FILE_OVERWRITE)
-        mt.add_setting("version", settings.SHOW_VERSION)
-        mt.add_setting("obbject_msg", settings.SHOW_MSG_OBBJECT_REGISTRY)
+        mt.add_info("Feature flags")
+        mt.add_setting(
+            "interactive",
+            settings.USE_INTERACTIVE_DF,
+            description="open dataframes in interactive window",
+        )
+        mt.add_setting(
+            "cls",
+            settings.USE_CLEAR_AFTER_CMD,
+            description="clear console after each command",
+        )
+        mt.add_setting(
+            "promptkit",
+            settings.USE_PROMPT_TOOLKIT,
+            description="enable prompt toolkit (autocomplete and history)",
+        )
+        mt.add_setting(
+            "exithelp",
+            settings.ENABLE_EXIT_AUTO_HELP,
+            description="automatically print help when quitting menu",
+        )
+        mt.add_setting(
+            "rcontext",
+            settings.REMEMBER_CONTEXTS,
+            description="remember contexts between menus",
+        )
+        mt.add_setting(
+            "richpanel",
+            settings.ENABLE_RICH_PANEL,
+            description="colorful rich CLI panel",
+        )
+        mt.add_setting(
+            "tbhint",
+            settings.TOOLBAR_HINT,
+            description="displays usage hints in the bottom toolbar",
+        )
+        mt.add_setting(
+            "overwrite",
+            settings.FILE_OVERWRITE,
+            description="whether to overwrite Excel files if they already exists",
+        )
+        mt.add_setting(
+            "version",
+            settings.SHOW_VERSION,
+            description="whether to show the version in the bottom right corner",
+        )
+        mt.add_setting(
+            "obbject_msg",
+            settings.SHOW_MSG_OBBJECT_REGISTRY,
+            description="show obbject registry message after a new result is added",
+        )
         mt.add_raw("\n")
-        mt.add_info("_preferences_")
-        mt.add_cmd("console_style")
-        mt.add_cmd("flair")
-        mt.add_cmd("timezone")
-        mt.add_cmd("n_rows")
-        mt.add_cmd("n_cols")
-        mt.add_cmd("obbject_res")
-        mt.add_cmd("obbject_display")
+        mt.add_info("Preferences")
+        mt.add_cmd("console_style", description="apply a custom rich style to the CLI")
+        mt.add_cmd("flair", description="choose flair icon")
+        mt.add_cmd("timezone", description="pick timezone")
+        mt.add_cmd(
+            "n_rows", description="number of rows to show on non interactive tables"
+        )
+        mt.add_cmd(
+            "n_cols", description="number of columns to show on non interactive tables"
+        )
+        mt.add_cmd(
+            "obbject_res",
+            description="define the maximum number of obbjects allowed in the registry",
+        )
+        mt.add_cmd(
+            "obbject_display",
+            description="define the maximum number of cached results to display on the help menu",
+        )
 
         session.console.print(text=mt.menu_text, menu="Settings")
 
