@@ -81,7 +81,12 @@ class FMPEconomicCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEconomicCalendarQueryParams:
         """Transform the query."""
-        return FMPEconomicCalendarQueryParams(**params)
+        transformed_params = params
+        if not transformed_params.get("start_date"):
+            transformed_params["start_date"] = datetime.now().date()
+        if not transformed_params.get("end_date"):
+            transformed_params["end_date"] = (datetime.now() + timedelta(days=7)).date()
+        return FMPEconomicCalendarQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
@@ -95,11 +100,6 @@ class FMPEconomicCalendarFetcher(
         base_url = "https://financialmodelingprep.com/api/v3/economic_calendar?"
 
         # FMP allows only 3-month windows to be queried, we need to chunk to request.
-        if not query.start_date or query.start_date is None:
-            query.start_date = datetime.now().date()
-        if not query.end_date or query.end_date is None:
-            query.end_date = (datetime.now() + timedelta(days=7)).date()
-
         def date_range(start_date, end_date):
             """Yield start and end dates for each 90-day period between start_date and end_date."""
             delta = timedelta(days=90)
