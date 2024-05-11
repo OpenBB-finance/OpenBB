@@ -22,6 +22,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
 
+:::info
+If a new file is placed in the folder (like a Routine) the CLI will need to be reset before auto complete will recognize it.
+:::
+
 ## Default Location
 
 Its default location is the home of the system user account, similar to the following paths:

@@ -47,6 +47,11 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
     url="cli/configuration"
 />
 <NewReferenceCard
+    title="Hub Synchronization"
+    description="An overview of the `/account` menu and synchronizing settings with the OpenBB Hub."
+    url="cli/hub"
+/>
+<NewReferenceCard
     title="Data Sources"
     description="How-to switch providers for a command, and define the default source for a function."
     url="cli/data-sources"
@@ -58,12 +63,12 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
 />
 <NewReferenceCard
     title="Interactive Tables"
-    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables"
+    description="Understand how to sort, filter, hide columns, display more rows or export data on our tables."
     url="cli/interactive-tables"
 />
 <NewReferenceCard
     title="Interactive Charts"
-    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts"
+    description="Explore how to overlay charts, change titles, draw lines, add text and much more on our charts."
     url="cli/interactive-charts"
 />
 </ul>

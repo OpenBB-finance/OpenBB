@@ -221,8 +221,16 @@ Exports can share the same `.xlsx` file by providing a `--sheet-name`.
 
 ## Run Multiple Commands
 
-A chain of commands can be run from a single line, separate each process with `/`.
+A chain of commands can be run from a single line, separate each process with `/`. The example below will draw two charts and can be pasted as a single line.
 
+```console
+/equity/price/historical --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --start_date 2022-01-01 --provider yfinance --chart/performance --symbol AAPL,MSFT,GOOGL,AMZN,META,NVDA,NFLX,TSLA,QQQ --provider finviz --chart
 ```
-equity/fundamental/balance --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name balance/cash --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name cash/income --symbol MSFT --provider yfinance --period quarter --export msft_financials.xlsx --sheet-name income
+
+## Example Routine
+
+To demonstrate how multiple commands are sequenced as a script, try running the example Routine.
+
+```console
+/exe --example
 ```

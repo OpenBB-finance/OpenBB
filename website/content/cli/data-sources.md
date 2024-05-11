@@ -1,6 +1,6 @@
 ---
 title: Data Sources
-sidebar_position: 4
+sidebar_position: 5
 description: This page explains how to select a provider for any specific command, and set a default souce for a route.
 keywords:
 - Terminal
@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data Sources | OpenBB CLI Docs" />
 
-Many commands have multiple data sources associated with it.
+Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
 
 :::important
 API credentials are defined in the `user_settings.json` file.

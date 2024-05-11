@@ -49,8 +49,8 @@ The `/settings` menu provides methods for customizing the look and feel of the C
 | `tbhint`       |                                Display usage hints in the bottom toolbar.  Default state is on. |
 | `exithelp`     |           Automatically print the screen after navigating back one menu.  Default state is off. |
 | `overwrite`    |               Automatically overwrite exported files with the same name.  Default state is off. |
-| `version`      |                     Displays the currently installed version number in the bottom right corner. |
 | `obbject_msg`  |       Displays a message whenever a new result is added to the registry.  Default state is off. |
+| `version`      |                     Displays the currently installed version number in the bottom right corner. |
 
 ### Preferences
 
