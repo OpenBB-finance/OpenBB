@@ -423,8 +423,9 @@ class CLIController(BaseController):
             else:
                 return
 
-            with open(routine_path) as fp:
-                raw_lines = list(fp)
+            try:
+                with open(routine_path) as fp:
+                    raw_lines = list(fp)
 
                 # Capture ARGV either as list if args separated by commas or as single value
                 if ns_parser.routine_args:
@@ -477,6 +478,12 @@ class CLIController(BaseController):
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     self.queue = self.queue[1:]
+
+            except FileNotFoundError:
+                session.console.print(
+                    f"[red]File '{routine_path}' doesn't exist.[/red]\n"
+                )
+                return
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
