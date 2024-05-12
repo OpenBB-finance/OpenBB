@@ -16,7 +16,6 @@ from pathlib import Path
 from types import MethodType
 from typing import Any, Dict, List, Optional
 
-import certifi
 import pandas as pd
 import requests
 from openbb import obb
@@ -37,7 +36,6 @@ from openbb_cli.controllers.utils import (
     bootup,
     first_time_user,
     get_flair_and_username,
-    is_installer,
     parse_and_split_input,
     print_goodbye,
     print_rich_table,
@@ -65,13 +63,6 @@ logger = logging.getLogger(__name__)
 
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
-
-if is_installer():
-    # Necessary for installer so that it can locate the correct certificates for
-    # API calls and https
-    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
-    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
-    os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 class CLIController(BaseController):
