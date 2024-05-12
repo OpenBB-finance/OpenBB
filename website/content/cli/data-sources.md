@@ -1,7 +1,7 @@
 ---
 title: Data Sources
 sidebar_position: 7
-description: This page explains how to select a provider for any specific command, and set a default souce for a route.
+description: This page explains how to select a provider for any specific command, and set a default source for a route.
 keywords:
 - Terminal
 - CLI

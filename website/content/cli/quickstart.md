@@ -95,7 +95,7 @@ Functions have a variety of parameters that differ by endpoint and provider. Use
 
 Parameters are all defined through the same pattern, `--argument`, followed by a space, and then the value.
 
-If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the pararmeter to be the opposite of its default state.
+If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the parameter to be the opposite of its default state.
 
 :::danger
 The use of positional arguments (i.e, `historical AAPL --start_date 2024-01-01`) is not currently supported.

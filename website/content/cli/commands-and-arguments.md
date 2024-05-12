@@ -37,7 +37,7 @@ Adding `--help`, or `-h`, to any command will display the description and parame
 
 Parameters are all defined through the same pattern, --argument, followed by a space, and then the value.
 
-If the parameter is a boolean (true/false), there is no value to enter. Adding the --argument flags the pararmeter to be the opposite of its default state.
+If the parameter is a boolean (true/false), there is no value to enter. Adding the --argument flags the parameter to be the opposite of its default state.
 
 Use the auto-complete to prompt choices and reduce the amount of keystrokes required to run a complex function.
 
