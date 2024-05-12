@@ -1,6 +1,6 @@
 ---
 title: OpenBBUserData Folder
-sidebar_position: 5
+sidebar_position: 8
 description: The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored. Its default location is the home of the system user account.
 keywords:
 - OpenBBUserData folder

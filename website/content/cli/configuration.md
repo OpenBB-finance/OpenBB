@@ -1,6 +1,6 @@
 ---
 title: Configuration & Settings
-sidebar_position: 3
+sidebar_position: 5
 description: This documentation page details the various settings and feature flags used to customize the OpenBB CLI.
 keywords:
 - Settings Menu

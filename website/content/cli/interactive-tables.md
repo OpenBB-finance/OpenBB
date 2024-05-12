@@ -1,6 +1,6 @@
 ---
 title: Interactive Tables
-sidebar_position: 7
+sidebar_position: 10
 description: This page explains how to navigate and utilize OpenBB's interactive tables. Understand how to sort and filter columns, hide or remove columns, select number of rows per page, freeze index and column headers, and export the data.
 keywords:
 - interactive tables

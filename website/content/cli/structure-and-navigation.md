@@ -1,23 +1,24 @@
 ---
 title: Structure and Navigation
-sidebar_position: 1
+sidebar_position: 3
 description: This page describes the layout and structure of the OpenBB CLI, as well as how to navigate it.
 keywords:
 - CLI application
 - OpenBB Platform CLI
-- terminal structure
-- Terminal navigation
+- structure
+- navigation
 - Command Line Interface
-- Interactive Charts and Tables
-- Terminal commands
-- terminal menus
+- navigating
+- Home
+- commands
+- menus
 - OpenBB Hub Theme Style
 - Absolute paths
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation - Usage | OpenBB CLI Docs" />
+<HeadTitle title="Structure and Navigation | OpenBB CLI Docs" />
 
 ## Structure
 
@@ -29,4 +30,13 @@ A menu is a collection of commands (and sub-menus). A menu can be distinguished 
 
 Navigating through the CLI menus is similar to traversing folders from any operating system's command line prompt. The `/home` screen is the main directory where everything begins, and the menus are paths branched from the main. Instead of `C:\Users\OpenBB\Documents`, you'll have something like `/equity/price`. Instead of `cd ..`, you can do `..` to return the menu right above. To go back to the root menu you can do `/`.
 
+### Absolute Paths
+
 Absolute paths are also valid to-and-from any point. From the `/equity/price` menu, you can go directly to `crypto` menu with: `/crypto`. Note the forward slash at the start to denote the "absolute" path.
+
+### Home
+
+Return to the Home screen from anywhere by entering any of the following:
+
+- `/`
+- `home`

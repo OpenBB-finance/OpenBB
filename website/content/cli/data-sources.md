@@ -1,6 +1,6 @@
 ---
 title: Data Sources
-sidebar_position: 5
+sidebar_position: 7
 description: This page explains how to select a provider for any specific command, and set a default souce for a route.
 keywords:
 - Terminal
@@ -98,8 +98,16 @@ Set the default data provider for the `/equity/price/historical` command by addi
 
 ```json
 {
-  ...
-  "defaults": {"routes": {"equity/price/historical": {"provider":"yfinance"}}}
-  ...
+    "defaults": {
+        "routes": {
+            "/equity/price/historical": {
+                "provider": "fmp"
+            },
+            "/equity/fundamental/balance": {
+                "provider": "polygon"
+            },
+            ...
+        }
+    }
 }
 ```

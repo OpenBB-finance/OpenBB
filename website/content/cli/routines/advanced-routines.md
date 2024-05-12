@@ -1,8 +1,8 @@
 ---
-title: Routines for Power Users
+title: Advanced Routines
 sidebar_position: 5
-description: This documentation guides on running automated workflows in OpenBB by
-  introducing variables and arguments for routines. Explains about input variables,
+description: This page provides guidance on creating and running advanced workflows in the OpenBB CLI by
+  introducing variables and arguments for routines. It explains input variables,
   relative time keyword variables, internal script variables and creating loops for
   batch execution.
 keywords:
@@ -14,16 +14,14 @@ keywords:
 - internal script variables
 - loops
 - batch execution
-- OpenBBTutorial
-- Technical Analysis
-- Stock Tickers
+- Tutorial
 - Running Scripts
 - Executing Commands
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Routines for Power Users - Routines - Usage | OpenBB CLI Docs" />
+<HeadTitle title="Advanced Routines - Routines | OpenBB CLI Docs" />
 
 ## Input Variables
 
@@ -31,23 +29,39 @@ Arguments are variables referenced within the `.openbb` script as `$ARGV` or `$A
 
 ### Example
 
-```bash
+```text
 # This script requires you to use arguments. This can be done with the following:
-# exe --file routines_template_with_inputs.openbb -i TSLA,AAPL,MSFT
+# exe --file routines_template_with_input.openbb -i TSLA
+# Replace the name of the file with your file.
 
-# Go to the stocks menu
+# Navigate to the menu
+/equity/price
+
+# Load the data and display a chart
+historical --symbol $ARGV --chart
 ```
 
 ## Set Variables
 
 In addition to external variables using the keyword, `ARGV`, internal variables can be defined with the, `$`, character.
 
-Which has the following output:
-
 Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
 
-### Variables Example
+### Internal Variables Example
 
+```text
+# Example routine with internal variables.
+
+$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
+
+/equity
+
+price
+
+historical --symbol $TICKERS --provider yfinance --start_date 2024-01-01 --chart
+
+home
+```
 
 ## Relative Time Keyword Variables
 
@@ -65,6 +79,24 @@ The result will be a date with the conventional date associated with OpenBB, i.e
 
 ### Relative Time Example
 
+```text
+$TICKERS = XLE,XOP,XLB,XLI,XLP,XLY,XHE,XLV,XLF,KRE,XLK,XLC,XLU,XLRE
+
+/equity
+
+price
+
+historical --symbol $TICKERS --provider yfinance --start_date $3MONTHSAGO --chart
+
+..
+
+calendar
+
+earnings --start_date $NEXTMONDAY --end_date $NEXTFRIDAY --provider nasdaq
+
+home
+```
+
 ## Foreach Loop
 
 Finally, what scripting language would this be if there were no loops? For this, we were inspired by MatLab. The loops in OpenBB utilize the foreach and end convention, allowing for iteration through a list of variables or arguments to execute a sequence of commands.
@@ -77,28 +109,11 @@ To create a foreach loop, you need to follow these steps:
 
 3. Conclude the loop with the keyword `end`.
 
-### Loop Examples
+### Loop Example
 
-```bash
-# Iterates through ARGV elements from position 1 onwards
+```text
+# Iterates through ARGV elements.
 foreach $$VAR in $ARGV[1:]
-    some_command
+    /equity/fundamental/filings --symbol $$VAR --provider sec
 end
-```
-
-```bash
-# Loops through all $ARGV variables
-FOREACH $$SOMETHING in $ARGV
-    some_sequence
- end
-```
-
-```bash
-# Iterates through ARGV elements in position 1,2
-foreach $$VAR in $ARGV[1:3]
-    some_menu
-    another_menu
-    some_command
-    ..
-END
 ```

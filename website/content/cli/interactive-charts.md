@@ -1,6 +1,6 @@
 ---
 title: Interactive Charts
-sidebar_position: 6
+sidebar_position: 9
 description: This page provides a detailed explanation of the OpenBB Interactive Charts. Understand various capabilities including annotation, color modification, drawing tools, data export, and supplementary data overlay.
 keywords:
 - interactive charts
