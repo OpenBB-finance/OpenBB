@@ -320,7 +320,7 @@ class ImportDefinition:
 
         if return_type:
             if not issubclass(return_type, OBBject):
-                  raise ValueError("Return type must be an OBBject.")
+                raise ValueError("Return type must be an OBBject.")
             hint_type = get_args(get_type_hints(return_type)["results"])[0]
             hint_type_list.append(hint_type)
 
