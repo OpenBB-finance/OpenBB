@@ -20,9 +20,10 @@ from openbb_tradingeconomics.utils.countries import COUNTRIES
 from pandas import to_datetime
 from pydantic import Field, field_validator, model_validator
 
-IMPORTANCE = Literal["low", "medium", "high"]
+IMPORTANCE = Literal[None, "low", "medium", "high"]
 
 GROUPS = Literal[
+    None,
     "interest_rate",
     "inflation",
     "bonds",
