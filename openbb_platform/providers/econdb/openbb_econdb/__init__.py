@@ -23,5 +23,4 @@ aggregate statistics.""",
         "EconomicIndicators": EconDbEconomicIndicatorsFetcher,
     },
     repr_name="EconDB",
-    logo_url="https://avatars.githubusercontent.com/u/21289885?v=4",
 )
