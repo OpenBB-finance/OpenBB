@@ -157,7 +157,7 @@ class ROUTER_equity_ownership(Container):
             int, OpenBBField(description="The number of data entries to return.")
         ] = 500,
         provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "tmx"]],
+            Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
@@ -172,7 +172,7 @@ class ROUTER_equity_ownership(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -186,15 +186,13 @@ class ROUTER_equity_ownership(Container):
             Type of ownership. (provider: intrinio)
         sort_by : Optional[Literal['filing_date', 'updated_on']]
             Field to sort by. (provider: intrinio)
-        summary : bool
-            Return a summary of the insider activity instead of the individuals. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[InsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -263,20 +261,6 @@ class ROUTER_equity_ownership(Container):
             Whether the owner is having a derivative transaction. (provider: intrinio)
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
-        period : Optional[str]
-            The period of the activity. Bucketed by three, six, and twelve months. (provider: tmx)
-        acquisition_or_deposition : Optional[str]
-            Whether the insider bought or sold the shares. (provider: tmx)
-        number_of_trades : Optional[int]
-            The number of shares traded over the period. (provider: tmx)
-        trade_value : Optional[float]
-            The value of the shares traded by the insider. (provider: tmx)
-        securities_bought : Optional[int]
-            The total number of shares bought by all insiders over the period. (provider: tmx)
-        securities_sold : Optional[int]
-            The total number of shares sold by all insiders over the period. (provider: tmx)
-        net_activity : Optional[int]
-            The total net activity by all insiders over the period. (provider: tmx)
 
         Examples
         --------
@@ -292,7 +276,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/ownership/insider_trading",
-                        ("fmp", "intrinio", "tmx"),
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
