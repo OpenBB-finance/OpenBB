@@ -3348,8 +3348,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
     {version = ">=1.21.0", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
+    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
     {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
 ]
 python-dateutil = ">=2.8.2"
@@ -4167,20 +4167,6 @@ files = [
 
 [package.extras]
 cli = ["click (>=5.0)"]
-
-[[package]]
-name = "python-i18n"
-version = "0.3.9"
-description = "Translation library for Python"
-optional = false
-python-versions = "*"
-files = [
-    {file = "python-i18n-0.3.9.tar.gz", hash = "sha256:df97f3d2364bf3a7ebfbd6cbefe8e45483468e52a9e30b909c6078f5f471e4e8"},
-    {file = "python_i18n-0.3.9-py3-none-any.whl", hash = "sha256:bda5b8d889ebd51973e22e53746417bd32783c9bd6780fd27cadbb733915651d"},
-]
-
-[package.extras]
-yaml = ["pyyaml (>=3.10)"]
 
 [[package]]
 name = "python-jose"
@@ -5169,8 +5155,8 @@ files = [
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.18,<2", markers = "python_version != \"3.10\" or platform_system != \"Windows\" or platform_python_implementation == \"PyPy\""},
     {version = ">=1.22.3,<2", markers = "python_version == \"3.10\" and platform_system == \"Windows\" and platform_python_implementation != \"PyPy\""},
+    {version = ">=1.18,<2", markers = "python_version != \"3.10\" or platform_system != \"Windows\" or platform_python_implementation == \"PyPy\""},
 ]
 packaging = ">=21.3"
 pandas = ">=1.0,<2.1.0 || >2.1.0"
@@ -5954,4 +5940,8 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.12"
+<<<<<<< HEAD
 content-hash = "c37af1bff97b4e765c763c69f8d40d18fd113f93e1d2b9697362aa7a9088cdcd"
+=======
+content-hash = "7dc546f808d5c75fc49d06a176cb053560ec0eaaf9da24e95716e8334672ae50"
+>>>>>>> OpenBB-finance/develop

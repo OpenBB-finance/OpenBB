@@ -220,13 +220,21 @@ class CLIController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_info("_configure_")
-        mt.add_menu("settings")
+        mt.add_info("Configure your own CLI")
+        mt.add_menu(
+            "settings",
+            description="enable and disable feature flags, preferences and settings",
+        )
         mt.add_raw("\n")
-        mt.add_info("_scripts_")
-        mt.add_cmd("record")
-        mt.add_cmd("stop")
-        mt.add_cmd("exe")
+        mt.add_info("Record and execute your own .openbb routine scripts")
+        mt.add_cmd("record", description="start recording current session")
+        mt.add_cmd(
+            "stop", description="stop session recording and convert to .openbb routine"
+        )
+        mt.add_cmd(
+            "exe",
+            description="execute .openbb routine scripts (use exe --example for an example)",
+        )
         mt.add_raw("\n")
         mt.add_info("Retrieve data from different asset classes and providers")
 
