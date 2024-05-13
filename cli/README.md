@@ -24,7 +24,7 @@ The command below provides access to the all the available OpenBB extensions beh
 pip install openbb-cli
 ```
 
-> Note: Find the most complete installation hints and tips [here](https://my.openbb.co/app/cli).
+> Note: Find the most complete installation hints and tips [here](https://my.openbb.co/app/cli/installation).
 
 After the installation is complete, you can deploy the OpenBB CLI by running the following command:
 
@@ -34,7 +34,7 @@ openbb
 
 Which should result in the following output:
 
-
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/f606bb6e-fa00-4fc8-bad2-8269bb4fc38e)
 
 ## API keys
 
