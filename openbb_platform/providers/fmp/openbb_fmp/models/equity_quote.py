@@ -29,7 +29,7 @@ class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Stock-Historical-Price
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEquityQuoteData(EquityQuoteData):

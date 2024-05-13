@@ -18,7 +18,7 @@ from pydantic import Field
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
     """FMP ETF Info Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEtfInfoData(EtfInfoData):
@@ -43,7 +43,7 @@ class FMPEtfInfoData(EtfInfoData):
     expense_ratio: Optional[float] = Field(
         default=None,
         description="The expense ratio, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     holdings_count: Optional[int] = Field(
         default=None, description="Number of holdings."
@@ -76,7 +76,7 @@ class FMPEtfInfoFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results = []
+        results: List = []
 
         async def get_one(symbol):
             """Get one symbol."""

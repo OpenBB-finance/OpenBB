@@ -28,24 +28,25 @@ class FredSeriesQueryParams(SeriesQueryParams):
         "end_date": "observation_end",
         "transform": "units",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    frequency: Literal[
-        None,
-        "a",
-        "q",
-        "m",
-        "w",
-        "d",
-        "wef",
-        "weth",
-        "wew",
-        "wetu",
-        "wem",
-        "wesu",
-        "wesa",
-        "bwew",
-        "bwem",
+    frequency: Optional[
+        Literal[
+            "a",
+            "q",
+            "m",
+            "w",
+            "d",
+            "wef",
+            "weth",
+            "wew",
+            "wetu",
+            "wem",
+            "wesu",
+            "wesa",
+            "bwew",
+            "bwem",
+        ]
     ] = Field(
         default=None,
         description="""
@@ -67,7 +68,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
             bwem = Biweekly, Ending Monday
         """,
     )
-    aggregation_method: Literal[None, "avg", "sum", "eop"] = Field(
+    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
         default="eop",
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -77,10 +78,11 @@ class FredSeriesQueryParams(SeriesQueryParams):
             eop = End of Period
         """,
     )
-    transform: Literal[None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] = (
-        Field(
-            default=None,
-            description="""
+    transform: Optional[
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ] = Field(
+        default=None,
+        description="""
         Transformation type
             None = No transformation
             chg = Change
@@ -92,7 +94,6 @@ class FredSeriesQueryParams(SeriesQueryParams):
             cca = Continuously Compounded Annual Rate of Change
             log = Natural Log
         """,
-        )
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 

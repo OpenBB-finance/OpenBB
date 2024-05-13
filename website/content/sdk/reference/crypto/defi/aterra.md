@@ -1,18 +1,19 @@
 ---
 title: aterra
-description: This document provides information about how to fetch historical data
+description:
+  This document provides information about how to fetch historical data
   for a specific Terra asset, plot the 30-day history of that asset and explains the
   usage of each function. Also includes source code links.
 keywords:
-- Terra assets
-- historical data
-- address
-- GET request
-- Draw chart
-- aterra
-- meta data
-- parameters
-- returns
+  - Terra assets
+  - historical data
+  - address
+  - GET request
+  - Draw chart
+  - aterra
+  - meta data
+  - parameters
+  - returns
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -37,19 +38,19 @@ openbb.crypto.defi.aterra(asset: str = "ust", address: str = "terra1tmnqgvg567yp
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| asset | str | Terra asset {ust,luna,sdt} | ust | True |
-| address | str | Terra address. Valid terra addresses start with 'terra' | terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8 | True |
-
+| Name    | Type | Description                                             | Default                                      | Optional |
+| ------- | ---- | ------------------------------------------------------- | -------------------------------------------- | -------- |
+| asset   | str  | Terra asset \{ust,luna,sdt\}                            | ust                                          | True     |
+| address | str  | Terra address. Valid terra addresses start with 'terra' | terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8 | True     |
 
 ---
 
 ## Returns
 
-| Type | Description |
-| ---- | ----------- |
+| Type         | Description     |
+| ------------ | --------------- |
 | pd.DataFrame | historical data |
+
 ---
 
 </TabItem>
@@ -67,13 +68,12 @@ openbb.crypto.defi.aterra_chart(asset: str = "", address: str = "", export: str 
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| asset | str | Terra asset {ust,luna,sdt} |  | True |
-| address | str | Terra address. Valid terra addresses start with 'terra' |  | True |
-| export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
-
+| Name          | Type                     | Description                                                     | Default | Optional |
+| ------------- | ------------------------ | --------------------------------------------------------------- | ------- | -------- |
+| asset         | str                      | Terra asset \{ust,luna,sdt\}                                    |         | True     |
+| address       | str                      | Terra address. Valid terra addresses start with 'terra'         |         | True     |
+| export        | str                      | Export dataframe data to csv,json,xlsx file                     |         | True     |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None    | True     |
 
 ---
 

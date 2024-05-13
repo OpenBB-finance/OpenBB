@@ -9,11 +9,8 @@ SRC_DIRECTORY = Path(__file__).parent.parent
 SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_platform"
 ASSETS_DIRECTORY = SRC_DIRECTORY / "assets"
 STYLES_DIRECTORY = ASSETS_DIRECTORY / "styles"
-ENV_FILE_REPOSITORY = REPOSITORY_DIRECTORY / ".env"
-ENV_FILE_PROJECT = REPOSITORY_DIRECTORY / "openbb_cli" / ".env"
 ENV_FILE_SETTINGS = SETTINGS_DIRECTORY / ".cli.env"
 HIST_FILE_PROMPT = SETTINGS_DIRECTORY / ".cli.his"
-I18N_FILE = ASSETS_DIRECTORY / "i18n"
 
 
 DEFAULT_ROUTINES_URL = "https://openbb-cms.directus.app/items/Routines"
@@ -67,7 +64,7 @@ AVAILABLE_FLAIRS = {
     ":mercury": "(☿)",
     ":hidden": "",
     ":sun": "(☼)",
-    ":moon": "(☾)",
+    ":moon": "(🌕)",
     ":nuke": "(☢)",
     ":hazard": "(☣)",
     ":tunder": "(☈)",
@@ -78,6 +75,6 @@ AVAILABLE_FLAIRS = {
     ":scales": "(⚖)",
     ":ball": "(⚽)",
     ":golf": "(⛳)",
-    ":piece": "(☮)",
+    ":peace": "(☮)",
     ":yy": "(☯)",
 }

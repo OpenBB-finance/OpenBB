@@ -3,25 +3,25 @@ title: How To Add Data Provider Extensions
 sidebar_position: 3
 description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- contribution
-- contributing
-- documentation
-- code
-- provider
-- data
-- endpoint
-- existing
-- OpenBB extensions
-- OpenBB provider
-- standard model
-- provider model
-- how to
-- new
-- template
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - data
+  - endpoint
+  - existing
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - provider model
+  - how to
+  - new
+  - template
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -46,18 +46,18 @@ The structure of the folder will look something like this:
 ```md
 template/
 ├── openbb_template/
-│   ├── models/
-│   │   ├── __init__.py
-│   │   └── some_model.py
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   └── helpers.py
-│   ├── tests/
-│   │   ├── record/
-│   │   ├── __init__.py
-│   │   └── test_template_fetchers.py
-│   ├── __init__.py
-├── __init__.py
+│ ├── models/
+│ │ ├── **init**.py
+│ │ └── some_model.py
+│ ├── utils/
+│ │ ├── **init**.py
+│ │ └── helpers.py
+│ ├── tests/
+│ │ ├── record/
+│ │ ├── **init**.py
+│ │ └── test_template_fetchers.py
+│ ├── **init**.py
+├── **init**.py
 ├── pyproject.toml
 └── README.md
 ```
@@ -99,9 +99,10 @@ The cookiecutter tool will get you most of the way there, but it still requires 
 The `pyproject.toml` file defines the package itself.
 
 :::tip
+
 - Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
 - If possible, use loose versioning.
-:::
+  :::
 
 ```
 [tool.poetry]
@@ -124,7 +125,7 @@ build-backend = "poetry.core.masonry.api"
 template = "openbb_template:template_provider"
 ```
 
-The last line (poetry.plugins) maps to the provider defined in the __init__.py file.
+The last line (poetry.plugins) maps to the provider defined in the **init**.py file.
 
 Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBBTerminal/openbb_platform/`:
 
@@ -226,14 +227,13 @@ The new extension can be self-published on PyPI and hosted in an independent Git
 
 If not contributing directly to the OpenBB GitHub, we still want to know about your creation. Share it with us on social media, and add `openbb` as a topic tag in your GitHub repo.
 
-
 ## Publish Extension To PyPI
 
 To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
 
 ### Setup
 
-Create an account and get an API token from <https://pypi.org/manage/account/token/>
+Create an account and get an API token from [https://pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
 
 Store the token with:
 

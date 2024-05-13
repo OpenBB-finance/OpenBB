@@ -31,6 +31,10 @@ class ROUTER_currency(Container):
     @validate
     def search(
         self,
+        query: Annotated[
+            Optional[str],
+            OpenBBField(description="Query to search for currency pairs."),
+        ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
             OpenBBField(
@@ -52,24 +56,12 @@ class ROUTER_currency(Container):
 
         Parameters
         ----------
+        query : Optional[str]
+            Query to search for currency pairs.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        symbol : Optional[str]
-            Symbol of the pair to search. (provider: polygon)
-        date : Optional[datetime.date]
-            A specific date to get data for. (provider: polygon)
-        search : Optional[str]
-            Search for terms within the ticker and/or company name. (provider: polygon)
-        active : Optional[bool]
-            Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)
-        order : Optional[Literal['asc', 'desc']]
-            Order data by ascending or descending. (provider: polygon)
-        sort : Optional[Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']]
-            Sort field used for ordering. (provider: polygon)
-        limit : Optional[Annotated[int, Gt(gt=0)]]
-            The number of data entries to return. (provider: polygon)
 
         Returns
         -------
@@ -87,49 +79,43 @@ class ROUTER_currency(Container):
 
         CurrencyPairs
         -------------
-        name : str
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
             Name of the currency pair.
-        symbol : Optional[str]
-            Symbol of the currency pair. (provider: fmp)
         currency : Optional[str]
             Base currency of the currency pair. (provider: fmp)
         stock_exchange : Optional[str]
             Stock exchange of the currency pair. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange of the currency pair. (provider: fmp)
-        code : Optional[str]
-            Code of the currency pair. (provider: intrinio)
         base_currency : Optional[str]
             ISO 4217 currency code of the base currency. (provider: intrinio)
         quote_currency : Optional[str]
             ISO 4217 currency code of the quote currency. (provider: intrinio)
-        market : Optional[str]
-            Name of the trading market. Always 'fx'. (provider: polygon)
-        locale : Optional[str]
-            Locale of the currency pair. (provider: polygon)
         currency_symbol : Optional[str]
             The symbol of the quote currency. (provider: polygon)
-        currency_name : Optional[str]
-            Name of the quote currency. (provider: polygon)
         base_currency_symbol : Optional[str]
             The symbol of the base currency. (provider: polygon)
         base_currency_name : Optional[str]
             Name of the base currency. (provider: polygon)
-        last_updated_utc : Optional[datetime]
-            The last updated timestamp in UTC. (provider: polygon)
-        delisted_utc : Optional[datetime]
-            The delisted timestamp in UTC. (provider: polygon)
+        market : Optional[str]
+            Name of the trading market. Always 'fx'. (provider: polygon)
+        locale : Optional[str]
+            Locale of the currency pair. (provider: polygon)
+        last_updated : Optional[date]
+            The date the reference data was last updated. (provider: polygon)
+        delisted : Optional[date]
+            The date the item was delisted. (provider: polygon)
 
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.currency.search(provider='intrinio')
-        >>> # Search for 'EURUSD' currency pair using 'intrinio' as provider.
-        >>> obb.currency.search(provider='intrinio', symbol='EURUSD')
-        >>> # Search for actively traded currency pairs on the queried date using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', date='2024-01-02', active=True)
+        >>> obb.currency.search(provider='fmp')
+        >>> # Search for 'EUR' currency pair using 'intrinio' as provider.
+        >>> obb.currency.search(provider='intrinio', query='EUR')
         >>> # Search for terms  using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', search='Euro zone')
+        >>> obb.currency.search(provider='polygon', query='Euro zone')
         """  # noqa: E501
 
         return self._run(
@@ -142,7 +128,9 @@ class ROUTER_currency(Container):
                         ("fmp", "intrinio", "polygon"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                    "query": query,
+                },
                 extra_params=kwargs,
             )
         )
@@ -302,6 +290,11 @@ class ROUTER_currency(Container):
                     "counter_currencies": counter_currencies,
                 },
                 extra_params=kwargs,
-                info={"base": {"multiple_items_allowed": ["fmp", "polygon"]}},
+                info={
+                    "base": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )

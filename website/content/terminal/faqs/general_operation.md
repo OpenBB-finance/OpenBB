@@ -1,21 +1,22 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: Learn how to overcome system-related issues by enabling the 'developer
+description:
+  Learn how to overcome system-related issues by enabling the 'developer
   mode' on Windows and MacOS. Get answers for queries and potential issues. Here,
   you'll also get to know how to run applications that do not meet the system's security
   policy, allow apps through firewall and get tips on portfolio management.
 keywords:
-- developer mode
-- overcome system-related issues
-- Windows
-- MacOS
-- run applications
-- system's security policy
-- allow apps through firewall
-- Portfolio management
-- Settings
-- FAQ
+  - developer mode
+  - overcome system-related issues
+  - Windows
+  - MacOS
+  - run applications
+  - system's security policy
+  - allow apps through firewall
+  - Portfolio management
+  - Settings
+  - FAQ
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -35,7 +36,8 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 - VcXsrv
 - Windows Terminal
 
-<details><summary>Why does a specific menu or command not exist?</summary>
+<details>
+<summary mdxType="summary">Why does a specific menu or command not exist?</summary>
 
 It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](/terminal/installation) to download the most recent release.
 
@@ -43,25 +45,29 @@ Do note that it is also possible that the menu or command has been deprecated. I
 
 </details>
 
-<details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
+<details>
+<summary mdxType="summary">Charts do not display on Linux/WSL or Docker installation.</summary>
 
 Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [/terminal/installation/docker](/terminal/installation/docker)
 
 </details>
 
-<details><summary>How do I retrieve more results than is returned by default?</summary>
+<details>
+<summary mdxType="summary">How do I retrieve more results than is returned by default?</summary>
 
 Most functions will have either, `--start` and `--end` flags, or a `--limit` argument. Print the help dialogue for any command by attaching, `--help` or `-h`.
 
 </details>
 
-<details><summary>Does the portfolio menu allow for dividends, interest, or other distributions?</summary>
+<details>
+<summary mdxType="summary">Does the portfolio menu allow for dividends, interest, or other distributions?</summary>
 
 Currently, this is only possible by manually updating the portfolio file.
 
 </details>
 
-<details><summary>Why does my Portfolio file fail to load?</summary>
+<details>
+<summary mdxType="summary">Why does my Portfolio file fail to load?</summary>
 
 This can be the result of a formatting error, check the file in a simple text editor to observe any abnormalities in the formatting; or, it could be a bug - check the [GitHub issues page](https://github.com/OpenBB-finance/OpenBBTerminal/issues) for similar errors.
 
@@ -81,19 +87,22 @@ See the guide [here](/sdk/data-available/portfolio/introduction) for more inform
 
 </details>
 
-<details><summary>How do I change the chart styles?</summary>
+<details>
+<summary mdxType="summary">How do I change the chart styles?</summary>
 
-See the guide [here](/terminal/usage/overview/customizing-the-terminal).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
+See the guide [here](/terminal/usage/overview/customizing-the-terminal). The theme can be toggled between light and dark mode, directly on the individual chart. See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
 
 </details>
 
-<details><summary>Can I change the colors of the text in the Terminal?</summary>
+<details>
+<summary mdxType="summary">Can I change the colors of the text in the Terminal?</summary>
 
 Yes, use the `colors` command under the `/settings` menu: [/terminal/usage/overview/customizing-the-terminal](/terminal/usage/overview/customizing-the-terminal)
 
 </details>
 
-<details><summary>After setting the preset in the stocks screener, nothing happens.</summary>
+<details>
+<summary mdxType="summary">After setting the preset in the stocks screener, nothing happens.</summary>
 
 Print the current screen again with by entering, `?`. Does the name of the selected preset display? With a preset loaded, run the screener by entering one of the commands below:
 
@@ -106,7 +115,8 @@ Print the current screen again with by entering, `?`. Does the name of the selec
 
 </details>
 
-<details><summary>Forecast functions say to enter a valid data set</summary>
+<details>
+<summary mdxType="summary">Forecast functions say to enter a valid data set</summary>
 
 Because an unlimited number of data sets can be loaded into the Forecast menu, each function requires defining the specific data set to be used. Add the `-d` or `--dataset` argument to the command, along with the name of the desired data set.
 
@@ -116,9 +126,10 @@ rnn -d SPY
 
 </details>
 
-<details><summary>How do I find stocks from India, or another country?</summary>
+<details>
+<summary mdxType="summary">How do I find stocks from India, or another country?</summary>
 
-Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](/terminal/menus/stocks#search).
+Use the `search` command from the `/stocks` menu. Refer to the menu's introduction guide [here](/terminal/menus/stocks#search).
 
 As an example, try this:
 

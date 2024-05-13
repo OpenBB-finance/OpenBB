@@ -97,7 +97,7 @@ class FederalReserveTreasuryRatesFetcher(
     ) -> List[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
 
-        df = data
+        df = data.copy()
         df = df[
             (to_datetime(df.date) >= to_datetime(query.start_date))  # type: ignore
             & (to_datetime(df.date) <= to_datetime(query.end_date))  # type: ignore

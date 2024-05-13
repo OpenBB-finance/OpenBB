@@ -233,7 +233,7 @@ class HubService:
             }
             msg = ""
             for k, v in deprecated.items():
-                msg += f"\n'{k}' -> '{v}', "
+                msg += f"\n'{k}' -> '{v.upper()}', "
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
@@ -253,7 +253,7 @@ class HubService:
         settings = self._hub_user_settings or HubUserSettings()
         for v4_k, v in sorted(credentials.items()):
             v3_k = self.V4TOV3.get(v4_k, None)
-            # If v3 key was there, we keep it
+            # If v3 key was in the hub already, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
             settings.features_keys[k] = v
         return settings

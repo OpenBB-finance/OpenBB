@@ -1,8 +1,9 @@
 """Finviz Equity Profile Model."""
 
 # pylint: disable=unused-argument
-import warnings
+
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from finvizfinance.quote import finvizfinance
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,8 +13,6 @@ from openbb_core.provider.standard_models.equity_info import (
 )
 from pydantic import Field
 
-_warn = warnings.warn
-
 
 class FinvizEquityProfileQueryParams(EquityInfoQueryParams):
     """
@@ -22,7 +21,7 @@ class FinvizEquityProfileQueryParams(EquityInfoQueryParams):
     Source: https://finviz.com/screener.ashx
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FinvizEquityProfileData(EquityInfoData):
@@ -59,7 +58,7 @@ class FinvizEquityProfileData(EquityInfoData):
     institutional_ownership: Optional[float] = Field(
         default=None,
         description="The institutional ownership of the stock, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     market_cap: Optional[str] = Field(
         default=None,
@@ -68,7 +67,7 @@ class FinvizEquityProfileData(EquityInfoData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the stock, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     earnings_date: Optional[str] = Field(
         default=None,
@@ -99,17 +98,17 @@ class FinvizEquityProfileFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
 
-        results = []
+        results: List = []
 
         def get_one(symbol) -> Dict:
             """Get the data for one symbol."""
-            result = {}
+            result: Dict = {}
             try:
                 data = finvizfinance(symbol)
                 fundament = data.ticker_fundament()
                 description = data.ticker_description()
             except Exception as e:  # pylint: disable=W0718
-                _warn(f"Failed to get data for {symbol} -> {e}")
+                warn(f"Failed to get data for {symbol} -> {e}")
                 return result
             div_yield = (
                 float(str(fundament.get("Dividend %", None)).replace("%", "")) / 100

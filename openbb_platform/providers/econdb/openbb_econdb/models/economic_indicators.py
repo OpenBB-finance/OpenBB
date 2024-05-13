@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -14,6 +14,7 @@ from openbb_core.provider.standard_models.economic_indicators import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_econdb.utils import helpers
+from openbb_econdb.utils.main_indicators import get_main_indicators
 from pandas import DataFrame, concat
 from pydantic import Field, field_validator
 
@@ -24,31 +25,36 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     """EconDB Economic Indicators Query."""
 
     __json_schema_extra__ = {
-        "symbol": ["multiple_items_allowed"],
-        "country": ["multiple_items_allowed"],
+        "symbol": {"multiple_items_allowed": True},
+        "country": {"multiple_items_allowed": True},
     }
 
-    transform: Literal["toya", "tpop", "tusd", "tpgp"] = Field(
+    transform: Union[None, Literal["toya", "tpop", "tusd", "tpgp"]] = Field(
         default=None,
         description="The transformation to apply to the data, default is None."
         + "\n"
-        + "\n        tpop: Change from previous period"
-        + "\n        toya: Change from one year ago"
-        + "\n        tusd: Values as US dollars"
-        + "\n        tpgp: Values as a percent of GDP"
+        + "\n    tpop: Change from previous period"
+        + "\n    toya: Change from one year ago"
+        + "\n    tusd: Values as US dollars"
+        + "\n    tpgp: Values as a percent of GDP"
         + "\n"
         + "\n"
-        + "     Only 'tpop' and 'toya' are applicable to all indicators."
-        + "     Applying transformations across multiple indicators/countries"
-        + "     may produce unexpected results."
-        + "\n     This is because not all indicators are compatible with all transformations,"
-        + "     and the original units and scale differ between entities."
-        + "\n     `tusd` should only be used where values are currencies.",
+        + "    Only 'tpop' and 'toya' are applicable to all indicators."
+        + " Applying transformations across multiple indicators/countries"
+        + " may produce unexpected results."
+        + "\n    This is because not all indicators are compatible with all transformations,"
+        + " and the original units and scale differ between entities."
+        + "\n    `tusd` should only be used where values are currencies.",
+    )
+    frequency: Literal["annual", "quarter", "month"] = Field(
+        default="quarter",
+        description="The frequency of the data, default is 'quarter'."
+        + " Only valid when 'symbol' is 'main'.",
     )
     use_cache: bool = Field(
         default=True,
         description="If True, the request will be cached for one day."
-        + "Using cache is recommended to avoid needlessly requesting the same data.",
+        + " Using cache is recommended to avoid needlessly requesting the same data.",
     )
 
     @field_validator("country", mode="before", check_fields=False)
@@ -89,12 +95,20 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
     @classmethod
     def validate_symbols(cls, v):
         """Validate each symbol to check if it is a valid indicator."""
+        if not v:
+            v = "main"
         symbols = v if isinstance(v, list) else v.split(",")
         new_symbols: List[str] = []
         for symbol in symbols:
             if "_" in symbol:
                 new_symbols.append(symbol)
                 continue
+            if symbol.upper() == "MAIN":
+                if len(symbols) > 1:
+                    raise ValueError(
+                        "The 'main' indicator cannot be combined with other indicators."
+                    )
+                return symbol
             if not any(
                 (
                     symbol.upper().startswith(indicator)
@@ -135,6 +149,15 @@ class EconDbEconomicIndicatorsFetcher(
             ).date()
         if new_params.get("end_date") is None:
             new_params["end_date"] = datetime.today().date()
+        countries = new_params.get("country")
+        if (
+            countries is not None
+            and len(countries.split(",")) > 1
+            and new_params.get("symbol", "").upper() == "MAIN"
+        ):
+            raise ValueError(
+                "The 'main' indicator cannot be combined with multiple countries."
+            )
         return EconDbEconomicIndicatorsQueryParams(**new_params)
 
     @staticmethod
@@ -144,6 +167,16 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data."""
+        if query.symbol.upper() == "MAIN":
+            country = query.country.upper() if query.country else "US"
+            return await get_main_indicators(
+                country,
+                query.start_date.strftime("%Y-%m-%d"),  # type: ignore
+                query.end_date.strftime("%Y-%m-%d"),  # type: ignore
+                query.frequency,
+                query.transform,
+                query.use_cache,
+            )
         token = credentials.get("econdb_api_key", "")  # type: ignore
         # Attempt to create a temporary token if one is not supplied.
         if not token:
@@ -299,6 +332,14 @@ class EconDbEconomicIndicatorsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[EconDbEconomicIndicatorsData]]:
         """Transform the data."""
+        if query.symbol.upper() == "MAIN":
+            return AnnotatedResult(
+                result=[
+                    EconDbEconomicIndicatorsData.model_validate(r)
+                    for r in data[0].get("records", [])
+                ],
+                metadata={query.country: data[0].get("metadata", [])},
+            )
         output = DataFrame()
         metadata = {}
         for d in data:

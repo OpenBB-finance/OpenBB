@@ -576,9 +576,16 @@
                 "message": null
             },
             "description": "Currency Search.\n\nSearch available currency pairs.\nCurrency pairs are the national currencies from two countries coupled for trading on\nthe foreign exchange (FX) marketplace.\nBoth currencies will have exchange rates on which the trade will have its position basis.\nAll trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.\n(ref: Investopedia)\nMajor currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='intrinio')\n# Search for 'EURUSD' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', symbol=EURUSD)\n# Search for actively traded currency pairs on the queried date using 'polygon' as provider.\nobb.currency.search(provider='polygon', date=2024-01-02, active=True)\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', search=Euro zone)\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='fmp')\n# Search for 'EUR' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', query='EUR')\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', query='Euro zone')\n```\n\n",
             "parameters": {
                 "standard": [
+                    {
+                        "name": "query",
+                        "type": "str",
+                        "description": "Query to search for currency pairs.",
+                        "default": null,
+                        "optional": true
+                    },
                     {
                         "name": "provider",
                         "type": "Literal['fmp', 'intrinio', 'polygon']",
@@ -589,57 +596,7 @@
                 ],
                 "fmp": [],
                 "intrinio": [],
-                "polygon": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol of the pair to search.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "search",
-                        "type": "str",
-                        "description": "Search for terms within the ticker and/or company name.",
-                        "default": "",
-                        "optional": true
-                    },
-                    {
-                        "name": "active",
-                        "type": "bool",
-                        "description": "Specify if the tickers returned should be actively traded on the queried date.",
-                        "default": true,
-                        "optional": true
-                    },
-                    {
-                        "name": "order",
-                        "type": "Literal['asc', 'desc']",
-                        "description": "Order data by ascending or descending.",
-                        "default": "asc",
-                        "optional": true
-                    },
-                    {
-                        "name": "sort",
-                        "type": "Literal['ticker', 'name', 'market', 'locale', 'currency_symbol', 'currency_name', 'base_currency_symbol', 'base_currency_name', 'last_updated_utc', 'delisted_utc']",
-                        "description": "Sort field used for ordering.",
-                        "default": "",
-                        "optional": true
-                    },
-                    {
-                        "name": "limit",
-                        "type": "Annotated[int, Gt(gt=0)]",
-                        "description": "The number of data entries to return.",
-                        "default": 1000,
-                        "optional": true
-                    }
-                ]
+                "polygon": []
             },
             "returns": {
                 "OBBject": [
@@ -673,11 +630,18 @@
             "data": {
                 "standard": [
                     {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
                         "name": "name",
                         "type": "str",
                         "description": "Name of the currency pair.",
-                        "default": "",
-                        "optional": false
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "fmp": [
@@ -712,13 +676,6 @@
                 ],
                 "intrinio": [
                     {
-                        "name": "code",
-                        "type": "str",
-                        "description": "Code of the currency pair.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
                         "name": "base_currency",
                         "type": "str",
                         "description": "ISO 4217 currency code of the base currency.",
@@ -735,30 +692,9 @@
                 ],
                 "polygon": [
                     {
-                        "name": "market",
-                        "type": "str",
-                        "description": "Name of the trading market. Always 'fx'.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
-                        "name": "locale",
-                        "type": "str",
-                        "description": "Locale of the currency pair.",
-                        "default": "",
-                        "optional": false
-                    },
-                    {
                         "name": "currency_symbol",
                         "type": "str",
                         "description": "The symbol of the quote currency.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "currency_name",
-                        "type": "str",
-                        "description": "Name of the quote currency.",
                         "default": null,
                         "optional": true
                     },
@@ -777,16 +713,30 @@
                         "optional": true
                     },
                     {
-                        "name": "last_updated_utc",
-                        "type": "datetime",
-                        "description": "The last updated timestamp in UTC.",
+                        "name": "market",
+                        "type": "str",
+                        "description": "Name of the trading market. Always 'fx'.",
                         "default": "",
                         "optional": false
                     },
                     {
-                        "name": "delisted_utc",
-                        "type": "datetime",
-                        "description": "The delisted timestamp in UTC.",
+                        "name": "locale",
+                        "type": "str",
+                        "description": "Locale of the currency pair.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "date",
+                        "description": "The date the reference data was last updated.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "delisted",
+                        "type": "date",
+                        "description": "The date the item was delisted.",
                         "default": null,
                         "optional": true
                     }
@@ -2681,7 +2631,7 @@
                     },
                     {
                         "name": "filter_variable",
-                        "type": "Literal[None, 'frequency', 'units', 'seasonal_adjustment']",
+                        "type": "Literal['frequency', 'units', 'seasonal_adjustment']",
                         "description": "Filter by an attribute.",
                         "default": null,
                         "optional": true
@@ -2940,22 +2890,29 @@
                 ],
                 "fred": [
                     {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 100000,
+                        "optional": true
+                    },
+                    {
                         "name": "frequency",
-                        "type": "Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
                         "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "aggregation_method",
-                        "type": "Literal[None, 'avg', 'sum', 'eop']",
+                        "type": "Literal['avg', 'sum', 'eop']",
                         "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
                         "default": "eop",
                         "optional": true
                     },
                     {
                         "name": "transform",
-                        "type": "Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
                         "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
                         "default": null,
                         "optional": true
@@ -3643,6 +3600,13 @@
                 ],
                 "fred": [
                     {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "For this function, it is the series_group ID or series ID. If the symbol provided is for a series_group, set the `is_series_group` parameter to True. Not all series that are in FRED have geographical data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
                         "name": "is_series_group",
                         "type": "bool",
                         "description": "When True, the symbol provided is for a series_group, else it is for a series ID.",
@@ -4108,7 +4072,7 @@
                 "message": null
             },
             "description": "Get economic indicators by country and indicator.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.indicators(provider='econdb', symbol='PCOCO')\n# Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.\nobb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')\n# Use the `main` symbol to get the group of main indicators for a country.\nobb.economy.indicators(provider='econdb', symbol='main', country='eu')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -4151,14 +4115,21 @@
                     {
                         "name": "transform",
                         "type": "Literal['toya', 'tpop', 'tusd', 'tpgp']",
-                        "description": "The transformation to apply to the data, default is None.     tpop: Change from previous period     toya: Change from one year ago     tusd: Values as US dollars     tpgp: Values as a percent of GDP    Only 'tpop' and 'toya' are applicable to all indicators.   Applying transformations across multiple indicators/countries   may produce unexpected results.   This is because not all indicators are compatible with all transformations,   and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
+                        "description": "The transformation to apply to the data, default is None.   tpop: Change from previous period   toya: Change from one year ago   tusd: Values as US dollars   tpgp: Values as a percent of GDP   Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.   This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.   `tusd` should only be used where values are currencies.",
                         "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'month']",
+                        "description": "The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'.",
+                        "default": "quarter",
                         "optional": true
                     },
                     {
                         "name": "use_cache",
                         "type": "bool",
-                        "description": "If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data.",
+                        "description": "If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data.",
                         "default": true,
                         "optional": true
                     }
@@ -5206,6 +5177,13 @@
                     }
                 ],
                 "benzinga": [
+                    {
+                        "name": "action",
+                        "type": "Literal['Downgrades', 'Maintains', 'Reinstates', 'Reiterates', 'Upgrades', 'Assumes', 'Initiates Coverage On', 'Terminates Coverage On', 'Removes', 'Suspends', 'Firm Dissolved']",
+                        "description": "Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined.",
+                        "default": null,
+                        "optional": true
+                    },
                     {
                         "name": "action_change",
                         "type": "Literal['Announces', 'Maintains', 'Lowers', 'Raises', 'Removes', 'Adjusts']",
@@ -8250,8 +8228,23 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "fiscal_year",
                         "type": "int",
@@ -8261,6 +8254,13 @@
                     }
                 ],
                 "polygon": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "filing_date",
                         "type": "date",
@@ -8353,7 +8353,15 @@
                         "optional": true
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -10002,8 +10010,23 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "fiscal_year",
                         "type": "int",
@@ -10013,6 +10036,13 @@
                     }
                 ],
                 "polygon": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "filing_date",
                         "type": "date",
@@ -10092,20 +10122,28 @@
                     },
                     {
                         "name": "order",
-                        "type": "Literal[None, 'asc', 'desc']",
+                        "type": "Literal['asc', 'desc']",
                         "description": "Order of the financial statement.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "sort",
-                        "type": "Literal[None, 'filing_date', 'period_of_report_date']",
+                        "type": "Literal['filing_date', 'period_of_report_date']",
                         "description": "Sort of the financial statement.",
                         "default": null,
                         "optional": true
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -10161,6 +10199,13 @@
                     }
                 ],
                 "fmp": [
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The fiscal year of the fiscal period.",
+                        "default": null,
+                        "optional": true
+                    },
                     {
                         "name": "filing_date",
                         "type": "date",
@@ -10867,6 +10912,20 @@
                     }
                 ],
                 "intrinio": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
+                    {
+                        "name": "statement_type",
+                        "type": "Literal['balance', 'income', 'cash']",
+                        "description": "Cash flow statements are reported as YTD, Q4 is the same as FY.",
+                        "default": "income",
+                        "optional": true
+                    },
                     {
                         "name": "fiscal_year",
                         "type": "int",
@@ -12072,8 +12131,23 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "fiscal_year",
                         "type": "int",
@@ -12083,6 +12157,13 @@
                     }
                 ],
                 "polygon": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "filing_date",
                         "type": "date",
@@ -12175,7 +12256,15 @@
                         "optional": true
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -15275,8 +15364,23 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm']",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter', 'ttm', 'ytd']",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
+                        "optional": true
+                    },
                     {
                         "name": "fiscal_year",
                         "type": "int",
@@ -16023,8 +16127,22 @@
                 ],
                 "sec": [
                     {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol to get data for.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "form_type",
+                        "type": "Literal['1', '1-A', '1-A POS', '1-A-W', '1-E', '1-E AD', '1-K', '1-SA', '1-U', '1-Z', '1-Z-W', '10-12B', '10-12G', '10-D', '10-K', '10-KT', '10-Q', '10-QT', '11-K', '11-KT', '13F-HR', '13F-NT', '13FCONP', '144', '15-12B', '15-12G', '15-15D', '15F-12B', '15F-12G', '15F-15D', '18-12B', '18-K', '19B-4E', '2-A', '2-AF', '2-E', '20-F', '20FR12B', '20FR12G', '24F-2NT', '25', '25-NSE', '253G1', '253G2', '253G3', '253G4', '3', '305B2', '34-12H', '4', '40-17F1', '40-17F2', '40-17G', '40-17GCS', '40-202A', '40-203A', '40-206A', '40-24B2', '40-33', '40-6B', '40-8B25', '40-8F-2', '40-APP', '40-F', '40-OIP', '40FR12B', '40FR12G', '424A', '424B1', '424B2', '424B3', '424B4', '424B5', '424B7', '424B8', '424H', '425', '485APOS', '485BPOS', '485BXT', '486APOS', '486BPOS', '486BXT', '487', '497', '497AD', '497H2', '497J', '497K', '497VPI', '497VPU', '5', '6-K', '6B NTC', '6B ORDR', '8-A12B', '8-A12G', '8-K', '8-K12B', '8-K12G3', '8-K15D5', '8-M', '8F-2 NTC', '8F-2 ORDR', '9-M', 'ABS-15G', 'ABS-EE', 'ADN-MTL', 'ADV-E', 'ADV-H-C', 'ADV-H-T', 'ADV-NR', 'ANNLRPT', 'APP NTC', 'APP ORDR', 'APP WD', 'APP WDG', 'ARS', 'ATS-N', 'ATS-N-C', 'ATS-N/UA', 'AW', 'AW WD', 'C', 'C-AR', 'C-AR-W', 'C-TR', 'C-TR-W', 'C-U', 'C-U-W', 'C-W', 'CB', 'CERT', 'CERTARCA', 'CERTBATS', 'CERTCBO', 'CERTNAS', 'CERTNYS', 'CERTPAC', 'CFPORTAL', 'CFPORTAL-W', 'CORRESP', 'CT ORDER', 'D', 'DEF 14A', 'DEF 14C', 'DEFA14A', 'DEFA14C', 'DEFC14A', 'DEFC14C', 'DEFM14A', 'DEFM14C', 'DEFN14A', 'DEFR14A', 'DEFR14C', 'DEL AM', 'DFAN14A', 'DFRN14A', 'DOS', 'DOSLTR', 'DRS', 'DRSLTR', 'DSTRBRPT', 'EFFECT', 'F-1', 'F-10', 'F-10EF', 'F-10POS', 'F-1MEF', 'F-3', 'F-3ASR', 'F-3D', 'F-3DPOS', 'F-3MEF', 'F-4', 'F-4 POS', 'F-4MEF', 'F-6', 'F-6 POS', 'F-6EF', 'F-7', 'F-7 POS', 'F-8', 'F-8 POS', 'F-80', 'F-80POS', 'F-9', 'F-9 POS', 'F-N', 'F-X', 'FOCUSN', 'FWP', 'G-405', 'G-405N', 'G-FIN', 'G-FINW', 'IRANNOTICE', 'MA', 'MA-A', 'MA-I', 'MA-W', 'MSD', 'MSDCO', 'MSDW', 'N-1', 'N-14', 'N-14 8C', 'N-14MEF', 'N-18F1', 'N-1A', 'N-2', 'N-2 POSASR', 'N-23C-2', 'N-23C3A', 'N-23C3B', 'N-23C3C', 'N-2ASR', 'N-2MEF', 'N-30B-2', 'N-30D', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6F', 'N-8A', 'N-8B-2', 'N-8F', 'N-8F NTC', 'N-8F ORDR', 'N-CEN', 'N-CR', 'N-CSR', 'N-CSRS', 'N-MFP', 'N-MFP1', 'N-MFP2', 'N-PX', 'N-Q', 'N-VP', 'N-VPFS', 'NO ACT', 'NPORT-EX', 'NPORT-NP', 'NPORT-P', 'NRSRO-CE', 'NRSRO-UPD', 'NSAR-A', 'NSAR-AT', 'NSAR-B', 'NSAR-BT', 'NSAR-U', 'NT 10-D', 'NT 10-K', 'NT 10-Q', 'NT 11-K', 'NT 20-F', 'NT N-CEN', 'NT N-MFP', 'NT N-MFP1', 'NT N-MFP2', 'NT NPORT-EX', 'NT NPORT-P', 'NT-NCEN', 'NT-NCSR', 'NT-NSAR', 'NTFNCEN', 'NTFNCSR', 'NTFNSAR', 'NTN 10D', 'NTN 10K', 'NTN 10Q', 'NTN 20F', 'OIP NTC', 'OIP ORDR', 'POS 8C', 'POS AM', 'POS AMI', 'POS EX', 'POS462B', 'POS462C', 'POSASR', 'PRE 14A', 'PRE 14C', 'PREC14A', 'PREC14C', 'PREM14A', 'PREM14C', 'PREN14A', 'PRER14A', 'PRER14C', 'PRRN14A', 'PX14A6G', 'PX14A6N', 'QRTLYRPT', 'QUALIF', 'REG-NR', 'REVOKED', 'RW', 'RW WD', 'S-1', 'S-11', 'S-11MEF', 'S-1MEF', 'S-20', 'S-3', 'S-3ASR', 'S-3D', 'S-3DPOS', 'S-3MEF', 'S-4', 'S-4 POS', 'S-4EF', 'S-4MEF', 'S-6', 'S-8', 'S-8 POS', 'S-B', 'S-BMEF', 'SBSE', 'SBSE-A', 'SBSE-BD', 'SBSE-C', 'SBSE-W', 'SC 13D', 'SC 13E1', 'SC 13E3', 'SC 13G', 'SC 14D9', 'SC 14F1', 'SC 14N', 'SC TO-C', 'SC TO-I', 'SC TO-T', 'SC13E4F', 'SC14D1F', 'SC14D9C', 'SC14D9F', 'SD', 'SDR', 'SE', 'SEC ACTION', 'SEC STAFF ACTION', 'SEC STAFF LETTER', 'SF-1', 'SF-3', 'SL', 'SP 15D2', 'STOP ORDER', 'SUPPL', 'T-3', 'TA-1', 'TA-2', 'TA-W', 'TACO', 'TH', 'TTW', 'UNDER', 'UPLOAD', 'WDL-REQ', 'X-17A-5']",
+                        "description": "Type of the SEC filing form.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Lookup filings by Central Index Key (CIK) instead of by symbol.",
                         "default": null,
                         "optional": true
@@ -16174,7 +16292,7 @@
                     },
                     {
                         "name": "act",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The SEC Act number.",
                         "default": null,
                         "optional": true
@@ -16202,42 +16320,42 @@
                     },
                     {
                         "name": "accession_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The accession number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "file_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The file number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "film_number",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The film number.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_inline_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an inline XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "is_xbrl",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Whether the filing is an XBRL filing.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "size",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The size of the filing.",
                         "default": null,
                         "optional": true
@@ -17428,6 +17546,13 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "filing_url",
+                        "type": "str",
+                        "description": "URL of the filing.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "company_name",
                         "type": "str",
                         "description": "Name of the company.",
@@ -17910,6 +18035,13 @@
                 ],
                 "fmp": [],
                 "intrinio": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID).",
+                        "default": "",
+                        "optional": false
+                    },
                     {
                         "name": "source",
                         "type": "Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']",
@@ -18553,8 +18685,30 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID).",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "start_time",
                         "type": "datetime.time",
@@ -18586,6 +18740,13 @@
                 ],
                 "polygon": [
                     {
+                        "name": "interval",
+                        "type": "str",
+                        "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                        "default": "1d",
+                        "optional": true
+                    },
+                    {
                         "name": "adjustment",
                         "type": "Literal['splits_only', 'unadjusted']",
                         "description": "The adjustment factor to apply. Default is splits only.",
@@ -18614,8 +18775,23 @@
                         "optional": true
                     }
                 ],
-                "tiingo": [],
+                "tiingo": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "yfinance": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "extended_hours",
                         "type": "bool",
@@ -19134,7 +19310,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The ticker symbol.",
+                        "default": "",
+                        "optional": false
+                    }
+                ]
             },
             "model": "PricePerformance"
         },
@@ -20888,8 +21072,30 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID).",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '10m', '15m', '30m', '60m', '1h', '1d', '1W', '1M', '1Q', '1Y']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "start_time",
                         "type": "datetime.time",
@@ -20921,6 +21127,13 @@
                 ],
                 "polygon": [
                     {
+                        "name": "interval",
+                        "type": "str",
+                        "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                        "default": "1d",
+                        "optional": true
+                    },
+                    {
                         "name": "adjustment",
                         "type": "Literal['splits_only', 'unadjusted']",
                         "description": "The adjustment factor to apply. Default is splits only.",
@@ -20949,8 +21162,23 @@
                         "optional": true
                     }
                 ],
-                "tiingo": [],
+                "tiingo": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1d', '1W', '1M', '1Y']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "yfinance": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "extended_hours",
                         "type": "bool",
@@ -22826,7 +23054,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The ticker symbol.",
+                        "default": "",
+                        "optional": false
+                    }
+                ],
                 "intrinio": [
                     {
                         "name": "max_annualized",
@@ -23199,6 +23435,13 @@
                     }
                 ],
                 "intrinio": [
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "The common name for the holding.",
+                        "default": null,
+                        "optional": true
+                    },
                     {
                         "name": "security_type",
                         "type": "str",
@@ -23630,7 +23873,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23644,7 +23887,7 @@
                     },
                     {
                         "name": "reset_date_unit_rec",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for receivable portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23693,7 +23936,7 @@
                     },
                     {
                         "name": "rate_tenor_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The rate tenor unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -23707,7 +23950,7 @@
                     },
                     {
                         "name": "reset_date_unit_pmnt",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "The reset date unit for payment portion of the swap.",
                         "default": null,
                         "optional": true
@@ -24089,7 +24332,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "The ticker symbol.",
+                        "default": "",
+                        "optional": false
+                    }
+                ]
             },
             "model": "EtfHoldingsPerformance"
         },
@@ -26120,7 +26371,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
                     {
                         "name": "limit",
@@ -26131,6 +26390,13 @@
                     }
                 ],
                 "polygon": [
+                    {
+                        "name": "interval",
+                        "type": "str",
+                        "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "sort",
                         "type": "Literal['asc', 'desc']",
@@ -26146,7 +26412,15 @@
                         "optional": true
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -26304,7 +26578,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": [],
+                "fmp": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '5m', '15m', '30m', '1h', '4h', '1d']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ],
                 "intrinio": [
                     {
                         "name": "limit",
@@ -26315,6 +26597,13 @@
                     }
                 ],
                 "polygon": [
+                    {
+                        "name": "interval",
+                        "type": "str",
+                        "description": "Time interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
+                        "default": "1d",
+                        "optional": true
+                    },
                     {
                         "name": "sort",
                         "type": "Literal['asc', 'desc']",
@@ -26330,7 +26619,15 @@
                         "optional": true
                     }
                 ],
-                "yfinance": []
+                "yfinance": [
+                    {
+                        "name": "interval",
+                        "type": "Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1W', '1M', '1Q']",
+                        "description": "Time interval of the data to return.",
+                        "default": "1d",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -26467,7 +26764,15 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "Literal['dowjones', 'sp500', 'nasdaq']",
+                        "description": "None",
+                        "default": "dowjones",
+                        "optional": true
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -26788,7 +27093,71 @@
                     }
                 ],
                 "fmp": [],
-                "intrinio": [],
+                "intrinio": [
+                    {
+                        "name": "source",
+                        "type": "Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases']",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "Literal['positive', 'neutral', 'negative']",
+                        "description": "Return news only from this source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "Filter by language. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Filter by topic. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_greater_than",
+                        "type": "int",
+                        "description": "News stories will have a word count greater than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_less_than",
+                        "type": "int",
+                        "description": "News stories will have a word count less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "is_spam",
+                        "type": "bool",
+                        "description": "Filter whether it is marked as spam or not. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_greater_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_less_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "tiingo": [
                     {
                         "name": "offset",
@@ -26935,6 +27304,76 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "summary",
+                        "type": "str",
+                        "description": "The summary of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topics",
+                        "type": "str",
+                        "description": "The topics related to the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count",
+                        "type": "int",
+                        "description": "The word count of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance",
+                        "type": "float",
+                        "description": "How strongly correlated the news article is to the business",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "str",
+                        "description": "The sentiment of the news article - i.e, negative, positive.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment_confidence",
+                        "type": "float",
+                        "description": "The confidence score of the sentiment rating.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "The language of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "spam",
+                        "type": "bool",
+                        "description": "Whether the news article is spam.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "copyright",
+                        "type": "str",
+                        "description": "The copyright notice of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "id",
                         "type": "str",
                         "description": "Article ID.",
@@ -26943,10 +27382,17 @@
                     },
                     {
                         "name": "company",
-                        "type": "Dict[str, Any]",
-                        "description": "Company details related to the news article.",
-                        "default": "",
-                        "optional": false
+                        "type": "IntrinioCompany",
+                        "description": "The Intrinio Company object. Contains details company reference data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "security",
+                        "type": "IntrinioSecurity",
+                        "description": "The Intrinio Security object. Contains the security details related to the news article.",
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "tiingo": [
@@ -27129,7 +27575,71 @@
                         "optional": true
                     }
                 ],
-                "intrinio": [],
+                "intrinio": [
+                    {
+                        "name": "source",
+                        "type": "Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases']",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "Literal['positive', 'neutral', 'negative']",
+                        "description": "Return news only from this source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "Filter by language. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Filter by topic. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_greater_than",
+                        "type": "int",
+                        "description": "News stories will have a word count greater than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count_less_than",
+                        "type": "int",
+                        "description": "News stories will have a word count less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "is_spam",
+                        "type": "bool",
+                        "description": "Filter whether it is marked as spam or not. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_greater_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance_less_than",
+                        "type": "float",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
                 "polygon": [
                     {
                         "name": "order",
@@ -27233,6 +27743,13 @@
                 ],
                 "benzinga": [
                     {
+                        "name": "images",
+                        "type": "List[Dict[str, str]]",
+                        "description": "URL to the images of the news.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "id",
                         "type": "str",
                         "description": "Article ID.",
@@ -27293,11 +27810,88 @@
                 ],
                 "intrinio": [
                     {
+                        "name": "source",
+                        "type": "str",
+                        "description": "The source of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "summary",
+                        "type": "str",
+                        "description": "The summary of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "topics",
+                        "type": "str",
+                        "description": "The topics related to the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "word_count",
+                        "type": "int",
+                        "description": "The word count of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "business_relevance",
+                        "type": "float",
+                        "description": "How strongly correlated the news article is to the business",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment",
+                        "type": "str",
+                        "description": "The sentiment of the news article - i.e, negative, positive.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "sentiment_confidence",
+                        "type": "float",
+                        "description": "The confidence score of the sentiment rating.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "language",
+                        "type": "str",
+                        "description": "The language of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "spam",
+                        "type": "bool",
+                        "description": "Whether the news article is spam.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "copyright",
+                        "type": "str",
+                        "description": "The copyright notice of the news article.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "id",
                         "type": "str",
                         "description": "Article ID.",
                         "default": "",
                         "optional": false
+                    },
+                    {
+                        "name": "security",
+                        "type": "IntrinioSecurity",
+                        "description": "The Intrinio Security object. Contains the security details related to the news article.",
+                        "default": null,
+                        "optional": true
                     }
                 ],
                 "polygon": [
@@ -27530,7 +28124,7 @@
                     },
                     {
                         "name": "cik",
-                        "type": "Union[str, int]",
+                        "type": "Union[int, str]",
                         "description": "Central Index Key (CIK)",
                         "default": null,
                         "optional": true

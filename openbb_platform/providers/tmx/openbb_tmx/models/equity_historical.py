@@ -44,7 +44,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     source: https://money.tmx.com
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Union[
         Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
@@ -100,7 +100,7 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     change_percent: Optional[float] = Field(
         description="Change in price, as a normalized percentage.",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     transactions: Optional[int] = Field(
         description="Total number of transactions recorded.", default=None

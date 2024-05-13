@@ -1,21 +1,22 @@
 ---
 title: Interactive Charts
 sidebar_position: 2
-description: Explore how to effectively utilize OpenBB's interactive charts backed
+description:
+  Explore how to effectively utilize OpenBB's interactive charts backed
   by open source PyWry technology. Understand various capabilities including annotation,
   color modification, drawing tools, data export, and supplementary data overlay.
 keywords:
-- interactive charts
-- PyWry technology
-- chart annotation
-- drawing tools
-- data export
-- data overlay
-- editing chart title
-- Toolbar
-- Text Tools
-- Draw Tools
-- Export Tools
+  - interactive charts
+  - PyWry technology
+  - chart annotation
+  - drawing tools
+  - data export
+  - data overlay
+  - editing chart title
+  - Toolbar
+  - Text Tools
+  - Draw Tools
+  - Export Tools
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -32,7 +33,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 A common type of output in OpenBB are interactive charts which open in a separated window (due to our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). The OpenBB charting library provides interactive and highly customizable charts.
 
 <details>
-<summary>Charting cheat sheet </summary>
+<summary mdxType="summary">Charting cheat sheet </summary>
 
 ![Group 653](https://user-images.githubusercontent.com/85772166/234313541-3d725e1c-ce48-4413-9267-b03571e0eccd.png)
 
@@ -63,7 +64,7 @@ Annotate a chart by clicking on the `Add Text` button, or with the keyboard, `ct
 
 ![Annotate Charts](https://user-images.githubusercontent.com/85772166/233248056-d459d7a0-ba2d-4533-896a-79406ded859e.png)
 
-Enter some text, make any adjustments to the options, then `submit`.  Place the crosshairs over the desired data point and click to place the text.
+Enter some text, make any adjustments to the options, then `submit`. Place the crosshairs over the desired data point and click to place the text.
 
 ![Place Text](https://user-images.githubusercontent.com/85772166/233728645-74734241-4da2-4cff-af17-b68a62e95113.png)
 
@@ -98,7 +99,7 @@ The two buttons at the far-right of the toolbar are for saving the raw data or, 
 
 ## Overlay
 
-The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data.  Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart.  As a candlestick, the CSV file must contain OHLC data.  The import window can also be opened with the keyboard, `ctrl-o`.
+The button, `Overlay chart from CSV`, provides an easy import method for supplementing a chart with additional data. Clicking on the button opens a pop-up dialogue to select the file, column, and whether the overlay should be a bar, candlestick, or line chart. As a candlestick, the CSV file must contain OHLC data. The import window can also be opened with the keyboard, `ctrl-o`.
 
 ![Overlay CSV](https://user-images.githubusercontent.com/85772166/233248522-16b539f4-b0ae-4c30-8c72-dfa59d0c0cfb.png)
 

@@ -21,7 +21,6 @@ from openbb_charting.core.backend import create_backend, get_backend
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
-from packaging import version
 from pytz import all_timezones, timezone
 from rich.table import Table
 
@@ -78,33 +77,17 @@ def print_goodbye():
     text = """
 [param]Thank you for using the OpenBB Platform CLI and being part of this journey.[/param]
 
-We hope you'll find the new CLI as valuable as this. To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+We hope you'll find the new OpenBB Platform CLI a valuable tool.
 
-In the meantime, check out our other products:
+To stay tuned, sign up for our newsletter: [cmds]https://openbb.co/newsletter.[/]
+
+Please feel free to check out our other products:
 
 [bold]OpenBB Terminal Pro[/]: [cmds]https://openbb.co/products/pro[/cmds]
 [bold]OpenBB Platform:[/]     [cmds]https://openbb.co/products/platform[/cmds]
 [bold]OpenBB Bot[/]:          [cmds]https://openbb.co/products/bot[/cmds]
     """
     Session().console.print(text)
-
-
-def hide_splashscreen():
-    """Hide the splashscreen on Windows bundles.
-
-    `pyi_splash` is a PyInstaller "fake-package" that's used to communicate
-    with the splashscreen on Windows.
-    Sending the `close` signal to the splash screen is required.
-    The splash screen remains open until this function is called or the Python
-    program is terminated.
-    """
-    try:
-        import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
-
-        pyi_splash.update_text("CLI Loaded!")
-        pyi_splash.close()
-    except Exception as e:
-        Session().console.print(f"Error: Unable to hide splashscreen: {e}")
 
 
 def print_guest_block_msg():
@@ -118,19 +101,11 @@ def print_guest_block_msg():
         )
 
 
-def is_installer() -> bool:
-    """Check whether or not it is a packaged version (Windows or Mac installer."""
-    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
-
-
 def bootup():
     """Bootup the cli."""
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec # noqa: S605,S607
-        # Hide splashscreen loader of the packaged app
-        if is_installer():
-            hide_splashscreen()
 
     try:
         if os.name == "nt":
@@ -140,69 +115,6 @@ def bootup():
             sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
     except Exception as e:
         Session().console.print(e, "\n")
-
-
-def check_for_updates() -> None:
-    """Check if the latest version is running.
-
-    Checks github for the latest release version and compares it to cfg.VERSION.
-    """
-    # The commit has was commented out because the terminal was crashing due to git import for multiple users
-    # ({str(git.Repo('.').head.commit)[:7]})
-    try:
-        r = request(
-            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest"
-        )
-    except Exception:
-        r = None
-
-    if r and r.status_code == 200:
-        latest_tag_name = r.json()["tag_name"]
-        latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(Session().settings.VERSION)
-
-        if check_valid_versions(latest_version, current_version):
-            if current_version == latest_version:
-                Session().console.print(
-                    "[green]You are using the latest stable version[/green]"
-                )
-            else:
-                Session().console.print(
-                    "[yellow]You are not using the latest stable version[/yellow]"
-                )
-                if current_version < latest_version:
-                    Session().console.print(
-                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
-                    )
-
-                else:
-                    Session().console.print(
-                        "[yellow]You are using an unreleased version[/yellow]"
-                    )
-
-        else:
-            Session().console.print("[red]You are using an unrecognized version.[/red]")
-    else:
-        Session().console.print(
-            "[yellow]Unable to check for updates... "
-            + "Check your internet connection and try again...[/yellow]"
-        )
-    Session().console.print("\n")
-
-
-def check_valid_versions(
-    latest_version: version.Version,
-    current_version: version.Version,
-) -> bool:
-    """Check if the versions are valid."""
-    if (
-        not latest_version
-        or not current_version
-        or not isinstance(latest_version, version.Version)
-        or not isinstance(current_version, version.Version)
-    ):
-        return False
-    return True
 
 
 def welcome_message():
@@ -454,6 +366,9 @@ def print_rich_table(  # noqa: PLR0912
     if export:
         return
 
+    MAX_COLS = Session().settings.ALLOWED_NUMBER_OF_COLUMNS
+    MAX_ROWS = Session().settings.ALLOWED_NUMBER_OF_ROWS
+
     # Make a copy of the dataframe to avoid SettingWithCopyWarning
     df = df.copy()
 
@@ -525,16 +440,12 @@ def print_rich_table(  # noqa: PLR0912
         if columns_to_auto_color is None and rows_to_auto_color is None:
             df = df.applymap(lambda x: return_colored_value(str(x)))
 
-    exceeds_allowed_columns = (
-        len(df.columns) > Session().settings.ALLOWED_NUMBER_OF_COLUMNS
-    )
-    exceeds_allowed_rows = len(df) > Session().settings.ALLOWED_NUMBER_OF_ROWS
+    exceeds_allowed_columns = len(df.columns) > MAX_COLS
+    exceeds_allowed_rows = len(df) > MAX_ROWS
 
     if exceeds_allowed_columns:
         original_columns = df.columns.tolist()
-        trimmed_columns = df.columns.tolist()[
-            : Session().settings.ALLOWED_NUMBER_OF_COLUMNS
-        ]
+        trimmed_columns = df.columns.tolist()[:MAX_COLS]
         df = df[trimmed_columns]
         trimmed_columns = [
             col for col in original_columns if col not in trimmed_columns
@@ -542,9 +453,9 @@ def print_rich_table(  # noqa: PLR0912
 
     if exceeds_allowed_rows:
         n_rows = len(df.index)
-        trimmed_rows = df.index.tolist()[: Session().settings.ALLOWED_NUMBER_OF_ROWS]
-        df = df.loc[trimmed_rows]
-        trimmed_rows_count = n_rows - Session().settings.ALLOWED_NUMBER_OF_ROWS
+        max_rows = MAX_ROWS
+        df = df[:max_rows]
+        trimmed_rows_count = n_rows - max_rows
 
     if use_tabulate_df:
         table = Table(title=title, show_lines=True, show_header=show_header)

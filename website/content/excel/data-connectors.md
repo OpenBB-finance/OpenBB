@@ -3,15 +3,16 @@ title: Data connectors
 sidebar_position: 3
 description: Access your data connectors from OpenBB Terminal Pro inside OpenBB Add-in for Excel.
 keywords:
-- Microsoft Excel
-- Add-in
-- Advanced
-- Data connectors
-- BYOD
-- Bring your own data
+  - Microsoft Excel
+  - Add-in
+  - Advanced
+  - Data connectors
+  - BYOD
+  - Bring your own data
 ---
 
 <!-- markdownlint-disable MD033 -->
+
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data connectors | OpenBB Add-in for Excel Docs" />
@@ -48,7 +49,7 @@ The easiest way to pass optional parameters is to write them into cells and refe
 
 :::info
 
-- Make sure your backend's CORS settings allow requests coming from <https://excel.openbb.co>.
+- Make sure your backend's CORS settings allow requests coming from [https://excel.openbb.co](https://excel.openbb.co).
 - Requests via HTTP will be blocked by Excel. So if you are using the Add-in for Excel on Mac or Office on the web with Safari browser you need to run your backend via HTTPS.
 
 :::
