@@ -1973,7 +1973,7 @@ def test_equity_ownership_form_13f(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_estimates_forward_pd(params, headers):
+def test_equity_estimates_forward_pe(params, headers):
     """Test the equity estimates forward_pe endpoint."""
     params = {p: v for p, v in params.items() if v}
 
