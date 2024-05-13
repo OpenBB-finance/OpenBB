@@ -80,7 +80,7 @@ To fully leverage the OpenBB Platform you need to get some API keys to connect w
 
 ### 1. OpenBB Hub
 
-Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get your personal access token from <https://my.openbb.co/app/sdk/pat> to connect with your account.
+Set your keys at [OpenBB Hub](https://my.openbb.co/app/platform/credentials) and get your personal access token from <https://my.openbb.co/app/platform/pat> to connect with your account.
 
 ```python
 >>> from openbb import obb
