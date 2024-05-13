@@ -160,8 +160,6 @@ class CLIController(BaseController):
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
-            choices["hold"]["off"] = {"--title": None}
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath  # type: ignore
@@ -199,8 +197,6 @@ class CLIController(BaseController):
                 "-d": "--description",
                 "--public": None,
                 "-p": "--public",
-                "--local": None,
-                "-l": "--local",
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
@@ -481,7 +477,7 @@ class CLIController(BaseController):
 
             except FileNotFoundError:
                 session.console.print(
-                    f"[red]File '{routine_path}' doesn't exist.[/red]\n"
+                    f"[red]File '{routine_path}' doesn't exist.[/red]"
                 )
                 return
 
