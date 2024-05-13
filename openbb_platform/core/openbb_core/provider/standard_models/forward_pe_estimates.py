@@ -1,6 +1,5 @@
 """Forward PE Estimates Standard Model."""
 
-from datetime import date as dateType
 from typing import Optional
 
 from pydantic import Field, field_validator
