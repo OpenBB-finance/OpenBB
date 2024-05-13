@@ -169,8 +169,6 @@ class CLIController(BaseController):
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
-            choices["hold"]["off"] = {"--title": None}
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath  # type: ignore
