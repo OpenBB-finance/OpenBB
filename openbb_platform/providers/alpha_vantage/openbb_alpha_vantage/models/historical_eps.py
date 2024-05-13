@@ -2,9 +2,9 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_eps import (
@@ -19,8 +19,6 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
 )
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class AlphaVantageHistoricalEpsQueryParams(HistoricalEpsQueryParams):
@@ -103,17 +101,13 @@ class AVHistoricalEpsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the AlphaVantage endpoint."""
-
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
-
         BASE_URL = "https://www.alphavantage.co/query?function=EARNINGS&"
-
         # We are allowing multiple symbols to be passed in the query, so we need to handle that.
         symbols = query.symbol.split(",")
-
         urls = [f"{BASE_URL}symbol={symbol}&apikey={api_key}" for symbol in symbols]
-
-        results = []
+        results: List = []
+        messages: List = []
 
         # We need to make a custom callback function for this async request.
         async def response_callback(response: ClientResponse, _: ClientSession):
@@ -123,7 +117,11 @@ class AVHistoricalEpsFetcher(
             target = (
                 "annualEarnings" if query.period == "annual" else "quarterlyEarnings"
             )
-            result = []
+            message = data.get("Information", "")
+            if message:
+                messages.append(message)
+                warn(f"Symbol Error for {symbol}: {message}")
+            result: List = []
             # If data is returned, append it to the results list.
             if data:
                 result = [
@@ -137,12 +135,14 @@ class AVHistoricalEpsFetcher(
                     results.extend(result[: query.limit])
                 else:
                     results.extend(result)
-
             # If no data is returned, raise a warning and move on to the next symbol.
             if not data:
-                _warn(f"Symbol Error: No data found for {symbol}")
+                warn(f"Symbol Error: No data found for {symbol}")
 
         await amake_requests(urls, response_callback, **kwargs)  # type: ignore
+
+        if not results:
+            raise EmptyDataError(f"No data was returned -> \n{messages[-1]}")
 
         return results
 
