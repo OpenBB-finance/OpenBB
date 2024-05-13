@@ -183,6 +183,10 @@ class PlatformController(BaseController):
                             ):
                                 session.console.print("Added OBBject to registry.")
 
+                            # making the dataframe available
+                            # either for printing or exporting (or both)
+                            df = obbject.to_dataframe()
+
                             if hasattr(ns_parser, "chart") and ns_parser.chart:
                                 obbject.show()
                                 fig = obbject.chart.fig
@@ -191,8 +195,6 @@ class PlatformController(BaseController):
                                     df.columns = [str(i) for i in df.columns]
 
                                 print_rich_table(df=df, show_index=True, title=title)
-
-                            df = obbject.to_dataframe()
 
                         elif isinstance(obbject, dict):
                             df = pd.DataFrame.from_dict(obbject, orient="index")
@@ -206,9 +208,10 @@ class PlatformController(BaseController):
                         and ns_parser.export
                         and not df.empty
                     ):
-                        if sheet_name := getattr(ns_parser, "sheet_name", None):
-                            if isinstance(sheet_name, list):
-                                sheet_name = sheet_name[0]
+                        if hasattr(ns_parser, "sheet_name") and isinstance(
+                            ns_parser.sheet_name, list
+                        ):
+                            sheet_name = ns_parser.sheet_name[0]
 
                         export_data(
                             export_type=",".join(ns_parser.export),
@@ -219,9 +222,7 @@ class PlatformController(BaseController):
                             figure=fig,
                         )
                     elif hasattr(ns_parser, "export") and ns_parser.export and df.empty:
-                        session.console.print(
-                            "[yellow]No data to export. Please make sure to run a command that generates data first.[/yellow]"
-                        )
+                        session.console.print("[yellow]No data to export.[/yellow]")
 
                 except Exception as e:
                     session.console.print(f"[red]{e}[/]\n")
