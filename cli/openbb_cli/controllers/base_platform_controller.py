@@ -153,54 +153,63 @@ class PlatformController(BaseController):
                     ns_parser = self._intersect_data_processing_commands(ns_parser)
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
-                    df: pd.DataFrame = None
+                    df: pd.DataFrame = pd.DataFrame()
                     fig: OpenBBFigure = None
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        if session.max_obbjects_exceeded():
-                            session.obbject_registry.remove()
 
-                        # use the obbject to store the command so we can display it later on results
-                        obbject.extra["command"] = f"{title} {' '.join(other_args)}"
+                        if isinstance(obbject, OBBject) and obbject.results:
+                            if session.max_obbjects_exceeded():
+                                session.obbject_registry.remove()
+                                session.console.print(
+                                    "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
+                                )
 
-                        session.obbject_registry.register(obbject)
-                        # we need to force to re-link so that the new obbject
-                        # is immediately available for data processing commands
-                        self._link_obbject_to_data_processing_commands()
-                        # also update the completer
-                        self.update_completer(self.choices_default)
+                            # use the obbject to store the command so we can display it later on results
+                            obbject.extra["command"] = f"{title} {' '.join(other_args)}"
 
-                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY and isinstance(
-                            obbject, OBBject
-                        ):
-                            session.console.print("Added OBBject to registry.")
+                            register_result = session.obbject_registry.register(obbject)
 
-                    if hasattr(ns_parser, "chart") and ns_parser.chart:
-                        obbject.show()
-                        fig = obbject.chart.fig
-                        if hasattr(obbject, "to_dataframe"):
+                            # we need to force to re-link so that the new obbject
+                            # is immediately available for data processing commands
+                            self._link_obbject_to_data_processing_commands()
+                            # also update the completer
+                            self.update_completer(self.choices_default)
+
+                            if (
+                                session.settings.SHOW_MSG_OBBJECT_REGISTRY
+                                and register_result
+                            ):
+                                session.console.print("Added OBBject to registry.")
+
+                            if hasattr(ns_parser, "chart") and ns_parser.chart:
+                                obbject.show()
+                                fig = obbject.chart.fig
+                            else:
+                                if isinstance(df.columns, pd.RangeIndex):
+                                    df.columns = [str(i) for i in df.columns]
+
+                                print_rich_table(df=df, show_index=True, title=title)
+
                             df = obbject.to_dataframe()
+
                         elif isinstance(obbject, dict):
                             df = pd.DataFrame.from_dict(obbject, orient="index")
-                        else:
-                            df = None
+                            print_rich_table(df=df, show_index=True, title=title)
 
-                    elif hasattr(obbject, "to_dataframe"):
-                        df = obbject.to_dataframe()
-                        if isinstance(df.columns, pd.RangeIndex):
-                            df.columns = [str(i) for i in df.columns]
-                        print_rich_table(df=df, show_index=True, title=title)
+                        elif not isinstance(obbject, OBBject):
+                            session.console.print(obbject)
 
-                    elif isinstance(obbject, dict):
-                        df = pd.DataFrame.from_dict(obbject, orient="index")
-                        print_rich_table(df=df, show_index=True, title=title)
+                    if (
+                        hasattr(ns_parser, "export")
+                        and ns_parser.export
+                        and not df.empty
+                    ):
+                        if sheet_name := getattr(ns_parser, "sheet_name", None):
+                            if isinstance(sheet_name, list):
+                                sheet_name = sheet_name[0]
 
-                    elif obbject:
-                        session.console.print(obbject)
-
-                    if hasattr(ns_parser, "export") and ns_parser.export:
-                        sheet_name = getattr(ns_parser, "sheet_name", None)
                         export_data(
                             export_type=",".join(ns_parser.export),
                             dir_path=os.path.dirname(os.path.abspath(__file__)),
@@ -209,10 +218,9 @@ class PlatformController(BaseController):
                             sheet_name=sheet_name,
                             figure=fig,
                         )
-
-                    if session.max_obbjects_exceeded():
+                    elif hasattr(ns_parser, "export") and ns_parser.export and df.empty:
                         session.console.print(
-                            "[yellow]\nMaximum number of OBBjects reached. The oldest entry was removed.[yellow]"
+                            "[yellow]No data to export. Please make sure to run a command that generates data first.[/yellow]"
                         )
 
                 except Exception as e:
