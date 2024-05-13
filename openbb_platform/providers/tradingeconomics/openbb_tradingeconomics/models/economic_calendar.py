@@ -20,10 +20,11 @@ from openbb_tradingeconomics.utils.countries import COUNTRIES
 from pandas import to_datetime
 from pydantic import Field, field_validator, model_validator
 
-IMPORTANCE = Literal[None, "low", "medium", "high"]
+IMPORTANCE_CHOICES = ["low", "medium", "high"]
 
-GROUPS = Literal[
-    None,
+IMPORTANCE = Literal["low", "medium", "high"]
+
+GROUPS_CHOICES = [
     "interest_rate",
     "inflation",
     "bonds",
@@ -38,6 +39,23 @@ GROUPS = Literal[
     "trade",
     "business",
 ]
+
+GROUPS = Literal[
+    "interest_rate",
+    "inflation",
+    "bonds",
+    "consumer",
+    "gdp",
+    "government",
+    "housing",
+    "labour",
+    "markets",
+    "money",
+    "prices",
+    "trade",
+    "business",
+]
+
 TE_COUNTRY_LIMIT = 28
 
 
@@ -56,8 +74,16 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
         description="Country of the event.",
         json_schema_extra={"choices": COUNTRIES},  # type: ignore[dict-item]
     )
-    importance: IMPORTANCE = Field(default=None, description="Importance of the event.")
-    group: GROUPS = Field(default=None, description="Grouping of events.")
+    importance: Optional[IMPORTANCE] = Field(
+        default=None,
+        description="Importance of the event.",
+        json_schema_extra={"choices": IMPORTANCE_CHOICES},  # type: ignore[dict-item]
+    )
+    group: Optional[GROUPS] = Field(
+        default=None,
+        description="Grouping of events.",
+        json_schema_extra={"choices": GROUPS_CHOICES},  # type: ignore[dict-item]
+    )
     calendar_id: Optional[Union[int, str]] = Field(
         default=None, description="Get events by TradingEconomics Calendar ID."
     )

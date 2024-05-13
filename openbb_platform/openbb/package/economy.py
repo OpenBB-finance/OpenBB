@@ -156,9 +156,9 @@ class ROUTER_economy(Container):
             no default.
         country : Optional[str]
             Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
-        importance : Literal['low', 'medium', 'high']
+        importance : Optional[Literal['low', 'medium', 'high']]
             Importance of the event. (provider: tradingeconomics)
-        group : Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
+        group : Optional[Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
             Grouping of events. (provider: tradingeconomics)
         calendar_id : Optional[Union[int, str]]
             Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed. (provider: tradingeconomics)
