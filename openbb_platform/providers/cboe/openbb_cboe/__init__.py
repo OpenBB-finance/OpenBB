@@ -38,5 +38,4 @@ around the world.""",
         "OptionsChains": CboeOptionsChainsFetcher,
     },
     repr_name="Chicago Board Options Exchange (CBOE)",
-    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cboe_Global_Markets_Logo.svg/2880px-Cboe_Global_Markets_Logo.svg.png",  # noqa: E501  pylint: disable=line-too-long
 )
