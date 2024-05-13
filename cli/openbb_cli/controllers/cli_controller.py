@@ -477,7 +477,7 @@ class CLIController(BaseController):
 
             except FileNotFoundError:
                 session.console.print(
-                    f"[red]File '{routine_path}' doesn't exist.[/red]\n"
+                    f"[red]File '{routine_path}' doesn't exist.[/red]"
                 )
                 return
 
