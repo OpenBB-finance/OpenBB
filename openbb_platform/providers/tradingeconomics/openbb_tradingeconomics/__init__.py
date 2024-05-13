@@ -16,5 +16,4 @@ world.""",
     credentials=["api_key"],
     fetcher_dict={"EconomicCalendar": TEEconomicCalendarFetcher},
     repr_name="Trading Economics",
-    logo_url="https://developer.tradingeconomics.com/Content/Images/logo.svg",
 )
