@@ -206,8 +206,6 @@ class CLIController(BaseController):
                 "-d": "--description",
                 "--public": None,
                 "-p": "--public",
-                "--local": None,
-                "-l": "--local",
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
