@@ -319,13 +319,10 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
-            try:
-                hint_type = get_args(get_type_hints(return_type)["results"])[0]
-                hint_type_list.append(hint_type)
-            except (KeyError, IndexError):
-                raise ValueError(  # pylint: disable=W0707
-                    "Please ensure that the return type is an OBBject."
-                )
+            if not issubclass(return_type, OBBject):
+                  raise ValueError("Return type must be an OBBject.")
+            hint_type = get_args(get_type_hints(return_type)["results"])[0]
+            hint_type_list.append(hint_type)
 
         hint_type_list = cls.filter_hint_type_list(hint_type_list)
 
