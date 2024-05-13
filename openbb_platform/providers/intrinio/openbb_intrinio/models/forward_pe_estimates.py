@@ -91,7 +91,8 @@ class IntrinioForwardPeEstimatesFetcher(
             except Exception as e:
                 warn(f"Symbol Error: {symbol} --> {e}")
             else:
-                results.append(data)
+                if data:
+                    results.append(data)  # type: ignore
 
         if symbols:
             await asyncio.gather(*[get_one(symbol) for symbol in symbols])
@@ -131,7 +132,7 @@ class IntrinioForwardPeEstimatesFetcher(
         symbols = query.symbol.split(",") if query.symbol else []
         if symbols:
             data.sort(
-                key=lambda item: (
+                key=lambda item: (  # type: ignore
                     symbols.index(item.get("ticker"))
                     if item.get("ticker") in symbols
                     else len(symbols)
