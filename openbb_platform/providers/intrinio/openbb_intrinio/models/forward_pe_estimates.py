@@ -132,8 +132,8 @@ class IntrinioForwardPeEstimatesFetcher(
         symbols = query.symbol.split(",") if query.symbol else []
         if symbols:
             data.sort(
-                key=lambda item: (  # type: ignore
-                    symbols.index(item.get("ticker"))
+                key=lambda item: (
+                    symbols.index(item.get("ticker"))  # type: ignore
                     if item.get("ticker") in symbols
                     else len(symbols)
                 )
