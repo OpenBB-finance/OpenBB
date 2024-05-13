@@ -315,6 +315,7 @@ def test_platform2hub():
 @pytest.mark.parametrize(
     "token, message",
     [
+        # valid
         (
             encode(
                 {"some": "payload", "exp": int(time()) + 100},
@@ -323,13 +324,15 @@ def test_platform2hub():
             ),
             None,
         ),
+        # expired
         (
             encode(
                 {"some": "payload", "exp": int(time())}, "secret", algorithm="HS256"
             ),
             "Platform personal access token expired.",
         ),
-        ("bad_token", "Failed to decode Platform token."),
+        # invalid
+        ("invalid_token", "Failed to decode Platform token."),
     ],
 )
 def test__check_token_expiration(token, message):
