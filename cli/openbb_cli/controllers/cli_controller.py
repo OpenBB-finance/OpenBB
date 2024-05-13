@@ -16,7 +16,6 @@ from pathlib import Path
 from types import MethodType
 from typing import Any, Dict, List, Optional
 
-import certifi
 import pandas as pd
 import requests
 from openbb import obb
@@ -37,7 +36,6 @@ from openbb_cli.controllers.utils import (
     bootup,
     first_time_user,
     get_flair_and_username,
-    is_installer,
     parse_and_split_input,
     print_goodbye,
     print_rich_table,
@@ -65,13 +63,6 @@ logger = logging.getLogger(__name__)
 
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
-
-if is_installer():
-    # Necessary for installer so that it can locate the correct certificates for
-    # API calls and https
-    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
-    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
-    os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 class CLIController(BaseController):
@@ -169,8 +160,6 @@ class CLIController(BaseController):
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
-            choices["hold"]["off"] = {"--title": None}
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath  # type: ignore
@@ -208,8 +197,6 @@ class CLIController(BaseController):
                 "-d": "--description",
                 "--public": None,
                 "-p": "--public",
-                "--local": None,
-                "-l": "--local",
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
@@ -432,8 +419,9 @@ class CLIController(BaseController):
             else:
                 return
 
-            with open(routine_path) as fp:
-                raw_lines = list(fp)
+            try:
+                with open(routine_path) as fp:
+                    raw_lines = list(fp)
 
                 # Capture ARGV either as list if args separated by commas or as single value
                 if ns_parser.routine_args:
@@ -486,6 +474,12 @@ class CLIController(BaseController):
                             f"[green]Folder '{export_path}' successfully created.[/green]"
                         )
                     self.queue = self.queue[1:]
+
+            except FileNotFoundError:
+                session.console.print(
+                    f"[red]File '{routine_path}' doesn't exist.[/red]"
+                )
+                return
 
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
