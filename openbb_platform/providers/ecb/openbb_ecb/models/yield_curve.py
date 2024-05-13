@@ -38,7 +38,7 @@ class ECBYieldCurveQueryParams(YieldCurveQueryParams):
     )
     use_cache: bool = Field(
         default=True,
-        description="If true, cache the request for four hours to make subsequent requests faster.",
+        description="If true, cache the request for four hours.",
     )
 
 
@@ -93,7 +93,7 @@ class ECBYieldCurveFetcher(
             if use_cache is True:
                 cache_dir = f"{get_user_cache_directory()}/http/ecb_yield_curve"
                 async with CachedSession(
-                    cache=SQLiteBackend(cache_dir, expire_after=3600 * 8)
+                    cache=SQLiteBackend(cache_dir, expire_after=3600 * 4)
                 ) as session:
                     try:
                         response = await amake_request(
