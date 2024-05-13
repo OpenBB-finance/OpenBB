@@ -137,7 +137,7 @@ class HubService:
         if not token:
             raise OpenBBError("Platform personal access token not found.")
 
-        self.check_token_expiration(token)
+        self._check_token_expiration(token)
 
         response = post(
             url=self._base_url + "/sdk/login",
@@ -257,7 +257,7 @@ class HubService:
         return settings
 
     @staticmethod
-    def check_token_expiration(token: str) -> None:
+    def _check_token_expiration(token: str) -> None:
         """Check token expiration, raises exception if expired."""
         try:
             header_data = get_unverified_header(token)
