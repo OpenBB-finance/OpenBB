@@ -160,7 +160,7 @@
     },
     {
         "packageName": "openbb-polygon",
-        "reprName": "Polygon",
+        "reprName": "Polygon.io",
         "description": "The Polygon.io Stocks API provides REST endpoints that let you query\nthe latest market data from all US stock exchanges. You can also find data on\ncompany financials, stock market holidays, corporate actions, and more.",
         "credentials": [
             "polygon_api_key"
