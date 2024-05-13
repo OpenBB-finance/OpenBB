@@ -22,11 +22,11 @@ To help you slice parts of data, we provide the [OBB.GET](https://docs.openbb.co
 
 - Suppose you called an `OBB.` function and it returned the following data at cells A1:D3:
 
-| period_ending | revenue | cost_of_revenue | gross_profit |
-|---|---|---|---|---|
-| 2023/09/30 | 383 285 000 000.00 | 214 137 000 000.00 | 169 148 000 000.00 |
-| 2022/09/24 | 394 328 000 000.00 | 223 546 000 000.00 | 170 782 000 000.00 |
-| 2021/09/25 | 365 817 000 000.00 | 212 981 000 000.00 | 152 836 000 000.00 |
+| period_ending | revenue            | cost_of_revenue    | gross_profit       |
+|---------------|--------------------|--------------------|--------------------|
+| 2023/09/30    | 383 285 000 000.00 | 214 137 000 000.00 | 169 148 000 000.00 |
+| 2022/09/24    | 394 328 000 000.00 | 223 546 000 000.00 | 170 782 000 000.00 |
+| 2021/09/25    | 365 817 000 000.00 | 212 981 000 000.00 | 152 836 000 000.00 |
 
 - Slicing a single row:
 
