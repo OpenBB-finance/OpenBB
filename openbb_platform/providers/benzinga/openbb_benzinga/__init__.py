@@ -19,5 +19,4 @@ focused on information that moves the market.""",
         "PriceTarget": BenzingaPriceTargetFetcher,
     },
     repr_name="Benzinga",
-    logo_url="https://www.benzinga.com/sites/all/themes/bz2/images/Benzinga-logo-navy.svg",
 )
