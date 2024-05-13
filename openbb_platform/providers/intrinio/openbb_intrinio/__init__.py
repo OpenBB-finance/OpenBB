@@ -55,9 +55,9 @@ from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 intrinio_provider = Provider(
     name="intrinio",
-    website="https://intrinio.com/",
+    website="https://intrinio.com",
     description="""Intrinio is a financial data platform that provides real-time and
-    historical financial market data to businesses and developers through an API.""",
+historical financial market data to businesses and developers through an API.""",
     credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
@@ -97,4 +97,8 @@ intrinio_provider = Provider(
         "ShareStatistics": IntrinioShareStatisticsFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,
     },
+    repr_name="Intrinio",
+    v3_credentials=["API_INTRINIO_KEY"],
+    instructions="Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard.",  # noqa: E501  pylint: disable=line-too-long
+    logo_url="https://assets-global.website-files.com/617960145ff34fe4a9fe7240/617960145ff34f9a97fe72c8_Intrinio%20Logo%20-%20Dark.svg",
 )

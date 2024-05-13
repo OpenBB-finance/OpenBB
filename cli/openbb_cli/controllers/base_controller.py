@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import pandas as pd
-from openbb_cli.config import setup
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import SCRIPT_TAGS
 from openbb_cli.controllers.choices import build_controller_choice_map
@@ -63,14 +62,12 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "stop",
-        "hold",
         "whoami",
         "results",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -165,113 +162,6 @@ class BaseController(metaclass=ABCMeta):
             old_class.queue = self.queue
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
-
-    def call_hold(self, other_args: List[str]) -> None:
-        """Process hold command."""
-        self.save_class()
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hold",
-            description="Turn on figure holding.  This will stop showing images until hold off is run.",
-        )
-        parser.add_argument(
-            "-o",
-            "--option",
-            choices=["on", "off"],
-            type=str,
-            default="off",
-            dest="option",
-        )
-        parser.add_argument(
-            "-s",
-            "--sameaxis",
-            action="store_true",
-            default=False,
-            help="Put plots on the same axis.  Best when numbers are on similar scales",
-            dest="axes",
-        )
-        parser.add_argument(
-            "--title",
-            type=str,
-            default="",
-            dest="title",
-            nargs="+",
-            help="When using hold off, this sets the title for the figure.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-o")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
-        if ns_parser:
-            if ns_parser.option == "on":
-                setup.HOLD = True
-                setup.COMMAND_ON_CHART = False
-                if ns_parser.axes:
-                    setup.set_same_axis()
-                else:
-                    setup.set_new_axis()
-            if ns_parser.option == "off":
-                setup.HOLD = False
-                if setup.get_current_figure() is not None:
-                    # create a subplot
-                    fig = setup.get_current_figure()
-                    if fig is None:
-                        return
-                    if not fig.has_subplots and not setup.make_new_axis():
-                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
-
-                    if setup.make_new_axis():
-                        for i, trace in enumerate(fig.select_traces()):
-                            trace.yaxis = f"y{i+1}"
-
-                            if i != 0:
-                                fig.update_layout(
-                                    {
-                                        f"yaxis{i+1}": dict(
-                                            side="left",
-                                            overlaying="y",
-                                            showgrid=True,
-                                            showline=False,
-                                            zeroline=False,
-                                            automargin=True,
-                                            ticksuffix=(
-                                                "       " * (i - 1) if i > 1 else ""
-                                            ),
-                                            tickfont=dict(
-                                                size=18,
-                                            ),
-                                            title=dict(
-                                                font=dict(
-                                                    size=15,
-                                                ),
-                                                standoff=0,
-                                            ),
-                                        ),
-                                    }
-                                )
-                        # pylint: disable=undefined-loop-variable
-                        fig.update_layout(margin=dict(l=30 * i))
-
-                    else:
-                        fig.update_yaxes(title="")
-
-                    if any(setup.get_legends()):
-                        for trace, new_name in zip(
-                            fig.select_traces(), setup.get_legends()
-                        ):
-                            if new_name:
-                                trace.name = new_name
-
-                    fig.update_layout(title=" ".join(ns_parser.title))
-                    fig.show()
-                    setup.COMMAND_ON_CHART = True
-
-                    setup.set_current_figure(None)
-                    setup.reset_legend()
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
@@ -832,16 +722,6 @@ class BaseController(metaclass=ABCMeta):
             "-h", "--help", action="store_true", help="show this help message"
         )
 
-        if setup.HOLD:
-            parser.add_argument(
-                "--legend",
-                type=str,
-                dest="hold_legend_str",
-                default="",
-                nargs="+",
-                help="Label for legend when hold is on.",
-            )
-
         if export_allowed != "no_export":
             choices_export = []
             help_export = "Does not export!"
@@ -924,10 +804,6 @@ class BaseController(metaclass=ABCMeta):
             # In case the command has required argument that isn't specified
 
             return None
-
-        # This protects against the hidden loads in stocks/fa
-        if parser.prog != "load" and setup.HOLD:
-            setup.set_last_legend(" ".join(ns_parser.hold_legend_str))
 
         if l_unknown_args:
             session.console.print(
