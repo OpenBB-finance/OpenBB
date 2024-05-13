@@ -68,5 +68,4 @@ tmx_provider = Provider(
         "TreasuryPrices": TmxTreasuryPricesFetcher,
     },
     repr_name="TMX",
-    logo_url="https://www.tmx.com/assets/application/img/tmx_logo_en.1593799726.svg",
 )
