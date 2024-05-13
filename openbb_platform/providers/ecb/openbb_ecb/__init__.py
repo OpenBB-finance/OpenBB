@@ -17,5 +17,4 @@ Statistical publications and dashboards offer a compilation of key data on selec
         "EUYieldCurve": ECBEUYieldCurveFetcher,
     },
     repr_name="European Central Bank (ECB)",
-    logo_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Logo_European_Central_Bank.svg/720px-Logo_European_Central_Bank.svg.png",  # noqa: E501  pylint: disable=line-too-long
 )
