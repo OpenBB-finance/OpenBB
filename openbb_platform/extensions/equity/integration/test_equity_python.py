@@ -1819,3 +1819,31 @@ def test_equity_ownership_form_13f(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA,MSFT",
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": None,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_pe(params, obb):
+    """Test the equity estimates forward_pe endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.estimates.forward_pe(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
