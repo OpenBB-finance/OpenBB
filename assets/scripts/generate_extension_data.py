@@ -15,6 +15,7 @@ OBBJECT_EXTENSIONS_PATH = OPENBB_PLATFORM_PATH / "obbject_extensions"
 
 OPENBB_PLATFORM_TOML = PyProjectTOML(OPENBB_PLATFORM_PATH / "pyproject.toml")
 
+
 def to_title(string: str) -> str:
     """Format string to title."""
     return " ".join(string.split("_")).title()
@@ -46,14 +47,13 @@ def to_camel(string: str):
     return components[0] + "".join(x.title() for x in components[1:])
 
 
-def createItem(
-    package_name: str, obj: object, obj_attrs: List[str]
-) -> Dict[str, Any]:
+def createItem(package_name: str, obj: object, obj_attrs: List[str]) -> Dict[str, Any]:
     """Create dictionary item from object attributes."""
-    extras = OPENBB_PLATFORM_TOML.data["tool"]["poetry"].get("extras", {})
-    # Remove openbb- and replace - with _
-    clean_pkg_name = package_name[7:].replace("-", "_")
-    item = {"packageName": package_name, "extra": clean_pkg_name in extras}
+    pkg_spec = OPENBB_PLATFORM_TOML.data["tool"]["poetry"]["dependencies"].get(
+        package_name
+    )
+    optional = pkg_spec.get("optional", False) if isinstance(pkg_spec, dict) else False
+    item = {"packageName": package_name, "optional": optional}
     item.update(
         {to_camel(a): getattr(obj, a) for a in obj_attrs if getattr(obj, a) is not None}
     )

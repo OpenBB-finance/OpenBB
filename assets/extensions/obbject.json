@@ -1,7 +1,7 @@
 [
     {
         "packageName": "openbb-charting",
-        "extra": true,
+        "optional": true,
         "description": "Create custom charts from OBBject data."
     }
 ]
