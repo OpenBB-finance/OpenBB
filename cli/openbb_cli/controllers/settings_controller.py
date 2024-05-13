@@ -19,7 +19,6 @@ class SettingsController(BaseController):
     """Settings Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
-        "tab",
         "interactive",
         "cls",
         "watermark",

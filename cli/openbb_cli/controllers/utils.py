@@ -21,7 +21,6 @@ from openbb_charting.core.backend import create_backend, get_backend
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
-from packaging import version
 from pytz import all_timezones, timezone
 from rich.table import Table
 
@@ -91,24 +90,6 @@ Please feel free to check out our other products:
     Session().console.print(text)
 
 
-def hide_splashscreen():
-    """Hide the splashscreen on Windows bundles.
-
-    `pyi_splash` is a PyInstaller "fake-package" that's used to communicate
-    with the splashscreen on Windows.
-    Sending the `close` signal to the splash screen is required.
-    The splash screen remains open until this function is called or the Python
-    program is terminated.
-    """
-    try:
-        import pyi_splash  # type: ignore  # pylint: disable=import-outside-toplevel
-
-        pyi_splash.update_text("CLI Loaded!")
-        pyi_splash.close()
-    except Exception as e:
-        Session().console.print(f"Error: Unable to hide splashscreen: {e}")
-
-
 def print_guest_block_msg():
     """Block guest users from using the cli."""
     if Session().is_local():
@@ -120,19 +101,11 @@ def print_guest_block_msg():
         )
 
 
-def is_installer() -> bool:
-    """Check whether or not it is a packaged version (Windows or Mac installer."""
-    return getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS")
-
-
 def bootup():
     """Bootup the cli."""
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec # noqa: S605,S607
-        # Hide splashscreen loader of the packaged app
-        if is_installer():
-            hide_splashscreen()
 
     try:
         if os.name == "nt":
@@ -142,69 +115,6 @@ def bootup():
             sys.stdout.reconfigure(encoding="utf-8")  # type: ignore
     except Exception as e:
         Session().console.print(e, "\n")
-
-
-def check_for_updates() -> None:
-    """Check if the latest version is running.
-
-    Checks github for the latest release version and compares it to cfg.VERSION.
-    """
-    # The commit has was commented out because the terminal was crashing due to git import for multiple users
-    # ({str(git.Repo('.').head.commit)[:7]})
-    try:
-        r = request(
-            "https://api.github.com/repos/openbb-finance/openbbterminal/releases/latest"
-        )
-    except Exception:
-        r = None
-
-    if r and r.status_code == 200:
-        latest_tag_name = r.json()["tag_name"]
-        latest_version = version.parse(latest_tag_name)
-        current_version = version.parse(Session().settings.VERSION)
-
-        if check_valid_versions(latest_version, current_version):
-            if current_version == latest_version:
-                Session().console.print(
-                    "[green]You are using the latest stable version[/green]"
-                )
-            else:
-                Session().console.print(
-                    "[yellow]You are not using the latest stable version[/yellow]"
-                )
-                if current_version < latest_version:
-                    Session().console.print(
-                        "[yellow]Check for updates at https://my.openbb.co/app/terminal/download[/yellow]"
-                    )
-
-                else:
-                    Session().console.print(
-                        "[yellow]You are using an unreleased version[/yellow]"
-                    )
-
-        else:
-            Session().console.print("[red]You are using an unrecognized version.[/red]")
-    else:
-        Session().console.print(
-            "[yellow]Unable to check for updates... "
-            + "Check your internet connection and try again...[/yellow]"
-        )
-    Session().console.print("\n")
-
-
-def check_valid_versions(
-    latest_version: version.Version,
-    current_version: version.Version,
-) -> bool:
-    """Check if the versions are valid."""
-    if (
-        not latest_version
-        or not current_version
-        or not isinstance(latest_version, version.Version)
-        or not isinstance(current_version, version.Version)
-    ):
-        return False
-    return True
 
 
 def welcome_message():
