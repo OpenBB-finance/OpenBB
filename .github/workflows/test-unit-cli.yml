@@ -40,7 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Run platform tests
+      - name: Run tests
         run: |
           pip install nox
           nox -f .github/scripts/noxfile.py -s unit_test_cli --python ${{ matrix.python_version }}
