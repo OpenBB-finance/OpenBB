@@ -2211,15 +2211,22 @@
                     },
                     {
                         "name": "importance",
-                        "type": "Literal['Low', 'Medium', 'High']",
+                        "type": "Literal['low', 'medium', 'high']",
                         "description": "Importance of the event.",
                         "default": null,
                         "optional": true
                     },
                     {
                         "name": "group",
-                        "type": "Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']",
-                        "description": "Grouping of events",
+                        "type": "Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']",
+                        "description": "Grouping of events.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_id",
+                        "type": "Union[Union[int, str], List[Union[int, str]]]",
+                        "description": "Get events by TradingEconomics Calendar ID. Multiple items allowed for provider(s): tradingeconomics.",
                         "default": null,
                         "optional": true
                     }
@@ -2271,6 +2278,13 @@
                         "optional": true
                     },
                     {
+                        "name": "category",
+                        "type": "str",
+                        "description": "Category of event.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
                         "name": "event",
                         "type": "str",
                         "description": "Event name.",
@@ -2278,9 +2292,9 @@
                         "optional": true
                     },
                     {
-                        "name": "reference",
+                        "name": "importance",
                         "type": "str",
-                        "description": "Abbreviated period for which released data refers to.",
+                        "description": "The importance level for the event.",
                         "default": null,
                         "optional": true
                     },
@@ -2288,55 +2302,6 @@
                         "name": "source",
                         "type": "str",
                         "description": "Source of the data.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "sourceurl",
-                        "type": "str",
-                        "description": "Source URL.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "actual",
-                        "type": "Union[str, float]",
-                        "description": "Latest released value.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "previous",
-                        "type": "Union[str, float]",
-                        "description": "Value for the previous period after the revision (if revision is applicable).",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "consensus",
-                        "type": "Union[str, float]",
-                        "description": "Average forecast among a representative group of economists.",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "forecast",
-                        "type": "Union[str, float]",
-                        "description": "Trading Economics projections",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "url",
-                        "type": "str",
-                        "description": "Trading Economics URL",
-                        "default": null,
-                        "optional": true
-                    },
-                    {
-                        "name": "importance",
-                        "type": "Union[Literal[0, 1, 2, 3], str]",
-                        "description": "Importance of the event. 1-Low, 2-Medium, 3-High",
                         "default": null,
                         "optional": true
                     },
@@ -2351,6 +2316,34 @@
                         "name": "unit",
                         "type": "str",
                         "description": "Unit of the data.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "consensus",
+                        "type": "Union[str, float]",
+                        "description": "Average forecast among a representative group of economists.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "previous",
+                        "type": "Union[str, float]",
+                        "description": "Value for the previous period after the revision (if revision is applicable).",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "revised",
+                        "type": "Union[str, float]",
+                        "description": "Revised previous value, if applicable.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "actual",
+                        "type": "Union[str, float]",
+                        "description": "Latest released value.",
                         "default": null,
                         "optional": true
                     }
@@ -2371,7 +2364,7 @@
                         "optional": true
                     },
                     {
-                        "name": "updated_at",
+                        "name": "last_updated",
                         "type": "datetime",
                         "description": "Last updated timestamp.",
                         "default": null,
@@ -2385,7 +2378,78 @@
                         "optional": true
                     }
                 ],
-                "tradingeconomics": []
+                "tradingeconomics": [
+                    {
+                        "name": "forecast",
+                        "type": "Union[str, float]",
+                        "description": "TradingEconomics projections.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "reference",
+                        "type": "str",
+                        "description": "Abbreviated period for which released data refers to.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "reference_date",
+                        "type": "date",
+                        "description": "Date for the reference period.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "calendar_id",
+                        "type": "int",
+                        "description": "TradingEconomics Calendar ID.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "date_span",
+                        "type": "int",
+                        "description": "Date span of the event.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "TradingEconomics Symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "ticker",
+                        "type": "str",
+                        "description": "TradingEconomics Ticker symbol.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "te_url",
+                        "type": "str",
+                        "description": "TradingEconomics URL path.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "source_url",
+                        "type": "str",
+                        "description": "Source URL.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "datetime",
+                        "description": "Last update of the data.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
             },
             "model": "EconomicCalendar"
         },
@@ -6685,6 +6749,139 @@
                 ]
             },
             "model": "ForwardEpsEstimates"
+        },
+        "/equity/estimates/forward_pe": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward PE estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_pe(provider='intrinio')\nobb.equity.estimates.forward_pe(symbol='AAPL,MSFT,GOOG', provider='intrinio')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'intrinio' if there is no default.",
+                        "default": "intrinio",
+                        "optional": true
+                    }
+                ],
+                "intrinio": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardPeEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year1",
+                        "type": "float",
+                        "description": "Estimated PE ratio for the next fiscal year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year2",
+                        "type": "float",
+                        "description": "Estimated PE ratio two fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year3",
+                        "type": "float",
+                        "description": "Estimated PE ratio three fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year4",
+                        "type": "float",
+                        "description": "Estimated PE ratio four fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year5",
+                        "type": "float",
+                        "description": "Estimated PE ratio five fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "peg_ratio_year1",
+                        "type": "float",
+                        "description": "Estimated Forward PEG ratio for the next fiscal year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "The latest trailing twelve months earnings per share.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_udpated",
+                        "type": "date",
+                        "description": "The date the data was last updated.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "ForwardPeEstimates"
         },
         "/equity/discovery/gainers": {
             "deprecated": {
