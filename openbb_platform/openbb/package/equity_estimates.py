@@ -15,6 +15,7 @@ class ROUTER_equity_estimates(Container):
     analyst_search
     consensus
     forward_eps
+    forward_pe
     forward_sales
     historical
     price_target
@@ -465,6 +466,97 @@ class ROUTER_equity_estimates(Container):
                         "intrinio": {"multiple_items_allowed": True},
                     }
                 },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def forward_pe(
+        self,
+        symbol: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get forward PE estimates.
+
+        Parameters
+        ----------
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[ForwardPeEstimates]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ForwardPeEstimates
+        ------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the entity.
+        year1 : Optional[float]
+            Estimated PE ratio for the next fiscal year.
+        year2 : Optional[float]
+            Estimated PE ratio two fiscal years from now.
+        year3 : Optional[float]
+            Estimated PE ratio three fiscal years from now.
+        year4 : Optional[float]
+            Estimated PE ratio four fiscal years from now.
+        year5 : Optional[float]
+            Estimated PE ratio five fiscal years from now.
+        peg_ratio_year1 : Optional[float]
+            Estimated Forward PEG ratio for the next fiscal year. (provider: intrinio)
+        eps_ttm : Optional[float]
+            The latest trailing twelve months earnings per share. (provider: intrinio)
+        last_udpated : Optional[date]
+            The date the data was last updated. (provider: intrinio)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.estimates.forward_pe(provider='intrinio')
+        >>> obb.equity.estimates.forward_pe(symbol='AAPL,MSFT,GOOG', provider='intrinio')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/estimates/forward_pe",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/forward_pe",
+                        ("intrinio",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+                info={"symbol": {"intrinio": {"multiple_items_allowed": True}}},
             )
         )
 
