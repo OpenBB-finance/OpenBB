@@ -233,7 +233,7 @@ class HubService:
             }
             msg = ""
             for k, v in deprecated.items():
-                msg += f"\n'{k}' -> '{v}', "
+                msg += f"\n'{k}' -> '{v.upper()}', "
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
