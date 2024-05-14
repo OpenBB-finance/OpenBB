@@ -13,10 +13,11 @@ To achieve that, we are working on a new CLI tool built on top of the OpenBB Pla
 ---
 
 <br />
-<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-dark.svg?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
-<img src="https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-light.svg?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="[https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-dark.svg](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/f6fb0471-455c-4218-b22a-4a02a72f3f2f)?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="[https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-light.svg](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/20d9fec0-f212-419a-ab08-dae8784b0067)?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
 <br />
 <br />
+
 
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/openbb_finance.svg?style=social&label=Follow%20%40openbb_finance)](https://twitter.com/openbb_finance)
 ![Discord Shield](https://discordapp.com/api/guilds/831165782750789672/widget.png?style=shield)
