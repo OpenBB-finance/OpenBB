@@ -6750,6 +6750,139 @@
             },
             "model": "ForwardEpsEstimates"
         },
+        "/equity/estimates/forward_pe": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward PE estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_pe(provider='intrinio')\nobb.equity.estimates.forward_pe(symbol='AAPL,MSFT,GOOG', provider='intrinio')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'intrinio' if there is no default.",
+                        "default": "intrinio",
+                        "optional": true
+                    }
+                ],
+                "intrinio": []
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardPeEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year1",
+                        "type": "float",
+                        "description": "Estimated PE ratio for the next fiscal year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year2",
+                        "type": "float",
+                        "description": "Estimated PE ratio two fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year3",
+                        "type": "float",
+                        "description": "Estimated PE ratio three fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year4",
+                        "type": "float",
+                        "description": "Estimated PE ratio four fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "year5",
+                        "type": "float",
+                        "description": "Estimated PE ratio five fiscal years from now.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "peg_ratio_year1",
+                        "type": "float",
+                        "description": "Estimated Forward PEG ratio for the next fiscal year.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "eps_ttm",
+                        "type": "float",
+                        "description": "The latest trailing twelve months earnings per share.",
+                        "default": null,
+                        "optional": true
+                    },
+                    {
+                        "name": "last_udpated",
+                        "type": "date",
+                        "description": "The date the data was last updated.",
+                        "default": null,
+                        "optional": true
+                    }
+                ]
+            },
+            "model": "ForwardPeEstimates"
+        },
         "/equity/discovery/gainers": {
             "deprecated": {
                 "flag": null,
