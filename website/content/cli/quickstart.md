@@ -119,16 +119,21 @@ historical --symbol AAPL --start_date 2024-01-01 --
 
 ### Data Processing Commands
 
-Data processing extensions, like `openbb-technical` accept `data` as an input.
+Data processing extensions, like `openbb-technical` accept `--data` as an input.
 
 :::info
-Outputs from functions are stored as `results` and are selected with the `--data` parameter.
+Command outputs are cached. These can be check using the `results` command and are selected with the `--data` parameter.
 :::
 
 ```console
+# Store the command output
 /equity/price/historical --symbol SPY --start_date 2024-01-01 --provider yfinance
 
-/technical/rsi --data 0 --chart
+# Check results content
+results
+
+# Use the results
+/technical/rsi --data OBB0 --chart
 ```
 
 ![SPY RSI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
