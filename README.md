@@ -13,8 +13,8 @@ To achieve that, we are working on a new CLI tool built on top of the OpenBB Pla
 ---
 
 <br />
-<img src="[https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-dark.svg](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/f6fb0471-455c-4218-b22a-4a02a72f3f2f)?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
-<img src="[https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/images/openbb-logo-light.svg](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/20d9fec0-f212-419a-ab08-dae8784b0067)?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/f6fb0471-455c-4218-b22a-4a02a72f3f2f?raw=true#gh-dark-mode-only" alt="OpenBB Terminal logo" width="600">
+<img src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/20d9fec0-f212-419a-ab08-dae8784b0067?raw=true#gh-light-mode-only" alt="OpenBB Terminal logo" width="600">
 <br />
 <br />
 
