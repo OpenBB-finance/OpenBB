@@ -1,4 +1,4 @@
-name: Test Platform V4
+name: 🚉 Unit test Platform
 
 on:
   pull_request:
@@ -40,7 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      - name: Run tests
+      - name: Run platform tests
         run: |
           pip install nox
-          nox -f .github/scripts/noxfile.py -s tests --python ${{ matrix.python_version }}
+          nox -f .github/scripts/noxfile.py -s unit_test_platform --python ${{ matrix.python_version }}

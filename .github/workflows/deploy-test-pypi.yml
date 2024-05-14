@@ -1,4 +1,4 @@
-name: Deploy the OpenBB Platform and the OpenBBTerminal to Test PyPI
+name: Deploy the OpenBB Platform to Test PyPI
 
 on:
   push:
