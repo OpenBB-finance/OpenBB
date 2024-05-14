@@ -198,6 +198,12 @@ class Backend(PyWry):
         self.check_backend()
         # pylint: disable=C0415
 
+        paper_bg = (
+            "rgba(0,0,0,0)"
+            if self.charting_settings.chart_style == "dark"
+            else "rgba(255,255,255,0)"
+        )
+
         title = "Interactive Chart"
 
         fig.layout.title.text = re.sub(
@@ -210,9 +216,8 @@ class Backend(PyWry):
             export_image = Path(export_image).resolve()
 
         json_data = json.loads(fig.to_json())
-
         json_data.update(self.get_json_update(command_location))
-
+        json_data["layout"]["paper_bgcolor"] = paper_bg
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
