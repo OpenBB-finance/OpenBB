@@ -80,6 +80,18 @@ export default function NavbarLayout({ children }) {
           "#3a204f"
         );
       }
+    } else if (cleanedPath.startsWith("/cli")) {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#d3d3d3"
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#d3d3d3"
+        );
+      }
     } else {
     }
   }, [pathname]);
