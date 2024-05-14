@@ -39,13 +39,16 @@ def headers():
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "country": "mexico,sweden",
-                "importance": "Low",
+                "importance": "low",
                 "group": "gdp",
+                "calendar_id": None,
             }
         ),
         (
             {
                 "provider": "fmp",
+                "start_date": "2023-10-24",
+                "end_date": "2023-11-03",
             }
         ),
     ],
