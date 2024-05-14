@@ -4,9 +4,7 @@ from typing import Optional
 from warnings import warn
 
 from fastapi import HTTPException
-from jose import JWTError
-from jose.exceptions import ExpiredSignatureError
-from jose.jwt import decode, get_unverified_header
+from jwt import ExpiredSignatureError, PyJWTError, decode, get_unverified_header
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.hub_session import HubSession
@@ -139,7 +137,7 @@ class HubService:
         if not token:
             raise OpenBBError("Platform personal access token not found.")
 
-        self.check_token_expiration(token)
+        self._check_token_expiration(token)
 
         response = post(
             url=self._base_url + "/sdk/login",
@@ -259,7 +257,7 @@ class HubService:
         return settings
 
     @staticmethod
-    def check_token_expiration(token: str) -> None:
+    def _check_token_expiration(token: str) -> None:
         """Check token expiration, raises exception if expired."""
         try:
             header_data = get_unverified_header(token)
@@ -271,5 +269,5 @@ class HubService:
             )
         except ExpiredSignatureError as e:
             raise OpenBBError("Platform personal access token expired.") from e
-        except JWTError as e:
+        except PyJWTError as e:
             raise OpenBBError("Failed to decode Platform token.") from e

@@ -21,10 +21,7 @@ class SettingsController(BaseController):
     CHOICES_COMMANDS: List[str] = [
         "interactive",
         "cls",
-        "watermark",
         "promptkit",
-        "thoughts",
-        "reporthtml",
         "exithelp",
         "rcontext",
         "richpanel",

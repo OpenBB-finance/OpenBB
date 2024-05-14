@@ -156,10 +156,12 @@ class ROUTER_economy(Container):
             no default.
         country : Optional[str]
             Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
-        importance : Optional[Literal['Low', 'Medium', 'High']]
+        importance : Optional[Literal['low', 'medium', 'high']]
             Importance of the event. (provider: tradingeconomics)
-        group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
-            Grouping of events (provider: tradingeconomics)
+        group : Optional[Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
+            Grouping of events. (provider: tradingeconomics)
+        calendar_id : Optional[Union[int, str]]
+            Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed. (provider: tradingeconomics)
 
         Returns
         -------
@@ -181,38 +183,53 @@ class ROUTER_economy(Container):
             The date of the data.
         country : Optional[str]
             Country of event.
+        category : Optional[str]
+            Category of event.
         event : Optional[str]
             Event name.
-        reference : Optional[str]
-            Abbreviated period for which released data refers to.
+        importance : Optional[str]
+            The importance level for the event.
         source : Optional[str]
             Source of the data.
-        sourceurl : Optional[str]
-            Source URL.
-        actual : Optional[Union[str, float]]
-            Latest released value.
-        previous : Optional[Union[str, float]]
-            Value for the previous period after the revision (if revision is applicable).
-        consensus : Optional[Union[str, float]]
-            Average forecast among a representative group of economists.
-        forecast : Optional[Union[str, float]]
-            Trading Economics projections
-        url : Optional[str]
-            Trading Economics URL
-        importance : Optional[Union[Literal[0, 1, 2, 3], str]]
-            Importance of the event. 1-Low, 2-Medium, 3-High
         currency : Optional[str]
             Currency of the data.
         unit : Optional[str]
             Unit of the data.
+        consensus : Optional[Union[str, float]]
+            Average forecast among a representative group of economists.
+        previous : Optional[Union[str, float]]
+            Value for the previous period after the revision (if revision is applicable).
+        revised : Optional[Union[str, float]]
+            Revised previous value, if applicable.
+        actual : Optional[Union[str, float]]
+            Latest released value.
         change : Optional[float]
             Value change since previous. (provider: fmp)
         change_percent : Optional[float]
             Percentage change since previous. (provider: fmp)
-        updated_at : Optional[datetime]
-            Last updated timestamp. (provider: fmp)
+        last_updated : Optional[datetime]
+            Last updated timestamp. (provider: fmp);
+            Last update of the data. (provider: tradingeconomics)
         created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
+        forecast : Optional[Union[str, float]]
+            TradingEconomics projections. (provider: tradingeconomics)
+        reference : Optional[str]
+            Abbreviated period for which released data refers to. (provider: tradingeconomics)
+        reference_date : Optional[date]
+            Date for the reference period. (provider: tradingeconomics)
+        calendar_id : Optional[int]
+            TradingEconomics Calendar ID. (provider: tradingeconomics)
+        date_span : Optional[int]
+            Date span of the event. (provider: tradingeconomics)
+        symbol : Optional[str]
+            TradingEconomics Symbol. (provider: tradingeconomics)
+        ticker : Optional[str]
+            TradingEconomics Ticker symbol. (provider: tradingeconomics)
+        te_url : Optional[str]
+            TradingEconomics URL path. (provider: tradingeconomics)
+        source_url : Optional[str]
+            Source URL. (provider: tradingeconomics)
 
         Examples
         --------
@@ -238,7 +255,10 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "country": {"tradingeconomics": {"multiple_items_allowed": True}}
+                    "country": {"tradingeconomics": {"multiple_items_allowed": True}},
+                    "calendar_id": {
+                        "tradingeconomics": {"multiple_items_allowed": True}
+                    },
                 },
             )
         )

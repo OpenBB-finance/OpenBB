@@ -562,7 +562,7 @@ def test_fmp_financial_ratios_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
     """Test FMP economic calendar fetcher."""
-    params = {}
+    params = {"start_date": date(2024, 1, 1), "end_date": date(2024, 3, 30)}
 
     fetcher = FMPEconomicCalendarFetcher()
     result = fetcher.test(params, credentials)
