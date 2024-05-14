@@ -189,7 +189,7 @@ class PlatformController(BaseController):
 
                             if hasattr(ns_parser, "chart") and ns_parser.chart:
                                 obbject.show()
-                                fig = obbject.chart.fig
+                                fig = obbject.chart.fig if obbject.chart else None
                             else:
                                 if isinstance(df.columns, pd.RangeIndex):
                                     df.columns = [str(i) for i in df.columns]
@@ -208,10 +208,9 @@ class PlatformController(BaseController):
                         and ns_parser.export
                         and not df.empty
                     ):
-                        if hasattr(ns_parser, "sheet_name") and isinstance(
-                            ns_parser.sheet_name, list
-                        ):
-                            sheet_name = ns_parser.sheet_name[0]
+                        sheet_name = getattr(ns_parser, "sheet_name", None)
+                        if sheet_name and isinstance(sheet_name, list):
+                            sheet_name = sheet_name[0]
 
                         export_data(
                             export_type=",".join(ns_parser.export),
