@@ -1,16 +1,16 @@
-name: Release Drafter
+name: Draft release
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       release_pr_number:
-        description: 'Release PR Number'
+        description: "Release PR Number"
         required: true
-        default: ''
+        default: ""
       tag:
-        description: 'Tag for release (manual input)'
+        description: "Tag for release (manual input)"
         required: true
-        default: ''
+        default: ""
 
 jobs:
   update_release_draft:
@@ -35,7 +35,9 @@ jobs:
 
       - name: 🧬 Process Changelog
         run: |
-          python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+          pip install requests openai
+          python .github/scripts/process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+          python .github/scripts/summarize_changelog.py ${{ secrets.GITHUB_TOKEN }} ${{ secrets.OPENAI_API_KEY }}
           cat CHANGELOG.md
 
       - name: 🛫 Create Release

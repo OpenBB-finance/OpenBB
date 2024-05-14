@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-econdb"
+version = "1.0.0"
+description = "EconDB extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_econdb" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.1.5"
+aiohttp-client-cache = "^0.11.0"
+aiosqlite = "^0.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+econdb = "openbb_econdb:econdb_provider"

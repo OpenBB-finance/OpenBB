@@ -96,10 +96,27 @@ class ROUTER_news(Container):
             Content types of the news to retrieve. (provider: benzinga)
         page : Optional[int]
             Page number of the results. Use in combination with limit. (provider: fmp)
+        source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
+            The source of the news article. (provider: intrinio);
+            A comma-separated list of the domains requested. (provider: tiingo)
+        sentiment : Optional[Literal['positive', 'neutral', 'negative']]
+            Return news only from this source. (provider: intrinio)
+        language : Optional[str]
+            Filter by language. Unsupported for yahoo source. (provider: intrinio)
+        topic : Optional[str]
+            Filter by topic. Unsupported for yahoo source. (provider: intrinio)
+        word_count_greater_than : Optional[int]
+            News stories will have a word count greater than this value. Unsupported for yahoo source. (provider: intrinio)
+        word_count_less_than : Optional[int]
+            News stories will have a word count less than this value. Unsupported for yahoo source. (provider: intrinio)
+        is_spam : Optional[bool]
+            Filter whether it is marked as spam or not. Unsupported for yahoo source. (provider: intrinio)
+        business_relevance_greater_than : Optional[float]
+            News stories will have a business relevance score more than this value. Unsupported for yahoo source. (provider: intrinio)
+        business_relevance_less_than : Optional[float]
+            News stories will have a business relevance score less than this value. Unsupported for yahoo source. (provider: intrinio)
         offset : Optional[int]
             Page offset, used in conjunction with limit. (provider: tiingo)
-        source : Optional[str]
-            A comma-separated list of the domains requested. (provider: tiingo)
 
         Returns
         -------
@@ -145,9 +162,30 @@ class ROUTER_news(Container):
             Updated date of the news. (provider: benzinga)
         source : Optional[str]
             Name of the news source. (provider: fmp);
+            The source of the news article. (provider: intrinio);
             Source of the article. (provider: polygon);
             News source. (provider: tiingo);
             Source of the news article (provider: yfinance)
+        summary : Optional[str]
+            The summary of the news article. (provider: intrinio)
+        topics : Optional[str]
+            The topics related to the news article. (provider: intrinio)
+        word_count : Optional[int]
+            The word count of the news article. (provider: intrinio)
+        business_relevance : Optional[float]
+                How strongly correlated the news article is to the business (provider: intrinio)
+        sentiment : Optional[str]
+            The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
+        sentiment_confidence : Optional[float]
+            The confidence score of the sentiment rating. (provider: intrinio)
+        language : Optional[str]
+            The language of the news article. (provider: intrinio)
+        spam : Optional[bool]
+            Whether the news article is spam. (provider: intrinio)
+        copyright : Optional[str]
+            The copyright notice of the news article. (provider: intrinio)
+        security : Optional[IntrinioSecurity]
+            The Intrinio Security object. Contains the security details related to the news article. (provider: intrinio)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         publisher : Optional[PolygonPublisher]
@@ -198,14 +236,12 @@ class ROUTER_news(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": [
-                            "benzinga",
-                            "fmp",
-                            "intrinio",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
+                        "benzinga": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                        "tiingo": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -275,10 +311,27 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        source : Optional[Union[Literal['yahoo', 'moody', 'moody_us_news', 'moody_us_press_releases'], str]]
+            The source of the news article. (provider: intrinio);
+            A comma-separated list of the domains requested. (provider: tiingo)
+        sentiment : Optional[Literal['positive', 'neutral', 'negative']]
+            Return news only from this source. (provider: intrinio)
+        language : Optional[str]
+            Filter by language. Unsupported for yahoo source. (provider: intrinio)
+        topic : Optional[str]
+            Filter by topic. Unsupported for yahoo source. (provider: intrinio)
+        word_count_greater_than : Optional[int]
+            News stories will have a word count greater than this value. Unsupported for yahoo source. (provider: intrinio)
+        word_count_less_than : Optional[int]
+            News stories will have a word count less than this value. Unsupported for yahoo source. (provider: intrinio)
+        is_spam : Optional[bool]
+            Filter whether it is marked as spam or not. Unsupported for yahoo source. (provider: intrinio)
+        business_relevance_greater_than : Optional[float]
+            News stories will have a business relevance score more than this value. Unsupported for yahoo source. (provider: intrinio)
+        business_relevance_less_than : Optional[float]
+            News stories will have a business relevance score less than this value. Unsupported for yahoo source. (provider: intrinio)
         offset : Optional[int]
             Page offset, used in conjunction with limit. (provider: tiingo)
-        source : Optional[str]
-            A comma-separated list of the domains requested. (provider: tiingo)
 
         Returns
         -------
@@ -322,8 +375,30 @@ class ROUTER_news(Container):
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
             News source. (provider: fmp, tiingo)
-        company : Optional[Dict[str, Any]]
-            Company details related to the news article. (provider: intrinio)
+        source : Optional[str]
+            The source of the news article. (provider: intrinio)
+        summary : Optional[str]
+            The summary of the news article. (provider: intrinio)
+        topics : Optional[str]
+            The topics related to the news article. (provider: intrinio)
+        word_count : Optional[int]
+            The word count of the news article. (provider: intrinio)
+        business_relevance : Optional[float]
+                How strongly correlated the news article is to the business (provider: intrinio)
+        sentiment : Optional[str]
+            The sentiment of the news article - i.e, negative, positive. (provider: intrinio)
+        sentiment_confidence : Optional[float]
+            The confidence score of the sentiment rating. (provider: intrinio)
+        language : Optional[str]
+            The language of the news article. (provider: intrinio)
+        spam : Optional[bool]
+            Whether the news article is spam. (provider: intrinio)
+        copyright : Optional[str]
+            The copyright notice of the news article. (provider: intrinio)
+        company : Optional[IntrinioCompany]
+            The Intrinio Company object. Contains details company reference data. (provider: intrinio)
+        security : Optional[IntrinioSecurity]
+            The Intrinio Security object. Contains the security details related to the news article. (provider: intrinio)
         symbols : Optional[str]
             Ticker tagged in the fetched news. (provider: tiingo)
         article_id : Optional[int]

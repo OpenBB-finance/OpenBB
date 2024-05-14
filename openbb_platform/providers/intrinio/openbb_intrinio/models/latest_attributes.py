@@ -23,8 +23,8 @@ class IntrinioLatestAttributesQueryParams(LatestAttributesQueryParams):
     """
 
     __json_schema_extra__ = {
-        "tag": ["multiple_items_allowed"],
-        "symbol": ["multiple_items_allowed"],
+        "tag": {"multiple_items_allowed": True},
+        "symbol": {"multiple_items_allowed": True},
     }
 
 

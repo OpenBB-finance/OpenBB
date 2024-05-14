@@ -28,7 +28,7 @@ repos:
         types: [python]
         files: '^openbb_platform/.*\.py$'
         exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
-        args: ["--config=pyproject.toml"]
+        args: ["--config=ruff.toml"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.5
     hooks:
@@ -39,8 +39,7 @@ repos:
             "--ignore-words-list=VAI,MIS,shs,gard,te,commun,parana,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot,fo",
             "--quiet-level=2",
             "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
-            "-x=openbb_terminal/economy/fedreserve_model.py",
-            "-x=.github/workflows/linting.yml"
+            "-x=.github/workflows/general-linting.yml"
           ]
   - repo: local
     hooks:

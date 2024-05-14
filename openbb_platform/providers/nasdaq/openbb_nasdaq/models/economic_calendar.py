@@ -22,7 +22,7 @@ class NasdaqEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     Source: https://www.nasdaq.com/market-activity/economic-calendar
     """
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"country": {"multiple_items_allowed": True}}
 
     country: Optional[str] = Field(
         default=None,

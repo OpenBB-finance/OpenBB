@@ -304,31 +304,38 @@ class StaticCommandRunner:
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
-        if "charting" not in obbject.accessors:
-            raise OpenBBError(
-                "Charting is not installed. Please install `openbb-charting`."
-            )
-        chart_params = {}
-        extra_params = kwargs.get("extra_params", {})
+        try:
+            if "charting" not in obbject.accessors:
+                raise OpenBBError(
+                    "Charting is not installed. Please install `openbb-charting`."
+                )
+            chart_params = {}
+            extra_params = kwargs.get("extra_params", {})
 
-        if hasattr(extra_params, "__dict__") and hasattr(extra_params, "chart_params"):
-            chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
-        elif isinstance(extra_params, dict) and "chart_params" in extra_params:
-            chart_params = kwargs["extra_params"].get("chart_params", {})
+            if hasattr(extra_params, "__dict__") and hasattr(
+                extra_params, "chart_params"
+            ):
+                chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
+            elif isinstance(extra_params, dict) and "chart_params" in extra_params:
+                chart_params = kwargs["extra_params"].get("chart_params", {})
 
-        if "chart_params" in kwargs and kwargs["chart_params"] is not None:
-            chart_params.update(kwargs.pop("chart_params", {}))
+            if "chart_params" in kwargs and kwargs["chart_params"] is not None:
+                chart_params.update(kwargs.pop("chart_params", {}))
 
-        if (
-            "kwargs" in kwargs
-            and "chart_params" in kwargs["kwargs"]
-            and kwargs["kwargs"].get("chart_params") is not None
-        ):
-            chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
+            if (
+                "kwargs" in kwargs
+                and "chart_params" in kwargs["kwargs"]
+                and kwargs["kwargs"].get("chart_params") is not None
+            ):
+                chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
-        if chart_params:
-            kwargs.update(chart_params)
-        obbject.charting.show(render=False, **kwargs)
+            if chart_params:
+                kwargs.update(chart_params)
+            obbject.charting.show(render=False, **kwargs)
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            if Env().DEBUG_MODE:
+                raise OpenBBError(e) from e
+            warn(str(e), OpenBBWarning)
 
     # pylint: disable=R0913, R0914
     @classmethod
@@ -449,6 +456,7 @@ class StaticCommandRunner:
             except Exception as e:
                 if Env().DEBUG_MODE:
                     raise OpenBBError(e) from e
+                warn(str(e), OpenBBWarning)
 
         return obbject
 

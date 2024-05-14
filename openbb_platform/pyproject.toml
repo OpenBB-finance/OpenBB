@@ -11,6 +11,7 @@ python = ">=3.8,<3.12"
 openbb-core = "^1.1.6"
 
 openbb-benzinga = "^1.1.5"
+openbb-econdb = "^1.0.0"
 openbb-federal-reserve = "^1.1.5"
 openbb-fmp = "^1.1.5"
 openbb-fred = "^1.1.5"

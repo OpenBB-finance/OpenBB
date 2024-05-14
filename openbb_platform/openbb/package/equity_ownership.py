@@ -245,7 +245,7 @@ class ROUTER_equity_ownership(Container):
             Expiration date of the derivative. (provider: intrinio)
         underlying_security_title : Optional[str]
             Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio)
-        underlying_shares : Optional[Union[float, int]]
+        underlying_shares : Optional[Union[int, float]]
             Number of underlying shares related to this derivative transaction. (provider: intrinio)
         nature_of_ownership : Optional[str]
             Nature of ownership of the insider trading. (provider: intrinio)
@@ -685,6 +685,6 @@ class ROUTER_equity_ownership(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
+                info={"symbol": {"yfinance": {"multiple_items_allowed": True}}},
             )
         )

@@ -10,6 +10,7 @@ from openbb_polygon.models.company_news import PolygonCompanyNewsFetcher
 from openbb_polygon.models.crypto_historical import PolygonCryptoHistoricalFetcher
 from openbb_polygon.models.currency_historical import PolygonCurrencyHistoricalFetcher
 from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
+from openbb_polygon.models.currency_snapshots import PolygonCurrencySnapshotsFetcher
 from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
 from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
@@ -151,7 +152,7 @@ def test_polygon_currency_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_polygon_currency_pairs_fetcher(credentials=test_credentials):
     """Test the Polygon Currency Pairs fetcher."""
-    params = {"date": date(2023, 1, 1)}
+    params = {}
 
     fetcher = PolygonCurrencyPairsFetcher()
     result = fetcher.test(params, credentials)
@@ -174,5 +175,15 @@ def test_polygon_market_snapshots_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = PolygonMarketSnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_polygon_currency_snapshots_fetcher(credentials=test_credentials):
+    """Test the Polygon Currency Snapshots fetcher."""
+    params = {"base": "XAU"}
+
+    fetcher = PolygonCurrencySnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

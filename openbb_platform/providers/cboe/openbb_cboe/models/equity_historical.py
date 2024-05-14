@@ -30,7 +30,7 @@ class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1m", "1d"] = Field(
         default="1d",
@@ -141,7 +141,7 @@ class CboeEquityHistoricalFetcher(
             return url
 
         urls = [
-            _generate_historical_prices_url(symbol, INTERVAL_DICT[query.interval])
+            _generate_historical_prices_url(symbol, INTERVAL_DICT[query.interval])  # type: ignore[arg-type]
             for symbol in symbols
         ]
         return await amake_requests(urls, **kwargs)
@@ -199,7 +199,7 @@ class CboeEquityHistoricalFetcher(
             (to_datetime(output["date"]) >= to_datetime(query.start_date))
             & (
                 to_datetime(output["date"])
-                <= to_datetime(query.end_date + timedelta(days=1))
+                <= to_datetime(query.end_date + timedelta(days=1))  # type: ignore[operator]
             )
         ]
         return [

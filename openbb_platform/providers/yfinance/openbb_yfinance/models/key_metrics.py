@@ -19,7 +19,7 @@ _warn = warnings.warn
 class YFinanceKeyMetricsQueryParams(KeyMetricsQueryParams):
     """YFinance Key Metrics Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class YFinanceKeyMetricsData(KeyMetricsData):
@@ -67,7 +67,7 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     earnings_growth_quarterly: Optional[float] = Field(
         default=None,
         description="Quarterly earnings growth (Year Over Year), as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="earningsQuarterlyGrowth",
     )
     revenue_per_share: Optional[float] = Field(
@@ -78,7 +78,7 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     revenue_growth: Optional[float] = Field(
         default=None,
         description="Revenue growth (Year Over Year), as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="revenueGrowth",
     )
     enterprise_to_revenue: Optional[float] = Field(
@@ -109,49 +109,49 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     gross_margin: Optional[float] = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="grossMargins",
     )
     operating_margin: Optional[float] = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="operatingMargins",
     )
     ebitda_margin: Optional[float] = Field(
         default=None,
         description="EBITDA margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="ebitdaMargins",
     )
     profit_margin: Optional[float] = Field(
         default=None,
         description="Profit margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="profitMargins",
     )
     return_on_assets: Optional[float] = Field(
         default=None,
         description="Return on assets, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="returnOnAssets",
     )
     return_on_equity: Optional[float] = Field(
         default=None,
         description="Return on equity, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="returnOnEquity",
     )
     dividend_yield: Optional[float] = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="dividendYield",
     )
     dividend_yield_5y_avg: Optional[float] = Field(
         default=None,
         description="5-year average dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="fiveYearAvgDividendYield",
     )
     payout_ratio: Optional[float] = Field(
@@ -205,7 +205,7 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     price_return_1y: Optional[float] = Field(
         default=None,
         description="One-year price return, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="52WeekChange",
     )
     currency: Optional[str] = Field(

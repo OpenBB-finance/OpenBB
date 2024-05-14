@@ -24,7 +24,7 @@ from pydantic import Field, field_validator
 class NasdaqHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """Nasdaq Historical Dividends Query Params."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class NasdaqHistoricalDividendsData(HistoricalDividendsData):

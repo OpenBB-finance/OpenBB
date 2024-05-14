@@ -18,6 +18,7 @@ openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
+openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
@@ -128,7 +129,7 @@ def install_local(_extras: bool = False):
         print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
 
     finally:
-        # Revert pyproject.toml and poetry.lock to their original state
+        # Revert pyproject.toml and poetry.lock to their original state.
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(original_pyproject)
 

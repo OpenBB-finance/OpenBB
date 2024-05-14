@@ -25,6 +25,9 @@ from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetch
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
+from openbb_intrinio.models.forward_pe_estimates import (
+    IntrinioForwardPeEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_sales_estimates import (
     IntrinioForwardSalesEstimatesFetcher,
 )
@@ -118,7 +121,13 @@ def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_company_news_fetcher(credentials=test_credentials):
     """Test company news fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {
+        "symbol": "AAPL",
+        "limit": 50,
+        "source": "yahoo",
+        "start_date": date(2024, 1, 2),
+        "end_date": date(2024, 1, 3),
+    }
 
     fetcher = IntrinioCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -128,7 +137,12 @@ def test_intrinio_company_news_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_world_news_fetcher(credentials=test_credentials):
     """Test world news fetcher."""
-    params = {}
+    params = {
+        "limit": 50,
+        "source": "yahoo",
+        "start_date": date(2024, 1, 2),
+        "end_date": date(2024, 1, 3),
+    }
 
     fetcher = IntrinioWorldNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -492,5 +506,15 @@ def test_intrinio_price_target_consensus_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioPriceTargetConsensusFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_forward_pe_fetcher(credentials=test_credentials):
+    """Test forward pe fetcher."""
+    params = {"symbol": "AAPL,MSFT"}
+
+    fetcher = IntrinioForwardPeEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

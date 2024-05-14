@@ -32,7 +32,7 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
         "updated_since": "updatedSince",
         "published_since": "publishedSince",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
@@ -152,10 +152,11 @@ class BenzingaCompanyNewsFetcher(
 
         base_url = "https://api.benzinga.com/api/v2/news"
 
-        query.sort = f"{query.sort}:{query.order}" if query.sort and query.order else ""
-        querystring = get_querystring(
-            query.model_dump(by_alias=True), ["order", "pageSize"]
+        model = query.model_dump(by_alias=True)
+        model["sort"] = (
+            f"{query.sort}:{query.order}" if query.sort and query.order else ""
         )
+        querystring = get_querystring(model, ["order", "pageSize"])
 
         pages = math.ceil(query.limit / 100) if query.limit else 1
         page_size = 100 if query.limit and query.limit > 100 else query.limit

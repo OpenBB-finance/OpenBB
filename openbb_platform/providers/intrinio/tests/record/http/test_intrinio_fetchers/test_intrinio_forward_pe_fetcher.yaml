@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/forward_pe/MSFT?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAGSBQWYAA2TOMQuDMBAF4L9Sbq5HcpoWswpCh2JR9xA0LdKqIaYUKf3vjUOHkuWG93GP9wY/
+        dHfjQMK5KVvYQzePVk+rmvRotvRU1FVTle2uqOpL8KfttTe92m5wYpQlTCScBbvO7qVdr6xRq9GO
+        g0wF0iECCsAxExGkIOmILMqzkBPGRQIkz5H9Fd2U036YfwsIeb6HR1i7eOX9qIxdwhdHIT5fAAAA
+        //8DADhyNhP+AAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 May 2024 02:56:36 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/zacks/forward_pe/AAPL?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAGSBQWYAA2zOywrCMBQE0F+Ru25DkiY+siviQiiSP7iEJkqxj5CmSBH/3dSFCHUzizkMzBNi
+        U99dAAVlqSvIoB46b/oZe9O5pdW6Om3Ol2OiyVsTncUlE3HKRU5lzmiy6xAeJlj0DmdnAgPFd2Qv
+        V8ATSCLYCooE/N9CfOAgViBB9VPb/vY3DCY2w/cC4Rm06e0YMcYOnR9BbYkoXm8AAAD//wMALdic
+        IvgAAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 13 May 2024 02:56:36 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

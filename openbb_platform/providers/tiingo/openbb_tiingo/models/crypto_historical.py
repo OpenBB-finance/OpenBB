@@ -35,7 +35,7 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
         "end_date": "endDate",
         "interval": "resampleFreq",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
@@ -125,7 +125,7 @@ class TiingoCryptoHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=False), ["tickers", "resampleFreq"]
         )
-        results = []
+        results: List[dict] = []
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             result = await response.json()

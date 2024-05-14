@@ -33,6 +33,7 @@ Extensions:
     - regulators@1.1.5
 
     - benzinga@1.1.5
+    - econdb@1.0.0
     - federal_reserve@1.1.5
     - fmp@1.1.5
     - fred@1.1.5

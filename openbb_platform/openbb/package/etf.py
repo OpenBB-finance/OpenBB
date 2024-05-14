@@ -98,7 +98,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -155,7 +155,7 @@ class ROUTER_etf(Container):
             The number of shares held in the ETF.
         weight : Optional[float]
             The weight of the equity in the ETF, as a normalized percent.
-        market_value : Optional[Union[float, int]]
+        market_value : Optional[Union[int, float]]
             The market value of the equity position in the ETF.
 
         Examples
@@ -180,7 +180,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -279,7 +279,7 @@ class ROUTER_etf(Container):
             The low price.
         close : float
             The close price.
-        volume : Optional[Union[float, int]]
+        volume : Optional[Union[int, float]]
             The trading volume.
         vwap : Optional[float]
             Volume Weighted Average Price over the period.
@@ -350,12 +350,10 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": [
-                            "fmp",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
+                        "fmp": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                        "tiingo": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     },
                     "adjusted": {"deprecated": True},
                     "prepost": {"deprecated": True},
@@ -527,23 +525,23 @@ class ROUTER_etf(Container):
         delta : Optional[Union[str, float]]
             The delta of the option. (provider: sec)
         rate_type_rec : Optional[str]
-            The type of rate for reveivable portion of the swap. (provider: sec)
+            The type of rate for receivable portion of the swap. (provider: sec)
         receive_currency : Optional[str]
             The receive currency of the swap. (provider: sec)
         upfront_receive : Optional[float]
             The upfront amount received of the swap. (provider: sec)
         floating_rate_index_rec : Optional[str]
-            The floating rate index for reveivable portion of the swap. (provider: sec)
+            The floating rate index for receivable portion of the swap. (provider: sec)
         floating_rate_spread_rec : Optional[float]
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
-            The rate tenor for reveivable portion of the swap. (provider: sec)
+            The rate tenor for receivable portion of the swap. (provider: sec)
         rate_tenor_unit_rec : Optional[Union[int, str]]
-            The rate tenor unit for reveivable portion of the swap. (provider: sec)
+            The rate tenor unit for receivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
-            The reset date for reveivable portion of the swap. (provider: sec)
+            The reset date for receivable portion of the swap. (provider: sec)
         reset_date_unit_rec : Optional[Union[int, str]]
-            The reset date unit for reveivable portion of the swap. (provider: sec)
+            The reset date unit for receivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
         payment_currency : Optional[str]
@@ -805,7 +803,7 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1195,7 +1193,9 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -1336,7 +1336,12 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )
 

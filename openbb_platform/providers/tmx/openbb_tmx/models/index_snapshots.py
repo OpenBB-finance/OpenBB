@@ -24,7 +24,7 @@ from pydantic import Field, field_validator
 class TmxIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     """TMX Index Snapshots Query Params."""
 
-    region: Literal[None, "ca", "us"] = Field(default="ca")  # type: ignore
+    region: Optional[Literal["ca", "us"]] = Field(default="ca")  # type: ignore
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request."
@@ -64,17 +64,17 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     return_mtd: Optional[float] = Field(
         default=None,
         description="The month-to-date return of the index, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_qtd: Optional[float] = Field(
         default=None,
         description="The quarter-to-date return of the index, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_ytd: Optional[float] = Field(
         default=None,
         description="The year-to-date return of the index, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     total_market_value: Optional[float] = Field(
         default=None,
@@ -103,7 +103,7 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     constituent_largest_weight: Optional[float] = Field(
         default=None,
         description="The largest weight of the index constituents, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     constituent_smallest_market_value: Optional[float] = Field(
         default=None,
@@ -112,7 +112,7 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     constituent_smallest_weight: Optional[float] = Field(
         default=None,
         description="The smallest weight of the index constituents, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
     @field_validator(

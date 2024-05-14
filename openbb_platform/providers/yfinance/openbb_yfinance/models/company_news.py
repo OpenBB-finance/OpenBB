@@ -21,7 +21,7 @@ class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://finance.yahoo.com/news/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class YFinanceCompanyNewsData(CompanyNewsData):

@@ -306,3 +306,73 @@ async def fred_regional(
     The series group ID is found by using `fred_search` and the `series_id` parameter.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CountryProfile",
+    examples=[
+        APIEx(parameters={"provider": "econdb", "country": "united_kingdom"}),
+        APIEx(
+            description="Enter the country as the full name, or iso code."
+            + " If `latest` is False, the complete history for each series is returned.",
+            parameters={
+                "country": "united_states,jp",
+                "latest": False,
+                "provider": "econdb",
+            },
+        ),
+    ],
+)
+async def country_profile(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a profile of country statistics and economic indicators."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="AvailableIndicators",
+    examples=[
+        APIEx(parameters={"provider": "econdb"}),
+    ],
+)
+async def available_indicators(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the available economic indicators for a provider."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="EconomicIndicators",
+    examples=[
+        APIEx(parameters={"provider": "econdb", "symbol": "PCOCO"}),
+        APIEx(
+            description="Enter the country as the full name, or iso code."
+            + " Use `available_indicators()` to get a list of supported indicators from EconDB.",
+            parameters={
+                "symbol": "CPI",
+                "country": "united_states,jp",
+                "provider": "econdb",
+            },
+        ),
+        APIEx(
+            description="Use the `main` symbol to get the group of main indicators for a country.",
+            parameters={"provider": "econdb", "symbol": "main", "country": "eu"},
+        ),
+    ],
+)
+async def indicators(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get economic indicators by country and indicator."""
+    return await OBBject.from_query(Query(**locals()))

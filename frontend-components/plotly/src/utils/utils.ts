@@ -251,7 +251,7 @@ const openbb_watermark = {
   xref: "paper",
   x: 1,
   y: 0,
-  text: "OpenBB Terminal",
+  text: "OpenBB",
   font_size: 17,
   font_color: "gray",
   opacity: 0.5,

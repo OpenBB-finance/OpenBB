@@ -27,23 +27,19 @@ def headers():
         (
             {
                 "provider": "polygon",
-                "symbol": "USDJPY",
-                "date": "2023-10-12",
-                "search": "",
-                "active": True,
-                "order": "asc",
-                "sort": "currency_name",
-                "limit": 100,
+                "query": "eur",
             }
         ),
         (
             {
                 "provider": "fmp",
+                "query": "eur",
             }
         ),
         (
             {
                 "provider": "intrinio",
+                "query": "eur",
             }
         ),
     ],
@@ -175,6 +171,14 @@ def test_currency_reference_rates(params, headers):
         (
             {
                 "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+        (
+            {
+                "provider": "polygon",
                 "base": "USD,XAU",
                 "counter_currencies": "EUR,JPY,GBP",
                 "quote_type": "indirect",
