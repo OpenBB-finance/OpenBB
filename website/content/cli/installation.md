@@ -28,6 +28,29 @@ Please refer to the [OpenBB Platform install documentation](/platform/installati
 If the OpenBB Platform is not already installed, the `openbb-cli` package  will install the default components.
 :::
 
+### Linux Requirements
+
+Linux users will need to take additional steps prior to installation.
+
+#### Rust
+
+Rust and Cargo must be installed, system-level, and in the PATH. Follow the instructions on-screen to install and add to PATH in the shell profile.
+
+```bash
+curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+```
+
+#### Webkit
+
+Next, install webkit.
+
+- Debian-based / Ubuntu / Mint: `sudo apt install libwebkit2gtk-4.0-dev`
+
+- Arch Linux / Manjaro: `sudo pacman -S webkit2gtk`
+
+- Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+
 ## PyPI
 
 Within your existing OpenBB environment, install `openbb-cli` with:
@@ -35,7 +58,6 @@ Within your existing OpenBB environment, install `openbb-cli` with:
 ```console
 pip install openbb-cli
 ```
-
 
 The installation script adds `openbb` to the PATH within your Python environment. The application can be launched from any path, as long as the environment is active.
 
