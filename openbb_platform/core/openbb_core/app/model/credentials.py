@@ -52,7 +52,7 @@ class CredentialsLoader:
                 formatted[c] = (
                     Optional[OBBSecretStr],
                     Field(
-                        default=None, description=origin
+                        default=None, description=origin, alias=c.upper()
                     ),  # register the credential origin (obbject, providers)
                 )
 
@@ -88,7 +88,7 @@ class CredentialsLoader:
         self.from_obbject()
         return create_model(  # type: ignore
             "Credentials",
-            __config__=ConfigDict(validate_assignment=True),
+            __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
             **self.prepare(self.credentials),
         )
 

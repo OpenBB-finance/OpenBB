@@ -27,19 +27,19 @@ from openbb_tmx.models.treasury_prices import TmxTreasuryPricesFetcher
 
 tmx_provider = Provider(
     name="tmx",
-    website="https://www.tmx.com/",
+    website="https://www.tmx.com",
     description="""Unofficial TMX Data Provider Extension
-        TMX Group Companies
-         - Toronto Stock Exchange
-         - TSX Venture Exchange
-         - TSX Trust
-         - Montréal Exchange
-         - TSX Alpha Exchange
-         - Shorcan
-         - CDCC
-         - CDS
-         - TMX Datalinx
-         - Trayport
+    TMX Group Companies
+        - Toronto Stock Exchange
+        - TSX Venture Exchange
+        - TSX Trust
+        - Montréal Exchange
+        - TSX Alpha Exchange
+        - Shorcan
+        - CDCC
+        - CDS
+        - TMX Datalinx
+        - Trayport
     """,
     fetcher_dict={
         "AvailableIndices": TmxAvailableIndicesFetcher,
@@ -67,4 +67,5 @@ tmx_provider = Provider(
         "PriceTargetConsensus": TmxPriceTargetConsensusFetcher,
         "TreasuryPrices": TmxTreasuryPricesFetcher,
     },
+    repr_name="TMX",
 )
