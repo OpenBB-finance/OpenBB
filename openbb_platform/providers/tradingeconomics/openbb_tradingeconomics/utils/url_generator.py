@@ -16,6 +16,7 @@ def check_args(query_args: Dict, to_include: List[str]):
     )
 
 
+# pylint: disable = R0912
 def generate_url(in_query):
     """Generate the url for trading economimcs.
 
@@ -62,6 +63,9 @@ def generate_url(in_query):
     # Country + Group + Date
     elif check_args(query, ["country", "group", "start_date", "end_date"]):
         url = f'{base_url}/country/{country}/group/{group}/{query["start_date"]}/{query["end_date"]}?c='
+    # Country + Date + Importance
+    elif check_args(query, ["country", "importance", "start_date", "end_date"]):
+        url = f'{base_url}/country/{country}/{query["start_date"]}/{query["end_date"]}?{urlencode(query)}&c='
     # By date only
     elif check_args(query, ["start_date", "end_date"]):
         url = f'{base_url}/country/All/{query["start_date"]}/{query["end_date"]}?c='
@@ -84,5 +88,8 @@ def generate_url(in_query):
         start_date = query["start_date"]
         end_date = query["end_date"]
         url = f"{base_url}/country/{country}/group/{group}/{start_date}/{end_date}?{urlencode(query)}&c="
+    # Calendar IDs
+    elif check_args(query, ["calendar_id"]):
+        url = f'{base_url}/calendarid/{str(query["calendar_id"])}?c='
 
     return url if url else ""

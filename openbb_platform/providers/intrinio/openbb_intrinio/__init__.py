@@ -21,6 +21,9 @@ from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetch
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
+from openbb_intrinio.models.forward_pe_estimates import (
+    IntrinioForwardPeEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_sales_estimates import (
     IntrinioForwardSalesEstimatesFetcher,
 )
@@ -77,6 +80,7 @@ historical financial market data to businesses and developers through an API."""
         "EtfSearch": IntrinioEtfSearchFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
         "ForwardEpsEstimates": IntrinioForwardEpsEstimatesFetcher,
+        "ForwardPeEstimates": IntrinioForwardPeEstimatesFetcher,
         "ForwardSalesEstimates": IntrinioForwardSalesEstimatesFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
