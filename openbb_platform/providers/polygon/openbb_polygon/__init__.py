@@ -18,10 +18,10 @@ from openbb_polygon.models.market_snapshots import PolygonMarketSnapshotsFetcher
 
 polygon_provider = Provider(
     name="polygon",
-    website="https://polygon.io/",
+    website="https://polygon.io",
     description="""The Polygon.io Stocks API provides REST endpoints that let you query
-     the latest market data from all US stock exchanges. You can also find data on
-     company financials, stock market holidays, corporate actions, and more.""",
+the latest market data from all US stock exchanges. You can also find data on
+company financials, stock market holidays, corporate actions, and more.""",
     credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": PolygonBalanceSheetFetcher,
@@ -39,4 +39,7 @@ polygon_provider = Provider(
         "MarketIndices": PolygonIndexHistoricalFetcher,
         "MarketSnapshots": PolygonMarketSnapshotsFetcher,
     },
+    repr_name="Polygon.io",
+    v3_credentials=["API_POLYGON_KEY"],
+    instructions='Go to: https://polygon.io\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)\n\nClick on, "Get your Free API Key".\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825952-ca5540ec-6ed2-4cef-a0ed-bb50b813932c.png)\n\nAfter signing up, the API Key is found at the bottom of the account dashboard page.\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png)',  # noqa: E501  pylint: disable=line-too-long
 )

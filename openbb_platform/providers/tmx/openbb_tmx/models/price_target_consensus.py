@@ -18,7 +18,7 @@ from pydantic import Field, field_validator
 class TmxPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """TMX Price Target Consensus Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

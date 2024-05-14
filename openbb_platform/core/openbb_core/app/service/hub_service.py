@@ -4,9 +4,7 @@ from typing import Optional
 from warnings import warn
 
 from fastapi import HTTPException
-from jose import JWTError
-from jose.exceptions import ExpiredSignatureError
-from jose.jwt import decode, get_unverified_header
+from jwt import ExpiredSignatureError, PyJWTError, decode, get_unverified_header
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.hub.hub_session import HubSession
@@ -139,7 +137,7 @@ class HubService:
         if not token:
             raise OpenBBError("Platform personal access token not found.")
 
-        self.check_token_expiration(token)
+        self._check_token_expiration(token)
 
         response = post(
             url=self._base_url + "/sdk/login",
@@ -233,7 +231,7 @@ class HubService:
             }
             msg = ""
             for k, v in deprecated.items():
-                msg += f"\n'{k}' -> '{v}', "
+                msg += f"\n'{k}' -> '{v.upper()}', "
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
@@ -253,13 +251,13 @@ class HubService:
         settings = self._hub_user_settings or HubUserSettings()
         for v4_k, v in sorted(credentials.items()):
             v3_k = self.V4TOV3.get(v4_k, None)
-            # If v3 key was there, we keep it
+            # If v3 key was in the hub already, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
             settings.features_keys[k] = v
         return settings
 
     @staticmethod
-    def check_token_expiration(token: str) -> None:
+    def _check_token_expiration(token: str) -> None:
         """Check token expiration, raises exception if expired."""
         try:
             header_data = get_unverified_header(token)
@@ -271,5 +269,5 @@ class HubService:
             )
         except ExpiredSignatureError as e:
             raise OpenBBError("Platform personal access token expired.") from e
-        except JWTError as e:
+        except PyJWTError as e:
             raise OpenBBError("Failed to decode Platform token.") from e

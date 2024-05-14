@@ -137,12 +137,10 @@ class ROUTER_crypto_price(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": [
-                            "fmp",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
+                        "fmp": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                        "tiingo": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )

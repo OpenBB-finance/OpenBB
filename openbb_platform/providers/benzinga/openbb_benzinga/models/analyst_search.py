@@ -34,11 +34,11 @@ class BenzingaAnalystSearchQueryParams(AnalystSearchQueryParams):
         "limit": "pageSize",
     }
     __json_schema_extra__ = {
-        "analyst_name": ["multiple_items_allowed"],
-        "firm_name": ["multiple_items_allowed"],
-        "analyst_ids": ["multiple_items_allowed"],
-        "firm_ids": ["multiple_items_allowed"],
-        "fields": ["multiple_items_allowed"],
+        "analyst_name": {"multiple_items_allowed": True},
+        "firm_name": {"multiple_items_allowed": True},
+        "analyst_ids": {"multiple_items_allowed": True},
+        "firm_ids": {"multiple_items_allowed": True},
+        "fields": {"multiple_items_allowed": True},
     }
 
     analyst_ids: Optional[str] = Field(

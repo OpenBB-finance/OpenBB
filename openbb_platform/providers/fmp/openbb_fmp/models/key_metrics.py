@@ -27,7 +27,7 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     with_ttm: Optional[bool] = Field(
         default=False, description="Include trailing twelve months (TTM) data."

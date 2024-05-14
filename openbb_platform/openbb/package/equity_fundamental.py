@@ -1421,8 +1421,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -2165,8 +2165,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -2351,7 +2351,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -2670,7 +2670,9 @@ class ROUTER_equity_fundamental(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -2864,7 +2866,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 

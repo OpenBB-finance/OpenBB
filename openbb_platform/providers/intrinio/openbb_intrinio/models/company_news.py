@@ -29,7 +29,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
         "limit": "page_size",
         "source": "specific_source",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     source: Optional[
         Literal["yahoo", "moody", "moody_us_news", "moody_us_press_releases"]
@@ -182,7 +182,7 @@ class IntrinioCompanyNewsFetcher(
             else ["symbol", "page_size"]
         )
         query_str = get_querystring(query.model_dump(by_alias=True), ignore)
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.split(",") if query.symbol else []
         news: List = []
 
         async def callback(response, session):
@@ -196,7 +196,9 @@ class IntrinioCompanyNewsFetcher(
             data.extend([{"symbol": symbol, **d} for d in _data])
             articles = len(data)
             next_page = result.get("next_page")
-            while next_page and query.limit > articles:
+            # query.limit can be None...
+            limit = query.limit or 2500
+            while next_page and limit > articles:
                 url = f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}&next_page={next_page}"
                 result = await get_data(url, session=session, **kwargs)
                 _data = result.get("news", [])

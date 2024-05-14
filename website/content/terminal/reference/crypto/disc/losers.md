@@ -1,29 +1,30 @@
 ---
 title: losers
-description: The 'losers' documentation page provides a Python based solution for
+description:
+  The 'losers' documentation page provides a Python based solution for
   identifying cryptocurrencies with the largest drop in value over a given time period.
   Control the analysis with options for the time interval, record limits, and sorting.
   This tool is essential for in-depth market analysis and monitoring market trends.
 keywords:
-- Market Analysis
-- Cryptocurrency
-- Crypto Losers
-- Market Trends
-- Price Drop
-- Time Interval
-- Record Limit
-- Sort Options
-- Python Script
-- Crypto Coin Symbol
-- Market Cap Rank
-- Volume
+  - Market Analysis
+  - Cryptocurrency
+  - Crypto Losers
+  - Market Trends
+  - Price Drop
+  - Time Interval
+  - Record Limit
+  - Sort Options
+  - Python Script
+  - Crypto Coin Symbol
+  - Market Cap Rank
+  - Volume
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="crypto/disc/losers - Reference | OpenBB Terminal Docs" />
 
-Shows Largest Losers - coins which price dropped the most in given period You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d} You can look on only N number of records with --limit, You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
+Shows Largest Losers - coins which price dropped the most in given period You can use parameter --interval to set which timeframe are you interested in: \{14d,1h,1y,200d,24h,30d,7d\} You can look on only N number of records with --limit, You can sort by \{Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]\} with --sort.
 
 ### Usage
 
@@ -35,12 +36,11 @@ losers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| interval | time period, one from {14d,1h,1y,200d,24h,30d,7d} | 1h | True | 14d, 1h, 1y, 200d, 24h, 30d, 7d |
-| limit | Number of records to display | 15 | True | None |
-| sortby | Sort by given column. Default: Market Cap Rank | Market Cap | True | Symbol, Name, Price [$], Market Cap, Market Cap Rank, Volume [$] |
-
+| Name     | Description                                         | Default    | Optional | Choices                                                          |
+| -------- | --------------------------------------------------- | ---------- | -------- | ---------------------------------------------------------------- |
+| interval | time period, one from \{14d,1h,1y,200d,24h,30d,7d\} | 1h         | True     | 14d, 1h, 1y, 200d, 24h, 30d, 7d                                  |
+| limit    | Number of records to display                        | 15         | True     | None                                                             |
+| sortby   | Sort by given column. Default: Market Cap Rank      | Market Cap | True     | Symbol, Name, Price [$], Market Cap, Market Cap Rank, Volume [$] |
 
 ---
 
@@ -82,4 +82,5 @@ losers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]]
 │ xrp    │ XRP             │ 0.84      │ 39.9B          │ 6               │ 3.2B       │ 0.29          │
 └────────┴─────────────────┴───────────┴────────────────┴─────────────────┴────────────┴───────────────┘
 ```
+
 ---

@@ -10,7 +10,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 import pandas as pd
-from openbb_cli.config import setup
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import SCRIPT_TAGS
 from openbb_cli.controllers.choices import build_controller_choice_map
@@ -52,7 +51,6 @@ class BaseController(metaclass=ABCMeta):
     CHOICES_COMMON = [
         "cls",
         "home",
-        "about",
         "h",
         "?",
         "help",
@@ -64,14 +62,12 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "stop",
-        "hold",
         "whoami",
         "results",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    HOLD_CHOICES: dict = {}
     NEWS_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
@@ -166,113 +162,6 @@ class BaseController(metaclass=ABCMeta):
             old_class.queue = self.queue
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
-
-    def call_hold(self, other_args: List[str]) -> None:
-        """Process hold command."""
-        self.save_class()
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hold",
-            description="Turn on figure holding.  This will stop showing images until hold off is run.",
-        )
-        parser.add_argument(
-            "-o",
-            "--option",
-            choices=["on", "off"],
-            type=str,
-            default="off",
-            dest="option",
-        )
-        parser.add_argument(
-            "-s",
-            "--sameaxis",
-            action="store_true",
-            default=False,
-            help="Put plots on the same axis.  Best when numbers are on similar scales",
-            dest="axes",
-        )
-        parser.add_argument(
-            "--title",
-            type=str,
-            default="",
-            dest="title",
-            nargs="+",
-            help="When using hold off, this sets the title for the figure.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-o")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
-        if ns_parser:
-            if ns_parser.option == "on":
-                setup.HOLD = True
-                setup.COMMAND_ON_CHART = False
-                if ns_parser.axes:
-                    setup.set_same_axis()
-                else:
-                    setup.set_new_axis()
-            if ns_parser.option == "off":
-                setup.HOLD = False
-                if setup.get_current_figure() is not None:
-                    # create a subplot
-                    fig = setup.get_current_figure()
-                    if fig is None:
-                        return
-                    if not fig.has_subplots and not setup.make_new_axis():
-                        fig.set_subplots(1, 1, specs=[[{"secondary_y": True}]])
-
-                    if setup.make_new_axis():
-                        for i, trace in enumerate(fig.select_traces()):
-                            trace.yaxis = f"y{i+1}"
-
-                            if i != 0:
-                                fig.update_layout(
-                                    {
-                                        f"yaxis{i+1}": dict(
-                                            side="left",
-                                            overlaying="y",
-                                            showgrid=True,
-                                            showline=False,
-                                            zeroline=False,
-                                            automargin=True,
-                                            ticksuffix=(
-                                                "       " * (i - 1) if i > 1 else ""
-                                            ),
-                                            tickfont=dict(
-                                                size=18,
-                                            ),
-                                            title=dict(
-                                                font=dict(
-                                                    size=15,
-                                                ),
-                                                standoff=0,
-                                            ),
-                                        ),
-                                    }
-                                )
-                        # pylint: disable=undefined-loop-variable
-                        fig.update_layout(margin=dict(l=30 * i))
-
-                    else:
-                        fig.update_yaxes(title="")
-
-                    if any(setup.get_legends()):
-                        for trace, new_name in zip(
-                            fig.select_traces(), setup.get_legends()
-                        ):
-                            if new_name:
-                                trace.name = new_name
-
-                    fig.update_layout(title=" ".join(ns_parser.title))
-                    fig.show()
-                    setup.COMMAND_ON_CHART = True
-
-                    setup.set_current_figure(None)
-                    setup.reset_legend()
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
@@ -496,14 +385,7 @@ class BaseController(metaclass=ABCMeta):
             help="Whether the routine should be public or not",
             default=False,
         )
-        parser.add_argument(
-            "-l",
-            "--local",
-            dest="local",
-            action="store_true",
-            help="Only save the routine locally - this is necessary if you are running in guest mode.",
-            default=False,
-        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
@@ -549,17 +431,16 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            if session.is_local() and not ns_parser.local:
+            if session.is_local():
                 session.console.print(
                     "[red]Recording session to the OpenBB Hub is not supported in guest mode.[/red]"
                 )
                 session.console.print(
-                    "\n[yellow]Sign to OpenBB Hub to register: http://openbb.co[/yellow]"
+                    "\n[yellow]Visit the OpenBB Hub to register: http://my.openbb.co[/yellow]"
                 )
                 session.console.print(
-                    "\n[yellow]Otherwise set the flag '-l' to save the file locally.[/yellow]"
+                    "\n[yellow]Your routine will be saved locally.[/yellow]\n"
                 )
-                return
 
             # Check if title has a valid format
             title = " ".join(ns_parser.name) if ns_parser.name else ""
@@ -577,8 +458,8 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_TAGS  # noqa: PLW0603
             global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
+            RECORD_SESSION_LOCAL_ONLY = session.is_local()
             RECORD_SESSION = True
-            RECORD_SESSION_LOCAL_ONLY = ns_parser.local
             SESSION_RECORDED_NAME = title
             SESSION_RECORDED_DESCRIPTION = (
                 " ".join(ns_parser.description)
@@ -598,123 +479,137 @@ class BaseController(metaclass=ABCMeta):
                 "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
             )
 
-    def call_stop(self, _) -> None:
+    def call_stop(self, other_args) -> None:
         """Process stop command."""
-        global RECORD_SESSION  # noqa: PLW0603
-        global SESSION_RECORDED  # noqa: PLW0603
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stop",
+            description="Stop recording session into .openbb routine file",
+        )
+        # This is only for auto-completion purposes
+        _ = self.parse_simple_args(parser, other_args)
 
-        if not RECORD_SESSION:
-            session.console.print(
-                "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
-            )
-        elif len(SESSION_RECORDED) < 5:
-            session.console.print(
-                "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
-            )
-        else:
-            current_user = session.user
+        if "-h" not in other_args and "--help" not in other_args:
+            global RECORD_SESSION  # noqa: PLW0603
+            global SESSION_RECORDED  # noqa: PLW0603
 
-            # Check if the user just wants to store routine locally
-            # This works regardless of whether they are logged in or not
-            if RECORD_SESSION_LOCAL_ONLY:
-                # Whitespaces are replaced by underscores and an .openbb extension is added
-                title_for_local_storage = (
-                    SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
-                )
-
-                routine_file = os.path.join(
-                    f"{current_user.preferences.export_directory}/routines",
-                    title_for_local_storage,
-                )
-
-                # If file already exists, add a timestamp to the name
-                if os.path.isfile(routine_file):
-                    i = session.console.input(
-                        "A local routine with the same name already exists, "
-                        "do you want to override it? (y/n): "
-                    )
-                    session.console.print("")
-                    while i.lower() not in ["y", "yes", "n", "no"]:
-                        i = session.console.input("Select 'y' or 'n' to proceed: ")
-                        session.console.print("")
-
-                    if i.lower() in ["n", "no"]:
-                        new_name = (
-                            datetime.now().strftime("%Y%m%d_%H%M%S_")
-                            + title_for_local_storage
-                        )
-                        routine_file = os.path.join(
-                            current_user.preferences.export_directory,
-                            "routines",
-                            new_name,
-                        )
-                        session.console.print(
-                            f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
-                        )
-
-                # Writing to file
-                Path(os.path.dirname(routine_file)).mkdir(parents=True, exist_ok=True)
-
-                with open(routine_file, "w") as file1:
-                    lines = ["# OpenBB Platform CLI - Routine", "\n"]
-
-                    username = getattr(
-                        session.user.profile.hub_session, "username", "local"
-                    )
-
-                    lines += [f"# Author: {username}", "\n\n"] if username else ["\n"]
-                    lines += [
-                        f"# Title: {SESSION_RECORDED_NAME}",
-                        "\n",
-                        f"# Tags: {SESSION_RECORDED_TAGS}",
-                        "\n\n",
-                        f"# Description: {SESSION_RECORDED_DESCRIPTION}",
-                        "\n\n",
-                    ]
-                    lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
-                    # Writing data to a file
-                    file1.writelines(lines)
-
+            if not RECORD_SESSION:
                 session.console.print(
-                    f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                    "[red]There is no session being recorded. Start one using the command 'record'[/red]\n"
                 )
+            elif len(SESSION_RECORDED) < 5:
+                session.console.print(
+                    "[red]Run at least 4 commands before stopping recording a session.[/red]\n"
+                )
+            else:
+                current_user = session.user
 
-            # If user doesn't specify they want to store routine locally
-            # Confirm that the user is logged in
-            elif not session.is_local():
-                routine = "\n".join(SESSION_RECORDED[:-1])
-                hub_session = current_user.profile.hub_session
-
-                if routine is not None:
-                    auth_header = (
-                        f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}"
-                        if hub_session
-                        else None
+                # Check if the user just wants to store routine locally
+                # This works regardless of whether they are logged in or not
+                if RECORD_SESSION_LOCAL_ONLY:
+                    # Whitespaces are replaced by underscores and an .openbb extension is added
+                    title_for_local_storage = (
+                        SESSION_RECORDED_NAME.replace(" ", "_") + ".openbb"
                     )
-                    kwargs = {
-                        "auth_header": auth_header,
-                        "name": SESSION_RECORDED_NAME,
-                        "description": SESSION_RECORDED_DESCRIPTION,
-                        "routine": routine,
-                        "tags": SESSION_RECORDED_TAGS,
-                        "public": SESSION_RECORDED_PUBLIC,
-                    }
-                    response = upload_routine(**kwargs)  # type: ignore
-                    if response is not None and response.status_code == 409:
+
+                    routine_file = os.path.join(
+                        f"{current_user.preferences.export_directory}/routines",
+                        title_for_local_storage,
+                    )
+
+                    # If file already exists, add a timestamp to the name
+                    if os.path.isfile(routine_file):
                         i = session.console.input(
-                            "A routine with the same name already exists, "
-                            "do you want to replace it? (y/n): "
+                            "A local routine with the same name already exists, "
+                            "do you want to override it? (y/n): "
                         )
                         session.console.print("")
-                        if i.lower() in ["y", "yes"]:
-                            kwargs["override"] = True  # type: ignore
-                            response = upload_routine(**kwargs)  # type: ignore
-                        else:
-                            session.console.print("[info]Aborted.[/info]")
+                        while i.lower() not in ["y", "yes", "n", "no"]:
+                            i = session.console.input("Select 'y' or 'n' to proceed: ")
+                            session.console.print("")
 
-            # Clear session to be recorded again
-            RECORD_SESSION = False
-            SESSION_RECORDED = list()
+                        if i.lower() in ["n", "no"]:
+                            new_name = (
+                                datetime.now().strftime("%Y%m%d_%H%M%S_")
+                                + title_for_local_storage
+                            )
+                            routine_file = os.path.join(
+                                current_user.preferences.export_directory,
+                                "routines",
+                                new_name,
+                            )
+                            session.console.print(
+                                f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
+                            )
+
+                    # Writing to file
+                    Path(os.path.dirname(routine_file)).mkdir(
+                        parents=True, exist_ok=True
+                    )
+
+                    with open(routine_file, "w") as file1:
+                        lines = ["# OpenBB Platform CLI - Routine", "\n"]
+
+                        username = getattr(
+                            session.user.profile.hub_session, "username", "local"
+                        )
+
+                        lines += (
+                            [f"# Author: {username}", "\n\n"] if username else ["\n"]
+                        )
+                        lines += [
+                            f"# Title: {SESSION_RECORDED_NAME}",
+                            "\n",
+                            f"# Tags: {SESSION_RECORDED_TAGS}",
+                            "\n\n",
+                            f"# Description: {SESSION_RECORDED_DESCRIPTION}",
+                            "\n\n",
+                        ]
+                        lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
+                        # Writing data to a file
+                        file1.writelines(lines)
+
+                    session.console.print(
+                        f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+                    )
+
+                # If user doesn't specify they want to store routine locally
+                # Confirm that the user is logged in
+                elif not session.is_local():
+                    routine = "\n".join(SESSION_RECORDED[:-1])
+                    hub_session = current_user.profile.hub_session
+
+                    if routine is not None:
+                        auth_header = (
+                            f"{hub_session.token_type} {hub_session.access_token.get_secret_value()}"
+                            if hub_session
+                            else None
+                        )
+                        kwargs = {
+                            "auth_header": auth_header,
+                            "name": SESSION_RECORDED_NAME,
+                            "description": SESSION_RECORDED_DESCRIPTION,
+                            "routine": routine,
+                            "tags": SESSION_RECORDED_TAGS,
+                            "public": SESSION_RECORDED_PUBLIC,
+                        }
+                        response = upload_routine(**kwargs)  # type: ignore
+                        if response is not None and response.status_code == 409:
+                            i = session.console.input(
+                                "A routine with the same name already exists, "
+                                "do you want to replace it? (y/n): "
+                            )
+                            session.console.print("")
+                            if i.lower() in ["y", "yes"]:
+                                kwargs["override"] = True  # type: ignore
+                                response = upload_routine(**kwargs)  # type: ignore
+                            else:
+                                session.console.print("[info]Aborted.[/info]")
+
+                # Clear session to be recorded again
+                RECORD_SESSION = False
+                SESSION_RECORDED = list()
 
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
@@ -841,16 +736,6 @@ class BaseController(metaclass=ABCMeta):
             "-h", "--help", action="store_true", help="show this help message"
         )
 
-        if setup.HOLD:
-            parser.add_argument(
-                "--legend",
-                type=str,
-                dest="hold_legend_str",
-                default="",
-                nargs="+",
-                help="Label for legend when hold is on.",
-            )
-
         if export_allowed != "no_export":
             choices_export = []
             help_export = "Does not export!"
@@ -871,6 +756,7 @@ class BaseController(metaclass=ABCMeta):
                 type=check_file_type_saved(choices_export),
                 dest="export",
                 help=help_export,
+                nargs="+",
             )
 
             # If excel is an option, add the sheet name
@@ -932,10 +818,6 @@ class BaseController(metaclass=ABCMeta):
             # In case the command has required argument that isn't specified
 
             return None
-
-        # This protects against the hidden loads in stocks/fa
-        if parser.prog != "load" and setup.HOLD:
-            setup.set_last_legend(" ".join(ns_parser.hold_legend_str))
 
         if l_unknown_args:
             session.console.print(
@@ -1001,7 +883,6 @@ class BaseController(metaclass=ABCMeta):
                                     '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                     '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                     "see usage and available options    "
-                                    f'<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                                     f"{self.path[-1].capitalize()} (cmd/menu) Documentation"
                                 ),
                                 style=Style.from_dict(

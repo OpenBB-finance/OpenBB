@@ -25,7 +25,7 @@ class FMPForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     __alias_dict__ = {"fiscal_period": "period"}
 

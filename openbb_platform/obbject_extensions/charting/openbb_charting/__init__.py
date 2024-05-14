@@ -35,13 +35,12 @@ warnings.filterwarnings(
     "ignore", category=UserWarning, module="openbb_core.app.model.extension", lineno=47
 )
 
-ext = Extension(name="charting")
+ext = Extension(name="charting", description="Create custom charts from OBBject data.")
 
 
 @ext.obbject_accessor
 class Charting:
-    """
-    Charting extension.
+    """Charting extension.
 
     Methods
     -------
@@ -79,8 +78,8 @@ class Charting:
 
     @classmethod
     def indicators(cls):
-        """
-        Return an instance of the IndicatorsParams class, containing all available indicators and their parameters.
+        """Return an instance of the IndicatorsParams class, containing all available indicators and their parameters.
+
         Without assigning to a variable, it will print the the information to the console.
         """
         return IndicatorsParams()
@@ -92,7 +91,6 @@ class Charting:
 
     def _handle_backend(self) -> Backend:
         """Create and start the backend."""
-
         create_backend(self._charting_settings)
         backend = get_backend()
         backend.start(debug=self._charting_settings.debug_mode)
@@ -101,15 +99,14 @@ class Charting:
     @staticmethod
     def _get_chart_function(route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
-
         if route is None:
             raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
         return getattr(charting_router, adjusted_route)
 
     def get_params(self) -> ChartParams:
-        """
-        Return the ChartQueryParams class for the function the OBBject was created from.
+        """Return the ChartQueryParams class for the function the OBBject was created from.
+
         Without assigning to a variable, it will print the docstring to the console.
         """
         if self._obbject._route is None:  # pylint: disable=protected-access
@@ -128,7 +125,7 @@ class Charting:
     ) -> Tuple[pd.DataFrame, bool]:
         """Convert supplied data to a DataFrame."""
         has_data = (
-            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty
+            isinstance(data, (Data, pd.DataFrame, pd.Series)) and not data.empty  # type: ignore
         ) or (bool(data))
         index = (
             data.index.name
@@ -393,11 +390,10 @@ class Charting:
         render: bool = True,
         **kwargs,
     ):
-        """
-        Create an OpenBBFigure with user customizations (if any) and save it to the OBBject.
+        """Create an OpenBBFigure with user customizations (if any) and save it to the OBBject.
+
         This function is used to populate, or re-populate, the OBBject with a chart using the data within
         the OBBject or external data supplied via the `data` parameter.
-
         This function modifies the original OBBject by overwriting the existing chart.
 
         Parameters
@@ -507,10 +503,10 @@ class Charting:
         current = self._charting_settings.chart_style
         new = "light" if current == "dark" else "dark"
         self._charting_settings.chart_style = new
-        figure = self._obbject.chart.fig
+        figure = self._obbject.chart.fig  # type: ignore[union-attr]
         updated_figure = self._set_chart_style(figure)
-        self._obbject.chart.fig = updated_figure
-        self._obbject.chart.content = updated_figure.show(
+        self._obbject.chart.fig = updated_figure  # type: ignore[union-attr]
+        self._obbject.chart.content = updated_figure.show(  # type: ignore[union-attr]
             external=True
         ).to_plotly_json()
 
@@ -519,8 +515,7 @@ class Charting:
         data: Optional[Union[pd.DataFrame, pd.Series]] = None,
         title: str = "",
     ):
-        """
-        Display an interactive table.
+        """Display an interactive table.
 
         Parameters
         ----------

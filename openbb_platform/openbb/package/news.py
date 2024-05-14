@@ -236,14 +236,12 @@ class ROUTER_news(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "multiple_items_allowed": [
-                            "benzinga",
-                            "fmp",
-                            "intrinio",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
+                        "benzinga": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "polygon": {"multiple_items_allowed": True},
+                        "tiingo": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )

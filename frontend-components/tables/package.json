@@ -22,7 +22,7 @@
     "@tanstack/match-sorter-utils": "^8.7.6",
     "@tanstack/react-table": "^8.7.9",
     "dom-to-image": "^2.6.0",
-    "plotly.js": "^2.18.2",
+    "plotly.js": "^2.32.0",
     "react": "^17.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",

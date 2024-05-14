@@ -27,7 +27,7 @@ class IntrinioKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://data.intrinio.com/data-tags/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class IntrinioKeyMetricsData(KeyMetricsData):

@@ -21,6 +21,9 @@ from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetch
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
+from openbb_intrinio.models.forward_pe_estimates import (
+    IntrinioForwardPeEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_sales_estimates import (
     IntrinioForwardSalesEstimatesFetcher,
 )
@@ -55,9 +58,9 @@ from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 intrinio_provider = Provider(
     name="intrinio",
-    website="https://intrinio.com/",
+    website="https://intrinio.com",
     description="""Intrinio is a financial data platform that provides real-time and
-    historical financial market data to businesses and developers through an API.""",
+historical financial market data to businesses and developers through an API.""",
     credentials=["api_key"],
     fetcher_dict={
         "BalanceSheet": IntrinioBalanceSheetFetcher,
@@ -77,6 +80,7 @@ intrinio_provider = Provider(
         "EtfSearch": IntrinioEtfSearchFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
         "ForwardEpsEstimates": IntrinioForwardEpsEstimatesFetcher,
+        "ForwardPeEstimates": IntrinioForwardPeEstimatesFetcher,
         "ForwardSalesEstimates": IntrinioForwardSalesEstimatesFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
@@ -97,4 +101,7 @@ intrinio_provider = Provider(
         "ShareStatistics": IntrinioShareStatisticsFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,
     },
+    repr_name="Intrinio",
+    v3_credentials=["API_INTRINIO_KEY"],
+    instructions="Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard.",  # noqa: E501  pylint: disable=line-too-long
 )

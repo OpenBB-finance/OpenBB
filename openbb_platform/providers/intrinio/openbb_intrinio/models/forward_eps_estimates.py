@@ -27,7 +27,7 @@ class IntrinioForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
     https://docs.intrinio.com/documentation/web_api/get_zacks_sales_estimates_v2
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     fiscal_year: Optional[int] = Field(
         default=None,

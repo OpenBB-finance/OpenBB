@@ -685,6 +685,6 @@ class ROUTER_equity_ownership(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
+                info={"symbol": {"yfinance": {"multiple_items_allowed": True}}},
             )
         )

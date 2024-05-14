@@ -40,7 +40,7 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: str = Field(
         default="1d",
