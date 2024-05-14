@@ -7,6 +7,7 @@ from openbb_core.app.service.user_service import UserService
 from openbb_econdb.models.available_indicators import EconDbAvailableIndicatorsFetcher
 from openbb_econdb.models.country_profile import EconDbCountryProfileFetcher
 from openbb_econdb.models.economic_indicators import EconDbEconomicIndicatorsFetcher
+from openbb_econdb.models.yield_curve import EconDbYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -22,6 +23,20 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_econdb_yield_curve_fetcher(credentials=test_credentials):
+    """Test EconDB Yield Curve Fetcher."""
+    params = {
+        "country": "united_kingdom",
+        "date": "2024-05-10,2020-05-10",
+        "use_cache": False,
+    }
+
+    fetcher = EconDbYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

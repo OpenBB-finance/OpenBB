@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
@@ -15,6 +15,7 @@ class ROUTER_fixedincome_government(Container):
     """/fixedincome/government
     treasury_rates
     us_yield_curve
+    yield_curve
     """
 
     def __repr__(self) -> str:
@@ -199,5 +200,95 @@ class ROUTER_fixedincome_government(Container):
                     "inflation_adjusted": inflation_adjusted,
                 },
                 extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def yield_curve(
+        self,
+        country: Annotated[
+            Optional[str], OpenBBField(description="The country to get data.")
+        ] = None,
+        date: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBField(
+                description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["econdb", "federal_reserve"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get yield curve data by country and date.
+
+        Parameters
+        ----------
+        country : Optional[str]
+            The country to get data.
+        date : Union[str, None, List[Optional[str]]]
+            A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve.
+        provider : Optional[Literal['econdb', 'federal_reserve']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'econdb' if there is
+            no default.
+        use_cache : bool
+            If true, cache the request for four hours. (provider: econdb)
+
+        Returns
+        -------
+        OBBject
+            results : List[YieldCurve]
+                Serializable results.
+            provider : Optional[Literal['econdb', 'federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        YieldCurve
+        ----------
+        date : Optional[date]
+            The date of the data.
+        maturity : str
+            Maturity length of the security.
+        rate : float
+            The yield as a normalized percent (0.05 is 5%)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.government.yield_curve(provider='econdb')
+        >>> obb.fixedincome.government.yield_curve(date='2023-05-01', country='united_kingdom', provider='econdb')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/government/yield_curve",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/government/yield_curve",
+                        ("econdb", "federal_reserve"),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={
+                    "date": {
+                        "econdb": ["multiple_items_allowed"],
+                        "federal_reserve": {"multiple_items_allowed": True},
+                    }
+                },
             )
         )
