@@ -78,7 +78,7 @@ class FederalReserveYieldCurveFetcher(
         """Return the transformed data."""
         df = data.copy()
         df.set_index("date", inplace=True)
-        dates = query.date.split(",") if query.date else df.index.max()
+        dates = query.date.split(",") if query.date else [df.index.max()]
         df.index = DatetimeIndex(df.index)
         dates_list = DatetimeIndex(dates)
         df.columns.name = "maturity"
