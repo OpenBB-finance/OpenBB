@@ -129,7 +129,7 @@ def install_local(_extras: bool = False):
         print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
 
     finally:
-        # Revert pyproject.toml and poetry.lock to their original state
+        # Revert pyproject.toml and poetry.lock to their original state.
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(original_pyproject)
 
