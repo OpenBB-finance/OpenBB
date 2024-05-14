@@ -5,9 +5,11 @@
 
 
 from pathlib import Path
+from time import time
 from unittest.mock import MagicMock, patch
 
 import pytest
+from jwt import encode
 from openbb_core.app.service.hub_service import (
     Credentials,
     HubService,
@@ -308,3 +310,35 @@ def test_platform2hub():
     assert user_settings.features_keys["API_FRED_KEY"] == "fred"
     assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
     assert "some_api_key" not in user_settings.features_keys
+
+
+@pytest.mark.parametrize(
+    "token, message",
+    [
+        # valid
+        (
+            encode(
+                {"some": "payload", "exp": int(time()) + 100},
+                "secret",
+                algorithm="HS256",
+            ),
+            None,
+        ),
+        # expired
+        (
+            encode(
+                {"some": "payload", "exp": int(time())}, "secret", algorithm="HS256"
+            ),
+            "Platform personal access token expired.",
+        ),
+        # invalid
+        ("invalid_token", "Failed to decode Platform token."),
+    ],
+)
+def test__check_token_expiration(token, message):
+    """Test check token expiration function."""
+    if message:
+        with pytest.raises(OpenBBError, match=message):
+            HubService._check_token_expiration(token)
+    else:
+        HubService._check_token_expiration(token)

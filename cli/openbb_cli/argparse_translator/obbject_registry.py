@@ -20,8 +20,10 @@ class Registry:
 
     def register(self, obbject: OBBject) -> bool:
         """Designed to add an OBBject instance to the registry."""
-        if isinstance(obbject, OBBject) and not self._contains_obbject(
-            obbject.id, self._obbjects
+        if (
+            isinstance(obbject, OBBject)
+            and not self._contains_obbject(obbject.id, self._obbjects)
+            and obbject.results
         ):
             self._obbjects.append(obbject)
             return True

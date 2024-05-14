@@ -188,8 +188,9 @@ class CLIController(BaseController):
                 "--input": None,
                 "-i": "--input",
                 "--url": None,
+                "--help": None,
+                "-h": "--help",
             }
-
             choices["record"] = {
                 "--name": None,
                 "-n": "--name",
@@ -200,14 +201,36 @@ class CLIController(BaseController):
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
+                "--help": None,
+                "-h": "--help",
             }
+            choices["stop"] = {"--help": None, "-h": "--help"}
+            choices["results"] = {"--help": None, "-h": "--help"}
 
             self.update_completer(choices)
 
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_info("Configure your own CLI")
+
+        mt.add_info("Configure the platform and manage your account")
+        for router, value in PLATFORM_ROUTERS.items():
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
+                continue
+            if value == "menu":
+                menu_description = (
+                    obb.reference["routers"]  # type: ignore
+                    .get(f"{self.PATH}{router}", {})
+                    .get("description")
+                ) or ""
+                mt.add_menu(
+                    name=router,
+                    description=menu_description.split(".")[0].lower(),
+                )
+            else:
+                mt.add_cmd(router)
+
+        mt.add_info("\nConfigure your CLI")
         mt.add_menu(
             "settings",
             description="enable and disable feature flags, preferences and settings",
@@ -260,32 +283,17 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_info("\nConfigure the platform and manage your account")
-
-        for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
-                continue
-            if value == "menu":
-                menu_description = (
-                    obb.reference["routers"]  # type: ignore
-                    .get(f"{self.PATH}{router}", {})
-                    .get("description")
-                ) or ""
-                mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
-                )
-            else:
-                mt.add_cmd(router)
-
-        mt.add_info("\nAccess and manage your cached results")
+        mt.add_raw("\n")
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
-            mt.add_section("Cached Results:\n", leading_new_line=True)
+            mt.add_info("\nCached Results")
             for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")  # type: ignore
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
