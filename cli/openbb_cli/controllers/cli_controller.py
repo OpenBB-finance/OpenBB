@@ -212,7 +212,25 @@ class CLIController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_info("Configure your own CLI")
+
+        mt.add_info("Configure the platform and manage your account")
+        for router, value in PLATFORM_ROUTERS.items():
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
+                continue
+            if value == "menu":
+                menu_description = (
+                    obb.reference["routers"]  # type: ignore
+                    .get(f"{self.PATH}{router}", {})
+                    .get("description")
+                ) or ""
+                mt.add_menu(
+                    name=router,
+                    description=menu_description.split(".")[0].lower(),
+                )
+            else:
+                mt.add_cmd(router)
+
+        mt.add_info("\nConfigure your CLI")
         mt.add_menu(
             "settings",
             description="enable and disable feature flags, preferences and settings",
@@ -264,24 +282,6 @@ class CLIController(BaseController):
                     )
                 else:
                     mt.add_cmd(router)
-
-        mt.add_info("\nConfigure the platform and manage your account")
-
-        for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
-                continue
-            if value == "menu":
-                menu_description = (
-                    obb.reference["routers"]  # type: ignore
-                    .get(f"{self.PATH}{router}", {})
-                    .get("description")
-                ) or ""
-                mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
-                )
-            else:
-                mt.add_cmd(router)
 
         mt.add_info("\nCached Results")
         mt.add_cmd("results")
