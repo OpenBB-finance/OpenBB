@@ -159,7 +159,7 @@ class PlatformController(BaseController):
 
                     if obbject:
 
-                        if isinstance(obbject, OBBject) and obbject.results:
+                        if isinstance(obbject, OBBject):
                             if session.max_obbjects_exceeded():
                                 session.obbject_registry.remove()
                                 session.console.print(
