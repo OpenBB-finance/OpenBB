@@ -285,7 +285,10 @@ class CLIController(BaseController):
             for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")  # type: ignore
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}\n",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()

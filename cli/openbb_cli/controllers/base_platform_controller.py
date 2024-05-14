@@ -326,11 +326,14 @@ class PlatformController(BaseController):
                 )
 
         if session.obbject_registry.obbjects:
-            mt.add_section("Cached Results:\n", leading_new_line=True)
+            mt.add_info("\nCached Results")
             for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}\n",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu=self.PATH)
 
