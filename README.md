@@ -55,6 +55,18 @@ or by cloning the repository directly with `git clone https://github.com/OpenBB-
 
 Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/platform/installation).
 
+### OpenBB Platform CLI installation
+
+The OpenBB Platform CLI is a command-line interface that allows you to access the OpenBB Platform directly from your terminal.
+
+It can be installed by running `pip install openbb-cli`
+
+or by cloning the repository directly with  `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`.
+
+Please find more about the installation process in the [OpenBB Documentation](https://docs.openbb.co/cli/installation).
+
+> The OpenBB Platform CLI offers an alternative to the former [OpenBB Terminal](https://github.com/OpenBB-finance/LegacyTerminal) as it has the same look and feel while offering the functionalities and extendability of the OpenBB Platform.
+
 ## 2. Contributing
 
 There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
