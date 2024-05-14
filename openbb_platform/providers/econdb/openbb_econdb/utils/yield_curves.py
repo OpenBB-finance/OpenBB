@@ -138,27 +138,18 @@ DAILY = {
 
 DAILY_COUNTRIES = list(DAILY.keys())
 
-COUNTRIES = Literal[",".join(DAILY_COUNTRIES)]
-
-
-HK = "https://www.hkgb.gov.hk/en/others/documents/DailyClosings.xls"
-HK_HISTORICAL_DAILY = "https://www.hkgb.gov.hk/en/others/documents/T090403.xls"
-
-
-def duration_sorter(durations: list) -> list:
-    """Sort durations labeled as month_5, year_5, etc."""
-
-    def duration_to_months(duration):
-        """Convert duration to months."""
-        if duration == "long_term":
-            return 360
-        parts = duration.split("_")
-        months = 0
-        for i in range(0, len(parts), 2):
-            number = int(parts[i + 1])
-            if parts[i] == "year":
-                number *= 12  # Convert years to months
-            months += number
-        return months
-
-    return sorted(durations, key=duration_to_months)
+COUNTRIES = Literal[
+    "australia",
+    "canada",
+    "china",
+    "hong_kong",
+    "india",
+    "japan",
+    "russia",
+    "saudi_arabia",
+    "south_africa",
+    "south_korea",
+    "taiwan",
+    "united_kingdom",
+    "united_states",
+]
