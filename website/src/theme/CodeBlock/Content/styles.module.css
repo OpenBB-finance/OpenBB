@@ -35,6 +35,7 @@
   float: left;
   min-width: 100%;
   padding: var(--ifm-pre-padding);
+  line-height: 18px;
 }
 
 .codeBlockLinesWithNumbering {
