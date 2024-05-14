@@ -159,8 +159,8 @@ class PlatformController(BaseController):
 
                     if obbject:
 
-                        if isinstance(obbject, OBBject) and obbject.results:
-                            if session.max_obbjects_exceeded():
+                        if isinstance(obbject, OBBject):
+                            if session.max_obbjects_exceeded() and obbject.results:
                                 session.obbject_registry.remove()
                                 session.console.print(
                                     "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
@@ -181,7 +181,9 @@ class PlatformController(BaseController):
                                 session.settings.SHOW_MSG_OBBJECT_REGISTRY
                                 and register_result
                             ):
-                                session.console.print("Added OBBject to registry.")
+                                session.console.print(
+                                    "Added `OBBject` to cached results."
+                                )
 
                             # making the dataframe available
                             # either for printing or exporting (or both)
@@ -326,11 +328,14 @@ class PlatformController(BaseController):
                 )
 
         if session.obbject_registry.obbjects:
-            mt.add_section("Cached Results:\n", leading_new_line=True)
+            mt.add_info("\nCached Results")
             for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu=self.PATH)
 

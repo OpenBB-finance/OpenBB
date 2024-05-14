@@ -99,17 +99,18 @@ class MenuText:
             else description
         )
 
-    def add_raw(self, text: str):
+    def add_raw(self, text: str, left_spacing: bool = False):
         """Append raw text (without translation)."""
-        self.menu_text += text
+        if left_spacing:
+            self.menu_text += f"{self.SECTION_SPACING * ' '}{text}\n"
+        else:
+            self.menu_text += text
 
     def add_section(
         self, text: str, description: str = "", leading_new_line: bool = False
     ):
         """Append raw text (without translation)."""
         spacing = (self.CMD_NAME_LENGTH - len(text) + self.SECTION_SPACING) * " "
-        left_spacing = self.SECTION_SPACING * " "
-        text = f"{left_spacing}{text}"
         if description:
             text = f"{text}{spacing}{description}\n"
 
