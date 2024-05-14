@@ -42,7 +42,7 @@ class CustomArgument(BaseModel):
     action: Literal["store_true", "store"]
     help: str
     nargs: Optional[Literal["+"]]
-    choices: Optional[Any]
+    choices: Optional[Tuple]
 
     @model_validator(mode="after")  # type: ignore
     @classmethod
@@ -117,7 +117,7 @@ class ReferenceToCustomArgumentsProcessor:
             return "+"
         return None
 
-    def _get_choices(self, type_: str) -> Tuple:
+    def _get_choices(self, type_: str, custom_choices: Any) -> Tuple:
         """Get the choices for the given type."""
         type_ = self._make_type_parsable(type_)  # type: ignore
         type_origin = get_origin(type_)
@@ -126,14 +126,12 @@ class ReferenceToCustomArgumentsProcessor:
 
         if type_origin is Literal:
             choices = get_args(type_)
-            # param_type = type(choices[0])
 
         if type_origin is list:
             type_ = get_args(type_)[0]
 
             if get_origin(type_) is Literal:
                 choices = get_args(type_)
-                # param_type = type(choices[0])
 
         if type_origin is Union and type(None) in get_args(type_):
             # remove NoneType from the args
@@ -145,7 +143,9 @@ class ReferenceToCustomArgumentsProcessor:
 
             if get_origin(type_) is Literal:
                 choices = get_args(type_)
-                # param_type = type(choices[0])
+
+        if custom_choices:
+            return tuple(custom_choices)
 
         return choices
 
@@ -174,7 +174,9 @@ class ReferenceToCustomArgumentsProcessor:
                             action="store" if type_ != bool else "store_true",
                             help=arg["description"],
                             nargs=self._get_nargs(type_),  # type: ignore
-                            choices=self._get_choices(arg["type"]),
+                            choices=self._get_choices(
+                                arg["type"], custom_choices=arg["choices"]
+                            ),
                         )
                     )
 
