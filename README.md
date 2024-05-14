@@ -91,10 +91,8 @@ We are most active on [our Discord](https://openbb.co/discord), but feel free to
 
 ## 3. License
 
-Distributed under the MIT License. See
+Distributed under the AGPLv3 License. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE) for more information.
-
-<!-- TODO: Tag Theo to review the license. -->
 
 ## 4. Disclaimer
 
