@@ -1483,8 +1483,10 @@ class ReferenceGenerator:
                 .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
             )  # fmt: skip
 
+            extra = field_info.json_schema_extra or {}
+
             # Add information for the providers supporting multiple symbols
-            if params_type == "QueryParams" and (extra := field_info.json_schema_extra):
+            if params_type == "QueryParams" and extra:
 
                 providers = []
                 for p, v in extra.items():  # type: ignore[union-attr]
@@ -1512,6 +1514,7 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
+                    "choices": extra.get("choices"),
                 }
             )
 
