@@ -21,5 +21,4 @@ an open and transparent government.""",
         "TreasuryPrices": GovernmentUSTreasuryPricesFetcher,
     },
     repr_name="Data.gov | United States Government",
-    logo_url="https://upload.wikimedia.org/wikipedia/commons/0/06/Muq55HrN_400x400.png",
 )

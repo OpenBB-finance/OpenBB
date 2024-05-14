@@ -8,11 +8,12 @@ from typing import Any, Dict, List
 from poetry.core.pyproject.toml import PyProjectTOML
 
 THIS_DIR = Path(__file__).parent
-PROVIDERS_PATH = Path(THIS_DIR, "..", "..", "openbb_platform/providers")
-EXTENSIONS_PATH = Path(THIS_DIR, "..", "..", "openbb_platform/extensions")
-OBBJECT_EXTENSIONS_PATH = Path(
-    THIS_DIR, "..", "..", "openbb_platform/obbject_extensions"
-)
+OPENBB_PLATFORM_PATH = Path(THIS_DIR, "..", "..", "openbb_platform")
+PROVIDERS_PATH = OPENBB_PLATFORM_PATH / "providers"
+EXTENSIONS_PATH = OPENBB_PLATFORM_PATH / "extensions"
+OBBJECT_EXTENSIONS_PATH = OPENBB_PLATFORM_PATH / "obbject_extensions"
+
+OPENBB_PLATFORM_TOML = PyProjectTOML(OPENBB_PLATFORM_PATH / "pyproject.toml")
 
 
 def to_title(string: str) -> str:
@@ -30,7 +31,7 @@ def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
         poetry = pyproject.data["tool"]["poetry"]
         name = poetry["name"]
         plugin = poetry.get("plugins", {}).get(plugin_key)
-        packages[name] = list(plugin.values())[0] if plugin else ""
+        packages[name] = {"plugin": list(plugin.values())[0] if plugin else ""}
     return packages
 
 
@@ -46,11 +47,15 @@ def to_camel(string: str):
     return components[0] + "".join(x.title() for x in components[1:])
 
 
-def createItem(package_name: str, obj: object, attrs: List[str]) -> Dict[str, str]:
+def createItem(package_name: str, obj: object, obj_attrs: List[str]) -> Dict[str, Any]:
     """Create dictionary item from object attributes."""
-    item = {"packageName": package_name}
+    pkg_spec = OPENBB_PLATFORM_TOML.data["tool"]["poetry"]["dependencies"].get(
+        package_name
+    )
+    optional = pkg_spec.get("optional", False) if isinstance(pkg_spec, dict) else False
+    item = {"packageName": package_name, "optional": optional}
     item.update(
-        {to_camel(a): getattr(obj, a) for a in attrs if getattr(obj, a) is not None}
+        {to_camel(a): getattr(obj, a) for a in obj_attrs if getattr(obj, a) is not None}
     )
     return item
 
@@ -58,54 +63,56 @@ def createItem(package_name: str, obj: object, attrs: List[str]) -> Dict[str, st
 def generate_provider_extensions() -> None:
     """Generate providers_extensions.json."""
     packages = get_packages(PROVIDERS_PATH, "openbb_provider_extension")
-    data: List[Dict[str, str]] = []
-    attrs = [
+    data: List[Dict[str, Any]] = []
+    obj_attrs = [
         "repr_name",
         "description",
         "credentials",
         "v3_credentials",
         "website",
         "instructions",
-        "logo_url",
     ]
 
-    for pkg_name, plugin in sorted(packages.items()):
+    for pkg_name, details in sorted(packages.items()):
+        plugin = details.get("plugin", "")
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             provider_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, provider_obj, attrs))
+            data.append(createItem(pkg_name, provider_obj, obj_attrs))
     write("provider", data)
 
 
 def generate_router_extensions() -> None:
     """Generate router_extensions.json."""
     packages = get_packages(EXTENSIONS_PATH, "openbb_core_extension")
-    data: List[Dict[str, str]] = []
-    attrs = ["description"]
-    for pkg_name, plugin in sorted(packages.items()):
+    data: List[Dict[str, Any]] = []
+    obj_attrs = ["description"]
+    for pkg_name, details in sorted(packages.items()):
+        plugin = details.get("plugin", "")
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             router_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, router_obj, attrs))
+            data.append(createItem(pkg_name, router_obj, obj_attrs))
     write("router", data)
 
 
 def generate_obbject_extensions() -> None:
     """Generate obbject_extensions.json."""
     packages = get_packages(OBBJECT_EXTENSIONS_PATH, "openbb_obbject_extension")
-    data: List[Dict[str, str]] = []
-    attrs = ["description"]
-    for pkg_name, plugin in sorted(packages.items()):
+    data: List[Dict[str, Any]] = []
+    obj_attrs = ["description"]
+    for pkg_name, details in sorted(packages.items()):
+        plugin = details.get("plugin", "")
         file_obj = plugin.split(":")
         if len(file_obj) == 2:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             ext_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, ext_obj, attrs))
+            data.append(createItem(pkg_name, ext_obj, obj_attrs))
     write("obbject", data)
 
 

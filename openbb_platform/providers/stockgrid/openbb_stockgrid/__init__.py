@@ -14,5 +14,4 @@ build a strategy around the number 1 factor moving the market: money.""",
         "ShortVolume": StockgridShortVolumeFetcher,
     },
     repr_name="Stockgrid",
-    logo_url="https://www.stockgrid.io/img/logo_white2.41ee5250.svg",
 )
