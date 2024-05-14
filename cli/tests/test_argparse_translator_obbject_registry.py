@@ -18,6 +18,17 @@ def registry():
 @pytest.fixture
 def mock_obbject():
     """Fixture to create a mock OBBject for testing."""
+
+    class MockModel:
+        """Mock model for testing."""
+
+        def __init__(self, value):
+            self.mock_value = value
+            self._model_json_schema = "mock_json_schema"
+
+        def model_json_schema(self):
+            return self._model_json_schema
+
     obb = Mock(spec=OBBject)
     obb.id = "123"
     obb.provider = "test_provider"
@@ -25,7 +36,7 @@ def mock_obbject():
     obb._route = "/test/route"
     obb._standard_params = Mock()
     obb._standard_params.__dict__ = {}
-    obb.results = []
+    obb.results = [MockModel(1), MockModel(2)]
     return obb
 
 

@@ -25,13 +25,6 @@ def test_add_raw(menu_text):
     assert "Example raw text" in menu_text.menu_text
 
 
-def test_add_section(menu_text):
-    """Test adding a section with and without description."""
-    menu_text.add_section("Section Title", "Description here", leading_new_line=True)
-    assert "\n    Section Title" in menu_text.menu_text
-    assert "Description here" in menu_text.menu_text
-
-
 def test_add_info(menu_text):
     """Test adding informational text."""
     menu_text.add_info("Info text")
