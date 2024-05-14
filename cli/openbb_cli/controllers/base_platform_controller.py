@@ -153,54 +153,67 @@ class PlatformController(BaseController):
                     ns_parser = self._intersect_data_processing_commands(ns_parser)
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
-                    df: pd.DataFrame = None
+                    df: pd.DataFrame = pd.DataFrame()
                     fig: OpenBBFigure = None
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:
-                        if session.max_obbjects_exceeded():
-                            session.obbject_registry.remove()
 
-                        # use the obbject to store the command so we can display it later on results
-                        obbject.extra["command"] = f"{title} {' '.join(other_args)}"
+                        if isinstance(obbject, OBBject):
+                            if session.max_obbjects_exceeded() and obbject.results:
+                                session.obbject_registry.remove()
+                                session.console.print(
+                                    "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
+                                )
 
-                        session.obbject_registry.register(obbject)
-                        # we need to force to re-link so that the new obbject
-                        # is immediately available for data processing commands
-                        self._link_obbject_to_data_processing_commands()
-                        # also update the completer
-                        self.update_completer(self.choices_default)
+                            # use the obbject to store the command so we can display it later on results
+                            obbject.extra["command"] = f"{title} {' '.join(other_args)}"
 
-                        if session.settings.SHOW_MSG_OBBJECT_REGISTRY and isinstance(
-                            obbject, OBBject
-                        ):
-                            session.console.print("Added OBBject to registry.")
+                            register_result = session.obbject_registry.register(obbject)
 
-                    if hasattr(ns_parser, "chart") and ns_parser.chart:
-                        obbject.show()
-                        fig = obbject.chart.fig
-                        if hasattr(obbject, "to_dataframe"):
+                            # we need to force to re-link so that the new obbject
+                            # is immediately available for data processing commands
+                            self._link_obbject_to_data_processing_commands()
+                            # also update the completer
+                            self.update_completer(self.choices_default)
+
+                            if (
+                                session.settings.SHOW_MSG_OBBJECT_REGISTRY
+                                and register_result
+                            ):
+                                session.console.print(
+                                    "Added `OBBject` to cached results."
+                                )
+
+                            # making the dataframe available
+                            # either for printing or exporting (or both)
                             df = obbject.to_dataframe()
+
+                            if hasattr(ns_parser, "chart") and ns_parser.chart:
+                                obbject.show()
+                                fig = obbject.chart.fig if obbject.chart else None
+                            else:
+                                if isinstance(df.columns, pd.RangeIndex):
+                                    df.columns = [str(i) for i in df.columns]
+
+                                print_rich_table(df=df, show_index=True, title=title)
+
                         elif isinstance(obbject, dict):
-                            df = pd.DataFrame.from_dict(obbject, orient="index")
-                        else:
-                            df = None
+                            df = pd.DataFrame.from_dict(obbject, orient="columns")
+                            print_rich_table(df=df, show_index=True, title=title)
 
-                    elif hasattr(obbject, "to_dataframe"):
-                        df = obbject.to_dataframe()
-                        if isinstance(df.columns, pd.RangeIndex):
-                            df.columns = [str(i) for i in df.columns]
-                        print_rich_table(df=df, show_index=True, title=title)
+                        elif not isinstance(obbject, OBBject):
+                            session.console.print(obbject)
 
-                    elif isinstance(obbject, dict):
-                        df = pd.DataFrame.from_dict(obbject, orient="index")
-                        print_rich_table(df=df, show_index=True, title=title)
-
-                    elif obbject:
-                        session.console.print(obbject)
-
-                    if hasattr(ns_parser, "export") and ns_parser.export:
+                    if (
+                        hasattr(ns_parser, "export")
+                        and ns_parser.export
+                        and not df.empty
+                    ):
                         sheet_name = getattr(ns_parser, "sheet_name", None)
+                        if sheet_name and isinstance(sheet_name, list):
+                            sheet_name = sheet_name[0]
+
                         export_data(
                             export_type=",".join(ns_parser.export),
                             dir_path=os.path.dirname(os.path.abspath(__file__)),
@@ -209,11 +222,8 @@ class PlatformController(BaseController):
                             sheet_name=sheet_name,
                             figure=fig,
                         )
-
-                    if session.max_obbjects_exceeded():
-                        session.console.print(
-                            "[yellow]\nMaximum number of OBBjects reached. The oldest entry was removed.[yellow]"
-                        )
+                    elif hasattr(ns_parser, "export") and ns_parser.export and df.empty:
+                        session.console.print("[yellow]No data to export.[/yellow]")
 
                 except Exception as e:
                     session.console.print(f"[red]{e}[/]\n")
@@ -318,11 +328,14 @@ class PlatformController(BaseController):
                 )
 
         if session.obbject_registry.obbjects:
-            mt.add_section("Cached Results:\n", leading_new_line=True)
+            mt.add_info("\nCached Results")
             for key, value in list(session.obbject_registry.all.items())[
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
-                mt.add_raw(f"\tOBB{key}: {value['command']}\n")
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu=self.PATH)
 

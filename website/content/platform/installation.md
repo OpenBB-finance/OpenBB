@@ -123,15 +123,6 @@ From your python interpreter, import the OpenBB Platform:
 from openbb import obb
 ```
 
-:::warning
-This import statement is required due to the statefulness of the obb package.  There is currently no support for imports such as
-
-```console
-from openbb.obb.equity import *
-```
-
-:::
-
 When the package is imported, any installed extensions will be discovered, imported and available for use.
 
 :::note

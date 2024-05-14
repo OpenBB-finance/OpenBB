@@ -18,12 +18,16 @@ class Registry:
         """Check if obbject with uuid is in the registry."""
         return any(obbject.id == uuid for obbject in obbjects)
 
-    def register(self, obbject: OBBject):
+    def register(self, obbject: OBBject) -> bool:
         """Designed to add an OBBject instance to the registry."""
-        if isinstance(obbject, OBBject) and not self._contains_obbject(
-            obbject.id, self._obbjects
+        if (
+            isinstance(obbject, OBBject)
+            and not self._contains_obbject(obbject.id, self._obbjects)
+            and obbject.results
         ):
             self._obbjects.append(obbject)
+            return True
+        return False
 
     def get(self, idx: int) -> OBBject:
         """Return the obbject at index idx."""

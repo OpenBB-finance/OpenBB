@@ -1,11 +1,11 @@
-name: Test Platform V4
+name: 🖥️ Unit test CLI
 
 on:
   pull_request:
     branches:
       - develop
     paths:
-      - 'openbb_platform/**'
+      - 'cli/**'
 
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -36,11 +36,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_platform/poetry.lock') }}
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('cli/poetry.lock') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
       - name: Run tests
         run: |
           pip install nox
-          nox -f .github/scripts/noxfile.py -s tests --python ${{ matrix.python_version }}
+          nox -f .github/scripts/noxfile.py -s unit_test_cli --python ${{ matrix.python_version }}
