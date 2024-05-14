@@ -39,7 +39,7 @@ repos:
             "--ignore-words-list=VAI,MIS,shs,gard,te,commun,parana,ro,zar,vie,hel,jewl,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,statics,ket,toke,certi,buidl,ot,fo",
             "--quiet-level=2",
             "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
-            "-x=.github/workflows/linting.yml"
+            "-x=.github/workflows/general-linting.yml"
           ]
   - repo: local
     hooks:

@@ -1,4 +1,4 @@
-name: API Integration Tests
+name: 🚉 Integration test Platform (API)
 
 on:
   workflow_dispatch:
