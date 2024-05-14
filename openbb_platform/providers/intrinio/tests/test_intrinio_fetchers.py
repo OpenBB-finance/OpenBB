@@ -25,6 +25,9 @@ from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetch
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
+from openbb_intrinio.models.forward_pe_estimates import (
+    IntrinioForwardPeEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_sales_estimates import (
     IntrinioForwardSalesEstimatesFetcher,
 )
@@ -503,5 +506,15 @@ def test_intrinio_price_target_consensus_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioPriceTargetConsensusFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_forward_pe_fetcher(credentials=test_credentials):
+    """Test forward pe fetcher."""
+    params = {"symbol": "AAPL,MSFT"}
+
+    fetcher = IntrinioForwardPeEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
