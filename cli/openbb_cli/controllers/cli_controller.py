@@ -283,10 +283,10 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_info("\nCached Results")
+        mt.add_raw("\n")
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
-            mt.add_raw("\n")
+            mt.add_info("\nCached Results")
             for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
