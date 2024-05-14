@@ -68,3 +68,9 @@ The `quit` command (can also use `q` or `..`) allows to leave the current menu t
 The `exit` command allows the user to exit the CLI.
 
 ### Reset
+
+The `reset` command will reset the CLI to its default state. This is specially useful for development so you can refresh the CLI without having to close and open it again.
+
+### Results
+
+The `results` command will display the stack of `OBBjects` that have been generated during the session, which can be later injected on the data processing commands.
