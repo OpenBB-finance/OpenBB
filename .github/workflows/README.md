@@ -54,7 +54,7 @@ Similarly, the `deploy-pypi` job is triggered only if the pushed branch starts w
 
 Note: The code uses the `pypa/build` package for building the binary wheel and source tarball, and the `pypa/gh-action-pypi-publish@release/v1` Github Action for publishing the distributions to PyPI and TestPyPI.
 
-## Release Drafter
+## Draft release
 
 This GitHub Actions workflow is designed to automatically generate and update draft releases in a GitHub repository. The workflow is triggered when it is manually dispatched, allowing you to control when the draft releases are updated.
 
