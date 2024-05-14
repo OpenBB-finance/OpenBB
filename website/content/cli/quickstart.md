@@ -98,7 +98,11 @@ Parameters are all defined through the same pattern, `--argument`, followed by a
 If the parameter is a boolean (true/false), there is no value to enter. Adding the `--argument` flags the parameter to be the opposite of its default state.
 
 :::danger
-The use of positional arguments (i.e, `historical AAPL --start_date 2024-01-01`) is not currently supported.
+The use of positional arguments is not supported.
+
+❌ `historical AAPL --start_date 2024-01-01`
+
+✅ `historical --symbol AAPL --start_date 2024-01-01`
 :::
 
 ### Use Auto Complete
