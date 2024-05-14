@@ -160,7 +160,7 @@ class PlatformController(BaseController):
                     if obbject:
 
                         if isinstance(obbject, OBBject):
-                            if session.max_obbjects_exceeded():
+                            if session.max_obbjects_exceeded() and obbject.results:
                                 session.obbject_registry.remove()
                                 session.console.print(
                                     "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[yellow]"
@@ -181,7 +181,9 @@ class PlatformController(BaseController):
                                 session.settings.SHOW_MSG_OBBJECT_REGISTRY
                                 and register_result
                             ):
-                                session.console.print("Added OBBject to registry.")
+                                session.console.print(
+                                    "Added `OBBject` to cached results."
+                                )
 
                             # making the dataframe available
                             # either for printing or exporting (or both)
