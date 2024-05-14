@@ -48,9 +48,6 @@ jobs:
               libgtk-3-dev \
               libwebkit2gtk-4.0-dev
 
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
       - name: Generate Platform Markdown
         run: |
           source .venv/bin/activate
