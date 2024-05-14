@@ -119,8 +119,6 @@ historical --symbol AAPL --start_date 2024-01-01 --
 
 ### Data Processing Commands
 
-Extensions such as, `openbb-technical`
-
 Data processing extensions, like `openbb-technical` accept `data` as an input.
 
 :::info
