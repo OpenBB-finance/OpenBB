@@ -188,8 +188,9 @@ class CLIController(BaseController):
                 "--input": None,
                 "-i": "--input",
                 "--url": None,
+                "--help": None,
+                "-h": "--help",
             }
-
             choices["record"] = {
                 "--name": None,
                 "-n": "--name",
@@ -200,7 +201,11 @@ class CLIController(BaseController):
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
+                "--help": None,
+                "-h": "--help",
             }
+            choices["stop"] = {"--help": None, "-h": "--help"}
+            choices["results"] = {"--help": None, "-h": "--help"}
 
             self.update_completer(choices)
 
@@ -278,15 +283,15 @@ class CLIController(BaseController):
             else:
                 mt.add_cmd(router)
 
-        mt.add_info("\nAccess and manage your cached results")
+        mt.add_info("\nCached Results")
         mt.add_cmd("results")
         if session.obbject_registry.obbjects:
-            mt.add_section("Cached Results:\n", leading_new_line=True)
+            mt.add_raw("\n")
             for key, value in list(session.obbject_registry.all.items())[  # type: ignore
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
                 mt.add_raw(
-                    f"[yellow]OBB{key}[/yellow]: {value['command']}\n",
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
                     left_spacing=True,
                 )
 

@@ -331,7 +331,7 @@ class PlatformController(BaseController):
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
                 mt.add_raw(
-                    f"[yellow]OBB{key}[/yellow]: {value['command']}\n",
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
                     left_spacing=True,
                 )
 
