@@ -197,7 +197,7 @@ class PlatformController(BaseController):
                                 print_rich_table(df=df, show_index=True, title=title)
 
                         elif isinstance(obbject, dict):
-                            df = pd.DataFrame.from_dict(obbject, orient="index")
+                            df = pd.DataFrame.from_dict(obbject, orient="columns")
                             print_rich_table(df=df, show_index=True, title=title)
 
                         elif not isinstance(obbject, OBBject):
