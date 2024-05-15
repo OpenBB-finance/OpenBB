@@ -1,4 +1,4 @@
-"""EconDB Helpers"""
+"""EconDB Helpers."""
 
 import asyncio
 import json
@@ -6,7 +6,6 @@ from importlib.resources import files
 from io import StringIO
 from typing import Dict, List, Optional, Tuple, Union
 
-import nest_asyncio
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.utils import get_user_cache_directory
@@ -389,20 +388,21 @@ def get_indicator_countries(indicator: str) -> List[str]:
 async def create_token(use_cache: bool = True) -> str:
     """Create a temporary token for the EconDB API."""
 
-    async def _callback(response, session):  # pylint: disable=W0613
+    async def _callback(_response, _):
         """Response callback function."""
         try:
-            return await response.json()
-        except Exception as _:
+            return await _response.json()
+        except Exception as e:
             raise RuntimeError(
                 "The temporary EconDB token could not be retrieved."
                 + " Please try again later or provide your own token."
                 + " Sign-up at: https://www.econdb.com/"
                 + " Your IP address may have been flagged by Cloudflare."
-            ) from _
+            ) from e
 
+    response: Union[dict, List[dict]] = {}
     url = "https://www.econdb.com/user/create_token/?reset=0"
-    if use_cache is True:
+    if use_cache:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators_temp_token"
         async with CachedSession(
             cache=SQLiteBackend(cache_dir, expire_after=3600 * 12)
@@ -426,6 +426,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
         """Response callback to read the CSV response."""
         return await response.text()
 
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators"
         async with CachedSession(
@@ -478,8 +479,9 @@ async def get_context(
     countries: Union[str, List[str]],
     transform: Optional[str] = None,
     use_cache: bool = True,
-) -> List[Dict]:
+) -> Union[dict, List[dict]]:
     """Get the data for a symbol and a list of countries."""
+    response: Union[dict, List[dict]] = {}
     urls = []
     countries = countries if isinstance(countries, list) else countries.split(",")
     # Multiple countries could be passed in a single request, but the request is prone
@@ -607,9 +609,6 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
     if with_metadata is True:
         return results, metadata
     return results
-
-
-nest_asyncio.apply()
 
 
 def update_json_files() -> None:
