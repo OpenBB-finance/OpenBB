@@ -102,9 +102,10 @@ class EconDbYieldCurveFetcher(
             response = await helpers.amake_request(  # type: ignore
                 url, timeout=20, **kwargs
             )
-
-        data = response.get("results")
-        if not response.get("results"):
+        if not response:
+            raise RuntimeError("Error: No data was returned.")
+        data = response.get("results")  # pylint: disable=E0606
+        if not data:
             raise EmptyDataError("The response was returned empty.")
         return data
 

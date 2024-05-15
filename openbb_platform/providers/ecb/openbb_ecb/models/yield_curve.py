@@ -80,7 +80,6 @@ class ECBYieldCurveFetcher(
             yield_curve_type=query.yield_curve_type,
         )
         YIELD_CURVE = IDS["SERIES_IDS"]
-        MATURITIES = IDS["MATURITIES"]
 
         maturities = list(MATURITIES.keys())
 
@@ -103,8 +102,10 @@ class ECBYieldCurveFetcher(
                         await session.close()
             else:
                 response = await amake_request(url=url)
+            if not response:
+                raise RuntimeError("Error: No data was returned.")
             if isinstance(response, List):
-                for item in response:
+                for item in response:  # pylint: disable=E0606
                     d = {
                         "date": item.get("PERIOD"),
                         "maturity": maturity,
