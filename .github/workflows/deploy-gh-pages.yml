@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: 📑 Deploy to GitHub Pages
 
 on:
   push:
@@ -51,18 +51,18 @@ jobs:
       - name: Generate Platform Markdown
         run: |
           pip install -U poetry
-          poetry run python openbb_platform/dev_install.py -e all
-          poetry run python -c "import openbb; openbb.build()"
+          poetry run -C openbb_platform python openbb_platform/dev_install.py -e all
+          poetry run -C openbb_platform python -c "import openbb; openbb.build()"
           pip uninstall nbmake -y
-          poetry run python website/generate_platform_v4_markdown.py
+          poetry run -C openbb_platform python website/generate_platform_v4_markdown.py
 
       - name: Generate Excel Docs
         run: |
-          poetry run python website/generate_excel_markdown.py
+          python website/generate_excel_markdown.py
 
       - name: Generate Widgets Library
         run: |
-          poetry run python website/generate_widgets_library.py
+          python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3
