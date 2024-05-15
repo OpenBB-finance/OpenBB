@@ -1,4 +1,4 @@
-"""EconDB Helpers"""
+"""EconDB Helpers."""
 
 import asyncio
 import json
@@ -400,6 +400,7 @@ async def create_token(use_cache: bool = True) -> str:
                 + " Your IP address may have been flagged by Cloudflare."
             ) from _
 
+    response: Union[dict, List[dict]]
     url = "https://www.econdb.com/user/create_token/?reset=0"
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators_temp_token"
@@ -425,6 +426,7 @@ async def download_indicators(use_cache: bool = True) -> DataFrame:
         """Response callback to read the CSV response."""
         return await response.text()
 
+    response: Union[dict, List[dict]]
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators"
         async with CachedSession(
@@ -477,8 +479,9 @@ async def get_context(
     countries: Union[str, List[str]],
     transform: Optional[str] = None,
     use_cache: bool = True,
-) -> List[Dict]:
+) -> Union[dict, List[dict]]:
     """Get the data for a symbol and a list of countries."""
+    response: Union[dict, List[dict]]
     urls = []
     countries = countries if isinstance(countries, list) else countries.split(",")
     # Multiple countries could be passed in a single request, but the request is prone
