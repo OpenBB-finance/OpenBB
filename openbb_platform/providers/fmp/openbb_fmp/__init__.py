@@ -65,7 +65,6 @@ from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
 from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
-
 fmp_provider = Provider(
     name="fmp",
     website="https://financialmodelingprep.com",
