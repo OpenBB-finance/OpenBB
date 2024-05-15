@@ -79,7 +79,7 @@ class FMPYieldCurveFetcher(
             )
             return url
 
-        dates = query.date.split(",")
+        dates = query.date.split(",")  # type: ignore
         urls = [generate_url(date) for date in dates]
 
         return await amake_requests(urls, **kwargs)

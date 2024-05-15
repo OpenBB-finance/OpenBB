@@ -25,7 +25,7 @@ class EconDbYieldCurveQueryParams(YieldCurveQueryParams):
     __json_schema_extra__ = {
         "date": ["multiple_items_allowed"],
     }
-    country: Literal[COUNTRIES] = Field(
+    country: COUNTRIES = Field(
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country", ""),
         json_schema_extra={"choices": DAILY_COUNTRIES},
@@ -118,7 +118,7 @@ class EconDbYieldCurveFetcher(
     ) -> AnnotatedResult[List[EconDbYieldCurveData]]:
         """Transform the data."""
         maturity_order = list(DAILY[query.country].values())
-        dates = query.date.split(",")
+        dates = query.date.split(",")  # type: ignore
         dates_list = DatetimeIndex(dates)
         new_data: Dict = {}
         metadata: Dict = {}
