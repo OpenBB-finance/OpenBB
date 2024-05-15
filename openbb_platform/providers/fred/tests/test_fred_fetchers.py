@@ -29,7 +29,10 @@ from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
-from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
+from openbb_fred.models.us_yield_curve import (
+    FREDYieldCurveFetcher as FREDUSYieldCurveFetcher,
+)
+from openbb_fred.models.yield_curve import FREDYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -58,11 +61,11 @@ def test_fredcpi_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fred_yield_curve_fetcher(credentials=test_credentials):
-    """Test FREDYieldCurveFetcher."""
+def test_fred_us_yield_curve_fetcher(credentials=test_credentials):
+    """Test FREDUSYieldCurveFetcher."""
     params = {"date": datetime.date(2023, 12, 1)}
 
-    fetcher = FREDYieldCurveFetcher()
+    fetcher = FREDUSYieldCurveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -300,5 +303,15 @@ def test_fred_regional_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredRegionalDataFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_yield_curve_fetcher(credentials=test_credentials):
+    """Test FREDYieldCurveFetcher."""
+    params = {"date": "2024-05-14,2023-05-14,2022-03-16,2021-05-14,2020-05-14"}
+
+    fetcher = FREDYieldCurveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
