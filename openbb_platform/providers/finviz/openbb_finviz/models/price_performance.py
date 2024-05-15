@@ -48,12 +48,12 @@ class FinvizPricePerformanceData(RecentPerformanceData):
     volatility_week: Optional[float] = Field(
         default=None,
         description="One-week realized volatility, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "fontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volatility_month: Optional[float] = Field(
         default=None,
         description="One-month realized volatility, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "fontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
