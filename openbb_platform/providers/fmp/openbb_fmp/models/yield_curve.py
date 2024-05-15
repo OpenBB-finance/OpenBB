@@ -91,7 +91,7 @@ class FMPYieldCurveFetcher(
         """Return the transformed data."""
         if not data:
             raise EmptyDataError("The request was returned empty.")
-        df = DataFrame(data).set_index("date")
+        df = DataFrame(data).set_index("date").sort_index()
         dates = query.date.split(",") if query.date else [df.index.max()]
         df.index = DatetimeIndex(df.index)
         dates_list = DatetimeIndex(dates)
