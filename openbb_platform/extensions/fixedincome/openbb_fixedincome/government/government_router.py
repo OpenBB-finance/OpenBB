@@ -22,9 +22,21 @@ router = Router(prefix="/government")
     examples=[
         APIEx(parameters={"provider": "federal_reserve"}),
         APIEx(parameters={"date": "2023-05-01,2024-05-01", "provider": "fmp"}),
-        APIEx(parameters={"date": "2023-05-01", "country": "united_kingdom", "provider": "econdb"}),
+        APIEx(
+            parameters={
+                "date": "2023-05-01",
+                "country": "united_kingdom",
+                "provider": "econdb",
+            }
+        ),
         APIEx(parameters={"provider": "ecb", "yield_curve_type": "par_yield"}),
-        APIEx(parameters={"provider": "fred", "yield_curve_type": "real", "date": "2023-05-01,2024-05-01"})
+        APIEx(
+            parameters={
+                "provider": "fred",
+                "yield_curve_type": "real",
+                "date": "2023-05-01,2024-05-01",
+            }
+        ),
     ],
 )
 async def yield_curve(
