@@ -52,7 +52,8 @@ jobs:
         run: |
           poetry install -C openbb_platform --no-interaction
           source openbb_platform/.venv/bin/activate
-          pip install -U poetry
+          # poetry removes setuptools and we need it
+          pip install setuptools
           pip install toml
           python openbb_platform/dev_install.py -e all
           python -c "import openbb; openbb.build()"
@@ -60,10 +61,12 @@ jobs:
 
       - name: Generate Excel Docs
         run: |
+          source openbb_platform/.venv/bin/activate
           python website/generate_excel_markdown.py
 
       - name: Generate Widgets Library
         run: |
+          source openbb_platform/.venv/bin/activate
           python website/generate_widgets_library.py
 
       - name: Setup Node
