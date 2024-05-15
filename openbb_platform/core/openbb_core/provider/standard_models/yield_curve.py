@@ -16,9 +16,6 @@ from openbb_core.provider.utils.descriptions import (
 class YieldCurveQueryParams(QueryParams):
     """Yield Curve Query."""
 
-    country: Optional[str] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("country", "")
-    )
     date: Optional[str] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", "")

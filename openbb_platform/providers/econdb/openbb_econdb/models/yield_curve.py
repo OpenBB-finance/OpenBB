@@ -28,6 +28,7 @@ class EconDbYieldCurveQueryParams(YieldCurveQueryParams):
     country: Literal[COUNTRIES] = Field(
         default="united_states",
         description=QUERY_DESCRIPTIONS.get("country", ""),
+        json_schema_extra={"choices": DAILY_COUNTRIES},
     )
     use_cache: bool = Field(
         default=True,

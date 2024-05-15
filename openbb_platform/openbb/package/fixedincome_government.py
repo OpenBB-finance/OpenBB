@@ -220,9 +220,6 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def yield_curve(
         self,
-        country: Annotated[
-            Optional[str], OpenBBField(description="The country to get data.")
-        ] = None,
         date: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
@@ -241,14 +238,14 @@ class ROUTER_fixedincome_government(Container):
 
         Parameters
         ----------
-        country : Optional[str]
-            The country to get data.
         date : Union[str, None, List[Optional[str]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
+        country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'russia', 'saudi_arabia', 'south_africa', 'south_korea', 'taiwan', 'united_kingdom', 'united_states']
+            The country to get data. (provider: econdb)
         use_cache : bool
             If true, cache the request for four hours. (provider: econdb)
         yield_curve_type : Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']
@@ -297,7 +294,6 @@ class ROUTER_fixedincome_government(Container):
                     )
                 },
                 standard_params={
-                    "country": country,
                     "date": date,
                 },
                 extra_params=kwargs,

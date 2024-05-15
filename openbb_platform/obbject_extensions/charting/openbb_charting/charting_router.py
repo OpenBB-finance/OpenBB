@@ -1400,7 +1400,7 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
         )
         country = f"United States {curve_type}"
     elif provider == "econdb":
-        country = kwargs["standard_params"].get("country")
+        country = getattr(kwargs["extra_params"], "country", "")
         country = country.replace("_", " ").title() if country else "United States"
     country = country + " " if country else ""
     title = kwargs.get("title", "")
