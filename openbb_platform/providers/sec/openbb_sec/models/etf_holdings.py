@@ -370,6 +370,7 @@ class SecEtfHoldingsFetcher(
         async def callback(response, session):
             """Response callback for the request."""
             return await response.read()
+
         response: Union[dict, List[dict]] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
