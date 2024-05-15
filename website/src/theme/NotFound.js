@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
-import DarkBlueRadialGradient from "../components/Icons/RadialGradients/DarkBlue";
-import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed";
+import DarkBlueRadialGradient from "../components/Icons/RadialGradients/DarkBlue.tsx";
+import RubyRedRadialGradient from "../components/Icons/RadialGradients/RubyRed.tsx";
 import { useIFrameContext } from "@site/src/theme/Root";
 
 export default function NotFound() {

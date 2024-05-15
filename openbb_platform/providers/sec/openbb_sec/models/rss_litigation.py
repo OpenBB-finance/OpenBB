@@ -1,15 +1,17 @@
 """SEC Litigation RSS Feed Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-import requests
 import xmltodict
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_sec.utils.definitions import SEC_HEADERS
+from openbb_core.provider.utils.helpers import make_request
+from openbb_sec.utils.definitions import HEADERS
 from pydantic import Field
 
 
@@ -49,7 +51,7 @@ class SecRssLitigationFetcher(
         """Return the raw data from the SEC endpoint."""
         results = []
         url = "https://www.sec.gov/rss/litigation/litreleases.xml"
-        r = requests.get(url, headers=SEC_HEADERS, timeout=5)
+        r = make_request(url, headers=HEADERS)
 
         if r.status_code == 200:
             data = xmltodict.parse(r.content)
@@ -58,7 +60,7 @@ class SecRssLitigationFetcher(
                 ["title", "link", "description", "pubDate", "dc:creator"]
             ]
             feed.columns = cols
-            feed["date"] = pd.to_datetime(feed["date"])
+            feed["date"] = pd.to_datetime(feed["date"], format="mixed")
             feed = feed.set_index("date")
             # Remove special characters
             for column in ["title", "summary"]:
@@ -73,6 +75,8 @@ class SecRssLitigationFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[SecRssLitigationData]:
+    def transform_data(
+        query: SecRssLitigationQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[SecRssLitigationData]:
         """Transform the data to the standard format."""
         return [SecRssLitigationData.model_validate(d) for d in data]

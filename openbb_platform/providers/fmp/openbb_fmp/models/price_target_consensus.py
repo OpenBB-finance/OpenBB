@@ -23,7 +23,7 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/price-target-consensus-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

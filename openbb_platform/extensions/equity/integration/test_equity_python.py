@@ -837,7 +837,7 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
             {
                 "symbol": "AAPL",
                 "limit": 3,
-                "type": "8-K",
+                "form_type": "8-K",
                 "cik": None,
                 "provider": "sec",
                 "use_cache": False,
@@ -847,7 +847,7 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
             {
                 "cik": "0001067983",
                 "limit": 3,
-                "type": "10-Q",
+                "form_type": "10-Q",
                 "symbol": None,
                 "provider": "sec",
                 "use_cache": False,
@@ -1598,7 +1598,15 @@ def test_equity_discovery_filings(params, obb):
     "params",
     [
         ({"symbol": "AAPL"}),
-        ({"limit": 24, "provider": "sec", "symbol": "AAPL", "skip_reports": 1}),
+        (
+            {
+                "limit": 24,
+                "provider": "sec",
+                "symbol": "AAPL",
+                "skip_reports": 1,
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1808,6 +1816,34 @@ def test_equity_ownership_form_13f(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.equity.ownership.form_13f(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA,MSFT",
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": None,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_pe(params, obb):
+    """Test the equity estimates forward_pe endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.estimates.forward_pe(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

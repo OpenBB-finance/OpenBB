@@ -21,7 +21,7 @@ _warn = warnings.warn
 class YFinanceEtfInfoQueryParams(EtfInfoQueryParams):
     """YFinance ETF Info Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class YFinanceEtfInfoData(EtfInfoData):
@@ -78,7 +78,7 @@ class YFinanceEtfInfoData(EtfInfoData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="yield",
     )
     dividend_rate_ttm: Optional[float] = Field(
@@ -89,7 +89,7 @@ class YFinanceEtfInfoData(EtfInfoData):
     dividend_yield_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend yield of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="trailingAnnualDividendYield",
     )
     year_high: Optional[float] = Field(
@@ -115,19 +115,19 @@ class YFinanceEtfInfoData(EtfInfoData):
     return_ytd: Optional[float] = Field(
         default=None,
         description="The year-to-date return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="ytdReturn",
     )
     return_3y_avg: Optional[float] = Field(
         default=None,
         description="The three year average return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="threeYearAverageReturn",
     )
     return_5y_avg: Optional[float] = Field(
         default=None,
         description="The five year average return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="fiveYearAverageReturn",
     )
     beta_3y_avg: Optional[float] = Field(

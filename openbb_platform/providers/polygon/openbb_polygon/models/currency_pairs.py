@@ -1,19 +1,22 @@
 """Polygon Currency Available Pairs Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsData,
     CurrencyPairsQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_polygon.utils.helpers import get_data
-from pydantic import Field, PositiveInt, field_validator
+from pandas import DataFrame
+from pydantic import Field, field_validator
 
 
 class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
@@ -22,52 +25,18 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
     Source: https://polygon.io/docs/forex/get_v3_reference_tickers
     """
 
-    symbol: Optional[str] = Field(
-        default=None, description="Symbol of the pair to search."
-    )
-    date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
-    )
-    search: Optional[str] = Field(
-        default="",
-        description="Search for terms within the ticker and/or company name.",
-    )
-    active: Optional[bool] = Field(
-        default=True,
-        description="Specify if the tickers returned should be actively traded on the queried date.",
-    )
-    order: Optional[Literal["asc", "desc"]] = Field(
-        default="asc", description="Order data by ascending or descending."
-    )
-    sort: Optional[
-        Literal[
-            "ticker",
-            "name",
-            "market",
-            "locale",
-            "currency_symbol",
-            "currency_name",
-            "base_currency_symbol",
-            "base_currency_name",
-            "last_updated_utc",
-            "delisted_utc",
-        ]
-    ] = Field(default="", description="Sort field used for ordering.")
-    limit: Optional[PositiveInt] = Field(
-        default=1000, description=QUERY_DESCRIPTIONS.get("limit", "")
-    )
-
 
 class PolygonCurrencyPairsData(CurrencyPairsData):
     """Polygon Currency Available Pairs Data."""
 
-    market: str = Field(description="Name of the trading market. Always 'fx'.")
-    locale: str = Field(description="Locale of the currency pair.")
+    __alias_dict__ = {
+        "last_updated": "last_updated_utc",
+        "delisted": "delisted_utc",
+        "name": "currency_name",
+        "symbol": "ticker",
+    }
     currency_symbol: Optional[str] = Field(
         default=None, description="The symbol of the quote currency."
-    )
-    currency_name: Optional[str] = Field(
-        default=None, description="Name of the quote currency."
     )
     base_currency_symbol: Optional[str] = Field(
         default=None, description="The symbol of the base currency."
@@ -75,22 +44,20 @@ class PolygonCurrencyPairsData(CurrencyPairsData):
     base_currency_name: Optional[str] = Field(
         default=None, description="Name of the base currency."
     )
-    last_updated_utc: datetime = Field(description="The last updated timestamp in UTC.")
-    delisted_utc: Optional[datetime] = Field(
-        default=None, description="The delisted timestamp in UTC."
+    market: str = Field(description="Name of the trading market. Always 'fx'.")
+    locale: str = Field(description="Locale of the currency pair.")
+    last_updated: Optional[dateType] = Field(
+        default=None, description="The date the reference data was last updated."
+    )
+    delisted: Optional[dateType] = Field(
+        default=None, description="The date the item was delisted."
     )
 
-    @field_validator("last_updated_utc", mode="before", check_fields=False)
+    @field_validator("last_updated", "delisted", mode="before", check_fields=False)
     @classmethod
     def last_updated_utc_validate(cls, v):  # pylint: disable=E0213
         """Return the parsed last updated timestamp in UTC."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
-
-    @field_validator("delisted_utc", mode="before", check_fields=False)
-    @classmethod
-    def delisted_utc_validate(cls, v):  # pylint: disable=E0213
-        """Return the parsed delisted timestamp in UTC."""
-        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ")
+        return datetime.strptime(v, "%Y-%m-%dT%H:%M:%SZ").date() if v else None
 
 
 class PolygonCurrencyPairsFetcher(
@@ -99,51 +66,36 @@ class PolygonCurrencyPairsFetcher(
         List[PolygonCurrencyPairsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Currency Pairs Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCurrencyPairsQueryParams:
-        """Transform the query parameters. Ticker is set if symbol is provided."""
-        transform_params = params
-        now = datetime.now().date().isoformat()
-        transform_params["symbol"] = (
-            f"ticker=C:{params.get('symbol').upper()}" if params.get("symbol") else ""
-        )
-        if params.get("date") is None:
-            transform_params["date"] = now
-
-        return PolygonCurrencyPairsQueryParams(**transform_params)
+        """Transform the query parameters."""
+        return PolygonCurrencyPairsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: PolygonCurrencyPairsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         """Extract the data from the Polygon API."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
-
         request_url = (
             f"https://api.polygon.io/v3/reference/"
-            f"tickers?{query.symbol}&market=fx&date={query.date}&"
-            f"search={query.search}&active={query.active}&order={query.order}&"
-            f"limit={query.limit}&sort={query.sort}&apiKey={api_key}"
+            f"tickers?&market=fx&limit=1000"
+            f"&apiKey={api_key}"
         )
-
         data = {"next_url": request_url}
         all_data: List[Dict] = []
-
         while "next_url" in data:
             data = await get_data(request_url, **kwargs)
-
             if isinstance(data, list):
                 raise ValueError("Expected a dict, got a list")
-
             if len(data["results"]) == 0:
                 raise RuntimeError(
                     "No results found. Please change your query parameters."
                 )
-
             if data["status"] == "OK":
                 results = data.get("results")
                 if not isinstance(results, list):
@@ -153,18 +105,34 @@ class PolygonCurrencyPairsFetcher(
                 all_data.extend(results)
             elif data["status"] == "ERROR":
                 raise UserWarning(data["error"])
-
             if "next_url" in data:
                 request_url = f"{data['next_url']}&apiKey={api_key}"
-
         return all_data
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCurrencyPairsQueryParams,
-        data: List[dict],
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[PolygonCurrencyPairsData]:
-        """Transform the data into a list of PolygonCurrencyPairsData."""
-        return [PolygonCurrencyPairsData.model_validate(d) for d in data]
+        """Filter data by search query and validate the model."""
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
+        df = DataFrame(data)
+        df["ticker"] = df["ticker"].str.replace("C:", "")
+        if query.query:
+            df = df[
+                df["name"].str.contains(query.query, case=False)
+                | df["base_currency_name"].str.contains(query.query, case=False)
+                | df["currency_name"].str.contains(query.query, case=False)
+                | df["base_currency_symbol"].str.contains(query.query, case=False)
+                | df["currency_symbol"].str.contains(query.query, case=False)
+                | df["ticker"].str.contains(query.query, case=False)
+            ]
+        if len(df) == 0:
+            raise EmptyDataError(
+                f"No results were found with the query supplied. -> {query.query}"
+            )
+        return [
+            PolygonCurrencyPairsData.model_validate(d) for d in df.to_dict("records")
+        ]

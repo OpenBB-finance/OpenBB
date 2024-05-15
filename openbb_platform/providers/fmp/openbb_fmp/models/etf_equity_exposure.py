@@ -24,7 +24,7 @@ class FMPEtfEquityExposureQueryParams(EtfEquityExposureQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/etf-stock-exposure-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEtfEquityExposureData(EtfEquityExposureData):
@@ -64,7 +64,7 @@ class FMPEtfEquityExposureFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results = []
+        results: List[dict] = []
 
         async def get_one(symbol):
             """Get one symbol."""

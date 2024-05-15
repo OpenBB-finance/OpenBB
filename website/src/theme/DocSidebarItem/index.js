@@ -2,11 +2,9 @@ import { useLocation } from "@docusaurus/router";
 import DocSidebarItemCategory from "@theme/DocSidebarItem/Category";
 import DocSidebarItemHtml from "@theme/DocSidebarItem/Html";
 import DocSidebarItemLink from "@theme/DocSidebarItem/Link";
-import React from "react";
-import { useIFrameContext } from "../Root";
+import { useIFrameContext } from "../Root.tsx";
 
 function shouldHideItem(item, productPath) {
-
   if (item.items) {
     return item.items.every((childItem) =>
       shouldHideItem(childItem, productPath)
@@ -48,7 +46,11 @@ export default function DocSidebarItem({ item, ...props }) {
 
   if ((isPro || isExcel) && !checkIfAnyChildIsProExcel(item)) {
     return null;
-  } else if (!(isPro || isExcel) && item.href?.startsWith("/pro") && item.href?.startsWith("/excel")) {
+  } else if (
+    !(isPro || isExcel) &&
+    item.href?.startsWith("/pro") &&
+    item.href?.startsWith("/excel")
+  ) {
     return null;
   }
 

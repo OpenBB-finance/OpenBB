@@ -53,14 +53,9 @@ router = Router(prefix="", description="Technical Analysis tools.")
             code=[
                 "crypto_data = obb.crypto.price.historical("
                 + " symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')",
-                "rr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTCUSD',"
+                "rr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTC-USD',"
                 + " long_period=365, short_period=30, window=30, trading_periods=365)",
             ],
-        ),
-        APIEx(
-            description="Note that the mock data displayed here is insufficient."
-            + " It must contain multiple symbols, with the benchmark, and be daily data at least 1 year in length.",
-            parameters={"benchmark": "SPY", "data": APIEx.mock_data("timeseries")},
         ),
     ],
 )
@@ -151,7 +146,6 @@ async def relative_rotation(
             rs_momentum : list[Data]
                 The normalized relative strength momentum data.
     """
-
     params = RelativeRotationQueryParams(
         data=data,
         benchmark=benchmark,

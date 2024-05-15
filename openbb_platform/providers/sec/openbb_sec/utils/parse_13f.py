@@ -19,7 +19,7 @@ def date_to_quarter_end(date: str) -> str:
     )
 
 
-def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
+async def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
     """Get the 13F-HR filings for a given symbol or CIK."""
     fetcher = SecCompanyFilingsFetcher()
     params: Dict[str, Any] = {}
@@ -32,16 +32,19 @@ def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
 
     params["use_cache"] = False
     params["form_type"] = "13F-HR"
-    query = fetcher.transform_query(params)
-    filings = fetcher.extract_data(query, {})
+    filings = await fetcher.fetch_data(params, {})
+    filings = [d.model_dump() for d in filings]
     if len(filings) == 0:
         raise ValueError(f"No 13F-HR filings found for {symbol if symbol else cik}.")
 
     # Filings before June 30, 2013 are non-structured and are not supported by downstream parsers.
+    up_to = to_datetime("2013-06-30").date()  # pylint: disable=unused-variable # noqa
     return (
         DataFrame(data=filings)
-        .query("`reportDate` >= '2013-06-30'")
-        .set_index("reportDate")["completeSubmissionUrl"]
+        .query("`report_date` >= @up_to")
+        .set_index("report_date")["complete_submission_url"]
+        .fillna("N/A")
+        .replace("N/A", None)
     )
 
 

@@ -1,14 +1,15 @@
 [tool.poetry]
 name = "openbb-wsj"
-version = "1.1.5"
+version = "1.2.0"
 description = "wsj extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_wsj" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = "^1.1.6"
+openbb-core = "^1.2.1"
 
 [build-system]
 requires = ["poetry-core"]

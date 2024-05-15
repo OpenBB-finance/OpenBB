@@ -4,20 +4,21 @@ sidebar_position: 2
 description: This page contains some frequently asked questions about OpenBB
   data and providers.
 keywords:
-- provider
-- data
-- source
-- live
-- platform
-- api
-- FastAPI
+  - provider
+  - data
+  - source
+  - live
+  - platform
+  - api
+  - FastAPI
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data Providers FAQ - FAQs | OpenBB Platform Docs" />
 
-<details><summary>Does OpenBB have coverage for [insert type of data]?</summary>
+<details>
+<summary mdxType="summary">Does OpenBB have coverage for [insert type of data]?</summary>
 
 Equity market coverage will vary by provider and subscription status with them. It is common for free tiers to be US-listings only.
 
@@ -25,7 +26,8 @@ You can find all data models [here](/platform/data_models), or the [Reference](/
 
 </details>
 
-<details><summary>The router appears to be missing functions.</summary>
+<details>
+<summary mdxType="summary">The router appears to be missing functions.</summary>
 
 The router populates itself from the installed extensions. For example, if the Technical Analysis extension is not installed, the `obb.technical` router path will not be present.
 
@@ -62,7 +64,8 @@ pip install openbb-nightly
 
 </details>
 
-<details><summary>Why is the returned data not matching the start/end date I requested?</summary>
+<details>
+<summary mdxType="summary">Why is the returned data not matching the start/end date I requested?</summary>
 
 The provider may not have data from the requested period, in which case the data will be what they return. For example, `provider='yfinance'` at one-minute intervals will not return beyond one week ago.
 
@@ -70,7 +73,8 @@ Another reason could be the data entitlements of your API key. Check the provide
 
 </details>
 
-<details><summary>How do I load a ticker symbol from India?</summary>
+<details>
+<summary mdxType="summary">How do I load a ticker symbol from India?</summary>
 
 Ticker symbols listed on exchanges outside of the US will have a suffix attached, for example, Rico Auto Industries Limited:
 
@@ -83,19 +87,22 @@ The precise naming convention will differ by source, it's best to reference each
 
 </details>
 
-<details><summary>How can I request a data provider or function?</summary>
+<details>
+<summary mdxType="summary">How can I request a data provider or function?</summary>
 
-Please  [request a feature](https://openbb.co/request-a-feature), tell us about your use case.
+Please [request a feature](https://openbb.co/request-a-feature), tell us about your use case.
 
 </details>
 
-<details><summary>Can I contribute my own data provider extension?</summary>
+<details>
+<summary mdxType="summary">Can I contribute my own data provider extension?</summary>
 
 Yes! Please take a look at our [Development](/platform/development) pages for more information.
 
 </details>
 
-<details><summary>Can my company become a data partner?</summary>
+<details>
+<summary mdxType="summary">Can my company become a data partner?</summary>
 
 Yes! Please visit our website [here](https://openbb.co/use-cases/data-vendors) and fill out the form.
 

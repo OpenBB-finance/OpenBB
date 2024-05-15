@@ -25,7 +25,7 @@ class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
     """
 
-    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"base": {"multiple_items_allowed": True}}
 
 
 class FMPCurrencySnapshotsData(CurrencySnapshotsData):

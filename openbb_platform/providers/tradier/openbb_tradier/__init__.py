@@ -9,11 +9,11 @@ from openbb_tradier.models.options_chains import TradierOptionsChainsFetcher
 tradier_provider = Provider(
     name="tradier",
     website="https://tradier.com",
-    description="Tradier provides a full range of services in a scalable, secure,"
-    + " and easy-to-use REST-based API for businesses and individual developers."
-    + " Fast, secure, simple. Start in minutes."
-    + " Get access to trading, account management, and market-data for"
-    + " Tradier Brokerage accounts through our APIs.",
+    description="""Tradier provides a full range of services in a scalable, secure,
+and easy-to-use REST-based API for businesses and individual developers.
+Fast, secure, simple. Start in minutes.
+Get access to trading, account management, and market-data for
+Tradier Brokerage accounts through our APIs.""",
     credentials=[
         "api_key",
         "account_type",
@@ -25,4 +25,7 @@ tradier_provider = Provider(
         "EquitySearch": TradierEquitySearchFetcher,
         "OptionsChains": TradierOptionsChainsFetcher,
     },
+    repr_name="Tradier",
+    v3_credentials=["API_TRADIER_TOKEN"],
+    instructions='Go to: https://documentation.tradier.com\n\n![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)\n\nClick on, "Open Account", to start the sign-up process. After the account has been setup, navigate to [Tradier Broker Dash](https://dash.tradier.com/login?redirect=settings.api) and create the application. Request a sandbox access token.',  # noqa: E501  pylint: disable=line-too-long
 )

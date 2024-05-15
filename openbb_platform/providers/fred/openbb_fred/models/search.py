@@ -41,8 +41,8 @@ class FredSearchQueryParams(SearchQueryParams):
         default=0,
         description="Offset the results in conjunction with limit.",
     )
-    filter_variable: Literal[None, "frequency", "units", "seasonal_adjustment"] = Field(
-        default=None, description="Filter by an attribute."
+    filter_variable: Optional[Literal["frequency", "units", "seasonal_adjustment"]] = (
+        Field(default=None, description="Filter by an attribute.")
     )
     filter_value: Optional[str] = Field(
         default=None,
