@@ -50,7 +50,6 @@ jobs:
 
       - name: Generate Platform Markdown
         run: |
-          source .venv/bin/activate
           pip install -U poetry
           poetry run python openbb_platform/dev_install.py -e all
           poetry run python -c "import openbb; openbb.build()"
@@ -59,12 +58,10 @@ jobs:
 
       - name: Generate Excel Docs
         run: |
-          source .venv/bin/activate
           poetry run python website/generate_excel_markdown.py
 
       - name: Generate Widgets Library
         run: |
-          source .venv/bin/activate
           poetry run python website/generate_widgets_library.py
 
       - name: Setup Node
