@@ -1,4 +1,4 @@
-name: General Linting
+name: 🧹 General Linting
 
 env:
   PIP_DEFAULT_TIMEOUT: 100

@@ -35,7 +35,7 @@ class EtfEquityExposureData(Data):
     weight: Optional[float] = Field(
         default=None,
         description="The weight of the equity in the ETF, as a normalized percent.",
-        json_schema_extra={"units_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     market_value: Optional[Union[int, float]] = Field(
         default=None,
