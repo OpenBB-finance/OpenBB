@@ -8,6 +8,7 @@ from warnings import warn
 import pandas as pd
 from openbb_core.app.model.charts.chart import ChartFormat
 from openbb_core.app.utils import basemodel_to_df
+from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
 from openbb_charting.core.chart_style import ChartStyle
@@ -19,6 +20,7 @@ from openbb_charting.utils import relative_rotation
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.helpers import (
     calculate_returns,
+    duration_sorter,
     heikin_ashi,
     should_share_axis,
     z_score_standardization,
@@ -406,7 +408,7 @@ def equity_price_historical(  # noqa: PLR0912
                 name=data[col].name,
                 mode="lines",
                 hovertemplate=hovertemplate,
-                line=dict(width=1, color=LARGE_CYCLER[i % len(LARGE_CYCLER)]),
+                line=dict(width=2, color=LARGE_CYCLER[i % len(LARGE_CYCLER)]),
                 yaxis=yaxis,
             )
 
@@ -608,7 +610,7 @@ def _ta_ma(**kwargs):
             name=name,
             mode="lines",
             hovertemplate=f"{name}: %{{y}}<extra></extra>",
-            line=dict(width=1, color=LARGE_CYCLER[color]),
+            line=dict(width=2, color=LARGE_CYCLER[color]),
             showlegend=True,
         )
         color += 1
@@ -1119,7 +1121,7 @@ def economy_fred_series(  # noqa: PLR0912
             name=df_ta[col].name,
             mode="lines",
             hovertemplate=f"{df_ta[col].name}: %{{y}}<extra></extra>",
-            line=dict(width=1, color=LARGE_CYCLER[i % len(LARGE_CYCLER)]),
+            line=dict(width=2, color=LARGE_CYCLER[i % len(LARGE_CYCLER)]),
             yaxis="y1" if kwargs.get("same_axis") is True else yaxes,
         )
 
@@ -1290,5 +1292,158 @@ def technical_relative_rotation(
     if kwargs.get("title") is not None:
         figure.set_title(str(kwargs.get("title")))
     content = figure.to_plotly_json()
+
+    return figure, content
+
+
+def fixedincome_government_yield_curve(  # noqa: PLR0912
+    **kwargs,
+) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    """Government Yield Curve Chart."""
+    data = kwargs.get("data", None)
+    df: pd.DataFrame = pd.DataFrame()
+    if data:
+        if isinstance(data, pd.DataFrame) and not data.empty:  # noqa: SIM108
+            df = data
+        elif isinstance(data, (list, Data)):
+            df = basemodel_to_df(data, index=None)  # type: ignore
+        else:
+            pass
+    else:
+        df = pd.DataFrame([d.model_dump() for d in kwargs["obbject_item"]])  # type: ignore
+
+    if df.empty:
+        raise ValueError("Error: No data to plot.")
+
+    if "maturity" not in df.columns:
+        raise ValueError("Error: Maturity column not found in the data.")
+
+    if "rate" not in df.columns:
+        raise ValueError("Error: Rate column not found in the data.")
+
+    if "date" not in df.columns:
+        raise ValueError("Error: Date column not found in the data.")
+
+    provider = kwargs.get("provider")
+    df["date"] = df["date"].astype(str)
+    maturities = duration_sorter(df["maturity"].unique().tolist())
+
+    # Use the supplied colors, if any.
+    colors = kwargs.get("colors", [])
+    if not colors:
+        colors = LARGE_CYCLER
+    color_count = 0
+
+    figure = OpenBBFigure().create_subplots(shared_xaxes=False)
+    figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
+
+    def create_fig(figure, df, dates, color_count, country: Optional[str] = None):
+        """Create a scatter for each date in the data."""
+        for date in dates:
+            color = colors[color_count % len(colors)]
+            plot_df = df[df["date"] == date].copy()
+            plot_df["rate"] = plot_df["rate"].apply(lambda x: x * 100)
+            plot_df = (
+                plot_df.drop(columns=["date"])
+                .set_index("maturity")
+                .filter(items=maturities, axis=0)
+                .reset_index()
+                .rename(columns={"maturity": "Maturity", "rate": "Yield"})
+            )
+            plot_df["Maturity"] = [
+                (
+                    d.split("_")[1] + " " + d.split("_")[0].title()
+                    if d != "long_term"
+                    else "Long Term"
+                )
+                for d in plot_df["Maturity"]
+            ]
+            figure.add_scatter(
+                x=plot_df["Maturity"],
+                y=plot_df["Yield"],
+                # fill=fill,
+                mode="lines+markers",
+                name=f"{country} - {date}" if country else date,
+                line=dict(width=3, color=color),
+                marker=dict(size=10, color=color),
+                hovertemplate=(
+                    "Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
+                    if len(dates) == 1
+                    else "%{fullData.name}<br>Maturity: %{x}<br>Yield: %{y}%<extra></extra>"
+                ),
+            )
+            color_count += 1
+        return figure, color_count
+
+    dates = df.date.unique().tolist()
+    figure, color_count = create_fig(figure, df, dates, color_count)
+
+    # Set the title for the chart
+    country: str = ""
+    if provider in ("federal_reserve", "fmp"):
+        country = "United States"
+    elif provider == "ecb":
+        curve_type = (
+            getattr(kwargs["extra_params"], "yield_curve_type", "")
+            .replace("_", " ")
+            .title()
+        )
+        grade = getattr(kwargs["extra_params"], "rating", "").replace("_", " ")
+        grade = grade.upper() if grade == "aaa" else "All Ratings"
+        country = f"Euro Area ({grade}) {curve_type}"
+    elif provider == "fred":
+        curve_type = getattr(kwargs["extra_params"], "yield_curve_type", "")
+        curve_type = (
+            "Real Rates"
+            if curve_type == "real"
+            else curve_type.replace("_", " ").title()
+        )
+        country = f"United States {curve_type}"
+    elif provider == "econdb":
+        country = kwargs["standard_params"].get("country")
+        country = country.replace("_", " ").title() if country else "United States"
+    country = country + " " if country else ""
+    title = kwargs.get("title", "")
+    if not title:
+        title = f"{country}Yield Curve"
+        if len(dates) == 1:
+            title = f"{country} Yield Curve - {dates[0]}"
+
+    # Update the layout of the figure.
+    figure.update_layout(
+        title=dict(text=title, x=0.5, font=dict(size=20)),
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(
+            title="Maturity",
+            ticklen=0,
+            showgrid=False,
+        ),
+        yaxis=dict(
+            title="Yield (%)",
+            ticklen=0,
+            showgrid=True,
+            gridcolor="rgba(128,128,128,0.3)",
+        ),
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            xanchor="right",
+            y=0.95,
+            x=0,
+            xref="paper",
+            font=dict(size=12),
+            bgcolor="rgba(0,0,0,0)",
+        ),
+        margin=dict(
+            b=25,
+            t=10,
+        ),
+    )
+
+    layout_kwargs = kwargs.get("layout_kwargs", {})
+    if layout_kwargs:
+        figure.update_layout(layout_kwargs)
+
+    content = figure.show(external=True)
 
     return figure, content
