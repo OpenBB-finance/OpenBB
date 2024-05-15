@@ -388,21 +388,21 @@ def get_indicator_countries(indicator: str) -> List[str]:
 async def create_token(use_cache: bool = True) -> str:
     """Create a temporary token for the EconDB API."""
 
-    async def _callback(response, session):  # pylint: disable=W0613
+    async def _callback(_response, _):
         """Response callback function."""
         try:
-            return await response.json()
-        except Exception as _:
+            return await _response.json()
+        except Exception as e:
             raise RuntimeError(
                 "The temporary EconDB token could not be retrieved."
                 + " Please try again later or provide your own token."
                 + " Sign-up at: https://www.econdb.com/"
                 + " Your IP address may have been flagged by Cloudflare."
-            ) from _
+            ) from e
 
     response: Union[dict, List[dict]] = {}
     url = "https://www.econdb.com/user/create_token/?reset=0"
-    if use_cache is True:
+    if use_cache:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_indicators_temp_token"
         async with CachedSession(
             cache=SQLiteBackend(cache_dir, expire_after=3600 * 12)
