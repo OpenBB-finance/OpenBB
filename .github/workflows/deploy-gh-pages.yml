@@ -52,7 +52,7 @@ jobs:
         run: |
           pip install -U poetry
           poetry install -C openbb_platform --only-root
-          source .venv/bin/activate
+          poetry shell -C openbb_platform
           poetry run -C openbb_platform pip install toml
           poetry run -C openbb_platform python openbb_platform/dev_install.py -e all
           poetry run -C openbb_platform python -c "import openbb; openbb.build()"
