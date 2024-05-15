@@ -27,7 +27,7 @@ class Preferences(BaseModel):
     )
     plot_pywry_height: PositiveInt = 762
     plot_pywry_width: PositiveInt = 1400
-    request_timeout: PositiveInt = 15
+    request_timeout: PositiveInt = 60
     show_warnings: bool = True
     table_style: Literal["dark", "light"] = "dark"
     user_styles_directory: str = str(Path.home() / "OpenBBUserData" / "styles" / "user")

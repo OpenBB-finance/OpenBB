@@ -24,23 +24,19 @@ def obb(pytestconfig):
         (
             {
                 "provider": "polygon",
-                "symbol": "USDJPY",
-                "date": "2023-10-12",
-                "search": "",
-                "active": True,
-                "order": "asc",
-                "sort": "currency_name",
-                "limit": 100,
+                "query": "eur",
             }
         ),
         (
             {
                 "provider": "fmp",
+                "query": "eur",
             }
         ),
         (
             {
                 "provider": "intrinio",
+                "query": "eur",
             }
         ),
     ],

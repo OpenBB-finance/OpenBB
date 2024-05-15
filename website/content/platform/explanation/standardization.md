@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each provider data model should inherit from an already defined [standard](/platform/data_models) model. All standard models are created and maintained by the OpenBB team. If a standard model needs to be created, please open a pull request and detail its use.
+Each provider data model should inherit from an already defined [standard](https://docs.openbb.co/platform/data_models) model. All standard models are created and maintained by the OpenBB team. If a standard model needs to be created, please open a pull request and detail its use.
 
 Standardizing provider query parameters and response data enhances the user experience by overcoming things like:
 
@@ -35,14 +35,14 @@ Standardizing provider query parameters and response data enhances the user expe
 - Transparently defined schemas for the data and query parameters.
 - Outputs from multiple sources are comparable with each other and easily interchanged.
 
-The standard models are all defined in the `/OpenBBTerminal/openbb_platform/platform/core/provider/standard_models/` [directory](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/standard_models).
+The standard models are all defined in the `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/` [directory](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_platform/core/openbb_core/provider/standard_models).
 
 ### What Is A Standard Model?
 
 Every standard model consists of two classes, with each being a Pydantic model.
 
-- [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py)
-- [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/data.py)
+- [`QueryParams`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/openbb_platform/core/openbb_core/provider/abstract/query_params.py)
+- [`Data`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/openbb_platform/core/openbb_core/provider/abstract/data.py)
 
 Any parameter or field can be assigned a custom `field_validator`, or the entire model can be passed through a `model_validator` on creation.
 
@@ -58,7 +58,7 @@ The standardization framework is a very powerful tool, but it has some caveats t
 
 ### QueryParams
 
-The `QueryParams` is an abstract class that defines what parameters will be needed to make a query to a data source. Below is the [EquityHistorical](data_models/EquityHistorical) standard model.
+The `QueryParams` is an abstract class that defines what parameters will be needed to make a query to a data source. Below is the [EquityHistorical](https://docs.openbb.co/platform/data_models/EquityHistorical) standard model.
 
 ```python
 """Equity Historical Price Standard Model."""

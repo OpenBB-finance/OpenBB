@@ -23,7 +23,7 @@ class PolygonCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     Source: https://polygon.io/docs/forex/get_v2_snapshot_locale_global_markets_forex_tickers
     """
 
-    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"base": {"multiple_items_allowed": True}}
 
 
 class PolygonCurrencySnapshotsData(CurrencySnapshotsData):
@@ -115,9 +115,9 @@ class PolygonCurrencySnapshotsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
         url = f"https://api.polygon.io/v2/snapshot/locale/global/markets/forex/tickers?apiKey={api_key}"
         results = await amake_request(url, **kwargs)
-        if results.get("status") != "OK":
-            raise RuntimeError(f"Error: {results.get('status')}")
-        return results.get("tickers", [])
+        if results.get("status") != "OK":  # type: ignore[union-attr]
+            raise RuntimeError(f"Error: {results.get('status')}")  # type: ignore[union-attr]
+        return results.get("tickers", [])  # type: ignore[union-attr]
 
     @staticmethod
     def transform_data(  # pylint: disable=too-many-locals, too-many-statements
@@ -129,7 +129,7 @@ class PolygonCurrencySnapshotsFetcher(
         if not data:
             raise EmptyDataError("No data returned.")
         counter_currencies = (
-            query.counter_currencies.upper().split(",")
+            query.counter_currencies.upper().split(",")  # type: ignore[union-attr]
             if query.counter_currencies
             else []
         )

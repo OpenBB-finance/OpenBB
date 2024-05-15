@@ -27,7 +27,7 @@ from pydantic import Field, field_validator
 class EconDbCountryProfileQueryParams(CountryProfileQueryParams):
     """Country Profile Query."""
 
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"country": {"multiple_items_allowed": True}}
 
     latest: bool = Field(
         default=True,

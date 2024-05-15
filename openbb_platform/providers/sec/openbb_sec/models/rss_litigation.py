@@ -60,7 +60,7 @@ class SecRssLitigationFetcher(
                 ["title", "link", "description", "pubDate", "dc:creator"]
             ]
             feed.columns = cols
-            feed["date"] = pd.to_datetime(feed["date"])
+            feed["date"] = pd.to_datetime(feed["date"], format="mixed")
             feed = feed.set_index("date")
             # Remove special characters
             for column in ["title", "summary"]:

@@ -319,6 +319,8 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
+            if not issubclass(return_type, OBBject):
+                raise ValueError("Return type must be an OBBject.")
             hint_type = get_args(get_type_hints(return_type)["results"])[0]
             hint_type_list.append(hint_type)
 
@@ -864,7 +866,15 @@ class MethodDefinition:
         original_type: Optional[type] = None,
     ) -> object:
         """Expand the original field type."""
-        if extra and "multiple_items_allowed" in extra:
+        if extra and any(
+            (
+                v.get("multiple_items_allowed")
+                if isinstance(v, dict)
+                # For backwards compatibility, before this was a list
+                else "multiple_items_allowed" in v
+            )
+            for v in extra.values()
+        ):
             if original_type is None:
                 raise ValueError(
                     "multiple_items_allowed requires the original type to be specified."
@@ -1450,6 +1460,10 @@ class ReferenceGenerator:
         expanded_types = MethodDefinition.TYPE_EXPANSION
         model_map = cls.pi.map[model]
 
+        # TODO: Change this to read the package data instead of pi.map directly
+        # We change some items (types, descriptions), so the reference.json
+        # does not reflect entirely the package code.
+
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
             field_type = field_info.annotation
@@ -1469,13 +1483,21 @@ class ReferenceGenerator:
                 .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
             )  # fmt: skip
 
+            extra = field_info.json_schema_extra or {}
+
             # Add information for the providers supporting multiple symbols
-            if params_type == "QueryParams" and field_info.json_schema_extra:
-                multiple_items_list = field_info.json_schema_extra.get(
-                    "multiple_items_allowed", None
-                )
-                if multiple_items_list:
-                    multiple_items = ", ".join(multiple_items_list)
+            if params_type == "QueryParams" and extra:
+
+                providers = []
+                for p, v in extra.items():  # type: ignore[union-attr]
+                    if isinstance(v, dict) and v.get("multiple_items_allowed"):
+                        providers.append(p)
+                    elif isinstance(v, list) and "multiple_items_allowed" in v:
+                        # For backwards compatibility, before this was a list
+                        providers.append(p)
+
+                if providers:
+                    multiple_items = ", ".join(providers)
                     cleaned_description += (
                         f" Multiple items allowed for provider(s): {multiple_items}."
                     )
@@ -1492,6 +1514,7 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
+                    "choices": extra.get("choices"),
                 }
             )
 

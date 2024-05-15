@@ -21,7 +21,7 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Literal[None, "us", "eu"] = Field(
+    region: Optional[Literal["us", "eu"]] = Field(
         default="us",
     )
 
@@ -89,7 +89,7 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
@@ -104,12 +104,14 @@ class CboeIndexSnapshotsFetcher(
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSnapshotsQueryParams, data: dict, **kwargs: Any
+        query: CboeIndexSnapshotsQueryParams,  # pylint: disable=unused-argument
+        data: dict,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         if not data:
             raise EmptyDataError()
-        data = DataFrame(data)
+        df = DataFrame(data)
         percent_cols = [
             "price_change_percent",
             "iv30",
@@ -117,10 +119,10 @@ class CboeIndexSnapshotsFetcher(
             "iv30_change_percent",
         ]
         for col in percent_cols:
-            if col in data.columns:
-                data[col] = round(data[col] / 100, 6)
-        data = (
-            data.replace(0, None)
+            if col in df.columns:
+                df[col] = round(df[col] / 100, 6)
+        df = (
+            df.replace(0, None)
             .replace("", None)
             .dropna(how="all", axis=1)
             .fillna("N/A")
@@ -135,9 +137,9 @@ class CboeIndexSnapshotsFetcher(
             "bid_size",
         ]
         for col in drop_cols:
-            if col in data.columns:
-                data = data.drop(columns=col)
+            if col in df.columns:
+                df = df.drop(columns=col)
         return [
             CboeIndexSnapshotsData.model_validate(d)
-            for d in data.to_dict(orient="records")
+            for d in df.to_dict(orient="records")
         ]

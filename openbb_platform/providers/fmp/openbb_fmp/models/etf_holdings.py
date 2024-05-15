@@ -73,7 +73,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         description="The weight of the holding, as a normalized percent.",
         alias="pctVal",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",

@@ -36,7 +36,7 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     weight: Optional[float] = Field(
         description="The weight of the asset in the portfolio, as a normalized percentage.",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     shares: Optional[Union[int, str]] = Field(
         description="The value of the assets under management.",
@@ -50,7 +50,7 @@ class TmxEtfHoldingsData(EtfHoldingsData):
     share_percentage: Optional[float] = Field(
         description="The share percentage of the holding, as a normalized percentage.",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     share_change: Optional[Union[float, str]] = Field(
         description="The change in shares of the holding.", default=None

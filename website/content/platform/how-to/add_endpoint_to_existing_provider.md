@@ -3,25 +3,25 @@ title: Add A New Data Endpoint With An Existing Provider
 sidebar_position: 5
 description: This guide outlines the process for adding a new endpoint to an existing data provider, that does not yet have a standard model.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- contribution
-- contributing
-- documentation
-- code
-- provider
-- new endpoint
-- fmp
-- OpenBB extensions
-- OpenBB provider
-- standard model
-- data model
-- currency
-- snapshot
-- router
-- how to
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - new endpoint
+  - fmp
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - data model
+  - currency
+  - snapshot
+  - router
+  - how to
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -53,6 +53,8 @@ Before getting started, get a few housekeeping items in order:
 
 - Clone the GitHub repo and navigate into the project's folder.
   - If you have already done this, update your local branch:
+    - `git fetch`
+    - `git pull origin develop`
     - `git fetch`
     - `git pull origin develop`
 - Install the OpenBB Platform in "editable" mode.
@@ -220,10 +222,11 @@ This can be a consideration for the data provider models to handle, and country 
 
 Like `QueryParams`, we don't want to attempt to define every potential future field. We want a core foundation for others to build on.
 We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
 data parsing requirements for this endpoint:
 
 - Split the six-letter symbol as two symbols.
-- If the provider only returns {"symbol": "price"}, it will need to coerced accordingly within the `transform_data` static method of the `Fetcher` class.
+- If the provider only returns `{"symbol": "price"}`, it will need to coerced accordingly within the `transform_data` static method of the `Fetcher` class.
 
 ```python
 class CurrencySnapshotsData(Data):
@@ -266,8 +269,8 @@ class CurrencySnapshotsData(Data):
 
 Combine the three code blocks above to make a complete standard model file, and then we have completed the first two tasks.
 
-- [X] With clear objectives, define the requirements for inputs and outputs of this function.
-- [X] Create a standard model that will be suitable for any provider to inherit from.
+- [x] With clear objectives, define the requirements for inputs and outputs of this function.
+- [x] Create a standard model that will be suitable for any provider to inherit from.
 
 ## Build Provider Models
 
@@ -277,30 +280,30 @@ Sample output data from the source is pasted below, and we can see that there ar
 
 ```json
 [
- {
-  "symbol": "AEDAUD",
-  "name": "AED/AUD",
-  "price": 0.40401,
-  "changesPercentage": 0.3901,
-  "change": 0.0016,
-  "dayLow": 0.40211,
-  "dayHigh": 0.40535,
-  "yearHigh": 0.440948,
-  "yearLow": 0.356628,
-  "marketCap": null,
-  "priceAvg50": 0.39494148,
-  "priceAvg200": 0.40097216,
-  "volume": 0,
-  "avgVolume": 0,
-  "exchange": "FOREX",
-  "open": 0.40223,
-  "previousClose": 0.40244,
-  "eps": null,
-  "pe": null,
-  "earningsAnnouncement": null,
-  "sharesOutstanding": null,
-  "timestamp": 1677792573
- }
+  {
+    "symbol": "AEDAUD",
+    "name": "AED/AUD",
+    "price": 0.40401,
+    "changesPercentage": 0.3901,
+    "change": 0.0016,
+    "dayLow": 0.40211,
+    "dayHigh": 0.40535,
+    "yearHigh": 0.440948,
+    "yearLow": 0.356628,
+    "marketCap": null,
+    "priceAvg50": 0.39494148,
+    "priceAvg200": 0.40097216,
+    "volume": 0,
+    "avgVolume": 0,
+    "exchange": "FOREX",
+    "open": 0.40223,
+    "previousClose": 0.40244,
+    "eps": null,
+    "pe": null,
+    "earningsAnnouncement": null,
+    "sharesOutstanding": null,
+    "timestamp": 1677792573
+  }
 ]
 ```
 
@@ -500,7 +503,7 @@ Next, open `~/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/__init__.p
 
 Step 3 is now done.
 
-- [X] Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
+- [x] Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
 
 ## Create Router Endpoint
 
@@ -551,8 +554,8 @@ exit()
 
 Steps 4 and 5 are done!
 
-- [X] Create a new router endpoint in the `openbb-currency` module.
-- [X] Rebuild the Python interface and static assets.
+- [x] Create a new router endpoint in the `openbb-currency` module.
+- [x] Rebuild the Python interface and static assets.
 
 ```python
 from openbb import obb
@@ -560,16 +563,16 @@ from openbb import obb
 obb.currency.snapshots(base="xau,xag", counter_currencies=["usd", "gbp", "eur", "hkd"],quote_type="indirect").to_df()
 ```
 
-| base_currency   | counter_currency   |   last_rate |       open |       high |        low |   volume |   prev_close |   change |   change_percent |       ma50 |      ma200 |   year_high |   year_low | last_rate_timestamp   |
-|:----------------|:-------------------|------------:|-----------:|-----------:|-----------:|---------:|-------------:|---------:|-----------------:|-----------:|-----------:|------------:|-----------:|:----------------------|
-| XAU             | USD                |    2092.76  |  2083.17   |  2092.8    |  2079.4    |     2246 |         2083 |    9.76  |      0.0046855   |  2030.83   |  1976.63   |    2084.35  |   1813.82  | 2024-03-04 06:16:12   |
-| XAU             | GBP                |    1645.45  |  1644.1    |  1645.6    |  1640      |      643 |         1644 |    1.45  |      0.000881995 |  1603.92   |  1573.46   |    1652.15  |   1482.2   | 2024-03-04 05:45:11   |
-| XAU             | EUR                |    1924     |  1921.5    |  1924      |  1917.15   |     1517 |         1921 |    3     |      0.0015617   |  1874.69   |  1826.4    |    1921.6   |   1719.35  | 2024-03-04 05:51:11   |
-| XAU             | HKD                |   16341.8   | 16310      | 16341.9    | 16276.4    |     1665 |        16307 |   34.75  |      0.002131    | 15891.1    | 15452.8    |   16306.3   |  14238     | 2024-03-04 05:57:11   |
-| XAG             | USD                |      23.299 |    23.1091 |    23.3062 |    23.0172 |     2074 |           23 |    0.299 |      0.013       |    22.7862 |    23.4349 |      26.035 |     20.005 | 2024-03-04 05:56:41   |
-| XAG             | GBP                |      18.26  |    18.21   |    18.26   |    18.14   |      413 |           18 |    0.26  |      0.0144444   |    17.9988 |    18.5021 |      20.67  |     16.81  | 2024-03-04 05:24:10   |
-| XAG             | EUR                |      21.36  |    21.32   |    21.37   |    21.2087 |     1079 |           21 |    0.36  |      0.0171429   |    21.0393 |    21.4906 |      23.64  |     18.97  | 2024-03-04 05:30:10   |
-| XAG             | HKD                |     181.237 |   180.881  |   181.399  |   180.124  |     1596 |          180 |    1.237 |      0.0068722   |   178.342  |   181.815  |     204.411 |    157.209 | 2024-03-04 05:30:10   |
+| base_currency | counter_currency | last_rate |    open |    high |     low | volume | prev_close | change | change_percent |    ma50 |   ma200 | year_high | year_low | last_rate_timestamp |
+| :------------ | :--------------- | --------: | ------: | ------: | ------: | -----: | ---------: | -----: | -------------: | ------: | ------: | --------: | -------: | :------------------ |
+| XAU           | USD              |   2092.76 | 2083.17 |  2092.8 |  2079.4 |   2246 |       2083 |   9.76 |      0.0046855 | 2030.83 | 1976.63 |   2084.35 |  1813.82 | 2024-03-04 06:16:12 |
+| XAU           | GBP              |   1645.45 |  1644.1 |  1645.6 |    1640 |    643 |       1644 |   1.45 |    0.000881995 | 1603.92 | 1573.46 |   1652.15 |   1482.2 | 2024-03-04 05:45:11 |
+| XAU           | EUR              |      1924 |  1921.5 |    1924 | 1917.15 |   1517 |       1921 |      3 |      0.0015617 | 1874.69 |  1826.4 |    1921.6 |  1719.35 | 2024-03-04 05:51:11 |
+| XAU           | HKD              |   16341.8 |   16310 | 16341.9 | 16276.4 |   1665 |      16307 |  34.75 |       0.002131 | 15891.1 | 15452.8 |   16306.3 |    14238 | 2024-03-04 05:57:11 |
+| XAG           | USD              |    23.299 | 23.1091 | 23.3062 | 23.0172 |   2074 |         23 |  0.299 |          0.013 | 22.7862 | 23.4349 |    26.035 |   20.005 | 2024-03-04 05:56:41 |
+| XAG           | GBP              |     18.26 |   18.21 |   18.26 |   18.14 |    413 |         18 |   0.26 |      0.0144444 | 17.9988 | 18.5021 |     20.67 |    16.81 | 2024-03-04 05:24:10 |
+| XAG           | EUR              |     21.36 |   21.32 |   21.37 | 21.2087 |   1079 |         21 |   0.36 |      0.0171429 | 21.0393 | 21.4906 |     23.64 |    18.97 | 2024-03-04 05:30:10 |
+| XAG           | HKD              |   181.237 | 180.881 | 181.399 | 180.124 |   1596 |        180 |  1.237 |      0.0068722 | 178.342 | 181.815 |   204.411 |  157.209 | 2024-03-04 05:30:10 |
 
 ## Write Tests
 
@@ -700,8 +703,9 @@ def test_currency_snapshots(params, obb):
 Now run `pytest` for both of these files.
 
 Step 6 & 7 are done.
- - [X] Add unit test.
- - [X] Add integration tests.
+
+- [x] Add unit test.
+- [x] Add integration tests.
 
 ## Submit A Pull Request
 
@@ -765,30 +769,31 @@ A pull request, in general, should have details on why the PR was created, what 
 
 1. **Why**?:
 
-    - This PR is the result of creating a piece of contributor documentation (not included in this PR) for creating a new router endpoint and standard model.
-    - Endpoint was requested by @minhhoang1023.
+   - This PR is the result of creating a piece of contributor documentation (not included in this PR) for creating a new router endpoint and standard model.
+   - Endpoint was requested by @minhhoang1023.
 
 2. **What**?:
 
-    - `obb.currency.snapshots()`
+   - `obb.currency.snapshots()`
 
-    - This endpoint provides a similar data set to `obb.equity.market_snapshots()` or `obb.index.snapshots()`, with minor twists:
-      - Set one, or multiple, 'base' currencies.
-      - Filter results for a list of supplied counter currencies.
-      - A `quote_type` parameter for the perspective on the exchange rate, "direct" or "indirect".
+   - This endpoint provides a similar data set to `obb.equity.market_snapshots()` or `obb.index.snapshots()`, with minor twists:
+     - Set one, or multiple, 'base' currencies.
+     - Filter results for a list of supplied counter currencies.
+     - A `quote_type` parameter for the perspective on the exchange rate, "direct" or "indirect".
 
 3. **Impact**:
 
-    - Not a breaking change.
+   - Not a breaking change.
 
-    - Future providers to this endpoint will require parsing symbols and filtering as part of the `transform_data` stage, as well as ensure the `quote_type` is correctly applied.
+   - Future providers to this endpoint will require parsing symbols and filtering as part of the `transform_data` stage, as well as ensure the `quote_type` is correctly applied.
 
 4. **Testing Done**:
 
-    - A variety of `base` and `counter_currencies`, checking both `quote_type` settings.
+   - A variety of `base` and `counter_currencies`, checking both `quote_type` settings.
 
-    - `obb.currency.snapshots(base="usd,xau,xag", counter_currencies="usd,eur,gbp,chf,aud,jpy,cny,cad", quote_type="indirect"`
+   - `obb.currency.snapshots(base="usd,xau,xag", counter_currencies="usd,eur,gbp,chf,aud,jpy,cny,cad", quote_type="indirect"`
 
+5. **Any other information**:
 5. **Any other information**:
 
 ![Screenshot 2024-03-04 at 10 05 00 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7943d2ef-05b9-4a25-9d17-32618e2c57cf)

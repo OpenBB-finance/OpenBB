@@ -156,10 +156,12 @@ class ROUTER_economy(Container):
             no default.
         country : Optional[str]
             Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
-        importance : Optional[Literal['Low', 'Medium', 'High']]
+        importance : Optional[Literal['low', 'medium', 'high']]
             Importance of the event. (provider: tradingeconomics)
-        group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
-            Grouping of events (provider: tradingeconomics)
+        group : Optional[Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
+            Grouping of events. (provider: tradingeconomics)
+        calendar_id : Optional[Union[int, str]]
+            Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed. (provider: tradingeconomics)
 
         Returns
         -------
@@ -181,38 +183,53 @@ class ROUTER_economy(Container):
             The date of the data.
         country : Optional[str]
             Country of event.
+        category : Optional[str]
+            Category of event.
         event : Optional[str]
             Event name.
-        reference : Optional[str]
-            Abbreviated period for which released data refers to.
+        importance : Optional[str]
+            The importance level for the event.
         source : Optional[str]
             Source of the data.
-        sourceurl : Optional[str]
-            Source URL.
-        actual : Optional[Union[str, float]]
-            Latest released value.
-        previous : Optional[Union[str, float]]
-            Value for the previous period after the revision (if revision is applicable).
-        consensus : Optional[Union[str, float]]
-            Average forecast among a representative group of economists.
-        forecast : Optional[Union[str, float]]
-            Trading Economics projections
-        url : Optional[str]
-            Trading Economics URL
-        importance : Optional[Union[Literal[0, 1, 2, 3], str]]
-            Importance of the event. 1-Low, 2-Medium, 3-High
         currency : Optional[str]
             Currency of the data.
         unit : Optional[str]
             Unit of the data.
+        consensus : Optional[Union[str, float]]
+            Average forecast among a representative group of economists.
+        previous : Optional[Union[str, float]]
+            Value for the previous period after the revision (if revision is applicable).
+        revised : Optional[Union[str, float]]
+            Revised previous value, if applicable.
+        actual : Optional[Union[str, float]]
+            Latest released value.
         change : Optional[float]
             Value change since previous. (provider: fmp)
         change_percent : Optional[float]
             Percentage change since previous. (provider: fmp)
-        updated_at : Optional[datetime]
-            Last updated timestamp. (provider: fmp)
+        last_updated : Optional[datetime]
+            Last updated timestamp. (provider: fmp);
+            Last update of the data. (provider: tradingeconomics)
         created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
+        forecast : Optional[Union[str, float]]
+            TradingEconomics projections. (provider: tradingeconomics)
+        reference : Optional[str]
+            Abbreviated period for which released data refers to. (provider: tradingeconomics)
+        reference_date : Optional[date]
+            Date for the reference period. (provider: tradingeconomics)
+        calendar_id : Optional[int]
+            TradingEconomics Calendar ID. (provider: tradingeconomics)
+        date_span : Optional[int]
+            Date span of the event. (provider: tradingeconomics)
+        symbol : Optional[str]
+            TradingEconomics Symbol. (provider: tradingeconomics)
+        ticker : Optional[str]
+            TradingEconomics Ticker symbol. (provider: tradingeconomics)
+        te_url : Optional[str]
+            TradingEconomics URL path. (provider: tradingeconomics)
+        source_url : Optional[str]
+            Source URL. (provider: tradingeconomics)
 
         Examples
         --------
@@ -237,7 +254,12 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["tradingeconomics"]}},
+                info={
+                    "country": {"tradingeconomics": {"multiple_items_allowed": True}},
+                    "calendar_id": {
+                        "tradingeconomics": {"multiple_items_allowed": True}
+                    },
+                },
             )
         )
 
@@ -430,7 +452,7 @@ class ROUTER_economy(Container):
                     "country": country,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["econdb"]}},
+                info={"country": {"econdb": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -603,7 +625,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"multiple_items_allowed": ["fred"]}},
+                info={"country": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -794,7 +816,7 @@ class ROUTER_economy(Container):
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
             Offset the results in conjunction with limit. (provider: fred)
-        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+        filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
             Filter by an attribute. (provider: fred)
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
@@ -931,7 +953,7 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert high frequency data to lower frequency.
                     None = No change
@@ -950,7 +972,7 @@ class ROUTER_economy(Container):
                     bwew = Biweekly, Ending Wednesday
                     bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal[None, 'avg', 'sum', 'eop']
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
                 A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
@@ -958,7 +980,7 @@ class ROUTER_economy(Container):
                     sum = Sum
                     eop = End of Period
                  (provider: fred)
-        transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
                 Transformation type
                     None = No transformation
@@ -1024,7 +1046,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                info={"symbol": {"multiple_items_allowed": ["fred"]}},
+                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -1083,19 +1105,21 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
-        transform : Literal['toya', 'tpop', 'tusd', 'tpgp']
+        transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
             The transformation to apply to the data, default is None.
 
-                tpop: Change from previous period
-                toya: Change from one year ago
-                tusd: Values as US dollars
-                tpgp: Values as a percent of GDP
+            tpop: Change from previous period
+            toya: Change from one year ago
+            tusd: Values as US dollars
+            tpgp: Values as a percent of GDP
 
-             Only 'tpop' and 'toya' are applicable to all indicators.     Applying transformations across multiple indicators/countries     may produce unexpected results.
-             This is because not all indicators are compatible with all transformations,     and the original units and scale differ between entities.
-             `tusd` should only be used where values are currencies. (provider: econdb)
+            Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
+            This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
+            `tusd` should only be used where values are currencies. (provider: econdb)
+        frequency : Literal['annual', 'quarter', 'month']
+            The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb)
         use_cache : bool
-            If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
 
         Returns
         -------
@@ -1130,6 +1154,8 @@ class ROUTER_economy(Container):
         >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
         >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
         >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
+        >>> # Use the `main` symbol to get the group of main indicators for a country.
+        >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
         """  # noqa: E501
 
         return self._run(
@@ -1150,8 +1176,8 @@ class ROUTER_economy(Container):
                 },
                 extra_params=kwargs,
                 info={
-                    "symbol": {"multiple_items_allowed": ["econdb"]},
-                    "country": {"multiple_items_allowed": ["econdb"]},
+                    "symbol": {"econdb": {"multiple_items_allowed": True}},
+                    "country": {"econdb": {"multiple_items_allowed": True}},
                 },
             )
         )

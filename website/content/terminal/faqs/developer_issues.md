@@ -1,43 +1,46 @@
 ---
 title: Developer Issues
 sidebar_position: 6
-description: This page helps with frequently asked questions regarding debugging,
+description:
+  This page helps with frequently asked questions regarding debugging,
   GitHub pull requests, and common error resolutions. The guide includes steps on
   how to launch in debug mode, switching branches, handling missing dependencies like
   wheel, dealing with .whl files, understanding JSONDecodeError, correcting line break
   errors, and using VS Code terminal.
 keywords:
-- debug mode
-- GitHub pull requests
-- error resolutions
-- missing dependencies
-- wheel
-- .whl file errors
-- JSONDecodeError
-- line break errors
-- VS Code terminal
-- poetry
-- conda
-- pip
+  - debug mode
+  - GitHub pull requests
+  - error resolutions
+  - missing dependencies
+  - wheel
+  - .whl file errors
+  - JSONDecodeError
+  - line break errors
+  - VS Code terminal
+  - poetry
+  - conda
+  - pip
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Developer Issues - Faqs | OpenBB Terminal Docs" />
 
-<details><summary>How do I launch in debug mode?</summary>
+<details>
+<summary mdxType="summary">How do I launch in debug mode?</summary>
 
-When installed from source, the OpenBB Terminal can be launched in debug mode.  Launch the Terminal using the syntax below.
+When installed from source, the OpenBB Terminal can be launched in debug mode. Launch the Terminal using the syntax below.
 
 ```python
 python terminal.py --debug
 ```
 
-Operate the Terminal normally, and errors will trigger an interrupt which prints the traceback with the error.  Charts and tables will also include a developer tools button, located at the top-left of the window, for identifying issues specific to the PyWry interactive window.
+Operate the Terminal normally, and errors will trigger an interrupt which prints the traceback with the error. Charts and tables will also include a developer tools button, located at the top-left of the window, for identifying issues specific to the PyWry interactive window.
 
 </details>
 
-<details><summary>What branch on GitHub should pull requests be submitted to?</summary>
+<details>
+<summary mdxType="summary">What branch on GitHub should pull requests be submitted to?</summary>
 
 Pull requests submitted to the Main branch will not be merged, please create branches from the `develop` branch.
 
@@ -56,7 +59,8 @@ Branches must also follow the naming convention:
 
 </details>
 
-<details><summary>Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
+<details>
+<summary mdxType="summary">Error: "git pull" fails because of a hot fix: cannot lock ref</summary>
 
 If the error message looks something like:
 
@@ -73,7 +77,8 @@ git pull
 
 </details>
 
-<details><summary>What does it mean if it says wheel is missing?</summary>
+<details>
+<summary mdxType="summary">What does it mean if it says wheel is missing?</summary>
 
 If you receive any notifications regarding `wheel` missing, this could be due to this dependency missing.
 
@@ -81,7 +86,8 @@ If you receive any notifications regarding `wheel` missing, this could be due to
 
 </details>
 
-<details><summary>Why do these .whl files not exist?</summary>
+<details>
+<summary mdxType="summary">Why do these .whl files not exist?</summary>
 
 If you get errors about .whl files not existing (usually on Windows) you have to reinitialize the following folder.
 Just removing the 'artifacts' folder could also be enough:
@@ -112,12 +118,14 @@ If you run into trouble with Poetry, and the advice above did not help, your bes
   - `conda env remove -n obb`
   - `conda clean -a`
   - Make a new environment and install dependencies again.
+
 - Reboot your computer and try again
 - Submit a ticket on GitHub
 
 </details>
 
-<details><summary>What does the JSONDecodeError mean during poetry install?</summary>
+<details>
+<summary mdxType="summary">What does the JSONDecodeError mean during poetry install?</summary>
 
 Sometimes poetry can throw a `JSONDecodeError` on random packages while running `poetry install`. This can be observed on macOS 10.14+ running python 3.8+. This is because of the use of an experimental installer that can be switched off to avoid the mentioned error. Run the code below as advised [here](https://github.com/python-poetry/poetry/issues/4210) and it should fix the installation process.
 
@@ -133,7 +141,8 @@ _Commands that may help you in case of an error:_
 
 </details>
 
-<details><summary>How do I deal with errors regarding CRLF?</summary>
+<details>
+<summary mdxType="summary">How do I deal with errors regarding CRLF?</summary>
 
 When trying to commit code changes, pylint will prevent you from doing so if your line break settings are set to
 CRLF (default for Windows).
@@ -156,7 +165,8 @@ git reset --hard
 
 </details>
 
-<details><summary>Why can't I run OpenBB via the VS Code integrated terminal?</summary>
+<details>
+<summary mdxType="summary">Why can't I run OpenBB via the VS Code integrated terminal?</summary>
 
 This occurs when VS Code terminal python version/path is different from the terminal version.
 

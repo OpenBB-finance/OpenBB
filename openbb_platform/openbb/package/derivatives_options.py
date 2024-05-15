@@ -209,9 +209,9 @@ class ROUTER_derivatives_options(Container):
             The type of unusual activity to query for. (provider: intrinio)
         sentiment : Optional[Literal['bullish', 'bearish', 'neutral']]
             The sentiment type to query for. (provider: intrinio)
-        min_value : Optional[Union[float, int]]
+        min_value : Optional[Union[int, float]]
             The inclusive minimum total value for the unusual activity. (provider: intrinio)
-        max_value : Optional[Union[float, int]]
+        max_value : Optional[Union[int, float]]
             The inclusive maximum total value for the unusual activity. (provider: intrinio)
         limit : int
             The number of data entries to return. A typical day for all symbols will yield 50-80K records. The API will paginate at 1000 records. The high default limit (100K) is to be able to reliably capture the most days. The high absolute limit (1.25M) is to allow for outlier days. Queries at the absolute limit will take a long time, and might be unreliable. Apply filters to improve performance. (provider: intrinio)

@@ -36,7 +36,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         "start_date": "startDate",
         "end_date": "endDate",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
@@ -142,7 +142,7 @@ class TiingoEquityHistoricalFetcher(
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             data = await response.json()
             symbol = response.url.parts[-2]
-            results = []
+            results: List[dict] = []
             if not data:
                 _warn(f"No data found the the symbol: {symbol}")
                 return results

@@ -9,7 +9,7 @@ import {
   useThemeConfig,
 } from "@docusaurus/theme-common";
 import {
-  findFirstCategoryLink,
+  // findFirstCategoryLink,
   isActiveSidebarItem,
   isSamePath,
   useDocSidebarItemsExpandedState,
@@ -18,7 +18,7 @@ import useIsBrowser from "@docusaurus/useIsBrowser";
 import DocSidebarItems from "@theme/DocSidebarItems";
 import clsx from "clsx";
 import React, { useEffect, useMemo } from "react";
-import { useIFrameContext } from "../../Root";
+import { useIFrameContext } from "../../Root.tsx";
 // If we navigate to a category and it becomes active, it should automatically
 // expand itself
 function useAutoExpandActiveCategory({ isActive, collapsed, updateCollapsed }) {
@@ -49,7 +49,7 @@ function useCategoryHrefWithSSRFallback(item, href) {
     if (isBrowser || !item.collapsible) {
       return undefined;
     }
-    return findFirstCategoryLink(item);
+    // return findFirstCategoryLink(item);
   }, [item, isBrowser]);
 }
 function CollapseButton({ categoryLabel, onClick }) {
@@ -85,6 +85,7 @@ export default function DocSidebarItemCategory({
     "OpenBB Bot": "/bot",
     "OpenBB Terminal Pro": "/pro",
     "OpenBB Add-in for Excel": "/excel",
+    "OpenBB CLI": "/cli",
   };
   const newHref = labelToHrefMap[label] || href;
   const {
@@ -126,19 +127,19 @@ export default function DocSidebarItemCategory({
   const dontShowLink =
     isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
 
-    const location = useLocation();
-    const isProPage = location.pathname.startsWith("/pro");
-    const isExcelPage = location.pathname.startsWith("/excel");
+  const location = useLocation();
+  const isProPage = location.pathname.startsWith("/pro");
+  const isExcelPage = location.pathname.startsWith("/excel");
 
-    // Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
-    if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
-      return null;
-    }
+  // Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
+  if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
+    return null;
+  }
 
-    // Temporary, remove to show Excel tab
-    if (item.customProps?.onlyDirectAccess && !isExcelPage) {
-      return null;
-    }
+  // Temporary, remove to show Excel tab
+  if (item.customProps?.onlyDirectAccess && !isExcelPage) {
+    return null;
+  }
 
   return (
     <li

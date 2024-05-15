@@ -84,3 +84,9 @@ class Session(metaclass=SingletonMeta):
 
     def reset(self) -> None:
         pass
+
+    def max_obbjects_exceeded(self) -> bool:
+        """Check if max obbjects exceeded."""
+        return (
+            len(self.obbject_registry.all) >= self.settings.N_TO_KEEP_OBBJECT_REGISTRY
+        )

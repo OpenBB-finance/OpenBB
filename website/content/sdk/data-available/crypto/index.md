@@ -1,7 +1,8 @@
 ---
 title: Crypto
 sidebar_position: 0
-description: This Docusaurus page is dedicated to providing a detailed guide on how
+description:
+  This Docusaurus page is dedicated to providing a detailed guide on how
   Cryptocurrency applications and dashboards can be built quickly using the OpenBB
   Terminal's Crypto Module. It provides an outline on how to use SDK functions at
   the 'openbb.crypto' level, rundown of functions and modules, along with sample Python
@@ -9,18 +10,18 @@ description: This Docusaurus page is dedicated to providing a detailed guide on 
   coins and more. This page can be useful for those working on Cryptocurrency applications,
   particularly those relying on Python or OpenBB Terminal.
 keywords:
-- Docusaurus
-- Cryptocurrency
-- Web Application
-- Crypto Module
-- SDK Functions
-- Digital Assets
-- Onchain Metrics
-- Data visualisation
-- CCXT
-- Trending Coins
-- Liquidity Measurement
-- Coin Ranking
+  - Docusaurus
+  - Cryptocurrency
+  - Web Application
+  - Crypto Module
+  - SDK Functions
+  - Digital Assets
+  - Onchain Metrics
+  - Data visualisation
+  - CCXT
+  - Trending Coins
+  - Liquidity Measurement
+  - Coin Ranking
 ---
 
 The Crypto module wraps the functions of the OpenBB Terminal menu. This allows web applications and dashboards to be built quickly on top of the existing infrastructure. Navigating the functions is similar to operating the OpenBB Terminal.
@@ -95,7 +96,7 @@ Help on Operation in module openbb_terminal.core.library.operation:
 ```
 
 <details>
-  <summary><code>CCXT Exchange List</code> <code>(expand to see list of exchanges supported by CCXT)</code></summary>
+  <summary mdxType="summary"><code>CCXT Exchange List</code> <code>(expand to see list of exchanges supported by CCXT)</code></summary>
 
 |     |           Exchange |
 | --- | -----------------: |

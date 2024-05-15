@@ -362,6 +362,10 @@ async def available_indicators(
                 "provider": "econdb",
             },
         ),
+        APIEx(
+            description="Use the `main` symbol to get the group of main indicators for a country.",
+            parameters={"provider": "econdb", "symbol": "main", "country": "eu"},
+        ),
     ],
 )
 async def indicators(

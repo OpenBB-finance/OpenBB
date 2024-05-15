@@ -1,5 +1,6 @@
 import argparse
 import inspect
+import re
 from copy import deepcopy
 from enum import Enum
 from typing import (
@@ -21,6 +22,8 @@ from openbb_core.app.model.field import OpenBBField
 from pydantic import BaseModel, model_validator
 from typing_extensions import Annotated
 
+# pylint: disable=protected-access
+
 SEP = "__"
 
 
@@ -39,7 +42,7 @@ class CustomArgument(BaseModel):
     action: Literal["store_true", "store"]
     help: str
     nargs: Optional[Literal["+"]]
-    choices: Optional[Any]
+    choices: Optional[Tuple]
 
     @model_validator(mode="after")  # type: ignore
     @classmethod
@@ -114,7 +117,7 @@ class ReferenceToCustomArgumentsProcessor:
             return "+"
         return None
 
-    def _get_choices(self, type_: str) -> Tuple:
+    def _get_choices(self, type_: str, custom_choices: Any) -> Tuple:
         """Get the choices for the given type."""
         type_ = self._make_type_parsable(type_)  # type: ignore
         type_origin = get_origin(type_)
@@ -123,14 +126,12 @@ class ReferenceToCustomArgumentsProcessor:
 
         if type_origin is Literal:
             choices = get_args(type_)
-            # param_type = type(choices[0])
 
         if type_origin is list:
             type_ = get_args(type_)[0]
 
             if get_origin(type_) is Literal:
                 choices = get_args(type_)
-                # param_type = type(choices[0])
 
         if type_origin is Union and type(None) in get_args(type_):
             # remove NoneType from the args
@@ -142,7 +143,9 @@ class ReferenceToCustomArgumentsProcessor:
 
             if get_origin(type_) is Literal:
                 choices = get_args(type_)
-                # param_type = type(choices[0])
+
+        if custom_choices:
+            return tuple(custom_choices)
 
         return choices
 
@@ -171,7 +174,9 @@ class ReferenceToCustomArgumentsProcessor:
                             action="store" if type_ != bool else "store_true",
                             help=arg["description"],
                             nargs=self._get_nargs(type_),  # type: ignore
-                            choices=self._get_choices(arg["type"]),
+                            choices=self._get_choices(
+                                arg["type"], custom_choices=arg["choices"]
+                            ),
                         )
                     )
 
@@ -200,7 +205,7 @@ class ArgparseTranslator:
         self.func = func
         self.signature = inspect.signature(func)
         self.type_hints = get_type_hints(func)
-        self.provider_parameters = []
+        self.provider_parameters: Dict[str, List[str]] = {}
 
         self._parser = argparse.ArgumentParser(
             prog=func.__name__,
@@ -215,25 +220,109 @@ class ArgparseTranslator:
 
         if custom_argument_groups:
             for group in custom_argument_groups:
+                self.provider_parameters[group.name] = []
                 argparse_group = self._parser.add_argument_group(group.name)
                 for argument in group.arguments:
-                    kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+                    self._handle_argument_in_groups(argument, argparse_group)
 
-                    # If the argument is already in use, we can't repeat it
-                    if f"--{argument.name}" not in self._parser_arguments():
-                        argparse_group.add_argument(f"--{argument.name}", **kwargs)
-                        self.provider_parameters.append(argument.name)
+    def _handle_argument_in_groups(self, argument, group):
+        """Handle the argument and add it to the parser."""
 
-    def _parser_arguments(self) -> List[str]:
-        """Get all the arguments from all groups currently defined on the parser."""
-        arguments_in_use: List[str] = []
+        def _in_group(arg, group_title):
+            for action_group in self._parser._action_groups:
+                if action_group.title == group_title:
+                    for action in action_group._group_actions:
+                        opts = action.option_strings
+                        if (opts and opts[0] == arg) or action.dest == arg:
+                            return True
+            return False
 
-        # pylint: disable=protected-access
-        for action_group in self._parser._action_groups:
-            for action in action_group._group_actions:
-                arguments_in_use.extend(action.option_strings)
+        def _remove_argument(arg) -> List[Optional[str]]:
+            groups_w_arg = []
 
-        return arguments_in_use
+            # remove the argument from the parser
+            for action in self._parser._actions:
+                opts = action.option_strings
+                if (opts and opts[0] == arg) or action.dest == arg:
+                    self._parser._remove_action(action)
+                    break
+
+            # remove from all groups
+            for action_group in self._parser._action_groups:
+                for action in action_group._group_actions:
+                    opts = action.option_strings
+                    if (opts and opts[0] == arg) or action.dest == arg:
+                        action_group._group_actions.remove(action)
+                        groups_w_arg.append(action_group.title)
+
+            # remove from _action_groups dict
+            self._parser._option_string_actions.pop(f"--{arg}", None)
+
+            return groups_w_arg
+
+        def _get_arg_choices(arg) -> Tuple:
+            for action in self._parser._actions:
+                opts = action.option_strings
+                if (opts and opts[0] == arg) or action.dest == arg:
+                    return tuple(action.choices or ())
+            return ()
+
+        def _update_providers(
+            input_string: str, new_provider: List[Optional[str]]
+        ) -> str:
+            pattern = r"\(provider:\s*(.*?)\)"
+            providers = re.findall(pattern, input_string)
+            providers.extend(new_provider)
+            # remove pattern from help and add with new providers
+            input_string = re.sub(pattern, "", input_string).strip()
+            return f"{input_string} (provider: {', '.join(providers)})"
+
+        # check if the argument is already in use, if not, add it
+        if f"--{argument.name}" not in self._parser._option_string_actions:
+            kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+            group.add_argument(f"--{argument.name}", **kwargs)
+            if group.title in self.provider_parameters:
+                self.provider_parameters[group.title].append(argument.name)
+
+        else:
+            kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
+            model_choices = kwargs.get("choices", ()) or ()
+            # extend choices
+            choices = tuple(set(_get_arg_choices(argument.name) + model_choices))
+
+            # check if the argument is in the required arguments
+            if _in_group(argument.name, group_title="required arguments"):
+                for action in self._required._group_actions:
+                    if action.dest == argument.name and choices:
+                        # update choices
+                        action.choices = choices
+                return
+
+            # check if the argument is in the optional arguments
+            if _in_group(argument.name, group_title="optional arguments"):
+                for action in self._parser._actions:
+                    if action.dest == argument.name:
+                        # update choices
+                        if choices:
+                            action.choices = choices
+                        if argument.name not in self.signature.parameters:
+                            # update help
+                            action.help = _update_providers(
+                                action.help or "", [group.title]
+                            )
+                return
+
+            # if the argument is in use, remove it from all groups
+            # and return the groups that had the argument
+            groups_w_arg = _remove_argument(argument.name)
+            groups_w_arg.append(group.title)  # add current group
+
+            # add it to the optional arguments group instead
+            if choices:
+                kwargs["choices"] = choices  # update choices
+            # add provider info to the help
+            kwargs["help"] = _update_providers(argument.help or "", groups_w_arg)
+            self._parser.add_argument(f"--{argument.name}", **kwargs)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
@@ -497,11 +586,19 @@ class ArgparseTranslator:
         kwargs = self._unflatten_args(vars(parsed_args))
         kwargs = self._update_with_custom_types(kwargs)
 
+        provider = kwargs.get("provider")
+        provider_args = []
+        if provider and provider in self.provider_parameters:
+            provider_args = self.provider_parameters[provider]
+        else:
+            for args in self.provider_parameters.values():
+                provider_args.extend(args)
+
         # remove kwargs that doesn't match the signature or provider parameters
         kwargs = {
             key: value
             for key, value in kwargs.items()
-            if key in self.signature.parameters or key in self.provider_parameters
+            if key in self.signature.parameters or key in provider_args
         }
 
         return self.func(**kwargs)

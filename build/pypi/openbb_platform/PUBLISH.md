@@ -55,6 +55,7 @@
 
 1. Install the packages on Google Colaboratory via PyPi and test to check if everything is working as expected.
 2. Install the packages in a new environment locally via PyPi and test to check if everything is working as expected.
-3. Open a new PR with the `release/<package>-<version>` branch pointing to the `develop` branch.
-4. Merge the `release/<package>-<version>` branch to the `develop` branch.
-5. If any bugs are encountered, create a new branch - `hotfix` for `main` and `bugfix` for `develop` and merge them accordingly.
+3. Regenerate assets for external use by running `python assets/scripts/generate_extension_data.py`
+4. Open a new PR with the `release/<package>-<version>` branch pointing to the `develop` branch.
+5. Merge the `release/<package>-<version>` branch to the `develop` branch.
+6. If any bugs are encountered, create a new branch - `hotfix` for `main` and `bugfix` for `develop` and merge them accordingly.

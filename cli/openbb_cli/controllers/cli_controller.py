@@ -16,7 +16,6 @@ from pathlib import Path
 from types import MethodType
 from typing import Any, Dict, List, Optional
 
-import certifi
 import pandas as pd
 import requests
 from openbb import obb
@@ -37,7 +36,6 @@ from openbb_cli.controllers.utils import (
     bootup,
     first_time_user,
     get_flair_and_username,
-    is_installer,
     parse_and_split_input,
     print_goodbye,
     print_rich_table,
@@ -65,13 +63,6 @@ logger = logging.getLogger(__name__)
 
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
-
-if is_installer():
-    # Necessary for installer so that it can locate the correct certificates for
-    # API calls and https
-    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
-    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
-    os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 class CLIController(BaseController):
@@ -169,8 +160,6 @@ class CLIController(BaseController):
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
-            choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
-            choices["hold"]["off"] = {"--title": None}
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath  # type: ignore
@@ -199,8 +188,9 @@ class CLIController(BaseController):
                 "--input": None,
                 "-i": "--input",
                 "--url": None,
+                "--help": None,
+                "-h": "--help",
             }
-
             choices["record"] = {
                 "--name": None,
                 "-n": "--name",
@@ -208,28 +198,56 @@ class CLIController(BaseController):
                 "-d": "--description",
                 "--public": None,
                 "-p": "--public",
-                "--local": None,
-                "-l": "--local",
                 "--tag1": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag2": {c: None for c in constants.SCRIPT_TAGS},
                 "--tag3": {c: None for c in constants.SCRIPT_TAGS},
+                "--help": None,
+                "-h": "--help",
             }
+            choices["stop"] = {"--help": None, "-h": "--help"}
+            choices["results"] = {"--help": None, "-h": "--help"}
 
             self.update_completer(choices)
 
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_info("_configure_")
-        mt.add_menu("settings")
+
+        mt.add_info("Configure the platform and manage your account")
+        for router, value in PLATFORM_ROUTERS.items():
+            if router not in NON_DATA_ROUTERS or router in ["reference", "coverage"]:
+                continue
+            if value == "menu":
+                menu_description = (
+                    obb.reference["routers"]  # type: ignore
+                    .get(f"{self.PATH}{router}", {})
+                    .get("description")
+                ) or ""
+                mt.add_menu(
+                    name=router,
+                    description=menu_description.split(".")[0].lower(),
+                )
+            else:
+                mt.add_cmd(router)
+
+        mt.add_info("\nConfigure your CLI")
+        mt.add_menu(
+            "settings",
+            description="enable and disable feature flags, preferences and settings",
+        )
         mt.add_raw("\n")
-        mt.add_info("_scripts_")
-        mt.add_cmd("record")
-        mt.add_cmd("stop")
-        mt.add_cmd("exe")
+        mt.add_info("Record and execute your own .openbb routine scripts")
+        mt.add_cmd("record", description="start recording current session")
+        mt.add_cmd(
+            "stop", description="stop session recording and convert to .openbb routine"
+        )
+        mt.add_cmd(
+            "exe",
+            description="execute .openbb routine scripts (use exe --example for an example)",
+        )
         mt.add_raw("\n")
-        mt.add_info("Platform CLI")
-        mt.add_raw("    data\n")
+        mt.add_info("Retrieve data from different asset classes and providers")
+
         for router, value in PLATFORM_ROUTERS.items():
             if router in NON_DATA_ROUTERS or router in DATA_PROCESSING_ROUTERS:
                 continue
@@ -247,7 +265,8 @@ class CLIController(BaseController):
                 mt.add_cmd(router)
 
         if any(router in PLATFORM_ROUTERS for router in DATA_PROCESSING_ROUTERS):
-            mt.add_raw("\n    data processing\n")
+            mt.add_info("\nAnalyze and process previously obtained data")
+
             for router, value in PLATFORM_ROUTERS.items():
                 if router not in DATA_PROCESSING_ROUTERS:
                     continue
@@ -264,25 +283,17 @@ class CLIController(BaseController):
                 else:
                     mt.add_cmd(router)
 
-        mt.add_raw("\n    configuration\n")
-        for router, value in PLATFORM_ROUTERS.items():
-            if router not in NON_DATA_ROUTERS or router == "reference":
-                continue
-            if value == "menu":
-                menu_description = (
-                    obb.reference["routers"]  # type: ignore
-                    .get(f"{self.PATH}{router}", {})
-                    .get("description")
-                ) or ""
-                mt.add_menu(
-                    name=router,
-                    description=menu_description.split(".")[0].lower(),
-                )
-            else:
-                mt.add_cmd(router)
-
-        mt.add_raw("\n    cached results (OBBjects)\n")
+        mt.add_raw("\n")
         mt.add_cmd("results")
+        if session.obbject_registry.obbjects:
+            mt.add_info("\nCached Results")
+            for key, value in list(session.obbject_registry.all.items())[  # type: ignore
+                : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
+            ]:
+                mt.add_raw(
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    left_spacing=True,
+                )
 
         session.console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -300,7 +311,7 @@ class CLIController(BaseController):
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
     def call_settings(self, _):
-        """Process feature flags command."""
+        """Process settings command."""
         from openbb_cli.controllers.settings_controller import (
             SettingsController,
         )
@@ -315,8 +326,7 @@ class CLIController(BaseController):
         if not other_args:
             session.console.print(
                 "[info]Provide a path to the routine you wish to execute. For an example, please use "
-                "`exe --example` and for documentation and to learn how create your own script "
-                "type `about exe`.\n[/info]"
+                "`exe --example`.\n[/info]"
             )
             return
         parser = argparse.ArgumentParser(
@@ -324,8 +334,7 @@ class CLIController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="exe",
             description="Execute automated routine script. For an example, please use "
-            "`exe --example` and for documentation and to learn how create your own script "
-            "type `about exe`.",
+            "`exe --example`.",
         )
         parser.add_argument(
             "--file",
@@ -368,8 +377,8 @@ class CLIController(BaseController):
         if ns_parser:
             if ns_parser.example:
                 routine_path = ASSETS_DIRECTORY / "routines" / "routine_example.openbb"
-                session.console.print(
-                    "[info]Executing an example, please type `about exe` "
+                session.console.print(  # TODO: Point to docs when ready
+                    "[info]Executing an example, please visit our docs "
                     "to learn how to create your own script.[/info]\n"
                 )
                 time.sleep(3)
@@ -418,8 +427,9 @@ class CLIController(BaseController):
             else:
                 return
 
-            with open(routine_path) as fp:
-                raw_lines = list(fp)
+            try:
+                with open(routine_path) as fp:
+                    raw_lines = list(fp)
 
                 # Capture ARGV either as list if args separated by commas or as single value
                 if ns_parser.routine_args:
@@ -473,6 +483,12 @@ class CLIController(BaseController):
                         )
                     self.queue = self.queue[1:]
 
+            except FileNotFoundError:
+                session.console.print(
+                    f"[red]File '{routine_path}' doesn't exist.[/red]"
+                )
+                return
+
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     """Handle job commands."""
@@ -525,9 +541,7 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
 
         if first_time_user():
             with contextlib.suppress(EOFError):
-                webbrowser.open(
-                    "https://docs.openbb.co/terminal/usage/overview/structure-and-navigation"
-                )
+                webbrowser.open("https://docs.openbb.co/cli")
 
         t_controller.print_help()
 
@@ -565,7 +579,6 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                                 '<style bg="ansiblack" fg="ansiwhite">[e]</style> exit the program    '
                                 '<style bg="ansiblack" fg="ansiwhite">[cmd -h]</style> '
                                 "see usage and available options    "
-                                '<style bg="ansiblack" fg="ansiwhite">[about (cmd/menu)]</style> '
                             ),
                             style=Style.from_dict(
                                 {

@@ -64,6 +64,7 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, List[SecForm13FHRData
             urls = filings.iloc[: query.limit].to_list()
         if query.date is not None:
             date = parse_13f.date_to_quarter_end(query.date.strftime("%Y-%m-%d"))
+            filings.index = filings.index.astype(str)
             urls = [filings.loc[date]]
 
         results = []

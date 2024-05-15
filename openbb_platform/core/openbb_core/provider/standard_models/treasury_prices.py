@@ -15,7 +15,7 @@ class TreasuryPricesQueryParams(QueryParams):
 
     date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + " No date will return the current posted data.",
+        + " Defaults to the last business day.",
         default=None,
     )
 

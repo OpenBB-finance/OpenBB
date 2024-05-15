@@ -3,11 +3,11 @@ title: Tests
 sidebar_position: 11
 description: This section provides an in-depth look at the Quality Assurance (QA) process in the OpenBB Platform. It covers the use of QA tools for testing extensions, creation of unit and integration tests, and the importance of maintaining a short import time for the package.
 keywords:
-- OpenBB QA process
-- Unit and integration tests
-- QA tools
-- Extension testing
-- Import time optimization
+  - OpenBB QA process
+  - Unit and integration tests
+  - QA tools
+  - Extension testing
+  - Import time optimization
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -92,7 +92,7 @@ pytest openbb_platform
 
 We aim to have a short import time for the package. To measure that we use `tuna`.
 
-- <https://pypi.org/project/tuna/>
+- [https://pypi.org/project/tuna/](https://pypi.org/project/tuna/)
 
 To visualize the import time breakdown by module and find potential bottlenecks, run the
 following commands from `openbb_platform` directory:
@@ -110,27 +110,27 @@ When using the OpenBB QA Framework it is important to be aware of the following 
 - The tests are semi-automated and might require manual intervention. For example, adjusting out-of-top level imports or changing specific arguments for a given payload.
 
 - The integration tests are more complex and if your newly added provider integration is already covered by the
-integration tests from previous commands or providers, you will need to manually inject the payload for the new
-provider.
+  integration tests from previous commands or providers, you will need to manually inject the payload for the new
+  provider.
 
 - In the integration test parametrized payload, the first item is always the set of standard parameters. Every
-consecutive item is a set of parameters for a specific provider with the standard parameters included.
+  consecutive item is a set of parameters for a specific provider with the standard parameters included.
 
 - The integration tests require you to be explicit, by using all of the standard parameters and provider-specific
-parameters in the payload. If you want to exclude a parameter, you can use `None` as its value.
+  parameters in the payload. If you want to exclude a parameter, you can use `None` as its value.
 
 - The integration tests require you to be explicit by specifying the `provider` parameter in provider-specific
-payloads.
+  payloads.
 
 - When recording unit tests, you might run into issues with the cache that is tied to your specific provider and present
-on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
-you can delete the cache file from your local machine and re-record the tests.
+  on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
+  you can delete the cache file from your local machine and re-record the tests.
 
-    > Note that the cache is likely located here:
-    > Windows: `C:\Users\user\AppData\Local\`
-    > Linux: `/home/user/.cache/`
-    > Mac: `/Users/user/Library/Caches`
+      > Note that the cache is likely located here:
+      > Windows: `C:\Users\user\AppData\Local\`
+      > Linux: `/home/user/.cache/`
+      > Mac: `/Users/user/Library/Caches`
 
 - Some providers (we are aware only of YFinance so far) do an additional request when used from the US region. As our CI
-is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the
-tests from a different region.
+  is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the
+  tests from a different region.
