@@ -135,9 +135,69 @@ DAILY = {
         "FRB_H15.F5280.D.US": "year_30",
     },
 }
-
+MONTHLY = {
+    "thailand": {
+        "BOTFM_RT_001_S2.36.M.TH": "month_1",
+        "BOTFM_RT_001_S2.37.M.TH": "month_3",
+        "BOTFM_RT_001_S2.38.M.TH": "month_6",
+        "BOTFM_RT_001_S2.39.M.TH": "year_1",
+        "BOTFM_RT_001_S2.40.M.TH": "year_2",
+        "BOTFM_RT_001_S2.41.M.TH": "year_3",
+        "BOTFM_RT_001_S2.42.M.TH": "year_4",
+        "BOTFM_RT_001_S2.43.M.TH": "year_5",
+        "BOTFM_RT_001_S2.44.M.TH": "year_6",
+        "BOTFM_RT_001_S2.45.M.TH": "year_7",
+        "BOTFM_RT_001_S2.46.M.TH": "year_8",
+        "BOTFM_RT_001_S2.47.M.TH": "year_9",
+        "BOTFM_RT_001_S2.48.M.TH": "year_10",
+        "BOTFM_RT_001_S2.49.M.TH": "year_11",
+        "BOTFM_RT_001_S2.50.M.TH": "year_12",
+        "BOTFM_RT_001_S2.51.M.TH": "year_13",
+        "BOTFM_RT_001_S2.52.M.TH": "year_14",
+        "BOTFM_RT_001_S2.53.M.TH": "year_15",
+        "BOTFM_RT_001_S2.54.M.TH": "year_16",
+        "BOTFM_RT_001_S2.55.M.TH": "year_17",
+        "BOTFM_RT_001_S2.56.M.TH": "year_18",
+        "BOTFM_RT_001_S2.57.M.TH": "year_19",
+        "BOTFM_RT_001_S2.58.M.TH": "year_20",
+    },
+    "new_zealand": {
+        "RBNZ_IR.MB01N.M.NZ": "month_1",
+        "RBNZ_IR.MB02N.M.NZ": "month_2",
+        "RBNZ_IR.MB03N.M.NZ": "month_3",
+        "RBNZ_IR.MG101N.M.NZ": "year_1",
+        "RBNZ_IR.MG102N.M.NZ": "year_2",
+        "RBNZ_IR.MG105N.M.NZ": "year_5",
+        "RBNZ_IR.MG110N.M.NZ": "year_10",
+    },
+    "mexico": {
+        "BXC_PS.SF4830.M.MX": "month_1",
+        "BXC_PS.SF4831.M.MX": "month_3",
+        "BXC_PS.SF4832.M.MX": "month_6",
+        "BXC_PS.SF4833.M.MX": "year_1",
+        "BXC_PS.SF17990.M.MX": "year_3",
+        "BXC_PS.SF98793.M.MX": "year_5",
+        "BXC_PS.SF33229.M.MX": "year_7",
+        "BXC_PS.SF30057.M.MX": "year_10",
+        "BXC_PS.SF41841.M.MX": "year_20",
+        "BXC_PS.SF60719.M.MX": "year_30",
+    },
+    "singapore": {
+        "SSG_IR.M70007118.M.SG": "year_1",
+        "SSG_IR.M70007113.M.SG": "year_2",
+        "SSG_IR.M70007110.M.SG": "year_5",
+        "SSG_IR.M70007115.M.SG": "year_10",
+        "SSG_IR.M70007119.M.SG": "year_15",
+        "SSG_IR.M70007120.M.SG": "year_20",
+    },
+}
 DAILY_COUNTRIES = list(DAILY.keys())
-
+MONTHLY_COUNTRIES = list(MONTHLY.keys())
+COUNTRIES_LIST = sorted(DAILY_COUNTRIES + MONTHLY_COUNTRIES)
+COUNTRIES_DICT = {
+    **DAILY,
+    **MONTHLY,
+}
 COUNTRIES = Literal[
     "australia",
     "canada",
@@ -145,11 +205,15 @@ COUNTRIES = Literal[
     "hong_kong",
     "india",
     "japan",
+    "mexico",
+    "new_zealand",
     "russia",
     "saudi_arabia",
+    "singapore",
     "south_africa",
     "south_korea",
     "taiwan",
+    "thailand",
     "united_kingdom",
     "united_states",
 ]

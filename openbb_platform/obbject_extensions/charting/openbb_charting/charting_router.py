@@ -1334,7 +1334,7 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
         colors = LARGE_CYCLER
     color_count = 0
 
-    figure = OpenBBFigure().create_subplots(shared_xaxes=False)
+    figure = OpenBBFigure().create_subplots(shared_xaxes=True)
     figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     def create_fig(figure, df, dates, color_count, country: Optional[str] = None):
@@ -1417,6 +1417,18 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
             title="Maturity",
             ticklen=0,
             showgrid=False,
+            type="category",
+            categoryorder="array",
+            categoryarray=(
+                [
+                    (
+                        d.split("_")[1] + " " + d.split("_")[0].title()
+                        if d != "long_term"
+                        else "Long Term"
+                    )
+                    for d in maturities
+                ]
+            ),
         ),
         yaxis=dict(
             title="Yield (%)",

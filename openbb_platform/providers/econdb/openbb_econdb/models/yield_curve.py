@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.yield_curve import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_econdb.utils import helpers
-from openbb_econdb.utils.yield_curves import COUNTRIES, DAILY, DAILY_COUNTRIES
+from openbb_econdb.utils.yield_curves import COUNTRIES, COUNTRIES_DICT, COUNTRIES_LIST
 from pandas import Categorical, DataFrame, DatetimeIndex
 from pydantic import Field, field_validator
 
@@ -27,8 +27,10 @@ class EconDbYieldCurveQueryParams(YieldCurveQueryParams):
     }
     country: COUNTRIES = Field(
         default="united_states",
-        description=QUERY_DESCRIPTIONS.get("country", ""),
-        json_schema_extra={"choices": DAILY_COUNTRIES},
+        description=QUERY_DESCRIPTIONS.get("country", "")
+        + " New Zealand, Mexico, Singapore, and Thailand have only monthly data."
+        + " The nearest date to the requested one will be used.",
+        json_schema_extra={"choices": COUNTRIES_LIST},
     )
     use_cache: bool = Field(
         default=True,
@@ -41,8 +43,8 @@ class EconDbYieldCurveQueryParams(YieldCurveQueryParams):
         """Validate the country."""
         if v is None:
             return "united_states"
-        if v not in DAILY_COUNTRIES:
-            raise ValueError(f"Country must be one of {DAILY_COUNTRIES}")
+        if v not in COUNTRIES_DICT:
+            raise ValueError(f"Country must be one of {COUNTRIES_DICT}")
         return v
 
 
@@ -77,7 +79,7 @@ class EconDbYieldCurveFetcher(
             token = await helpers.create_token(use_cache=query.use_cache)
             credentials.update({"econdb_api_key": token})  # type: ignore
         base_url = "https://www.econdb.com/api/series/?ticker="
-        symbols = list(DAILY[query.country].keys())
+        symbols = list(COUNTRIES_DICT[query.country].keys())
         url = (
             base_url
             + f"%5B{','.join(symbols)}%5D&page_size=50&format=json&token={token}"
@@ -117,7 +119,7 @@ class EconDbYieldCurveFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[EconDbYieldCurveData]]:
         """Transform the data."""
-        maturity_order = list(DAILY[query.country].values())
+        maturity_order = list(COUNTRIES_DICT[query.country].values())
         dates = query.date.split(",")  # type: ignore
         dates_list = DatetimeIndex(dates)
         new_data: Dict = {}
@@ -125,7 +127,7 @@ class EconDbYieldCurveFetcher(
         # Unpack the data for each maturity.
         for item in data:
             ticker = item.get("ticker")
-            maturity = DAILY[query.country].get(ticker)
+            maturity = COUNTRIES_DICT[query.country].get(ticker)
             dataset = item.get("dataset")
             additional_metadata = item.get("additional_metadata")
             units = "percent"
@@ -171,8 +173,13 @@ class EconDbYieldCurveFetcher(
             by=["date", "maturity"]
         ).reset_index(drop=True)
         flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
-        records = flattened_data.to_dict(orient="records")
+        records = flattened_data.copy()
+        records["rate"] = records["rate"].fillna("N/A").replace("N/A", None)
         return AnnotatedResult(
-            result=[EconDbYieldCurveData.model_validate(r) for r in records],
+            result=[
+                EconDbYieldCurveData.model_validate(r)
+                for r in records.to_dict("records")
+                if r.get("rate")
+            ],
             metadata=metadata,
         )
