@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_fixedincome_government(Container):
@@ -125,6 +127,10 @@ class ROUTER_fixedincome_government(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
+    )
     def us_yield_curve(
         self,
         date: Annotated[
@@ -185,6 +191,13 @@ class ROUTER_fixedincome_government(Container):
         >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')
         """  # noqa: E501
 
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/fixedincome/government/us_yield_curve",
             **filter_inputs(
@@ -213,11 +226,11 @@ class ROUTER_fixedincome_government(Container):
         date: Annotated[
             Union[str, None, List[Optional[str]]],
             OpenBBField(
-                description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve."
+                description="A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred."
             ),
         ] = None,
         provider: Annotated[
-            Optional[Literal["econdb", "federal_reserve"]],
+            Optional[Literal["econdb", "federal_reserve", "fmp", "fred"]],
             OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
             ),
@@ -231,20 +244,22 @@ class ROUTER_fixedincome_government(Container):
         country : Optional[str]
             The country to get data.
         date : Union[str, None, List[Optional[str]]]
-            A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve.
-        provider : Optional[Literal['econdb', 'federal_reserve']]
+            A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
+        provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
         use_cache : bool
             If true, cache the request for four hours. (provider: econdb)
+        yield_curve_type : Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']
+            Yield curve type. Nominal and Real Rates are available daily, others are monthly. The closest date to the requested date will be returned. (provider: fred)
 
         Returns
         -------
         OBBject
             results : List[YieldCurve]
                 Serializable results.
-            provider : Optional[Literal['econdb', 'federal_reserve']]
+            provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -265,8 +280,10 @@ class ROUTER_fixedincome_government(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.yield_curve(provider='econdb')
+        >>> obb.fixedincome.government.yield_curve(provider='federal_reserve')
+        >>> obb.fixedincome.government.yield_curve(date='2023-05-01,2024-05-01', provider='fmp')
         >>> obb.fixedincome.government.yield_curve(date='2023-05-01', country='united_kingdom', provider='econdb')
+        >>> obb.fixedincome.government.yield_curve(provider='fred', yield_curve_type='real', date='2023-05-01,2024-05-01')
         """  # noqa: E501
 
         return self._run(
@@ -276,7 +293,7 @@ class ROUTER_fixedincome_government(Container):
                     "provider": self._get_provider(
                         provider,
                         "/fixedincome/government/yield_curve",
-                        ("econdb", "federal_reserve"),
+                        ("econdb", "federal_reserve", "fmp", "fred"),
                     )
                 },
                 standard_params={
@@ -288,6 +305,8 @@ class ROUTER_fixedincome_government(Container):
                     "date": {
                         "econdb": ["multiple_items_allowed"],
                         "federal_reserve": {"multiple_items_allowed": True},
+                        "fmp": {"multiple_items_allowed": True},
+                        "fred": {"multiple_items_allowed": True},
                     }
                 },
             )
