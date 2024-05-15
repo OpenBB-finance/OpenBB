@@ -81,8 +81,6 @@ class ECBYieldCurveFetcher(
         )
         YIELD_CURVE = IDS["SERIES_IDS"]
 
-        maturities = list(MATURITIES.keys())
-
         BASE_URL = "https://data.ecb.europa.eu/data-detail-api"
 
         async def get_one(maturity, use_cache):
@@ -113,7 +111,7 @@ class ECBYieldCurveFetcher(
                     }
                     results.append(d)
 
-        tasks = [get_one(maturity, query.use_cache) for maturity in maturities]
+        tasks = [get_one(maturity, query.use_cache) for maturity in MATURITIES]
 
         await asyncio.gather(*tasks)
 

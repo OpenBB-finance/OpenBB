@@ -1255,7 +1255,7 @@ def technical_relative_rotation(
             ratios_df, momentum_df, benchmark_symbol, study, date  # type: ignore
         )
 
-    figure = OpenBBFigure(fig)
+    figure = OpenBBFigure(fig)  # pylint: disable=E0606
     font_color = "black" if ChartStyle().plt_style == "light" else "white"
     figure.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
