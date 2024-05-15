@@ -3,6 +3,7 @@ name = "openbb-economy"
 version = "1.1.5"
 description = "Economy extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_economy" }]
 

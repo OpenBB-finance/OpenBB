@@ -3,6 +3,7 @@ name = "openbb-econometrics"
 version = "1.1.5"
 description = "Econometrics Toolkit for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_econometrics" }]
 

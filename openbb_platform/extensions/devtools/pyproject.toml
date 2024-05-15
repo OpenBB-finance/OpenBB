@@ -3,6 +3,7 @@ name = "openbb-devtools"
 version = "1.1.6"
 description = "Tools for OpenBB Platform Developers"
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_devtools" }]
 

@@ -5,6 +5,7 @@ description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["OpenBB <hello@openbb.co>"]
 packages = [{ include = "openbb_cli" }]
+license = "AGPL-3.0-only"
 readme = "README.md"
 homepage = "https://openbb.co"
 repository = "https://github.com/OpenBB-finance/OpenBBTerminal"

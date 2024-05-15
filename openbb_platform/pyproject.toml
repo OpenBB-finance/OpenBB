@@ -3,6 +3,7 @@ name = "openbb"
 version = "4.1.7"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb" }]
 

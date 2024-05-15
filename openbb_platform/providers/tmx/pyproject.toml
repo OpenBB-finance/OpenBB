@@ -3,6 +3,7 @@ name = "openbb-tmx"
 version = "1.0.2"
 description = "Unofficial TMX data provider extension for the OpenBB Platform - Public Canadian markets data for Python and Fast API."
 authors = ["OpenBB <hello@openbb.co>"]
+license = "AGPL-3.0-only"
 readme = "README.md"
 packages = [{ include = "openbb_tmx" }]
 
