@@ -100,10 +100,10 @@ class ECBYieldCurveFetcher(
                         await session.close()
             else:
                 response = await amake_request(url=url)
-            if not response:
+            if not response:   # pylint: disable=E0606
                 raise RuntimeError("Error: No data was returned.")
-            if isinstance(response, List):
-                for item in response:  # pylint: disable=E0606
+            if isinstance(response, List):  # pylint: disable=E0606
+                for item in response:
                     d = {
                         "date": item.get("PERIOD"),
                         "maturity": maturity,
