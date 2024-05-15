@@ -70,6 +70,7 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
+from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -744,5 +745,15 @@ def test_fmp_equity_forward_eps_fetcher(credentials=test_credentials):
     }
 
     fetcher = FMPForwardEpsEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_yield_curve_fetcher(credentials=test_credentials):
+    """Test FMP Yield Curve Fetcher."""
+    params = {"date": "2024-05-14,2023-05-14,2022-05-14,2021-05-14,2020-05-14"}
+
+    fetcher = FMPYieldCurveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
