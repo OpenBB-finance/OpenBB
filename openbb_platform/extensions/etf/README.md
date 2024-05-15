@@ -7,5 +7,5 @@ This extension provides a set of commands for ETF data retrieval.
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install .
+pip install openbb-etf
 ```

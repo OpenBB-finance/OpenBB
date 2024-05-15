@@ -1,30 +1,8 @@
 # Providers
 
-## Available Providers
+In this folder you can find the providers that were created or are supported by OpenBB.
 
-See full list of available providers in the [PROVIDERS file](../PROVIDERS.md)
-
-## Default Provider Configuration
-
-To configure the default providers for each route, edit the `.openbb_platform/user_settings.json` file in your home directory using the following template:
-
-```json
-{
-    "defaults": {
-        "routes": {
-            "/equity/price/historical": {
-                "provider": "fmp"
-            },
-            "/equity/fundamental/balance": {
-                "provider": "polygon"
-            },
-            ...
-        }
-    }
-}
-```
-
-## Provider Information
+## Recommended structure
 
 Every provider is located within a directory, with the following structure:
 
