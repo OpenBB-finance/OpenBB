@@ -27,7 +27,7 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
 
     @field_validator("region", mode="after", check_fields=False)
     @classmethod
-    def validate_region(cls, v: str):
+    def validate_region(cls, v):
         """Validate region."""
         return "us" if v is None else v
 
@@ -100,7 +100,7 @@ class CboeIndexSnapshotsFetcher(
             url = "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
 
         data = await amake_request(url, **kwargs)
-        return data.get("data")
+        return data.get("data")  # type: ignore
 
     @staticmethod
     def transform_data(
