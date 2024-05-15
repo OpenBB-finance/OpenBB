@@ -6,7 +6,6 @@ from importlib.resources import files
 from io import StringIO
 from typing import Dict, List, Optional, Tuple, Union
 
-import nest_asyncio
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.utils import get_user_cache_directory
@@ -607,9 +606,6 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
     if with_metadata is True:
         return results, metadata
     return results
-
-
-nest_asyncio.apply()
 
 
 def update_json_files() -> None:
