@@ -281,6 +281,7 @@ async def get_data_from_url(
     **kwargs: Any,
 ) -> Any:
     """Make an asynchronous HTTP request to a static file."""
+    data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
             try:
