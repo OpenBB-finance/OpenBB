@@ -1411,7 +1411,7 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
     # Update the layout of the figure.
     figure.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=20)),
-        plot_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0)",
         xaxis=dict(
             title="Maturity",
             ticklen=0,
