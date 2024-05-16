@@ -1,6 +1,8 @@
 """Intrinio World News Model."""
 
-from datetime import datetime
+# pylint: disable=unused-argument
+
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -60,13 +62,17 @@ class IntrinioWorldNewsQueryParams(WorldNewsQueryParams):
     )
     business_relevance_greater_than: Optional[float] = Field(
         default=None,
+        ge=0,
+        le=1,
         description="News stories will have a business relevance score more than this value."
-        + " Unsupported for yahoo source.",
+        + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
     business_relevance_less_than: Optional[float] = Field(
         default=None,
+        ge=0,
+        le=1,
         description="News stories will have a business relevance score less than this value."
-        + " Unsupported for yahoo source.",
+        + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
 
 
@@ -161,7 +167,16 @@ class IntrinioWorldNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioWorldNewsQueryParams:
         """Transform the query params."""
-        return IntrinioWorldNewsQueryParams(**params)
+        transformed_params = params
+        if not transformed_params.get("start_date"):
+            transformed_params["start_date"] = datetime.now().date()
+        if not transformed_params.get("end_date"):
+            transformed_params["end_date"] = (datetime.now() + timedelta(days=1)).date()
+        if transformed_params["start_date"] == transformed_params["end_date"]:
+            transformed_params["end_date"] = (
+                transformed_params["end_date"] + timedelta(days=1)
+            ).date()
+        return IntrinioWorldNewsQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
@@ -179,9 +194,7 @@ class IntrinioWorldNewsFetcher(
             else ["symbol", "page_size"]
         )
         query_str = get_querystring(query.model_dump(by_alias=True), ignore)
-        # TODO: Change page_size to a more appropriate value when Intrinio fixes the bug in this param.
-        url = f"{base_url}/news?{query_str}&page_size=99&api_key={api_key}"
-
+        url = f"{base_url}/news?{query_str}&page_size={query.limit}&api_key={api_key}"
         seen = set()
 
         async def callback(response, session):
@@ -195,7 +208,7 @@ class IntrinioWorldNewsFetcher(
             articles = len(data)
             next_page = result.get("next_page")
             while next_page and articles < query.limit:
-                url = f"{base_url}/news?{query_str}&page_size=99&api_key={api_key}&next_page={next_page}"
+                url = f"{base_url}/news?{query_str}&page_size={query.limit}&api_key={api_key}&next_page={next_page}"
                 result = await get_data(url, session=session, **kwargs)
                 _data = result.get("news", [])
                 if _data:
@@ -213,16 +226,18 @@ class IntrinioWorldNewsFetcher(
                 : query.limit
             ]
 
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)  # type: ignore
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioWorldNewsData]:
         """Return the transformed data."""
         if not data:
-            raise EmptyDataError("Error: The request was returned as empty.")
+            raise EmptyDataError(
+                "Error: The request was returned as empty."
+                + " Try adjusting the requested date ranges, if applicable."
+            )
         results: List[IntrinioWorldNewsData] = []
         for item in data:
             body = item.get("body", {})

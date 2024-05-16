@@ -30534,7 +30534,7 @@
                     {
                         "name": "business_relevance_greater_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -30542,7 +30542,7 @@
                     {
                         "name": "business_relevance_less_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -31075,7 +31075,7 @@
                     {
                         "name": "business_relevance_greater_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -31083,7 +31083,7 @@
                     {
                         "name": "business_relevance_less_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
