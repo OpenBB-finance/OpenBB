@@ -4,7 +4,7 @@
 
 import asyncio
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -73,7 +73,7 @@ class ECBYieldCurveFetcher(
     ) -> List[Dict]:
         """Extract data."""
 
-        results = []
+        results: List = []
 
         IDS = get_yield_curve_ids(
             rating=query.rating,
@@ -86,7 +86,7 @@ class ECBYieldCurveFetcher(
         async def get_one(maturity, use_cache):
             """Each maturity is a separate download."""
             url = f"{BASE_URL}/{YIELD_CURVE[maturity]}"
-
+            response: Union[Dict, List[Dict]] = []
             if use_cache is True:
                 cache_dir = f"{get_user_cache_directory()}/http/ecb_yield_curve"
                 async with CachedSession(
