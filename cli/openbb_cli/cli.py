@@ -2,12 +2,15 @@
 
 import sys
 
-from openbb_cli.config.setup import bootstrap
-from openbb_cli.controllers.cli_controller import launch
-
 
 def main():
     """Use the main entry point for the OpenBB CLI."""
+    print("Loading...\n")  # noqa: T201
+
+    # pylint: disable=import-outside-toplevel
+    from openbb_cli.config.setup import bootstrap
+    from openbb_cli.controllers.cli_controller import launch
+
     bootstrap()
 
     dev = "--dev" in sys.argv[1:]
