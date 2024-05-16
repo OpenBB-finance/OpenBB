@@ -190,6 +190,7 @@ async def download_zip_file(
     async def callback(response, session):
         """Response callback for ZIP file downloads."""
         return await response.read()
+
     response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_ftd"
