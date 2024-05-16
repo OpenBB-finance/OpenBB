@@ -9,6 +9,9 @@ from tomlkit import dumps, load, loads
 PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
+CLI_PATH = Path(__file__).parent.parent.resolve() / "cli"
+CLI_PYPROJECT = CLI_PATH / "pyproject.toml"
+CLI_LOCK = CLI_PATH / "poetry.lock"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
@@ -140,7 +143,49 @@ def install_platform_local(_extras: bool = False):
             f.write(original_lock)
 
 
+def install_platform_cli():
+    """Install the CLI locally for development purposes."""
+    original_lock = CLI_LOCK.read_text()
+    original_pyproject = CLI_PYPROJECT.read_text()
+
+    with open(CLI_PYPROJECT) as f:
+        pyproject_toml = load(f)
+
+    # remove "openbb" from dependencies
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
+        "openbb", None
+    )
+
+    TEMP_PYPROJECT = dumps(pyproject_toml)
+
+    try:
+        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(TEMP_PYPROJECT)
+
+        CMD = [sys.executable, "-m", "poetry"]
+
+        subprocess.run(
+            CMD + ["lock", "--no-update"], cwd=CLI_PATH, check=True  # noqa: S603
+        )
+        subprocess.run(CMD + ["install"], cwd=CLI_PATH, check=True)  # noqa: S603
+
+    except (Exception, KeyboardInterrupt) as e:
+        print(e)  # noqa: T201
+        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
+
+    finally:
+        # Revert pyproject.toml and poetry.lock to their original state.
+        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_pyproject)
+
+        with open(CLI_LOCK, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_lock)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
+    cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
     install_platform_local(extras)
+    if cli:
+        install_platform_cli()
