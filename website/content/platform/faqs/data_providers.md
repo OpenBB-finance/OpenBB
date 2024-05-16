@@ -96,7 +96,7 @@ Please [request a feature](https://openbb.co/request-a-feature), tell us about y
 <details>
 <summary mdxType="summary">Can I contribute my own data provider extension?</summary>
 
-Yes! Please take a look at our [Development](../explanation/development) pages for more information.
+Yes! Please take a look at our [Development](../developer_guide/development) pages for more information.
 
 </details>
 
