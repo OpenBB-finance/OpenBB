@@ -263,13 +263,13 @@ files = [
 
 [[package]]
 name = "astroid"
-version = "3.2.0"
+version = "3.2.1"
 description = "An abstract syntax tree for Python with inference support."
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "astroid-3.2.0-py3-none-any.whl", hash = "sha256:16ee8ca5c75ac828783028cc1f967777f0e507c6886a295ad143e0f405b975a2"},
-    {file = "astroid-3.2.0.tar.gz", hash = "sha256:f7f829f8506ade59f1b3c6c93d8fac5b1ebc721685fa9af23e9794daf1d450a3"},
+    {file = "astroid-3.2.1-py3-none-any.whl", hash = "sha256:b452064132234819f023b94f4bd045b250ea0009f372b4377cfcd87f10806ca5"},
+    {file = "astroid-3.2.1.tar.gz", hash = "sha256:902564b36796ba1eab3ad2c7a694861fbd926f574d5dbb5fa1d86778a2ba2d91"},
 ]
 
 [package.dependencies]
@@ -6417,4 +6417,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.12"
-content-hash = "fbab20f9ae9ebb26f141fcfed29aec2c7511be1ae9a39d44071f795a0c04adb6"
+content-hash = "880fe769cafedeeca0f97f9a66ea0962540f1e0f3ff77db2f8ad0a1065adcdeb"

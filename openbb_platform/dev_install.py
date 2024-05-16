@@ -9,7 +9,6 @@ from tomlkit import dumps, load, loads
 PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
-CLI_PATH = Path(__file__).parent.parent / "cli"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
@@ -141,18 +140,7 @@ def install_platform_local(_extras: bool = False):
             f.write(original_lock)
 
 
-def install_cli_local():
-    """Install Platform CLI locally for development purposes."""
-    subprocess.run(
-        [sys.executable, "-m", "poetry", "install", "--only", "external"],  # noqa: S603
-        cwd=CLI_PATH,
-        check=True,
-    )
-
-
 if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
     install_platform_local(extras)
-    if any(arg.lower() in ["-c", "--cli"] for arg in args):
-        install_cli_local()
