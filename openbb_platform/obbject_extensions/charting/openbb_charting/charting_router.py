@@ -1377,22 +1377,21 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
 
     dates = df.date.unique().tolist()
     figure, color_count = create_fig(figure, df, dates, color_count)
-
+    extra_params = kwargs.get("extra_params")
+    extra_params = (
+        extra_params if isinstance(extra_params, dict) else extra_params.__dict__
+    )
     # Set the title for the chart
     country: str = ""
     if provider in ("federal_reserve", "fmp"):
         country = "United States"
     elif provider == "ecb":
-        curve_type = (
-            getattr(kwargs["extra_params"], "yield_curve_type", "")
-            .replace("_", " ")
-            .title()
-        )
-        grade = getattr(kwargs["extra_params"], "rating", "").replace("_", " ")
+        curve_type = extra_params.get("yield_curve_type", "").replace("_", " ").title()
+        grade = extra_params.get("rating", "").replace("_", " ")
         grade = grade.upper() if grade == "aaa" else "All Ratings"
         country = f"Euro Area ({grade}) {curve_type}"
     elif provider == "fred":
-        curve_type = getattr(kwargs["extra_params"], "yield_curve_type", "")
+        curve_type = extra_params.get("yield_curve_type", "")
         curve_type = (
             "Real Rates"
             if curve_type == "real"
@@ -1400,7 +1399,7 @@ def fixedincome_government_yield_curve(  # noqa: PLR0912
         )
         country = f"United States {curve_type}"
     elif provider == "econdb":
-        country = getattr(kwargs["extra_params"], "country", "")
+        country = extra_params.get("country", "")
         country = country.replace("_", " ").title() if country else "United States"
     country = country + " " if country else ""
     title = kwargs.get("title", "")
