@@ -4,12 +4,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-import toml
+from tomlkit import dumps, load, loads
 
 PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
-
+CLI_PATH = Path(__file__).parent.parent / "cli"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
@@ -68,7 +68,8 @@ def extract_dev_dependencies(local_dep_path):
     """Extract development dependencies from a given package's pyproject.toml."""
     package_pyproject_path = PLATFORM_PATH / local_dep_path
     if package_pyproject_path.exists():
-        package_pyproject_toml = toml.load(package_pyproject_path / "pyproject.toml")
+        with open(package_pyproject_path / "pyproject.toml") as f:
+            package_pyproject_toml = load(f)
         return (
             package_pyproject_toml.get("tool", {})
             .get("poetry", {})
@@ -82,7 +83,7 @@ def extract_dev_dependencies(local_dep_path):
 def get_all_dev_dependencies():
     """Aggregate development dependencies from all local packages."""
     all_dev_dependencies = {}
-    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
+    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     for _, package_info in local_deps.items():
         if "path" in package_info:
             dev_deps = extract_dev_dependencies(Path(package_info["path"]))
@@ -90,25 +91,28 @@ def get_all_dev_dependencies():
     return all_dev_dependencies
 
 
-def install_local(_extras: bool = False):
+def install_platform_local(_extras: bool = False):
     """Install the Platform locally for development purposes."""
     original_lock = LOCK.read_text()
     original_pyproject = PYPROJECT.read_text()
 
-    pyproject_toml = toml.load(PYPROJECT)
-    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
-    pyproject_toml["tool"]["poetry"]["dependencies"].update(local_deps)
+    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
+    with open(PYPROJECT) as f:
+        pyproject_toml = load(f)
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
+        local_deps
+    )
 
     if _extras:
         dev_dependencies = get_all_dev_dependencies()
-        pyproject_toml["tool"]["poetry"].setdefault("group", {}).setdefault(
-            "dev", {}
-        ).setdefault("dependencies", {})
-        pyproject_toml["tool"]["poetry"]["group"]["dev"]["dependencies"].update(
-            dev_dependencies
-        )
+        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
+            "group", {}
+        ).setdefault("dev", {}).setdefault("dependencies", {})
+        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"][
+            "dependencies"
+        ].update(dev_dependencies)
 
-    TEMP_PYPROJECT = toml.dumps(pyproject_toml)
+    TEMP_PYPROJECT = dumps(pyproject_toml)
 
     try:
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
@@ -137,7 +141,18 @@ def install_local(_extras: bool = False):
             f.write(original_lock)
 
 
+def install_cli_local():
+    """Install Platform CLI locally for development purposes."""
+    subprocess.run(
+        [sys.executable, "-m", "poetry", "install", "--only", "external"],  # noqa: S603
+        cwd=CLI_PATH,
+        check=True,
+    )
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
-    install_local(extras)
+    install_platform_local(extras)
+    if any(arg.lower() in ["-c", "--cli"] for arg in args):
+        install_cli_local()
