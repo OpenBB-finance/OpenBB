@@ -196,7 +196,7 @@ To install all extensions and providers, run: `python dev_install.py -e`
 
 ### Devcontainer
 
-The OpenBB Platform can be run in a [Devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) in VS Code. This is a container container with a well-defined environment, and it can be used to develop, build, test, and run the OpenBB Platform and its CLI.
+The OpenBB Platform can be run in a [Devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) in VS Code. This is a container with a well-defined environment, and it can be used to develop, build, test, and run the OpenBB Platform and its CLI.
 
 1. Open the project in VS Code
 2. Press F1 (Command Palette) and select Remote-Containers: Reopen in Container
