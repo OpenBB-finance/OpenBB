@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -85,6 +85,7 @@ class EconDbYieldCurveFetcher(
             + f"%5B{','.join(symbols)}%5D&page_size=50&format=json&token={token}"
         )
         data: List[Dict] = []
+        response: Union[Dict, List[Dict]] = {}
         if query.use_cache is True:
             cache_dir = f"{helpers.get_user_cache_directory()}/http/econdb_yield_curve"
             async with helpers.CachedSession(
@@ -146,14 +147,21 @@ class EconDbYieldCurveFetcher(
                 if maturity not in new_data:
                     new_data[maturity] = {}
                 new_data[maturity][d] = r
+
+        # Create a DataFrame from the data
         df = DataFrame(new_data)
-        df = df.dropna()  # Drop rows with missing values
 
         # Convert the index to a DatetimeIndex
         df.index = DatetimeIndex(df.index)
 
         # Find the nearest date in the DataFrame to each date in dates_list
-        nearest_dates = [df.index.asof(date) for date in dates_list]
+        def get_nearest_date(df, target_date):
+            differences = (df.index - target_date).to_series().abs()
+            nearest_date_index = differences.argmin()
+            nearest_date = df.index[nearest_date_index]
+            return nearest_date
+
+        nearest_dates = [get_nearest_date(df, date) for date in dates_list]
 
         # Filter for only the nearest dates
         df = df[df.index.isin(nearest_dates)]
@@ -175,11 +183,13 @@ class EconDbYieldCurveFetcher(
         flattened_data.loc[:, "date"] = flattened_data["date"].dt.strftime("%Y-%m-%d")
         records = flattened_data.copy()
         records["rate"] = records["rate"].fillna("N/A").replace("N/A", None)
-        return AnnotatedResult(
-            result=[
-                EconDbYieldCurveData.model_validate(r)
-                for r in records.to_dict("records")
-                if r.get("rate")
-            ],
-            metadata=metadata,
-        )
+        records = records.to_dict("records")
+        results: List[EconDbYieldCurveData] = [
+            EconDbYieldCurveData.model_validate(r) for r in records if r.get("rate")
+        ]
+        if not results:
+            raise EmptyDataError(
+                f"No data was found for the country, {query.country},"
+                f" and dates, {query.date}"
+            )
+        return AnnotatedResult(result=results, metadata=metadata)
