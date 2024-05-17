@@ -42,7 +42,7 @@ export default function NavbarLayout({ children }) {
         );
       }
     } else if (
-      cleanedPath.startsWith("/sdk") ||
+      cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
       cleanedPath.startsWith("/platform")
     ) {
       if (document.documentElement.getAttribute("data-theme") === "dark") {
@@ -78,18 +78,6 @@ export default function NavbarLayout({ children }) {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
           "#3a204f"
-        );
-      }
-    } else if (cleanedPath.startsWith("/cli")) {
-      if (document.documentElement.getAttribute("data-theme") === "dark") {
-        document.documentElement.style.setProperty(
-          "--ifm-color-primary",
-          "#d3d3d3"
-        );
-      } else {
-        document.documentElement.style.setProperty(
-          "--ifm-color-primary",
-          "#d3d3d3"
         );
       }
     } else {
