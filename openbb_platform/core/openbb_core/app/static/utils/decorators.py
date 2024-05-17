@@ -73,15 +73,15 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     error_list.append(f"[Arg] {loc} -> input: {_input} -> {msg}")
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
-                raise OpenBBError(
-                    f"\n[Kind] -> QueryValidationError\n[Detail] -> {error_str}"
-                ).with_traceback(tb) from None
+                raise OpenBBError(f"\n[Detail] -> {error_str}").with_traceback(
+                    tb
+                ) from None
             if isinstance(e, OpenBBError):
-                raise OpenBBError(
-                    f"\n[Kind] -> {e.__class__.__name__}\n[Detail] -> {str(e)}"
-                ).with_traceback(tb) from None
-            raise OpenBBError(
-                "\n[Kind] -> General\n[Detail] -> Unexpected error."
-            ).with_traceback(tb) from None
+                raise OpenBBError(f"\n[Detail] -> {str(e)}").with_traceback(
+                    tb
+                ) from None
+            raise OpenBBError("\n[Detail] -> Unexpected error.").with_traceback(
+                tb
+            ) from None
 
     return wrapper
