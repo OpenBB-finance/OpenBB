@@ -54,7 +54,10 @@ class ExceptionHandlers:
         if "QueryParams" in error.title and all_in_query:
             detail = [{**err, "loc": ("query",) + err.get("loc", ())} for err in errors]
             return await ExceptionHandlers._handle(
-                exception=error, status_code=422, kind="ValidationError", detail=detail
+                exception=error,
+                status_code=422,
+                kind="QueryValidationError",
+                detail=detail,
             )
         return await ExceptionHandlers.base(request, error)
 

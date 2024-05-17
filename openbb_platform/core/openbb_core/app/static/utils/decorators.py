@@ -74,7 +74,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
                 raise OpenBBError(
-                    f"\n[Kind] -> ValidationError\n[Detail] -> {error_str}"
+                    f"\n[Kind] -> QueryValidationError\n[Detail] -> {error_str}"
                 ).with_traceback(tb) from None
             if isinstance(e, OpenBBError):
                 raise OpenBBError(
