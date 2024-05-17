@@ -93,7 +93,7 @@ export default function NavbarLayout({ children }) {
           header_docs_pro: cleanedPath.startsWith("/pro"),
           header_docs_excel: cleanedPath.startsWith("/excel"),
           header_docs_sdk:
-            cleanedPath.startsWith("/sdk") ||
+            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
             cleanedPath.startsWith("/platform"),
           header_docs_bot: cleanedPath.startsWith("/bot"),
           header_docs:
@@ -102,7 +102,8 @@ export default function NavbarLayout({ children }) {
             !cleanedPath.startsWith("/platform") &&
             !cleanedPath.startsWith("/bot") &&
             !cleanedPath.startsWith("/pro") &&
-            !cleanedPath.startsWith("/excel"),
+            !cleanedPath.startsWith("/excel") &&
+            !cleanedPath.startsWith("/cli"),
         },
         "navbar",
         "navbar--fixed-top",
