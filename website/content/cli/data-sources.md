@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources | OpenBB CLI Docs" />
+<HeadTitle title="Data Sources | OpenBB Platform CLI Docs" />
 
 Many commands have multiple data sources associated with it. This page describes how to select from multiple providers.
 

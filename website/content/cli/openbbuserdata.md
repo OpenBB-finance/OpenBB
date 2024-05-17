@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBBUserData Folder | OpenBB CLI Docs" />
+<HeadTitle title="OpenBBUserData Folder | OpenBB Platform CLI Docs" />
 
 The OpenBBUserData folder is where exports, routines, and other user-related content is saved and stored.
 

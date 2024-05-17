@@ -18,11 +18,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Community Routines - Routines - | OpenBB CLI Docs" />
+<HeadTitle title="Community Routines - Routines - | OpenBB Platform CLI Docs" />
 
 ## Overview
 
-Community Routines are a feature of the [OpenBB Hub](https://my.openbb.co) that provides methods for creating, editing and sharing OpenBB CLI scripts in the cloud.
+Community Routines are a feature of the [OpenBB Hub](https://my.openbb.co) that provides methods for creating, editing and sharing OpenBB Platform CLI scripts in the cloud.
 
 Users can create routines that are private or public, with public routines able to run directly from a URL.
 

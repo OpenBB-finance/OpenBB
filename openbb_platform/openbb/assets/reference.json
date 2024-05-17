@@ -15754,15 +15754,15 @@
                 ],
                 "fmp": [
                     {
-                        "name": "date",
+                        "name": "period_ending",
                         "type": "date",
-                        "description": "The date of the data.",
+                        "description": "Period ending date.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "period",
+                        "name": "fiscal_period",
                         "type": "str",
                         "description": "Period of the data.",
                         "default": "",
@@ -15772,7 +15772,7 @@
                     {
                         "name": "calendar_year",
                         "type": "int",
-                        "description": "Calendar year.",
+                        "description": "Calendar year for the fiscal period.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -15781,6 +15781,14 @@
                         "name": "revenue_per_share",
                         "type": "float",
                         "description": "Revenue per share",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "capex_per_share",
+                        "type": "float",
+                        "description": "Capital expenditures per share",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -15850,15 +15858,7 @@
                         "choices": null
                     },
                     {
-                        "name": "enterprise_value",
-                        "type": "float",
-                        "description": "Enterprise value",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "price_to_sales_ratio",
+                        "name": "price_to_sales",
                         "type": "float",
                         "description": "Price-to-sales ratio",
                         "default": null,
@@ -15866,7 +15866,7 @@
                         "choices": null
                     },
                     {
-                        "name": "pocf_ratio",
+                        "name": "price_to_operating_cash_flow",
                         "type": "float",
                         "description": "Price-to-operating cash flow ratio",
                         "default": null,
@@ -15874,7 +15874,7 @@
                         "choices": null
                     },
                     {
-                        "name": "pfcf_ratio",
+                        "name": "price_to_free_cash_flow",
                         "type": "float",
                         "description": "Price-to-free cash flow ratio",
                         "default": null,
@@ -15882,7 +15882,7 @@
                         "choices": null
                     },
                     {
-                        "name": "pb_ratio",
+                        "name": "price_to_book",
                         "type": "float",
                         "description": "Price-to-book ratio",
                         "default": null,
@@ -15890,7 +15890,7 @@
                         "choices": null
                     },
                     {
-                        "name": "ptb_ratio",
+                        "name": "price_to_tangible_book",
                         "type": "float",
                         "description": "Price-to-tangible book ratio",
                         "default": null,
@@ -15906,7 +15906,7 @@
                         "choices": null
                     },
                     {
-                        "name": "enterprise_value_over_ebitda",
+                        "name": "ev_to_ebitda",
                         "type": "float",
                         "description": "Enterprise value-to-EBITDA ratio",
                         "default": null,
@@ -15941,6 +15941,14 @@
                         "name": "free_cash_flow_yield",
                         "type": "float",
                         "description": "Free cash flow yield",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debt_to_market_cap",
+                        "type": "float",
+                        "description": "Debt-to-market capitalization ratio",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -15989,14 +15997,6 @@
                         "name": "income_quality",
                         "type": "float",
                         "description": "Income quality",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "dividend_yield",
-                        "type": "float",
-                        "description": "Dividend yield, as a normalized percent.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -16066,38 +16066,6 @@
                         "choices": null
                     },
                     {
-                        "name": "graham_number",
-                        "type": "float",
-                        "description": "Graham number",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "roic",
-                        "type": "float",
-                        "description": "Return on invested capital",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "return_on_tangible_assets",
-                        "type": "float",
-                        "description": "Return on tangible assets",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "graham_net_net",
-                        "type": "float",
-                        "description": "Graham net-net working capital",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "working_capital",
                         "type": "float",
                         "description": "Working capital",
@@ -16117,6 +16085,14 @@
                         "name": "net_current_asset_value",
                         "type": "float",
                         "description": "Net current asset value",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "enterprise_value",
+                        "type": "float",
+                        "description": "Enterprise value",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -16202,7 +16178,7 @@
                         "choices": null
                     },
                     {
-                        "name": "roe",
+                        "name": "return_on_equity",
                         "type": "float",
                         "description": "Return on equity",
                         "default": null,
@@ -16210,9 +16186,41 @@
                         "choices": null
                     },
                     {
-                        "name": "capex_per_share",
+                        "name": "return_on_invested_capital",
                         "type": "float",
-                        "description": "Capital expenditures per share",
+                        "description": "Return on invested capital",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "return_on_tangible_assets",
+                        "type": "float",
+                        "description": "Return on tangible assets",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "dividend_yield",
+                        "type": "float",
+                        "description": "Dividend yield, as a normalized percent.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "graham_number",
+                        "type": "float",
+                        "description": "Graham number",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "graham_net_net",
+                        "type": "float",
+                        "description": "Graham net-net working capital",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -30534,7 +30542,7 @@
                     {
                         "name": "business_relevance_greater_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -30542,7 +30550,7 @@
                     {
                         "name": "business_relevance_less_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -31075,7 +31083,7 @@
                     {
                         "name": "business_relevance_greater_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -31083,7 +31091,7 @@
                     {
                         "name": "business_relevance_less_than",
                         "type": "float",
-                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source.",
+                        "description": "News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1.",
                         "default": null,
                         "optional": true,
                         "choices": null

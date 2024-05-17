@@ -1,7 +1,7 @@
 ---
 title: Commands And Arguments
 sidebar_position: 4
-description: This page explains how to enter commands and arguments into the OpenBB CLI.
+description: This page explains how to enter commands and arguments into the OpenBB Platform CLI.
 keywords:
 - help arguments
 - auto-complete
@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Commands And Arguments | OpenBB CLI Docs" />
+<HeadTitle title="Commands And Arguments | OpenBB Platform CLI Docs" />
 
 Commands are displayed on-screen in a lighter colour, compared with menu items, and they will not be prefaced with, `>`.
 
@@ -43,7 +43,7 @@ Use the auto-complete to prompt choices and reduce the amount of keystrokes requ
 
 ## Auto-complete
 
-The OpenBB CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
+The OpenBB Platform CLI is equipped with an auto completion engine that presents choices based on the current menu and command. Whenever you start typing, suggestion prompts will appear for existing commands and menus. When the command contains arguments, pressing the `space bar` after typing the command will present the list of available arguments.
 
 This functionality dramatically reduces the number of key strokes required to perform tasks and, in many cases, eliminates the need to consult the help dialogue for reminders. Choices - where they are bound by a defined list - are scrollable with the up and down arrow keys.
 
