@@ -445,12 +445,12 @@ class IntrinioBalanceSheetFetcher(
 
         async def callback(response: ClientResponse, _: Any) -> Dict:
             """Return the response."""
-            statement_data = await response.json()
+            statement_data = await response.json()  # type: ignore
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "financials": statement_data["standardized_financials"],
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "financials": statement_data["standardized_financials"],  # type: ignore
             }
 
         urls = [
