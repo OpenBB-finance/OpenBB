@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Interactive Charts - | OpenBB CLI Docs" />
+<HeadTitle title="Interactive Charts - | OpenBB Platform CLI Docs" />
 
 Interactive charts open in a separate window ([PyWry](https://github.com/OpenBB-finance/pywry)). The OpenBB charting library provides interactive and highly customizable charts.
 

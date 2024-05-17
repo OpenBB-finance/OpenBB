@@ -4,7 +4,7 @@ import sys
 
 
 def main():
-    """Use the main entry point for the OpenBB CLI."""
+    """Use the main entry point for the OpenBB Platform CLI."""
     print("Loading...\n")  # noqa: T201
 
     # pylint: disable=import-outside-toplevel
