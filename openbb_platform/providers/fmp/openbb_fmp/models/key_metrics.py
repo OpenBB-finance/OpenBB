@@ -1,5 +1,7 @@
 """FMP Key Metrics Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from datetime import (
     date as dateType,
@@ -14,7 +16,6 @@ from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_fmp.utils.helpers import response_callback
@@ -37,13 +38,23 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
 class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="Period of the data.")
+    __alias_dict__ = {
+        "dividend_yield": "dividend_yiel",
+        "market_cap": "marketCap",
+        "research_and_development_to_revenue": "researchAndDevelopementToRevenue",
+        "fiscal_period": "period",
+        "period_ending": "date",
+    }
+    period_ending: dateType = Field(description="Period ending date.")
+    fiscal_period: str = Field(description="Period of the data.")
     calendar_year: Optional[ForceInt] = Field(
-        default=None, description="Calendar year."
+        default=None, description="Calendar year for the fiscal period."
     )
     revenue_per_share: Optional[float] = Field(
         default=None, description="Revenue per share"
+    )
+    capex_per_share: Optional[float] = Field(
+        default=None, description="Capital expenditures per share"
     )
     net_income_per_share: Optional[float] = Field(
         default=None, description="Net income per share"
@@ -67,28 +78,37 @@ class FMPKeyMetricsData(KeyMetricsData):
     interest_debt_per_share: Optional[float] = Field(
         default=None, description="Interest debt per share"
     )
-    enterprise_value: Optional[float] = Field(
-        default=None, description="Enterprise value"
+    price_to_sales: Optional[float] = Field(
+        default=None,
+        description="Price-to-sales ratio",
+        alias="priceToSalesRatio",
     )
-    price_to_sales_ratio: Optional[float] = Field(
-        default=None, description="Price-to-sales ratio"
-    )
-    pocf_ratio: Optional[float] = Field(
+    price_to_operating_cash_flow: Optional[float] = Field(
         default=None,
         description="Price-to-operating cash flow ratio",
         alias="pocfratio",
     )
-    pfcf_ratio: Optional[float] = Field(
-        default=None, description="Price-to-free cash flow ratio"
+    price_to_free_cash_flow: Optional[float] = Field(
+        default=None,
+        description="Price-to-free cash flow ratio",
+        alias="pfcfRatio",
     )
-    pb_ratio: Optional[float] = Field(default=None, description="Price-to-book ratio")
-    ptb_ratio: Optional[float] = Field(
-        default=None, description="Price-to-tangible book ratio"
+    price_to_book: Optional[float] = Field(
+        default=None,
+        description="Price-to-book ratio",
+        alias="pbRatio",
+    )
+    price_to_tangible_book: Optional[float] = Field(
+        default=None,
+        description="Price-to-tangible book ratio",
+        alias="ptbRatio",
     )
     ev_to_sales: Optional[float] = Field(
-        default=None, description="Enterprise value-to-sales ratio"
+        default=None,
+        description="Enterprise value-to-sales ratio",
+        alias="evToSales",
     )
-    enterprise_value_over_ebitda: Optional[float] = Field(
+    ev_to_ebitda: Optional[float] = Field(
         default=None,
         description="Enterprise value-to-EBITDA ratio",
         alias="enterpriseValueOverEBITDA",
@@ -99,9 +119,18 @@ class FMPKeyMetricsData(KeyMetricsData):
     ev_to_free_cash_flow: Optional[float] = Field(
         default=None, description="Enterprise value-to-free cash flow ratio"
     )
-    earnings_yield: Optional[float] = Field(default=None, description="Earnings yield")
+    earnings_yield: Optional[float] = Field(
+        default=None,
+        description="Earnings yield",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     free_cash_flow_yield: Optional[float] = Field(
-        default=None, description="Free cash flow yield"
+        default=None,
+        description="Free cash flow yield",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    debt_to_market_cap: Optional[float] = Field(
+        default=None, description="Debt-to-market capitalization ratio"
     )
     debt_to_equity: Optional[float] = Field(
         default=None, description="Debt-to-equity ratio"
@@ -119,11 +148,6 @@ class FMPKeyMetricsData(KeyMetricsData):
         default=None, description="Interest coverage"
     )
     income_quality: Optional[float] = Field(default=None, description="Income quality")
-    dividend_yield: Optional[float] = Field(
-        default=None,
-        description="Dividend yield, as a normalized percent.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
     payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")
     sales_general_and_administrative_to_revenue: Optional[float] = Field(
         default=None,
@@ -149,16 +173,6 @@ class FMPKeyMetricsData(KeyMetricsData):
     stock_based_compensation_to_revenue: Optional[float] = Field(
         default=None, description="Stock-based compensation-to-revenue ratio"
     )
-    graham_number: Optional[float] = Field(default=None, description="Graham number")
-    roic: Optional[float] = Field(
-        default=None, description="Return on invested capital"
-    )
-    return_on_tangible_assets: Optional[float] = Field(
-        default=None, description="Return on tangible assets"
-    )
-    graham_net_net: Optional[float] = Field(
-        default=None, description="Graham net-net working capital"
-    )
     working_capital: Optional[float] = Field(
         default=None, description="Working capital"
     )
@@ -167,6 +181,9 @@ class FMPKeyMetricsData(KeyMetricsData):
     )
     net_current_asset_value: Optional[float] = Field(
         default=None, description="Net current asset value"
+    )
+    enterprise_value: Optional[float] = Field(
+        default=None, description="Enterprise value"
     )
     invested_capital: Optional[float] = Field(
         default=None, description="Invested capital"
@@ -198,9 +215,32 @@ class FMPKeyMetricsData(KeyMetricsData):
     inventory_turnover: Optional[float] = Field(
         default=None, description="Inventory turnover"
     )
-    roe: Optional[float] = Field(default=None, description="Return on equity")
-    capex_per_share: Optional[float] = Field(
-        default=None, description="Capital expenditures per share"
+    return_on_equity: Optional[float] = Field(
+        default=None,
+        description="Return on equity",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        alias="roe",
+    )
+    return_on_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Return on invested capital",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        alias="roic",
+    )
+    return_on_tangible_assets: Optional[float] = Field(
+        default=None,
+        description="Return on tangible assets",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield, as a normalized percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        alias="dividendYield",
+    )
+    graham_number: Optional[float] = Field(default=None, description="Graham number")
+    graham_net_net: Optional[float] = Field(
+        default=None, description="Graham net-net working capital"
     )
 
 
@@ -210,7 +250,7 @@ class FMPKeyMetricsFetcher(
         List[FMPKeyMetricsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Key Metrics Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPKeyMetricsQueryParams:
@@ -226,31 +266,34 @@ class FMPKeyMetricsFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         base_url = "https://financialmodelingprep.com/api/v3"
-
         symbols = query.symbol.split(",")
-
         results: List = []
 
         async def get_one(symbol):
             """Get data for one symbol."""
-
-            url = f"{base_url}/key-metrics/{symbol}?period={query.period}&limit={query.limit}&apikey={api_key}"
-
+            url = (
+                f"{base_url}/key-metrics/{symbol}?period={query.period}"
+                + f"&limit={query.limit}&apikey={api_key}"
+            )
             result = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
-
             if not result:
                 warn(f"Symbol Error: No data found for {symbol}.")
 
             if result:
-
                 ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
                 if query.with_ttm and (
                     metrics_ttm := await amake_request(
                         ttm_url, response_callback=response_callback, **kwargs
                     )
                 ):
+                    metrics_ttm_data = {
+                        k: v
+                        for k, v in metrics_ttm[0].items()
+                        if k
+                        not in ("dividendYieldPercentageTTM", "dividendPerShareTTM")
+                    }
                     result.insert(  # type: ignore
                         0,
                         {
@@ -258,7 +301,10 @@ class FMPKeyMetricsFetcher(
                             "period": "TTM",
                             "date": datetime.now().strftime("%Y-%m-%d"),
                             "calendar_year": datetime.now().year,
-                            **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},  # type: ignore
+                            **{
+                                k.replace("TTM", ""): v
+                                for k, v in metrics_ttm_data.items()
+                            },
                         },
                     )
                 results.extend(result)
@@ -266,7 +312,7 @@ class FMPKeyMetricsFetcher(
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])
 
         if not results:
-            raise EmptyDataError("No data found for given symbols.")
+            raise EmptyDataError(f"No data found for given symbols -> {query.symbol}.")
 
         return results
 
