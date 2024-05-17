@@ -121,10 +121,10 @@ class FredSearchFetcher(
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.series_id is not None:
-            results = []
+            results: List = []
 
             async def get_one(_id: str):
-                data = {}
+                data: Dict = {}
                 url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
                 response = await amake_request(url)
                 data = response.get("series_group")  # type: ignore
