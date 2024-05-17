@@ -3153,6 +3153,254 @@
             },
             "model": "RiskPremium"
         },
+        "/economy/balance_of_payments": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Balance of Payments Reports.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.balance_of_payments(provider='fred')\nobb.economy.balance_of_payments(provider='fred', country=brazil)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default.",
+                        "default": "fred",
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "country",
+                        "type": "Literal['argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czechia', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'g7', 'g20']",
+                        "description": "The country to get data. Enter as a 3-letter ISO country code, default is USA.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": "argentina,australia,austria,belgium,brazil,canada,chile,china,colombia,costa_rica,czechia,denmark,estonia,finland,france,germany,greece,hungary,iceland,india,indonesia,ireland,israel,italy,japan,korea,latvia,lithuania,luxembourg,mexico,netherlands,new_zealand,norway,poland,portugal,russia,saudi_arabia,slovak_republic,slovenia,south_africa,spain,sweden,switzerland,turkey,united_kingdom,united_states,g7,g20"
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BalanceOfPayments]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "period",
+                        "type": "date",
+                        "description": "The date representing the beginning of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_percent_of_gdp",
+                        "type": "float",
+                        "description": "Current Account Balance as Percent of GDP",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_total",
+                        "type": "float",
+                        "description": "Current Account Total Balance (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_total_services",
+                        "type": "float",
+                        "description": "Current Account Total Services Balance (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_total_secondary_income",
+                        "type": "float",
+                        "description": "Current Account Total Secondary Income Balance (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_total_goods",
+                        "type": "float",
+                        "description": "Current Account Total Goods Balance (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "balance_total_primary_income",
+                        "type": "float",
+                        "description": "Current Account Total Primary Income Balance (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_services_percent_of_goods_and_services",
+                        "type": "float",
+                        "description": "Current Account Credits Services as Percent of Goods and Services",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_services_percent_of_current_account",
+                        "type": "float",
+                        "description": "Current Account Credits Services as Percent of Current Account",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_total_services",
+                        "type": "float",
+                        "description": "Current Account Credits Total Services (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_total_goods",
+                        "type": "float",
+                        "description": "Current Account Credits Total Goods (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_total_primary_income",
+                        "type": "float",
+                        "description": "Current Account Credits Total Primary Income (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_total_secondary_income",
+                        "type": "float",
+                        "description": "Current Account Credits Total Secondary Income (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "credits_total",
+                        "type": "float",
+                        "description": "Current Account Credits Total (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_services_percent_of_goods_and_services",
+                        "type": "float",
+                        "description": "Current Account Debits Services as Percent of Goods and Services",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_services_percent_of_current_account",
+                        "type": "float",
+                        "description": "Current Account Debits Services as Percent of Current Account",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_total_services",
+                        "type": "float",
+                        "description": "Current Account Debits Total Services (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_total_goods",
+                        "type": "float",
+                        "description": "Current Account Debits Total Goods (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_total_primary_income",
+                        "type": "float",
+                        "description": "Current Account Debits Total Primary Income (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_total",
+                        "type": "float",
+                        "description": "Current Account Debits Total (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "debits_total_secondary_income",
+                        "type": "float",
+                        "description": "Current Account Debits Total Secondary Income (USD)",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "BalanceOfPayments"
+        },
         "/economy/fred_search": {
             "deprecated": {
                 "flag": null,
