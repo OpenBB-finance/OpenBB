@@ -16,27 +16,36 @@ class ExceptionHandlers:
     """Exception handlers."""
 
     @staticmethod
-    async def _handle(exception: Exception, status_code: int, detail: Any):
+    async def _handle(exception: Exception, status_code: int, kind: str, detail: Any):
         """Exception handler."""
         if Env().DEBUG_MODE:
             raise exception
         logger.error(exception)
         return JSONResponse(
             status_code=status_code,
-            content={"detail": detail},
+            content={
+                "kind": kind,
+                "detail": detail,
+            },
         )
 
     @staticmethod
     async def base(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
-        return await ExceptionHandlers._handle(error, 500, "Unknown error.")
+        return await ExceptionHandlers._handle(
+            exception=error,
+            status_code=500,
+            kind="General",
+            detail="Unknown error.",
+        )
 
     @staticmethod
     async def query_validation(request: Request, error: ValidationError):
         """Exception handler for ValidationError."""
-        # We check if the validation error comes from the query
-        # and update the error location.
-        # If it comes from Data or other code we return unknown error.
+        # We check if the validation error comes from provider QueryParams.
+        # Some validation is performed at Fetcher level.
+        # If yes, we update the error location with query.
+        # If not, we handle it as a base Exception error.
         query_params = dict(request.query_params)
         errors = error.errors(include_url=False)
         all_in_query = all(
@@ -44,10 +53,17 @@ class ExceptionHandlers:
         )
         if "QueryParams" in error.title and all_in_query:
             detail = [{**err, "loc": ("query",) + err.get("loc", ())} for err in errors]
-            return await ExceptionHandlers._handle(error, 422, detail)
+            return await ExceptionHandlers._handle(
+                exception=error, status_code=422, kind="ValidationError", detail=detail
+            )
         return await ExceptionHandlers.base(request, error)
 
     @staticmethod
     async def openbb(_: Request, error: OpenBBError):
         """Exception handler for OpenBBError."""
-        return await ExceptionHandlers._handle(error, 400, str(error.original))
+        return await ExceptionHandlers._handle(
+            exception=error,
+            status_code=400,
+            kind=error.__class__.__name__,
+            detail=str(error.original),
+        )
