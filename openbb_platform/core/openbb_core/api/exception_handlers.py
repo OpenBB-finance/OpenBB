@@ -36,7 +36,7 @@ class ExceptionHandlers:
             exception=error,
             status_code=500,
             kind="General",
-            detail="Unknown error.",
+            detail="Unexpected error.",
         )
 
     @staticmethod

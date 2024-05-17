@@ -47,7 +47,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
     def wrapper(*f_args, **f_kwargs):
         try:
             return func(*f_args, **f_kwargs)
-        except (ValidationError, Exception) as e:
+        except (ValidationError, OpenBBError, Exception) as e:
             if Env().DEBUG_MODE:
                 raise
 
@@ -76,9 +76,12 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 raise OpenBBError(
                     f"\n[Kind] -> ValidationError\n[Detail] -> {error_str}"
                 ).with_traceback(tb) from None
-
+            if isinstance(e, OpenBBError):
+                raise OpenBBError(
+                    f"\n[Kind] -> {e.__class__.__name__}\n[Detail] -> {str(e)}"
+                ).with_traceback(tb) from None
             raise OpenBBError(
-                f"\n[Kind] -> {e.__class__.__name__}\n[Detail] -> {str(e)}"
+                "\n[Kind] -> General\n[Detail] -> Unexpected error."
             ).with_traceback(tb) from None
 
     return wrapper
