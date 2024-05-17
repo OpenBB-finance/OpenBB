@@ -162,6 +162,8 @@ class FMPEquityScreenerFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        if query.sector is not None:
+            query.sector = query.sector.replace("_", " ").title()
         url = create_url(
             version=3,
             endpoint="stock-screener",
