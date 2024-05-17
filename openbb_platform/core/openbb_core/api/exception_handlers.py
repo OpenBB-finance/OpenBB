@@ -16,7 +16,7 @@ class ExceptionHandlers:
     """Exception handlers."""
 
     @staticmethod
-    async def _handle(exception: Exception, status_code: int, kind: str, detail: Any):
+    async def _handle(exception: Exception, status_code: int, detail: Any):
         """Exception handler."""
         if Env().DEBUG_MODE:
             raise exception
@@ -24,7 +24,6 @@ class ExceptionHandlers:
         return JSONResponse(
             status_code=status_code,
             content={
-                "kind": kind,
                 "detail": detail,
             },
         )
@@ -35,7 +34,6 @@ class ExceptionHandlers:
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=500,
-            kind="General",
             detail="Unexpected error.",
         )
 
@@ -56,7 +54,6 @@ class ExceptionHandlers:
             return await ExceptionHandlers._handle(
                 exception=error,
                 status_code=422,
-                kind="QueryValidationError",
                 detail=detail,
             )
         return await ExceptionHandlers.base(request, error)
@@ -67,6 +64,5 @@ class ExceptionHandlers:
         return await ExceptionHandlers._handle(
             exception=error,
             status_code=400,
-            kind=error.__class__.__name__,
             detail=str(error.original),
         )
