@@ -117,7 +117,7 @@ class AVHistoricalEpsFetcher(
             target = (
                 "annualEarnings" if query.period == "annual" else "quarterlyEarnings"
             )
-            message = data.get("Information", "")
+            message = data.get("Information", "")  # type: ignore
             if message:
                 messages.append(message)
                 warn(f"Symbol Error for {symbol}: {message}")

@@ -171,7 +171,7 @@ class SecCompanyFilingsFetcher(
             query.cik = cik_ + str(query.cik)  # type: ignore
 
         url = f"https://data.sec.gov/submissions/CIK{query.cik}.json"
-
+        data: Union[dict, List[dict]] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_company_filings"
             async with CachedSession(
@@ -206,7 +206,7 @@ class SecCompanyFilingsFetcher(
                     new_data = DataFrame.from_records(result)
                     results.extend(new_data.to_dict("records"))
 
-            urls = []
+            urls: List = []
             new_urls = (
                 DataFrame(data["filings"].get("files"))  # type: ignore
                 if "filings" in data
