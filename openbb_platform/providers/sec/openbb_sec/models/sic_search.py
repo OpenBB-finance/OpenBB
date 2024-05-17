@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from aiohttp_client_cache import SQLiteBackend
@@ -62,6 +62,7 @@ class SecSicSearchFetcher(
             "https://www.sec.gov/corpfin/"
             "division-of-corporation-finance-standard-industrial-classification-sic-code-list"
         )
+        response: Union[dict, List[dict], str] = {}
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_sic"
             async with CachedSession(

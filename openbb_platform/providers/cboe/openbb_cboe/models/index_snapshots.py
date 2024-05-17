@@ -1,5 +1,7 @@
 """CBOE Index Snapshots Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -27,9 +29,9 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
 
     @field_validator("region", mode="after", check_fields=False)
     @classmethod
-    def validate_region(cls, v: str):
+    def validate_region(cls, v):
         """Validate region."""
-        return "us" if v is None else v
+        return v if v else "us"
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):
@@ -89,24 +91,24 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
-
+        url: str = ""
         if query.region == "us":
             url = "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
         if query.region == "eu":
             url = "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
 
         data = await amake_request(url, **kwargs)
-        return data.get("data")
+        return data.get("data")  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSnapshotsQueryParams,  # pylint: disable=unused-argument
-        data: dict,
-        **kwargs: Any,  # pylint: disable=unused-argument
+        query: CboeIndexSnapshotsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         if not data:

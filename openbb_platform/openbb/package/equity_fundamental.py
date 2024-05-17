@@ -2420,14 +2420,16 @@ class ROUTER_equity_fundamental(Container):
             Market capitalization
         pe_ratio : Optional[float]
             Price-to-earnings ratio (P/E ratio)
-        date : Optional[date]
-            The date of the data. (provider: fmp)
-        period : Optional[str]
+        period_ending : Optional[date]
+            Period ending date. (provider: fmp)
+        fiscal_period : Optional[str]
             Period of the data. (provider: fmp)
         calendar_year : Optional[int]
-            Calendar year. (provider: fmp)
+            Calendar year for the fiscal period. (provider: fmp)
         revenue_per_share : Optional[float]
             Revenue per share (provider: fmp, yfinance)
+        capex_per_share : Optional[float]
+            Capital expenditures per share (provider: fmp)
         net_income_per_share : Optional[float]
             Net income per share (provider: fmp)
         operating_cash_flow_per_share : Optional[float]
@@ -2444,21 +2446,19 @@ class ROUTER_equity_fundamental(Container):
             Shareholders equity per share (provider: fmp)
         interest_debt_per_share : Optional[float]
             Interest debt per share (provider: fmp)
-        enterprise_value : Optional[int]
-            Enterprise value (provider: fmp, intrinio, yfinance)
-        price_to_sales_ratio : Optional[float]
+        price_to_sales : Optional[float]
             Price-to-sales ratio (provider: fmp)
-        pocf_ratio : Optional[float]
+        price_to_operating_cash_flow : Optional[float]
             Price-to-operating cash flow ratio (provider: fmp)
-        pfcf_ratio : Optional[float]
+        price_to_free_cash_flow : Optional[float]
             Price-to-free cash flow ratio (provider: fmp)
-        pb_ratio : Optional[float]
-            Price-to-book ratio (provider: fmp)
-        ptb_ratio : Optional[float]
-            Price-to-tangible book ratio (provider: fmp)
+        price_to_book : Optional[float]
+            Price-to-book ratio (provider: fmp, intrinio, yfinance)
+        price_to_tangible_book : Optional[float]
+            Price-to-tangible book ratio (provider: fmp, intrinio)
         ev_to_sales : Optional[float]
             Enterprise value-to-sales ratio (provider: fmp)
-        enterprise_value_over_ebitda : Optional[float]
+        ev_to_ebitda : Optional[float]
             Enterprise value-to-EBITDA ratio (provider: fmp)
         ev_to_operating_cash_flow : Optional[float]
             Enterprise value-to-operating cash flow ratio (provider: fmp)
@@ -2469,6 +2469,8 @@ class ROUTER_equity_fundamental(Container):
             Earnings yield, as a normalized percent. (provider: intrinio)
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
+        debt_to_market_cap : Optional[float]
+            Debt-to-market capitalization ratio (provider: fmp)
         debt_to_equity : Optional[float]
             Debt-to-equity ratio (provider: fmp, yfinance)
         debt_to_assets : Optional[float]
@@ -2481,8 +2483,6 @@ class ROUTER_equity_fundamental(Container):
             Interest coverage (provider: fmp)
         income_quality : Optional[float]
             Income quality (provider: fmp)
-        dividend_yield : Optional[float]
-            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
         payout_ratio : Optional[float]
             Payout ratio (provider: fmp, yfinance)
         sales_general_and_administrative_to_revenue : Optional[float]
@@ -2499,20 +2499,14 @@ class ROUTER_equity_fundamental(Container):
             Capital expenditures-to-depreciation ratio (provider: fmp)
         stock_based_compensation_to_revenue : Optional[float]
             Stock-based compensation-to-revenue ratio (provider: fmp)
-        graham_number : Optional[float]
-            Graham number (provider: fmp)
-        roic : Optional[float]
-            Return on invested capital (provider: fmp)
-        return_on_tangible_assets : Optional[float]
-            Return on tangible assets (provider: fmp)
-        graham_net_net : Optional[float]
-            Graham net-net working capital (provider: fmp)
         working_capital : Optional[float]
             Working capital (provider: fmp)
         tangible_asset_value : Optional[float]
             Tangible asset value (provider: fmp)
         net_current_asset_value : Optional[float]
             Net current asset value (provider: fmp)
+        enterprise_value : Optional[int]
+            Enterprise value (provider: fmp, intrinio, yfinance)
         invested_capital : Optional[float]
             Invested capital (provider: fmp)
         average_receivables : Optional[float]
@@ -2533,14 +2527,21 @@ class ROUTER_equity_fundamental(Container):
             Payables turnover (provider: fmp)
         inventory_turnover : Optional[float]
             Inventory turnover (provider: fmp)
-        roe : Optional[float]
-            Return on equity (provider: fmp)
-        capex_per_share : Optional[float]
-            Capital expenditures per share (provider: fmp)
-        price_to_book : Optional[float]
-            Price to book ratio. (provider: intrinio, yfinance)
-        price_to_tangible_book : Optional[float]
-            Price to tangible book ratio. (provider: intrinio)
+        return_on_equity : Optional[float]
+            Return on equity (provider: fmp);
+            Return on equity, as a normalized percent. (provider: intrinio);
+            Return on equity, as a normalized percent. (provider: yfinance)
+        return_on_invested_capital : Optional[float]
+            Return on invested capital (provider: fmp);
+            Return on invested capital, as a normalized percent. (provider: intrinio)
+        return_on_tangible_assets : Optional[float]
+            Return on tangible assets (provider: fmp)
+        dividend_yield : Optional[float]
+            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
+        graham_number : Optional[float]
+            Graham number (provider: fmp)
+        graham_net_net : Optional[float]
+            Graham net-net working capital (provider: fmp)
         price_to_revenue : Optional[float]
             Price to revenue ratio. (provider: intrinio)
         quick_ratio : Optional[float]
@@ -2569,10 +2570,6 @@ class ROUTER_equity_fundamental(Container):
             Invested capital growth, as a normalized percent. (provider: intrinio)
         return_on_assets : Optional[float]
             Return on assets, as a normalized percent. (provider: intrinio, yfinance)
-        return_on_equity : Optional[float]
-            Return on equity, as a normalized percent. (provider: intrinio, yfinance)
-        return_on_invested_capital : Optional[float]
-            Return on invested capital, as a normalized percent. (provider: intrinio)
         ebitda : Optional[int]
             Earnings before interest, taxes, depreciation, and amortization. (provider: intrinio)
         ebit : Optional[int]

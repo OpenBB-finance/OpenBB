@@ -1,7 +1,7 @@
 ---
 title: Installation
 sidebar_position: 2
-description: This page provides installation instructions for the OpenBB CLI.
+description: This page provides installation instructions for the OpenBB Platform CLI.
 keywords:
 - OpenBB Platform
 - Python
@@ -14,11 +14,11 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation | OpenBB CLI Docs" />
+<HeadTitle title="Installation | OpenBB Platform CLI Docs" />
 
 ## Pre-Requisites
 
-The OpenBB CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
+The OpenBB Platform CLI is a wrapper around the [Platform](/platform), and should be installed along side an existing OpenBB installation.
 
 - A Python virtual environment with a version between 3.9 and 3.11, inclusive, is required.
 
