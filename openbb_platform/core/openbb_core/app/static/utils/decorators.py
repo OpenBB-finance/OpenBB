@@ -77,9 +77,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     tb
                 ) from None
             if isinstance(e, OpenBBError):
-                raise OpenBBError(f"\n[Error] -> {str(e)}").with_traceback(
-                    tb
-                ) from None
+                raise OpenBBError(f"\n[Error] -> {str(e)}").with_traceback(tb) from None
             raise OpenBBError("\n[Error] -> Unexpected error.").with_traceback(
                 tb
             ) from None
