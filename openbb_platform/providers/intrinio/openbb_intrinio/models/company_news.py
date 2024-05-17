@@ -1,8 +1,9 @@
 """Intrinio Company News Model."""
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
@@ -66,13 +67,17 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     )
     business_relevance_greater_than: Optional[float] = Field(
         default=None,
+        ge=0,
+        le=1,
         description="News stories will have a business relevance score more than this value."
-        + " Unsupported for yahoo source.",
+        + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
     business_relevance_less_than: Optional[float] = Field(
         default=None,
+        ge=0,
+        le=1,
         description="News stories will have a business relevance score less than this value."
-        + " Unsupported for yahoo source.",
+        + " Unsupported for yahoo source. Value is a decimal between 0 and 1.",
     )
 
 
@@ -164,7 +169,18 @@ class IntrinioCompanyNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioCompanyNewsQueryParams:
         """Transform the query params."""
-        return IntrinioCompanyNewsQueryParams(**params)
+        transformed_params = params
+        if not transformed_params.get("start_date"):
+            transformed_params["start_date"] = (
+                datetime.now() - timedelta(days=365)
+            ).date()
+        if not transformed_params.get("end_date"):
+            transformed_params["end_date"] = (datetime.now() + timedelta(days=1)).date()
+        if transformed_params["start_date"] == transformed_params["end_date"]:
+            transformed_params["end_date"] = (
+                transformed_params["end_date"] + timedelta(days=1)
+            ).date()
+        return IntrinioCompanyNewsQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
@@ -199,23 +215,26 @@ class IntrinioCompanyNewsFetcher(
             # query.limit can be None...
             limit = query.limit or 2500
             while next_page and limit > articles:
-                url = f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}&next_page={next_page}"
+                url = (
+                    f"{base_url}/{symbol}/news?{query_str}"
+                    + f"&page_size={query.limit}&api_key={api_key}&next_page={next_page}"
+                )
                 result = await get_data(url, session=session, **kwargs)
                 _data = result.get("news", [])
                 if _data:
                     data.extend([{"symbol": symbol, **d} for d in _data])
                     articles = len(data)
                 next_page = result.get("next_page")
-            # Remove duplicates based on URL
             return data
 
         seen = set()
 
         async def get_one(symbol):
             """Get the data for one symbol."""
-            # TODO: Change page_size to a more appropriate value when Intrinio fixes the bug in this param.
-            url = f"{base_url}/{symbol}/news?{query_str}&page_size=99&api_key={api_key}"
+            url = f"{base_url}/{symbol}/news?{query_str}&page_size={query.limit}&api_key={api_key}"
             data = await amake_request(url, response_callback=callback, **kwargs)
+            if not data:
+                warn(f"No data found for: {symbol}")
             if data:
                 data = [x for x in data if not (x["url"] in seen or seen.add(x["url"]))]  # type: ignore
                 news.extend(
@@ -229,7 +248,10 @@ class IntrinioCompanyNewsFetcher(
         await asyncio.gather(*tasks)
 
         if not news:
-            raise EmptyDataError("Error: The request was returned as empty.")
+            raise EmptyDataError(
+                "Error: The request was returned as empty."
+                + " Try adjusting the requested date ranges, if applicable."
+            )
 
         return news
 
