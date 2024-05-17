@@ -8,13 +8,12 @@ from typing import Any, Dict, List, Optional
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_of_payments import (
-    B6BopUsdData,
     BalanceOfPaymentsQueryParams,
+    BP6BopUsdData,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import (
-    FredSeriesData,
     FredSeriesFetcher,
     FredSeriesQueryParams,
 )
@@ -46,7 +45,7 @@ class FredBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
     )
 
 
-class FredBalanceOfPaymentsData(B6BopUsdData):
+class FredBalanceOfPaymentsData(BP6BopUsdData):
     """FRED Balance Of Payments Data."""
 
     __alias_dict__ = {"period": "date"}
