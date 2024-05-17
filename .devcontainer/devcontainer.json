@@ -11,10 +11,3 @@
         }
     }
 }
-// Running the OpenBB Platform Dev Container
-// Installs the OpenBB Platform and its CLI in a Python virtual environment `obb`
-// 1. Open the project in VS Code
-// 2. Press F1 (command pallete) and select Remote-Containers: Reopen in Container
-// 3. Wait for the container to build and the postCreateCommand to run
-// 4. Open a terminal in VS Code and run the following commands
-//    source obb/bin/activate
