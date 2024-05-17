@@ -106,8 +106,7 @@ class FredBalanceOfPaymentsFetcher(
         query_dict["symbol"] = ",".join(list(get_bop_series(country).values()))
         fred_query = FredSeriesQueryParams(**query_dict)
         data = fred_fetcher.transform_data(fred_query, data)
-
-        series_ids = get_bop_series(query.country)
+        series_ids = get_bop_series(country)
         col_map = {v: k for k, v in series_ids.items()}
         result = data.result
         df = (
