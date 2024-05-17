@@ -213,7 +213,7 @@ class IntrinioWorldNewsFetcher(
                 : query.limit
             ]
 
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)  # type: ignore
 
     # pylint: disable=unused-argument
     @staticmethod
