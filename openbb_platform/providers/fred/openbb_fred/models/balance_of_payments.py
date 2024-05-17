@@ -107,7 +107,7 @@ class FredBalanceOfPaymentsFetcher(
         data = fred_fetcher.transform_data(fred_query, data)
         series_ids = get_bop_series(country)
         col_map = {v: k for k, v in series_ids.items()}
-        result = data.result
+        result = data.result  # type: ignore
         df = (
             DataFrame([d.model_dump() for d in result])
             .set_index("date")
@@ -118,5 +118,5 @@ class FredBalanceOfPaymentsFetcher(
 
         return AnnotatedResult(
             result=[FredBalanceOfPaymentsData.model_validate(r) for r in records],
-            metadata=data.metadata,
+            metadata=data.metadata,  # type: ignore
         )
