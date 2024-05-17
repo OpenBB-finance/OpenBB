@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 sidebar_position: 2
-description: This page is a quick start guide for the OpenBB CLI.
+description: This page is a quick start guide for the OpenBB Platform CLI.
 keywords:
 - quickstart
 - quick start
@@ -12,7 +12,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Quick Start - Usage | OpenBB CLI Docs" />
+<HeadTitle title="Quick Start - Usage | OpenBB Platform CLI Docs" />
 
 ## Launch
 

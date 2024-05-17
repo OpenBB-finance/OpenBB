@@ -1,7 +1,7 @@
 ---
 title: Configuration & Settings
 sidebar_position: 5
-description: This documentation page details the various settings and feature flags used to customize the OpenBB CLI.
+description: This documentation page details the various settings and feature flags used to customize the OpenBB Platform CLI.
 keywords:
 - Settings Menu
 - Feature Flags Menu
@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Configuration & Settings - | OpenBB CLI Docs" />
+<HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
 
 In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/usage/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
 
