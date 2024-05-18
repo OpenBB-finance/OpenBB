@@ -753,6 +753,36 @@ def test_equity_estimates_forward_eps(params, obb):
 @parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "quarter",
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "annual",
+                "limit": None,
+                "include_historical": False,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_ebitda(params, obb):
+    """Test the equity estimates forward EBITDA endpoint."""
+    result = obb.equity.estimates.forward_ebitda(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
         ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {

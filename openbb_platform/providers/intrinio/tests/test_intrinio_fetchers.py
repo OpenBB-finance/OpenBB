@@ -22,6 +22,9 @@ from openbb_intrinio.models.etf_price_performance import (
 )
 from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
+from openbb_intrinio.models.forward_ebitda_estimates import (
+    IntrinioForwardEbitdaEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
@@ -516,5 +519,15 @@ def test_intrinio_forward_pe_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,MSFT"}
 
     fetcher = IntrinioForwardPeEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_forward_ebitda_fetcher(credentials=test_credentials):
+    """Test forward ebitda fetcher."""
+    params = {"symbol": "AAPL,MSFT"}
+
+    fetcher = IntrinioForwardEbitdaEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
