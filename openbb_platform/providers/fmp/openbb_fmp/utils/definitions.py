@@ -3,21 +3,21 @@
 from typing import Literal
 
 SECTORS = Literal[
-    "Consumer Cyclical",
-    "Energy",
-    "Technology",
-    "Industrials",
-    "Financial Services",
-    "Basic Materials",
-    "Communication Services",
-    "Consumer Defensive",
-    "Healthcare",
-    "Real Estate",
-    "Utilities",
-    "Industrial Goods",
-    "Financial",
-    "Services",
-    "Conglomerates",
+    "consumer_cyclical",
+    "energy",
+    "technology",
+    "industrials",
+    "financial_services",
+    "basic_materials",
+    "communication_services",
+    "consumer_defensive",
+    "healthcare",
+    "real_estate",
+    "utilities",
+    "industrial_goods",
+    "financial",
+    "services",
+    "conglomerates",
 ]
 
 EXCHANGES = Literal[
@@ -142,7 +142,6 @@ MARKETS = Literal[
 ]
 
 TRANSACTION_TYPES = Literal[
-    None,
     "award",
     "conversion",
     "return",
