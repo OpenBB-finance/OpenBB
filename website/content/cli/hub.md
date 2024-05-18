@@ -1,7 +1,7 @@
 ---
 title: Hub Synchronization
 sidebar_position: 6
-description: This page outlines the `/account` menu within the OpenBB CLI, and integrations with the OpenBB Hub.
+description: This page outlines the `/account` menu within the OpenBB Platform CLI, and integrations with the OpenBB Hub.
 keywords:
 - OpenBB Platform CLI
 - OpenBB Hub
@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Hub Synchronization | OpenBB Platform CLI Docs" />
 
-This page outlines the `/account` menu within the OpenBB CLI and integrations with the OpenBB Hub.
+This page outlines the `/account` menu within the OpenBB Platform CLI and integrations with the OpenBB Hub.
 
 ## Registration
 

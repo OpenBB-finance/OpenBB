@@ -1,7 +1,7 @@
 ---
 title: Introduction
 sidebar_position: 0
-description: The OpenBB CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
+description: The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts. No experience with Python, or other programming languages, is required.
 keywords:
 - OpenBB
 - CLI
@@ -18,11 +18,11 @@ keywords:
 import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB CLI Docs" />
+<HeadTitle title="OpenBB Platform CLI Docs" />
 
 ## Overview
 
-The OpenBB CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
+The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform. It offers a convenient way to interact with the Platform and its extensions, as well as automate data collection via OpenBB Routine Scripts.
 
 The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
 
@@ -33,17 +33,17 @@ The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 <NewReferenceCard
     title="Installation"
-    description="An installation guide for the OpenBB CLI."
+    description="An installation guide for the OpenBB Platform CLI."
     url="cli/installation"
 />
 <NewReferenceCard
     title="Quick Start"
-    description="A quick start guide for the OpenBB CLI."
+    description="A quick start guide for the OpenBB Platform CLI."
     url="cli/quickstart"
 />
 <NewReferenceCard
     title="Configuration & Settings"
-    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB CLI."
+    description="An explanation of the settings and environment variables that customize the look and feel of the OpenBB Platform CLI."
     url="cli/configuration"
 />
 <NewReferenceCard

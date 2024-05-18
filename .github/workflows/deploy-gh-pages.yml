@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: 📑 Deploy to GitHub Pages
 
 on:
   push:
@@ -48,27 +48,25 @@ jobs:
               libgtk-3-dev \
               libwebkit2gtk-4.0-dev
 
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
       - name: Generate Platform Markdown
         run: |
-          source .venv/bin/activate
+          poetry install -C openbb_platform --no-interaction
+          source openbb_platform/.venv/bin/activate
           pip install -U poetry
-          poetry run python openbb_platform/dev_install.py -e all
-          poetry run python -c "import openbb; openbb.build()"
-          pip uninstall nbmake -y
-          poetry run python website/generate_platform_v4_markdown.py
+          pip install toml
+          python openbb_platform/dev_install.py -e all
+          python -c "import openbb; openbb.build()"
+          python website/generate_platform_v4_markdown.py
 
       - name: Generate Excel Docs
         run: |
-          source .venv/bin/activate
-          poetry run python website/generate_excel_markdown.py
+          pip install requests
+          python website/generate_excel_markdown.py
 
       - name: Generate Widgets Library
         run: |
-          source .venv/bin/activate
-          poetry run python website/generate_widgets_library.py
+          pip install requests
+          python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3

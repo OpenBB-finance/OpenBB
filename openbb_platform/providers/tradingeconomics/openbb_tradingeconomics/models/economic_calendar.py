@@ -72,7 +72,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     country: Optional[str] = Field(
         default=None,
         description="Country of the event.",
-        json_schema_extra={"choices": COUNTRIES},  # type: ignore[dict-item]
+        json_schema_extra={"choices": sorted(COUNTRIES)},  # type: ignore[dict-item]
     )
     importance: Optional[IMPORTANCE] = Field(
         default=None,

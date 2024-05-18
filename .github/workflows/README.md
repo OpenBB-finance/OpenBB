@@ -2,6 +2,10 @@
 
 This directory contains the workflows for the OpenBB 🦋 Project. The workflows are:
 
+## 📑 Deploy to GitHub Pages
+
+This GitHub Actions workflow is responsible for building the documentation and deploying it to GitHub Pages. This workflow is triggered when a new change is pushed to the `main` or `release` branch of the repository, and the documentation is published to GitHub Pages.
+
 ## Branch Name Check
 
 Objective: To check if pull request branch names follow the GitFlow naming convention before merging.
@@ -58,7 +62,7 @@ Note: The code uses the `pypa/build` package for building the binary wheel and s
 
 This GitHub Actions workflow is designed to automatically generate and update draft releases in a GitHub repository. The workflow is triggered when it is manually dispatched, allowing you to control when the draft releases are updated.
 
-## General Linting
+## 🧹 General Linting
 
 This GitHub Actions workflow is responsible for running linting checks on the codebase. This workflow is triggered on pull request events such as `opened`, `synchronize`, and `edited`, and push events on branches with names that start with `feature/`, `hotfix/`, or `release/`. The workflow also sets a number of environment variables and uses Github Actions caching to improve performance.
 
@@ -79,11 +83,7 @@ The first job, `code-linting`, runs on an Ubuntu machine and performs several li
 
 The second job, `markdown-link-check`, runs on an Ubuntu machine and performs linting of the markdown files in the repository. It uses a Docker container `avtodev/markdown-lint` to perform the linting.
 
-## Deploy to GitHub Pages
-
-This GitHub Actions workflow is responsible for building the documentation and deploying it to GitHub Pages. This workflow is triggered when a new change is pushed to the `main` or `release` branch of the repository, and the documentation is published to GitHub Pages.
-
-## Pull Request Labels
+## 🏷️ Pull Request Labels
 
 Automatic labelling of pull requests.
 
