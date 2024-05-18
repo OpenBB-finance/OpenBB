@@ -67,7 +67,7 @@ class FMPForwardEbitdaEstimatesFetcher(
         List[FMPForwardEbitdaEstimatesData],
     ]
 ):
-    """FMP Foward EBITDA Estimates Fetcher."""
+    """FMP Forward EBITDA Estimates Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPForwardEbitdaEstimatesQueryParams:
