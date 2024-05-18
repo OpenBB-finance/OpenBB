@@ -35,7 +35,6 @@ class IntrinioForwardEbitdaEstimatesQueryParams(ForwardEbitdaEstimatesQueryParam
     estimate_type: Optional[
         Literal[
             "ebitda",
-            "ebitda",
             "ebit",
             "enterprise_value",
             "cash_flow_per_share",
@@ -190,4 +189,6 @@ class IntrinioForwardEbitdaEstimatesFetcher(
         if not results:
             raise EmptyDataError()
 
-        return results
+        return sorted(
+            results, key=lambda x: (x.fiscal_year, x.last_updated), reverse=True
+        )
