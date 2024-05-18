@@ -1,5 +1,7 @@
 """FMP Insider Trading Model."""
 
+# pylint: disable=unused-argument
+
 import math
 from typing import Any, Dict, List, Optional
 
