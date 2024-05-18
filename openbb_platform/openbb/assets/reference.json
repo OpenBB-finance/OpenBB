@@ -5794,24 +5794,24 @@
                     },
                     {
                         "name": "analyst_ids",
-                        "type": "Union[List[str], str]",
-                        "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts.",
+                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "firm_ids",
-                        "type": "Union[List[str], str]",
-                        "description": "Comma-separated list of firm IDs.",
+                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "description": "Comma-separated list of firm IDs. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
                         "name": "fields",
-                        "type": "Union[List[str], str]",
-                        "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields.",
+                        "type": "Union[Union[List[str], str], List[Union[List[str], str]]]",
+                        "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed for provider(s): benzinga.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -22325,7 +22325,7 @@
                     },
                     {
                         "name": "sector",
-                        "type": "Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']",
+                        "type": "Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']",
                         "description": "Filter by sector.",
                         "default": null,
                         "optional": true,
