@@ -19741,7 +19741,7 @@
                 "fmp": [
                     {
                         "name": "transaction_type",
-                        "type": "Literal[None, 'award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']",
+                        "type": "Literal['award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']",
                         "description": "Type of the transaction.",
                         "default": null,
                         "optional": true,

@@ -142,7 +142,6 @@ MARKETS = Literal[
 ]
 
 TRANSACTION_TYPES = Literal[
-    None,
     "award",
     "conversion",
     "return",
