@@ -1,7 +1,7 @@
 """FMP Equity Screener Model."""
 
 # pylint: disable=unused-argument
-
+from copy import deepcopy
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
@@ -165,13 +165,14 @@ class FMPEquityScreenerFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        if query.sector is not None:
-            query.sector = query.sector.replace("_", " ").title()
+        _query = deepcopy(query)
+        if _query.sector is not None:
+            _query.sector = _query.sector.replace("_", " ").title()
         url = create_url(
             version=3,
             endpoint="stock-screener",
             api_key=api_key,
-            query=query,
+            query=_query,
             exclude=["query", "is_symbol", "industry"],
         ).replace(" ", "%20")
         return await get_data(url, **kwargs)  # type: ignore
