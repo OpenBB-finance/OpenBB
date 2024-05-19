@@ -36,5 +36,5 @@ class AppLoader:
     def add_exception_handlers(app: FastAPI):
         """Add exception handlers."""
         app.exception_handlers[Exception] = ExceptionHandlers.base
-        app.exception_handlers[ValidationError] = ExceptionHandlers.query_validation
+        app.exception_handlers[ValidationError] = ExceptionHandlers.validation
         app.exception_handlers[OpenBBError] = ExceptionHandlers.openbb

@@ -38,7 +38,7 @@ class ExceptionHandlers:
         )
 
     @staticmethod
-    async def query_validation(request: Request, error: ValidationError):
+    async def validation(request: Request, error: ValidationError):
         """Exception handler for ValidationError."""
         # Some validation is performed at Fetcher level.
         # So we check if the validation error comes from a QueryParams class.
