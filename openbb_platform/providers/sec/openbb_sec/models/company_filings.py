@@ -39,7 +39,7 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    form_type: Union[None, FORM_TYPES] = Field(
+    form_type: Optional[FORM_TYPES] = Field(
         description="Type of the SEC filing form.",
         default=None,
     )
@@ -276,7 +276,7 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            filings = filings[filings["form"] == query.form_type]
+            filings = filings[filings["form"] == query.form_type.replace("_", " ")]
 
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings
