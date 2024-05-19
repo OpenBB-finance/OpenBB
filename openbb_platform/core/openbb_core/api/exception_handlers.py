@@ -29,7 +29,7 @@ class ExceptionHandlers:
         )
 
     @staticmethod
-    async def base(_: Request, error: Exception) -> JSONResponse:
+    async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
         return await ExceptionHandlers._handle(
             exception=error,
@@ -57,7 +57,7 @@ class ExceptionHandlers:
                 status_code=422,
                 detail=detail,
             )
-        return await ExceptionHandlers.base(request, error)
+        return await ExceptionHandlers.exception(request, error)
 
     @staticmethod
     async def openbb(_: Request, error: OpenBBError):
