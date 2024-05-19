@@ -1,7 +1,7 @@
 ---
-title: Basic Response & Command Coverage
+title: Basic Response
 sidebar_position: 3
-description: This page details the basic response and output that can be expected to be received from the the OpenBB Platform, as well as instructions for determining the command coverage provided by the installed extensions.
+description: This page details the basic response and output that can be expected to be received from the the OpenBB Platform.
 keywords:
 - tutorial
 - standardized output
@@ -56,25 +56,6 @@ Additional class methods are helpers for converting the results to a variety of 
 - `to_numpy()`: converts to a Numpy array.
 - `to_polars()`: converts to a Polars table.
 
-The output from the Fast API is a serialized version of this object, and these methods are lost on conversion. OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
-
-```python
-import requests
-from openbb_core.app.model.obbject import OBBject
-
-data = []
-symbol="SPY"
-url = f"http://127.0.0.1:8000/api/v1/equity/price/historical?provider=polygon&symbol={symbol}"
-headers = {"accept": "application/json"}
-
-response = requests.get(url, headers=headers, timeout=3)
-
-if response.status_code == 200:
-  data = OBBject.model_validate(response.json())
-
-data.to_df()
-```
-
 :::info
 The preferred output type can be set with a user preference.
 
@@ -83,26 +64,3 @@ obb.user.preferences.output_type="dataframe"
 ```
 
 :::
-
-## Commands and Provider Coverage
-
-The installed commands and data providers are found under, `obb.coverage`.
-
-```python
-obb.coverage
-```
-
-```console
-/coverage
-
-    providers
-    commands
-    command_model
-    command_schemas
-```
-
-`obb.coverage.providers` is a dictionary of the installed provider extensions, each with its own list of available commands.
-
-`obb.coverage.commands` is a dictionary of commands, each with its own list of available providers for the data.
-
-`obb.coverage.command_model` is a dictionary where the keys are the command paths and the values is a nested dictionary of QueryParams and Data models associated with that function.

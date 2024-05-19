@@ -1,6 +1,6 @@
 ---
 title: Quick Start - New Router Extension
-sidebar_position: 25
+sidebar_position: 8
 description: This page will walk through creating a new OpenBB Router Extension from scratch. By the end, you will have the shell structure for a new router path with custom endpoints.
 keywords:
 - OpenBB Platform
@@ -24,11 +24,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This page will walk through creating a new OpenBB Provider Extension from scratch. By the end, you will have the shell structure for holding models that connect to the Router through the Provider Interface.
 
-## 1. Create Project Folder
+## Preparation
+
+### Create Project Folder
 
 Create a folder for the project. For this example, we will name the folder, `empty_router`.
 
-### 1A. Create `pyproject.toml` File
+### Create `pyproject.toml` File
 
 - Open the folder and create a new file called, `pyproject.toml`.
 
@@ -53,7 +55,7 @@ build-backend = "poetry.core.masonry.api"
 empty = "openbb_empty_router.empty_router:router"
 ```
 
-### 1B. Create `README.md` File
+### Create `README.md` File
 
 - In the same location, create a new file called, `README.md`.
 - Open the file, then add a title and any other high-level information about the extension.
@@ -64,11 +66,11 @@ empty = "openbb_empty_router.empty_router:router"
 An example Router extension for the OpenBB Platform.
 ```
 
-### 1C. Create Sub-Folder For Code
+### Create Sub-Folder For Code
 
 - Create a sub-folder that begins with `openbb` and is followed by the name of the project folder, `openbb_empty_router`.
 
-### 1D. Create `__init__.py` File
+### Create `__init__.py` File
 
 - In the new sub-folder, create a new file called, `__init__.py`.
 - Add a docstring on the first line, followed by an empty line.
@@ -78,7 +80,7 @@ An example Router extension for the OpenBB Platform.
 
 ```
 
-### 1E. Create Router File
+### Create Router File
 
 - In the same location as the file just saved, create a new file called, `empty_router.py`.
 
@@ -132,7 +134,7 @@ async def empty_function(
     return await OBBject.from_query(Query(**locals()))
 ```
 
-## 2. Build Lock File
+## Build Lock File
 
 - The Python environment should have `toml` and `poetry` installed as packages from PyPI.
 
@@ -146,7 +148,7 @@ pip install toml poetry
 poetry lock
 ```
 
-## 3. Install Extension In Editable Mode
+## Install Extension In Editable Mode
 
 ```console
 pip install -e .
@@ -169,25 +171,10 @@ openbb-currency         1.1.5
 openbb-derivatives      1.1.5
 openbb-economy          1.1.5
 openbb-empty-router     0.0.1        /Users/username/path_to_created_folder/empty_router
-openbb-equity           1.1.5
-openbb-etf              1.1.5
-openbb-federal-reserve  1.1.5
-openbb-fixedincome      1.1.5
-openbb-fmp              1.1.5
-openbb-fred             1.1.5
-openbb-index            1.1.5
-openbb-intrinio         1.1.5
-openbb-news             1.1.5
-openbb-oecd             1.1.5
-openbb-polygon          1.1.5
-openbb-regulators       1.1.5
-openbb-sec              1.1.5
-openbb-tiingo           1.1.5
-openbb-tradingeconomics 1.1.5
-openbb-yfinance         1.1.5
+...
 ```
 
-## 4. Build Static Assets
+## Build Static Assets
 
 ```console
 python -c "import openbb; openbb.build()"
@@ -203,7 +190,7 @@ obb.reference["info"]["extensions"]["openbb_core_extension"]
 
 The list should include the newly created and installed extension, `empty@0.0.1`.
 
-## 5. Smoke Test
+## Smoke Test
 
 Run the placeholder commands.
 

@@ -16,7 +16,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="What's the Difference Between OpenBB Platform and SDK? - FAQs | OpenBB Platform Docs" />
 
-If you're already an OpenBB user, you may be familiar with some of the legacy pain points. As [this](https://openbb.co/blog/celebrating-the-openbb-platform-v4-beta) blog post highlights, there were many challenges with maintaining the existing codebase. We needed to refresh the architecture to make it modular, resilient, and scalable. The core components have been trimmed substantially to be lean and efficient - the number of dependencies has reduced from nearly four-hundred down to about twenty. The result is a much smoother installation procedure, with the tradeoff being some breaking changes for those transitioning from V3 SDK to the V4 Platform. The major differences are described below.
+If you're already an OpenBB user, you may be familiar with some of the legacy pain points. As [this](https://openbb.co/blog/celebrating-the-openbb-platform-v4-beta) blog post highlights, there were many challenges with maintaining the existing codebase.
+
+We needed to refresh the architecture to make it modular, resilient, and scalable. The core components have been trimmed substantially to be lean and efficient - the number of dependencies has reduced from nearly four-hundred down to about twenty.
+
+The result is a much smoother installation procedure, with the tradeoff being some breaking changes for those transitioning from V3 SDK to the V4 Platform. The major differences are described below.
 
 ### Terminal Application
 
@@ -52,7 +56,9 @@ uvicorn openbb_core.api.rest_api:app
 
 ### Verbose Namespaces
 
-After careful consideration, the decision was made to name functions with more verbosity. This adds clarity to the functions and lets the user better understand its purpose. It also improves the performance of AI tooling built on top of the Platform.
+After careful consideration, the decision was made to name functions with more verbosity. This adds clarity to the functions and lets the user better understand its purpose.
+
+It also improves the performance of AI tooling built on top of the Platform.
 
 ```python
 obb.equity.fundamental.employee_count("AAPL")
@@ -97,7 +103,9 @@ obb.account.login()
 
 ### Function Outputs
 
-The default output format can be selected by the user, and all outputs are Pydantic models. If you are transitioning from V3 SDK and like working with Pandas DataFrames, set the preference to "dataframe" to get a V3-like response.
+The default output format can be selected by the user, and all outputs are Pydantic models.
+
+If you are transitioning from V3 SDK and like working with Pandas DataFrames, set the preference to "dataframe" to get a V3-like response.
 
 ```python
 from openbb import obb
@@ -127,7 +135,9 @@ pip install jupyter-lab
 
 ### Views
 
-Most of the development has been on the core architecture and data providers. Most views from the V3 SDK and Terminal have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
+Most of the development has been on the core architecture and data providers.
+
+Most views from the V3 SDK and Terminal have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
 
 Install the charting extension with:
 
@@ -141,4 +151,4 @@ More views to come soon!
 
 ### Getting Started
 
-See the [usage](/platform/usage) page for examples on getting started using the OpenBB Platform.
+See the [getting started](/platform/getting_started) page for examples on getting started using the OpenBB Platform.

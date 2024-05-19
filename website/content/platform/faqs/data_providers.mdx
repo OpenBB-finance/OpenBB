@@ -21,14 +21,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Equity market coverage will vary by provider and subscription status with them. It is common for free tiers to be US-listings only.
 
-You can find all data models [here](/platform/data_models), or the [Reference](/platform/reference) page of endpoints. If the type of data you are looking for is not listed there, send us a [feature request](https://openbb.co/request-a-feature) telling us about your use case.
+You can find all data models [here](/platform/data_models), or the [Reference](/platform/reference) page of endpoints.
+
+If the type of data you are looking for is not listed there, send us a [feature request](https://openbb.co/request-a-feature) telling us about your use case.
 
 </details>
 
 <details>
 <summary mdxType="summary">The router appears to be missing functions.</summary>
 
-The router populates itself from the installed extensions. For example, if the Technical Analysis extension is not installed, the `obb.technical` router path will not be present.
+The router populates itself from the installed extensions.
+
+For example, if the Technical Analysis extension is not installed, the `obb.technical` router path will not be present.
 
 The same applies to data extensions. If a provider module is not installed, it will not be displayed as a choice.
 
@@ -68,7 +72,11 @@ pip install openbb-nightly
 
 The provider may not have data from the requested period, in which case the data will be what they return. For example, `provider='yfinance'` at one-minute intervals will not return beyond one week ago.
 
-Another reason could be the data entitlements of your API key. Check the provider's website to know what data coverage to expect. If there is technical problem with a provider or function, please check [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) and raise an issue if one does not already exist. Or, send us an [email](mailto:support@openbb.co) with the details, your system configuration, the syntax used, and any error messages that are raised.
+Another reason could be the data entitlements of your API key. Check the provider's website to know what data coverage to expect.
+
+If there is technical problem with a provider or function, please check [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) and raise an issue if one does not already exist.
+
+Or, send us an [email](mailto:support@openbb.co) with the details, your system configuration, the syntax used, and any error messages that are raised.
 
 </details>
 

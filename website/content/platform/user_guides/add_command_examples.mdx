@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
 
-> When a given provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
+> When a provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
 
 ## Requirements
 
@@ -41,7 +41,9 @@ All router endpoints must have examples.
 
 ## Example Models
 
-There are two models for defining examples, `APIEx` and `PythonEx`. `APIEx` is more structured aiming to be language agnostic - provide less freedom - while `PythonEx` gives more freedom to create complex examples.
+There are two models for defining examples, `APIEx` and `PythonEx`. `
+
+`APIEx` is more structured aiming to be language agnostic - provides less freedom - while `PythonEx` gives more freedom to create complex examples.
 
 ```python
 from openbb_core.app.model.example import APIEx, PythonEx

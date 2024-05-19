@@ -14,7 +14,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
-We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality. To ensure this, we have a set of QA tools that you can use to test your work.
+We are strong believers in the Quality Assurance (QA) process and we want to make sure that all the extensions that are added to the OpenBB Platform are of high quality.
+
+To ensure this, we have a set of QA tools that you can use to test your work.
 
 Primarily, we have tools that semi-automate the creation of unit and integration tests.
 
@@ -22,6 +24,7 @@ Primarily, we have tools that semi-automate the creation of unit and integration
 
 ## Unit tests
 
+<details>
 Each `Fetcher` comes equipped with a `test` method that will ensure it is implemented correctly, that it is returning the expected data, that all types are correct, and that the data is valid.
 
 To create unit tests for your Fetchers, you can run the following command:
@@ -43,9 +46,11 @@ pytest <path_to_the_unit_test_file> --record=all
 :::note
 Sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 :::
+</details>
 
 ## Integration tests
 
+<details>
 The integration tests are a bit more complex than the unit tests, as we want to test both the Python interface and the API interface. For this, we have two scripts that will help you generate the integration tests.
 
 To generate the integration tests for the Python interface, you can run the following command:
@@ -88,7 +93,11 @@ pytest openbb_platform -m integration
 pytest openbb_platform
 ```
 
+</details>
+
 ## Import time
+
+<details>
 
 We aim to have a short import time for the package. To measure that we use `tuna`.
 
@@ -103,7 +112,11 @@ python -X importtime openbb/__init__.py 2> import.log
 tuna import.log
 ```
 
+</details>
+
 ## Known caveats
+
+<details>
 
 When using the OpenBB QA Framework it is important to be aware of the following caveats:
 
@@ -126,11 +139,13 @@ When using the OpenBB QA Framework it is important to be aware of the following 
   on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
   you can delete the cache file from your local machine and re-record the tests.
 
-      > Note that the cache is likely located here:
-      > Windows: `C:\Users\user\AppData\Local\`
-      > Linux: `/home/user/.cache/`
-      > Mac: `/Users/user/Library/Caches`
+    > Note that the cache is likely located here:
+    > Windows: `C:\Users\user\AppData\Local\`
+    > Linux: `/home/user/.cache/`
+    > Mac: `/Users/user/Library/Caches`
 
 - Some providers (we are aware only of YFinance so far) do an additional request when used from the US region. As our CI
   is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the
   tests from a different region.
+
+</details>

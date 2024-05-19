@@ -1,6 +1,6 @@
 ---
 title: REST API
-sidebar_position: 1
+sidebar_position: 6
 description: Learn how to configure and deploy the OpenBB Platform's REST API using FastAPI, including detailed guidelines on API documentation, authorization, CORS settings, and server configurations.
 keywords:
 - tutorial
@@ -47,15 +47,30 @@ To learn more about how you can run the API in different scenarios refer to [uvi
 
 ## API Documentation
 
+<details>
+
+
 The Fast API app comes with a swagger documentation page. When running the API locally, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 The API Docs provide interactive descriptions of all available endpoints that you can call right from the documentation web page.
 
+</details>
+
 ## Data API Keys
 
-The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file. You can find more information about the structure of the file and environment variables in the [Local Environment](api_keys#local-environment) section.
+
+<details>
+
+
+The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file.
+
+You can find more information about the structure of the file and environment variables in the [Local Environment](api_keys#local-environment) section.
+
+</details>
 
 ## API Authorization
+
+<details>
 
 By default, no authorization is required. Basic authorization can be enabled with environment variables. In the `~/.openbb_platform` folder, next to the `user_settings.json`, create a new file, `.env`, if it does not yet exist. Set your Basic Auth credentials.
 
@@ -88,7 +103,12 @@ response = requests.get(url=url, headers=headers)
 response.json()
 ```
 
+</details>
+
+
 ## Advanced API Settings
+
+<details>
 
 When deploying the API to the public internet, it's crucial to configure it in a way you ensure the application functions correctly and securely. Two critical aspects to consider are Cross-Origin Resource Sharing (CORS) and the configuration of the "servers" list.
 
@@ -139,3 +159,6 @@ In the example above, the settings are permissive ("\*" for origins, methods, an
 The servers array is used to specify the different environments where your API can be accessed.
 
 In the example, there is only one server defined, which is the local development server. For deployment to public internet, you would add an entry for the public server URL and any other environments where your API is accessible.
+
+
+</details>

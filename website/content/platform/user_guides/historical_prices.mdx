@@ -1,6 +1,6 @@
 ---
 title: Loading Historical Price Data
-sidebar_position: 7
+sidebar_position: 2
 description: This page provides an introduction to historical prices, including how to access and use them in the OpenBB Platform.
 keywords:
 - stocks
@@ -17,7 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Historical Prices - Usage | OpenBB Platform Docs" />
 
-Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume. There may be additional fields returned by a provider, but those are the expected columns. Granularity and amount of historical data will vary by provider and subscription status. Visit their websites to understand what your entitlements are.
+Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume. There may be additional fields returned by a provider, but those are the expected columns.
+
+Granularity and amount of historical data will vary by provider and subscription status. Visit their websites to understand what your entitlements are.
 
 :::info
 These examples will assume that the OpenBB Platform is initialized in a Python session.
@@ -30,6 +32,9 @@ import pandas as pd
 :::
 
 ## Historical OHLC
+
+
+<details>
 
 The `historical` function is located under a submodule for each asset type. In the `openbb-equity` module.
 
@@ -74,7 +79,10 @@ df_daily.head(1)
 |:--------------|-------:|-------:|------:|--------:|-----------:|------------:|---------------:|----------------:|
 | 1993-01-29  |  43.97 |  43.97 | 43.75 |   43.94 | 1003200 |           0 |              0 |               0 |
 
-### Intervals
+
+<details>
+<summary mdxType="summary">Intervals</summary>
+
 
 The intervals are entered according to this pattern:
 
@@ -99,7 +107,12 @@ df_monthly.tail(2)
 | 2023-10-01  | 426.62 | 438.14 | 409.21 |  418.2  | 1999149700 |           0 |              0 |               0 |
 | 2023-11-01  | 419.2  | 456.38 | 418.65 |  455.02 | 1161239576 |           0 |              0 |               0 |
 
-### Resample a Time Series
+
+</details>
+
+
+<details>
+<summary mdxType="summary">Resample a Time Series</summary>
 
 `yfinance` returns the monthly data for the first day of each month. Let's resample it to take from the last, using the daily information captured in the previous cells.
 
@@ -132,7 +145,13 @@ df_daily.loc["2023-11-01":].sum()["volume"]
 1210484176
 ```
 
-### Differences Between Sources
+</details>
+
+
+
+<details>
+<summary mdxType="summary">Differences Between Sources</summary>
+
 
 To demonstrate the difference between sources, let's compare values for daily volume from several sources.
 
@@ -167,11 +186,20 @@ compare
 | 2023-11-21  | 49244639 |     49244639 |       49244639 |       49244600 |
 | 2023-11-22  | 59446573 |     59313820 |       58205780 |       59394900 |
 
+</details>
+
+</details>
+
 ## Other Types of Symbols
+
+
+<details>
 
 Other types of assets and ticker symbols can be loaded from `obb.equity.price.historical()`, below are some examples but not an exhaustive list.
 
-### Share Classes
+<details>
+<summary mdxType="summary">Share Classes</summary>
+
 
 Some sources use `-` as the distinction between a share class, e.g., `BRK-A` and `BRK-B`. Other formats include:
 
@@ -187,15 +215,33 @@ obb.equity.price.historical("brk.b", provider="polygon")
 obb.equity.price.historical("brk-b", provider="fmp")
 ```
 
-While some providers handle the different formats on their end, others do not. This is something to consider when no results are returned from one source. Some may even use a combination, or accept multiple variations. Sometimes there is no real logic behind the additional characters, `GOOGL` vs. `GOOG`. These are known unknown variables of ticker symbology, what's good for one source may return errors from another.
+While some providers handle the different formats on their end, others do not.
 
-### Regional Identifiers
+This is something to consider when no results are returned from one source.
 
-With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`). Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions. [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
+Some may even use a combination, or accept multiple variations. Sometimes there is no real logic behind the additional characters, `GOOGL` vs. `GOOG`.
+
+These are known unknown variables of ticker symbology, what's good for one source may return errors from another.
+
+</details>
+
+
+<details>
+<summary mdxType="summary">Regional Identifiers</summary>
+
+
+With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`).
+
+Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions.
+
+[This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
 
 `openbb-tmx` follows the composite convention, "SPY:US". When the symbol is for its domestic Canadian market, "CNQ", no identifier is required.
 
-### Indices
+</details>
+
+<details>
+<summary mdxType="summary">Indices</summary>
 
 Sources will have their own treatment of these symbols, some examples are:
 
@@ -222,7 +268,10 @@ obb.equity.price.historical("^RUT", provider="fmp").to_df().tail(1)
 **For an endpoint geared more specifically towards indices, try `obb.index.price.historical()`**
 :::
 
-### Currencies
+</details>
+
+<details>
+<summary mdxType="summary">Currencies</summary>
 
 FX symbols face the same dilemma as share classes, there are several variations of the same symbol.
 
@@ -250,7 +299,12 @@ obb.equity.price.historical("C:EURUSD", provider="polygon").to_df().tail(1)
 |:--------------|--------:|-------:|-------:|--------:|---------:|-------:|---------------:|
 | 2023-11-21  | 1.09168 | 1.0923 | 1.0851 |  1.0888 |   155827 | 1.0893 |         155827 |
 
-### Crypto
+</details>
+
+
+<details>
+<summary mdxType="summary">Crypto</summary>
+
 
 Similar, but different to FX tickers.
 
@@ -280,7 +334,11 @@ obb.crypto.price.historical("BTCUSD", provider="polygon").to_df().tail(1)
 |:--------------|-------:|-------:|------:|--------:|---------:|--------:|---------------:|
 | 2023-11-21  |  35756 |  37900 | 35633 | 37433.8 |  30411.4 | 36841.5 |         464907 |
 
-### Futures
+</details>
+
+<details>
+<summary mdxType="summary">Futures</summary>
+
 
 Historical prices for the continuation chart, can be fetched by the `fmp` or `yfinance` data extensions.  Individual active contracts are returned by `yfinance`.
 
@@ -306,7 +364,10 @@ obb.equity.price.historical("CLZ24.NYM", provider="yfinance").to_df().tail(1)
 |:--------------|-------:|-------:|------:|--------:|---------:|------------:|---------------:|
 | 2023-11-22  |  74.07 |  74.07 | 73.41 |   73.46 |      610 |           0 |              0 |
 
-### Options
+</details>
+
+<details>
+<summary mdxType="summary">Options</summary>
 
 Individual options contracts are also loadable from `openbb.equity.price.historical()`.
 
@@ -328,3 +389,7 @@ obb.equity.price.historical("O:SPY241220P00400000", provider="polygon").to_df().
 | date          |   open |   high |   low |   close |   volume |    vwap |   transactions |
 |:--------------|-------:|-------:|------:|--------:|---------:|--------:|---------------:|
 | 2023-11-20  |   10.9 |  10.95 | 10.75 |   10.75 |       17 | 10.8376 |             10 |
+
+</details>
+
+</details>

@@ -1,6 +1,6 @@
 ---
 title: Introduction to Financial Statements
-sidebar_position: 9
+sidebar_position: 3
 description: This page provides an introduction to financial statement data available in the OpenBB Platform. This includes quarterly and annual reports, along with metrics and ratios by company. This guide provides examples for using the variety of sources.
 keywords:
 - stocks
@@ -27,7 +27,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Financial Statements - Usage | OpenBB Platform Docs" />
 
-OpenBB Platform data extensions provide access to financial statements as quarterly or annual. There are also endpoints for ratios and other common non-GAAP metrics. Most data providers require a subscription to access all data, refer to the website of a specific provider for details on entitlements and coverage.
+OpenBB Platform data extensions provide access to financial statements as quarterly or annual.
+
+There are also endpoints for ratios and other common non-GAAP metrics.
+
+Most data providers require a subscription to access all data, refer to the website of a specific provider for details on entitlements and coverage.
 
 Financial statement functions are grouped under the `obb.equity.fundamental` module.
 
@@ -54,7 +58,8 @@ The main parameters are:
 - `period`: 'annual' or 'quarter'. Default is 'annual'.
 - `limit`: Limit the number of results returned, from the latest. Default is 5. For perspective, 150 will go back to 1985. The amount of historical records varies by provider.
 
-### Field Names
+<details>
+<summary mdxType="summary">Field Names</summary>
 
 :::info
 
@@ -102,9 +107,16 @@ df
 |  2 | 53811000000 | 53811000000 | 53811000000 | 53811000000 |
 |  3 | 53335000000 | 53335000000 | 53335000000 | 53335000000 |
 
-### Weighted Average Shares Outstanding
+</details>
 
-This key metric will be found under the income statement. It might also be called, 'basic', and the numbers do not include authorized but unissued shares. A declining count over time is a sign that the company is returning capital to shareholders in the form of buy backs. Under ideal circumstances, it is more capital-efficient, for both company and shareholders, because distributions are double-taxed. The company pays income tax on dividends paid, and the beneficiary pays income tax again on receipt.
+<details>
+<summary mdxType="summary">Weighted Average Shares Outstanding</summary>
+
+This key metric will be found under the income statement. It might also be called, 'basic', and the numbers do not include authorized but unissued shares.
+
+A declining count over time is a sign that the company is returning capital to shareholders in the form of buy backs. Under ideal circumstances, it is more capital-efficient, for both company and shareholders, because distributions are double-taxed.
+
+The company pays income tax on dividends paid, and the beneficiary pays income tax again on receipt.
 
 A company will disclose how many shares are outstanding at the end of the period  as a weighted average over the reporting period - three months.
 
@@ -173,8 +185,10 @@ round((price["close"].mean()*1300000)/1000000, 2)
 ```console
 187.55
 ```
+</details>
 
-### Dividends Paid
+<details>
+<summary mdxType="summary">Dividends Paid</summary>
 
 Dividends paid is in the cash flow statement. We can calculate the amount-per-share with the reported data.
 
@@ -221,10 +235,14 @@ data.set_index("ex_dividend_date").loc["2023-08-15": "2022-11-15"]
 | 2023-08-15  |       1.1  |
 
 The numbers check out, and the $2B paid to investors over four quarters is more than ten times the $190M returned through share buy backs.
+</details>
 
-### Financial Attributes
+<details>
+<summary mdxType="summary">Financial Attributes</summary>
 
-The `openbb-intrinio` data extension has an endpoint for extracting a single fact from financial statements. There is a helper function for looking up the correct `tag`.
+The `openbb-intrinio` data extension has an endpoint for extracting a single fact from financial statements.
+
+There is a helper function for looking up the correct `tag`.
 
 #### Search Financial Attributes
 
@@ -269,14 +287,19 @@ marketcap.index = marketcap.index.astype(str)
 ```console
 -0.24
 ```
+</details>
 
 ## Ratios and Other Metrics
 
-Other valuation functions are derivatives of the financial statements, but the data provider does the math. Values are typically ratios between line items, on a per-share basis, or as a percent growth.
+<details>
+Other valuation functions are derivatives of the financial statements, but the data provider does the math.
+
+Values are typically ratios between line items, on a per-share basis, or as a percent growth.
 
 This data set is where you can find EPS, FCF, P/B, EBIT, quick ratio, etc.
 
-### Quick Ratio
+<details>
+<summary mdxType="summary">Quick Ratio</summary>
 
 Target's quick ratio could be one reason why its share price is losing traction against the market. Its ability to pay current obligations is not optimistically reflected in a 0.27 score, approximately 50% below the historical median.
 
@@ -294,8 +317,10 @@ display(f"Median Quick Ratio: {ratios['quick_ratio'].median()}")
 Current Quick Ratio: 0.27
 Median Quick Ratio: 0.58
 ```
+</details>
 
-### Free Cash Flow Yield
+<details>
+<summary mdxType="summary">Free Cash Flow Yield</summary>
 
 The `metrics` endpoint, with the `openbb-fmp` data extension, has a field for free cash flow yield. It is calculated by taking the free cash flow per share divided by the current share price. We could arrive at this answer by writing some code, but these types of endpoints do the work so we don't have to. This is part of the value-add that API data distributors provide, they allow you to get straight to work with data.
 
@@ -336,3 +361,6 @@ fcf_yield.transpose()
 | The TJX Companies, Inc.            |   0.0271588 |  0.0234975  | 0.0517687 | 0.0401668 | 0.0488266 |  0.0399352 | 0.0536965 | 0.0433279  | 0.0464416 |   0.0406432 |
 
 Explore the rest of the `fundamental` module under the [Reference](/platform/reference/equity/fundamental) section.
+</details>
+
+</details>

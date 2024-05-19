@@ -1,6 +1,6 @@
 ---
 title: Quick Start - Mapping The Provider Interface
-sidebar_position: 24
+sidebar_position: 7
 description: This page demonstrates how to get started mapping Provider extension models to the Provider Interface and Router. It continues with the example provided [here](quickstart_new_provider_extension). By the end, you will have mapped a new Provider extension to World News standard model.
 keywords:
 - OpenBB Platform
@@ -33,7 +33,9 @@ All Provider models are made of three elements:
 - Data
 - Fetcher
 
-## 1. Create Model File
+## Start Mapping
+
+###  Create Model File
 
 - In the `/models` folder of the extension - `/Users/username/path_to_created_folder/empty_provider/openbb_empty_provider/models` - create a new file called, "world_news.py".
 - Start the file with a docstring, then a new line.
@@ -43,7 +45,7 @@ All Provider models are made of three elements:
 
 ```
 
-### 1A. Import Statements
+### Import Statements
 
 The import schema will follow a pattern similar to this, depending on the specific requirements of the function.
 
@@ -56,7 +58,7 @@ from openbb_core.provider.standard_models.world_news import WorldNewsQueryParams
 from pydantic import Field
 ```
 
-### 1B. Build QueryParams Model
+### Build QueryParams Model
 
 - Create a class that inherits from the standard model.
 
@@ -72,7 +74,7 @@ class EmptyWorldNewsQueryParams(WorldNewsQueryParams):
 
 Field and model validators are added here, if required.
 
-### 1C. Build Data Model
+### Build Data Model
 
 - Create a class that inherits from the standard model.
 
@@ -88,7 +90,7 @@ class EmptyWorldNewsData(WorldNewsData):
 
 Field and model validators are added here, if required.
 
-### 1D. Build Fetcher
+### Build Fetcher
 
 The Fetcher consists of three stages:
 

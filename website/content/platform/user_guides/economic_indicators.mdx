@@ -1,6 +1,6 @@
 ---
 title: Economic Indicators
-sidebar_position: 8
+sidebar_position: 5
 description: This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint,
   with the `openbb-econdb` provider extension. The command provides access to over 100 standardized indicator
   symbols, covering countries around the world.
@@ -122,7 +122,9 @@ data.extra["results_metadata"]
    'DATA_TYPE_FM:Financial market data type': 'LEV:Level'}}}
 ```
 
-### Basic Descriptions
+<details>
+<summary mdxType="summary">Basic Descriptions</summary>
+
 
 Basic descriptions of the base symbols can be imported from within the extension module helpers.
 
@@ -310,7 +312,12 @@ This list should not be considered as the absolute source of truth. The metadata
 | WAGEMAN   | Hourly wage manufacturing                          |
 | Y10YD     | Long term yield                                    |
 
+</details>
+
 ## Countries
+
+
+<details>
 
 The `country` parameter will accept the ISO country code, or the country name. Regional groups listed below are also valid:
 
@@ -357,8 +364,12 @@ from openbb_econdb.utils.helpers import get_indicator_countries
 
 get_indicator_countries("GDPPC")  # returns a list of two-letter ISO country codes
 ```
+</details>
+
 
 ## How To Enter Symbols
+
+<details>
 
 The three parameters - symbol, country, transform - all work together.
 
@@ -380,7 +391,8 @@ The `transform` will apply to all combinations of `symbol` and `country`.
 If you attempt to pass a base symbol (excluding commodity and world indicators) with no country, it will raise an error.
 :::
 
-### Example - One Indicator & Country
+<details>
+<summary mdxType="summary">Example - Onde Indicator & Country</summary>
 
 M3 Money Supply
 
@@ -423,8 +435,10 @@ data.extra.get("results_metadata")
    'SERIES_NAME:Series name (FRB)': 'M2_N.M:M2_N.M',
    'UNIT:Units': 'CURRENCY:Currency'}}}
 ```
+</details>
 
-### Example - One Indicator & Country With Transform
+<details>
+<summary mdxType="summary">Example - One Indicator & Country With Transform</summary>
 
 US PPI - Change from one year ago.
 
@@ -468,8 +482,10 @@ data.extra.get("results_metadata")
    'FREQ:Frequency': 'M:Monthly',
    'UNIT_MULT:Unit multiplier': '0:Units'}}}
 ```
+</details>
 
-### Example - Commodity Indicator
+<details>
+<summary mdxType="summary">Example - Commodity Indicator</summary>
 
 Values are always in USD.
 
@@ -504,8 +520,10 @@ lead.extra["results_metadata"]
    'UNIT_MEASURE:Unit of Measure': 'USD:US Dollars',
    'UNIT_MULT:Scale': '0:Units'}}}
 ```
+</details>
 
-### Example - Multiple Indicators & Countries With Transform
+<details>
+<summary mdxType="summary">Example - Multiple Indicators & Countries With Transform</summary>
 
 ```python
 params = {"symbol": "core,cpi", "country": "us,de,jp", "transform": "toya"}
@@ -532,9 +550,10 @@ df
 | 2024-03-01 | CORE          | COREUS~TOYA | United States | 0.03797  |
 | 2024-03-01 | CPI           | CPIDE~TOYA  | Germany       | 0.021533 |
 | 2024-03-01 | CPI           | CPIUS~TOYA  | United States | 0.03475  |
+</details>
 
-
-### Example - All Countries
+<details>
+<summary mdxType="summary">Example - All Countries</summary>
 
 Setting the country to "all" will retrieve data for all available countries.
 
@@ -590,12 +609,18 @@ data.extra.get("results_metadata")["NYSE~TUSD"]
   'CURRENCY:Currency': 'MIO_NAC:Million units of national currency',
   'BOP_ITEM:BOP_item': 'IN1:Primary income'}}
 ```
+</details>
+
+</details>
 
 ## Advanced Symbols
 
+<details>
+
 The grouping behaviour can be overridden. This will allow multiple transformations, or for a specific symbol to ignore the supplied `country` and `transform` parameters.
 
-### Example - Bypass Group Parameters
+<details>
+<summary mdxType="summary">Example - Bypass Group Parameters</summary>
 
 The "~" character is used to separate the base symbol + 2-letter ISO country code, and the transformation.
 It works as a flag to exclude from the other parameters.
@@ -633,8 +658,10 @@ obb.economy.indicators(symbol=["CPIUS~","CPI"], country="fr", transform="toya").
 | 2024-03-01 | CPI           | CPIFR~TOYA | France        |   0.022947 |
 | 2024-03-01 | CPI           | CPIUS      | United States | 312.2      |
 
+</details>
 
-### Example - Non-Standard Symbols
+<details>
+<summary mdxType="summary">Example - Non-Standard Symbols</summary>
 
 The `symbol` parameter can also be used to access non-standard series. These are specific to reporting entities, like the Ministry of Finance, Japan.
 These symbols are not searchable, but the structure will be familiar if you have worked with the particular source before.
@@ -705,3 +732,5 @@ data.extra["results_metadata"].get("MFJP_IR.5Y.D.JP")
  'additional_info': {'3:Indicator': '8:Japanese Government Bonds - 5Y yield',
   'GEO:None': '107:None'}}
 ```
+</details>
+</details>

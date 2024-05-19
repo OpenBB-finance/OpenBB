@@ -1,6 +1,6 @@
 ---
 title: OBBject
-sidebar_position: 3
+sidebar_position: 4
 description: This page provides information about the OBBject class in the OpenBB Platform.  This class provides the interface to interact with commands
 keywords:
 - OBBject
@@ -20,7 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OBBject - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform. Every command will return this class as the command output. This class contains the following attributes:
+The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform. Every command will return this class as the command output.
+
+This class contains the following attributes:
 
 - results
   - This contains serializable data that was obtained by running the command.
@@ -89,9 +91,12 @@ In general, this will not be how you want to ingest or modify your data, so to h
 
 We understand that there is no one size fits all solution for data ingestion and manipulation, so we have provided a few methods to help with this and handle the conversion from Obbject to your preferred data type. These methods are accessed by running `obbject.<method>`.
 
-### to_dataframe()
+<details>
+<summary mdxType="summary">to_dataframe()</summary>
 
-One of the most popular libraries for python data manipulation, this method will return a pandas dataframe with the results. We have designed this function to work with various data structures we have encountered. Given the time series nature of the data, we set the index to be `date` if that column appears in the models.
+One of the most popular libraries for python data manipulation, this method will return a pandas dataframe with the results.
+
+We have designed this function to work with various data structures we have encountered. Given the time series nature of the data, we set the index to be `date` if that column appears in the models.
 
 This also has the shorter alias `to_df()`.
 
@@ -103,7 +108,10 @@ type(obb.equity.price.historical("AAPL", provider="fmp").to_dataframe())
 <class 'pandas.core.frame.DataFrame'>
 ```
 
-### to_dict(orient)
+</details>
+
+<details>
+<summary mdxType="summary">to_dict()</summary>
 
 A very common data structure is to return the data in a dictionary. This model provides an interface to do so, with options to return the dictionary in different orientations, just as in the pandas `to_dict()` method. The default method will return a dictionary that allows you to index to obtain data:
 
@@ -137,24 +145,44 @@ obb.equity.price.historical("AAPL", provider="fmp").to_dict("records")[0]
  'change_over_time': 0.0002600949}
 ```
 
-### Others
+</details>
 
-In addition to these two highly used methods, we have also provided the following methods:
-
-#### to_numpy()
+<details>
+<summary mdxType="summary">to_numpy()</summary>
 
 Returns numpy arrays of the results. Note that this loses the column names, so you will need to index the array to obtain the data.
 
-#### to_polars()
+```python
+to_numpy = obb.equity.price.historical("AAPL", provider="fmp").to_numpy()[:1]
+```
 
-Growing in popularity, polars is a blazingly fast dataframe library. This method will return a polars dataframe. Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
+```console
+[
+  [datetime.date(2023, 5, 19), 176.39, 176.39, 174.94, 175.16,
+  55809475, 175.72, 174.23, 55809475.0, -1.23, -0.0069732]
+],
+...
+```
 
-#### show()
+</details>
+
+<details>
+<summary mdxType="summary">to_polars()</summary>
+
+Growing in popularity, polars is a blazingly fast dataframe library. This method will return a polars dataframe.
+
+Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
+</details>
+
+<details>
+<summary mdxType="summary">show()</summary>
 
 When a charting extension is installed, this method will display the chart if it was computed during the execution of the command, by setting the `chart` parameter to `True`.
+
+</details>
 
 ## OBBject Extensions
 
 OBBject extensions registers an accessor in each OBBject that is returned when a command is executed.
 
-This [page](how-to/add_obbject_extension) details the process for extending the OBBject class.
+This [page](platform/user_guide/add_obbject_extension) details the process for extending the OBBject class.

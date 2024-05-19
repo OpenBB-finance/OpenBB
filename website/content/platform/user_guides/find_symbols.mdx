@@ -1,6 +1,6 @@
 ---
 title: Finding Ticker Symbols
-sidebar_position: 6
+sidebar_position: 1
 description: This page provides comprehensive information about finding stocks in the with the OpenBB Platform. Search companies from different sources, and filter results. This guide is intended to introduce some methods for searching, screening, and discovery.
 keywords:
 - stocks
@@ -39,6 +39,8 @@ The simplest way to find tickers is with a basic text query.
 
 ## Search Nasdaq
 
+<details>
+
 ```python
 obb.equity.search("JPMorgan", provider="nasdaq").to_df().head(3)
 ```
@@ -49,7 +51,11 @@ obb.equity.search("JPMorgan", provider="nasdaq").to_df().head(3)
 |  1 | BBAG     | JPMorgan BetaBuilders U.S. Aggregate Bond ETF                    | Y               | P          |                   | Y     |              100 | N            |                    | BBAG         | BBAG            | N             |
 |  2 | BBAX     | JPMorgan BetaBuilders Developed Asia Pacific-ex Japan ETF        | Y               | Z          |                   | Y     |              100 | N            |                    | BBAX         | BBAX            | N             |
 
+</details>
+
 ## Search Cboe
+
+<details>
 
 ```python
 obb.index.search("SPX", provider="cboe").to_df().tail(5)
@@ -63,7 +69,12 @@ obb.index.search("SPX", provider="cboe").to_df().tail(5)
 | 35 | WPUT     | Cboe S&P 500 One-Week PutWrite Index  | Tracks the value of a portfolio that overlays a short weekly SPX put  on one-month Treasury bills                                                        |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
 | 36 | XSPAM    | Mini SPX Index (AM Settlement)        | Mini SPX Index (AM Settlement)                                                                                                                           |           15 | USD        | America/Chicago | 08:00:00    | 16:00:00     | MonToFri    | C                | Regular       |
 
+</details>
+
 ## Search ETFs
+
+
+<details>
 
 ```python
 obb.etf.search("gold", provider="tmx").to_df().iloc[-5:]
@@ -106,7 +117,13 @@ obb.etf.search("gold", provider="tmx").to_df().iloc[-5:]
 | dividend_frequency    | Annually                   | Annually                   | Semi-Annually                         | Annually                               | Annually                  |
 | beta_20y              | nan                        | nan                        | 0.560996                              | nan                                    | nan                       |
 
+
+</details>
+
 ## Search the SEC
+
+
+<details>
 
 Use an empty string, `""`, to return the complete list - over 10,000.
 
@@ -211,7 +228,12 @@ obb.equity.fundamental.filings("AAPL", type="4", provider="sec").to_df().iloc[-1
 | complete_submission_url | https://www.sec.gov/Archives/edgar/data/0000320193/0000320193-23-000109.txt                              |
 | filing_detail_url       | https://www.sec.gov/Archives/edgar/data/0000320193/0000320193-23-000109-index.htm                        |
 
+</details>
+
 ## Screen Markets
+
+
+<details>
 
 Screeners provide a targeted search, a tool for comparison and discovery. Find stocks from around the world with the screener endpoint, and the `openbb-fmp` provider.
 
@@ -323,7 +345,11 @@ obb.equity.screener(
 | MRK      | Merck & Co., Inc.           | 258192673024 | Healthcare             | Drug Manufacturers—General |  0.375 |  101.75 |                   2.92 |  6760568 | NYSE       | New York Stock Exchange | US        | False    | True               |
 | VZ       | Verizon Communications Inc. | 152314546478 | Communication Services | Telecom Services           |  0.391 |   36.23 |                   2.66 | 14960968 | NYSE       | New York Stock Exchange | US        | False    | True               |
 
+</details>
+
 ## Get Available Indices
+
+<details>
 
 List all indices from a source with:
 
@@ -376,3 +402,5 @@ With the `openbb-yfinance` extension, index time series can be loaded using the 
 :::
 
 The examples above show demonstrate the most basic ways to find ticker symbols with the OpenBB Platform. Create your own custom scripts for discovery by combining these with other methods.
+
+</details>

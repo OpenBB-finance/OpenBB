@@ -1,7 +1,7 @@
 ---
 title: REST API Requests
-sidebar_position: 4
-description: How to send POST requests to the OpenBB Platform REST API.
+sidebar_position: 5
+description: How to send requests to the OpenBB Platform REST API.
 keywords:
 - tutorial
 - OpenBB Platform
@@ -13,9 +13,7 @@ keywords:
 ---
 
 
-## REST API POST Requests
-
-Most endpoints are for data retrieval, but some [toolkit extensions](/platform/user_guides/extensions) require data to pass through the function.  In these instances, it must be a POST request, and JSON.
+Most REST API endpoints are for data retrieval and are defined as `GET` requests, but some [toolkit extensions](/platform/user_guides/extensions) require data to pass through the function. In these instances, it must be a `POST` request.
 
 ### Example
 
@@ -27,7 +25,7 @@ First, start a development server.
 uvicorn openbb_core.api.rest_api:app --reload
 ```
 
-This example will use Python and the Requests library, so the syntax will vary according to the preferred medium for interacting with the API.
+This example will use Python and the `requests` library.
 
 #### Fetch Some Data
 
@@ -55,9 +53,9 @@ data_results[-1]
 
 #### Send a POST Request
 
-Next, pass the `data_results` to a function, using the `json` field in the POST headers. For this example, realized volatility cones, the default parameters  assume the time series data is daily and that volatility should be annualized over 252 trading days.
+Next, pass the `data_results` to a function, using the `json` field in the POST headers.
 
-The `index` parameter tells the function which field in the posted data to use as the date index.
+For this example, realized volatility cones, the default parameters assume the time series data is daily and that volatility should be annualized over 252 trading days.
 
 ```python
 import pandas as pd
@@ -66,7 +64,7 @@ post_url = "http://localhost:8000/api/v1/technical/cones"
 post_response = requests.post(post_url, json=data_results)
 ta_results = post_response.json()["results"]
 
-pd.DataFrame.from_records(ta_results)
+pd.DataFrame.from_records(ta_results).head()
 ```
 
 |   window |   realized |        min |   lower_25% |   median |   upper_75% |     max |
@@ -76,10 +74,22 @@ pd.DataFrame.from_records(ta_results)
 |       30 |   0.988435 | 0.332913   |    0.750007 | 0.921482 |     1.17072 | 2.98404 |
 |       60 |   0.932594 | 0.47639    |    0.792548 | 0.964617 |     1.20171 | 2.35563 |
 |       90 |   0.915137 | 0.551011   |    0.815229 | 0.965553 |     1.2128  | 2.04104 |
-|      120 |   0.858644 | 0.549233   |    0.836395 | 0.983437 |     1.21097 | 1.86416 |
-|      150 |   0.898628 | 0.557274   |    0.842359 | 0.991539 |     1.23165 | 1.73182 |
-|      180 |   0.902293 | 0.579575   |    0.84876  | 1.00421  |     1.23584 | 1.68786 |
-|      210 |   0.901717 | 0.580214   |    0.854655 | 0.996992 |     1.2271  | 1.65739 |
-|      240 |   0.884282 | 0.587564   |    0.857935 | 1.00491  |     1.22141 | 1.62973 |
-|      300 |   0.852533 | 0.622105   |    0.862097 | 1.00724  |     1.21705 | 1.51887 |
-|      360 |   0.847416 | 0.661648   |    0.869691 | 1.03923  |     1.20488 | 1.48571 |
+
+The output from the Fast API is a serialized version of this object, and these methods are lost on conversion. OBBject can be reconstructed to recover the helpers by importing the model and validating the data.
+
+```python
+import requests
+from openbb_core.app.model.obbject import OBBject
+
+data = []
+symbol="SPY"
+url = f"http://127.0.0.1:8000/api/v1/equity/price/historical?provider=polygon&symbol={symbol}"
+headers = {"accept": "application/json"}
+
+response = requests.get(url, headers=headers, timeout=3)
+
+if response.status_code == 200:
+  data = OBBject.model_validate(response.json())
+
+data.to_df()
+```

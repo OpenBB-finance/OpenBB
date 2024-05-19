@@ -21,6 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Both QueryParams and Data models can benefit from the tactical use of Pydantic validators.
 This page will outline some of the key scenarios where they are deployed.
+
 Overall, they assist with enforcing Fast API compliance for both inputs and outputs,
 and they work in the final stage of transformation immediately before output.
 
@@ -42,63 +43,77 @@ The items to import from the Pydantic library are:
 from pydantic import field_validator, model_validator
 ```
 
-### Parsing Dates
+<details>
+<summary mdxType="summary">Parsing Dates</summary>
 
 Providers will format dates in a number of ways. OpenBB uses YYYY-MM-DD as the standard convention, for both inputs and outputs.
+
 Outputs are a `datetime` object or JSON serlialized string. Validators are used to parse the date from the specific format.
 This example is used within a provider's `Data` model.
 
 ```python
-    @field_validator("last_trade_timestamp", mode="before", check_fields=False)
-    @classmethod
-    def parse_timestamp(cls, v):
-        """Parse a Unix timestamp."""
-        return datetime.fromtimestamp(v)
+@field_validator("last_trade_timestamp", mode="before", check_fields=False)
+@classmethod
+def parse_timestamp(cls, v):
+    """Parse a Unix timestamp."""
+    return datetime.fromtimestamp(v)
 ```
 
-### Normalize Percent Values
+</details>
+
+<details>
+<summary mdxType="summary">Normalize Percent Values</summary>
 
 At the provider level, we want to standardize the way values representing a percent are returned.
+
 It is our intention to ensure those values are ready-to-consume by formulas without conversion.
 This example would be used within a provider's `Data` model.
 
 ```python
-    @field_validator("change_percent", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):
-        """Normalize the percent."""
-        return v / 100 if v else None
+@field_validator("change_percent", mode="before", check_fields=False)
+@classmethod
+def normalize_percent(cls, v):
+    """Normalize the percent."""
+    return v / 100 if v else None
 ```
 
-### Dynamic Default Date
+</details>
+
+<details>
+<summary mdxType="summary">Dynamic Default Date</summary>
 
 It might be desirable to have a default date parameter that is not static. To allow this, we must set the default parameter value as `None`, and use the `model_validator`. This example is for the `QueryParams`.
 
 ```python
-    @model_validator(mode="before")
-    @classmethod
-    def validate_dates(cls, values) -> dict:
-        """Validate the query parameters."""
-        if values.get("start_date") is None:
-            values["start_date"] = (datetime.now() - timedelta(days=90)).date()
-        if values.get("end_date") is None:
-            values["end_date"] = datetime.now().date()
-        return values
+@model_validator(mode="before")
+@classmethod
+def validate_dates(cls, values) -> dict:
+    """Validate the query parameters."""
+    if values.get("start_date") is None:
+        values["start_date"] = (datetime.now() - timedelta(days=90)).date()
+    if values.get("end_date") is None:
+        values["end_date"] = datetime.now().date()
+    return values
 ```
 
-### Replace 0s With None
+</details>
+
+<details>
+<summary mdxType="summary">Replace 0s With None</summary>
 
 Sometimes values are returned as a `0` when they should really be a `null`.
 This example looks at the entire `Data` model, but could easily be adapted to use on individual fields.
 
 ```python
-    @model_validator(mode="before")
-    @classmethod
-    def replace_zero(cls, values):
-        """Check for zero values and replace with None."""
-        return (
-            {k: None if v == 0 else v for k, v in values.items()}
-            if isinstance(values, dict)
-            else values
-        )
+@model_validator(mode="before")
+@classmethod
+def replace_zero(cls, values):
+    """Check for zero values and replace with None."""
+    return (
+        {k: None if v == 0 else v for k, v in values.items()}
+        if isinstance(values, dict)
+        else values
+    )
 ```
+
+</details>

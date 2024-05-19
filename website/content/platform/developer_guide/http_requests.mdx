@@ -1,6 +1,6 @@
 ---
 title: HTTP Requests
-sidebar_position: 8
+sidebar_position: 6
 description: This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 keywords:
 - OpenBB Platform
@@ -89,8 +89,9 @@ Some data providers allow for bulk downloading from a list of symbols, while man
 
 Ultimately, the choice is at the discretion of the developer. OpenBB has made the implementation of both methods easy and fast, the next sections will elaborate.
 
-### Synchronous - Requests
 
+### Synchronous - Requests
+<details>
 ```python
 from openbb_core.provider.utils import make_request
 ```
@@ -120,9 +121,11 @@ All parameters of `requests.get` or `requests.post`are accessible and passed thr
     ValueError
         If invalid method is passed
 ```
+</details>
 
 ### Asynchronous - AIOHTTP
 
+<details>
 Single-URL requests can be made asynchronously. The name of the function now starts with, `a`.
 
 ```python
@@ -164,8 +167,10 @@ Absent `await`, the response is a coroutine - a task waiting to be executed.
 
 :::
 
-### Multi-URL Requests
+</details>
 
+### Multi-URL Requests
+<details>
 The helper function becomes plural, `amake_requests`, when fetching for a list of URLs. Under the hood, it is using `asyncio.gather` to perform the tasks concurrently. The same default callback function from `amake_request` exists, only here it appends the expected `json` output to a `List[Dict]`.
 
 ```python
@@ -191,9 +196,10 @@ from openbb_core.provider.utils.helpers import amake_requests
     Union[dict, List[dict]]
         Response json
 ```
+</details>
 
 ### Custom Callback
-
+<details>
 Customize the response parsing by creating a specific callback function. The example below is a method for converting CSV data to a dictionary and appending it to a list.
 
 ```python
@@ -209,9 +215,11 @@ async def response_callback(response, _: Any):
     data = DataFrame(StringIO(response), skiprows=2)
     results.append(data.to_dict("records"))
 ```
+</details>
+
 
 ### Asynchronous Fetchers
-
+<details>
 When a Fetcher is asynchronous, the `extract_data` static method needs to be defined accordingly - `aextract_data` instead of `extract_data`.
 
 ```python
@@ -223,4 +231,7 @@ When a Fetcher is asynchronous, the `extract_data` static method needs to be def
     ) -> List[Dict]:
 ```
 
-These helper functions simplify and standardize the majority of HTTP requests. They are starting points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
+These helper functions simplify and standardize the majority of HTTP requests.
+
+They are starting points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
+</details>
