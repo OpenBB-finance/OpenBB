@@ -4,6 +4,7 @@ import argparse
 import difflib
 import os
 import re
+import shlex
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from pathlib import Path
@@ -240,7 +241,7 @@ class BaseController(metaclass=ABCMeta):
         else:
             try:
                 (known_args, other_args) = self.parser.parse_known_args(
-                    an_input.split()
+                    shlex.split(an_input)
                 )
             except Exception as exc:
                 raise SystemExit from exc
