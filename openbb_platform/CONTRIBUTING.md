@@ -37,6 +37,7 @@
       - [Important classes](#important-classes)
       - [Import statements](#import-statements)
       - [The TET pattern](#the-tet-pattern)
+      - [Error](#errors)
       - [Data processing commands](#data-processing-commands)
         - [Python Interface](#python-interface)
         - [API Interface](#api-interface)
@@ -537,6 +538,16 @@ As the OpenBB Platform has its own standardization framework and the data fetche
 1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](openbb_platform/platform/provider/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 2. Extract - `extract_data(query: ExampleQueryParams,credentials: Optional[Dict[str, str]],**kwargs: Any,) -> Dict`: makes the request to the API endpoint and returns the raw data. Given the transformed query parameters, the credentials and any other extra arguments, this method should return the raw data as a dictionary.
 3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) children.
+
+#### Errors
+
+To ensure a consistent error handling behavior our API relies on the convention below.
+
+| Status code | Exception | Detail | Description |
+| -------- | ------- | ------- | ------- |
+| 400 | `OpenBBError` or child of `OpenBBError` | Custom message. | Use this to explicitly raise custom exceptions, like `EmptyDataError`. |
+| 422 | `ValidationError` | `Pydantic` errors dict message. | Automatically raised to inform the user about query validation errors. ValidationErrors outside of the query are treated with status code 500 by default. |
+| 500 | Any exception not covered above, eg `ValueError`, `ZeroDivisionError` | Unexpected error. | Unexpected exceptions, most likely a bug. |
 
 #### Data processing commands
 
