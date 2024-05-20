@@ -1877,3 +1877,40 @@ def test_equity_estimates_forward_pe(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "sec",
+                "symbol": "NVDA,AAPL,AMZN,MSFT,GOOG,SMCI",
+                "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                "year": 2024,
+                "fiscal_period": None,
+                "instantaneous": False,
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "sec",
+                "symbol": None,
+                "fact": None,
+                "year": None,
+                "instantaneous": False,
+                "use_cache": False,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_compare_company_facts(params, obb):
+    """Test the equity compare company_facts endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.compare.company_facts(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

@@ -85,7 +85,12 @@ async def groups(
             }
         ),
         APIEx(
-            description="Facts "
+            parameters={
+                "provider": "sec",
+                "symbol": "NVDA,AAPL,AMZN,MSFT,GOOG,SMCI",
+                "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                "year": 2024,
+            }
         )
     ],
 )

@@ -32,6 +32,9 @@ class CompareCompanyFactsData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     name: Optional[str] = Field(default=None, description="Name of the entity.")
+    value: float = Field(
+        description="The reported value of the fact or concept.",
+    )
     reported_date: Optional[dateType] = Field(
         default=None, description="The date when the report was filed."
     )

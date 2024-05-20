@@ -45,7 +45,7 @@ class SecCompareCompanyFactsQueryParams(CompareCompanyFactsQueryParams):
         description="Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'."
         + " AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'."
         + " In previous years, they have reported as 'Revenues'.",
-        json_schema_extra={"choices": (",").join(FACTS)},
+        json_schema_extra={"choices": sorted(FACTS)},
     )
     year: Optional[int] = Field(
         default=None,
@@ -94,6 +94,7 @@ class SecCompareCompanyFactsData(CompareCompanyFactsData):
         "value": "val",
         "location": "loc",
     }
+
     cik: Union[str, int] = Field(
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )
@@ -118,9 +119,6 @@ class SecCompareCompanyFactsData(CompareCompanyFactsData):
     unit: str = Field(
         default=None,
         description="The unit of measurement for the fact or concept.",
-    )
-    value: float = Field(
-        description="The reported value of the fact or concept.",
     )
 
 
