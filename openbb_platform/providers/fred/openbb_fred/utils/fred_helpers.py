@@ -57,7 +57,7 @@ def comma_to_float_list(v: str) -> List[float]:
         return [float(m) for m in v.split(",")]
     except ValueError as e:
         raise ValueError(
-            "'maturity' must be a float or a comma-separated string of floats"
+            "maturity must be a float or a comma-separated string of floats"
         ) from e
 
 
@@ -216,3 +216,135 @@ def get_spot_series_id(maturity: List[float], category: List[str]) -> List[dict]
             filtered_series.append(s)
 
     return filtered_series
+
+
+BOP_COUNTRIES = {
+    "argentina": "ARG",
+    "australia": "AUS",
+    "austria": "AUT",
+    "belgium": "BEL",
+    "brazil": "BRA",
+    "canada": "CAN",
+    "chile": "CHL",
+    "china": "CHN",
+    "colombia": "COL",
+    "costa_rica": "CRI",
+    "czechia": "CZE",
+    "denmark": "DNK",
+    "estonia": "EST",
+    "finland": "FIN",
+    "france": "FRA",
+    "germany": "DEU",
+    "greece": "GRC",
+    "hungary": "HUN",
+    "iceland": "ISL",
+    "india": "IND",
+    "indonesia": "IDN",
+    "ireland": "IRL",
+    "israel": "ISR",
+    "italy": "ITA",
+    "japan": "JAP",
+    "korea": "KOR",
+    "latvia": "LVA",
+    "lithuania": "LTU",
+    "luxembourg": "LUX",
+    "mexico": "MEX",
+    "netherlands": "NLD",
+    "new_zealand": "NZL",
+    "norway": "NOR",
+    "poland": "POL",
+    "portugal": "PRT",
+    "russia": "RUS",
+    "saudi_arabia": "SAU",
+    "slovak_republic": "SVK",
+    "slovenia": "SVN",
+    "south_africa": "ZAF",
+    "spain": "ESP",
+    "sweden": "SWE",
+    "switzerland": "CHE",
+    "turkey": "TUR",
+    "united_kingdom": "GBR",
+    "united_states": "USA",
+    "g7": "G7",
+    "g20": "G20",
+}
+
+BOP_COUNTRY_CHOICES = Literal[
+    "argentina",
+    "australia",
+    "austria",
+    "belgium",
+    "brazil",
+    "canada",
+    "chile",
+    "china",
+    "colombia",
+    "costa_rica",
+    "czechia",
+    "denmark",
+    "estonia",
+    "finland",
+    "france",
+    "germany",
+    "greece",
+    "hungary",
+    "iceland",
+    "india",
+    "indonesia",
+    "ireland",
+    "israel",
+    "italy",
+    "japan",
+    "korea",
+    "latvia",
+    "lithuania",
+    "luxembourg",
+    "mexico",
+    "netherlands",
+    "new_zealand",
+    "norway",
+    "poland",
+    "portugal",
+    "russia",
+    "saudi_arabia",
+    "slovak_republic",
+    "slovenia",
+    "south_africa",
+    "spain",
+    "sweden",
+    "switzerland",
+    "turkey",
+    "united_kingdom",
+    "united_states",
+    "g7",
+    "g20",
+]
+
+
+def get_bop_series(country: str) -> dict:
+    """Get the series IDs for the B6 Balance of Payments Report."""
+    return dict(
+        # Current Account Balance in USD.
+        balance_percent_of_gdp=f"{country}B6BLTT02STSAQ",
+        balance_total=f"{country}B6BLTT01CXCUSAQ",
+        balance_total_services=f"{country}B6BLSE01CXCUSAQ",
+        balance_total_secondary_income=f"{country}B6BLSI01CXCUSAQ",
+        balance_total_goods=f"{country}B6BLTD01CXCUSAQ",
+        balance_total_primary_income=f"{country}B6BLPI01CXCUSAQ",
+        # Current Account Credits in USD
+        credits_services_percent_of_goods_and_services=f"{country}B6CRSE03STSAQ",
+        credits_services_percent_of_current_account=f"{country}B6CRSE02STSAQ",
+        credits_total_services=f"{country}B6CRSE01CXCUSAQ",
+        credits_total_goods=f"{country}B6CRTD01CXCUSAQ",
+        credits_total_primary_income=f"{country}B6CRPI01CXCUSAQ",
+        credits_total_secondary_income=f"{country}B6CRSI01CXCUSAQ",
+        credits_total=f"{country}B6CRTT01CXCUSAQ",
+        # Current Account Debits in USD
+        debits_services_percent_of_goods_and_services=f"{country}B6DBSE03STSAQ",
+        debits_services_percent_of_current_account=f"{country}B6DBSE02STSAQ",
+        debits_total_services=f"{country}B6DBSE01CXCUSAQ",
+        debits_total_goods=f"{country}B6DBTD01CXCUSAQ",
+        debits_total_primary_income=f"{country}B6DBPI01CXCUSAQ",
+        debits_total=f"{country}B6DBTT01CXCUSAQ",
+        debits_total_secondary_income=f"{country}B6DBSI01CXCUSAQ",
+    )

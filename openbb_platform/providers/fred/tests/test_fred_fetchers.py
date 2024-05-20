@@ -5,6 +5,7 @@ import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
 from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
@@ -300,5 +301,19 @@ def test_fred_regional_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredRegionalDataFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_balance_of_payments_fetcher(credentials=test_credentials):
+    """Test FredBalanceOfPaymentsFetcher."""
+    params = {
+        "country": "united_states",
+        "start_date": datetime.date(2020, 1, 1),
+        "end_date": datetime.date(2024, 3, 31),
+    }
+
+    fetcher = FredBalanceOfPaymentsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
