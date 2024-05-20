@@ -18,8 +18,6 @@ import pandas as pd
 import plotly.graph_objects as go
 from openbb_core.env import Env
 from packaging import version
-from reportlab.graphics import renderPDF
-from svglib.svglib import svg2rlg
 
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
@@ -236,7 +234,6 @@ class Backend(PyWry):
 
     async def process_image(self, export_image: Path):
         """Check if the image has been exported to the path."""
-        pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
         checks = 0
@@ -246,15 +243,7 @@ class Backend(PyWry):
             if checks > 50:
                 break
 
-        if pdf:
-            img_path = img_path.rename(img_path.with_suffix(".svg"))
-
         if img_path.exists():  # noqa: SIM102
-            if pdf:
-                drawing = svg2rlg(img_path)
-                img_path.unlink(missing_ok=True)
-                renderPDF.drawToFile(drawing, str(export_image))
-
             if self.charting_settings.plot_open_export:
                 if sys.platform == "win32":
                     os.startfile(export_image)  # nosec: B606 # noqa: S606

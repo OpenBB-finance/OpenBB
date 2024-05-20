@@ -901,7 +901,7 @@ def export_data(
                 else:
                     save_to_excel(df, saved_path, sheet_name)
 
-            elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+            elif saved_path.suffix in [".jpg", ".png", ".svg"]:
                 if figure is None:
                     Session().console.print("No plot to export.")
                     continue
