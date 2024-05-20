@@ -696,7 +696,6 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         The "metadata" key contains information about the frame.
     """
     current_date = datetime.now().date()
-    year = None
     quarter = FISCAL_PERIODS_DICT.get(fiscal_period, None) if fiscal_period else None
     if year is None and quarter is None:
         quarter = (current_date.month - 1) // 3
@@ -823,35 +822,33 @@ async def get_concept(
             messages.append(message)
         else:
             url = f"https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/{taxonomy}/{fact}.json"
-            response: Union[Dict, List[Dict]] = []
+            response: Union[Dict, List[Dict]] = {}
             try:
                 response = await fetch_data(url, use_cache, False)
             except Exception as _:  # pylint: disable=W0718
                 warn(message)
                 messages.append(message)
-            if not response:
-                warn(message)
-                messages.append(message)
-            units = response.get("units", {})
-            metadata[ticker] = {
-                "cik": response.get("cik", ""),
-                "taxonomy": response.get("taxonomy", ""),
-                "tag": response.get("tag", ""),
-                "label": response.get("label", ""),
-                "description": response.get("description", ""),
-                "name": response.get("entityName", ""),
-                "units": list(units) if len(units) > 1 else list(units)[0],
-            }
-            for k, v in units.items():
-                unit = k
-                values = v
-                for item in values:
-                    item["unit"] = unit
-                    item["symbol"] = ticker
-                    item["cik"] = metadata[ticker]["cik"]
-                    item["name"] = metadata[ticker]["name"]
-                    item["fact"] = metadata[ticker]["label"]
-                results.extend(values)
+            if response:
+                units = response.get("units", {})
+                metadata[ticker] = {
+                    "cik": response.get("cik", ""),
+                    "taxonomy": response.get("taxonomy", ""),
+                    "tag": response.get("tag", ""),
+                    "label": response.get("label", ""),
+                    "description": response.get("description", ""),
+                    "name": response.get("entityName", ""),
+                    "units": list(units) if units and len(units) > 1 else list(units)[0],
+                }
+                for k, v in units.items():
+                    unit = k
+                    values = v
+                    for item in values:
+                        item["unit"] = unit
+                        item["symbol"] = ticker
+                        item["cik"] = metadata[ticker]["cik"]
+                        item["name"] = metadata[ticker]["name"]
+                        item["fact"] = metadata[ticker]["label"]
+                    results.extend(values)
 
     await asyncio.gather(*[get_one(ticker) for ticker in symbols])
 
