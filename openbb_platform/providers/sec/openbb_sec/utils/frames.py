@@ -749,15 +749,15 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         else:
             raise ValueError(message) from e
 
-    data = sorted(response["data"], key=lambda x: x["val"], reverse=True)
+    data = sorted(response.get("data", {}), key=lambda x: x["val"], reverse=True)  # type: ignore
     metadata = {
-        "frame": response["ccp"],
-        "tag": response["tag"],
-        "label": response["label"],
-        "description": response["description"],
-        "taxonomy": response["taxonomy"],
-        "unit": response["uom"],
-        "count": response["pts"],
+        "frame": response.get("ccp", ""),  # type: ignore
+        "tag": response.get("tag", ""),  # type: ignore
+        "label": response.get("label", ""),  # type: ignore
+        "description": response.get("description", ""),  # type: ignore
+        "taxonomy": response.get("taxonomy", ""),  # type: ignore
+        "unit": response.get("uom", ""),  # type: ignore
+        "count": response.get("pts", ""),  # type: ignore
     }
     df = DataFrame(data)
     companies = await get_all_companies(use_cache=use_cache)
@@ -829,14 +829,14 @@ async def get_concept(
                 warn(message)
                 messages.append(message)
             if response:
-                units = response.get("units", {})
+                units = response.get("units", {})  # type: ignore
                 metadata[ticker] = {
-                    "cik": response.get("cik", ""),
-                    "taxonomy": response.get("taxonomy", ""),
-                    "tag": response.get("tag", ""),
-                    "label": response.get("label", ""),
-                    "description": response.get("description", ""),
-                    "name": response.get("entityName", ""),
+                    "cik": response.get("cik", ""),  # type: ignore
+                    "taxonomy": response.get("taxonomy", ""),  # type: ignore
+                    "tag": response.get("tag", ""),  # type: ignore
+                    "label": response.get("label", ""),  # type: ignore
+                    "description": response.get("description", ""),  # type: ignore
+                    "name": response.get("entityName", ""),  # type: ignore
                     "units": (
                         list(units) if units and len(units) > 1 else list(units)[0]
                     ),
