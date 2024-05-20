@@ -849,11 +849,11 @@ class ROUTER_equity_estimates(Container):
         action : Optional[Literal['downgrades', 'maintains', 'reinstates', 'reiterates', 'upgrades', 'assumes', 'initiates', 'terminates', 'removes', 'suspends', 'firm_dissolved']]
             Filter by a specific action_company. (provider: benzinga)
         analyst_ids : Optional[Union[List[str], str]]
-            Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. (provider: benzinga)
+            Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple comma separated items allowed. (provider: benzinga)
         firm_ids : Optional[Union[List[str], str]]
-            Comma-separated list of firm IDs. (provider: benzinga)
+            Comma-separated list of firm IDs. Multiple comma separated items allowed. (provider: benzinga)
         fields : Optional[Union[List[str], str]]
-            Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
+            Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
 
@@ -955,9 +955,12 @@ class ROUTER_equity_estimates(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
-                        "benzinga": {"multiple_items_allowed": True},
+                        "benzinga": ["multiple_items_allowed"],
                         "fmp": {"multiple_items_allowed": True},
-                    }
+                    },
+                    "analyst_ids": {"benzinga": ["multiple_items_allowed"]},
+                    "firm_ids": {"benzinga": ["multiple_items_allowed"]},
+                    "fields": {"benzinga": ["multiple_items_allowed"]},
                 },
             )
         )

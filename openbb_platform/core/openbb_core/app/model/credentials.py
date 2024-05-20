@@ -116,3 +116,7 @@ class Credentials(_Credentials):  # type: ignore
                 [f"{k}: {v}" for k, v in sorted(self.model_dump(mode="json").items())]
             )
         )
+
+    def update(self, incoming: "Credentials"):
+        """Update current credentials."""
+        self.__dict__.update(incoming.model_dump(exclude_none=True))

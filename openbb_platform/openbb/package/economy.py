@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_economy(Container):
     """/economy
     available_indicators
+    balance_of_payments
     calendar
     composite_leading_indicator
     country_profile
@@ -115,6 +116,114 @@ class ROUTER_economy(Container):
                         provider,
                         "/economy/available_indicators",
                         ("econdb",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def balance_of_payments(
+        self,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Balance of Payments Reports.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        country : Literal['argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czechia', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'g7', 'g20']
+            The country to get data. Enter as a 3-letter ISO country code, default is USA. (provider: fred)
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format. (provider: fred)
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[BalanceOfPayments]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        BalanceOfPayments
+        -----------------
+        period : Optional[date]
+            The date representing the beginning of the reporting period.
+        balance_percent_of_gdp : Optional[float]
+            Current Account Balance as Percent of GDP
+        balance_total : Optional[float]
+            Current Account Total Balance (USD)
+        balance_total_services : Optional[float]
+            Current Account Total Services Balance (USD)
+        balance_total_secondary_income : Optional[float]
+            Current Account Total Secondary Income Balance (USD)
+        balance_total_goods : Optional[float]
+            Current Account Total Goods Balance (USD)
+        balance_total_primary_income : Optional[float]
+            Current Account Total Primary Income Balance (USD)
+        credits_services_percent_of_goods_and_services : Optional[float]
+            Current Account Credits Services as Percent of Goods and Services
+        credits_services_percent_of_current_account : Optional[float]
+            Current Account Credits Services as Percent of Current Account
+        credits_total_services : Optional[float]
+            Current Account Credits Total Services (USD)
+        credits_total_goods : Optional[float]
+            Current Account Credits Total Goods (USD)
+        credits_total_primary_income : Optional[float]
+            Current Account Credits Total Primary Income (USD)
+        credits_total_secondary_income : Optional[float]
+            Current Account Credits Total Secondary Income (USD)
+        credits_total : Optional[float]
+            Current Account Credits Total (USD)
+        debits_services_percent_of_goods_and_services : Optional[float]
+            Current Account Debits Services as Percent of Goods and Services
+        debits_services_percent_of_current_account : Optional[float]
+            Current Account Debits Services as Percent of Current Account
+        debits_total_services : Optional[float]
+            Current Account Debits Total Services (USD)
+        debits_total_goods : Optional[float]
+            Current Account Debits Total Goods (USD)
+        debits_total_primary_income : Optional[float]
+            Current Account Debits Total Primary Income (USD)
+        debits_total : Optional[float]
+            Current Account Debits Total (USD)
+        debits_total_secondary_income : Optional[float]
+            Current Account Debits Total Secondary Income (USD)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.balance_of_payments(provider='fred')
+        >>> obb.economy.balance_of_payments(provider='fred', country='brazil')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/balance_of_payments",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/balance_of_payments",
+                        ("fred",),
                     )
                 },
                 standard_params={},

@@ -93,6 +93,8 @@ async def risk_premium(
 @router.command(
     model="BalanceOfPayments",
     examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"provider": "fred", "country": "brazil"}),
         APIEx(parameters={"provider": "ecb"}),
         APIEx(parameters={"report_type": "summary", "provider": "ecb"}),
         APIEx(

@@ -543,7 +543,7 @@ def test_fmp_equity_quote_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_equity_screener_fetcher(credentials=test_credentials):
     """Test FMP equity screener fetcher."""
-    params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
+    params = {"industry": "midstream", "sector": "energy", "beta_max": 0.5}
 
     fetcher = FMPEquityScreenerFetcher()
     result = fetcher.test(params, credentials)

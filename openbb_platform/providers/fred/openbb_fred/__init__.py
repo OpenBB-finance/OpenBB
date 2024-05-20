@@ -2,6 +2,7 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
 from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
@@ -39,6 +40,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
 816,000 economic time series from various sources.""",
     credentials=["api_key"],
     fetcher_dict={
+        "BalanceOfPayments": FredBalanceOfPaymentsFetcher,
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
