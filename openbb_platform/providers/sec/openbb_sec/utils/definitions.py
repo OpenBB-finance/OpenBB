@@ -161,7 +161,7 @@ FORM_TYPES = Literal[
     "CFPORTAL",
     "CFPORTAL-W",
     "CORRESP",
-    "CT ORDER",
+    "CT_ORDER",
     "D",
     "DEF_14A",
     "DEF_14C",
