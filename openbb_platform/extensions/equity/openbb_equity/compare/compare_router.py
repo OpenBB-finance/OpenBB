@@ -91,7 +91,7 @@ async def groups(
                 "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
                 "year": 2024,
             }
-        )
+        ),
     ],
 )
 async def company_facts(

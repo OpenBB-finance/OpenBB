@@ -837,7 +837,9 @@ async def get_concept(
                     "label": response.get("label", ""),
                     "description": response.get("description", ""),
                     "name": response.get("entityName", ""),
-                    "units": list(units) if units and len(units) > 1 else list(units)[0],
+                    "units": (
+                        list(units) if units and len(units) > 1 else list(units)[0]
+                    ),
                 }
                 for k, v in units.items():
                     unit = k
