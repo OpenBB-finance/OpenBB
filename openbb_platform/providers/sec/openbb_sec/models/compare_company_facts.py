@@ -178,8 +178,8 @@ class SecCompareCompanyFactsFetcher(
         if not data:
             raise EmptyDataError("The request was returned empty.")
         metadata = data.get("metadata")
-        results_data = data.get("data")
+        results_data = data.get("data", [])
         return AnnotatedResult(
-            result=[SecCompareCompanyFactsData.model_validate(d) for d in results_data],
+            result=[SecCompareCompanyFactsData.model_validate(d) for d in results_data],  # type: ignore
             metadata=metadata,
         )
