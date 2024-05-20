@@ -779,7 +779,7 @@ async def get_concept(
     taxonomy: Optional[TAXONOMIES] = "us-gaap",
     use_cache: bool = True,
 ) -> Dict:
-    """Returns all the XBRL disclosures from a single company (CIK)
+    """Return all the XBRL disclosures from a single company (CIK)
     and concept (a taxonomy and tag) into a single JSON file, with a separate array of facts
     for each units on measure that the company has chosen to disclose
     (e.g. net profits reported in U.S. dollars and in Canadian dollars).
