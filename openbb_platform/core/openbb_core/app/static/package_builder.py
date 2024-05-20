@@ -190,7 +190,7 @@ class PackageBuilder:
                 "openbb": VERSION.replace("dev", ""),
                 "info": {
                     "title": "OpenBB Platform (Python)",
-                    "description": "This is the OpenBB Platform (Python).",
+                    "description": "Investment research for everyone, anywhere.",
                     "core": CORE_VERSION.replace("dev", ""),
                     "extensions": ext_map,
                 },
