@@ -112,20 +112,18 @@ class IntrinioForwardEbitdaEstimatesFetcher(
             """Get the data for one symbol."""
             url = f"{BASE_URL}&identifier={symbol}"
             url = url + f"&{query_str}" if query_str else url
-            new_data: List[Dict] = []
             data = await amake_request(
                 url, response_callback=response_callback, **kwargs
             )
-            if (
-                not data
-                or not isinstance(data, dict)
-                or not data.get("ebitda_consensus")
-            ):
+            consensus = (
+                data.get("ebitda_consensus")
+                if isinstance(data, dict) and "ebitda_consensus" in data
+                else []
+            )
+            if not data or not consensus:
                 warn(f"Symbol Error: No data found for {symbol}")
-            if isinstance(data, dict) and data.get("ebitda_consensus"):
-                new_data = data.get("ebitda_consensus")  # type: ignore
-                if new_data:
-                    results.extend(new_data)
+            if consensus:
+                results.extend(consensus)
 
         if symbols:
             await asyncio.gather(*[get_one(symbol) for symbol in symbols])
@@ -146,11 +144,13 @@ class IntrinioForwardEbitdaEstimatesFetcher(
                     next_page = data["next_page"]  # type: ignore
                     next_url = f"{url}&next_page={next_page}"
                     data = await amake_request(next_url, session=session, **kwargs)
-                    if (
-                        "ebitda_consensus" in data
-                        and len(data.get("ebitda_consensus")) > 0  # type: ignore
-                    ):
-                        results.extend(data.get("ebitda_consensus"))  # type: ignore
+                    consensus = (
+                        data.get("ebitda_consensus")
+                        if isinstance(data, dict) and "ebitda_consensus" in data
+                        else []
+                    )
+                    if consensus:
+                        results.extend(consensus)  # type: ignore
             return results
 
         url = f"{BASE_URL}&{query_str}" if query_str else BASE_URL
