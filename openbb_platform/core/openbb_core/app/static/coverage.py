@@ -11,16 +11,13 @@ if TYPE_CHECKING:
     from openbb_core.app.static.app_factory import BaseApp
 
 
-class Coverage:
-    """Coverage class.
-
-    /coverage
-
-        providers
-        commands
-        command_model
-        command_schemas
-        reference
+class Coverage:  # noqa: D205, D400
+    """/coverage
+    providers
+    commands
+    command_model
+    command_schemas
+    reference
     """
 
     def __init__(self, app: "BaseApp"):

@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     from openbb_core.app.static.app_factory import BaseApp
 
 
-class Account:
+class Account:  # noqa: D205, D400
     """/account
     login
     logout
@@ -123,8 +123,8 @@ class Account:
         """
         self._hub_service = self._create_hub_service(email, password, pat)
         incoming = self._hub_service.pull()
-        updated: UserSettings = UserService.update_default(incoming)
-        self._base_app._command_runner.user_settings = updated
+        self._base_app.user.profile = incoming.profile
+        self._base_app.user.credentials.update(incoming.credentials)
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(self._openbb_directory, self.SESSION_FILE)
@@ -185,10 +185,8 @@ class Account:
             )
         else:
             incoming = self._hub_service.pull()
-            updated: UserSettings = UserService.update_default(incoming)
-            updated.id = self._base_app._command_runner.user_settings.id
-            self._base_app._command_runner.user_settings = updated
-
+            self._base_app.user.profile = incoming.profile
+            self._base_app.user.credentials.update(incoming.credentials)
         if return_settings:
             return self._base_app._command_runner.user_settings
         return None
