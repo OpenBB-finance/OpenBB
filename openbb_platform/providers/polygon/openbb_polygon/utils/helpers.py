@@ -59,7 +59,7 @@ async def response_callback(
     data: Dict = await response.json()  # type: ignore
 
     if response.status != 200:
-        message = data.get("error", None) or data.get("message", None)
+        message = data.get("error") or data.get("message")
         raise RuntimeError(f"Error in Polygon request -> {message}")
 
     keys_in_data = "results" in data or "tickers" in data
