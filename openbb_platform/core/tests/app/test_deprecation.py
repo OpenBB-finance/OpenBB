@@ -2,7 +2,6 @@
 
 import unittest
 
-import pytest
 from openbb_core.app.static.package_builder import PathHandler
 from openbb_core.app.version import VERSION, get_major_minor
 
