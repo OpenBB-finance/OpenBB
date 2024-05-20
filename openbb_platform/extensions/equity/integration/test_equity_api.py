@@ -2037,6 +2037,7 @@ def test_equity_estimates_forward_ebitda(params, headers):
                 "symbol": None,
                 "fact": None,
                 "year": None,
+                "fiscal_period": None,
                 "instantaneous": False,
                 "use_cache": False,
             }

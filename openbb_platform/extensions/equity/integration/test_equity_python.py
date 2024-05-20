@@ -1899,6 +1899,7 @@ def test_equity_estimates_forward_pe(params, obb):
                 "symbol": None,
                 "fact": None,
                 "year": None,
+                "fiscal_period": None,
                 "instantaneous": False,
                 "use_cache": False,
             }
