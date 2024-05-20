@@ -7651,6 +7651,234 @@
             },
             "model": "ForwardSalesEstimates"
         },
+        "/equity/estimates/forward_ebitda": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward EBITDA estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_ebitda(provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL', fiscal_period=annual, provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL,MSFT', fiscal_period=quarter, provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fmp', 'intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
+                        "default": "fmp",
+                        "optional": true
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "The future fiscal period to retrieve estimates for.",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_historical",
+                        "type": "bool",
+                        "description": "If True, the data will include all past data and the limit will be ignored.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Filter for only full-year or quarterly estimates.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "estimate_type",
+                        "type": "Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']",
+                        "description": "Limit the EBITDA estimates to this type.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardEbitdaEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "date",
+                        "description": "The date of the last update.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "Fiscal year for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "str",
+                        "description": "Fiscal quarter for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "Union[int, str]",
+                        "description": "Calendar quarter for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low_estimate",
+                        "type": "int",
+                        "description": "The EBITDA estimate low for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high_estimate",
+                        "type": "int",
+                        "description": "The EBITDA estimate high for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "mean",
+                        "type": "int",
+                        "description": "The EBITDA estimate mean for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "median",
+                        "type": "int",
+                        "description": "The EBITDA estimate median for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "int",
+                        "description": "The EBITDA estimate standard deviation for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "number_of_analysts",
+                        "type": "int",
+                        "description": "Number of analysts providing estimates for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "conensus_type",
+                        "type": "Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']",
+                        "description": "The type of estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ForwardEbitdaEstimates"
+        },
         "/equity/estimates/forward_eps": {
             "deprecated": {
                 "flag": null,
@@ -8052,7 +8280,7 @@
                         "choices": null
                     },
                     {
-                        "name": "last_udpated",
+                        "name": "last_updated",
                         "type": "date",
                         "description": "The date the data was last updated.",
                         "default": null,

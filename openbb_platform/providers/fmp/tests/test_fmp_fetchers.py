@@ -43,6 +43,7 @@ from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
+from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -733,5 +734,20 @@ def test_fmp_equity_forward_eps_fetcher(credentials=test_credentials):
     }
 
     fetcher = FMPForwardEpsEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_forward_ebitda_fetcher(credentials=test_credentials):
+    """Test FMP forward EBITDA estimates fetcher."""
+    params = {
+        "symbol": "MSFT,AAPL",
+        "fiscal_period": "annual",
+        "include_historical": False,
+        "limit": None,
+    }
+
+    fetcher = FMPForwardEbitdaEstimatesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

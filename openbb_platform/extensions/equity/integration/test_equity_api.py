@@ -1982,3 +1982,36 @@ def test_equity_estimates_forward_pe(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "quarter",
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "annual",
+                "limit": None,
+                "include_historical": False,
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_forward_ebitda(params, headers):
+    """Test the equity estimates forward_ebitda endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/forward_ebitda?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
