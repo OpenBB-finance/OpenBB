@@ -52,3 +52,6 @@ cli/openbb_cli/assets/styles/user/hub.richstyle.json
 
 # Platform
 openbb_platform/openbb/package/*
+
+# Dev Container env
+obb/*
