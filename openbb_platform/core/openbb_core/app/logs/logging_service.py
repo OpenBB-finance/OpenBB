@@ -4,14 +4,13 @@ import json
 import logging
 from enum import Enum
 from types import TracebackType
-from typing import Any, Callable, Dict, Optional, Tuple, Type, Union, cast
+from typing import Any, Callable, Dict, Optional, Tuple, Type, Union
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.handlers_manager import HandlersManager
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
@@ -224,24 +223,22 @@ class LoggingService(metaclass=SingletonMeta):
             kwargs = {k: str(v)[:100] for k, v in kwargs.items()}
 
             # Get execution info
-            openbb_error = cast(
-                Optional[OpenBBError], exec_info[1] if exec_info else None
-            )
+            error = str(exec_info[1]) if exec_info and len(exec_info) > 1 else None
 
             # Construct message
-            message_label = "ERROR" if openbb_error else "CMD"
+            message_label = "ERROR" if error else "CMD"
             log_message = json.dumps(
                 {
                     "route": route,
                     "input": kwargs,
-                    "error": str(openbb_error.original) if openbb_error else None,
+                    "error": error,
                     "custom_headers": custom_headers,
                 },
                 default=to_jsonable_python,
             )
             log_message = f"{message_label}: {log_message}"
 
-            log_level = logger.error if openbb_error else logger.info
+            log_level = logger.error if error else logger.info
             log_level(
                 log_message,
                 extra={"func_name_override": func.__name__},
