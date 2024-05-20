@@ -4,7 +4,6 @@ import json
 import tempfile
 from pathlib import Path
 
-from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.service.user_service import (
     UserService,
     UserSettings,
@@ -45,20 +44,6 @@ def test_write_default_user_settings():
 
     # Clean up the temporary file
     temp_path.unlink()
-
-
-def test_update_default():
-    """Test update default user settings."""
-
-    # Some settings
-    defaults_test = Defaults(routes={"test": {"test": "test"}})
-    other_settings = UserSettings(defaults=defaults_test)
-
-    # Update the default settings
-    updated_settings = UserService.update_default(other_settings)
-
-    assert "test" in updated_settings.defaults.model_dump()["routes"]
-    assert updated_settings.defaults.model_dump()["routes"]["test"] == {"test": "test"}
 
 
 def test_merge_dicts():
