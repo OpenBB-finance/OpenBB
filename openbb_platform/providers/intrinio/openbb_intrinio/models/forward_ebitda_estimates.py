@@ -137,7 +137,7 @@ class IntrinioForwardEbitdaEstimatesFetcher(
             messages = data.get("messages")
             if messages:
                 raise RuntimeError(str(messages))
-            estimates = data.get("ebitda_consensus", {})  # type: ignore
+            estimates = data.get("ebitda_consensus", [])  # type: ignore
             if estimates and len(estimates) > 0:
                 results.extend(estimates)
                 while data.get("next_page"):  # type: ignore
