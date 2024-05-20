@@ -449,24 +449,6 @@ def test_etf_discovery_active(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "SPY", "provider": "fmp"}),
-        ({"symbol": "QQQ", "provider": "fmp"}),
-    ],
-)
-@pytest.mark.integration
-def test_etf_holdings_performance(params, obb):
-    """Test the ETF holdings performance endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.holdings_performance(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@parametrize(
-    "params",
-    [
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
     ],
 )
