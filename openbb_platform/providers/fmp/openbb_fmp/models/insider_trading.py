@@ -1,5 +1,7 @@
 """FMP Insider Trading Model."""
 
+# pylint: disable=unused-argument
+
 import math
 from typing import Any, Dict, List, Optional
 
@@ -19,7 +21,7 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    transaction_type: TRANSACTION_TYPES = Field(
+    transaction_type: Optional[TRANSACTION_TYPES] = Field(
         default=None,
         description="Type of the transaction.",
         alias="transactionType",

@@ -1421,7 +1421,7 @@ def test_equity_search(params, headers):
         (
             {
                 "industry": "REIT",
-                "sector": "Real Estate",
+                "sector": "real_estate",
                 "mktcap_min": None,
                 "mktcap_max": None,
                 "price_min": None,

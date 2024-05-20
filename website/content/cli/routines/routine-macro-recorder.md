@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Routine Macro Recorder - Routines - Usage | OpenBB CLI Docs" />
+<HeadTitle title="Routine Macro Recorder - Routines - Usage | OpenBB Platform CLI Docs" />
 
 OpenBB script routines can be captured with the macro recorder, controlled with global commands. Enter, `record`, to start saving commands, and then, `stop`, terminates the recording. This means that any command you run will be captured in the script; and on `stop`, it will be saved to the `~/OpenBBUserData/routines/` folder.
 
