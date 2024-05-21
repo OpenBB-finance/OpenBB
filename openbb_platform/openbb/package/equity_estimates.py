@@ -14,6 +14,7 @@ class ROUTER_equity_estimates(Container):
     """/equity/estimates
     analyst_search
     consensus
+    forward_ebitda
     forward_eps
     forward_pe
     forward_sales
@@ -347,6 +348,122 @@ class ROUTER_equity_estimates(Container):
 
     @exception_handler
     @validate
+    def forward_ebitda(
+        self,
+        symbol: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio."
+            ),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fmp", "intrinio"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get forward EBITDA estimates.
+
+        Parameters
+        ----------
+        symbol : Union[str, None, List[Optional[str]]]
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
+        provider : Optional[Literal['fmp', 'intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        fiscal_period : Optional[Literal['annual', 'quarter']]
+            The future fiscal period to retrieve estimates for. (provider: fmp);
+            Filter for only full-year or quarterly estimates. (provider: intrinio)
+        limit : Optional[int]
+            The number of data entries to return. (provider: fmp)
+        include_historical : bool
+            If True, the data will include all past data and the limit will be ignored. (provider: fmp)
+        estimate_type : Optional[Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']]
+            Limit the EBITDA estimates to this type. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : List[ForwardEbitdaEstimates]
+                Serializable results.
+            provider : Optional[Literal['fmp', 'intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ForwardEbitdaEstimates
+        ----------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the entity.
+        last_updated : Optional[date]
+            The date of the last update.
+        period_ending : Optional[date]
+            The end date of the reporting period.
+        fiscal_year : Optional[int]
+            Fiscal year for the estimate.
+        fiscal_period : Optional[str]
+            Fiscal quarter for the estimate.
+        calendar_year : Optional[int]
+            Calendar year for the estimate.
+        calendar_period : Optional[Union[int, str]]
+            Calendar quarter for the estimate.
+        low_estimate : Optional[int]
+            The EBITDA estimate low for the period.
+        high_estimate : Optional[int]
+            The EBITDA estimate high for the period.
+        mean : Optional[int]
+            The EBITDA estimate mean for the period.
+        median : Optional[int]
+            The EBITDA estimate median for the period.
+        standard_deviation : Optional[int]
+            The EBITDA estimate standard deviation for the period.
+        number_of_analysts : Optional[int]
+            Number of analysts providing estimates for the period.
+        conensus_type : Optional[Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']]
+            The type of estimate. (provider: intrinio)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.estimates.forward_ebitda(provider='intrinio')
+        >>> obb.equity.estimates.forward_ebitda(symbol='AAPL', fiscal_period='annual', provider='intrinio')
+        >>> obb.equity.estimates.forward_ebitda(symbol='AAPL,MSFT', fiscal_period='quarter', provider='fmp')
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/estimates/forward_ebitda",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/forward_ebitda",
+                        ("fmp", "intrinio"),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+                info={
+                    "symbol": {
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                    }
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
     def forward_eps(
         self,
         symbol: Annotated[
@@ -532,7 +649,7 @@ class ROUTER_equity_estimates(Container):
             Estimated Forward PEG ratio for the next fiscal year. (provider: intrinio)
         eps_ttm : Optional[float]
             The latest trailing twelve months earnings per share. (provider: intrinio)
-        last_udpated : Optional[date]
+        last_updated : Optional[date]
             The date the data was last updated. (provider: intrinio)
 
         Examples

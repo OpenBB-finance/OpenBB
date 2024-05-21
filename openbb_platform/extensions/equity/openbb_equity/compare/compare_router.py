@@ -71,3 +71,34 @@ async def groups(
     Performance metrics include the stock price change for different time periods.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CompareCompanyFacts",
+    examples=[
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(
+            parameters={
+                "provider": "sec",
+                "fact": "PaymentsForRepurchaseOfCommonStock",
+                "year": 2023,
+            }
+        ),
+        APIEx(
+            parameters={
+                "provider": "sec",
+                "symbol": "NVDA,AAPL,AMZN,MSFT,GOOG,SMCI",
+                "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                "year": 2024,
+            }
+        ),
+    ],
+)
+async def company_facts(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Copmare reported company facts and fundamental data points."""
+    return await OBBject.from_query(Query(**locals()))

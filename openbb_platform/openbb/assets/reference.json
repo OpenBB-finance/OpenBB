@@ -5950,6 +5950,520 @@
             },
             "model": "EquityPeers"
         },
+        "/equity/compare/company_facts": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Copmare reported company facts and fundamental data points.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.compare.company_facts(provider='sec')\nobb.equity.compare.company_facts(provider='sec', fact='PaymentsForRepurchaseOfCommonStock', year=2023)\nobb.equity.compare.company_facts(provider='sec', symbol='NVDA,AAPL,AMZN,MSFT,GOOG,SMCI', fact='RevenueFromContractWithCustomerExcludingAssessedTax', year=2024)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): sec.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fact",
+                        "type": "str",
+                        "description": "The fact to lookup, typically a GAAP-reporting measure. Choices vary by provider.",
+                        "default": "",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['sec']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'sec' if there is no default.",
+                        "default": "sec",
+                        "optional": true
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "fact",
+                        "type": "Literal['AccountsPayableCurrent', 'AccountsReceivableNet', 'AccountsReceivableNetCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrent', 'AccrualForTaxesOtherThanIncomeTaxesCurrentAndNoncurrent', 'AccruedIncomeTaxesCurrent', 'AccruedIncomeTaxesNoncurrent', 'AccruedInsuranceCurrent', 'AccruedLiabilitiesCurrent', 'AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment', 'AccumulatedOtherComprehensiveIncomeLossNetOfTax', 'AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets', 'AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue', 'AdvertisingExpense', 'AllocatedShareBasedCompensationExpense', 'AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount', 'Assets', 'AssetsCurrent', 'AssetsNoncurrent', 'NoncurrentAssets', 'AssetImpairmentCharges', 'BuildingsAndImprovementsGross', 'CapitalLeaseObligationsCurrent', 'CapitalLeaseObligationsNoncurrent', 'Cash', 'CashAndCashEquivalentsAtCarryingValue', 'CashCashEquivalentsAndShortTermInvestments', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect', 'CommitmentsAndContingencies', 'CommercialPaper', 'CommonStockDividendsPerShareDeclared', 'CommonStockDividendsPerShareCashPaid', 'CommonStocksIncludingAdditionalPaidInCapital', 'ComprehensiveIncomeNetOfTax', 'ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest', 'ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest', 'ConstructionInProgressGross', 'ContractWithCustomerAssetNet', 'ContractWithCustomerLiability', 'ContractWithCustomerLiabilityCurrent', 'ContractWithCustomerLiabilityNoncurrent', 'CostOfRevenue', 'CostOfGoodsAndServicesSold', 'CurrentFederalTaxExpenseBenefit', 'CurrentForeignTaxExpenseBenefit', 'CurrentIncomeTaxExpenseBenefit', 'CurrentStateAndLocalTaxExpenseBenefit', 'DebtInstrumentFaceAmount', 'DebtInstrumentFairValue', 'DebtLongtermAndShorttermCombinedAmount', 'DeferredFederalIncomeTaxExpenseBenefit', 'DeferredForeignIncomeTaxExpenseBenefit', 'DeferredIncomeTaxExpenseBenefit', 'DeferredIncomeTaxesAndTaxCredits', 'DeferredIncomeTaxLiabilities', 'DeferredIncomeTaxLiabilitiesNet', 'DeferredRevenue', 'DeferredTaxAssetsGross', 'DeferredTaxAssetsLiabilitiesNet', 'DeferredTaxAssetsNet', 'DeferredTaxLiabilities', 'DefinedContributionPlanCostRecognized', 'Depreciation', 'DepreciationAmortizationAndAccretionNet', 'DepreciationAmortizationAndOther', 'DepreciationAndAmortization', 'DepreciationDepletionAndAmortization', 'DerivativeCollateralObligationToReturnCash', 'DerivativeCollateralRightToReclaimCash', 'DerivativeFairValueOfDerivativeNet', 'DerivativeLiabilityCollateralRightToReclaimCashOffset', 'DerivativeNotionalAmount', 'Dividends', 'DividendsCash', 'DividendsPayableAmountPerShare', 'DividendsPayableCurrent', 'DistributedEarnings', 'EarningsPerShareBasic', 'EarningsPerShareDiluted', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents', 'EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations', 'EmployeeRelatedLiabilitiesCurrent', 'EmployeeRelatedLiabilitiesCurrentAndNoncurrent', 'EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense', 'FinanceLeaseInterestExpense', 'FinanceLeaseInterestPaymentOnLiability', 'FinanceLeaseLiability', 'FinanceLeaseLiabilityCurrent', 'FinanceLeaseLiabilityNoncurrent', 'FinanceLeaseLiabilityPaymentsDue', 'FinanceLeaseLiabilityPaymentsDueAfterYearFive', 'FinanceLeaseLiabilityPaymentsDueNextTwelveMonths', 'FinanceLeaseLiabilityPaymentsDueYearFive', 'FinanceLeaseLiabilityPaymentsDueYearFour', 'FinanceLeaseLiabilityPaymentsDueYearThree', 'FinanceLeaseLiabilityPaymentsDueYearTwo', 'FinanceLeaseLiabilityPaymentsRemainderOfFiscalYear', 'FinanceLeaseLiabilityUndiscountedExcessAmount', 'FinanceLeasePrincipalPayments', 'FinanceLeaseRightOfUseAsset', 'FinancingReceivableAllowanceForCreditLosses', 'FiniteLivedIntangibleAssetsNet', 'FixturesAndEquipmentGross', 'GainLossOnInvestments', 'GainLossOnInvestmentsAndDerivativeInstruments', 'GainLossOnSaleOfBusiness', 'GainsLossesOnExtinguishmentOfDebt', 'GeneralAndAdministrativeExpense', 'Goodwill', 'GrossProfit', 'ImpairmentOfIntangibleAssetsExcludingGoodwill', 'ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill', 'IncomeLossFromContinuingOperations', 'IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', 'IncomeLossFromContinuingOperationsPerBasicShare', 'IncomeLossFromContinuingOperationsPerDilutedShare', 'InterestAndDebtExpense', 'IncomeTaxExpenseBenefit', 'IncomeTaxesPaid', 'IncomeTaxesPaidNet', 'IncreaseDecreaseInAccountsAndOtherReceivables', 'IncreaseDecreaseInAccountsPayable', 'IncreaseDecreaseInAccountsReceivable', 'IncreaseDecreaseInAccruedLiabilities', 'IncreaseDecreaseInAccruedIncomeTaxesPayable', 'IncreaseDecreaseInAccruedTaxesPayable', 'IncreaseDecreaseInContractWithCustomerLiability', 'IncreaseDecreaseInDeferredIncomeTaxes', 'IncreaseDecreaseInInventories', 'IncreaseDecreaseInOtherCurrentAssets', 'IncreaseDecreaseInOtherCurrentLiabilities', 'IncreaseDecreaseInOtherNoncurrentAssets', 'IncreaseDecreaseInOtherNoncurrentLiabilities', 'IncreaseDecreaseInPensionPlanObligations', 'IncrementalCommonSharesAttributableToShareBasedPaymentArrangements', 'InterestExpenseDebt', 'InterestIncomeExpenseNet', 'InterestPaid', 'InterestPaidNet', 'InventoryNet', 'InvestmentIncomeInterest', 'Land', 'LeaseAndRentalExpense', 'LesseeOperatingLeaseLiabilityPaymentsDue', 'LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFive', 'LesseeOperatingLeaseLiabilityPaymentsDueYearFour', 'LesseeOperatingLeaseLiabilityPaymentsDueYearThree', 'LesseeOperatingLeaseLiabilityPaymentsDueYearTwo', 'LesseeOperatingLeaseLiabilityPaymentsRemainderOfFiscalYear', 'LettersOfCreditOutstandingAmount', 'Liabilities', 'LiabilitiesAndStockholdersEquity', 'LiabilitiesCurrent', 'LineOfCredit', 'LineOfCreditFacilityMaximumBorrowingCapacity', 'LongTermDebt', 'LongTermDebtCurrent', 'LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree', 'LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo', 'LongTermDebtMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear', 'LongTermDebtNoncurrent', 'LongTermInvestments', 'LossContingencyEstimateOfPossibleLoss', 'MachineryAndEquipmentGross', 'MarketableSecuritiesCurrent', 'MarketableSecuritiesNoncurrent', 'MinorityInterest', 'NetCashProvidedByUsedInFinancingActivities', 'NetCashProvidedByUsedInInvestingActivities', 'NetCashProvidedByUsedInOperatingActivities', 'NetIncomeLoss', 'NetIncomeLossAttributableToNoncontrollingInterest', 'NetIncomeLossAttributableToNonredeemableNoncontrollingInterest', 'NetIncomeLossAttributableToRedeemableNoncontrollingInterest', 'NonoperatingIncomeExpense', 'NoninterestIncome', 'NotesReceivableNet', 'OperatingExpenses', 'OperatingIncomeLoss', 'OperatingLeaseCost', 'OperatingLeaseLiability', 'OperatingLeaseLiabilityCurrent', 'OperatingLeaseLiabilityNoncurrent', 'OperatingLeaseRightOfUseAsset', 'OtherAccruedLiabilitiesCurrent', 'OtherAssetsCurrent', 'OtherAssetsNoncurrent', 'OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossafterReclassificationandTax', 'OtherComprehensiveIncomeLossDerivativeInstrumentGainLossbeforeReclassificationafterTax', 'OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax', 'OtherComprehensiveIncomeLossNetOfTax', 'OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent', 'OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax', 'OtherIncome', 'OtherLiabilitiesCurrent', 'OtherLiabilitiesNoncurrent', 'OtherLongTermDebt', 'OtherNoncashIncomeExpense', 'PaymentsForCapitalImprovements', 'PaymentsOfDividends', 'PaymentsOfDividendsMinorityInterest', 'PaymentsForProceedsFromBusinessesAndInterestInAffiliates', 'PaymentsForProceedsFromOtherInvestingActivities', 'PaymentsForRent', 'PaymentsForRepurchaseOfCommonStock', 'PaymentsOfDebtExtinguishmentCosts', 'PaymentsToAcquireInvestments', 'PaymentsToAcquirePropertyPlantAndEquipment', 'PreferredStockSharesOutstanding', 'PreferredStockValue', 'PrepaidExpenseAndOtherAssetsCurrent', 'PrepaidExpenseCurrent', 'ProceedsFromDebtMaturingInMoreThanThreeMonths', 'ProceedsFromDebtNetOfIssuanceCosts', 'ProceedsFromDivestitureOfBusinesses', 'ProceedsFromInvestments', 'ProceedsFromIssuanceOfCommonStock', 'ProceedsFromIssuanceOfDebt', 'ProceedsFromIssuanceOfLongTermDebt', 'ProceedsFromIssuanceOfUnsecuredDebt', 'ProceedsFromIssuanceOrSaleOfEquity', 'ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities', 'ProceedsFromPaymentsForOtherFinancingActivities', 'ProceedsFromPaymentsToMinorityShareholders', 'ProceedsFromRepaymentsOfShortTermDebt', 'ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess', 'ProceedsFromSaleOfPropertyPlantAndEquipment', 'ProceedsFromStockOptionsExercised', 'ProfitLoss', 'PropertyPlantAndEquipmentGross', 'PropertyPlantAndEquipmentNet', 'ReceivablesNetCurrent', 'RedeemableNoncontrollingInterestEquityCarryingAmount', 'RepaymentsOfDebtMaturingInMoreThanThreeMonths', 'RepaymentsOfLongTermDebt', 'ResearchAndDevelopmentExpense', 'RestrictedCash', 'RestrictedCashAndCashEquivalents', 'RestrictedStockExpense', 'RestructuringCharges', 'RetainedEarningsAccumulatedDeficit', 'Revenues', 'RevenueFromContractWithCustomerExcludingAssessedTax', 'SecuredLongTermDebt', 'SellingAndMarketingExpense', 'SellingGeneralAndAdministrativeExpense', 'ShareBasedCompensation', 'ShortTermBorrowings', 'ShortTermInvestments', 'StockholdersEquity', 'StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest', 'StockholdersEquityOther', 'StockIssuedDuringPeriodValueNewIssues', 'StockOptionPlanExpense', 'StockRedeemedOrCalledDuringPeriodValue', 'StockRepurchasedDuringPeriodValue', 'StockRepurchasedAndRetiredDuringPeriodValue', 'TaxesPayableCurrent', 'TradingSecuritiesDebt', 'TreasuryStockAcquiredAverageCostPerShare', 'TreasuryStockSharesAcquired', 'UnrealizedGainLossOnInvestments', 'UnrecognizedTaxBenefits', 'UnsecuredDebt', 'VariableLeaseCost', 'WeightedAverageNumberOfDilutedSharesOutstanding', 'WeightedAverageNumberOfSharesOutstandingBasic', 'WeightedAverageNumberDilutedSharesOutstandingAdjustment']",
+                        "description": "Fact or concept from the SEC taxonomy, in UpperCamelCase. Defaults to, 'Revenues'. AAPL, MSFT, GOOG, BRK-A currently report revenue as, 'RevenueFromContractWithCustomerExcludingAssessedTax'. In previous years, they have reported as 'Revenues'.",
+                        "default": "Revenues",
+                        "optional": true,
+                        "choices": [
+                            "AccountsPayableCurrent",
+                            "AccountsReceivableNet",
+                            "AccountsReceivableNetCurrent",
+                            "AccrualForTaxesOtherThanIncomeTaxesCurrent",
+                            "AccrualForTaxesOtherThanIncomeTaxesCurrentAndNoncurrent",
+                            "AccruedIncomeTaxesCurrent",
+                            "AccruedIncomeTaxesNoncurrent",
+                            "AccruedInsuranceCurrent",
+                            "AccruedLiabilitiesCurrent",
+                            "AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment",
+                            "AccumulatedOtherComprehensiveIncomeLossNetOfTax",
+                            "AcquisitionsNetOfCashAcquiredAndPurchasesOfIntangibleAndOtherAssets",
+                            "AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue",
+                            "AdvertisingExpense",
+                            "AllocatedShareBasedCompensationExpense",
+                            "AntidilutiveSecuritiesExcludedFromComputationOfEarningsPerShareAmount",
+                            "AssetImpairmentCharges",
+                            "Assets",
+                            "AssetsCurrent",
+                            "AssetsNoncurrent",
+                            "BuildingsAndImprovementsGross",
+                            "CapitalLeaseObligationsCurrent",
+                            "CapitalLeaseObligationsNoncurrent",
+                            "Cash",
+                            "CashAndCashEquivalentsAtCarryingValue",
+                            "CashCashEquivalentsAndShortTermInvestments",
+                            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+                            "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",
+                            "CommercialPaper",
+                            "CommitmentsAndContingencies",
+                            "CommonStockDividendsPerShareCashPaid",
+                            "CommonStockDividendsPerShareDeclared",
+                            "CommonStocksIncludingAdditionalPaidInCapital",
+                            "ComprehensiveIncomeNetOfTax",
+                            "ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest",
+                            "ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest",
+                            "ConstructionInProgressGross",
+                            "ContractWithCustomerAssetNet",
+                            "ContractWithCustomerLiability",
+                            "ContractWithCustomerLiabilityCurrent",
+                            "ContractWithCustomerLiabilityNoncurrent",
+                            "CostOfGoodsAndServicesSold",
+                            "CostOfRevenue",
+                            "CurrentFederalTaxExpenseBenefit",
+                            "CurrentForeignTaxExpenseBenefit",
+                            "CurrentIncomeTaxExpenseBenefit",
+                            "CurrentStateAndLocalTaxExpenseBenefit",
+                            "DebtInstrumentFaceAmount",
+                            "DebtInstrumentFairValue",
+                            "DebtLongtermAndShorttermCombinedAmount",
+                            "DeferredFederalIncomeTaxExpenseBenefit",
+                            "DeferredForeignIncomeTaxExpenseBenefit",
+                            "DeferredIncomeTaxExpenseBenefit",
+                            "DeferredIncomeTaxLiabilities",
+                            "DeferredIncomeTaxLiabilitiesNet",
+                            "DeferredIncomeTaxesAndTaxCredits",
+                            "DeferredRevenue",
+                            "DeferredTaxAssetsGross",
+                            "DeferredTaxAssetsLiabilitiesNet",
+                            "DeferredTaxAssetsNet",
+                            "DeferredTaxLiabilities",
+                            "DefinedContributionPlanCostRecognized",
+                            "Depreciation",
+                            "DepreciationAmortizationAndAccretionNet",
+                            "DepreciationAmortizationAndOther",
+                            "DepreciationAndAmortization",
+                            "DepreciationDepletionAndAmortization",
+                            "DerivativeCollateralObligationToReturnCash",
+                            "DerivativeCollateralRightToReclaimCash",
+                            "DerivativeFairValueOfDerivativeNet",
+                            "DerivativeLiabilityCollateralRightToReclaimCashOffset",
+                            "DerivativeNotionalAmount",
+                            "DistributedEarnings",
+                            "Dividends",
+                            "DividendsCash",
+                            "DividendsPayableAmountPerShare",
+                            "DividendsPayableCurrent",
+                            "EarningsPerShareBasic",
+                            "EarningsPerShareDiluted",
+                            "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents",
+                            "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+                            "EmployeeRelatedLiabilitiesCurrent",
+                            "EmployeeRelatedLiabilitiesCurrentAndNoncurrent",
+                            "EmployeeServiceShareBasedCompensationTaxBenefitFromCompensationExpense",
+                            "FinanceLeaseInterestExpense",
+                            "FinanceLeaseInterestPaymentOnLiability",
+                            "FinanceLeaseLiability",
+                            "FinanceLeaseLiabilityCurrent",
+                            "FinanceLeaseLiabilityNoncurrent",
+                            "FinanceLeaseLiabilityPaymentsDue",
+                            "FinanceLeaseLiabilityPaymentsDueAfterYearFive",
+                            "FinanceLeaseLiabilityPaymentsDueNextTwelveMonths",
+                            "FinanceLeaseLiabilityPaymentsDueYearFive",
+                            "FinanceLeaseLiabilityPaymentsDueYearFour",
+                            "FinanceLeaseLiabilityPaymentsDueYearThree",
+                            "FinanceLeaseLiabilityPaymentsDueYearTwo",
+                            "FinanceLeaseLiabilityPaymentsRemainderOfFiscalYear",
+                            "FinanceLeaseLiabilityUndiscountedExcessAmount",
+                            "FinanceLeasePrincipalPayments",
+                            "FinanceLeaseRightOfUseAsset",
+                            "FinancingReceivableAllowanceForCreditLosses",
+                            "FiniteLivedIntangibleAssetsNet",
+                            "FixturesAndEquipmentGross",
+                            "GainLossOnInvestments",
+                            "GainLossOnInvestmentsAndDerivativeInstruments",
+                            "GainLossOnSaleOfBusiness",
+                            "GainsLossesOnExtinguishmentOfDebt",
+                            "GeneralAndAdministrativeExpense",
+                            "Goodwill",
+                            "GrossProfit",
+                            "ImpairmentOfIntangibleAssetsExcludingGoodwill",
+                            "ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill",
+                            "IncomeLossFromContinuingOperations",
+                            "IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity",
+                            "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",
+                            "IncomeLossFromContinuingOperationsPerBasicShare",
+                            "IncomeLossFromContinuingOperationsPerDilutedShare",
+                            "IncomeTaxExpenseBenefit",
+                            "IncomeTaxesPaid",
+                            "IncomeTaxesPaidNet",
+                            "IncreaseDecreaseInAccountsAndOtherReceivables",
+                            "IncreaseDecreaseInAccountsPayable",
+                            "IncreaseDecreaseInAccountsReceivable",
+                            "IncreaseDecreaseInAccruedIncomeTaxesPayable",
+                            "IncreaseDecreaseInAccruedLiabilities",
+                            "IncreaseDecreaseInAccruedTaxesPayable",
+                            "IncreaseDecreaseInContractWithCustomerLiability",
+                            "IncreaseDecreaseInDeferredIncomeTaxes",
+                            "IncreaseDecreaseInInventories",
+                            "IncreaseDecreaseInOtherCurrentAssets",
+                            "IncreaseDecreaseInOtherCurrentLiabilities",
+                            "IncreaseDecreaseInOtherNoncurrentAssets",
+                            "IncreaseDecreaseInOtherNoncurrentLiabilities",
+                            "IncreaseDecreaseInPensionPlanObligations",
+                            "IncrementalCommonSharesAttributableToShareBasedPaymentArrangements",
+                            "InterestAndDebtExpense",
+                            "InterestExpenseDebt",
+                            "InterestIncomeExpenseNet",
+                            "InterestPaid",
+                            "InterestPaidNet",
+                            "InventoryNet",
+                            "InvestmentIncomeInterest",
+                            "Land",
+                            "LeaseAndRentalExpense",
+                            "LesseeOperatingLeaseLiabilityPaymentsDue",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueAfterYearFive",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueYearFive",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueYearFour",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueYearThree",
+                            "LesseeOperatingLeaseLiabilityPaymentsDueYearTwo",
+                            "LesseeOperatingLeaseLiabilityPaymentsRemainderOfFiscalYear",
+                            "LettersOfCreditOutstandingAmount",
+                            "Liabilities",
+                            "LiabilitiesAndStockholdersEquity",
+                            "LiabilitiesCurrent",
+                            "LineOfCredit",
+                            "LineOfCreditFacilityMaximumBorrowingCapacity",
+                            "LongTermDebt",
+                            "LongTermDebtCurrent",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearTwo",
+                            "LongTermDebtMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear",
+                            "LongTermDebtNoncurrent",
+                            "LongTermInvestments",
+                            "LossContingencyEstimateOfPossibleLoss",
+                            "MachineryAndEquipmentGross",
+                            "MarketableSecuritiesCurrent",
+                            "MarketableSecuritiesNoncurrent",
+                            "MinorityInterest",
+                            "NetCashProvidedByUsedInFinancingActivities",
+                            "NetCashProvidedByUsedInInvestingActivities",
+                            "NetCashProvidedByUsedInOperatingActivities",
+                            "NetIncomeLoss",
+                            "NetIncomeLossAttributableToNoncontrollingInterest",
+                            "NetIncomeLossAttributableToNonredeemableNoncontrollingInterest",
+                            "NetIncomeLossAttributableToRedeemableNoncontrollingInterest",
+                            "NoncurrentAssets",
+                            "NoncurrentAssets",
+                            "NoninterestIncome",
+                            "NonoperatingIncomeExpense",
+                            "NotesReceivableNet",
+                            "OperatingExpenses",
+                            "OperatingIncomeLoss",
+                            "OperatingLeaseCost",
+                            "OperatingLeaseLiability",
+                            "OperatingLeaseLiabilityCurrent",
+                            "OperatingLeaseLiabilityNoncurrent",
+                            "OperatingLeaseRightOfUseAsset",
+                            "OtherAccruedLiabilitiesCurrent",
+                            "OtherAssetsCurrent",
+                            "OtherAssetsNoncurrent",
+                            "OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax",
+                            "OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax",
+                            "OtherComprehensiveIncomeLossDerivativeInstrumentGainLossafterReclassificationandTax",
+                            "OtherComprehensiveIncomeLossDerivativeInstrumentGainLossbeforeReclassificationafterTax",
+                            "OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax",
+                            "OtherComprehensiveIncomeLossNetOfTax",
+                            "OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent",
+                            "OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax",
+                            "OtherIncome",
+                            "OtherLiabilitiesCurrent",
+                            "OtherLiabilitiesNoncurrent",
+                            "OtherLongTermDebt",
+                            "OtherNoncashIncomeExpense",
+                            "PaymentsForCapitalImprovements",
+                            "PaymentsForProceedsFromBusinessesAndInterestInAffiliates",
+                            "PaymentsForProceedsFromOtherInvestingActivities",
+                            "PaymentsForRent",
+                            "PaymentsForRepurchaseOfCommonStock",
+                            "PaymentsOfDebtExtinguishmentCosts",
+                            "PaymentsOfDividends",
+                            "PaymentsOfDividendsMinorityInterest",
+                            "PaymentsToAcquireInvestments",
+                            "PaymentsToAcquirePropertyPlantAndEquipment",
+                            "PreferredStockSharesOutstanding",
+                            "PreferredStockValue",
+                            "PrepaidExpenseAndOtherAssetsCurrent",
+                            "PrepaidExpenseCurrent",
+                            "ProceedsFromDebtMaturingInMoreThanThreeMonths",
+                            "ProceedsFromDebtNetOfIssuanceCosts",
+                            "ProceedsFromDivestitureOfBusinesses",
+                            "ProceedsFromInvestments",
+                            "ProceedsFromIssuanceOfCommonStock",
+                            "ProceedsFromIssuanceOfDebt",
+                            "ProceedsFromIssuanceOfLongTermDebt",
+                            "ProceedsFromIssuanceOfUnsecuredDebt",
+                            "ProceedsFromIssuanceOrSaleOfEquity",
+                            "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",
+                            "ProceedsFromPaymentsForOtherFinancingActivities",
+                            "ProceedsFromPaymentsToMinorityShareholders",
+                            "ProceedsFromRepaymentsOfShortTermDebt",
+                            "ProceedsFromRepaymentsOfShortTermDebtMaturingInThreeMonthsOrLess",
+                            "ProceedsFromSaleOfPropertyPlantAndEquipment",
+                            "ProceedsFromStockOptionsExercised",
+                            "ProfitLoss",
+                            "PropertyPlantAndEquipmentGross",
+                            "PropertyPlantAndEquipmentNet",
+                            "ReceivablesNetCurrent",
+                            "RedeemableNoncontrollingInterestEquityCarryingAmount",
+                            "RepaymentsOfDebtMaturingInMoreThanThreeMonths",
+                            "RepaymentsOfLongTermDebt",
+                            "ResearchAndDevelopmentExpense",
+                            "RestrictedCash",
+                            "RestrictedCashAndCashEquivalents",
+                            "RestrictedStockExpense",
+                            "RestructuringCharges",
+                            "RetainedEarningsAccumulatedDeficit",
+                            "RevenueFromContractWithCustomerExcludingAssessedTax",
+                            "Revenues",
+                            "SecuredLongTermDebt",
+                            "SellingAndMarketingExpense",
+                            "SellingGeneralAndAdministrativeExpense",
+                            "ShareBasedCompensation",
+                            "ShortTermBorrowings",
+                            "ShortTermInvestments",
+                            "StockIssuedDuringPeriodValueNewIssues",
+                            "StockOptionPlanExpense",
+                            "StockRedeemedOrCalledDuringPeriodValue",
+                            "StockRepurchasedAndRetiredDuringPeriodValue",
+                            "StockRepurchasedDuringPeriodValue",
+                            "StockholdersEquity",
+                            "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest",
+                            "StockholdersEquityOther",
+                            "TaxesPayableCurrent",
+                            "TradingSecuritiesDebt",
+                            "TreasuryStockAcquiredAverageCostPerShare",
+                            "TreasuryStockSharesAcquired",
+                            "UnrealizedGainLossOnInvestments",
+                            "UnrecognizedTaxBenefits",
+                            "UnsecuredDebt",
+                            "VariableLeaseCost",
+                            "WeightedAverageNumberDilutedSharesOutstandingAdjustment",
+                            "WeightedAverageNumberOfDilutedSharesOutstanding",
+                            "WeightedAverageNumberOfSharesOutstandingBasic"
+                        ]
+                    },
+                    {
+                        "name": "year",
+                        "type": "int",
+                        "description": "The year to retrieve the data for. If not provided, the current year is used. When symbol(s) are provided, excluding the year will return all reported values for the concept.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['fy', 'q1', 'q2', 'q3', 'q4']",
+                        "description": "The fiscal period to retrieve the data for. If not provided, the most recent quarter is used. This parameter is ignored when a symbol is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "instantaneous",
+                        "type": "bool",
+                        "description": "Whether to retrieve instantaneous data. See the notes above for more information. Defaults to False. Some facts are only available as instantaneous data. The function will automatically attempt the inverse of this parameter if the initial fiscal quarter request fails. This parameter is ignored when a symbol is supplied.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "Whether to use cache for the request. Defaults to True.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CompareCompanyFacts]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['sec']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "The reported value of the fact or concept.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "reported_date",
+                        "type": "date",
+                        "description": "The date when the report was filed.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_beginning",
+                        "type": "date",
+                        "description": "The start date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The fiscal year.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "str",
+                        "description": "The fiscal period of the fiscal year.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "sec": [
+                    {
+                        "name": "cik",
+                        "type": "Union[str, int]",
+                        "description": "Central Index Key (CIK) for the requested entity.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "location",
+                        "type": "str",
+                        "description": "Geographic location of the reporting entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "form",
+                        "type": "str",
+                        "description": "The SEC form associated with the fact or concept.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frame",
+                        "type": "str",
+                        "description": "The frame ID associated with the fact or concept, if applicable.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "accession",
+                        "type": "str",
+                        "description": "SEC filing accession number associated with the reported fact or concept.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "fact",
+                        "type": "str",
+                        "description": "The display name of the fact or concept.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "unit",
+                        "type": "str",
+                        "description": "The unit of measurement for the fact or concept.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CompareCompanyFacts"
+        },
         "/equity/estimates/price_target": {
             "deprecated": {
                 "flag": null,
@@ -7651,6 +8165,234 @@
             },
             "model": "ForwardSalesEstimates"
         },
+        "/equity/estimates/forward_ebitda": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get forward EBITDA estimates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.estimates.forward_ebitda(provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL', fiscal_period=annual, provider='intrinio')\nobb.equity.estimates.forward_ebitda(symbol='AAPL,MSFT', fiscal_period=quarter, provider='fmp')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fmp', 'intrinio']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
+                        "default": "fmp",
+                        "optional": true
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "The future fiscal period to retrieve estimates for.",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_historical",
+                        "type": "bool",
+                        "description": "If True, the data will include all past data and the limit will be ignored.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "fiscal_period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Filter for only full-year or quarterly estimates.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "estimate_type",
+                        "type": "Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']",
+                        "description": "Limit the EBITDA estimates to this type.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ForwardEbitdaEstimates]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fmp', 'intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the entity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_updated",
+                        "type": "date",
+                        "description": "The date of the last update.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "period_ending",
+                        "type": "date",
+                        "description": "The end date of the reporting period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "Fiscal year for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_period",
+                        "type": "str",
+                        "description": "Fiscal quarter for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_year",
+                        "type": "int",
+                        "description": "Calendar year for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "calendar_period",
+                        "type": "Union[int, str]",
+                        "description": "Calendar quarter for the estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low_estimate",
+                        "type": "int",
+                        "description": "The EBITDA estimate low for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high_estimate",
+                        "type": "int",
+                        "description": "The EBITDA estimate high for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "mean",
+                        "type": "int",
+                        "description": "The EBITDA estimate mean for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "median",
+                        "type": "int",
+                        "description": "The EBITDA estimate median for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "int",
+                        "description": "The EBITDA estimate standard deviation for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "number_of_analysts",
+                        "type": "int",
+                        "description": "Number of analysts providing estimates for the period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [],
+                "intrinio": [
+                    {
+                        "name": "conensus_type",
+                        "type": "Literal['ebitda', 'ebit', 'enterprise_value', 'cash_flow_per_share', 'pretax_income']",
+                        "description": "The type of estimate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "ForwardEbitdaEstimates"
+        },
         "/equity/estimates/forward_eps": {
             "deprecated": {
                 "flag": null,
@@ -8052,7 +8794,7 @@
                         "choices": null
                     },
                     {
-                        "name": "last_udpated",
+                        "name": "last_updated",
                         "type": "date",
                         "description": "The date the data was last updated.",
                         "default": null,
@@ -27574,214 +28316,6 @@
                 "fmp": []
             },
             "model": "EtfHoldingsDate"
-        },
-        "/etf/holdings_performance": {
-            "deprecated": {
-                "flag": true,
-                "message": "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2."
-            },
-            "description": "Get the recent price performance of each ticker held in the ETF.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.etf.holdings_performance(symbol='XLK', provider='fmp')\n```\n\n",
-            "parameters": {
-                "standard": [
-                    {
-                        "name": "symbol",
-                        "type": "Union[str, List[str]]",
-                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fmp']",
-                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fmp' if there is no default.",
-                        "default": "fmp",
-                        "optional": true
-                    }
-                ],
-                "fmp": []
-            },
-            "returns": {
-                "OBBject": [
-                    {
-                        "name": "results",
-                        "type": "List[EtfHoldingsPerformance]",
-                        "description": "Serializable results."
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Optional[Literal['fmp']]",
-                        "description": "Provider name."
-                    },
-                    {
-                        "name": "warnings",
-                        "type": "Optional[List[Warning_]]",
-                        "description": "List of warnings."
-                    },
-                    {
-                        "name": "chart",
-                        "type": "Optional[Chart]",
-                        "description": "Chart object."
-                    },
-                    {
-                        "name": "extra",
-                        "type": "Dict[str, Any]",
-                        "description": "Extra info."
-                    }
-                ]
-            },
-            "data": {
-                "standard": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol representing the entity requested in the data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "one_day",
-                        "type": "float",
-                        "description": "One-day return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "wtd",
-                        "type": "float",
-                        "description": "Week to date return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "one_week",
-                        "type": "float",
-                        "description": "One-week return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "mtd",
-                        "type": "float",
-                        "description": "Month to date return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "one_month",
-                        "type": "float",
-                        "description": "One-month return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "qtd",
-                        "type": "float",
-                        "description": "Quarter to date return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "three_month",
-                        "type": "float",
-                        "description": "Three-month return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "six_month",
-                        "type": "float",
-                        "description": "Six-month return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "ytd",
-                        "type": "float",
-                        "description": "Year to date return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "one_year",
-                        "type": "float",
-                        "description": "One-year return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "two_year",
-                        "type": "float",
-                        "description": "Two-year return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "three_year",
-                        "type": "float",
-                        "description": "Three-year return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "four_year",
-                        "type": "float",
-                        "description": "Four-year",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "five_year",
-                        "type": "float",
-                        "description": "Five-year return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "ten_year",
-                        "type": "float",
-                        "description": "Ten-year return.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "max",
-                        "type": "float",
-                        "description": "Return from the beginning of the time series.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
-                "fmp": [
-                    {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "The ticker symbol.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
-            },
-            "model": "EtfHoldingsPerformance"
         },
         "/etf/equity_exposure": {
             "deprecated": {
