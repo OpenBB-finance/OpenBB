@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "build_tsc": "tsc && vite build",
-    "deploy": "npm run build && mv dist/index.html ../../cli/openbb_cli/assets/interactive/plotly.html",
+    "deploy": "npm run build && mv dist/index.html ../../openbb_platform/obbject_extensions/charting/openbb_charting/core/plotly.html",
     "preview": "vite preview"
   },
   "dependencies": {
