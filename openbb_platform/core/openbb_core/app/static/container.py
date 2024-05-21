@@ -67,6 +67,6 @@ class Container:
                 if self._check_credentials(p):
                     return p
             raise OpenBBError(
-                f"Fallback failed due to missing credentials, please specify the provider. Tried: {', '.join(providers)}."
+                f"Fallback failed, please specify the provider. Tried: {', '.join(providers)}."
             )
         return choice
