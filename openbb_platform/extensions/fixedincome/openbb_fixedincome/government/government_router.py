@@ -77,8 +77,8 @@ async def us_yield_curve(
     deprecated=True,
     deprecation=OpenBBDeprecationWarning(
         message="This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead.",
-        since=(4, 1),
-        expected_removal=(4, 3),
+        since=(4, 2),
+        expected_removal=(4, 4),
     ),
     examples=[
         APIEx(parameters={"provider": "ecb"}),
