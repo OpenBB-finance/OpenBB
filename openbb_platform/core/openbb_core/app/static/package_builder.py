@@ -1396,7 +1396,7 @@ class ReferenceGenerator:
         )
 
     @classmethod
-    def _get_provider_parameter_info(cls, model: str) -> Dict[str, Optional[str]]:
+    def _get_provider_parameter_info(cls, model: str) -> Dict[str, Any]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
 
         Parameters
@@ -1406,7 +1406,7 @@ class ReferenceGenerator:
 
         Returns
         -------
-        Dict[str, str]
+        Dict[str, Any]
             Dictionary of the provider parameter information
         """
         pi_model_provider = cls.pi.model_providers[model]
