@@ -2,15 +2,13 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
-from warnings import simplefilter, warn
 
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated, deprecated
+from typing_extensions import Annotated
 
 
 class ROUTER_etf(Container):
@@ -20,7 +18,6 @@ class ROUTER_etf(Container):
     historical
     holdings
     holdings_date
-    holdings_performance
     info
     price_performance
     search
@@ -689,121 +686,6 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-            )
-        )
-
-    @exception_handler
-    @validate
-    @deprecated(
-        "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2.",
-        category=OpenBBDeprecationWarning,
-    )
-    def holdings_performance(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
-            ),
-        ],
-        provider: Annotated[
-            Optional[Literal["fmp"]],
-            OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
-            ),
-        ] = None,
-        **kwargs
-    ) -> OBBject:
-        """Get the recent price performance of each ticker held in the ETF.
-
-        Parameters
-        ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
-        provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[EtfHoldingsPerformance]
-                Serializable results.
-            provider : Optional[Literal['fmp']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
-
-        EtfHoldingsPerformance
-        ----------------------
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data.
-        one_day : Optional[float]
-            One-day return.
-        wtd : Optional[float]
-            Week to date return.
-        one_week : Optional[float]
-            One-week return.
-        mtd : Optional[float]
-            Month to date return.
-        one_month : Optional[float]
-            One-month return.
-        qtd : Optional[float]
-            Quarter to date return.
-        three_month : Optional[float]
-            Three-month return.
-        six_month : Optional[float]
-            Six-month return.
-        ytd : Optional[float]
-            Year to date return.
-        one_year : Optional[float]
-            One-year return.
-        two_year : Optional[float]
-            Two-year return.
-        three_year : Optional[float]
-            Three-year return.
-        four_year : Optional[float]
-            Four-year
-        five_year : Optional[float]
-            Five-year return.
-        ten_year : Optional[float]
-            Ten-year return.
-        max : Optional[float]
-            Return from the beginning of the time series.
-
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.etf.holdings_performance(symbol='XLK', provider='fmp')
-        """  # noqa: E501
-
-        simplefilter("always", DeprecationWarning)
-        warn(
-            "This endpoint is deprecated; pass a list of holdings symbols directly to `/equity/price/performance` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.2.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-
-        return self._run(
-            "/etf/holdings_performance",
-            **filter_inputs(
-                provider_choices={
-                    "provider": self._get_provider(
-                        provider,
-                        "/etf/holdings_performance",
-                        ("fmp",),
-                    )
-                },
-                standard_params={
-                    "symbol": symbol,
-                },
-                extra_params=kwargs,
-                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
