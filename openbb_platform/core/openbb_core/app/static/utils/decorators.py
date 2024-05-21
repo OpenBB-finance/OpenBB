@@ -65,7 +65,12 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                         [
                             str(i)
                             for i in err.get("loc", ())
-                            if i not in ("standard_params", "extra_params")
+                            if i
+                            not in (
+                                "standard_params",
+                                "extra_params",
+                                "provider_choices",
+                            )
                         ]
                     )
                     _input = err.get("input", "")

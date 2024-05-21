@@ -126,8 +126,8 @@ class ProviderInterface(metaclass=SingletonMeta):
         return self._map
 
     @property
-    def credentials(self) -> List[str]:
-        """Dictionary of required credentials by provider."""
+    def credentials(self) -> Dict[str, List[str]]:
+        """Map credentials to providers."""
         return self._registry_map.credentials
 
     @property

@@ -1,6 +1,6 @@
 """Defaults model."""
 
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -10,7 +10,9 @@ class Defaults(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
-    routes: Dict[str, Dict[str, Optional[str]]] = Field(default_factory=dict)
+    routes: Dict[str, Dict[str, Optional[Union[str, List[str]]]]] = Field(
+        default_factory=dict
+    )
 
     def __repr__(self) -> str:
         """Return string representation."""

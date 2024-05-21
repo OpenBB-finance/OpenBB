@@ -3,7 +3,6 @@
 from typing import Any, Optional, Tuple
 
 from openbb_core.app.command_runner import CommandRunner
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -24,18 +23,29 @@ class Container:
             return obbject
         return getattr(obbject, "to_" + output_type)()
 
+    def _check_credentials(self, provider: str) -> bool:
+        """Check required credentials are populated."""
+        credentials = self._command_runner.user_settings.credentials
+        required = credentials.providers.get(provider, [])
+        current = credentials.model_dump(exclude_none=True)
+        return all(item in current for item in required)
+
     def _get_provider(
         self, choice: Optional[str], cmd: str, available: Tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution."""
         if choice is None:
-            if config_default := self._command_runner.user_settings.defaults.routes.get(
-                cmd, {}
-            ).get("provider"):
-                if config_default in available:
-                    return config_default
-                raise OpenBBError(
-                    f"provider '{config_default}' is not available. Choose from: {', '.join(available)}."
+            routes = self._command_runner.user_settings.defaults.routes
+            if provider := (routes.get(cmd, {}).get("provider") or available):
+                provider_iterable = (
+                    [provider] if isinstance(provider, str) else provider
                 )
+                for p in provider_iterable:
+                    if self._check_credentials(p):
+                        return p
+                    continue
+            # Warn that that no provider with keys was found
+            # We fallback to the first provider that does not need keys
+            # We fallback to the first provider
             return available[0]
         return choice
