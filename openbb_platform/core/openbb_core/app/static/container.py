@@ -27,9 +27,10 @@ class Container:
     def _check_credentials(self, provider: str) -> bool:
         """Check required credentials are populated."""
         credentials = self._command_runner.user_settings.credentials
-        required = credentials.origins.get(provider, [])
-        current = credentials.model_dump(exclude_none=True)
-        return all(item in current for item in required)
+        if provider not in credentials.origins:
+            return False
+        required = credentials.origins.get(provider)
+        return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
         self, choice: Optional[str], cmd: str, available: Tuple[str, ...]
@@ -37,10 +38,13 @@ class Container:
         """Get the provider to use in execution."""
         if choice is None:
             routes = self._command_runner.user_settings.defaults.routes
-            if provider := (routes.get(cmd, {}).get("provider") or available):
-                for p in [provider] if isinstance(provider, str) else provider:
-                    if self._check_credentials(p):
-                        return p
-                    continue
-            raise OpenBBError("Provider fallback failed, please specify the provider.")
+            provider = routes.get(cmd, {}).get("provider", []) or available
+            providers = [provider] if isinstance(provider, str) else provider
+            for p in providers:
+                if self._check_credentials(p):
+                    return p
+                continue
+            raise OpenBBError(
+                f"Please specify the provider. Fallback failed, tried -> {', '.join(providers)}."
+            )
         return choice
