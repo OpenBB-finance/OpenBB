@@ -434,7 +434,7 @@ class CLIController(BaseController):
                 script_inputs = []
                 # Capture ARGV either as list if args separated by commas or as single value
                 if routine_args := ns_parser.routine_args:
-                    pattern = r'\[(.*?)\]'
+                    pattern = r"\[(.*?)\]"
                     matches = re.findall(pattern, routine_args)
 
                     for match in matches:
