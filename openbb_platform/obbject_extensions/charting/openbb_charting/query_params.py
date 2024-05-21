@@ -262,6 +262,23 @@ class MAQueryParams(ChartQueryParams):
     )
 
 
+class FixedincomeGovernmentYieldCurve(ChartQueryParams):
+    """Fixed Income Government Yield Curve Chart Query Params."""
+
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the chart.",
+    )
+    colors: Optional[List[str]] = Field(
+        default=None,
+        description="List of colors to use for the lines.",
+    )
+    layout_kwargs: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Additional keyword arguments to pass to the Plotly `update_layout` method.",
+    )
+
+
 class TechnicalSMAChartQueryParams(MAQueryParams):
     """Technical SMA Chart Query Params."""
 

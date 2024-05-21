@@ -590,3 +590,34 @@ def test_charting_etf_holdings(params, obb):
     assert len(result.results) > 0
     assert result.chart.content
     assert isinstance(result.chart.fig, OpenBBFigure)
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "econdb",
+                "country": "united_kingdom",
+                "date": None,
+                "chart": True,
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "date": "2023-05-10,2024-05-10",
+                "chart": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_charting_fixedincome_government_yield_curve(params, obb):
+    """Test chart fixedincome government yield curve."""
+    result = obb.fixedincome.government.yield_curve(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+    assert result.chart.content
+    assert isinstance(result.chart.fig, OpenBBFigure)
