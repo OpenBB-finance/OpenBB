@@ -33,13 +33,36 @@ class Container:
         return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
-        self, choice: Optional[str], cmd: str, available: Tuple[str, ...]
+        self, choice: Optional[str], command: str, default_fallback: Tuple[str, ...]
     ) -> str:
-        """Get the provider to use in execution."""
+        """Get the provider to use in execution.
+
+        If no choice is specified, the configured fallback is used. A provider is used
+        when its required credentials are populated.
+
+        Parameters
+        ----------
+        choice: Optional[str]
+            The provider choice, for example 'fmp'.
+        command: str
+            The command to get the provider for, for example 'equity.price.historical'
+        default_fallback: Tuple[str, ...]
+            A tuple of available providers for the given command to use as default fallback.
+
+        Returns
+        -------
+        str
+            The provider to use in the command.
+
+        Raises
+        ------
+        OpenBBError
+            Raises error when all the providers in the fallback failed.
+        """
         if choice is None:
-            routes = self._command_runner.user_settings.defaults.routes
-            provider = routes.get(cmd, {}).get("provider", []) or available
-            providers = [provider] if isinstance(provider, str) else provider
+            commands = self._command_runner.user_settings.defaults.commands
+            fallback = commands.get(command, {}).get("provider", []) or default_fallback
+            providers = [fallback] if isinstance(fallback, str) else fallback
             for p in providers:
                 if self._check_credentials(p):
                     return p

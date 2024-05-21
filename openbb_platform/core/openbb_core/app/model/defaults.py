@@ -10,8 +10,9 @@ class Defaults(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
-    routes: Dict[str, Dict[str, Optional[Union[str, List[str]]]]] = Field(
-        default_factory=dict
+    commands: Dict[str, Dict[str, Optional[Union[str, List[str]]]]] = Field(
+        default_factory=dict,
+        alias="routes",  # routes was deprecated in favor of commands
     )
 
     def __repr__(self) -> str:
