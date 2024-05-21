@@ -447,7 +447,7 @@ class CLIController(BaseController):
 
                 err, parsed_script = parse_openbb_script(
                     raw_lines=raw_lines,
-                    script_inputs=script_inputs if ns_parser.routine_args else None,
+                    script_inputs=script_inputs
                 )
 
                 # If there err output is not an empty string then it means there was an
