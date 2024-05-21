@@ -355,7 +355,7 @@ class CLIController(BaseController):
             "--input",
             help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
             dest="routine_args",
-            type=lambda s: [str(item) for item in s.split(",")],
+            type=str,
         )
         parser.add_argument(
             "-e",
@@ -431,12 +431,18 @@ class CLIController(BaseController):
                 with open(routine_path) as fp:
                     raw_lines = list(fp)
 
+                script_inputs = []
                 # Capture ARGV either as list if args separated by commas or as single value
-                if ns_parser.routine_args:
-                    script_inputs = (
-                        ns_parser.routine_args
-                        if "," not in ns_parser.routine_args
-                        else ns_parser.routine_args.split(",")
+                if routine_args := ns_parser.routine_args:
+                    pattern = r'\[(.*?)\]'
+                    matches = re.findall(pattern, routine_args)
+
+                    for match in matches:
+                        routine_args = routine_args.replace(f"[{match}]", "")
+                        script_inputs.append(match)
+
+                    script_inputs.extend(
+                        [val for val in routine_args.split(",") if val]
                     )
 
                 err, parsed_script = parse_openbb_script(
