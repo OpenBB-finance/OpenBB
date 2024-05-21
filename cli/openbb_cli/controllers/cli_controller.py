@@ -446,8 +446,7 @@ class CLIController(BaseController):
                     )
 
                 err, parsed_script = parse_openbb_script(
-                    raw_lines=raw_lines,
-                    script_inputs=script_inputs
+                    raw_lines=raw_lines, script_inputs=script_inputs
                 )
 
                 # If there err output is not an empty string then it means there was an
@@ -552,7 +551,6 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
         t_controller.print_help()
 
     while ret_code:
-
         # There is a command in the queue
         if t_controller.queue and len(t_controller.queue) > 0:
             # If the command is quitting the menu we want to return in here

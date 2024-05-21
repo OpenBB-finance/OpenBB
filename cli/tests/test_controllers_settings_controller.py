@@ -11,7 +11,6 @@ from openbb_cli.controllers.settings_controller import SettingsController
 @pytest.fixture
 def mock_session():
     with patch("openbb_cli.controllers.settings_controller.session") as mock:
-
         mock.settings.USE_INTERACTIVE_DF = False
         mock.settings.ALLOWED_NUMBER_OF_ROWS = 20
         mock.settings.TIMEZONE = "UTC"
