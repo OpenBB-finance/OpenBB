@@ -447,15 +447,15 @@ class IntrinioIncomeStatementFetcher(
 
             calculations_data = [
                 item
-                for item in calculations_data.get("standardized_financials", [])
+                for item in calculations_data.get("standardized_financials", [])  # type: ignore
                 if item["data_tag"]["tag"] in data_tags
             ]
 
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "financials": statement_data["standardized_financials"]
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "financials": statement_data["standardized_financials"]  # type: ignore
                 + calculations_data,
             }
 
