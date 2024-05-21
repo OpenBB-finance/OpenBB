@@ -2,7 +2,7 @@
     "openbb": "4.2.0",
     "info": {
         "title": "OpenBB Platform (Python)",
-        "description": "This is the OpenBB Platform (Python).",
+        "description": "Investment research for everyone, anywhere.",
         "core": "1.2.2",
         "extensions": {
             "openbb_core_extension": [

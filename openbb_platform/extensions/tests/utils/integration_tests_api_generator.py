@@ -3,7 +3,7 @@
 import argparse
 import os
 from pathlib import Path
-from typing import Dict, List, Literal, Type, get_type_hints
+from typing import Dict, List, Literal, Type, Union, get_type_hints
 
 import requests
 from openbb_charting import Charting
@@ -15,7 +15,7 @@ from extensions.tests.utils.integration_tests_generator import get_test_params
 
 def get_http_method(api_paths: Dict[str, dict], route: str):
     """Given a set of paths and a route, return the http method for that route."""
-    route_info = api_paths.get(route, None)
+    route_info = api_paths.get(route)
     if not route_info:
         return route_info
     return list(route_info.keys())[0]
@@ -58,7 +58,7 @@ def headers():
 
 def write_test_w_template(
     http_method: Literal["post", "get"],
-    params_list: List[Dict[str, str]],
+    params_list: List[Dict[str, Union[str, bool]]],
     route: str,
     path: str,
     chart: bool = False,
@@ -170,12 +170,12 @@ def write_charting_extension_integration_tests():
 
     for function in functions:
         route = "/" + function.replace("_", "/")
-        if not test_exists(route=function, path=test_file):
+        if not test_exists(route=function, path=str(test_file)):
             write_test_w_template(
                 http_method="post",
                 params_list=[{"chart": True}],
                 route=route,
-                path=test_file,
+                path=str(test_file),
                 chart=True,
             )
 

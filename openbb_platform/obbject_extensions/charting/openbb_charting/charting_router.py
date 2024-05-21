@@ -31,7 +31,6 @@ def equity_price_performance(
     **kwargs,
 ) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Performance Chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
@@ -83,7 +82,7 @@ def equity_price_performance(
         limit = kwargs.pop("limit", 10)
         chart_df = chart_df.head(limit)  # type: ignore
 
-    layout_kwargs: Dict[str, Any] = kwargs["layout_kwargs"] if "layout_kwargs" in kwargs else {}  # type: ignore
+    layout_kwargs: Dict[str, Any] = kwargs.get("layout_kwargs", {})
 
     title = (
         f"{kwargs.pop('title')}" if "title" in kwargs else "Equity Price Performance"
@@ -140,7 +139,6 @@ def etf_price_performance(
 
 def etf_holdings(**kwargs) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:
     """Equity Compare Groups Chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
@@ -198,7 +196,6 @@ def equity_price_historical(  # noqa: PLR0912
     **kwargs,
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Equity Price Historical Chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
@@ -512,7 +509,6 @@ def crypto_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
-
     index = (
         kwargs.get("index")
         if "index" in kwargs and kwargs.get("index") is not None
@@ -587,8 +583,6 @@ def _ta_ma(**kwargs):
         ma_df = ma_df.dropna()
         data = data.iloc[-len(ma_df) :]
 
-    color = 0
-
     if (
         "candles" in kwargs
         and kwargs.get("candles") is True
@@ -600,7 +594,7 @@ def _ta_ma(**kwargs):
     else:
         ma_df[f"{target}".title()] = data[target]
 
-    for col in ma_df.columns:
+    for i, col in enumerate(ma_df.columns):
         name = col.replace("_", " ")
         fig.add_scatter(
             x=ma_df.index,
@@ -608,10 +602,9 @@ def _ta_ma(**kwargs):
             name=name,
             mode="lines",
             hovertemplate=f"{name}: %{{y}}<extra></extra>",
-            line=dict(width=1, color=LARGE_CYCLER[color]),
+            line=dict(width=1, color=LARGE_CYCLER[i]),
             showlegend=True,
         )
-        color += 1
 
     fig.update_layout(
         title=dict(text=title, x=0.5, font=dict(size=16)),
@@ -685,7 +678,6 @@ def technical_zlma(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Technical Aroon Chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     else:
@@ -726,7 +718,6 @@ def technical_aroon(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     else:
@@ -765,7 +756,6 @@ def technical_macd(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Average directional movement index chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     else:
@@ -801,7 +791,6 @@ def technical_adx(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
 def technical_rsi(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """Relative strength index chart."""
-
     if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
         data = kwargs["data"]
     else:
@@ -875,7 +864,6 @@ def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
         "orange",
         "blue",
     ]
-    color = 0
 
     fig = OpenBBFigure()
 
@@ -883,7 +871,7 @@ def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
 
     text_color = "black" if ChartStyle().plt_style == "light" else "white"
 
-    for col in df_ta.columns:
+    for i, col in enumerate(df_ta.columns):
         fig.add_scatter(
             x=df_ta.index,
             y=df_ta[col],
@@ -891,11 +879,10 @@ def technical_cones(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
             mode="lines+markers",
             hovertemplate=f"{col}: %{{y}}<extra></extra>",
             marker=dict(
-                color=colors[color],
+                color=colors[i],
                 size=11,
             ),
         )
-        color += 1
 
     fig.set_title(title)
 
@@ -1064,7 +1051,7 @@ def economy_fred_series(  # noqa: PLR0912
             if normalize:
                 y1title = None
                 title = f"{title} - Normalized" if title else "Normalized"
-            bar_mode = kwargs["barmode"] if "barmode" in kwargs else "group"
+            bar_mode = kwargs.get("barmode", "group")
             fig = bar_chart(
                 df_ta.reset_index(),
                 "date",
@@ -1228,7 +1215,6 @@ def technical_relative_rotation(
     **kwargs: Any,
 ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Relative Rotation Chart."""
-
     ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
     momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
     benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore

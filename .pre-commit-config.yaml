@@ -10,11 +10,11 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 24.1.0
+    rev: 24.4.2
     hooks:
       - id: black
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: "v0.0.285"
+    rev: "v0.4.4"
     hooks:
       - id: ruff
   - repo: https://github.com/pycqa/pydocstyle
@@ -26,7 +26,7 @@ repos:
         entry: pydocstyle
         language: python
         types: [python]
-        files: '^openbb_platform/.*\.py$'
+        files: '^(openbb_platform/|cli/).*\.py$'
         exclude: 'tests/.*\.py|openbb_platform/test_.*\.py'
         args: ["--config=ruff.toml"]
   - repo: https://github.com/codespell-project/codespell
@@ -41,7 +41,8 @@ repos:
             "--skip=./**/tests/**,./**/test_*.py,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*,./website/config.toml",
             "-x=.github/workflows/general-linting.yml"
           ]
-  - repo: local
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.6.1"
     hooks:
       - id: mypy
         name: mypy
@@ -50,6 +51,7 @@ repos:
         language: python
         "types_or": [python, pyi]
         args: ["--ignore-missing-imports", "--scripts-are-modules", "--check-untyped-defs"]
+        additional_dependencies: ["types-requests", "types-setuptools"]
         require_serial: true
   - repo: https://github.com/kynan/nbstripout
     rev: 0.6.1

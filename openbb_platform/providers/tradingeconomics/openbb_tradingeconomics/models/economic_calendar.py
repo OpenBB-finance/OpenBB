@@ -175,7 +175,7 @@ class TEEconomicCalendarData(EconomicCalendarData):
     def importance_to_number(cls, v):
         """Convert importance to number."""
         value_to_string = {1: "Low", 2: "Medium", 3: "High"}
-        return value_to_string.get(v, None) if v else None
+        return value_to_string.get(v) if v else None
 
     @field_validator("date", "last_updated", mode="before", check_fields=False)
     @classmethod
