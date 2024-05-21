@@ -91,7 +91,7 @@ class CredentialsLoader:
             __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
             **self.format_credentials(),
         )
-        model.providers = self.credentials
+        model.origins = self.credentials
         return model
 
 

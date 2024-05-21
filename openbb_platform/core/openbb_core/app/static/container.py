@@ -3,6 +3,7 @@
 from typing import Any, Optional, Tuple
 
 from openbb_core.app.command_runner import CommandRunner
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -26,7 +27,7 @@ class Container:
     def _check_credentials(self, provider: str) -> bool:
         """Check required credentials are populated."""
         credentials = self._command_runner.user_settings.credentials
-        required = credentials.providers.get(provider, [])
+        required = credentials.origins.get(provider, [])
         current = credentials.model_dump(exclude_none=True)
         return all(item in current for item in required)
 
@@ -37,15 +38,9 @@ class Container:
         if choice is None:
             routes = self._command_runner.user_settings.defaults.routes
             if provider := (routes.get(cmd, {}).get("provider") or available):
-                provider_iterable = (
-                    [provider] if isinstance(provider, str) else provider
-                )
-                for p in provider_iterable:
+                for p in [provider] if isinstance(provider, str) else provider:
                     if self._check_credentials(p):
                         return p
                     continue
-            # Warn that that no provider with keys was found
-            # We fallback to the first provider that does not need keys
-            # We fallback to the first provider
-            return available[0]
+            raise OpenBBError("Provider fallback failed, please specify the provider.")
         return choice
