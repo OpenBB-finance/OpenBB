@@ -230,15 +230,12 @@ async def download_zip_file(
                 "DESCRIPTION": "description",
             }
         )
-        if symbol is not None:
+        if symbol:
             results = results[results["symbol"] == symbol]
         results["date"] = pd.to_datetime(results["date"], format="%Y%m%d").dt.date
+        # Replace invalid decimal values with None
         results["price"] = results["price"].mask(
-            results["price"].str.contains(  # pylint: disable=C0121
-                r"^\d+(?:\.\d+)?$", regex=True
-            )
-            == False,  # noqa
-            None,
+            ~results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True), None
         )
         results["price"] = results["price"].astype(float)
 

@@ -480,7 +480,7 @@ class OpenBBFigure(go.Figure):
         if not export:
             return False
 
-        return any(ext in export for ext in ["jpg", "pdf", "png", "svg"])
+        return any(ext in export for ext in ["jpg", "png", "svg"])
 
     def set_title(
         self, title: str, wrap: bool = False, wrap_width: int = 80, **kwargs
@@ -1621,7 +1621,9 @@ class OpenBBFigure(go.Figure):
                 lim = min(int(np.ceil(10 * np.log10(nobs))), nobs - 1)
                 lags = np.arange(not zero, lim + 1)
             elif np.isscalar(lags):
-                lags = np.arange(not zero, int(lags) + 1)  # +1 for zero lag
+                lags = np.arange(
+                    not zero, int(lags) + 1  # type: ignore
+                )  # +1 for zero lag
             else:
                 irregular = True
                 lags = np.asanyarray(lags).astype(int)

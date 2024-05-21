@@ -644,7 +644,7 @@ class RouterLoader:
         """Load routes from extensions."""
         router = Router()
 
-        for name, entry in ExtensionLoader().core_objects.items():
+        for name, entry in ExtensionLoader().core_objects.items():  # type: ignore[attr-defined]
             try:
                 router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:
