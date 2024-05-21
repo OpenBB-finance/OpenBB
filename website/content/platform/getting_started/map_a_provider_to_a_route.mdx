@@ -1,7 +1,7 @@
 ---
-title: Quick Start - Mapping The Provider Interface
-sidebar_position: 7
-description: This page demonstrates how to get started mapping Provider extension models to the Provider Interface and Router. It continues with the example provided [here](quickstart_new_provider_extension). By the end, you will have mapped a new Provider extension to World News standard model.
+title: Mapping New Provider
+sidebar_position: 10
+description: This page demonstrates how to get started mapping Provider extension models to the Provider Interface and Router. By the end, you will have mapped a new Provider extension to World News standard model.
 keywords:
 - OpenBB Platform
 - Open source
@@ -25,7 +25,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This page demonstrates how to get started mapping Provider extension models to the Provider Interface and Router.
 
-It continues with the example provided [here](quickstart_new_provider_extension). By the end, you will have mapped a new Provider extension to World News standard model. This will connect it to the existing function and is accessible through the `provider` parameter.
+It continues the example provided [here](create_new_provider_extension). By the end, you will have mapped a new Provider extension to the World News standard model. This will connect it to the existing command and make it accessible through the `provider` parameter.
 
 All Provider models are made of three elements:
 
@@ -58,7 +58,7 @@ from openbb_core.provider.standard_models.world_news import WorldNewsQueryParams
 from pydantic import Field
 ```
 
-### Build QueryParams Model
+### Create a QueryParams Model
 
 - Create a class that inherits from the standard model.
 
@@ -74,7 +74,7 @@ class EmptyWorldNewsQueryParams(WorldNewsQueryParams):
 
 Field and model validators are added here, if required.
 
-### Build Data Model
+### Create a Data Model
 
 - Create a class that inherits from the standard model.
 
@@ -148,6 +148,7 @@ class EmptyWorldNewsFetcher(
 - In the `__init__.py` where the Provider class was defined, import the Fetcher from the model file and map it to the router.
 
 ```python
+# /Users/username/path_to_created_folder/empty_provider/openbb_empty_provider/__init__.py
 """Empty Provider Module."""
 
 from openbb_empty_provider.models.world_news import EmptyWorldNewsFetcher
@@ -157,7 +158,7 @@ empty_provider = Provider(
     name="empty",
     website="http://empty.io",
     description="""The empty provider is a supplier of promises.""",
-    #credentials=["api_key"],
+    # credentials=["api_key"],
     fetcher_dict={
         "WorldNews": EmptyWorldNewsFetcher
     },

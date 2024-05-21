@@ -31,7 +31,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
 
 To demonstrate, we will be extending the `openbb-currency` router. The objective is to add a snapshot of currencies relative to a base currency.
-The process will be very similar to adding a data provider to an existing endpoint - described on [this page](add_data_to_existing_endpoint.md) -
+The process will be very similar to adding a data provider to an existing endpoint - described on [this page](add_data_to_existing_endpoint) -
 only here, we need to create a new router function and standard model.
 
 It's about the same amount of work, but effort should be placed in consideration of others inheriting from this model in the future.
@@ -274,7 +274,7 @@ Combine the three code blocks above to make a complete standard model file, and 
 
 ## Build Provider Models
 
-We're going to start with one provider, [FMP](https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote), and this section will look a lot like the process outlined [here](add_data_to_existing_endpoint.md).
+We're going to start with one provider, [FMP](https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote), and this section will look a lot like the process outlined [here](add_data_to_existing_endpoint).
 
 Sample output data from the source is pasted below, and we can see that there are some fields which don't have anything to do with currencies. Those will be dropped.
 

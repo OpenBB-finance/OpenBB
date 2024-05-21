@@ -1,6 +1,6 @@
 ---
 title: Basic Syntax
-sidebar_position: 2
+sidebar_position: 1
 description: This page provides comprehensive information about standardized command syntax for an open-source platform. Topics discussed include the structure of command syntax, use of standardized parameters, usage of provider and symbol parameters, handling of date and limit parameters, and more. Also explored, are the methods for selecting data sources, handling different list and ticker symbol formats, and dealing with command responses and warnings.
 keywords:
 - tutorial
@@ -68,7 +68,7 @@ uvicorn openbb_core.api.rest_api:app
 
 ## Provider
 
-The `provider` parameter is the way to select the specific source of the data from the endpoint. If a [preference for the default provider](/platform/usage#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
+The `provider` parameter is the way to select the specific source of the data from the endpoint. If a [preference for the default provider](/platform/user_guides/settings_and_environment_variables) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
 
 ```python
 historical_prices = obb.equity.price.historical("aapl", provider="alpha_vantage")
@@ -80,7 +80,7 @@ Provider coverage can be ascertained with the command below:
 obb.coverage.providers
 ```
 
-Refer to, [Data Providers](/platform/extensions/data_extensions), for instructions on installing data provider extensions.
+Refer to, [Data Extensions](/platform/developer_guide/extensions), for instructions on installing data provider extensions.
 
 ## Symbol
 
