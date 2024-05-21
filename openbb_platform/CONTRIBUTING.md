@@ -63,7 +63,7 @@ This document provides guidelines for contributing to the OpenBB Platform.
 Throughout this document, we will be differentiating between two types of contributors: Developers and Contributors.
 
 1. **Developers**: Those who are building new features or extensions for the OpenBB Platform or leveraging the OpenBB Platform.
-2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#how-to-create-a-pr) thus giving back to the community.
+2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#getting_started-create-a-pr) thus giving back to the community.
 
 **Why is this distinction important?**
 
@@ -665,7 +665,7 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
 
 The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](#developer-guidelines). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
 
-There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#how-to-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#how-to-build-openbb-extensions), fix a bug, improve or create documentation, etc.
+There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#getting_started-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#getting_started-build-openbb-extensions), fix a bug, improve or create documentation, etc.
 
 ### Expectations for Contributors
 

@@ -1,0 +1,164 @@
+---
+title: REST API
+sidebar_position: 6
+description: Learn how to configure and deploy the OpenBB Platform's REST API using FastAPI, including detailed guidelines on API documentation, authorization, CORS settings, and server configurations.
+keywords:
+- tutorial
+- OpenBB Platform
+- REST API
+- FastAPI
+- API Documentation
+- API Authorization
+- CORS Configuration
+- Server Settings
+- API Deployment
+- Swagger Documentation
+- Basic Auth
+- API Security
+- System Settings JSON
+- API Keys
+- Public Internet Deployment
+- Production Deployment
+- API Endpoints
+- Uvicorn Command
+- Base64 Encoding
+- HTTP Headers
+- Python Requests
+- Local Network API
+- OpenAPI JSON
+---
+
+The OpenBB Platform comes with a FastAPI application that serves platform commands as REST API endpoints.
+
+Activate the Python environment and then start the server from a Terminal command line with:
+
+```console
+uvicorn openbb_core.api.rest_api:app
+```
+
+You can add arguments that are supported by `uvicorn` to customize how the API is launched.
+For example this command will be useful if you are developing. It will launch the API in a way it's reachable on your local network and reload every time the code changes:
+
+```console
+uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+To learn more about how you can run the API in different scenarios refer to [uvicorn's documentation](https://www.uvicorn.org/#command-line-options)
+
+## API Documentation
+
+<details>
+
+
+The Fast API app comes with a swagger documentation page. When running the API locally, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+
+The API Docs provide interactive descriptions of all available endpoints that you can call right from the documentation web page.
+
+</details>
+
+## Data API Keys
+
+
+<details>
+
+
+The API keys to your data providers are loaded from the `~/.openbb_platform/user_settings.json` file.
+
+You can find more information about the structure of the file and environment variables in the [Local Environment](api_keys#local-environment) section.
+
+</details>
+
+## API Authorization
+
+<details>
+
+By default, no authorization is required. Basic authorization can be enabled with environment variables. In the `~/.openbb_platform` folder, next to the `user_settings.json`, create a new file, `.env`, if it does not yet exist. Set your Basic Auth credentials.
+
+```.env
+OPENBB_API_AUTH="True"
+OPENBB_API_USERNAME="my_email"
+OPENBB_API_PASSWORD="my_password"
+```
+
+The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request to the API inside the headers "Authorization" field.
+
+Here is an example of calling the API that has Basic Authorization enabled from python.
+
+```python
+import base64
+import requests
+
+msg = "some_user:some_pass"
+msg_bytes = msg.encode('ascii')
+base64_bytes = base64.b64encode(msg_bytes)
+base64_msg = base64_bytes.decode('ascii')
+
+
+symbol="SPY"
+url = f"http://127.0.0.1:8000/api/v1/equity/price/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
+headers = {"accept": "application/json", "Authorization": f"Basic {base64_msg}"}
+
+response = requests.get(url=url, headers=headers)
+
+response.json()
+```
+
+</details>
+
+
+## Advanced API Settings
+
+<details>
+
+When deploying the API to the public internet, it's crucial to configure it in a way you ensure the application functions correctly and securely. Two critical aspects to consider are Cross-Origin Resource Sharing (CORS) and the configuration of the "servers" list.
+
+The configuration for these settings is managed through the `system_settings.json` file, which should be located in the same directory as your `user_settings.json`. This JSON file allows you to specify various settings that affect the behavior of the API. Here's an example structure of the `system_settings.json` file:
+
+```json
+{
+    "api_settings": {
+        "version": "1",
+        "title": "OpenBB Platform API",
+        "description": "This is the OpenBB Platform API.",
+        "terms_of_service": "http://example.com/terms/",
+        "contact_name": "OpenBB Team",
+        "contact_url": "https://openbb.co",
+        "contact_email": "hello@openbb.co",
+        "license_name": "MIT",
+        "license_url": "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE",
+        "servers": [
+            {
+                "url": "http://localhost:8000",
+                "description": "Local OpenBB development server"
+            }
+        ],
+        "cors": {
+            "allow_origins": [
+                "*"
+            ],
+            "allow_methods": [
+                "*"
+            ],
+            "allow_headers": [
+                "*"
+            ]
+        },
+        "prefix": "/api/v1"
+    }
+}
+```
+
+## CORS Configuration
+
+The cors section within the api_settings is particularly important for web applications. It defines the rules for which external domains are allowed to access your API.
+
+In the example above, the settings are permissive ("\*" for origins, methods, and headers), which means any external domain can request resources from your API. This setting might be suitable for development, but when deploying to public internet, you should specify the exact domains, methods, and headers to tighten security.
+
+## Servers List
+
+The servers array is used to specify the different environments where your API can be accessed.
+
+In the example, there is only one server defined, which is the local development server. For deployment to public internet, you would add an entry for the public server URL and any other environments where your API is accessible.
+
+
+</details>

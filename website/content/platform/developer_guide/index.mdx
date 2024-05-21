@@ -1,0 +1,65 @@
+---
+title: Developer Guide
+sidebar_position: 1
+description: The OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API
+keywords:
+- developer_guide
+- OpenBB Platform
+- Python client
+- Fast API
+- getting started
+- authorization
+- data providers
+- OpenBB Hub
+- local environment
+- environment variables
+- user settings
+- command execution
+- API response
+- logging
+- proxy networks
+- data cleaning
+- technical analysis
+- quantitative analysis
+- charting libraries
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Developer Guide - Usage | OpenBB Platform Docs" />
+
+## What is the OpenBB Platform?
+
+Starting with V4, we have completely restructured the previous version of the OpenBB SDK.
+
+Instead of a single monolithic SDK, that comes with dependency nightmares and compatibility issues with things you may not need, we have morphed into the OpenBB Platform, which serves as a collection of building blocks to be used for your own need.
+
+We have broken the Platform into two main components:
+
+- OpenBB Core
+- OpenBB Extensions
+  - OpenBB Providers
+  - OpenBB Toolkits
+
+The OpenBB Core provides all of the groundwork for building custom applications. It is a lightweight package providing connections with data providers in a standardized way, and the ability to build additional toolkits on top. Additionally, the `openbb-core` library contains the infrastructure for Fast API deployments.
+
+OpenBB Extensions are the pieces that can be added to the core for building on top of. We have grouped them categorically as, Providers and Toolkits.
+
+As the name suggests, Providers are the interface to obtaining any raw data from any data source. The data providers are accessed through asset class extensions, such as `openbb-equity`. OpenBB toolkits, such as `openbb-technical`, provide additional functionalities on top of the raw data access.
+
+When you install the Platform (openbb), we provide a default set of extensions that give access to a wide range of functionalities and data. Additional data and processing tools are available to be installed and used as desired. The reason we are doing this is to avoid an overcomplicated environment with many dependencies that can cause issues. The goal is that OpenBB can be used as a drop-in within any environment for building and extending applications.
+
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API.
+
+The extension framework provides interoperability between as many, or few, services required.
+
+Optional extras are not included with the base installation, and these include:
+
+- Charting libraries and views
+- Data processing and calculations
+- Technical/Quantitative Analysis
+- Community data providers
+- Toolkit extensions
+- CLI Terminal
+
+Refer to [Extensions](/platform/developer_guide/extensions) for the list of extensions hosted in the OpenBB GitHub repository that can be installed independently.

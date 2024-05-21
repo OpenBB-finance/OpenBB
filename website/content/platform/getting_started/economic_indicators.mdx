@@ -1,0 +1,736 @@
+---
+title: Economic Indicators
+sidebar_position: 7
+description: This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint,
+  with the `openbb-econdb` provider extension. The command provides access to over 100 standardized indicator
+  symbols, covering countries around the world.
+keywords:
+- tutorial
+- provider
+- econdb
+- economy
+- usage
+- indicators
+- economic
+- CPI
+- CORE
+- GDP
+- transform
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Economic Indicators - User Guides | OpenBB Platform Docs" />
+
+This page provides a tutorial for getting started using the `obb.economy.indicators` endpoint, with the `openbb-econdb` provider extension.
+The command provides access to over 100 standardized indicator symbols, covering countries around the world.
+
+:::note
+**OpenBB is not affiliated with EconDB. All service is provided "AS IS" and without warranty.**
+:::
+
+## Authorization
+
+This command requires an API key. You can create an account [here](https://econdb.com), and enter the key assigned.
+
+Leaving the key as None will attempt to retrieve a temporary token that is assigned when downloading the data as a CSV file from a browser.
+This is a workaround and can be blocked by Cloudflare. In this instance, the temporary token can be viewed by opening any indicator in your browser,
+then selecting 'Python' from the 'Export' drop-down.
+
+![Temporary Token](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d2d4c6a7-e8b1-4345-b28f-0693ddb8dcf1)
+
+The best method is to support the service by registering an account.
+
+```python
+from openbb import obb
+obb.user.credentials.econdb_api_key = REPLACE_WITH_KEY
+```
+
+See the [API keys](api_keys) page for more information on credentials.
+
+## Important Considerations
+
+**Carefully inspect data before conducting analysis and arriving at conclusions.**
+
+EconDB sources data directly from national agencies, or other reputable sources such as the IMF, but the data itself may not be directly comparable between collections of countries. For example, some countries will have GDP data as 'annualized' (North America) while others report the values for the period.
+
+These factors can be considered as "known-unknowns", the metadata will not contain this information.
+
+:::important
+- This function will not attempt to normalize the values for cross-country comparison. Some values should be manually adjusted, post-request, to accommodate.
+
+- Transforming levels as USD, or % of GDP, may have unexpected results where values are not appropriate for this conversion. Do not attempt to apply these transformations universally.
+
+- Values that are scaled to, or transformed as, a percent are returned as a normalized value - i.e, 1% = 0.01. It will have a multiplier value of 1, which is not indicative of display values.
+
+- Contextual information is contained within metadata, returned under the "extra" attribute of the function response.
+:::
+
+## Available Indicators
+
+EconDB has a list of "main" indicators, which are standardized base symbols across the available countries for each.
+
+```python
+from openbb import obb
+
+indicators = obb.economy.available_indicators(provider="econdb").to_df()
+
+indicators.iloc[0]
+```
+
+| symbol_root           | POLIR                      |
+|:----------------------|:---------------------------|
+| symbol                | POLIREA                    |
+| country               | Euro area                  |
+| iso                   | EA                         |
+| description           | Policy rate - short term   |
+| frequency             | D                          |
+| currency              | PERCENT                    |
+| scale                 | Units                      |
+| multiplier            | 1                          |
+| transformation        | Period level               |
+| source                | European Central Bank      |
+| first_date            | 1999-01-01                 |
+| last_date             | 2024-04-08                 |
+| last_insert_timestamp | 2024-04-08 12:27:05.089860 |
+
+:::tip
+Metadata is returned in the command response to the 'extra' attribute.
+:::
+
+
+```python
+data = obb.economy.indicators("POLIR", country="EA")
+data.extra["results_metadata"]
+```
+
+```python
+{'POLIREA': {'title': 'Euro area - Policy rate - short term',
+  'country': 'Euro area',
+  'frequency': 'D',
+  'dataset': 'ECBFM',
+  'transformation': None,
+  'units': 'PERCENT',
+  'scale': 'Units',
+  'multiplier': 1,
+  'additional_info': {'FREQ:Frequency': 'D:Daily',
+   'REF_AREA:Reference area': 'U2:Euro area (Member States and Institutions of the Euro Area) changing composition',
+   'CURRENCY:Currency': 'EUR:Euro',
+   'PROVIDER_FM:Financial market provider': '4F:ECB',
+   'INSTRUMENT_FM:Financial market instrument': 'KR:Key interest rate',
+   'PROVIDER_FM_ID:Financial market provider identifier': 'MRR_FR:ECB Main refinancing operations - fixed rate tenders (fixed rate) (date of changes)',
+   'DATA_TYPE_FM:Financial market data type': 'LEV:Level'}}}
+```
+
+<details>
+<summary mdxType="summary">Basic Descriptions</summary>
+
+
+Basic descriptions of the base symbols can be imported from within the extension module helpers.
+
+```python
+from openbb_econdb.utils.helpers import INDICATORS_DESCRIPTIONS
+```
+
+:::important
+This list should not be considered as the absolute source of truth. The metadata for the indicator will be returned in the command response, under the `extras` attribute.
+:::
+
+| ACPOP     | Active population                                  |
+|:----------|:---------------------------------------------------|
+| CA        | Current account balance                            |
+| CAR       | Passenger car sales                                |
+| CBAL      | Commercial balance (goods + services)              |
+| CI        | Change in inventories                              |
+| CKA       | Net foreign investment                             |
+| CLAIMS    | Weekly unemployment insurance claims               |
+| CLI       | OECD CLI                                           |
+| CON       | Total consumption                                  |
+| CONF      | Consumer confidence index                          |
+| CORE      | Core consumer price index                          |
+| CP        | Construction production                            |
+| CPI       | Consumer price index                               |
+| CRED      | Domestic credit                                    |
+| CREDEA    | Domestic credit                                    |
+| DWPE      | Dwelling permits                                   |
+| ELE       | Production electricity                             |
+| EMP       | Total employment                                   |
+| EMRATIO   | Employment to working age population               |
+| EQYCAP    | Market capitalization                              |
+| EXP       | Exports of goods and services                      |
+| EXPMON    | Monthly exports                                    |
+| GASDEM    | Gas demand                                         |
+| GASODEM   | Gasoline demand                                    |
+| GASOPROD  | Gasoline production                                |
+| GASPROD   | Gas production                                     |
+| GBAL      | Government balance                                 |
+| GCF       | Gross capital formation                            |
+| GDEBT     | Government debt                                    |
+| GDEBTN    | Government net debt                                |
+| GDP       | Gross domestic product                             |
+| GDPDEF    | GDP deflator                                       |
+| GDPPC     | GDP per capita                                     |
+| GFCF      | Gross fixed capital formation                      |
+| GREV      | General government total revenue                   |
+| GSPE      | General government total expenditure               |
+| HHDIR     | Household debt to income ratio                     |
+| HHS       | Household saving                                   |
+| HOU       | House price                                        |
+| IBD1      | Interbank lending overnight rate                   |
+| IIPA      | International investment position: Assets          |
+| IIPL      | International investment position: Liabilities     |
+| IMP       | Imports of goods and services                      |
+| IMPMON    | Monthly imports                                    |
+| INVER     | Investment rate                                    |
+| IP        | Industrial production                              |
+| JHR       | Job hires rate                                     |
+| JLR       | Job layoffs rate                                   |
+| JQR       | Job quits rate                                     |
+| JVR       | Job vacancy rate                                   |
+| KA        | Capital account                                    |
+| LE00      | Life expectancy at birth                           |
+| LMICS     | Low and Middle Income Commodity Index (World Bank) |
+| M3        | Money supply                                       |
+| M3YD      | 3 month yield                                      |
+| MB        | Monetary base                                      |
+| NCT       | Net current transfers (Secondary Income)           |
+| NFCI      | Non-financial corporations investment rate         |
+| NFCLOAN   | Lending to non-financial corporations              |
+| NIIP      | Net international investment position              |
+| NPL       | Non performing loans                               |
+| NY        | Net income from abroad (Primary Income)            |
+| OILDEM    | Oil demand                                         |
+| OILPROD   | Oil production                                     |
+| PALUM     | Aluminum                                           |
+| PAPPLE    | Non-Citrus Fruit, Apple                            |
+| PART      | Participation rate                                 |
+| PBANSOP   | Bananas                                            |
+| PBARL     | Barley                                             |
+| PBEEF     | Beef                                               |
+| PCE       | Personal consumption expenditure price index       |
+| PCHANA    | Legumes, Chickpea                                  |
+| PCHROM    | Chromium                                           |
+| PCOALAU   | Coal, Australia                                    |
+| PCOALSA   | Coal, South Africa                                 |
+| PCOBA     | Cobalt                                             |
+| PCOCO     | Cocoa                                              |
+| PCOFFOTM  | Coffee, Other Mild Arabica                         |
+| PCOFFROB  | Coffee, Robustas                                   |
+| PCOIL     | Coconut Oil                                        |
+| PCOPP     | Copper                                             |
+| PCOTTIND  | Cotton                                             |
+| PDAP      | Diammonium phosphate                               |
+| PFSHMEAL  | Fish Meal                                          |
+| PGASO     | Gasoline                                           |
+| PGNUTS    | Groundnuts                                         |
+| PGOLD     | Gold                                               |
+| PHEATOIL  | Heating Oil                                        |
+| PHIDE     | Hides                                              |
+| PIORECR   | Iron                                               |
+| PLAMB     | Lamb                                               |
+| PLEAD     | Lead                                               |
+| PLITH     | Lithium                                            |
+| PLMMODY   | Molybdenum                                         |
+| PLOGORE   | Soft Logs                                          |
+| PLOGSK    | Hard Logs, Import Price Japan                      |
+| PMAIZMT   | Corn                                               |
+| PMANGELE  | Manganese                                          |
+| PMILK     | Dairy Products, Milk                               |
+| PNGASEU   | Natural gas, EU                                    |
+| PNGASJP   | LNG, Asia                                          |
+| PNGASUS   | Natural Gas, US Henry Hub Gas                      |
+| PNICK     | Nickel                                             |
+| POATS     | Oats                                               |
+| POILAPSP  | APSP crude oil($/bbl)                              |
+| POILBRE   | Brent Crude                                        |
+| POILDUB   | Dubai Crude                                        |
+| POILWTI   | WTI Crude                                          |
+| POLIR     | Policy rate - short term                           |
+| POLVOIL   | Olive Oil                                          |
+| POP       | Population                                         |
+| PORANG    | Orange                                             |
+| PPALLA    | Palladium                                          |
+| PPI       | Producer price index                               |
+| PPLAT     | Platinum                                           |
+| PPOIL     | Palm Oil                                           |
+| PPORK     | Swine                                              |
+| PPOTASH   | Potassium Fertilizer                               |
+| PPOULT    | Poultry                                            |
+| PPROPANE  | Propane                                            |
+| PRC       | Private consumption                                |
+| PREODOM   | Rare Earth Elements                                |
+| PRICENPQ  | Rice, Thailand                                     |
+| PRIDEBT   | Private debt                                       |
+| PROIL     | Rapeseed Oil                                       |
+| PRUBB     | Rubber                                             |
+| PSALM     | Fish                                               |
+| PSAWMAL   | Hard Sawnwood, Dark Red Meranti                    |
+| PSAWORE   | Soft Sawnwood, Average of Softwoods,               |
+| PSHRI     | Shrimp                                             |
+| PSILLUMP  | Silicon                                            |
+| PSILVER   | Silver                                             |
+| PSMEA     | Soybean Meal                                       |
+| PSOIL     | Soybeans Oil                                       |
+| PSORG     | Sorghum                                            |
+| PSOYB     | Soybeans                                           |
+| PSUGAISA  | Sugar, No. 11, World                               |
+| PSUGAUSA  | Sugar, No. 16, US                                  |
+| PSUNO     | Sunflower Oil                                      |
+| PTEA      | Tea, Kenyan                                        |
+| PTEAINDIA | Tea, Kolkata                                       |
+| PTEAMOM   | Tea, Mombasa                                       |
+| PTEASL    | Tea, Colombo                                       |
+| PTIN      | Tin                                                |
+| PTOMATO   | Vegetables, Tomato                                 |
+| PUC       | Public consumption                                 |
+| PURAN     | Uranium                                            |
+| PUREA     | Urea                                               |
+| PVANPENT  | Vanadium                                           |
+| PWHEAMT   | Wheat                                              |
+| PWOOLC    | Wool, Coarse                                       |
+| PWOOLF    | Wool, Fine                                         |
+| PZINC     | Zinc                                               |
+| RCI       | Real change in inventories                         |
+| RCON      | Real total consumption                             |
+| REER      | Real effective exchange rate                       |
+| REEREA    | Real effective exchange rate                       |
+| RETA      | Retail trade                                       |
+| REXP      | Real exports of goods and services                 |
+| RGCF      | Real gross capital formation                       |
+| RGDP      | Real gross domestic product                        |
+| RGDPPC    | Real GDP per capita                                |
+| RGFCF     | Real gross fixed capital formation                 |
+| RIMP      | Real imports of goods and services                 |
+| RPRC      | Real private consumption                           |
+| RPUC      | Real public consumption                            |
+| SEI       | Stock exchange index                               |
+| SENT      | Sentiment index                                    |
+| TB        | Trade balance                                      |
+| URATE     | Unemployment                                       |
+| UTIL      | Utilization rate                                   |
+| WAGE      | Wages/Earnings                                     |
+| WAGEMAN   | Hourly wage manufacturing                          |
+| Y10YD     | Long term yield                                    |
+
+</details>
+
+## Countries
+
+
+<details>
+
+The `country` parameter will accept the ISO country code, or the country name. Regional groups listed below are also valid:
+
+- all
+- africa
+- central_asia
+- east_asia
+- europe
+- g7
+- g20
+- latin_america
+- middle_east
+- north_america
+- oceania
+- south_asia
+- southeast_asia
+
+:::note
+Some symbols do not have a country - e.g., commodity items - and they will ignore any supplied values to the parameter.
+Not every indicator has data for every country. Items with no results will be communicated via the `warnings` attribute of the response object.
+
+```python
+obb.economy.indicators("POLIR", country="southeast_asia")
+```
+```console
+OBBject
+
+id: 0661ac07-ab9c-7ebf-8000-849fef1202bc
+results: [{'date': datetime.date(2013, 4, 29), 'symbol': 'POLIRSG', 'country': 'Sin...
+provider: econdb
+warnings: [{'category': 'UserWarning', 'message': "Invalid country code for...
+chart: None
+extra: {'results_metadata': {'POLIRID': {'title': 'Indonesia - Policy rate - short ...
+```
+
+:::
+
+### Countries By Indicator
+
+In addition to filtering the `available_indicators` data locally, countries by indicator can be imported as a utility function from the `openbb_econdb.utils.helpers` module.
+
+```python
+from openbb_econdb.utils.helpers import get_indicator_countries
+
+get_indicator_countries("GDPPC")  # returns a list of two-letter ISO country codes
+```
+</details>
+
+
+## How To Enter Symbols
+
+<details>
+
+The three parameters - symbol, country, transform - all work together.
+
+- Symbol (base symbol)
+  - CPI, GDP, CORE, etc
+  - Multiple items allowed
+- Country
+  - ISO country code, or name
+  - Multiple items allowed
+- Transform
+  - `tpop`: Percent change from previous period
+  - `toya`: Percent change from year ago
+  - `tusd`: Values as US dollars
+  - `tpgp`: Values as a percent of GDP
+
+The `transform` will apply to all combinations of `symbol` and `country`.
+
+:::warning
+If you attempt to pass a base symbol (excluding commodity and world indicators) with no country, it will raise an error.
+:::
+
+<details>
+<summary mdxType="summary">Example - Onde Indicator & Country</summary>
+
+M3 Money Supply
+
+```python
+data = obb.economy.indicators("M3", country="us")
+
+data.to_df().tail(12)
+```
+
+| date       | symbol_root   | symbol   | country       |   value |
+|:-----------|:--------------|:---------|:--------------|--------:|
+| 2023-03-01 | M3            | M3US     | United States |   21027 |
+| 2023-04-01 | M3            | M3US     | United States |   20843 |
+| 2023-05-01 | M3            | M3US     | United States |   20711 |
+| 2023-06-01 | M3            | M3US     | United States |   20749 |
+| 2023-07-01 | M3            | M3US     | United States |   20724 |
+| 2023-08-01 | M3            | M3US     | United States |   20695 |
+| 2023-09-01 | M3            | M3US     | United States |   20669 |
+| 2023-10-01 | M3            | M3US     | United States |   20636 |
+| 2023-11-01 | M3            | M3US     | United States |   20723 |
+| 2023-12-01 | M3            | M3US     | United States |   20890 |
+| 2024-01-01 | M3            | M3US     | United States |   20862 |
+| 2024-02-01 | M3            | M3US     | United States |   20788 |
+
+```python
+data.extra.get("results_metadata")
+```
+```python
+{'M3US': {'title': 'United States - Money supply',
+  'country': 'United States',
+  'frequency': 'M',
+  'dataset': 'FRB_H6_M2',
+  'transform': None,
+  'units': 'DOMESTIC',
+  'scale': 'Billions',
+  'multiplier': 1000000000,
+  'additional_info': {'ADJUSTED:Seasonal Adjustment': 'NSA:Not seasonally adjusted',
+   'CURRENCY:Currency': 'USD:United States / United States Dollar',
+   'FREQ:Frequency': '129:Monthly',
+   'SERIES_NAME:Series name (FRB)': 'M2_N.M:M2_N.M',
+   'UNIT:Units': 'CURRENCY:Currency'}}}
+```
+</details>
+
+<details>
+<summary mdxType="summary">Example - One Indicator & Country With Transform</summary>
+
+US PPI - Change from one year ago.
+
+```python
+data = obb.economy.indicators("PPI", country="us", transform="toya")
+
+data.to_df().tail(12)
+```
+
+| date       | symbol_root   | symbol     | country       |    value |
+|:-----------|:--------------|:-----------|:--------------|---------:|
+| 2023-04-01 | PPI           | PPIUS~TOYA | United States | 0.022995 |
+| 2023-05-01 | PPI           | PPIUS~TOYA | United States | 0.011822 |
+| 2023-06-01 | PPI           | PPIUS~TOYA | United States | 0.001912 |
+| 2023-07-01 | PPI           | PPIUS~TOYA | United States | 0.008722 |
+| 2023-08-01 | PPI           | PPIUS~TOYA | United States | 0.016003 |
+| 2023-09-01 | PPI           | PPIUS~TOYA | United States | 0.021542 |
+| 2023-10-01 | PPI           | PPIUS~TOYA | United States | 0.013481 |
+| 2023-11-01 | PPI           | PPIUS~TOYA | United States | 0.008465 |
+| 2023-12-01 | PPI           | PPIUS~TOYA | United States | 0.00948  |
+| 2024-01-01 | PPI           | PPIUS~TOYA | United States | 0.008222 |
+| 2024-02-01 | PPI           | PPIUS~TOYA | United States | 0.015153 |
+| 2024-03-01 | PPI           | PPIUS~TOYA | United States | 0.020896 |
+
+```python
+data.extra.get("results_metadata")
+```
+```
+{'PPIUS~TOYA': {'title': 'United States - Producer price index',
+  'country': 'United States',
+  'frequency': 'M',
+  'dataset': 'BLS_PPI00',
+  'transform': 'Change from one year ago',
+  'units': 'INDEX',
+  'scale': 'PERCENT',
+  'multiplier': 1,
+  'additional_info': {'DATA_DOMAIN:Data Domain': 'PPI:Producer price indices',
+   'REF_AREA:Reference country or area': 'US:United States',
+   'INDICATOR:Economic Indicator': 'PPPI_SA_IX:Prices, Producer Price Index, All Commodities, Seasonally adjusted, Index',
+   'COUNTERPART_AREA:Counterpart country or area': '_Z:Not applicable',
+   'FREQ:Frequency': 'M:Monthly',
+   'UNIT_MULT:Unit multiplier': '0:Units'}}}
+```
+</details>
+
+<details>
+<summary mdxType="summary">Example - Commodity Indicator</summary>
+
+Values are always in USD.
+
+```python
+lead = obb.economy.indicators("plead")
+
+lead.to_df().tail(4)
+```
+
+| date       | symbol_root   | symbol   | country   |   value |
+|:-----------|:--------------|:---------|:----------|--------:|
+| 2023-10-01 | PLEAD         | PLEAD    | World     |  2131.4 |
+| 2023-11-01 | PLEAD         | PLEAD    | World     |  2188.5 |
+| 2023-12-01 | PLEAD         | PLEAD    | World     |  2027.2 |
+| 2024-01-01 | PLEAD         | PLEAD    | World     |  2087.4 |
+
+```python
+lead.extra["results_metadata"]
+```
+```python
+{'PLEAD': {'title': 'World - Lead',
+  'country': 'World',
+  'frequency': 'M',
+  'dataset': 'IMF_PCPS',
+  'transform': None,
+  'units': 'USD',
+  'scale': 'Units',
+  'multiplier': 1,
+  'additional_info': {'FREQ:Frequency': 'M:Monthly',
+   'REF_AREA:Reference Area': 'W00:All Countries, excluding the IO',
+   'COMMODITY:Commodity': 'PLEAD:Primary Commodity Prices, Lead',
+   'UNIT_MEASURE:Unit of Measure': 'USD:US Dollars',
+   'UNIT_MULT:Scale': '0:Units'}}}
+```
+</details>
+
+<details>
+<summary mdxType="summary">Example - Multiple Indicators & Countries With Transform</summary>
+
+```python
+params = {"symbol": "core,cpi", "country": "us,de,jp", "transform": "toya"}
+data = obb.economy.indicators(**params)
+df = data.to_df().filter(like="2024", axis=0)
+
+df
+```
+
+| date       | symbol_root   | symbol      | country       |    value |
+|:-----------|:--------------|:------------|:--------------|---------:|
+| 2024-01-01 | CORE          | COREDE~TOYA | Germany       | 0.03394  |
+| 2024-01-01 | CORE          | COREJP~TOYA | Japan         | 0.03523  |
+| 2024-01-01 | CORE          | COREUS~TOYA | United States | 0.03875  |
+| 2024-01-01 | CPI           | CPIDE~TOYA  | Germany       | 0.02887  |
+| 2024-01-01 | CPI           | CPIJP~TOYA  | Japan         | 0.021012 |
+| 2024-01-01 | CPI           | CPIUS~TOYA  | United States | 0.03106  |
+| 2024-02-01 | CORE          | COREDE~TOYA | Germany       | 0.03454  |
+| 2024-02-01 | CORE          | COREJP~TOYA | Japan         | 0.03216  |
+| 2024-02-01 | CORE          | COREUS~TOYA | United States | 0.03762  |
+| 2024-02-01 | CPI           | CPIDE~TOYA  | Germany       | 0.02517  |
+| 2024-02-01 | CPI           | CPIJP~TOYA  | Japan         | 0.02788  |
+| 2024-02-01 | CPI           | CPIUS~TOYA  | United States | 0.03166  |
+| 2024-03-01 | CORE          | COREUS~TOYA | United States | 0.03797  |
+| 2024-03-01 | CPI           | CPIDE~TOYA  | Germany       | 0.021533 |
+| 2024-03-01 | CPI           | CPIUS~TOYA  | United States | 0.03475  |
+</details>
+
+<details>
+<summary mdxType="summary">Example - All Countries</summary>
+
+Setting the country to "all" will retrieve data for all available countries.
+
+```python
+data = obb.economy.indicators("ny", country="all", transform="tusd")
+
+data.to_df().filter(like="2024", axis=0)
+```
+| date       | symbol_root   | symbol    | country    |    value |
+|:-----------|:--------------|:----------|:-----------|---------:|
+| 2024-01-01 | NY            | NYBE~TUSD | Belgium    |  1132.6  |
+| 2024-01-01 | NY            | NYBG~TUSD | Bulgaria   |   -78.79 |
+| 2024-01-01 | NY            | NYHR~TUSD | Croatia    |    31.99 |
+| 2024-01-01 | NY            | NYCZ~TUSD | Czechia    |  -676.3  |
+| 2024-01-01 | NY            | NYDK~TUSD | Denmark    |  1323.6  |
+| 2024-01-01 | NY            | NYEE~TUSD | Estonia    |  -131.74 |
+| 2024-01-01 | NY            | NYFI~TUSD | Finland    |   626.4  |
+| 2024-01-01 | NY            | NYFR~TUSD | France     |  8570    |
+| 2024-01-01 | NY            | NYDE~TUSD | Germany    | 13656    |
+| 2024-01-01 | NY            | NYGR~TUSD | Greece     |   451.5  |
+| 2024-01-01 | NY            | NYHU~TUSD | Hungary    |  -528.7  |
+| 2024-01-01 | NY            | NYIT~TUSD | Italy      |  -509.5  |
+| 2024-01-01 | NY            | NYLV~TUSD | Latvia     |    53.57 |
+| 2024-01-01 | NY            | NYLT~TUSD | Lithuania  |  -111.62 |
+| 2024-01-01 | NY            | NYLU~TUSD | Luxembourg | -3791    |
+| 2024-01-01 | NY            | NYMT~TUSD | Malta      |  -218.54 |
+| 2024-01-01 | NY            | NYPL~TUSD | Poland     | -3029    |
+| 2024-01-01 | NY            | NYPT~TUSD | Portugal   |    28.42 |
+| 2024-01-01 | NY            | NYRO~TUSD | Romania    |  -410.1  |
+| 2024-01-01 | NY            | NYSK~TUSD | Slovakia   |  -342.7  |
+| 2024-01-01 | NY            | NYSI~TUSD | Slovenia   |   -82.76 |
+| 2024-01-01 | NY            | NYSE~TUSD | Sweden     |  2334.1  |
+
+
+```python
+data.extra.get("results_metadata")["NYSE~TUSD"]
+```
+```
+{'title': 'Sweden - Net income from abroad (Primary Income)',
+ 'country': 'Sweden',
+ 'frequency': 'M',
+ 'dataset': 'BOP_C6_M',
+ 'transform': 'Values as US dollars',
+ 'units': 'USD',
+ 'scale': 'Units',
+ 'multiplier': 1000000,
+ 'additional_info': {'GEO:Geopolitical entity (reporting)': 'SE:Sweden',
+  'PARTNER:Geopolitical entity (partner)': 'WRL_REST:Rest of the world',
+  'SECTPART:Sector (ESA 2010)': 'S1:Total economy',
+  'SECTOR10:Sector (ESA 2010)': 'S1:Total economy',
+  'FREQ:Frequency': 'M:Monthly',
+  'STK_FLOW:Stock or flow': 'BAL:Balance',
+  'CURRENCY:Currency': 'MIO_NAC:Million units of national currency',
+  'BOP_ITEM:BOP_item': 'IN1:Primary income'}}
+```
+</details>
+
+</details>
+
+## Advanced Symbols
+
+<details>
+
+The grouping behaviour can be overridden. This will allow multiple transformations, or for a specific symbol to ignore the supplied `country` and `transform` parameters.
+
+<details>
+<summary mdxType="summary">Example - Bypass Group Parameters</summary>
+
+The "~" character is used to separate the base symbol + 2-letter ISO country code, and the transformation.
+It works as a flag to exclude from the other parameters.
+
+```python
+obb.economy.indicators("CPIUS~").to_df().tail(2)
+```
+
+| date       | symbol_root   | symbol   | country       |   value |
+|:-----------|:--------------|:---------|:--------------|--------:|
+| 2024-02-01 | CPI           | CPIUS    | United States |   311.1 |
+| 2024-03-01 | CPI           | CPIUS    | United States |   312.2 |
+
+Without "~", symbols are assumed to be a base symbol, and require a country parameter. An error (or warning where at least one symbol supplied was valid) is raised if the condition is not met.
+
+```python
+obb.economy.indicators("CPIUS")
+```
+
+```console
+OpenBBError: No valid combination of indicator symbols and countries were supplied.
+Valid countries for 'CPIUS' are: None
+If the symbol - CPIUS - is missing a country code. Please add the two-letter country code or use the country parameter.
+If already included, add '~' to the end of the symbol.
+```
+
+This example bypasses the transformation for US data, applying it only to France.
+
+```python
+obb.economy.indicators(symbol=["CPIUS~","CPI"], country="fr", transform="toya").to_df().tail(2)
+```
+
+| date       | symbol_root   | symbol     | country       |      value |
+|:-----------|:--------------|:-----------|:--------------|-----------:|
+| 2024-03-01 | CPI           | CPIFR~TOYA | France        |   0.022947 |
+| 2024-03-01 | CPI           | CPIUS      | United States | 312.2      |
+
+</details>
+
+<details>
+<summary mdxType="summary">Example - Non-Standard Symbols</summary>
+
+The `symbol` parameter can also be used to access non-standard series. These are specific to reporting entities, like the Ministry of Finance, Japan.
+These symbols are not searchable, but the structure will be familiar if you have worked with the particular source before.
+For this purpose, enter each symbol ending with, "~".
+
+:::important
+Non-standard symbols will not have transformations, standardized metadata, or normalized percent values.
+:::
+
+Japan Yield Curve
+
+```python
+symbols = [
+  "MFJP_IR.1Y.D.JP~",
+  "MFJP_IR.2Y.D.JP~",
+  "MFJP_IR.3Y.D.JP~",
+  "MFJP_IR.4Y.D.JP~",
+  "MFJP_IR.5Y.D.JP~",
+  "MFJP_IR.6Y.D.JP~",
+  "MFJP_IR.7Y.D.JP~",
+  "MFJP_IR.8Y.D.JP~",
+  "MFJP_IR.9Y.D.JP~",
+  "MFJP_IR.10Y.D.JP~",
+  "MFJP_IR.15Y.D.JP~",
+  "MFJP_IR.20Y.D.JP~",
+  "MFJP_IR.25Y.D.JP~",
+  "MFJP_IR.30Y.D.JP~",
+  "MFJP_IR.40Y.D.JP~",
+]
+data = obb.economy.indicators(symbol=symbols)
+
+curve = data.to_df().filter(like="2024-04-11", axis=0)
+
+curve
+```
+
+| date       | symbol_root   | symbol           | country   |   value |
+|:-----------|:--------------|:-----------------|:----------|--------:|
+| 2024-04-11 |               | MFJP_IR.1Y.D.JP  | Japan     |   0.068 |
+| 2024-04-11 |               | MFJP_IR.2Y.D.JP  | Japan     |   0.27  |
+| 2024-04-11 |               | MFJP_IR.3Y.D.JP  | Japan     |   0.28  |
+| 2024-04-11 |               | MFJP_IR.4Y.D.JP  | Japan     |   0.37  |
+| 2024-04-11 |               | MFJP_IR.5Y.D.JP  | Japan     |   0.485 |
+| 2024-04-11 |               | MFJP_IR.6Y.D.JP  | Japan     |   0.508 |
+| 2024-04-11 |               | MFJP_IR.7Y.D.JP  | Japan     |   0.592 |
+| 2024-04-11 |               | MFJP_IR.8Y.D.JP  | Japan     |   0.68  |
+| 2024-04-11 |               | MFJP_IR.9Y.D.JP  | Japan     |   0.757 |
+| 2024-04-11 |               | MFJP_IR.10Y.D.JP | Japan     |   0.854 |
+| 2024-04-11 |               | MFJP_IR.15Y.D.JP | Japan     |   1.289 |
+| 2024-04-11 |               | MFJP_IR.20Y.D.JP | Japan     |   1.625 |
+| 2024-04-11 |               | MFJP_IR.25Y.D.JP | Japan     |   1.78  |
+| 2024-04-11 |               | MFJP_IR.30Y.D.JP | Japan     |   1.907 |
+| 2024-04-11 |               | MFJP_IR.40Y.D.JP | Japan     |   2.065 |
+
+```python
+data.extra["results_metadata"].get("MFJP_IR.5Y.D.JP")
+```
+
+```python
+{'title': 'Japan - Japanese Government Bonds - 5Y yield',
+ 'country': 'Japan',
+ 'frequency': 'D',
+ 'dataset': 'MFJP_IR',
+ 'transform': None,
+ 'units': None,
+ 'scale': None,
+ 'multiplier': 1,
+ 'additional_info': {'3:Indicator': '8:Japanese Government Bonds - 5Y yield',
+  'GEO:None': '107:None'}}
+```
+</details>
+</details>
