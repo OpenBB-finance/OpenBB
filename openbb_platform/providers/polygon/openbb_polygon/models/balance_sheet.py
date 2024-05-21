@@ -161,7 +161,9 @@ class PolygonBalanceSheetData(BalanceSheetData):
     temporary_equity: Optional[float] = Field(
         description="Temporary equity", default=None
     )
-    preferred_stock: Optional[float] = Field(description="Preferred stock", default=None)
+    preferred_stock: Optional[float] = Field(
+        description="Preferred stock", default=None
+    )
     redeemable_non_controlling_interest: Optional[float] = Field(
         description="Redeemable non-controlling interest", default=None
     )
