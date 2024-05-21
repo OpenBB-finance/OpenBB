@@ -73,8 +73,12 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                             )
                         ]
                     )
-                    _input = err.get("input", "")
                     msg = err.get("msg", "")
+                    _input = (
+                        "..."
+                        if msg == "Missing required argument"
+                        else err.get("input", "")
+                    )
                     error_list.append(f"[Arg] {loc} -> input: {_input} -> {msg}")
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
