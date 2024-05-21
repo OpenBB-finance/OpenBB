@@ -190,7 +190,7 @@ class PackageBuilder:
                 "openbb": VERSION.replace("dev", ""),
                 "info": {
                     "title": "OpenBB Platform (Python)",
-                    "description": "This is the OpenBB Platform (Python).",
+                    "description": "Investment research for everyone, anywhere.",
                     "core": CORE_VERSION.replace("dev", ""),
                     "extensions": ext_map,
                 },
@@ -1048,7 +1048,7 @@ class DocstringGenerator:
         cls,
         model_name: str,
         summary: str,
-        explicit_params: dict,
+        explicit_params: Dict[str, Parameter],
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
@@ -1071,8 +1071,10 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{create_indent(2)}")
             return description
 
-        def get_param_info(parameter: Parameter) -> Tuple[str, str]:
+        def get_param_info(parameter: Optional[Parameter]) -> Tuple[str, str]:
             """Get the parameter info."""
+            if not parameter:
+                return "", ""
             annotation = getattr(parameter, "_annotation", None)
             if isinstance(annotation, _AnnotatedAlias):
                 args = getattr(annotation, "__args__", []) if annotation else []
@@ -1123,7 +1125,7 @@ class DocstringGenerator:
             docstring += "\n"
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
-            providers, _ = get_param_info(explicit_params.get("provider", None))
+            providers, _ = get_param_info(explicit_params.get("provider"))
             docstring += cls.get_OBBject_description(results_type, providers)
 
             # Schema
@@ -1300,7 +1302,7 @@ class PathHandler:
     @staticmethod
     def get_route(path: str, route_map: Dict[str, BaseRoute]):
         """Get the route from the path."""
-        return route_map.get(path, None)
+        return route_map.get(path)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: List[str]) -> List[str]:
