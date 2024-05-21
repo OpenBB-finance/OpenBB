@@ -63,6 +63,7 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
+from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
 fmp_provider = Provider(
     name="fmp",
@@ -134,6 +135,7 @@ stock market information (news, currencies, and stock prices).""",
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
         "EtfHistorical": FMPEquityHistoricalFetcher,
+        "YieldCurve": FMPYieldCurveFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",
     v3_credentials=["API_KEY_FINANCIALMODELINGPREP"],
