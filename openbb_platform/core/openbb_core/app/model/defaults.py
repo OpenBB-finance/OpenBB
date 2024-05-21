@@ -36,6 +36,6 @@ class Defaults(BaseModel):
             )
             key = "routes"
         values[key] = {
-            k.strip("/").replace("/", "."): v for k, v in values[key].items()
+            k.strip("/").replace("/", "."): v for k, v in values.get(key, {}).items()
         }
         return values
