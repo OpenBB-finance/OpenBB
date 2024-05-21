@@ -26,7 +26,7 @@
     "@types/plotly.js-dist-min": "^2.3.4",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "@types/react-plotly.js": "^2.6.0",
+    "@types/react-plotly.js": "^2.6.3",
     "@types/wicg-file-system-access": "^2020.9.6",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.13",
