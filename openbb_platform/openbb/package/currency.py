@@ -38,7 +38,7 @@ class ROUTER_currency(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon')"
             ),
         ] = None,
         **kwargs
@@ -59,9 +59,7 @@ class ROUTER_currency(Container):
         query : Optional[str]
             Query to search for currency pairs.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon')
 
         Returns
         -------
@@ -160,7 +158,7 @@ class ROUTER_currency(Container):
         provider: Annotated[
             Optional[Literal["fmp", "polygon"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'polygon')"
             ),
         ] = None,
         **kwargs
@@ -176,9 +174,7 @@ class ROUTER_currency(Container):
         counter_currencies : Union[List[str], str, None]
             An optional list of counter currency symbols to filter for. None returns all.
         provider : Optional[Literal['fmp', 'polygon']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'polygon')
 
         Returns
         -------

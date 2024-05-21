@@ -39,7 +39,7 @@ class ROUTER_fixedincome_spreads(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -61,9 +61,7 @@ class ROUTER_fixedincome_spreads(Container):
         maturity : Optional[Literal['3m', '2y']]
             The maturity
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------
@@ -131,7 +129,7 @@ class ROUTER_fixedincome_spreads(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -153,9 +151,7 @@ class ROUTER_fixedincome_spreads(Container):
         maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
             The maturity
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------
@@ -222,7 +218,7 @@ class ROUTER_fixedincome_spreads(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -245,9 +241,7 @@ class ROUTER_fixedincome_spreads(Container):
         maturity : Optional[Literal['3m', '6m']]
             The maturity
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------

@@ -49,7 +49,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -75,9 +75,7 @@ class ROUTER_fixedincome_corporate(Container):
         grade : Literal['aa', 'a2_p2']
             The grade.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------
@@ -142,7 +140,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -162,9 +160,7 @@ class ROUTER_fixedincome_corporate(Container):
         yield_curve : Literal['spot', 'par']
             The yield curve type.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------
@@ -237,7 +233,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -260,9 +256,7 @@ class ROUTER_fixedincome_corporate(Container):
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
         category : Literal['all', 'duration', 'eur', 'usd']
             The type of category. (provider: fred)
         area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
@@ -337,7 +331,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -359,9 +353,7 @@ class ROUTER_fixedincome_corporate(Container):
         index_type : Literal['aaa', 'baa']
             The type of series.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
         spread : Optional[Literal['treasury', 'fed_funds']]
             The type of spread. (provider: fred)
 
@@ -440,7 +432,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
             ),
         ] = None,
         **kwargs
@@ -464,9 +456,7 @@ class ROUTER_fixedincome_corporate(Container):
         category : Union[str, List[str]]
             Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
 
         Returns
         -------

@@ -33,7 +33,7 @@ class Container:
         return all(getattr(credentials, r, None) for r in required)
 
     def _get_provider(
-        self, choice: Optional[str], command: str, default_fallback: Tuple[str, ...]
+        self, choice: Optional[str], command: str, default_priority: Tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution.
 
@@ -46,7 +46,7 @@ class Container:
             The provider choice, for example 'fmp'.
         command: str
             The command to get the provider for, for example 'equity.price.historical'
-        default_fallback: Tuple[str, ...]
+        default_priority: Tuple[str, ...]
             A tuple of available providers for the given command to use as default fallback.
 
         Returns
@@ -61,8 +61,8 @@ class Container:
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
-            fallback = commands.get(command, {}).get("provider", []) or default_fallback
-            providers = [fallback] if isinstance(fallback, str) else fallback
+            priority = commands.get(command, {}).get("provider", []) or default_priority
+            providers = [priority] if isinstance(priority, str) else priority
             for p in providers:
                 if self._check_credentials(p):
                     return p

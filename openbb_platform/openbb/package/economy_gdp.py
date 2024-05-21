@@ -48,7 +48,7 @@ class ROUTER_economy_gdp(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
             ),
         ] = None,
         **kwargs
@@ -66,9 +66,7 @@ class ROUTER_economy_gdp(Container):
         type : Literal['nominal', 'real']
             Type of GDP to get forecast of. Either nominal or real.
         provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
         country : Literal['argentina', 'asia', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_17', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'non-oecd', 'norway', 'oecd_total', 'peru', 'poland', 'portugal', 'romania', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'world']
             Country to get GDP for. (provider: oecd)
 
@@ -141,7 +139,7 @@ class ROUTER_economy_gdp(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
             ),
         ] = None,
         **kwargs
@@ -157,9 +155,7 @@ class ROUTER_economy_gdp(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
         country : Literal['australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'colombia', 'costa_rica', 'czech_republic', 'denmark', 'estonia', 'euro_area', 'european_union', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']
             Country to get GDP for. (provider: oecd)
 
@@ -231,7 +227,7 @@ class ROUTER_economy_gdp(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
             ),
         ] = None,
         **kwargs
@@ -247,9 +243,7 @@ class ROUTER_economy_gdp(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'oecd' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
         country : Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']
             Country to get GDP for. (provider: oecd)
 

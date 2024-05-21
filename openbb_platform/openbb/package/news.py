@@ -48,7 +48,7 @@ class ROUTER_news(Container):
                 Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
             ],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance')"
             ),
         ] = None,
         **kwargs
@@ -66,9 +66,7 @@ class ROUTER_news(Container):
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiing...
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'benzinga' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance')
         date : Optional[datetime.date]
             A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
@@ -268,7 +266,7 @@ class ROUTER_news(Container):
         provider: Annotated[
             Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('benzinga', 'fmp', 'intrinio', 'tiingo')"
             ),
         ] = None,
         **kwargs
@@ -284,9 +282,7 @@ class ROUTER_news(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'benzinga' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('benzinga', 'fmp', 'intrinio', 'tiingo')
         date : Optional[datetime.date]
             A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']

@@ -48,7 +48,7 @@ class ROUTER_equity_ownership(Container):
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('sec',)"
             ),
         ] = None,
         **kwargs
@@ -72,9 +72,7 @@ class ROUTER_equity_ownership(Container):
         limit : Optional[int]
             The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
         provider : Optional[Literal['sec']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'sec' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('sec',)
 
         Returns
         -------
@@ -159,7 +157,7 @@ class ROUTER_equity_ownership(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio')"
             ),
         ] = None,
         **kwargs
@@ -173,9 +171,7 @@ class ROUTER_equity_ownership(Container):
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio')
         transaction_type : Optional[Literal['award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']]
             Type of the transaction. (provider: fmp)
         start_date : Optional[datetime.date]
@@ -295,7 +291,7 @@ class ROUTER_equity_ownership(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
             ),
         ] = None,
         **kwargs
@@ -307,9 +303,7 @@ class ROUTER_equity_ownership(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
         include_current_quarter : Optional[bool]
             Include current quarter data. (provider: fmp)
         date : Optional[datetime.date]
@@ -442,7 +436,7 @@ class ROUTER_equity_ownership(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
             ),
         ] = None,
         **kwargs
@@ -458,9 +452,7 @@ class ROUTER_equity_ownership(Container):
         page : Optional[int]
             Page number of the data to fetch.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
 
         Returns
         -------
@@ -596,7 +588,7 @@ class ROUTER_equity_ownership(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'yfinance')"
             ),
         ] = None,
         **kwargs
@@ -608,9 +600,7 @@ class ROUTER_equity_ownership(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'yfinance')
 
         Returns
         -------
