@@ -4,6 +4,7 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
+from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
@@ -134,5 +135,18 @@ def test_sec_form_13FHR_fetcher(credentials=test_credentials):
     params = {"symbol": "NVDA", "use_cache": False}
 
     fetcher = SecForm13FHRFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_compare_company_facts_fetcher(credentials=test_credentials):
+    """Test the SEC Compare Company Facts fetcher."""
+    params = {
+        "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "use_cache": False,
+    }
+
+    fetcher = SecCompareCompanyFactsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
