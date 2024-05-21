@@ -37,7 +37,7 @@ class ROUTER_equity_calendar(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -51,7 +51,7 @@ class ROUTER_equity_calendar(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -127,7 +127,7 @@ class ROUTER_equity_calendar(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -141,7 +141,7 @@ class ROUTER_equity_calendar(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -230,7 +230,7 @@ class ROUTER_equity_calendar(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -248,7 +248,7 @@ class ROUTER_equity_calendar(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         status : Optional[Literal['upcoming', 'priced', 'withdrawn']]
             Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)
         min_value : Optional[int]
@@ -360,7 +360,7 @@ class ROUTER_equity_calendar(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -374,7 +374,7 @@ class ROUTER_equity_calendar(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------

@@ -609,7 +609,7 @@ class MethodDefinition:
                             description=(
                                 "The provider to use, by default None. "
                                 "If None, the priority list configured in the settings is used. "
-                                f"Default priority: {default_priority}"
+                                f"Default priority: {', '.join(default_priority)}."
                             ),
                         ),
                     ],
@@ -1420,7 +1420,7 @@ class ReferenceGenerator:
         description = (
             "The provider to use, by default None. "
             "If None, the priority list configured in the settings is used. "
-            f"Default priority: {default_priority}"
+            f"Default priority: {', '.join(default_priority)}."
         )
 
         provider_parameter_info = {

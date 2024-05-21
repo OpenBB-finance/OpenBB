@@ -47,7 +47,7 @@ class ROUTER_equity_price(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance."
             ),
         ] = None,
         **kwargs
@@ -65,7 +65,7 @@ class ROUTER_equity_price(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -203,7 +203,7 @@ class ROUTER_equity_price(Container):
         provider: Annotated[
             Optional[Literal["polygon"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('polygon',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon."
             ),
         ] = None,
         **kwargs
@@ -215,7 +215,7 @@ class ROUTER_equity_price(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['polygon']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('polygon',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: polygon.
         limit : int
             The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon)
         date : Optional[datetime.date]
@@ -312,7 +312,7 @@ class ROUTER_equity_price(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -324,7 +324,7 @@ class ROUTER_equity_price(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -414,7 +414,7 @@ class ROUTER_equity_price(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'yfinance')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -426,7 +426,7 @@ class ROUTER_equity_price(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'yfinance')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
             Source of the data. (provider: intrinio)
 

@@ -27,7 +27,7 @@ class ROUTER_derivatives_options(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -39,7 +39,7 @@ class ROUTER_derivatives_options(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
 
@@ -184,7 +184,7 @@ class ROUTER_derivatives_options(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -196,7 +196,7 @@ class ROUTER_derivatives_options(Container):
         symbol : Optional[str]
             Symbol to get data for. (the underlying symbol)
         provider : Optional[Literal['intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('intrinio',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format. If no symbol is supplied, requests are only allowed for a single date. Use the start_date for the target date. Intrinio appears to have data beginning Feb/2022, but is unclear when it actually began. (provider: intrinio)
         end_date : Optional[datetime.date]

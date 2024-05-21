@@ -38,7 +38,7 @@ class ROUTER_fixedincome_government(Container):
         provider: Annotated[
             Optional[Literal["federal_reserve", "fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve', 'fmp')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp."
             ),
         ] = None,
         **kwargs
@@ -52,7 +52,7 @@ class ROUTER_fixedincome_government(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve', 'fmp')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fmp.
 
         Returns
         -------
@@ -143,7 +143,7 @@ class ROUTER_fixedincome_government(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -157,7 +157,7 @@ class ROUTER_fixedincome_government(Container):
         inflation_adjusted : Optional[bool]
             Get inflation adjusted rates.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -225,7 +225,7 @@ class ROUTER_fixedincome_government(Container):
         provider: Annotated[
             Optional[Literal["econdb", "federal_reserve", "fmp", "fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb', 'federal_reserve', 'fmp', 'fred')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred."
             ),
         ] = None,
         **kwargs
@@ -237,7 +237,7 @@ class ROUTER_fixedincome_government(Container):
         date : Union[str, None, List[Optional[str]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb', 'federal_reserve', 'fmp', 'fred')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.
         country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']
             The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. (provider: econdb)
         use_cache : bool

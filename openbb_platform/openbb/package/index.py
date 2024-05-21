@@ -31,7 +31,7 @@ class ROUTER_index(Container):
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'yfinance')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance."
             ),
         ] = None,
         **kwargs
@@ -41,7 +41,7 @@ class ROUTER_index(Container):
         Parameters
         ----------
         provider : Optional[Literal['fmp', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'yfinance')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
 
         Returns
         -------
@@ -102,7 +102,7 @@ class ROUTER_index(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -114,7 +114,7 @@ class ROUTER_index(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -201,7 +201,7 @@ class ROUTER_index(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon', 'yfinance')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
             ),
         ] = None,
         **kwargs
@@ -219,7 +219,7 @@ class ROUTER_index(Container):
         interval : Optional[str]
             Time interval of the data to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'intrinio', 'polygon', 'yfinance')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio, polygon)
         sort : Literal['asc', 'desc']

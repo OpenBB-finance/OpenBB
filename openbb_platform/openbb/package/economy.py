@@ -41,7 +41,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["econdb"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
             ),
         ] = None,
         **kwargs
@@ -51,7 +51,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         provider : Optional[Literal['econdb']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
         use_cache : bool
             Whether to use cache or not, by default is True The cache of indicator symbols will persist for one week. (provider: econdb)
 
@@ -128,7 +128,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -138,7 +138,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         country : Literal['argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czechia', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'g7', 'g20']
             The country to get data. Enter as a 3-letter ISO country code, default is USA. (provider: fred)
         start_date : Optional[datetime.date]
@@ -242,7 +242,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fmp", "tradingeconomics"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'tradingeconomics')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics."
             ),
         ] = None,
         **kwargs
@@ -256,7 +256,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'tradingeconomics']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp', 'tradingeconomics')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, tradingeconomics.
         country : Optional[str]
             Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
         importance : Optional[Literal['low', 'medium', 'high']]
@@ -381,7 +381,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
             ),
         ] = None,
         **kwargs
@@ -401,7 +401,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
             Country to get GDP for. (provider: oecd)
 
@@ -466,7 +466,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["econdb"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
             ),
         ] = None,
         **kwargs
@@ -478,7 +478,7 @@ class ROUTER_economy(Container):
         country : Union[str, List[str]]
             The country to get data. Multiple comma separated items allowed for provider(s): econdb.
         provider : Optional[Literal['econdb']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
         latest : bool
             If True, return only the latest data. If False, return all available data for each indicator. (provider: econdb)
         use_cache : bool
@@ -642,7 +642,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -674,7 +674,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -746,7 +746,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -767,7 +767,7 @@ class ROUTER_economy(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         is_series_group : bool
             When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
         region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
@@ -884,7 +884,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -900,7 +900,7 @@ class ROUTER_economy(Container):
         query : Optional[str]
             The search word(s).
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         is_release : Optional[bool]
             Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
         release_id : Optional[Union[int, str]]
@@ -1025,7 +1025,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fred", "intrinio"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred', 'intrinio')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio."
             ),
         ] = None,
         **kwargs
@@ -1043,7 +1043,7 @@ class ROUTER_economy(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fred', 'intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred', 'intrinio')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, intrinio.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert high frequency data to lower frequency.
@@ -1175,7 +1175,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["econdb"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb."
             ),
         ] = None,
         **kwargs
@@ -1193,7 +1193,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['econdb']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('econdb',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb.
         transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
             The transformation to apply to the data, default is None.
 
@@ -1286,7 +1286,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
             ),
         ] = None,
         **kwargs
@@ -1310,7 +1310,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
             Country to get GDP for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
@@ -1383,7 +1383,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["federal_reserve"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
             ),
         ] = None,
         **kwargs
@@ -1402,7 +1402,7 @@ class ROUTER_economy(Container):
         adjusted : Optional[bool]
             Whether to return seasonally adjusted data.
         provider : Optional[Literal['federal_reserve']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
 
         Returns
         -------
@@ -1470,7 +1470,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1480,7 +1480,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fmp',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -1543,7 +1543,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
             ),
         ] = None,
         **kwargs
@@ -1565,7 +1565,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
             Country to get GDP for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
@@ -1634,7 +1634,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
             ),
         ] = None,
         **kwargs
@@ -1648,7 +1648,7 @@ class ROUTER_economy(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('oecd',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['colombia', 'new_zealand', 'united_kingdom', 'italy', 'luxembourg', 'euro_area19', 'sweden', 'oecd', 'south_africa', 'denmark', 'canada', 'switzerland', 'slovakia', 'hungary', 'portugal', 'spain', 'france', 'czech_republic', 'costa_rica', 'japan', 'slovenia', 'russia', 'austria', 'latvia', 'netherlands', 'israel', 'iceland', 'united_states', 'ireland', 'mexico', 'germany', 'greece', 'turkey', 'australia', 'poland', 'south_korea', 'chile', 'finland', 'european_union27_2020', 'norway', 'lithuania', 'euro_area20', 'estonia', 'belgium', 'brazil', 'indonesia', 'all']
             Country to get GDP for. (provider: oecd)
         sex : Literal['total', 'male', 'female']

@@ -26,7 +26,7 @@ class ROUTER_equity_shorts(Container):
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('sec',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
             ),
         ] = None,
         **kwargs
@@ -38,7 +38,7 @@ class ROUTER_equity_shorts(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('sec',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         limit : Optional[int]
 
                 Limit the number of reports to parse, from most recent.

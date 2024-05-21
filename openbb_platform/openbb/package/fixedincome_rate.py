@@ -41,7 +41,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -60,7 +60,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
             Period of AMERIBOR rate. (provider: fred)
 
@@ -125,7 +125,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -145,7 +145,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         parameter : Literal['daily_excl_weekend', 'monthly', 'weekly', 'daily', 'annual']
             FRED series ID of DWPCR data. (provider: fred)
 
@@ -214,7 +214,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -238,7 +238,7 @@ class ROUTER_fixedincome_rate(Container):
         interest_rate_type : Literal['deposit', 'lending', 'refinancing']
             The type of interest rate.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -302,7 +302,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["federal_reserve", "fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve', 'fred')"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred."
             ),
         ] = None,
         **kwargs
@@ -321,7 +321,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('federal_reserve', 'fred')
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
         parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
             Period of FED rate. (provider: fred)
 
@@ -378,7 +378,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -394,7 +394,7 @@ class ROUTER_fixedincome_rate(Container):
         Parameters
         ----------
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         long_run : bool
             Flag to show long run projections (provider: fred)
 
@@ -468,7 +468,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -488,7 +488,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
             Period of ESTR rate. (provider: fred)
 
@@ -553,7 +553,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -572,7 +572,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -634,7 +634,7 @@ class ROUTER_fixedincome_rate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)"
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -653,7 +653,7 @@ class ROUTER_fixedincome_rate(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: ('fred',)
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
             Period of SONIA rate. (provider: fred)
 
