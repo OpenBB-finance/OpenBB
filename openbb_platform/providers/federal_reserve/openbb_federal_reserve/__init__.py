@@ -8,6 +8,7 @@ from openbb_federal_reserve.models.money_measures import (
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
+from openbb_federal_reserve.models.yield_curve import FederalReserveYieldCurveFetcher
 
 federal_reserve_provider = Provider(
     name="federal_reserve",
@@ -18,6 +19,7 @@ the Central Bank of the United States.""",
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
         "FEDFUNDS": FederalReserveFEDFetcher,
+        "YieldCurve": FederalReserveYieldCurveFetcher,
     },
     repr_name="Federal Reserve (FED)",
 )

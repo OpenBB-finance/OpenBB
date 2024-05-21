@@ -29497,10 +29497,143 @@
             },
             "model": "SelectedTreasuryBill"
         },
-        "/fixedincome/government/us_yield_curve": {
+        "/fixedincome/government/yield_curve": {
             "deprecated": {
                 "flag": null,
                 "message": null
+            },
+            "description": "Get yield curve data by country and date.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.yield_curve(provider='federal_reserve')\nobb.fixedincome.government.yield_curve(date='2023-05-01,2024-05-01', provider='fmp')\nobb.fixedincome.government.yield_curve(date='2023-05-01', country=united_kingdom, provider='econdb')\nobb.fixedincome.government.yield_curve(provider='fred', yield_curve_type=real, date='2023-05-01,2024-05-01')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[Union[str, str], List[Union[str, str]]]",
+                        "description": "A specific date to get data for. By default is the current data. Multiple items allowed for provider(s): econdb, federal_reserve, fmp, fred.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['econdb', 'federal_reserve', 'fmp', 'fred']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'econdb' if there is no default.",
+                        "default": "econdb",
+                        "optional": true
+                    }
+                ],
+                "econdb": [
+                    {
+                        "name": "country",
+                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'russia', 'saudi_arabia', 'south_africa', 'south_korea', 'taiwan', 'united_kingdom', 'united_states']",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "australia",
+                            "canada",
+                            "china",
+                            "hong_kong",
+                            "india",
+                            "japan",
+                            "russia",
+                            "saudi_arabia",
+                            "south_africa",
+                            "south_korea",
+                            "taiwan",
+                            "united_kingdom",
+                            "united_states"
+                        ]
+                    },
+                    {
+                        "name": "use_cache",
+                        "type": "bool",
+                        "description": "If true, cache the request for four hours.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [],
+                "fmp": [],
+                "fred": [
+                    {
+                        "name": "yield_curve_type",
+                        "type": "Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']",
+                        "description": "Yield curve type. Nominal and Real Rates are available daily, others are monthly. The closest date to the requested date will be returned.",
+                        "default": "nominal",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[YieldCurve]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "Maturity length of the security.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "The yield as a normalized percent (0.05 is 5%)",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "econdb": [],
+                "federal_reserve": [],
+                "fmp": [],
+                "fred": []
+            },
+            "model": "YieldCurve"
+        },
+        "/fixedincome/government/us_yield_curve": {
+            "deprecated": {
+                "flag": true,
+                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
             },
             "description": "US Yield Curve. Get United States yield curve.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.us_yield_curve(provider='fred')\nobb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')\n```\n\n",

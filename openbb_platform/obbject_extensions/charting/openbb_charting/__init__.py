@@ -459,6 +459,9 @@ class Charting:
             )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["extra_params"] = kwargs["extra"]["metadata"].arguments.get(
+            "extra_params"
+        )
         if "kwargs" in kwargs:
             _kwargs = kwargs.pop("kwargs")
             kwargs.update(_kwargs.get("chart_params", {}))
