@@ -126,7 +126,7 @@ class ROUTER_equity_compare(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/compare/company_facts",
+                        "equity.compare.company_facts",
                         ("sec",),
                     )
                 },
@@ -198,7 +198,7 @@ class ROUTER_equity_compare(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/compare/peers",
+                        "equity.compare.peers",
                         ("fmp",),
                     )
                 },

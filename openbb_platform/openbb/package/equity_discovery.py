@@ -103,7 +103,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/active",
+                        "equity.discovery.active",
                         ("yfinance",),
                     )
                 },
@@ -191,7 +191,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/aggressive_small_caps",
+                        "equity.discovery.aggressive_small_caps",
                         ("yfinance",),
                     )
                 },
@@ -299,7 +299,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/filings",
+                        "equity.discovery.filings",
                         ("fmp",),
                     )
                 },
@@ -390,7 +390,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/gainers",
+                        "equity.discovery.gainers",
                         ("yfinance",),
                     )
                 },
@@ -478,7 +478,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/growth_tech",
+                        "equity.discovery.growth_tech",
                         ("yfinance",),
                     )
                 },
@@ -566,7 +566,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/losers",
+                        "equity.discovery.losers",
                         ("yfinance",),
                     )
                 },
@@ -654,7 +654,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/undervalued_growth",
+                        "equity.discovery.undervalued_growth",
                         ("yfinance",),
                     )
                 },
@@ -742,7 +742,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/undervalued_large_caps",
+                        "equity.discovery.undervalued_large_caps",
                         ("yfinance",),
                     )
                 },

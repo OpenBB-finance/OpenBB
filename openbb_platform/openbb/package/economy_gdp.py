@@ -106,7 +106,7 @@ class ROUTER_economy_gdp(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/gdp/forecast",
+                        "economy.gdp.forecast",
                         ("oecd",),
                     )
                 },
@@ -197,7 +197,7 @@ class ROUTER_economy_gdp(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/gdp/nominal",
+                        "economy.gdp.nominal",
                         ("oecd",),
                     )
                 },
@@ -287,7 +287,7 @@ class ROUTER_economy_gdp(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/gdp/real",
+                        "economy.gdp.real",
                         ("oecd",),
                     )
                 },

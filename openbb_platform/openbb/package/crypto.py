@@ -92,7 +92,7 @@ class ROUTER_crypto(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/crypto/search",
+                        "crypto.search",
                         ("fmp",),
                     )
                 },

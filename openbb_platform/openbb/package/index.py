@@ -87,7 +87,7 @@ class ROUTER_index(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/index/available",
+                        "index.available",
                         ("fmp", "yfinance"),
                     )
                 },
@@ -165,7 +165,7 @@ class ROUTER_index(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/index/constituents",
+                        "index.constituents",
                         ("fmp",),
                     )
                 },
@@ -287,7 +287,7 @@ class ROUTER_index(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/index/market",
+                        "index.market",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },

@@ -214,7 +214,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/analyst_search",
+                        "equity.estimates.analyst_search",
                         ("benzinga",),
                     )
                 },
@@ -328,7 +328,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/consensus",
+                        "equity.estimates.consensus",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -445,7 +445,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_ebitda",
+                        "equity.estimates.forward_ebitda",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -569,7 +569,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_eps",
+                        "equity.estimates.forward_eps",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -665,7 +665,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_pe",
+                        "equity.estimates.forward_pe",
                         ("intrinio",),
                     )
                 },
@@ -788,7 +788,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_sales",
+                        "equity.estimates.forward_sales",
                         ("intrinio",),
                     )
                 },
@@ -906,7 +906,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/historical",
+                        "equity.estimates.historical",
                         ("fmp",),
                     )
                 },
@@ -1061,7 +1061,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/price_target",
+                        "equity.estimates.price_target",
                         ("benzinga", "fmp"),
                     )
                 },

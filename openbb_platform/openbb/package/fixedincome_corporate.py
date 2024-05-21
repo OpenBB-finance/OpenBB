@@ -113,7 +113,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/commercial_paper",
+                        "fixedincome.corporate.commercial_paper",
                         ("fred",),
                     )
                 },
@@ -206,7 +206,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/hqm",
+                        "fixedincome.corporate.hqm",
                         ("fred",),
                     )
                 },
@@ -306,7 +306,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/ice_bofa",
+                        "fixedincome.corporate.ice_bofa",
                         ("fred",),
                     )
                 },
@@ -399,7 +399,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/moody",
+                        "fixedincome.corporate.moody",
                         ("fred",),
                     )
                 },
@@ -502,7 +502,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/spot_rates",
+                        "fixedincome.corporate.spot_rates",
                         ("fred",),
                     )
                 },

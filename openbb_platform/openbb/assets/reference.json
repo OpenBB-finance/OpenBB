@@ -29525,8 +29525,8 @@
                 "econdb": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'russia', 'saudi_arabia', 'south_africa', 'south_korea', 'taiwan', 'united_kingdom', 'united_states']",
-                        "description": "The country to get data.",
+                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']",
+                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used.",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
@@ -29536,11 +29536,15 @@
                             "hong_kong",
                             "india",
                             "japan",
+                            "mexico",
+                            "new_zealand",
                             "russia",
                             "saudi_arabia",
+                            "singapore",
                             "south_africa",
                             "south_korea",
                             "taiwan",
+                            "thailand",
                             "united_kingdom",
                             "united_states"
                         ]
@@ -29633,7 +29637,7 @@
         "/fixedincome/government/us_yield_curve": {
             "deprecated": {
                 "flag": true,
-                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
+                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4."
             },
             "description": "US Yield Curve. Get United States yield curve.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.us_yield_curve(provider='fred')\nobb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')\n```\n\n",

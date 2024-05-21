@@ -216,7 +216,7 @@ class ROUTER_news(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/news/company",
+                        "news.company",
                         (
                             "benzinga",
                             "fmp",
@@ -427,7 +427,7 @@ class ROUTER_news(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/news/world",
+                        "news.world",
                         ("benzinga", "fmp", "intrinio", "tiingo"),
                     )
                 },

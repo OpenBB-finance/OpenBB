@@ -128,7 +128,7 @@ class ROUTER_currency_price(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/currency/price/historical",
+                        "currency.price.historical",
                         ("fmp", "polygon", "tiingo", "yfinance"),
                     )
                 },

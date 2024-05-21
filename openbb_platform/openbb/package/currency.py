@@ -124,7 +124,7 @@ class ROUTER_currency(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/currency/search",
+                        "currency.search",
                         ("fmp", "intrinio", "polygon"),
                     )
                 },
@@ -280,7 +280,7 @@ class ROUTER_currency(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/currency/snapshots",
+                        "currency.snapshots",
                         ("fmp", "polygon"),
                     )
                 },

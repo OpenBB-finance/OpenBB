@@ -828,10 +828,11 @@ class MethodDefinition:
             elif name == "provider_choices":
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
                 available = field.type.__args__
+                cmd = path.strip("/").replace("/", ".")
                 code += "                provider_choices={\n"
                 code += '                    "provider": self._get_provider(\n'
                 code += "                        provider,\n"
-                code += f'                        "{path}",\n'
+                code += f'                        "{cmd}",\n'
                 code += f"                        {available},\n"
                 code += "                    )\n"
                 code += "                },\n"

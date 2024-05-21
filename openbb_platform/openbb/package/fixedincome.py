@@ -123,7 +123,7 @@ class ROUTER_fixedincome(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/sofr",
+                        "fixedincome.sofr",
                         ("fred",),
                     )
                 },

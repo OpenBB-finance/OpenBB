@@ -114,7 +114,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/available_indicators",
+                        "economy.available_indicators",
                         ("econdb",),
                     )
                 },
@@ -222,7 +222,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/balance_of_payments",
+                        "economy.balance_of_payments",
                         ("fred",),
                     )
                 },
@@ -354,7 +354,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/calendar",
+                        "economy.calendar",
                         ("fmp", "tradingeconomics"),
                     )
                 },
@@ -449,7 +449,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/composite_leading_indicator",
+                        "economy.composite_leading_indicator",
                         ("oecd",),
                     )
                 },
@@ -553,7 +553,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/country_profile",
+                        "economy.country_profile",
                         ("econdb",),
                     )
                 },
@@ -721,7 +721,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/cpi",
+                        "economy.cpi",
                         ("fred",),
                     )
                 },
@@ -874,7 +874,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/fred_regional",
+                        "economy.fred_regional",
                         ("fred",),
                     )
                 },
@@ -1005,7 +1005,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/fred_search",
+                        "economy.fred_search",
                         ("fred",),
                     )
                 },
@@ -1144,7 +1144,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/fred_series",
+                        "economy.fred_series",
                         ("fred", "intrinio"),
                     )
                 },
@@ -1273,7 +1273,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/indicators",
+                        "economy.indicators",
                         ("econdb",),
                     )
                 },
@@ -1374,7 +1374,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/long_term_interest_rate",
+                        "economy.long_term_interest_rate",
                         ("oecd",),
                     )
                 },
@@ -1474,7 +1474,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/money_measures",
+                        "economy.money_measures",
                         ("federal_reserve",),
                     )
                 },
@@ -1545,7 +1545,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/risk_premium",
+                        "economy.risk_premium",
                         ("fmp",),
                     )
                 },
@@ -1635,7 +1635,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/short_term_interest_rate",
+                        "economy.short_term_interest_rate",
                         ("oecd",),
                     )
                 },
@@ -1728,7 +1728,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/unemployment",
+                        "economy.unemployment",
                         ("oecd",),
                     )
                 },

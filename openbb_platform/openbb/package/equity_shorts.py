@@ -94,7 +94,7 @@ class ROUTER_equity_shorts(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/shorts/fails_to_deliver",
+                        "equity.shorts.fails_to_deliver",
                         ("sec",),
                     )
                 },

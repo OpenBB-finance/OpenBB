@@ -173,7 +173,7 @@ class ROUTER_equity_price(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/price/historical",
+                        "equity.price.historical",
                         ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
@@ -292,7 +292,7 @@ class ROUTER_equity_price(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/price/nbbo",
+                        "equity.price.nbbo",
                         ("polygon",),
                     )
                 },
@@ -395,7 +395,7 @@ class ROUTER_equity_price(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/price/performance",
+                        "equity.price.performance",
                         ("fmp",),
                     )
                 },
@@ -567,7 +567,7 @@ class ROUTER_equity_price(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/price/quote",
+                        "equity.price.quote",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },

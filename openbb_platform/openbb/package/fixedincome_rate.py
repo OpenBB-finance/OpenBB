@@ -100,7 +100,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/ameribor",
+                        "fixedincome.rate.ameribor",
                         ("fred",),
                     )
                 },
@@ -187,7 +187,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/dpcredit",
+                        "fixedincome.rate.dpcredit",
                         ("fred",),
                     )
                 },
@@ -280,7 +280,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/ecb",
+                        "fixedincome.rate.ecb",
                         ("fred",),
                     )
                 },
@@ -367,7 +367,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/effr",
+                        "fixedincome.rate.effr",
                         ("federal_reserve", "fred"),
                     )
                 },
@@ -454,7 +454,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/effr_forecast",
+                        "fixedincome.rate.effr_forecast",
                         ("fred",),
                     )
                 },
@@ -538,7 +538,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/estr",
+                        "fixedincome.rate.estr",
                         ("fred",),
                     )
                 },
@@ -621,7 +621,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/iorb",
+                        "fixedincome.rate.iorb",
                         ("fred",),
                     )
                 },
@@ -707,7 +707,7 @@ class ROUTER_fixedincome_rate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/rate/sonia",
+                        "fixedincome.rate.sonia",
                         ("fred",),
                     )
                 },

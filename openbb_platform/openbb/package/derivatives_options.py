@@ -164,7 +164,7 @@ class ROUTER_derivatives_options(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/derivatives/options/chains",
+                        "derivatives.options.chains",
                         ("intrinio",),
                     )
                 },
@@ -271,7 +271,7 @@ class ROUTER_derivatives_options(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/derivatives/options/unusual",
+                        "derivatives.options.unusual",
                         ("intrinio",),
                     )
                 },

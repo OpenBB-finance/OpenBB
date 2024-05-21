@@ -87,7 +87,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/countries",
+                        "etf.countries",
                         ("fmp",),
                     )
                 },
@@ -169,7 +169,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/equity_exposure",
+                        "etf.equity_exposure",
                         ("fmp",),
                     )
                 },
@@ -334,7 +334,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/historical",
+                        "etf.historical",
                         ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
@@ -608,7 +608,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/holdings",
+                        "etf.holdings",
                         ("fmp", "intrinio", "sec"),
                     )
                 },
@@ -678,7 +678,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/holdings_date",
+                        "etf.holdings_date",
                         ("fmp",),
                     )
                 },
@@ -1065,7 +1065,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/info",
+                        "etf.info",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -1210,7 +1210,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/price_performance",
+                        "etf.price_performance",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -1328,7 +1328,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/search",
+                        "etf.search",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -1398,7 +1398,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/sectors",
+                        "etf.sectors",
                         ("fmp",),
                     )
                 },

@@ -102,7 +102,7 @@ class ROUTER_equity_calendar(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/calendar/dividend",
+                        "equity.calendar.dividend",
                         ("fmp",),
                     )
                 },
@@ -200,7 +200,7 @@ class ROUTER_equity_calendar(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/calendar/earnings",
+                        "equity.calendar.earnings",
                         ("fmp",),
                     )
                 },
@@ -337,7 +337,7 @@ class ROUTER_equity_calendar(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/calendar/ipo",
+                        "equity.calendar.ipo",
                         ("intrinio",),
                     )
                 },
@@ -425,7 +425,7 @@ class ROUTER_equity_calendar(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/calendar/splits",
+                        "equity.calendar.splits",
                         ("fmp",),
                     )
                 },

@@ -393,7 +393,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/balance",
+                        "equity.fundamental.balance",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -549,7 +549,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/balance_growth",
+                        "equity.fundamental.balance_growth",
                         ("fmp",),
                     )
                 },
@@ -816,7 +816,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/cash",
+                        "equity.fundamental.cash",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -954,7 +954,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/cash_growth",
+                        "equity.fundamental.cash_growth",
                         ("fmp",),
                     )
                 },
@@ -1053,7 +1053,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/dividends",
+                        "equity.fundamental.dividends",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -1137,7 +1137,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/employee_count",
+                        "equity.fundamental.employee_count",
                         ("fmp",),
                     )
                 },
@@ -1284,7 +1284,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/filings",
+                        "equity.fundamental.filings",
                         ("fmp", "intrinio", "sec"),
                     )
                 },
@@ -1405,7 +1405,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_attributes",
+                        "equity.fundamental.historical_attributes",
                         ("intrinio",),
                     )
                 },
@@ -1502,7 +1502,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_eps",
+                        "equity.fundamental.historical_eps",
                         ("fmp",),
                     )
                 },
@@ -1574,7 +1574,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_splits",
+                        "equity.fundamental.historical_splits",
                         ("fmp",),
                     )
                 },
@@ -1934,7 +1934,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/income",
+                        "equity.fundamental.income",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -2070,7 +2070,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/income_growth",
+                        "equity.fundamental.income_growth",
                         ("fmp",),
                     )
                 },
@@ -2155,7 +2155,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/latest_attributes",
+                        "equity.fundamental.latest_attributes",
                         ("intrinio",),
                     )
                 },
@@ -2242,7 +2242,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/management",
+                        "equity.fundamental.management",
                         ("fmp", "yfinance"),
                     )
                 },
@@ -2343,7 +2343,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/management_compensation",
+                        "equity.fundamental.management_compensation",
                         ("fmp",),
                     )
                 },
@@ -2655,7 +2655,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/metrics",
+                        "equity.fundamental.metrics",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -2855,7 +2855,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/multiples",
+                        "equity.fundamental.multiples",
                         ("fmp",),
                     )
                 },
@@ -3003,7 +3003,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/overview",
+                        "equity.fundamental.overview",
                         ("fmp",),
                     )
                 },
@@ -3198,7 +3198,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/ratios",
+                        "equity.fundamental.ratios",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -3299,7 +3299,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/reported_financials",
+                        "equity.fundamental.reported_financials",
                         ("intrinio",),
                     )
                 },
@@ -3389,7 +3389,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/revenue_per_geography",
+                        "equity.fundamental.revenue_per_geography",
                         ("fmp",),
                     )
                 },
@@ -3478,7 +3478,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/revenue_per_segment",
+                        "equity.fundamental.revenue_per_segment",
                         ("fmp",),
                     )
                 },
@@ -3572,7 +3572,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/search_attributes",
+                        "equity.fundamental.search_attributes",
                         ("intrinio",),
                     )
                 },
@@ -3650,7 +3650,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/trailing_dividend_yield",
+                        "equity.fundamental.trailing_dividend_yield",
                         ("tiingo",),
                     )
                 },
@@ -3730,7 +3730,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/transcript",
+                        "equity.fundamental.transcript",
                         ("fmp",),
                     )
                 },

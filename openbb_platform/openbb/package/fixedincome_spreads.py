@@ -99,7 +99,7 @@ class ROUTER_fixedincome_spreads(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/spreads/tcm",
+                        "fixedincome.spreads.tcm",
                         ("fred",),
                     )
                 },
@@ -191,7 +191,7 @@ class ROUTER_fixedincome_spreads(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/spreads/tcm_effr",
+                        "fixedincome.spreads.tcm_effr",
                         ("fred",),
                     )
                 },
@@ -283,7 +283,7 @@ class ROUTER_fixedincome_spreads(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/spreads/treasury_effr",
+                        "fixedincome.spreads.treasury_effr",
                         ("fred",),
                     )
                 },
