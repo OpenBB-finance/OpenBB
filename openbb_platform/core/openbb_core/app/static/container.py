@@ -43,7 +43,6 @@ class Container:
             for p in providers:
                 if self._check_credentials(p):
                     return p
-                continue
             raise OpenBBError(
                 f"Please specify the provider. Fallback failed, tried -> {', '.join(providers)}."
             )
