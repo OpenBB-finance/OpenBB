@@ -1,7 +1,7 @@
 ---
-title: Quick Start - New Router Extension
+title: Create New Router Extension
 sidebar_position: 8
-description: This page will walk through creating a new OpenBB Router Extension from scratch. By the end, you will have the shell structure for a new router path with custom endpoints.
+description: This page will walk through creating a new OpenBB Router Extension from scratch. By the end, you will have the code structure for a new router path and an api endpoint.
 keywords:
 - OpenBB Platform
 - Open source
@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Quick Start - New Provider Extension - Getting Started - Development | OpenBB Platform Docs" />
 
-This page will walk through creating a new OpenBB Provider Extension from scratch. By the end, you will have the shell structure for holding models that connect to the Router through the Provider Interface.
+This page will walk through creating a new OpenBB router extension from scratch. By the end, you will have the shell structure for adding commands to the OpenBB Platform's interfaces.
 
 ## Preparation
 
@@ -45,7 +45,7 @@ packages = [{ include = "openbb_empty_router" }]
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.12"
-openbb = "^4.1.7"
+openbb = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -94,7 +94,7 @@ empty = "openbb_empty_router.empty_router:router"
 
 :::
 
-- Insert placeholder items for the smoke test.
+- Insert code for our command route.
 
 ```python
 """Empty Router"""
@@ -120,7 +120,7 @@ async def hello() -> OBBject[str]: # The output of every router command must be 
     return OBBject(results="Hello from the Empty Router extension!")
 
 # This is a clone of `obb.equity.price.historical`.
-# Replace this with a mapping to the Provider Interface.
+# The model can be replaced with a a different model from the Provider Interface.
 @router.command(
     model="EquityHistorical",
 )
@@ -192,7 +192,7 @@ The list should include the newly created and installed extension, `empty@0.0.1`
 
 ## Smoke Test
 
-Run the placeholder commands.
+Run the added commands.
 
 ```python
 obb.empty.hello()
@@ -211,6 +211,6 @@ extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}
 
 ## Conclusion
 
-This process created, built, and installed a new OpenBB Router Provider extension from scratch.
+This process created, built, and installed a new OpenBB router extension from scratch.
 
 The next step is to map Provider Interface models, and/or create custom GET/POST request functions to import directly for use in the router.

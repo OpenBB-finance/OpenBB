@@ -74,6 +74,7 @@ conda activate openbb
 :::
 
 ### PyPI
+
 <details>
 Install from PyPI with:
 
@@ -160,9 +161,11 @@ If you want to uninstall the package and all its dependencies:
 ```console
 pip uninstall openbb[all]
 ```
+
 </details>
 
 ### Docker
+
 <details>
 OpenBB provides a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
 
@@ -182,6 +185,7 @@ This will mount the local `~/.openbb_platform` directory into the Docker contain
 </details>
 
 ### Source
+
 <details>
 To build the OpenBB Platform from the source code, first install `git`:
 
@@ -226,11 +230,13 @@ To install all extensions and providers, run: `python dev_install.py -e`
 
 ## Post-Installation
 
-With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built. This is done automatically, but can be manually triggered if required. Start a Python session and then `import openbb`:
+With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built. This is done automatically, but can be manually triggered if required. Start a Python session and import openbb:
 
 ```console
 python
+```
 
+```python
 from openbb import obb
 
 exit()
