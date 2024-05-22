@@ -1,0 +1,38 @@
+---
+title: Command Coverage
+sidebar_position: 6
+description: This page details the instructions for determining the command coverage provided by the installed extensions.
+keywords:
+- tutorial
+- standardized output
+- OBBject
+- provider
+- results
+- warnings
+- chart
+- extra
+- command coverage
+---
+
+## Commands and Provider Coverage
+
+The installed commands and data providers are found under, `obb.coverage`.
+
+```python
+obb.coverage
+```
+
+```console
+/coverage
+
+    providers
+    commands
+    command_model
+    command_schemas
+```
+
+`obb.coverage.providers` is a dictionary of the installed provider extensions, each with its own list of available commands.
+
+`obb.coverage.commands` is a dictionary of commands, each with its own list of available providers for the data.
+
+`obb.coverage.command_model` is a dictionary where the keys are the command paths and the values is a nested dictionary of QueryParams and Data models associated with that function.

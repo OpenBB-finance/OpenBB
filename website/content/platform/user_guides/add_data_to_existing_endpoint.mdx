@@ -1,0 +1,863 @@
+---
+title: Add Provider To An Existing Command
+sidebar_position: 10
+description: This guide outlines the process for adding an endpoint to an existing data provider and router endpoint.
+keywords:
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - data
+  - endpoint
+  - existing
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - provider model
+  - how to
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Add Provider To An Existing Command - How-To | OpenBB Platform Docs" />
+
+This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
+
+- Document the parameters and returned fields from the chosen data provider.
+- Find the existing standard model that is mapped to the router endpoint.
+- Identify any common parameters and fields to map.
+- Build the provider models and Fetcher class by inheriting from the standard models.
+- Map the new provider model to the router.
+- Rebuild the Python interface and static assets.
+- Add unit tests.
+- Add integration tests.
+- Submit a pull request.
+
+:::note
+
+Before getting started, get a few housekeeping items in order:
+
+- Clone the GitHub repo and navigate into the project's folder.
+  - If you have already done this, update your local branch:
+    - `git fetch`
+    - `git pull origin develop`
+- Install the OpenBB Platform in "editable" mode.
+  - `cd openbb_platform`
+  - `python dev_install.py -e`
+- Rebuild the Python interface and static assets.
+  - `import openbb`
+  - `openbb.build()`
+- Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
+  - `git checkout -b feature/av-historical-eps`
+
+:::
+
+Let's get started!
+
+## Identify What's Being Added
+
+For this example, we will be adding a user-requested data set from AlphaVantage, historical EPS. There is an existing [GitHub issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues/6104) that we will link to in the submitted pull request. By linking the issue, it will be closed automatically on merge.
+
+Here's what we know about this AlphaVantage API endpoint:
+
+:::info
+This API returns the annual and quarterly earnings (EPS) for the company of interest.
+Quarterly data also includes analyst estimates and surprise metrics.
+:::
+
+### Provider API Documentation
+
+The documentation for this endpoint is, [https://www.alphavantage.co/documentation/#earnings](https://www.alphavantage.co/documentation/#earnings). This link will be added to the query parameters model docstring.
+
+### Base URL
+
+The base URL structure will be different for each provider, AlphaVantage identifies a `function` for each request as the first parameter.
+
+```python
+BASE_URL = "https://www.alphavantage.co/query?function=EARNINGS&"
+```
+
+### Source Parameters
+
+Ignoring `function` and `api_key`, there is only one parameter for this function.
+
+```python
+symbol: str = "IBM"
+```
+
+### Source Response
+
+They provide a sample JSON output, returning both annual and quarterly data in the same response.
+
+```json
+{
+  "symbol": "IBM",
+  "annualEarnings": [
+    {
+      "fiscalDateEnding": "2023-12-31",
+      "reportedEPS": "9.61"
+    },
+    {
+      "fiscalDateEnding": "2022-12-31",
+      "reportedEPS": "9.12"
+    }
+  ],
+  "quarterlyEarnings": [
+    {
+      "fiscalDateEnding": "2023-12-31",
+      "reportedDate": "2024-01-24",
+      "reportedEPS": "3.87",
+      "estimatedEPS": "3.78",
+      "surprise": "0.09",
+      "surprisePercentage": "2.381"
+    },
+    {
+      "fiscalDateEnding": "2023-09-30",
+      "reportedDate": "2023-10-25",
+      "reportedEPS": "2.2",
+      "estimatedEPS": "2.13",
+      "surprise": "0.07",
+      "surprisePercentage": "3.2864"
+    }
+  ]
+}
+```
+
+Here's what we know about the existing router endpoint and standard model:
+
+### OpenBB Endpoint
+
+The function we are adding AlphaVantage as a source to is:
+
+```python
+from openbb import obb
+
+obb.equity.fundamental.historical_eps(symbol = "IBM", limit=5, provider="fmp")
+```
+
+| date       | symbol | eps_actual | eps_estimated | revenue_estimated | revenue_actual | reporting_time | updated_at | period_ending |
+| :--------- | :----- | ---------: | ------------: | ----------------: | -------------: | :------------- | :--------- | :------------ |
+| 2024-01-24 | IBM    |       3.87 |          3.78 |       17298500000 |    17381000000 | amc            | 2024-02-29 | 2023-12-31    |
+| 2024-04-17 | IBM    |          - |          1.59 |       14572800000 |              - | bmo            | 2024-02-29 | 2024-03-30    |
+| 2024-07-24 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-06-30    |
+| 2024-10-23 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-09-30    |
+| 2025-01-22 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-12-31    |
+
+FMP is currently the only source for this endpoint. There are only two parameters, `symbol` and `limit`. The `limit` argument determines how many quarters to go back.
+
+### Standard Model
+
+The standard model is defined by, [HistoricalEps](https://docs.openbb.co/platform/data_models/HistoricalEps).
+
+```python
+from openbb_core.provider.standard_models.historical_eps import HistoricalEpsData, HistoricalEpsQueryParams
+```
+
+Each standard model consists of two classes, `QueryParams` and `Data`. The name of each model begins with a CamelCase representation of the endpoint, `HistoricalEps`, with some instances warranting abbreviations. Files are always named with lower snake_case.
+
+`HistoricalEps` is what we will reference in the router when we get there.
+
+### Standard QueryParams
+
+The `HistoricalEpsQueryParams` model defines only one parameter, `symbol`. It includes a validation method for converting the symbol to upper case.
+
+```python
+class HistoricalEpsQueryParams(QueryParams):
+    """Historical EPS Query."""
+
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def upper_symbol(cls, v: str) -> str:
+        """Convert symbol to uppercase."""
+        return v.upper()
+```
+
+We will inherit from this class to create our QueryParams model, specific to AlphaVantage. The model will be named, `AlphaVantageHistoricalEpsQueryParams`. Don't worry about it being too long.
+
+### Standard Data
+
+The `HistoricalEpsData` model defines some fields, with two being mandatory: `date` and `symbol`. It includes a validation method for converting the date from an ISO string to a datetime object.
+
+```python
+class HistoricalEpsData(Data):
+    """Historical EPS Data."""
+
+    date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date", ""))
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    announce_time: Optional[str] = Field(
+        default=None, description="Timing of the earnings announcement."
+    )
+    eps_actual: Optional[float] = Field(
+        default=None, description="Actual EPS from the earnings date."
+    )
+    eps_estimated: Optional[float] = Field(
+        default=None, description="Estimated EPS for the earnings date."
+    )
+
+    @field_validator("date", mode="before", check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=E0213
+        """Return formatted datetime."""
+        return parser.isoparse(str(v))
+```
+
+Now we know exactly what is going to be added, and how we should structure our query to fetch the data. This endpoint is not overly complex but harmonizing many input parameters, and the potentially endless data fields, across many providers is a challenge.
+
+So far, we have knocked out three of the outlined tasks.
+
+- [x] Catalogue the parameters and returned fields from the chosen data provider.
+- [x] Find the existing standard model that is mapped to the router endpoint.
+- [x] Identify common parameters and fields to map.
+
+Let's get on with the fun stuff and start building!
+
+## Build the Provider Model
+
+### Create a New File
+
+The first step is to create a new file in the provider extension folder:
+
+```console
+~/OpenBBTerminal/openbb_platform/providers/alpha_vantage/openbb_alpha_vantage/models
+```
+
+We will call this file: `historical_eps.py`
+
+The first line of the file should be a docstring, followed by the import statements.
+
+### Import Statements
+
+Every model will be different, but most items below will be typical of nearly every data provider model. Variations will come from design choices for [HTTP requests](/platform/developer_guide/http_requests), or other requirements. We won't get into that here though.
+
+```python
+"""AlphaVantage Historical EPS Model."""
+
+# pylint: disable=unused-argument
+
+from datetime import date as dateType
+from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.historical_eps import (
+    HistoricalEpsData,
+    HistoricalEpsQueryParams,
+)
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests
+)
+from pydantic import Field, field_validator
+```
+
+### Define The QueryParams
+
+Define a class that inherits from the standard model's `QueryParams` and put a link to the source documentation, if it exists, in the docstring.
+
+We'll define a field to return either, `annualEarnings` or `quarterlyEarnings`. Other endpoints call this parameter `period`, so we will do the same here. Adding a `limit` parameter will provide more flexibility, even though we can't control that from the source.
+
+If a parameter is common, like `date` or `period` are, they will have a standardized description. The `description` will display in the function's signature and Fast API Swagger docs.
+
+To allow multiple items in a query parameters field - i.e, a list of tickers - we can add the `__json_schema_extra__` dictionary to the top of the model. If there are any fields to map on output, define them with the `__alias_dict__` dictionary.
+
+```python
+class AlphaVantageHistoricalEpsQueryParams(HistoricalEpsQueryParams):
+    """
+    AlphaVantage Historical EPS Query Params.
+
+    Source: https://www.alphavantage.co/documentation/#earnings
+    """
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+    period: Literal["annual", "quarter"] = Field(
+        default="quarter", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+    limit: Optional[int] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
+    )
+```
+
+### Define The Data Model
+
+In the sample output data from AlphaVantage, we know that there are two date fields; however, only 'fiscalDateEnding' is returned in both time intervals. This makes it the right candidate to map to the `date` field in the standard model.
+
+Mapping is done via `__alias_dict__`, a dictionary defined at the top of the class before any fields. Leave it out if there's nothing to map.
+
+:::tip
+If a field represents a percent, we want to always return it as a normalized decimal value - i.e, 1% is 0.01 - so that downstream processes can use values directly in formulas without needing to figure out if 1 means 1% or 100%.
+
+If the data source returns the numbers (or null values) as a string (maybe with a % character), we will clean it using a `field_validator`.
+
+We communicate this to the frontend, via `json_schema_extra`, in the field definition so the values can be correctly displayed.
+
+By ensuring this small detail, we contribute to the overall standardization of data.
+:::
+
+```python
+class AlphaVantageHistoricalEpsData(HistoricalEpsData):
+    """AlphaVantage Historical EPS Data."""
+
+    __alias_dict__ = {
+        "date": "fiscalDateEnding",
+        "eps_actual": "reportedEPS",
+        "eps_estimated": "estimatedEPS",
+        "surprise_percent": "surprisePercentage",
+        "reported_date": "reportedDate",
+    }
+
+    surprise: Optional[float] = Field(
+        default=None,
+        description="Surprise in EPS (Actual - Estimated).",
+    )
+    surprise_percent: Optional[float] = Field(
+        default=None,
+        description="EPS surprise as a normalized percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    reported_date: Optional[dateType] = Field(
+        default=None,
+        description="Date of the earnings report.",
+    )
+
+    @field_validator(
+        "eps_estimated",
+        "eps_actual",
+        "surprise",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def validate_null(cls, v):
+        """Clean None returned as a string."""
+        return None if str(v).strip() == "None" or str(v) == "0" else v
+
+    @field_validator("surprise_percent", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent values."""
+        if isinstance(v, str) and v == "None" or str(v) == "0":
+            return None
+        return float(v) / 100
+```
+
+### Build the Fetcher Class
+
+Provider models have a total of three classes, `QueryParams`, `Data`, and `Fetcher`. The `Fetcher` is what gets executed by the router and divides the request into three distinct processes that can be serviced individually. We define it as a Transform-Extract-Transform (TET) process because we:
+
+- Transform the query from the user input into the specific format required for each provider.
+- Extract the data from the provider endpoint.
+- Transform the data into a standard format (the model or a list of models).
+
+Each process is a static method, and breaking it down makes it easier to debug any points of failure.
+
+```python
+class AVHistoricalEpsFetcher(
+    Fetcher[
+        AlphaVantageHistoricalEpsQueryParams,
+        List[AlphaVantageHistoricalEpsData]
+    ]
+):
+    """AlphaVantage Historical EPS Fetcher."""
+
+    @staticmethod
+    def transform_query(params: Dict[str, Any]) -> AlphaVantageHistoricalEpsQueryParams:
+        """Transform the query params."""
+        # If no transformations are required, simply return the validated model.
+        return AlphaVantageHistoricalEpsQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: AlphaVantageHistoricalEpsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> List[Dict]:
+        """Return the raw data from the AlphaVantage endpoint."""
+
+        api_key = credentials.get("alpha_vantage_api_key") if credentials else "DEMO"
+
+        BASE_URL = "https://www.alphavantage.co/query?function=EARNINGS&"
+
+        # We are allowing multiple symbols to be passed in the query, so we need to handle that.
+        symbols = query.symbol.split(",")
+
+        urls = [
+            f"{BASE_URL}symbol={symbol}&apikey={api_key}" for symbol in symbols
+        ]
+
+        results = []
+
+        # We need to make a custom callback function for this async request.
+        async def response_callback(response: ClientResponse, _: ClientSession):
+            """Response callback function."""
+            symbol = response.url.query.get("symbol", None)
+            data = await response.json()
+            target = "annualEarnings" if query.period == "annual" else "quarterlyEarnings"
+            result = []
+            # If data is returned, append it to the results list.
+            if data:
+                result = [
+                    {
+                        "symbol": symbol,
+                        **d,
+                    }
+                    for d in data.get(target, [])  # type: ignore
+                ]
+                if query.limit is not None:
+                    results.extend(result[:query.limit])
+                else:
+                    results.extend(result)
+
+            # If no data is returned, raise a warning and move on to the next symbol.
+            if not data:
+                warn(f"Symbol Error: No data found for {symbol}")
+
+        await amake_requests(urls, response_callback, **kwargs)  # type: ignore
+
+        return results
+
+    @staticmethod
+    def transform_data(
+        query: AlphaVantageHistoricalEpsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
+    ) -> List[AlphaVantageHistoricalEpsData]:
+        """Transform the raw data into the standard model."""
+        if not data:
+            raise EmptyDataError("No data found.")
+        return [AlphaVantageHistoricalEpsData.model_validate(d) for d in data]
+```
+
+Combining all of the code blocks above, beginning with the import statements section, makes a complete file and we have finished step 4.
+
+- [x] Build the provider models and Fetcher class by inheriting from the standard models.
+
+## Map To Router
+
+Mapping to the router is done in the `__init__.py` file, one folder back from the `models` folder where we created the `historical_eps.py` file.
+
+We import the `Fetcher` that was created, and then map it in the `fetcher_dict` property of the Provider class.
+
+```python
+"""Alpha Vantage Provider module."""
+
+from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
+from openbb_alpha_vantage.models.historical_eps import AVHistoricalEpsFetcher
+from openbb_core.provider.abstract.provider import Provider
+
+alpha_vantage_provider = Provider(
+    name="alpha_vantage",
+    website="https://www.alphavantage.co/documentation/",
+    description="""Alpha Vantage provides realtime and historical
+    financial market data through a set of powerful and developer-friendly data APIs
+    and spreadsheets. From traditional asset classes (e.g., stocks, ETFs, mutual funds)
+    to economic indicators, from foreign exchange rates to commodities,
+    from fundamental data to technical indicators, Alpha Vantage
+    is your one-stop-shop for enterprise-grade global market data delivered through
+    cloud-based APIs, Excel, and Google Sheets. """,
+    credentials=["api_key"],
+    fetcher_dict={
+        "EquityHistorical": AVEquityHistoricalFetcher,
+        "HistoricalEps": AVHistoricalEpsFetcher,
+    },
+)
+```
+
+Step 5 is complete.
+
+- [x] Map the new provider model to the router.
+
+## Rebuild Static Assets
+
+When modifying router components or model definitions, the Python interface needs to be rebuilt before use. Open a terminal, with the `obb` environment active, start a new Python session, and enter:
+
+```python
+import openbb
+
+openbb.build()
+
+exit()
+```
+
+:::note
+
+If changes are only made to the static methods within the Fetcher, rebuilding is not required. Restart the Python interpreter to apply the edits.
+
+:::
+
+Step 6 is done.
+
+- [x] Rebuild the Python interface and static assets.
+
+We can now run the function and test our work.
+
+```python
+from openbb import obb
+
+obb.equity.fundamental.historical_eps(
+    symbol=["IBM","GOOG","AAPL","MSFT"],
+    period="quarter",
+    provider="alpha_vantage",
+    limit=1
+).to_df()
+```
+
+| date       | symbol | eps_actual | eps_estimated | surprise | surprise_percent | reported_date |
+| :--------- | :----- | ---------: | ------------: | -------: | ---------------: | :------------ |
+| 2023-12-31 | GOOG   |       1.64 |          1.59 |     0.05 |         0.031447 | 2024-01-30    |
+| 2023-12-31 | AAPL   |       2.18 |           2.1 |     0.08 |         0.038095 | 2024-02-01    |
+| 2023-12-31 | MSFT   |       2.93 |          2.78 |     0.15 |         0.053957 | 2024-01-30    |
+| 2023-12-31 | IBM    |       3.87 |          3.78 |     0.09 |          0.02381 | 2024-01-24    |
+
+Checking the `annual` setting:
+
+```python
+obb.equity.fundamental.historical_eps(
+    symbol="AAPL,
+    period="annual",
+    provider="alpha_vantage",
+    limit=4
+).to_df()
+```
+
+| date       | symbol | eps_actual |
+| :--------- | :----- | ---------: |
+| 2021-09-30 | AAPL   |       5.62 |
+| 2022-09-30 | AAPL   |       6.11 |
+| 2023-09-30 | AAPL   |       6.12 |
+| 2023-12-31 | AAPL   |       2.18 |
+
+We can see that the most recent `annual` data point only represent the first quarter of Apple's fiscal year, and this is something to keep in mind while working with the data.
+
+To check that the warning is being transmitted, enter a bad symbol in the list.
+
+```python
+obb.equity.fundamental.historical_eps(symbol="AAPL,BAD_SYMBOL", provider="alpha_vantage").warnings
+```
+
+```console
+[Warning_(category='UserWarning', message='Symbol Error: No data found for BAD_SYMBOL')]
+```
+
+With confidence that the endpoint is working as expected, let's move on to unit and integration tests.
+
+## Add Tests
+
+Adding tests doesn't take a lot of effort. In most cases, copying and pasting from an existing one will do the job.
+
+### Unit Tests
+
+Unit tests are located in the provider extension folder.
+
+```console
+~/OpenBBTerminal/openbb_platform/providers/alpha_vantage/tests
+```
+
+There will be one test file dedicated to testing each fetcher in the provider extension. Our file is:
+
+```console
+test_alpha_vantage_fetchers.py
+```
+
+The unit tests leverage the Fetcher class' built-in testing methods. It checks that the data is being returned, that types are conformed to their definitions, and that the model validates. It relies on `pytest` and captures a HTTP cassette. Here's what our test file will look like:
+
+```python
+from datetime import date
+
+import pytest
+from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
+from openbb_alpha_vantage.models.historical_eps import AVHistoricalEpsFetcher
+from openbb_core.app.service.user_service import UserService
+
+test_credentials = UserService().default_user_settings.credentials.model_dump(
+    mode="json"
+)
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("apikey", "MOCK_API_KEY"),
+        ],
+    }
+
+
+@pytest.mark.record_http
+def test_av_equity_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+        "interval": "15m",
+    }
+
+    fetcher = AVEquityHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_av_historical_eps_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL,MSFT",
+        "period": "quarter",
+        "limit": 4
+    }
+
+    fetcher = AVHistoricalEpsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+```
+
+That's all there is to it, we can capture the cassette now. Open a terminal, navigate into the `tests` folder from above, with the `obb` environment active, and enter:
+
+```console
+pytest test_alpha_vantage_fetchers.py --record http --record-no-overwrite
+```
+
+A successful test will result in a file being created in the `record` subfolder. Check the file for any obvious errors.
+
+Step 7 is done.
+
+- [x] Add unit tests.
+
+### Integration Tests
+
+Integration tests are even easier to add here, we just need to add a set of parameters for the new provider to the existing test. These tests are located in the `extensions` folder, where the routers are, under `integration`.
+
+```console
+~/OpenBBTerminal/openbb_platform/extensions/equity/integration
+```
+
+There are two files here, one for the Python interface, and the other for the Fast API.
+
+- `test_equity_python.py`
+- `test_equity_api.py`
+
+There will be at least one test for every router endpoint, which expects all providers and parameters to be supplied. The structure will be the same for all functions. Snippets below will include the import statements, setup, and our function - `historical_eps`.
+
+#### Python Test
+
+```python
+"""Python interface integration tests for the equity extension."""
+
+from datetime import time
+
+import pytest
+from extensions.tests.conftest import parametrize
+from openbb_core.app.model.obbject import OBBject
+
+# pylint: disable=too-many-lines,redefined-outer-name
+
+
+# pylint: disable=import-outside-toplevel,inconsistent-return-statements
+@pytest.fixture(scope="session")
+def obb(pytestconfig):
+    """Fixture to setup obb."""
+    if pytestconfig.getoption("markexpr") != "not integration":
+        import openbb
+
+        return openbb.obb
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "quarter",
+                "limit": 5,
+                "provider": "alpha_vantage"
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_historical_eps(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.fundamental.historical_eps(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+```
+
+Run this test by navigating into the folder above and entering:
+
+```console
+pytest test_equity_python.py
+```
+
+:::note
+
+If tests not related to the items being touched directly are failing, don't worry about them. That's out of scope.
+
+:::
+
+#### API Test
+
+The API test is slightly different, but the `params` can be copied and pasted from the Python test. In addition to basic checks, it will fail when values returned are not JSON serializable.
+
+```python
+"""API integration tests for equity extension."""
+
+import base64
+from datetime import time
+
+import pytest
+import requests
+from extensions.tests.conftest import parametrize
+from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import get_querystring
+
+# pylint: disable=too-many-lines,redefined-outer-name
+
+
+@pytest.fixture(scope="session")
+def headers():
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
+
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "quarter",
+                "limit": 5,
+                "provider": "alpha_vantage"
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_historical_eps(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/historical_eps?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+```
+
+To run this test, we will need to open a second terminal and start the server.
+
+```console
+uvicorn openbb_core.api.rest_api:app
+```
+
+Go back to the other terminal and run the test by entering:
+
+```console
+pytest test_equity_api.py
+```
+
+Step 8 is done.
+
+- [x] Add integration tests.
+
+All that's left now is to submit the work as a pull request for review.
+
+## Submit A Pull Request
+
+We're already on the correct branch, `feature/av-historical-eps`, but it may be out-of-sync with the `develop` branch. Let's update it just to be sure.
+
+```console
+git fetch
+git pull origin develop
+```
+
+### Linters
+
+Before opening a pull request, run the linters over all files that were touched.
+
+- black
+- ruff
+- mypy
+- pylint
+
+Fix all items, and valid fixes for `pylint` can be disabling on that line. It won't always know what is contextually correct.
+
+### Add Files To Commit
+
+When preparing to commit changes to the local branch, only add the files directly touched. Here are all the files we touched in this process:
+
+- `openbb_platform/providers/alpha_vantage/openbb_alpha_vantage/models/historical_eps.py`
+- `openbb_platopenbb_platform/providers/alpha_vantage/openbb_alpha_vantage/__init__.py`
+- `openbb_platform/providers/alpha_vantage/tests/test_alpha_vantage_fetchers.py`
+- `openbb_platform/providers/alpha_vantage/tests/record/test_av_historical_eps_fetchers.yaml`
+- `openbb_platform/extensions/equity/integration/test_equity_api.py`
+- `openbb_platform/extensions/equity/integration/test_equity_python.py`
+
+### Install Pre-Commit Hooks
+
+The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBBTerminal`.
+
+```console
+pre-commit install
+```
+
+### Commit Changes
+
+```console
+git commit -m "adds AlphaVantage to historical_eps"
+```
+
+### Push Changes
+
+Assuming the commit is successful, push the changes to the remote branch.
+
+```console
+git push --set-upstream origin feature/av-historical-eps
+```
+
+### Open a Pull Request
+
+A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
+
+1. **Why**? (1-3 sentences or a bullet point list):
+
+   - This PR is the result of a development documentation page created (not in this PR).
+
+   - Closes #6104, a user feature request.
+
+2. **What**? (1-3 sentences or a bullet point list):
+
+   - Adds AlphaVantage as a provider to `obb.equity.fundamental.historical_eps()`
+
+3. **Impact** (1-2 sentences or a bullet point list):
+
+   - Is not a breaking change.
+
+   - Does not introduce any changes other than adding the provider to this endpoint.
+
+4. **Testing Done**:
+
+   - Created unit test and integration tests.
+
+   - Used a variety of symbols, single and lists, to check that the EmptyDataError and symbol warnings are catching correctly.
+
+### Enjoy
+
+With this final step, we have completed all the tasks outlined at the top of the page. Thank you for your contributions!
+
+This guide was based on a true story, see the pull request [here](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6155)
