@@ -1,0 +1,47 @@
+---
+title: Dynamic Command Execution
+sidebar_position: 5
+description: This guide provides detailed instructions on how to execute commands dynamically in the OpenBB Platform.
+keywords:
+- OpenBB community
+- OpenBB Platform
+- Custom commands
+- API
+- Python Interface
+- Dynamic Execution
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Dynamic Command Execution | OpenBB Platform Docs" />
+
+
+Dynamic execution provides an alternate entry point to functions. This method requires formatting the query as demonstrated below.
+
+```python
+from openbb_core.app.command_runner import CommandRunner
+runner = CommandRunner()
+output = await runner.run(
+    "/equity/fundamental/ratios",
+    provider_choices={
+        "provider": "fmp",
+    },
+    standard_params={
+        "symbol" : "TSLA",
+        "period" : "quarter",
+    },
+    extra_params={}
+)
+```
+
+```console
+>>> output
+OBBject
+
+id: 065241b7-bd9d-7313-8000-9406d8afab75
+results: [{'symbol': 'TSLA', 'date': '2023-06-30', 'period': 'Q2', 'current_ratio':...
+provider: fmp
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'fmp'}, 'standa...
+```

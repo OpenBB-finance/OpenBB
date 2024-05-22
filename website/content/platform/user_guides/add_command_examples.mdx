@@ -1,0 +1,100 @@
+---
+title: Add Examples to Commands
+sidebar_position: 12
+description: This guide provides detailed instructions for including command examples in the router endpoints of the OpenBB Platform.
+keywords:
+  - OpenBB community
+  - OpenBB Platform
+  - Custom commands
+  - API
+  - Python Interface
+  - Examples
+  - Usage
+  - Parameters
+  - contributing
+  - requirements
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Add Examples to Commands - How-To | OpenBB Platform Docs" />
+
+Usage examples are defined in the router and are expected to provide working syntax, with descriptions for complex functions requiring many parameters.
+
+> When a provider is not installed, its example will be excluded from `openapi.json` and Python docstrings
+
+## Requirements
+
+All router endpoints must have examples.
+
+- If any endpoint is excluded from the schema it only needs to contain a Python example.
+- POST method examples should have both API and Python examples, unless they are excluded from the schema.
+
+**For API Examples:**
+
+- At least one example using all required parameters. It cannot use any provider-specific parameters here. It should not specify the provider field.
+- If there are more than three parameters, a description must be supplied in the example.
+
+**For Python Examples:**
+
+- Descriptions are mandatory.
+
+## Example Models
+
+There are two models for defining examples, `APIEx` and `PythonEx`. `
+
+`APIEx` is more structured aiming to be language agnostic - provides less freedom - while `PythonEx` gives more freedom to create complex examples.
+
+```python
+from openbb_core.app.model.example import APIEx, PythonEx
+```
+
+### `APIEx`
+
+```python
+@router.command(
+    model="WorldNews",
+    examples=[
+        APIEx(parameters={}),
+        APIEx(parameters={"limit": 100}),
+        APIEx(
+            description="Get news on the specified dates.",
+            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+        ),
+        APIEx(
+            description="Display the headlines of the news.",
+            parameters={"display": "headline", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by topics.",
+            parameters={"topics": "finance", "provider": "benzinga"},
+        ),
+        APIEx(
+            description="Get news by source using 'tingo' as provider.",
+            parameters={"provider": "tiingo", "source": "bloomberg"},
+        ),
+        APIEx(
+            description="Filter aticles by term using 'biztoc' as provider.",
+            parameters={"provider": "biztoc", "term": "apple"},
+        ),
+    ],
+)
+```
+
+### `PythonEx`
+
+```python
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        PythonEx(
+            description="Perform Ordinary Least Squares (OLS) regression.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+            ],
+        )
+    ],
+)
+```
