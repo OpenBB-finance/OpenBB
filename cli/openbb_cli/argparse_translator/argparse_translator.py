@@ -33,7 +33,6 @@ class ArgparseActionType(Enum):
 
 
 class CustomArgument(BaseModel):
-
     name: str
     type: Optional[Any]
     dest: str
@@ -62,7 +61,6 @@ class CustomArgument(BaseModel):
 
     # override
     def model_dump(self, **kwargs):
-
         res = super().model_dump(**kwargs)
 
         # Check if choices is present and if it's an empty tuple remove it
@@ -152,7 +150,6 @@ class ReferenceToCustomArgumentsProcessor:
     def build_custom_groups(self):
         """Build the custom groups from the reference."""
         for route, v in self.reference.items():
-
             for provider, args in v["parameters"].items():
                 if provider == "standard":
                     continue
