@@ -128,7 +128,7 @@ class ROUTER_fixedincome_government(Container):
     @exception_handler
     @validate
     @deprecated(
-        "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.",
         category=OpenBBDeprecationWarning,
     )
     def us_yield_curve(
@@ -193,7 +193,7 @@ class ROUTER_fixedincome_government(Container):
 
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+            "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4.",
             category=DeprecationWarning,
             stacklevel=2,
         )
@@ -244,8 +244,8 @@ class ROUTER_fixedincome_government(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'econdb' if there is
             no default.
-        country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'russia', 'saudi_arabia', 'south_africa', 'south_korea', 'taiwan', 'united_kingdom', 'united_states']
-            The country to get data. (provider: econdb)
+        country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']
+            The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. (provider: econdb)
         use_cache : bool
             If true, cache the request for four hours. (provider: econdb)
         yield_curve_type : Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']

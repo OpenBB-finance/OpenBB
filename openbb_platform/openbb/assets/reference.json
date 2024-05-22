@@ -1,36 +1,36 @@
 {
-    "openbb": "4.2.0",
+    "openbb": "4.2.1",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.2.2",
+        "core": "1.2.3",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.1.0",
-                "crypto@1.2.0",
-                "currency@1.2.0",
-                "derivatives@1.2.0",
-                "economy@1.2.0",
-                "equity@1.2.0",
-                "etf@1.2.0",
-                "fixedincome@1.2.0",
-                "index@1.2.0",
-                "news@1.2.0",
-                "regulators@1.2.0"
+                "commodity@1.1.1",
+                "crypto@1.2.1",
+                "currency@1.2.1",
+                "derivatives@1.2.1",
+                "economy@1.2.1",
+                "equity@1.2.1",
+                "etf@1.2.1",
+                "fixedincome@1.2.1",
+                "index@1.2.1",
+                "news@1.2.1",
+                "regulators@1.2.1"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.2.0",
-                "econdb@1.1.0",
-                "federal_reserve@1.2.0",
-                "fmp@1.2.0",
-                "fred@1.2.0",
-                "intrinio@1.2.0",
-                "oecd@1.2.0",
-                "polygon@1.2.0",
-                "sec@1.2.0",
-                "tiingo@1.2.0",
-                "tradingeconomics@1.2.0",
-                "yfinance@1.2.0"
+                "benzinga@1.2.1",
+                "econdb@1.1.1",
+                "federal_reserve@1.2.1",
+                "fmp@1.2.1",
+                "fred@1.2.1",
+                "intrinio@1.2.1",
+                "oecd@1.2.1",
+                "polygon@1.2.1",
+                "sec@1.2.1",
+                "tiingo@1.2.1",
+                "tradingeconomics@1.2.1",
+                "yfinance@1.2.1"
             ],
             "openbb_obbject_extension": []
         }
@@ -625,7 +625,7 @@
                 "message": null
             },
             "description": "Currency Search.\n\nSearch available currency pairs.\nCurrency pairs are the national currencies from two countries coupled for trading on\nthe foreign exchange (FX) marketplace.\nBoth currencies will have exchange rates on which the trade will have its position basis.\nAll trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.\n(ref: Investopedia)\nMajor currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='fmp')\n# Search for 'EUR' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', query='EUR')\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', query='Euro zone')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.currency.search(provider='fmp')\n# Search for 'EUR' currency pair using 'intrinio' as provider.\nobb.currency.search(provider='intrinio', query='EUR')\n# Search for terms  using 'polygon' as provider.\nobb.currency.search(provider='polygon', query='EUR')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -1611,7 +1611,7 @@
                 "message": null
             },
             "description": "Get the complete options chain for a ticker.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.unusual(provider='intrinio')\n# Use the 'symbol' parameter to get the most recent activity for a specific symbol.\nobb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')\n# Use the 'symbol' parameter to get the most recent activity for a specific symbol.\nobb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -29525,8 +29525,8 @@
                 "econdb": [
                     {
                         "name": "country",
-                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'russia', 'saudi_arabia', 'south_africa', 'south_korea', 'taiwan', 'united_kingdom', 'united_states']",
-                        "description": "The country to get data.",
+                        "type": "Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']",
+                        "description": "The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used.",
                         "default": "united_states",
                         "optional": true,
                         "choices": [
@@ -29536,11 +29536,15 @@
                             "hong_kong",
                             "india",
                             "japan",
+                            "mexico",
+                            "new_zealand",
                             "russia",
                             "saudi_arabia",
+                            "singapore",
                             "south_africa",
                             "south_korea",
                             "taiwan",
+                            "thailand",
                             "united_kingdom",
                             "united_states"
                         ]
@@ -29633,7 +29637,7 @@
         "/fixedincome/government/us_yield_curve": {
             "deprecated": {
                 "flag": true,
-                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3."
+                "message": "This endpoint will be removed in a future version. Use, `/fixedincome/government/yield_curve`, instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.4."
             },
             "description": "US Yield Curve. Get United States yield curve.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.government.us_yield_curve(provider='fred')\nobb.fixedincome.government.us_yield_curve(inflation_adjusted=True, provider='fred')\n```\n\n",

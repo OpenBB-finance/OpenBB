@@ -936,18 +936,17 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.2.2"
-description = "OpenBB package with core functionality"
+version = "1.2.3"
+description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "openbb_core-1.2.2-py3-none-any.whl", hash = "sha256:804f6ad954fdbc5c3e619d5fd6ffc79ff86a0ae1291806fcffd673711567219b"},
-    {file = "openbb_core-1.2.2.tar.gz", hash = "sha256:9f17e77f1471c31051c8100a9a5d60ae147fbb06cff9da5572bb23095abce163"},
+    {file = "openbb_core-1.2.3-py3-none-any.whl", hash = "sha256:0a8a0671024651ebf249a96532303ec9cc2776e3985751443dadcf7da9489e97"},
+    {file = "openbb_core-1.2.3.tar.gz", hash = "sha256:043541fa099a866544dd239a69f91797d5305c86a54efc61039c7f5dd049a504"},
 ]
 
 [package.dependencies]
 aiohttp = ">=3.9.5,<4.0.0"
-anyio = ">=3.7.0,<4.0.0"
 fastapi = ">=0.111.0,<0.112.0"
 html5lib = ">=1.1,<2.0"
 importlib-metadata = ">=6.8.0,<7.0.0"
@@ -957,8 +956,8 @@ pydantic = ">=2.5.1,<3.0.0"
 pyjwt = ">=2.8.0,<3.0.0"
 python-dotenv = ">=1.0.0,<2.0.0"
 python-multipart = ">=0.0.7,<0.0.8"
-requests = ">=2.31.0,<3.0.0"
-ruff = ">=0.1.6,<0.2.0"
+requests = ">=2.32.1,<3.0.0"
+ruff = ">=0.1.6,<=0.4.4"
 uuid7 = ">=0.1.0,<0.2.0"
 uvicorn = ">=0.24,<0.25"
 websockets = ">=12.0,<13.0"
@@ -2040,4 +2039,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "bf85f0be08da6f2f01275394d9a27401b3b4ca16629cbc8020081749fe8b60d4"
+content-hash = "143966ea8e78e9efa924618cc26ffee158c7fb059bae227d0ea1cda7fd0abc1d"

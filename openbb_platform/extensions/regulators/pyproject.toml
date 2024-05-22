@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-regulators"
-version = "1.2.0"
+version = "1.2.1"
 description = "Markets and Agency Regulators extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -9,7 +9,7 @@ packages = [{ include = "openbb_regulators" }]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.12"
-openbb-core = "^1.2.1"
+openbb-core = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core"]

@@ -11,15 +11,6 @@
 2. Ensure all the CI workflows pass.
 3. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
 4. Ensure all integration tests pass: `pytest openbb_platform -m integration`
-5. Run `python -c "import openbb; openbb.build()"` to build the static assets. Make sure that only required extensions are installed.
-
-    > **Note**: Run `python -c "import openbb"` after building the static to check that no additional static is being built.
-
-6. Finally, check if everything works:
-
-   1. Install the packages locally using `python openbb_platform/dev_install.py` command and test them in a new environment.
-   2. Check if all the `pyproject.toml` files are correct, including the `openbb_platform` one.
-   3. Double check if there is any new extension or provider that needs to be added to [integration tests GitHub Action workflow](/.github/workflows/platform-api-integration-test.yml).
 
 ## Release procedure
 
@@ -35,11 +26,18 @@
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
     2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
-         - Bump the dependency package versions
-         - Re-build the static assets that are bundled with the package
-         - Run unit tests to validate the existence of deprecated endpoints
-         - Run `poetry publish --build` from `openbb_platform`
-         - Run `poetry lock` from `openbb_platform`
+         1. Bump the dependency package versions
+
+        > [!WARNING]
+        > Create a new environment before proceeding.
+        > Make sure that only required extensions are installed
+
+         2. Re-build the static assets that are bundled with the package: `python -c "import openbb; openbb.build()"`
+            - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
+            - Run any command to smoke test if the static assets are being built correctly.
+         3. Run unit tests to validate the existence of deprecated endpoints
+         4. Run `poetry publish --build` from `openbb_platform`
+         5. Run `poetry lock` from `openbb_platform`
 
     > [!TIP]
     > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies:
