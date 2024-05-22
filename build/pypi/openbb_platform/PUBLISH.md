@@ -13,13 +13,8 @@
 4. Ensure all integration tests pass: `pytest openbb_platform -m integration`
 5. Run `python -c "import openbb; openbb.build()"` to build the static assets. Make sure that only required extensions are installed.
 
-    > **Note**: Run `python -c "import openbb"` after building the static to check that no additional static is being built.
-
-6. Finally, check if everything works:
-
-   1. Install the packages locally using `python openbb_platform/dev_install.py` command and test them in a new environment.
-   2. Check if all the `pyproject.toml` files are correct, including the `openbb_platform` one.
-   3. Double check if there is any new extension or provider that needs to be added to [integration tests GitHub Action workflow](/.github/workflows/platform-api-integration-test.yml).
+    1. Run `python -c "import openbb"` after building the static to check that no additional static is being built.
+    2. Run any command to smoke test if the static assets are being built correctly.
 
 ## Release procedure
 
