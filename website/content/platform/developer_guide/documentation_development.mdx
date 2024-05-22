@@ -1,0 +1,64 @@
+---
+title: Documentation - Development
+sidebar_position: 30
+description: Building the OpenBB Platform documentation and packages.
+keywords:
+- OpenBB Platform
+- Open source
+- Documentation
+- Development
+- Markdown
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Documentation - Development | OpenBB Platform Docs" />
+
+
+The documentation and packages are kept in the `/website` folder, at the base of the repository. Navigate there to install the dependencies and start the development server.
+
+### Generate Markdown Files
+
+Markdown files for the Reference and Data Models pages need to be generated.
+This will generate content based on what is actually installed and contained locally, so it may appear different than what is on this website.
+
+Open a terminal command line to the `/OpenBBTerminal/website` folder, then enter:
+
+```bash
+python generate_platform_v4_markdown.py
+```
+
+### Node.js
+
+- [Node.js](https://nodejs.org/en/) >= 16.13.0
+  To check if Node.js installed, run this command:
+
+```bash
+node --version # should be v16.13.0 or higher
+```
+
+#### Install Dependencies
+
+```bash
+npm install
+```
+
+#### Start Development Server
+
+```bash
+npm start
+```
+
+This starts a local development server at: [http://localhost:3000](http://localhost:3000)
+
+Most changes are reflected live without having to restart the server.
+
+#### Build
+
+```bash
+npm run build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+OpenBB uses Github Pages to host our website, it's deployed in the `gh-pages` branch.
