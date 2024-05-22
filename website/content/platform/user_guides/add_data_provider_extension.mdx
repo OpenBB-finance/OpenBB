@@ -1,5 +1,5 @@
 ---
-title: Add Data Provider Extensions
+title: Build New Provider Extension
 sidebar_position: 7
 description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
 keywords:
@@ -24,9 +24,9 @@ keywords:
   - template
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Add Data Provider Extensions - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Build New Provider Extension - How-To | OpenBB Platform Docs" />
 
 This page will walk through adding a new data provider extension to the OpenBB Platform.
 By the end, you will have an extension that is ready to be published, or submitted as a pull request.
@@ -67,6 +67,7 @@ The `__init__.py` file where models are mapped to the router is under, `/openbb_
 To get started:
 
 - Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip) file.
+
   - If working with a cloned GitHub repo, the folder is:
 
   ```console
@@ -76,6 +77,7 @@ To get started:
 - Rename everything, "template", to suit. File names, models, import statements, docstrings.
 - Add any provider-specific package requirements in the `pyproject.toml` file.
 - Update the Provider information in the `__init__.py` file.
+
   - If credentials are required, add a line to the Provider class initialization.
 
   ```python
@@ -107,13 +109,12 @@ The `pyproject.toml` file defines the package itself.
 
 :::tip
 
-
 - Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
 - If possible, use loose versioning.
 
   :::
 
-``` toml
+```toml
 [tool.poetry]
 name = "openbb-template"
 version = "1.0.0"

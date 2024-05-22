@@ -1,30 +1,30 @@
 ---
-title: Add A Data Provider To An Existing Endpoint
-sidebar_position: 9
+title: Add Provider To An Existing Command
+sidebar_position: 10
 description: This guide outlines the process for adding an endpoint to an existing data provider and router endpoint.
 keywords:
-- OpenBB Platform
-- Open source
-- Python interface
-- REST API
-- contribution
-- contributing
-- documentation
-- code
-- provider
-- data
-- endpoint
-- existing
-- OpenBB extensions
-- OpenBB provider
-- standard model
-- provider model
-- how to
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - data
+  - endpoint
+  - existing
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - provider model
+  - how to
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
-<HeadTitle title="Add A Data Provider To An Existing Endpoint - How-To | OpenBB Platform Docs" />
+<HeadTitle title="Add Provider To An Existing Command - How-To | OpenBB Platform Docs" />
 
 This page will walk through adding a data provider to an existing endpoint, using a standard model. At a high level, the process will look something like:
 
@@ -96,35 +96,35 @@ They provide a sample JSON output, returning both annual and quarterly data in t
 
 ```json
 {
-    "symbol": "IBM",
-    "annualEarnings": [
-        {
-            "fiscalDateEnding": "2023-12-31",
-            "reportedEPS": "9.61"
-        },
-        {
-            "fiscalDateEnding": "2022-12-31",
-            "reportedEPS": "9.12"
-        },
-    ],
-    "quarterlyEarnings": [
-        {
-            "fiscalDateEnding": "2023-12-31",
-            "reportedDate": "2024-01-24",
-            "reportedEPS": "3.87",
-            "estimatedEPS": "3.78",
-            "surprise": "0.09",
-            "surprisePercentage": "2.381"
-        },
-        {
-            "fiscalDateEnding": "2023-09-30",
-            "reportedDate": "2023-10-25",
-            "reportedEPS": "2.2",
-            "estimatedEPS": "2.13",
-            "surprise": "0.07",
-            "surprisePercentage": "3.2864"
-        },
-    ],
+  "symbol": "IBM",
+  "annualEarnings": [
+    {
+      "fiscalDateEnding": "2023-12-31",
+      "reportedEPS": "9.61"
+    },
+    {
+      "fiscalDateEnding": "2022-12-31",
+      "reportedEPS": "9.12"
+    }
+  ],
+  "quarterlyEarnings": [
+    {
+      "fiscalDateEnding": "2023-12-31",
+      "reportedDate": "2024-01-24",
+      "reportedEPS": "3.87",
+      "estimatedEPS": "3.78",
+      "surprise": "0.09",
+      "surprisePercentage": "2.381"
+    },
+    {
+      "fiscalDateEnding": "2023-09-30",
+      "reportedDate": "2023-10-25",
+      "reportedEPS": "2.2",
+      "estimatedEPS": "2.13",
+      "surprise": "0.07",
+      "surprisePercentage": "3.2864"
+    }
+  ]
 }
 ```
 
@@ -140,13 +140,13 @@ from openbb import obb
 obb.equity.fundamental.historical_eps(symbol = "IBM", limit=5, provider="fmp")
 ```
 
-| date       | symbol   |   eps_actual |   eps_estimated |   revenue_estimated |   revenue_actual | reporting_time   | updated_at   | period_ending   |
-|:-----------|:---------|-------------:|----------------:|--------------------:|-----------------:|:-----------------|:-------------|:----------------|
-| 2024-01-24 | IBM      |         3.87 |            3.78 |         17298500000 |      17381000000 | amc              | 2024-02-29   | 2023-12-31      |
-| 2024-04-17 | IBM      |       -      |            1.59 |         14572800000 |     -            | bmo              | 2024-02-29   | 2024-03-30      |
-| 2024-07-24 | IBM      |       -      |          -      |       -             |     -            | amc              | 2024-02-29   | 2024-06-30      |
-| 2024-10-23 | IBM      |       -      |          -      |       -             |     -            | amc              | 2024-02-29   | 2024-09-30      |
-| 2025-01-22 | IBM      |       -      |          -      |       -             |     -            | amc              | 2024-02-29   | 2024-12-31      |
+| date       | symbol | eps_actual | eps_estimated | revenue_estimated | revenue_actual | reporting_time | updated_at | period_ending |
+| :--------- | :----- | ---------: | ------------: | ----------------: | -------------: | :------------- | :--------- | :------------ |
+| 2024-01-24 | IBM    |       3.87 |          3.78 |       17298500000 |    17381000000 | amc            | 2024-02-29 | 2023-12-31    |
+| 2024-04-17 | IBM    |          - |          1.59 |       14572800000 |              - | bmo            | 2024-02-29 | 2024-03-30    |
+| 2024-07-24 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-06-30    |
+| 2024-10-23 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-09-30    |
+| 2025-01-22 | IBM    |          - |             - |                 - |              - | amc            | 2024-02-29 | 2024-12-31    |
 
 FMP is currently the only source for this endpoint. There are only two parameters, `symbol` and `limit`. The `limit` argument determines how many quarters to go back.
 
@@ -211,9 +211,9 @@ Now we know exactly what is going to be added, and how we should structure our q
 
 So far, we have knocked out three of the outlined tasks.
 
-- [X] Catalogue the parameters and returned fields from the chosen data provider.
-- [X] Find the existing standard model that is mapped to the router endpoint.
-- [X] Identify common parameters and fields to map.
+- [x] Catalogue the parameters and returned fields from the chosen data provider.
+- [x] Find the existing standard model that is mapped to the router endpoint.
+- [x] Identify common parameters and fields to map.
 
 Let's get on with the fun stuff and start building!
 
@@ -439,7 +439,7 @@ class AVHistoricalEpsFetcher(
 
 Combining all of the code blocks above, beginning with the import statements section, makes a complete file and we have finished step 4.
 
-- [X] Build the provider models and Fetcher class by inheriting from the standard models.
+- [x] Build the provider models and Fetcher class by inheriting from the standard models.
 
 ## Map To Router
 
@@ -474,7 +474,7 @@ alpha_vantage_provider = Provider(
 
 Step 5 is complete.
 
-- [X] Map the new provider model to the router.
+- [x] Map the new provider model to the router.
 
 ## Rebuild Static Assets
 
@@ -496,7 +496,7 @@ If changes are only made to the static methods within the Fetcher, rebuilding is
 
 Step 6 is done.
 
-- [X] Rebuild the Python interface and static assets.
+- [x] Rebuild the Python interface and static assets.
 
 We can now run the function and test our work.
 
@@ -511,12 +511,12 @@ obb.equity.fundamental.historical_eps(
 ).to_df()
 ```
 
-| date       | symbol   |   eps_actual |   eps_estimated |   surprise |   surprise_percent | reported_date   |
-|:-----------|:---------|-------------:|----------------:|-----------:|-------------------:|:----------------|
-| 2023-12-31 | GOOG     |         1.64 |            1.59 |       0.05 |           0.031447 | 2024-01-30      |
-| 2023-12-31 | AAPL     |         2.18 |            2.1  |       0.08 |           0.038095 | 2024-02-01      |
-| 2023-12-31 | MSFT     |         2.93 |            2.78 |       0.15 |           0.053957 | 2024-01-30      |
-| 2023-12-31 | IBM      |         3.87 |            3.78 |       0.09 |           0.02381  | 2024-01-24      |
+| date       | symbol | eps_actual | eps_estimated | surprise | surprise_percent | reported_date |
+| :--------- | :----- | ---------: | ------------: | -------: | ---------------: | :------------ |
+| 2023-12-31 | GOOG   |       1.64 |          1.59 |     0.05 |         0.031447 | 2024-01-30    |
+| 2023-12-31 | AAPL   |       2.18 |           2.1 |     0.08 |         0.038095 | 2024-02-01    |
+| 2023-12-31 | MSFT   |       2.93 |          2.78 |     0.15 |         0.053957 | 2024-01-30    |
+| 2023-12-31 | IBM    |       3.87 |          3.78 |     0.09 |          0.02381 | 2024-01-24    |
 
 Checking the `annual` setting:
 
@@ -529,12 +529,12 @@ obb.equity.fundamental.historical_eps(
 ).to_df()
 ```
 
-| date       | symbol   |   eps_actual |
-|:-----------|:---------|-------------:|
-| 2021-09-30 | AAPL     |         5.62 |
-| 2022-09-30 | AAPL     |         6.11 |
-| 2023-09-30 | AAPL     |         6.12 |
-| 2023-12-31 | AAPL     |         2.18 |
+| date       | symbol | eps_actual |
+| :--------- | :----- | ---------: |
+| 2021-09-30 | AAPL   |       5.62 |
+| 2022-09-30 | AAPL   |       6.11 |
+| 2023-09-30 | AAPL   |       6.12 |
+| 2023-12-31 | AAPL   |       2.18 |
 
 We can see that the most recent `annual` data point only represent the first quarter of Apple's fiscal year, and this is something to keep in mind while working with the data.
 
@@ -622,7 +622,7 @@ def test_av_historical_eps_fetcher(credentials=test_credentials):
 
 That's all there is to it, we can capture the cassette now. Open a terminal, navigate into the `tests` folder from above, with the `obb` environment active, and enter:
 
-``` console
+```console
 pytest test_alpha_vantage_fetchers.py --record http --record-no-overwrite
 ```
 
@@ -630,7 +630,7 @@ A successful test will result in a file being created in the `record` subfolder.
 
 Step 7 is done.
 
-- [X] Add unit tests.
+- [x] Add unit tests.
 
 ### Integration Tests
 
@@ -773,7 +773,7 @@ pytest test_equity_api.py
 
 Step 8 is done.
 
-- [X] Add integration tests.
+- [x] Add integration tests.
 
 All that's left now is to submit the work as a pull request for review.
 
@@ -836,25 +836,25 @@ A pull request, in general, should have details on why the PR was created, what 
 
 1. **Why**? (1-3 sentences or a bullet point list):
 
-    - This PR is the result of a development documentation page created (not in this PR).
+   - This PR is the result of a development documentation page created (not in this PR).
 
-    - Closes #6104, a user feature request.
+   - Closes #6104, a user feature request.
 
 2. **What**? (1-3 sentences or a bullet point list):
 
-    - Adds AlphaVantage as a provider to `obb.equity.fundamental.historical_eps()`
+   - Adds AlphaVantage as a provider to `obb.equity.fundamental.historical_eps()`
 
 3. **Impact** (1-2 sentences or a bullet point list):
 
-    - Is not a breaking change.
+   - Is not a breaking change.
 
-    - Does not introduce any changes other than adding the provider to this endpoint.
+   - Does not introduce any changes other than adding the provider to this endpoint.
 
 4. **Testing Done**:
 
-    - Created unit test and integration tests.
+   - Created unit test and integration tests.
 
-    - Used a variety of symbols, single and lists, to check that the EmptyDataError and symbol warnings are catching correctly.
+   - Used a variety of symbols, single and lists, to check that the EmptyDataError and symbol warnings are catching correctly.
 
 ### Enjoy
 
