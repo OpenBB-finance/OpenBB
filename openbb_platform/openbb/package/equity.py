@@ -491,7 +491,7 @@ class ROUTER_equity(Container):
             If true, returns only ETFs. (provider: fmp)
         is_active : Optional[bool]
             If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']]
+        sector : Optional[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']]
             Filter by sector. (provider: fmp)
         industry : Optional[str]
             Filter by industry. (provider: fmp)

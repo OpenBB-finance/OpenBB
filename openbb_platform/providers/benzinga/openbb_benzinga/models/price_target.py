@@ -48,8 +48,21 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
     __alias_dict__ = {
         "limit": "pagesize",
         "symbol": "parameters[tickers]",
+        "date": "parameters[date]",
+        "start_date": "parameters[date_from]",
+        "end_date": "parameters[date_to]",
+        "updated": "parameters[updated]",
+        "importance": "parameters[importance]",
+        "action": "parameters[action]",
+        "analyst_ids": "parameters[analyst_id]",
+        "firm_ids": "parameters[firm_id]",
     }
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": ["multiple_items_allowed"],
+        "analyst_ids": ["multiple_items_allowed"],
+        "firm_ids": ["multiple_items_allowed"],
+        "fields": ["multiple_items_allowed"],
+    }
 
     page: Optional[int] = Field(
         default=0,
@@ -60,17 +73,14 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
     date: Optional[dateType] = Field(
         default=None,
         description="Date for calendar data, shorthand for date_from and date_to.",
-        alias="parameters[date]",
     )
     start_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", ""),
-        alias="parameters[date_from]",
     )
     end_date: Optional[dateType] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
-        alias="parameters[date_to]",
     )
     updated: Optional[Union[dateType, int]] = Field(
         default=None,
@@ -78,13 +88,11 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         + " This will force the sort order to be Greater Than or Equal to the timestamp indicated."
         + " The date can be a date string or a Unix timestamp."
         + " The date string must be in the format of YYYY-MM-DD.",
-        alias="parameters[updated]",
     )
     importance: Optional[int] = Field(
         default=None,
         description="Importance level to filter by."
         + " Uses Greater Than or Equal To the importance indicated",
-        alias="parameters[importance]",
     )
     action: Optional[
         Literal[
@@ -103,18 +111,15 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
     ] = Field(
         default=None,
         description="Filter by a specific action_company.",
-        alias="parameters[action]",
     )
     analyst_ids: Optional[Union[List[str], str]] = Field(
         default=None,
         description="Comma-separated list of analyst (person) IDs."
         + " Omitting will bring back all available analysts.",
-        alias="parameters[analyst_id]",
     )
     firm_ids: Optional[Union[List[str], str]] = Field(
         default=None,
         description="Comma-separated list of firm IDs.",
-        alias="parameters[firm_id]",
     )
     fields: Optional[Union[List[str], str]] = Field(
         default=None,

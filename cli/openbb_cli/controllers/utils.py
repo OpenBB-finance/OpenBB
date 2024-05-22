@@ -901,7 +901,7 @@ def export_data(
                 else:
                     save_to_excel(df, saved_path, sheet_name)
 
-            elif saved_path.suffix in [".jpg", ".pdf", ".png", ".svg"]:
+            elif saved_path.suffix in [".jpg", ".png", ".svg"]:
                 if figure is None:
                     Session().console.print("No plot to export.")
                     continue
@@ -910,7 +910,10 @@ def export_data(
                 Session().console.print("Wrong export file specified.")
                 continue
 
-            Session().console.print(f"Saved file: {saved_path}")
+            if saved_path.exists():
+                Session().console.print(f"Saved file: {saved_path}")
+            else:
+                Session().console.print(f"Failed to save file: {saved_path}")
 
         if figure is not None:
             figure._exported = True  # pylint: disable=protected-access

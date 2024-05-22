@@ -34,12 +34,12 @@ from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
-from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
+from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -63,6 +63,7 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
+from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
 fmp_provider = Provider(
     name="fmp",
@@ -102,13 +103,13 @@ stock market information (news, currencies, and stock prices).""",
         "EtfEquityExposure": FMPEtfEquityExposureFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
-        "EtfHoldingsPerformance": FMPEtfHoldingsPerformanceFetcher,
         "EtfInfo": FMPEtfInfoFetcher,
         "EtfPricePerformance": FMPPricePerformanceFetcher,
         "EtfSearch": FMPEtfSearchFetcher,
         "EtfSectors": FMPEtfSectorsFetcher,
         "ExecutiveCompensation": FMPExecutiveCompensationFetcher,
         "FinancialRatios": FMPFinancialRatiosFetcher,
+        "ForwardEbitdaEstimates": FMPForwardEbitdaEstimatesFetcher,
         "ForwardEpsEstimates": FMPForwardEpsEstimatesFetcher,
         "HistoricalDividends": FMPHistoricalDividendsFetcher,
         "HistoricalEmployees": FMPHistoricalEmployeesFetcher,
@@ -134,6 +135,7 @@ stock market information (news, currencies, and stock prices).""",
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
         "EtfHistorical": FMPEquityHistoricalFetcher,
+        "YieldCurve": FMPYieldCurveFetcher,
     },
     repr_name="Financial Modeling Prep (FMP)",
     v3_credentials=["API_KEY_FINANCIALMODELINGPREP"],

@@ -23,9 +23,6 @@ export default function Export({
       case "csv":
         downloadData("csv", columns, data, downloadFinished);
         break;
-      case "xlsx":
-        downloadData("xlsx", columns, data, downloadFinished);
-        break;
       case "png":
         downloadImage("table", downloadFinished);
         break;

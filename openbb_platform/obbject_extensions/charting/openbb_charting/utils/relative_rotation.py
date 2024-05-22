@@ -102,7 +102,6 @@ def create_rrg_with_tails(
     Figure
         Plotly GraphObjects Figure.
     """
-    color = 0
     symbols = ratios_data.columns.to_list()
 
     tail_dict = {"week": "W", "month": "M"}
@@ -126,7 +125,7 @@ def create_rrg_with_tails(
     # Create an empty list to store the scatter traces
     traces = []
 
-    for symbol in symbols:
+    for i, symbol in enumerate(symbols):
         # Select a single row from each dataframe
         x_data = ratios_data[symbol]
         y_data = momentum_data[symbol]
@@ -137,9 +136,9 @@ def create_rrg_with_tails(
             y=y_data[:-1],  # All but the last data point
             mode="lines+markers",
             line=dict(
-                color=color_sequence[color % len(color_sequence)], width=2, dash="dash"
+                color=color_sequence[i % len(color_sequence)], width=2, dash="dash"
             ),
-            marker=dict(size=6, color=color_sequence[color % len(color_sequence)]),
+            marker=dict(size=6, color=color_sequence[i % len(color_sequence)]),
             opacity=0.3,
             showlegend=False,
             name=name,
@@ -167,7 +166,7 @@ def create_rrg_with_tails(
             ),
             marker=dict(
                 size=marker_size,
-                color=color_sequence[color % len(color_sequence)],
+                color=color_sequence[i % len(color_sequence)],
                 line=dict(color="black", width=1),
             ),
             showlegend=False,
@@ -178,7 +177,6 @@ def create_rrg_with_tails(
             hoverlabel=dict(font_size=10),
         )
         traces.extend([line_trace, marker_trace])
-        color += 1
     padding = 0.1
     y_range = [y_min - padding * abs(y_min) - 0.3, y_max + padding * abs(y_max) + 0.3]
     x_range = [x_min - padding * abs(x_min) - 0.3, x_max + padding * abs(x_max) + 0.3]
@@ -370,7 +368,6 @@ def create_rrg_without_tails(
     Figure
         Plotly GraphObjects Figure.
     """
-
     if date is not None and date not in ratios_data.index.astype(str):
         warn(f"Date {str(date)} not found in data, using the last available date.")
         date = ratios_data.index[-1]

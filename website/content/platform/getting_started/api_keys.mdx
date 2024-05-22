@@ -1,0 +1,90 @@
+---
+title: Authorization and API Keys
+sidebar_position: 2
+description: An overview for setting up the OpenBB Platform Python client and Fast API with data provider API keys.
+keywords:
+- tutorial
+- OpenBB Platform
+- Python client
+- Fast API
+- getting started
+- authorization
+- data providers
+- OpenBB Hub
+- local environment
+- environment variables
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="API Keys - Usage | OpenBB Platform Docs" />
+
+By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. Keys can be stored locally and they can also be securely saved to your OpenBB Hub [account](https://my.openbb.co/app/hub) for convenient remote access.
+
+### OpenBB Hub
+
+:::info
+The OpenBB Hub is only accessible via the Python Interface. For REST API, store credentials and preferences in the `user_settings.json` file [local](api_keys#local-environment) to the deployment.
+:::
+
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+
+The OpenBB Hub is a convenient solution for accessing data in temporary Python environments, like Google Colab ([example notebook](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb)). Login with:
+
+```python
+from openbb import obb
+
+# Login with personal access token
+obb.account.login(pat="my_pat", remember_me=True)
+
+# Alternatively, login with email and password
+obb.account.login(email="my_email", password="my_password", remember_me=True)
+
+# Change a credential
+obb.user.credentials.polygon_api_key = "my_api_key"
+
+# Save account changes to the Hub
+obb.account.save()
+
+# Refresh account with latest changes
+obb.account.refresh()
+
+# Logout
+obb.account.logout()
+```
+
+Set `remember_me` as `False` to discard all credentials at the end of the session.
+
+:::tip
+With `remember_me=True`, credentials will be permanently stored in the environment.
+Wrapping this sequence before deploying an API server is one (insecure) way to authorize data providers for remote access.
+:::
+
+### Local Environment
+
+Credentials and user preferences are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`. It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, it will be created on the first run. The schema below can be copy/pasted as a template:
+
+```json
+{
+  "credentials": {
+    "fmp_api_key": "REPLACE",
+    "polygon_api_key": "REPLACE",
+    "benzinga_api_key": "REPLACE",
+    "fred_api_key": "REPLACE",
+    "nasdaq_api_key": "REPLACE",
+    "intrinio_api_key": "REPLACE",
+    "alpha_vantage_api_key": "REPLACE",
+    "biztoc_api_key": "REPLACE",
+    "tradier_api_key": "REPLACE",
+    "tradier_account_type": "sandbox OR live",
+    "tradingeconomics_api_key": "REPLACE",
+    "tiingo_token": "REPLACE"
+}
+}
+```
+
+To set keys from the Python client for the current session only, access the Credentials class:
+
+```python
+obb.user.credentials.intrinio_api_key = "my_api_key"
+```

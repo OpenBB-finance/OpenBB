@@ -1,7 +1,7 @@
 ---
 title: Structure and Navigation
 sidebar_position: 3
-description: This page describes the layout and structure of the OpenBB CLI, as well as how to navigate it.
+description: This page describes the layout and structure of the OpenBB Platform CLI, as well as how to navigate it.
 keywords:
 - CLI application
 - OpenBB Platform CLI
@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Structure and Navigation | OpenBB CLI Docs" />
+<HeadTitle title="Structure and Navigation | OpenBB Platform CLI Docs" />
 
 ## Structure
 

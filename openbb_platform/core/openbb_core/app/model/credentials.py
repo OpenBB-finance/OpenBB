@@ -61,7 +61,7 @@ class CredentialsLoader:
     def from_obbject(self) -> None:
         """Load credentials from OBBject extensions."""
         self.credentials["obbject"] = set()
-        for name, entry in ExtensionLoader().obbject_objects.items():
+        for name, entry in ExtensionLoader().obbject_objects.items():  # type: ignore[attr-defined]
             try:
                 for c in entry.credentials:
                     self.credentials["obbject"].add(c)
@@ -116,3 +116,7 @@ class Credentials(_Credentials):  # type: ignore
                 [f"{k}: {v}" for k, v in sorted(self.model_dump(mode="json").items())]
             )
         )
+
+    def update(self, incoming: "Credentials"):
+        """Update current credentials."""
+        self.__dict__.update(incoming.model_dump(exclude_none=True))

@@ -27,22 +27,18 @@ def test_is_reset(command, expected):
     assert is_reset(command) == expected
 
 
-@pytest.mark.parametrize(
-    "keyword, expected_date",
-    [
-        (
-            "$LASTFRIDAY",
-            (
-                datetime.now()
-                - timedelta(days=((datetime.now().weekday() - 4) % 7 + 7) % 7)
-            ).strftime("%Y-%m-%d"),
-        ),
-    ],
-)
-def test_match_and_return_openbb_keyword_date(keyword, expected_date):
+def test_match_and_return_openbb_keyword_date():
     """Test the match_and_return_openbb_keyword_date function."""
+    keyword = "$LASTFRIDAY"
     result = match_and_return_openbb_keyword_date(keyword)
-    assert result == expected_date
+    expected = ""
+    if keyword == "$LASTFRIDAY":
+        today = datetime.now()
+        expected = today - timedelta(days=(today.weekday() + 3) % 7)
+        if expected >= today:
+            expected -= timedelta(days=7)
+        expected = expected.strftime("%Y-%m-%d")
+    assert result == expected
 
 
 def test_parse_openbb_script_basic():
@@ -100,7 +96,7 @@ def test_date_keyword_last_friday():
     """Test the match_and_return_openbb_keyword_date function."""
     today = datetime.now()
     last_friday = today - timedelta(days=(today.weekday() - 4 + 7) % 7)
-    if last_friday > today:
+    if last_friday >= today:
         last_friday -= timedelta(days=7)
     expected_date = last_friday.strftime("%Y-%m-%d")
     assert match_and_return_openbb_keyword_date("$LASTFRIDAY") == expected_date

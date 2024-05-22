@@ -371,6 +371,7 @@ class SecEtfHoldingsFetcher(
             """Response callback for the request."""
             return await response.read()
 
+        response: Union[dict, List[dict]] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
             async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
@@ -747,6 +748,9 @@ class SecEtfHoldingsFetcher(
             )
         # Extract additional information from the form that doesn't belong in the holdings table.
         metadata = {}
+        month_1: str = ""
+        month_2: str = ""
+        month_3: str = ""
         try:
             gen_info = response["edgarSubmission"]["formData"].get("genInfo", {})  # type: ignore
             if gen_info:

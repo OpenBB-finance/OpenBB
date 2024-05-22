@@ -1,0 +1,281 @@
+---
+title: Build New Provider Extension
+sidebar_position: 7
+description: This guide outlines the process for adding a new data provider extension to the OpenBB Platform.
+keywords:
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - data
+  - endpoint
+  - existing
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - provider model
+  - how to
+  - new
+  - template
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Build New Provider Extension - How-To | OpenBB Platform Docs" />
+
+This page will walk through adding a new data provider extension to the OpenBB Platform.
+By the end, you will have an extension that is ready to be published, or submitted as a pull request.
+
+## Template For Getting Started
+
+If you've already been through some of the other data provider tasks - [How To Add Data To An Existing Endpoint](add_data_to_existing_endpoint) & [How To Add A New Data Endpoint With An Existing Provider](add_endpoint_to_existing_provider) - these steps will simply tag on to the beginning. Instead of editing the `__init__.py` file, we will create it.
+
+An easy way to get started is to copy and paste something existing. In the OpenBB GitHub repository, provider extensions are located [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/providers).
+
+For convenience's sake, download this template [zip file](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip). It contains the basic folder structure and everything required to get started creating new data models.
+
+For demonstration purposes, we'll assume this is from the perspective of somebody who will open a pull request and contribute the code to the OpenBB repository. The process, however, also applies to publishing directly via PyPI. Anyone can make an OpenBB extension.
+
+The structure of the folder will look something like this:
+
+```md
+template/
+├── openbb_template/
+│ ├── models/
+│ │ ├── **init**.py
+│ │ └── some_model.py
+│ ├── utils/
+│ │ ├── **init**.py
+│ │ └── helpers.py
+│ ├── tests/
+│ │ ├── record/
+│ │ ├── **init**.py
+│ │ └── test_template_fetchers.py
+│ ├── **init**.py
+├── **init**.py
+├── pyproject.toml
+└── README.md
+```
+
+The `__init__.py` file where models are mapped to the router is under, `/openbb_template`.
+
+To get started:
+
+- Unpack the downloaded [zip](ttps://github.com/OpenBB-finance/OpenBBTerminal/files/14519701/provider_extension_template.zip) file.
+
+  - If working with a cloned GitHub repo, the folder is:
+
+  ```console
+  ~/OpenBBTerminal/openbb_platform/providers
+  ```
+
+- Rename everything, "template", to suit. File names, models, import statements, docstrings.
+- Add any provider-specific package requirements in the `pyproject.toml` file.
+- Update the Provider information in the `__init__.py` file.
+
+  - If credentials are required, add a line to the Provider class initialization.
+
+  ```python
+  credentials=["api_key", "account_type"], # account_type is either "sandbox" or "live"
+  ```
+
+- From a terminal command line, navigate into the folder where the extension is, then install the empty blank package in "editable" mode.
+
+  ```console
+  poetry lock
+  pip install -e .
+  ```
+
+- Start creating data models using the steps outlined [here](add_data_to_existing_endpoint)
+
+### Cookiecutter
+
+In order to speed up the process of building an extension, we have created a [**Cookiecutter**](https://github.com/OpenBB-finance/openbb-cookiecutter) template.
+
+It serves as a jumpstart for your extension development, and can be used instead of the template ZIP referenced earlier. Instructions are located on the [GitHub page](https://github.com/OpenBB-finance/openbb-cookiecutter).
+
+:::note
+The cookiecutter tool will get you most of the way there, but it still requires some tweaks to the file names and initializations.
+:::
+
+## Dependencies
+
+The `pyproject.toml` file defines the package itself.
+
+:::tip
+
+- Before adding any dependency, ensure it aligns with the Platform's existing dependencies.
+- If possible, use loose versioning.
+
+  :::
+
+```toml
+[tool.poetry]
+name = "openbb-template"
+version = "1.0.0"
+description = "Template Provider Extension for the OpenBB Platform"
+authors = ["Name <my@emailaddress.com>"]
+readme = "README.md"
+packages = [{ include = "openbb_template" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+openbb = "^4.1.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+template = "openbb_template:template_provider"
+```
+
+The last line (poetry.plugins) maps to the provider defined in the `__init__.py` file.
+
+Additionally, for local extensions, you can add this line in the `LOCAL_DEPS` variable in the `dev_install.py` file, located in `~/OpenBBTerminal/openbb_platform/`:
+
+```toml
+# If this is a community dependency, add this under "Community dependencies",
+# with additional argument optional = true
+openbb-extension = { path = "<relative-path-to-the-extension>", develop = true }
+```
+
+Now you can use the `python dev_install.py [-e]` command to install the local extension.
+
+## Authorization Credentials
+
+Access to most data sources is authorized with an API key, issued by the source. Sometimes there are multiple authorization fields, and other times there may be a need to change the base URL depending on the type of account.
+
+> If no authorization is required, leave out the 'credentials' parameter.
+
+Below is the contents from the template's `__init__.py` file, modified to create a provider extension for [Tradier](https://documentation.tradier.com/brokerage-api/overview/endpoints).
+
+```python
+"""Tradier Provider Module."""
+
+from openbb_core.provider.abstract.provider import Provider
+from openbb_tradier.models.options_chains import TradierOptionsChainsFetcher
+
+tradier_provider = Provider(
+    name="tradier",
+    website="https://tradier.com",
+    description= "Tradier provides a full range of services in a scalable, secure,"
+        + " and easy-to-use REST-based API for businesses and individual developers."
+        + " Fast, secure, simple. Start in minutes."
+        + " Get access to trading, account management, and market-data for"
+        + " Tradier Brokerage accounts through our APIs.",
+    credentials=["api_key", "account_type"], # account_type is either "sandbox" or "live"
+    fetcher_dict={
+        "OptionsChains": TradierOptionsChainsFetcher,
+    },
+)
+```
+
+## Filtering Out Secrets From Unit Tests
+
+The template extension has a starting point for building unit tests, but filters might need to be updated for the specific provider.
+
+```python
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [
+            ("User-Agent", None),
+            ("api_key", "MOCK_API_KEY"),
+            ("x-api-token", "MOCK_API_KEY"),
+        ],
+        "filter_query_parameters": [
+            ("api_key", "MOCK_API_KEY"),
+            ("x-api-token", "MOCK_API_KEY"),
+        ],
+    }
+```
+
+For Tradier, authorization is sent in the request headers as "Authorization". We will need to replace `api_key` header filters with `Authorization`.
+
+:::important
+Inspect captured test cassettes to verify that no secrets are recorded.
+:::
+
+## Rebuild the Python Interface and Static Assets
+
+The application will need to rebuild the static files in order to recognize any changes to the `fetcher_dict` in the `__init__.py` file.
+This is also required to reflect any changes to parameters, docstrings and function signatures.
+
+Open a terminal, start a new Python session, then enter:
+
+```python
+import openbb
+
+openbb.build()
+
+exit()
+```
+
+The updated endpoint's function signature will now display the additional provider.
+
+```python
+Signature:
+obb.derivatives.options.chains(
+    symbol: typing.Annotated[str, OpenBBField(description='Symbol to get data for.')],
+    provider: Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier']] = None,
+    **kwargs,
+) -> openbb_core.app.model.obbject.OBBject
+```
+
+## Get Building
+
+Following either path, [How To Add Data To An Existing Endpoint](add_data_to_existing_endpoint) & [How To Add A New Data Endpoint With An Existing Provider](add_endpoint_to_existing_provider), will take this from an empty provider extension to a finished product.
+
+The new extension can be self-published on PyPI and hosted in an independent GitHub repo. You will then be able to maintain the code, and the release schedule.
+
+If not contributing directly to the OpenBB GitHub, we still want to know about your creation. Share it with us on social media, and add `openbb` as a topic tag in your GitHub repo.
+
+## Publish Extension To PyPI
+
+To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI API token.
+
+### Setup
+
+Create an account and get an API token from [https://pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
+
+Store the token with:
+
+```bash
+poetry config pypi-token.pypi pypi-YYYYYYYY
+```
+
+### Release
+
+`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run:
+
+```bash
+poetry build
+```
+
+This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
+
+If you want to test your package locally you can do it with:
+
+```bash
+pip install dist/openbb_[FILE_NAME].whl
+```
+
+### Publish
+
+To publish your package to PyPI run:
+
+```bash
+poetry publish
+```
+
+Now, you can pip install your package from PyPI with:
+
+```bash
+pip install openbb-some_ext
+```

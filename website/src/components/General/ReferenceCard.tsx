@@ -26,7 +26,7 @@ export default function ReferenceCard({
         {
           header_docs_terminal: cleanedPath.startsWith("/terminal"),
           "bg-gradient-to-r from-[#541c12] to-[rgba(84, 29, 19, 1)]":
-            cleanedPath.startsWith("/sdk") ||
+            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
             cleanedPath.startsWith("/platform"),
           "bg-gradient-to-r from-grey-800 to-purple-800":
             cleanedPath.startsWith("/bot"),
@@ -34,7 +34,8 @@ export default function ReferenceCard({
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/sdk") &&
             !cleanedPath.startsWith("/platform") &&
-            !cleanedPath.startsWith("/bot"),
+            !cleanedPath.startsWith("/bot") &&
+            !cleanedPath.startsWith("/cli"),
         },
       )}
       to={url}

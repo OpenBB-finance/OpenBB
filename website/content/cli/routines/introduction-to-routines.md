@@ -19,7 +19,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Introduction to Routines - Routines | OpenBB CLI Docs" />
+<HeadTitle title="Introduction to Routines - Routines | OpenBB Platform CLI Docs" />
 
 ## Overview
 
@@ -29,7 +29,7 @@ Other software like STATA, SPSS, and R-Studio share similar functionality in the
 
 Routines make it easy to automate a series of processes, and this includes mining and dumping large amounts of data to organized spreadsheets.  Making use of `--export` and `--sheet-name`, data collection is more efficient and reliable, with results that are easily replicable.
 
-A pipeline of commands is difficult to share, so to encourage users to share ideas and processes, we created [Community Routines](community-routines.md) for the [OpenBB Hub](https://my.openbb.co/). Routines can be created, stored, and shared - executable in any OpenBB CLI installation, by URL.
+A pipeline of commands is difficult to share, so to encourage users to share ideas and processes, we created [Community Routines](community-routines.md) for the [OpenBB Hub](https://my.openbb.co/). Routines can be created, stored, and shared - executable in any OpenBB Platform CLI installation, by URL.
 
 ## Pipeline of Commands
 

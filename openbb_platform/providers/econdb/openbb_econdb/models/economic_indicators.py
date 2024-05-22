@@ -385,14 +385,9 @@ class EconDbEconomicIndicatorsFetcher(
                     units = "USD"
                 elif scale == "Units":
                     units = (
-                        (
-                            add_info["UNIT_MEASURE:UNIT_MEASURE"]
-                            if "UNIT_MEASURE:UNIT_MEASURE" in add_info
-                            else (
-                                add_info["UNIT:Unit of measure"]
-                                if "UNIT:Unit of measure" in add_info
-                                else units
-                            )
+                        add_info.get(
+                            "UNIT_MEASURE:UNIT_MEASURE",
+                            add_info.get("UNIT:Unit of measure", units),
                         )
                         if units != "USD"
                         else units

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-core"
-version = "1.2.2"
-description = "OpenBB package with core functionality"
+version = "1.2.3"
+description = "OpenBB package with core functionality."
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
 readme = "README.md"
@@ -18,19 +18,12 @@ uuid7 = "^0.1.0"
 posthog = "^3.3.1"
 python-multipart = "^0.0.7"
 pydantic = "^2.5.1"
-requests = "^2.31.0"
+requests = "^2.32.1"
 importlib-metadata = "^6.8.0"
 python-dotenv = "^1.0.0"
 aiohttp = "^3.9.5"
-ruff = "^0.1.6"
+ruff = ">=0.1.6,<=0.4.4"      # Needed here to lint generated code
 pyjwt = "^2.8.0"
-anyio = "^3.7.0"  # TODO: Migrate to v4
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.0.0"
-pytest-subtests = "^0.11.0"
-pytest-recorder = "^0.2.4"
-pytest-asyncio = "^0.23.2"
 
 [build-system]
 requires = ["poetry-core"]
