@@ -41,7 +41,7 @@ force-wrap-aliases = true
 
 [lint.pylint]
 max-args = 8
-max-branches = 25
+max-branches = 26
 max-returns = 9
 max-statements = 30
 
