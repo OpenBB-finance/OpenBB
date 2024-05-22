@@ -27,7 +27,12 @@
     2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
          1. Bump the dependency package versions
-         2. Re-build the static assets (make sure that only required extensions are installed) that are bundled with the package `python -c "import openbb; openbb.build()"`
+
+        > [!WARNING]
+        > Create a new environment before proceeding.
+        > Make sure that only required extensions are installed
+
+         2. Re-build the static assets that are bundled with the package: `python -c "import openbb; openbb.build()"`
             - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
             - Run any command to smoke test if the static assets are being built correctly.
          3. Run unit tests to validate the existence of deprecated endpoints
