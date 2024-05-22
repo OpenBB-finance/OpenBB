@@ -115,7 +115,7 @@ class ROUTER_currency(Container):
         >>> # Search for 'EUR' currency pair using 'intrinio' as provider.
         >>> obb.currency.search(provider='intrinio', query='EUR')
         >>> # Search for terms  using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', query='Euro zone')
+        >>> obb.currency.search(provider='polygon', query='EUR')
         """  # noqa: E501
 
         return self._run(

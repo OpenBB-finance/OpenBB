@@ -10,7 +10,7 @@ keywords:
   - Import time optimization
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Tests - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
@@ -46,6 +46,7 @@ pytest <path_to_the_unit_test_file> --record=all
 :::note
 Sometimes manual intervention is needed. For example, adjusting out-of-top level imports or adding specific arguments for a given fetcher.
 :::
+
 </details>
 
 ## Integration tests
@@ -139,10 +140,10 @@ When using the OpenBB QA Framework it is important to be aware of the following 
   on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
   you can delete the cache file from your local machine and re-record the tests.
 
-    > Note that the cache is likely located here:
-    > Windows: `C:\Users\user\AppData\Local\`
-    > Linux: `/home/user/.cache/`
-    > Mac: `/Users/user/Library/Caches`
+      > Note that the cache is likely located here:
+      > Windows: `C:\Users\user\AppData\Local\`
+      > Linux: `/home/user/.cache/`
+      > Mac: `/Users/user/Library/Caches`
 
 - Some providers (we are aware only of YFinance so far) do an additional request when used from the US region. As our CI
   is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the

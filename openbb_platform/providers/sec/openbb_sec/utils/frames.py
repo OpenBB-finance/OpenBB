@@ -696,7 +696,7 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
         The "metadata" key contains information about the frame.
     """
     current_date = datetime.now().date()
-    quarter = FISCAL_PERIODS_DICT.get(fiscal_period, None) if fiscal_period else None
+    quarter = FISCAL_PERIODS_DICT.get(fiscal_period) if fiscal_period else None
     if year is None and quarter is None:
         quarter = (current_date.month - 1) // 3
         year = current_date.year

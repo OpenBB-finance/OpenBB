@@ -1,40 +1,41 @@
 ---
 title: Installation
 sidebar_position: 1
-description: This page presents the general system requirements, supported environments,
+description:
+  This page presents the general system requirements, supported environments,
   installation procedures, and setup for running the OpenBB Platform. It discusses
   the prerequisites including Python version, operating system requirements, Docker
   usage, and the process of building the platform from source.
 keywords:
-- OpenBB Platform
-- Python
-- System requirements
-- Supported environments
-- Installation
-- Docker
-- Python virtual environment
-- Installation from source
-- Windows 10
-- Mac OS Big Sur
-- Linux
-- Package installation
-- VS Code
-- PyCharm
-- Jupyter
-- GitHub
-- Conda
-- venv
-- API
-- Repository
-- pip
-- Poetry
-- Toml
-- PyPI
-- Node.js
-- npm
+  - OpenBB Platform
+  - Python
+  - System requirements
+  - Supported environments
+  - Installation
+  - Docker
+  - Python virtual environment
+  - Installation from source
+  - Windows 10
+  - Mac OS Big Sur
+  - Linux
+  - Package installation
+  - VS Code
+  - PyCharm
+  - Jupyter
+  - GitHub
+  - Conda
+  - venv
+  - API
+  - Repository
+  - pip
+  - Poetry
+  - Toml
+  - PyPI
+  - Node.js
+  - npm
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Installation | OpenBB Platform Docs" />
 
@@ -64,7 +65,7 @@ With the environment created, and activated, begin the installation process.
 Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python.
 
 :::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
+Installing packages directly to the system Python or `base` environment is not recommended. Create a new environment first (can be any name, using openbb here for example).
 
 ```bash
 conda create -n openbb python=3.11
@@ -182,6 +183,7 @@ docker run --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform openbb
 ```
 
 This will mount the local `~/.openbb_platform` directory into the Docker container to use with the API keys and preferences from there, and it will expose the API on port `8000`.
+
 </details>
 
 ### Source
@@ -226,6 +228,7 @@ python dev_install.py
 :::note
 To install all extensions and providers, run: `python dev_install.py -e`
 :::
+
 </details>
 
 ### Devcontainer

@@ -39,7 +39,7 @@ async def chains(
 @router.command(
     model="OptionsUnusual",
     examples=[
-        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(parameters={"symbol": "TSLA", "provider": "intrinio"}),
         APIEx(
             description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
             parameters={"symbol": "TSLA", "provider": "intrinio"},
