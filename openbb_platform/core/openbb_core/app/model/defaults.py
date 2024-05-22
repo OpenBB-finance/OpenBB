@@ -1,6 +1,6 @@
 """Defaults model."""
 
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 from warnings import warn
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -13,7 +13,7 @@ class Defaults(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True, populate_by_name=True)
 
-    commands: Dict[str, Dict[str, Optional[Union[str, List[str]]]]] = Field(
+    commands: Dict[str, Dict[str, Optional[List[str]]]] = Field(
         default_factory=dict,
         alias="routes",
     )
@@ -35,7 +35,12 @@ class Defaults(BaseModel):
                 category=OpenBBWarning,
             )
             key = "routes"
-        values[key] = {
-            k.strip("/").replace("/", "."): v for k, v in values.get(key, {}).items()
-        }
-        return values
+
+        new_values = {"commands": {}}
+        for k, v in values.get(key, {}).items():
+            clean_k = k.strip("/").replace("/", ".")
+            provider = v.get("provider") if v else None
+            if isinstance(provider, str):
+                v["provider"] = [provider]
+            new_values["commands"][clean_k] = v
+        return new_values

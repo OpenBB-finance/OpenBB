@@ -61,8 +61,9 @@ class Container:
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
-            priority = commands.get(command, {}).get("provider", []) or default_priority
-            providers = [priority] if isinstance(priority, str) else priority
+            providers = (
+                commands.get(command, {}).get("provider", []) or default_priority
+            )
             for p in providers:
                 if self._check_credentials(p):
                     return p
