@@ -86,7 +86,7 @@ def test_container__check_credentials(container):
             "test.not_available.command",
             ("provider_1", "provider_2"),
             OpenBBError,
-            "Fallback failed, please specify the provider. Tried: x, y, z.",
+            "Fallback failed, please specify the provider or update credentials. Tried: x, y, z.",
         ),
     ],
 )
