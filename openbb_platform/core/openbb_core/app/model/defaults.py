@@ -36,7 +36,7 @@ class Defaults(BaseModel):
             )
             key = "routes"
 
-        new_values = {"commands": {}}
+        new_values: Dict[str, Dict[str, Optional[List[str]]]] = {"commands": {}}
         for k, v in values.get(key, {}).items():
             clean_k = k.strip("/").replace("/", ".")
             provider = v.get("provider") if v else None
