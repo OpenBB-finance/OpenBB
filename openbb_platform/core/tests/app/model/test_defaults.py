@@ -7,7 +7,7 @@ def test_defaults():
     """Test the Defaults class."""
     cc = Defaults(commands={"/equity/price": {"provider": "test"}})
     assert isinstance(cc, Defaults)
-    assert cc.commands == {"equity.price": {"provider": "test"}}
+    assert cc.commands == {"equity.price": {"provider": ["test"]}}
 
 
 def test_fields():
