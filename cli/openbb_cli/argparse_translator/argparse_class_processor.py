@@ -92,7 +92,6 @@ class ArgparseClassProcessor:
             if name.startswith("__") or name.startswith("_"):
                 continue
             if inspect.ismethod(member):
-
                 class_name = cls._get_class_name(target)
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member,
