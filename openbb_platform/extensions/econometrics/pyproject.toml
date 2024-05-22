@@ -8,11 +8,11 @@ readme = "README.md"
 packages = [{ include = "openbb_econometrics" }]
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.12"                 # scipy forces python <4.0 explicitly
+python = ">=3.8,<3.12"  # scipy forces python <4.0 explicitly
 scipy = "^1.10.1"
 statsmodels = "^0.14.0"
 arch = "^5.5.0"
-linearmodels = "<=4.25"                # ^4.26 has setuptools-scm in setup_requires
+linearmodels = "<=4.25" # ^4.26 has setuptools-scm in setup_requires
 openbb-core = "^1.2.3"
 
 [build-system]
