@@ -1,0 +1,216 @@
+---
+title: Create New Router Extension
+sidebar_position: 8
+description: This page will walk through creating a new OpenBB Router Extension from scratch. By the end, you will have the code structure for a new router path and an api endpoint.
+keywords:
+- OpenBB Platform
+- Open source
+- community
+- code
+- router
+- openbb-core
+- data
+- extension
+- how-to
+- new
+- endpoint
+- template
+- quickstart
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Quick Start - New Provider Extension - Getting Started - Development | OpenBB Platform Docs" />
+
+This page will walk through creating a new OpenBB router extension from scratch. By the end, you will have the shell structure for adding commands to the OpenBB Platform's interfaces.
+
+## Preparation
+
+### Create Project Folder
+
+Create a folder for the project. For this example, we will name the folder, `empty_router`.
+
+### Create `pyproject.toml` File
+
+- Open the folder and create a new file called, `pyproject.toml`.
+
+```toml
+[tool.poetry]
+name = "openbb-empty-router"
+version = "0.0.1"
+description = "An empty OpenBB Router extension"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_empty_router" }]
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.12"
+openbb = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_core_extension"]
+empty = "openbb_empty_router.empty_router:router"
+```
+
+### Create `README.md` File
+
+- In the same location, create a new file called, `README.md`.
+- Open the file, then add a title and any other high-level information about the extension.
+
+```markdown
+# Empty OpenBB Router Extension
+
+An example Router extension for the OpenBB Platform.
+```
+
+### Create Sub-Folder For Code
+
+- Create a sub-folder that begins with `openbb` and is followed by the name of the project folder, `openbb_empty_router`.
+
+### Create `__init__.py` File
+
+- In the new sub-folder, create a new file called, `__init__.py`.
+- Add a docstring on the first line, followed by an empty line.
+
+```python
+"""Empty Router Module."""
+
+```
+
+### Create Router File
+
+- In the same location as the file just saved, create a new file called, `empty_router.py`.
+
+:::info
+This is the file mapped at the bottom of the `pyproject.toml` file.
+
+```toml
+[tool.poetry.plugins."openbb_core_extension"]
+empty = "openbb_empty_router.empty_router:router"
+```
+
+:::
+
+- Insert code for our command route.
+
+```python
+"""Empty Router"""
+
+from typing import Any, Dict, List, Literal, Optional
+from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.provider_interface import (
+    ExtraParams,
+    ProviderChoices,
+    StandardParams,
+)
+from openbb_core.provider.abstract.data import Data
+from openbb_core.app.query import Query
+from openbb_core.app.router import Router
+from openbb_core.app.model.obbject import OBBject
+
+router = Router(prefix="", description="An Empty OpenBB Router Extension.")
+
+@router.command(methods=["GET"])
+async def hello() -> OBBject[str]: # The output of every router command must be an instance of `OBBject`.
+    """OpenBB Hello World."""
+    return OBBject(results="Hello from the Empty Router extension!")
+
+# This is a clone of `obb.equity.price.historical`.
+# The model can be replaced with a a different model from the Provider Interface.
+@router.command(
+    model="EquityHistorical",
+)
+async def empty_function(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[Data]:
+    """An empty function using the Provider Interface."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+## Build Lock File
+
+- The Python environment should have `toml` and `poetry` installed as packages from PyPI.
+
+```console
+pip install toml poetry
+```
+
+- Navigate into the main folder, and with the environment active, enter:
+
+```console
+poetry lock
+```
+
+## Install Extension In Editable Mode
+
+```console
+pip install -e .
+```
+
+The installation can be verified, and it should display a path similar to the one below.
+Everything else is installed under the `site-packages` of the environment.
+
+```console
+pip list | grep openbb
+```
+
+```console
+openbb                  4.1.7
+openbb-benzinga         1.1.5
+openbb-commodity        1.0.4
+openbb-core             1.1.6
+openbb-crypto           1.1.5
+openbb-currency         1.1.5
+openbb-derivatives      1.1.5
+openbb-economy          1.1.5
+openbb-empty-router     0.0.1        /Users/username/path_to_created_folder/empty_router
+...
+```
+
+## Build Static Assets
+
+```console
+python -c "import openbb; openbb.build()"
+```
+
+The installation can be verified by inspecting `obb.reference`. Start a Python session and import the OpenBB Platform.
+
+```python
+from openbb import obb
+
+obb.reference["info"]["extensions"]["openbb_core_extension"]
+```
+
+The list should include the newly created and installed extension, `empty@0.0.1`.
+
+## Smoke Test
+
+Run the added commands.
+
+```python
+obb.empty.hello()
+```
+
+```console
+OBBject
+
+id: 0663956f-a01d-751b-8000-b44c72e60664
+results: Hello from the Empty Router extension!
+provider: None
+warnings: None
+chart: None
+extra: {'metadata': {'arguments': {'provider_choices': {}, 'standard_params': {}, '...
+```
+
+## Conclusion
+
+This process created, built, and installed a new OpenBB router extension from scratch.
+
+The next step is to map Provider Interface models, and/or create custom GET/POST request functions to import directly for use in the router.
