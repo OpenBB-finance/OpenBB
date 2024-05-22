@@ -228,6 +228,17 @@ To install all extensions and providers, run: `python dev_install.py -e`
 :::
 </details>
 
+### Devcontainer
+
+The OpenBB Platform can be run in a [Devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) in VS Code. This is a container with a well-defined environment, and it can be used to develop, build, test, and run the OpenBB Platform and its CLI.
+
+1. Open the project in VS Code
+2. Press F1 (Command Palette) and select Remote-Containers: Reopen in Container
+3. Wait for the container to build and the postCreateCommand to run
+4. Open a terminal in VS Code and run the following command: source obb/bin/activate
+
+> You can also click the Dev Containers badge at the top of the README to open the project in a Devcontainer.
+
 ## Post-Installation
 
 With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built. This is done automatically, but can be manually triggered if required. Start a Python session and import openbb:

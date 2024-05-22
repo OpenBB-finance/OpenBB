@@ -112,9 +112,9 @@ class ROUTER_news(Container):
         is_spam : Optional[bool]
             Filter whether it is marked as spam or not. Unsupported for yahoo source. (provider: intrinio)
         business_relevance_greater_than : Optional[float]
-            News stories will have a business relevance score more than this value. Unsupported for yahoo source. (provider: intrinio)
+            News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1. (provider: intrinio)
         business_relevance_less_than : Optional[float]
-            News stories will have a business relevance score less than this value. Unsupported for yahoo source. (provider: intrinio)
+            News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1. (provider: intrinio)
         offset : Optional[int]
             Page offset, used in conjunction with limit. (provider: tiingo)
 
@@ -327,9 +327,9 @@ class ROUTER_news(Container):
         is_spam : Optional[bool]
             Filter whether it is marked as spam or not. Unsupported for yahoo source. (provider: intrinio)
         business_relevance_greater_than : Optional[float]
-            News stories will have a business relevance score more than this value. Unsupported for yahoo source. (provider: intrinio)
+            News stories will have a business relevance score more than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1. (provider: intrinio)
         business_relevance_less_than : Optional[float]
-            News stories will have a business relevance score less than this value. Unsupported for yahoo source. (provider: intrinio)
+            News stories will have a business relevance score less than this value. Unsupported for yahoo source. Value is a decimal between 0 and 1. (provider: intrinio)
         offset : Optional[int]
             Page offset, used in conjunction with limit. (provider: tiingo)
 

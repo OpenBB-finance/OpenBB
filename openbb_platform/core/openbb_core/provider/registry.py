@@ -41,7 +41,7 @@ class RegistryLoader:
         """Load providers from entry points."""
         registry = Registry()
 
-        for name, entry in ExtensionLoader().provider_objects.items():
+        for name, entry in ExtensionLoader().provider_objects.items():  # type: ignore[attr-defined]
             try:
                 registry.include_provider(provider=entry)
             except Exception as e:

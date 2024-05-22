@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build_tsc": "tsc && vite build",
-    "deploy": "npm run build && mv dist/index.html ../../cli/openbb_cli/assets/interactive/table.html",
+    "deploy": "npm run build && mv dist/index.html ../../openbb_platform/obbject_extensions/charting/openbb_charting/core/table.html",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -30,7 +30,6 @@
     "react-plotly.js": "^2.6.0",
     "react-table": "^7.8.0",
     "react-virtual": "^2.10.4",
-    "xlsx": "^0.18.5",
     "xss": "^1.0.14"
   },
   "devDependencies": {

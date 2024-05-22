@@ -79,7 +79,7 @@ class ParametersBuilder:
     def merge_args_and_kwargs(
         cls,
         func: Callable,
-        args: Tuple[Any],
+        args: Tuple[Any, ...],
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Merge args and kwargs into a single dict."""
@@ -134,7 +134,7 @@ class ParametersBuilder:
 
         def _has_provider(kwargs: Dict[str, Any]) -> bool:
             """Check if the kwargs already have a provider."""
-            provider_choices = kwargs.get("provider_choices", None)
+            provider_choices = kwargs.get("provider_choices")
 
             if isinstance(provider_choices, dict):  # when in python
                 return provider_choices.get("provider", None) is not None
@@ -156,7 +156,7 @@ class ParametersBuilder:
 
             Either pick it from the user defaults or from the command coverage.
             """
-            cmd_cov_given_route = command_coverage.get(route, None)
+            cmd_cov_given_route = command_coverage.get(route)
             command_cov_provider = (
                 cmd_cov_given_route[0] if cmd_cov_given_route else None
             )
@@ -229,7 +229,8 @@ class ParametersBuilder:
         }
         # We allow extra fields to return with model with 'cc: CommandContext'
         config = ConfigDict(extra="allow", arbitrary_types_allowed=True)
-        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore  # pylint: disable=C0103
+        # pylint: disable=C0103
+        ValidationModel = create_model(func.__name__, __config__=config, **fields)  # type: ignore
         # Validate and coerce
         model = ValidationModel(**kwargs)
         ParametersBuilder._warn_kwargs(
@@ -292,9 +293,7 @@ class StaticCommandRunner:
     ) -> OBBject:
         """Run a command and return the output."""
         obbject = await maybe_coroutine(func, **kwargs)
-        obbject.provider = getattr(
-            kwargs.get("provider_choices", None), "provider", None
-        )
+        obbject.provider = getattr(kwargs.get("provider_choices"), "provider", None)
         return obbject
 
     @classmethod
@@ -331,7 +330,7 @@ class StaticCommandRunner:
 
             if chart_params:
                 kwargs.update(chart_params)
-            obbject.charting.show(render=False, **kwargs)
+            obbject.charting.show(render=False, **kwargs)  # type: ignore[attr-defined]
         except Exception as e:  # pylint: disable=broad-exception-caught
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e
@@ -386,9 +385,6 @@ class StaticCommandRunner:
                 obbject._standard_params = kwargs.get("standard_params", None)
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
-
-            except Exception as e:
-                raise OpenBBError(e) from e
             finally:
                 ls = LoggingService(system_settings, user_settings)
                 ls.log(

@@ -4,6 +4,7 @@ import argparse
 import difflib
 import os
 import re
+import shlex
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from pathlib import Path
@@ -240,7 +241,7 @@ class BaseController(metaclass=ABCMeta):
         else:
             try:
                 (known_args, other_args) = self.parser.parse_known_args(
-                    an_input.split()
+                    shlex.split(an_input)
                 )
             except Exception as exc:
                 raise SystemExit from exc
@@ -744,11 +745,11 @@ class BaseController(metaclass=ABCMeta):
                 choices_export = ["csv", "json", "xlsx"]
                 help_export = "Export raw data into csv, json, xlsx"
             elif export_allowed == "figures_only":
-                choices_export = ["png", "jpg", "pdf", "svg"]
-                help_export = "Export figure into png, jpg, pdf, svg "
+                choices_export = ["png", "jpg", "svg"]
+                help_export = "Export figure into png, jpg, svg "
             else:
-                choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
-                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
+                choices_export = ["csv", "json", "xlsx", "png", "jpg", "svg"]
+                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, svg "
 
             parser.add_argument(
                 "--export",
@@ -811,7 +812,7 @@ class BaseController(metaclass=ABCMeta):
                 "raw_data_and_figures",
             ]:
                 ns_parser.is_image = any(
-                    ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]
+                    ext in ns_parser.export for ext in ["png", "svg", "jpg"]
                 )
 
         except SystemExit:

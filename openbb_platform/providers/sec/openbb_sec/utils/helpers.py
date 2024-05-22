@@ -38,7 +38,7 @@ async def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     >>> tickers = get_all_companies()
     """
     url = "https://www.sec.gov/files/company_tickers.json"
-
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_companies"
         async with CachedSession(
@@ -65,6 +65,7 @@ async def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
         """Response callback for CIK lookup data."""
         return await response.text(encoding="latin-1")
 
+    response: Union[dict, List[dict], str] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_ciks"
         async with CachedSession(
@@ -97,6 +98,7 @@ async def get_mf_and_etf_map(use_cache: bool = True) -> pd.DataFrame:
     symbols = pd.DataFrame()
 
     url = "https://www.sec.gov/files/company_tickers_mf.json"
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_mf_etf_map"
         async with CachedSession(
@@ -189,6 +191,7 @@ async def download_zip_file(
         """Response callback for ZIP file downloads."""
         return await response.read()
 
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_ftd"
         async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
@@ -227,15 +230,12 @@ async def download_zip_file(
                 "DESCRIPTION": "description",
             }
         )
-        if symbol is not None:
+        if symbol:
             results = results[results["symbol"] == symbol]
         results["date"] = pd.to_datetime(results["date"], format="%Y%m%d").dt.date
+        # Replace invalid decimal values with None
         results["price"] = results["price"].mask(
-            results["price"].str.contains(  # pylint: disable=C0121
-                r"^\d+(?:\.\d+)?$", regex=True
-            )
-            == False,  # noqa
-            None,
+            ~results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True), None
         )
         results["price"] = results["price"].astype(float)
 
@@ -315,7 +315,7 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
         raise ValueError("Fund not found for, the symbol: " + symbol)
 
     url = f"https://efts.sec.gov/LATEST/search-index?q={series_id}&dateRange=all&forms=NPORT-P"
-
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
         async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:

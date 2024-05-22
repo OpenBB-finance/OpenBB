@@ -18,6 +18,9 @@ from openbb_intrinio.models.etf_price_performance import (
 )
 from openbb_intrinio.models.etf_search import IntrinioEtfSearchFetcher
 from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
+from openbb_intrinio.models.forward_ebitda_estimates import (
+    IntrinioForwardEbitdaEstimatesFetcher,
+)
 from openbb_intrinio.models.forward_eps_estimates import (
     IntrinioForwardEpsEstimatesFetcher,
 )
@@ -79,6 +82,7 @@ historical financial market data to businesses and developers through an API."""
         "EtfPricePerformance": IntrinioEtfPricePerformanceFetcher,
         "EtfSearch": IntrinioEtfSearchFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
+        "ForwardEbitdaEstimates": IntrinioForwardEbitdaEstimatesFetcher,
         "ForwardEpsEstimates": IntrinioForwardEpsEstimatesFetcher,
         "ForwardPeEstimates": IntrinioForwardPeEstimatesFetcher,
         "ForwardSalesEstimates": IntrinioForwardSalesEstimatesFetcher,

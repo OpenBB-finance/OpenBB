@@ -1,0 +1,71 @@
+name: Branch Name Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+    types: [opened, synchronize, edited]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Get branch names.
+      id: branch-names
+      uses: tj-actions/branch-names@v8
+
+    - name: Show Output result for source-branch and target-branch
+      run: |
+        echo "source-branch=${{ steps.branch-names.outputs.head_ref_branch }}"
+        echo "target-branch=${{ steps.branch-names.outputs.base_ref_branch }}"
+
+    - name: Check branch name for develop PRs
+      id: check-develop-branch
+      if: ${{ steps.branch-names.outputs.base_ref_branch == 'develop' }}
+      run: |
+        if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(feature/.*|docs/.*|bugfix/.*|hotfix/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
+          echo "reason=Invalid branch name for a Pull Request to be merged to `${{ steps.branch-names.outputs.base_ref_branch }}` branch. Branches must follow the GitFlow naming convention." >> $GITHUB_OUTPUT
+        fi
+
+    - name: Check branch name for main PRs
+      id: check-main-branch
+      if: ${{ steps.branch-names.outputs.base_ref_branch == 'main' }}
+      run: |
+        if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(hotfix/.*|docs/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
+          echo "reason=Invalid branch name for a Pull Request to be merged to `${{ steps.branch-names.outputs.base_ref_branch }}` branch. Pull requests must be from a hotfix or release branch." >> $GITHUB_OUTPUT
+        fi
+
+    - name: Check for existing comment
+      if: ${{ steps.check-develop-branch.outputs.reason || steps.check-main-branch.outputs.reason }}
+      id: check-comment
+      run: |
+        commentExists=$(gh pr view ${{ github.event.pull_request.number }} --json comments -q '.comments[].body' | grep -F "Invalid branch name" || echo '')
+        if [[ -n "$commentExists" ]]; then
+          echo "commentExists=true" >> $GITHUB_OUTPUT
+        else
+          echo "commentExists=false" >> $GITHUB_OUTPUT
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Comment on PR for invalid branch name
+      if: steps.check-comment.outputs.commentExists == 'false'
+      run: |
+        reason="${{ steps.check-develop-branch.outputs.reason }}${{ steps.check-main-branch.outputs.reason }}"
+        gh pr comment ${{ github.event.pull_request.number }} --body "$reason Please review our [branch naming guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/CONTRIBUTING.md#branch-naming-conventions)."
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Fail if branch name is invalid
+      if: ${{ steps.check-develop-branch.outputs.reason || steps.check-main-branch.outputs.reason }}
+      run: |
+        echo "Invalid branch name. Please review our branch naming guidelines."
+        exit 1

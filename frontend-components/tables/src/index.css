@@ -57,11 +57,10 @@ body {
   font-family: "Fira Code", monospace;
 }
 
-/*table tbody {
-  display: block;
-  max-height: 300px;
-  overflow-y: scroll;
-}*/
+table {
+  width: 100%;
+  table-layout: auto;
+}
 
 table thead,
 table tfoot,
@@ -69,16 +68,22 @@ table tbody tr {
   display: table;
   width: 100%;
   table-layout: fixed;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+th, td {
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .resizer {
   cursor: col-resize;
   user-select: none;
   touch-action: none;
-}
-
-tr {
-  width: fit-content;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .resizer.isResizing {
@@ -161,7 +166,6 @@ table thead th {
   animation: spin 1.5s linear infinite;
   opacity: 1;
 }
-
 
 @keyframes spin {
   0% {

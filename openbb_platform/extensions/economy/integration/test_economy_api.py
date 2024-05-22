@@ -251,6 +251,14 @@ def test_economy_gdp_real(params, headers):
                 "provider": "ecb",
             }
         ),
+        (
+            {
+                "country": "united_states",
+                "start_date": None,
+                "end_date": None,
+                "provider": "fred",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

@@ -88,7 +88,7 @@ class IntrinioEquityQuoteData(EquityQuoteData):
     def validate_listing_venue(cls, v):
         """Validate listing venue and remove empty strings."""
         if v:
-            return VENUES[v] if v in VENUES else v
+            return VENUES.get(v, v)
         return None
 
 

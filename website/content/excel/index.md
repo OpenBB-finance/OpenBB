@@ -29,13 +29,10 @@ Data standardization is at the core of OpenBB Add-in for Excel, offering you a c
         <button
             className="bg-grey-200 hover:bg-grey-400 dark:bg-[#303038] dark:hover:bg-grey-600 text-grey-900 dark:text-grey-200 text-sm font-medium py-2 px-4 rounded"
         >
-            Join Add-In for Excel waitlist
+            Start Terminal Pro free-trial
         </button>
     </a>
 </div>
-
-
-Data standardization is at the core of OpenBB for Excel, offering you a consistent and reliable dataset from a diverse range of asset classes, from equity, fixed income, and cryptocurrency to macroeconomics. This seamless fetch of data means you can readily compare across providers and update it instantly, ensuring accuracy and saving you valuable time.
 
 ---
 

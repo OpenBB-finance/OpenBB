@@ -1,7 +1,7 @@
 ---
 title: Advanced Routines
 sidebar_position: 5
-description: This page provides guidance on creating and running advanced workflows in the OpenBB CLI by
+description: This page provides guidance on creating and running advanced workflows in the OpenBB Platform CLI by
   introducing variables and arguments for routines. It explains input variables,
   relative time keyword variables, internal script variables and creating loops for
   batch execution.
@@ -21,7 +21,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Advanced Routines - Routines | OpenBB CLI Docs" />
+<HeadTitle title="Advanced Routines - Routines | OpenBB Platform CLI Docs" />
 
 ## Input Variables
 

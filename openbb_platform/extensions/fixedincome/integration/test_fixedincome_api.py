@@ -623,3 +623,46 @@ def test_fixedincome_corporate_bond_prices(params, headers):
     result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"date": "2023-05-01,2024-05-01", "provider": "fmp"}),
+        (
+            {
+                "date": "2023-05-01",
+                "country": "united_kingdom",
+                "provider": "econdb",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "ecb",
+                "yield_curve_type": "par_yield",
+                "date": None,
+                "rating": "aaa",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "yield_curve_type": "nominal",
+                "date": "2023-05-01,2024-05-01",
+            }
+        ),
+        ({"provider": "federal_reserve", "date": "2023-05-01,2024-05-01"}),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_yield_curve(params, headers):
+    """Test the treasury rates endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/government/yield_curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

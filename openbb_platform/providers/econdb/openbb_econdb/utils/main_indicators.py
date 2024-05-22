@@ -1,7 +1,7 @@
 """Main Indicators"""
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Literal
+from typing import Dict, List, Literal, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -72,6 +72,7 @@ main_indicators_order = [
 
 async def fetch_data(url, use_cache: bool = True):
     """Fetch the data with or without the cached session object."""
+    response: Union[dict, List[dict]] = {}
     if use_cache is True:
         cache_dir = f"{get_user_cache_directory()}/http/econdb_main_indicators"
         async with CachedSession(

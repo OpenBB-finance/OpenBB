@@ -39,7 +39,7 @@ class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):
         description="Lookup filings by Central Index Key (CIK) instead of by symbol.",
         default=None,
     )
-    form_type: Union[None, FORM_TYPES] = Field(
+    form_type: Optional[FORM_TYPES] = Field(
         description="Type of the SEC filing form.",
         default=None,
     )
@@ -171,7 +171,7 @@ class SecCompanyFilingsFetcher(
             query.cik = cik_ + str(query.cik)  # type: ignore
 
         url = f"https://data.sec.gov/submissions/CIK{query.cik}.json"
-
+        data: Union[dict, List[dict]] = []
         if query.use_cache is True:
             cache_dir = f"{get_user_cache_directory()}/http/sec_company_filings"
             async with CachedSession(
@@ -206,7 +206,7 @@ class SecCompanyFilingsFetcher(
                     new_data = DataFrame.from_records(result)
                     results.extend(new_data.to_dict("records"))
 
-            urls = []
+            urls: List = []
             new_urls = (
                 DataFrame(data["filings"].get("files"))  # type: ignore
                 if "filings" in data
@@ -276,7 +276,7 @@ class SecCompanyFilingsFetcher(
             base_url + filings["accessionNumber"] + "-index.htm"
         )
         if query.form_type:
-            filings = filings[filings["form"] == query.form_type]
+            filings = filings[filings["form"] == query.form_type.replace("_", " ")]
 
         if query.limit:
             filings = filings.head(query.limit) if query.limit != 0 else filings

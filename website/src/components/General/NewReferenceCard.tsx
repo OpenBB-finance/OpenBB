@@ -36,12 +36,10 @@ export default function NewReferenceCard({
           "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]":
             cleanedPath.startsWith("/bot"),
           "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]":
-            cleanedPath.startsWith("/sdk") ||
+            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
             cleanedPath.startsWith("/platform"),
           "hover:bg-[#16A34A] border-[#16A34A] dark:hover:bg-[#14532D] dark:border-[#14532D]":
             cleanedPath.startsWith("/excel"),
-          "hover:bg-[#D3D3D3] border-[#D3D3D3] dark:hover:bg-[#5c5c5c] dark:border-[#5c5c5c]":
-            cleanedPath.startsWith("/cli"),
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/pro") &&

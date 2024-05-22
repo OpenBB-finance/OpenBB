@@ -72,7 +72,7 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     country: Optional[str] = Field(
         default=None,
         description="Country of the event.",
-        json_schema_extra={"choices": COUNTRIES},  # type: ignore[dict-item]
+        json_schema_extra={"choices": sorted(COUNTRIES)},  # type: ignore[dict-item]
     )
     importance: Optional[IMPORTANCE] = Field(
         default=None,
@@ -175,7 +175,7 @@ class TEEconomicCalendarData(EconomicCalendarData):
     def importance_to_number(cls, v):
         """Convert importance to number."""
         value_to_string = {1: "Low", 2: "Medium", 3: "High"}
-        return value_to_string.get(v, None) if v else None
+        return value_to_string.get(v) if v else None
 
     @field_validator("date", "last_updated", mode="before", check_fields=False)
     @classmethod
