@@ -1,5 +1,6 @@
 """Test the container.py file."""
 
+from re import escape
 from typing import Optional
 from unittest.mock import patch
 
@@ -86,7 +87,10 @@ def test_container__check_credentials(container):
             "test.not_available.command",
             ("provider_1", "provider_2"),
             OpenBBError,
-            "Fallback failed, please specify the provider or update credentials. Tried: x, y, z.",
+            escape(
+                "Provider fallback failed, please specify the provider or update credentials."
+                "\n[Providers]\n  * 'x' -> not found\n  * 'y' -> not found\n  * 'z' -> not found"
+            ),
         ),
     ],
 )
