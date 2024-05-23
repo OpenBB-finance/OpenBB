@@ -256,7 +256,7 @@ class ROUTER_derivatives_options(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual(provider='intrinio')
+        >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         >>> # Use the 'symbol' parameter to get the most recent activity for a specific symbol.
         >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         """  # noqa: E501

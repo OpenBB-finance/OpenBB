@@ -237,7 +237,9 @@ class ROUTER_fixedincome_government(Container):
         date : Union[str, None, List[Optional[str]]]
             A specific date to get data for. By default is the current data. Multiple comma separated items allowed for provider(s): econdb, federal_reserve, fmp, fred.
         provider : Optional[Literal['econdb', 'federal_reserve', 'fmp', 'fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: econdb, federal_reserve, fmp, fred.
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'econdb' if there is
+            no default.
         country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']
             The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. (provider: econdb)
         use_cache : bool
