@@ -22,6 +22,10 @@ def vcr_config():
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
             ("filter[selected_date]", "MOCK_DATE"),
+            ("relative_periods", "MOCK_PERIODS"),
+            ("estimates_data_items", "MOCK_ITEMS"),
+            ("period_type", "MOCK_PERIOD"),
+            ("ticker_ids", "MOCK_TICKER_IDS"),
         ],
     }
 

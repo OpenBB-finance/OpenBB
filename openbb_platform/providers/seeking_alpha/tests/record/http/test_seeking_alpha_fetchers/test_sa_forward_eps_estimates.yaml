@@ -21,16 +21,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5WU0W7aMBSGX8XK1SZBiO3ESVBViRKYkDo2CVqBpl0E4lJLJmF2UhFVvHvtQkm8
-        JNV26eM4/vSd4//VkuV+k3FpDX+9WiyxhhB6Ts/KywO1hpdNq2fJbSZUwQ8CF2Mb96xCcLU/OJ8e
-        zB+jkfoqjff61M3mVhduBptbVdxmaU7TXNXnj7NoNgLjTBwyEecsS/WfebFTe+lLElun3pnBR2FI
-        UCcF9AMH22HQQrGuKBSCXlXXrxnlyff4CGp84MdBc4BZus32FCxyxUV3JZgspwZbWbER18OfsBHf
-        g7aGbxoajpuSVO2/PQ23lSpCfOIrEx0NgwRBz8a+18Jzb7jSq8rVNxGnLKeL51hQCdAR3GfpzhAX
-        xYw3PfGrJ4IIwmpQusCwh13libSALQwwvarAliJOBIA28lYGzh2NBWhnklcmD7rqvi4iFBJsE6eN
-        yABqEyWvohbPmcj/wVRtoLBPVH86sXDg2CFu6+CDwaVXlaiICXrUo32WomdePTE9a+Cu4BygFbh0
-        9+9ZL0w0txMtxKFru21gkQGmV5+CXcICvDcRdoIlNTAP4u6pD7Abts3WWmWC8QirQiOlvtRS4it4
-        z44PYT8LFWCSmiFRqgSrP0yMHBR0t5XYyCEQea1RuupHk+nDfLzsn/9S2bxArRqZMeJcHgRTjzRi
-        L1RI9sRoAiZ/CpaXYFqkCeiDMY+lBCOgU6gWu8d+Qp+KdJt/3Hb6fXoDDIUZXRgGAAA=
+        H4sIAAAAAAAAA5WUUW/aMBSF/4qVp02CQOzYSVBVKSUwIXVsErQCTXsIxKWWTMLspCKq+O+zCyVx
+        k1Tb47124k/nnnteLVnuNxmX1ujXq8USa+Q4eNiz8vJArdHl0OpZcpsJ1fACglFgo55VCK7OB+ev
+        B/PHKFS30nivv7rZ3OrGzWBzq5rbLM1pmqv+/HEWzUIwzsQhE3HOslT/mRc7dZa+JLF16p0ZPBgE
+        BHZSOJ7vERs6uAVjXWEoBl1V768Z5cn3+AhqgODHQYOAWbrN9hQscgVGdyWYLKcGXFnBERejT+CI
+        EslWOrXAhaNxUybV+2+lRttKLEI84vndYhHoD22C2njuDbF0VYn1TcQpy+niORZUAngE91m6M5SL
+        YsabQvGrUAQSiJRVOrzkIOz7to9Ji1ALA0xXFdhSxIkAjg3xysC5o7EA7UzyyoQdV73XSTR0sA2R
+        00JkALUJJa9CLZ4zkf+DUjVHIU/7pQsLugjZrqtm3Ni6B4NLV5VQERP0qL19FkWbXi2Z9hq4KzgH
+        cAUu0/1o9sJEczvRAk0W4KCFLDLIdPUp2SUvwNsUnU6ypEaGHdRtex/5apSB95FsrVLB2MKq0Qiq
+        L7Wc+Are0uNdsZ+FyjBJzZgoVYjVNxPBIfS756oiDHpDX99ozDVc9aPJ9GE+XvbPf6nUvECtGqER
+        ci4PgqktjdgLFZI9MZqAyZ+C5SWYFmkC+mDMYylBCHQM1ZL32E/oU5Fu8/fXTr9PfwHF9HT0GwYA
+        AA==
     headers:
       Accept-Ranges:
       - bytes
@@ -45,21 +46,21 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '563'
+      - '571'
       Content-Security-Policy:
       - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
         https://seekingalpha.com/report/csp'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 May 2024 16:42:05 GMT
+      - Thu, 23 May 2024 18:10:32 GMT
       Etag:
-      - W/"6ebd3b8b31f60ee2d65508ba12e0ddb5"
+      - W/"1a4846bf634ee5326277e66d6bb54460"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Set-Cookie:
-      - machine_cookie=9360564485638; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
-      - machine_cookie_ts=1716482525; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
+      - machine_cookie=1388282386286; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
+      - machine_cookie_ts=1716487832; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains; preload
       Vary:
@@ -77,13 +78,13 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - bjGXyEWvMWky3Xmi
+      - Gkj-RwREjk1ZTUrZ
       X-Runtime:
-      - '0.056442'
+      - '0.062366'
       X-Served-By:
-      - cache-bfi-krnt7300100-BFI
+      - cache-bfi-krnt7300078-BFI
       X-Timer:
-      - S1716482525.063274,VS0,VE129
+      - S1716487832.960725,VS0,VE132
       X-XSS-Protection:
       - '0'
       alt-svc:
@@ -109,7 +110,7 @@ interactions:
       Sec-Fetch-Site:
       - same-origin
     method: GET
-    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=eps_normalized_actual%2Ceps_normalized_consensus_low%2Ceps_normalized_consensus_mean%2Ceps_normalized_consensus_high%2Ceps_normalized_num_of_estimates%2Ceps_gaap_actual%2Ceps_gaap_consensus_low%2Ceps_gaap_consensus_mean%2Ceps_gaap_consensus_high%2C&period_type=quarterly&relative_periods=-4%2C-3%2C-2%2C-1%2C0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%2C11%2C12&ticker_ids=1150
+    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=MOCK_ITEMS&period_type=MOCK_PERIOD&relative_periods=MOCK_PERIODS&ticker_ids=MOCK_TICKER_IDS
   response:
     body:
       string: !!binary |
@@ -180,20 +181,20 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 May 2024 16:42:05 GMT
+      - Thu, 23 May 2024 18:10:32 GMT
       Etag:
       - W/"c526b90b1ad2bad27d7a89410724e0b4"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Set-Cookie:
-      - machine_cookie=4645994647547; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
-      - machine_cookie_ts=1716482525; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
+      - machine_cookie=1430579407975; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
+      - machine_cookie_ts=1716487832; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains; preload
       Vary:
       - User-Agent, Accept-Encoding
       X-Cache:
-      - MISS
+      - HIT
       X-Cache-Hits:
       - '0'
       X-Content-Type-Options:
@@ -209,9 +210,9 @@ interactions:
       X-Runtime:
       - '0.414440'
       X-Served-By:
-      - cache-bfi-krnt7300087-BFI
+      - cache-bfi-krnt7300098-BFI
       X-Timer:
-      - S1716482525.298126,VS0,VE496
+      - S1716487832.180053,VS0,VE473
       X-XSS-Protection:
       - '0'
       alt-svc:

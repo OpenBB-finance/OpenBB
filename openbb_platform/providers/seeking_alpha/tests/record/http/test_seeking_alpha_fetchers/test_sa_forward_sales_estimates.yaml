@@ -21,16 +21,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5WU0W7aMBSGX8XK1SZBiO3ESVBViRKYkDo2CVqBpl0E4lJLJmF2UhFVvHvtQkm8
-        JNV26eM4/vSd4//VkuV+k3FpDX+9WiyxhhB6Ts/KywO1hpdNq2fJbSZUwQ8CF2Mb96xCcLU/OJ8e
-        zB+jkfoqjff61M3mVhduBptbVdxmaU7TXNXnj7NoNgLjTBwyEecsS/WfebFTe+lLElun3pnBR2FI
-        UCcF9AMH22HQQrGuKBSCXlXXrxnlyff4CGp84MdBc4BZus32FCxyxUV3JZgspwZbWbER18OfsBHf
-        g7aGbxoajpuSVO2/PQ23lSpCfOIrEx0NgwRBz8a+18Jzb7jSq8rVNxGnLKeL51hQCdAR3GfpzhAX
-        xYw3PfGrJ4IIwmpQusCwh13libSALQwwvarAliJOBIA28lYGzh2NBWhnklcmD7rqvi4iFBJsE6eN
-        yABqEyWvohbPmcj/wVRtoLBPVH86sXDg2CFu6+CDwaVXlaiICXrUo32WomdePTE9a+Cu4BygFbh0
-        9+9ZL0w0txMtxKFru21gkQGmV5+CXcICvDcRdoIlNTAP4u6pD7Abts3WWmWC8QirQiOlvtRS4it4
-        z44PYT8LFWCSmiFRqgSrP0yMHBR0t5XYyCEQea1RuupHk+nDfLzsn/9S2bxArRqZMeJcHgRTjzRi
-        L1RI9sRoAiZ/CpaXYFqkCeiDMY+lBCOgU6gWu8d+Qp+KdJt/3Hb6fXoDDIUZXRgGAAA=
+        H4sIAAAAAAAAA5WUUW/aMBSF/4qVp02CQOzYSVBVKSUwIXVsErQCTXsIxKWWTMLspCKq+O+zCyVx
+        k1Tb47124k/nnnteLVnuNxmX1ujXq8USa+Q4eNiz8vJArdHl0OpZcpsJ1fACglFgo55VCK7OB+ev
+        B/PHKFS30nivv7rZ3OrGzWBzq5rbLM1pmqv+/HEWzUIwzsQhE3HOslT/mRc7dZa+JLF16p0ZPBgE
+        BHZSOJ7vERs6uAVjXWEoBl1V768Z5cn3+AhqgODHQYOAWbrN9hQscgVGdyWYLKcGXFnBERejT+CI
+        EslWOrXAhaNxUybV+2+lRttKLEI84vndYhHoD22C2njuDbF0VYn1TcQpy+niORZUAngE91m6M5SL
+        YsabQvGrUAQSiJRVOrzkIOz7to9Ji1ALA0xXFdhSxIkAjg3xysC5o7EA7UzyyoQdV73XSTR0sA2R
+        00JkALUJJa9CLZ4zkf+DUjVHIU/7pQsLugjZrqtm3Ni6B4NLV5VQERP0qL19FkWbXi2Z9hq4KzgH
+        cAUu0/1o9sJEczvRAk0W4KCFLDLIdPUp2SUvwNsUnU6ypEaGHdRtex/5apSB95FsrVLB2MKq0Qiq
+        L7Wc+Are0uNdsZ+FyjBJzZgoVYjVNxPBIfS756oiDHpDX99ozDVc9aPJ9GE+XvbPf6nUvECtGqER
+        ci4PgqktjdgLFZI9MZqAyZ+C5SWYFmkC+mDMYylBCHQM1ZL32E/oU5Fu8/fXTr9PfwHF9HT0GwYA
+        AA==
     headers:
       Accept-Ranges:
       - bytes
@@ -45,21 +46,21 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '563'
+      - '571'
       Content-Security-Policy:
       - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
         https://seekingalpha.com/report/csp'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 May 2024 16:42:05 GMT
+      - Thu, 23 May 2024 18:10:32 GMT
       Etag:
-      - W/"6ebd3b8b31f60ee2d65508ba12e0ddb5"
+      - W/"1a4846bf634ee5326277e66d6bb54460"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Set-Cookie:
-      - machine_cookie=7180006338193; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
-      - machine_cookie_ts=1716482525; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
+      - machine_cookie=5349009622943; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
+      - machine_cookie_ts=1716487832; expires=Wed, 23 May 2029 18:10:32 GMT; path=/;
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains; preload
       Vary:
@@ -77,13 +78,13 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - bjGXyEWvMWky3Xmi
+      - Gkj-RwREjk1ZTUrZ
       X-Runtime:
-      - '0.056442'
+      - '0.062366'
       X-Served-By:
-      - cache-bfi-krnt7300049-BFI
+      - cache-bfi-krnt7300038-BFI
       X-Timer:
-      - S1716482526.954398,VS0,VE2
+      - S1716487833.753393,VS0,VE2
       X-XSS-Protection:
       - '0'
       alt-svc:
@@ -109,39 +110,41 @@ interactions:
       Sec-Fetch-Site:
       - same-origin
     method: GET
-    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=revenue_actual%2Crevenue_consensus_low%2Crevenue_consensus_mean%2Crevenue_consensus_high%2Crevenue_num_of_estimates&period_type=quarterly&relative_periods=-3%2C-2%2C-1%2C0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%2C11&ticker_ids=1150
+    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=MOCK_ITEMS&period_type=MOCK_PERIOD&relative_periods=MOCK_PERIODS&ticker_ids=MOCK_TICKER_IDS
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA92c607jSBBG38W/yairb748R/6tVsgCsxMphNlcWCGUd99yLhC2vmbc7WYNZJBm
-        yJhJfNR1qutzPM/FuntcbBYPq03RPO+vim6zXdy3267/tiByqv+dj+lWu+56tbu/fri7fnNMVTR/
-        PBfd3V13s108drf8s0VTaKXtTLmZNnNVNUo3RD+UUjNlG6WKq4IPaxfb7v6xXe764/2P/tlf3Xrx
-        cNu/4vFP26df3YK/L/7etettt14+8UF3i81Nuzw9UzR0fuapa9dFwy9cXhV8QLe6bdeXR52feznO
-        n1+QD319257f48youVL8Tvnrzdtubx/b1c3pJFe75XK///OqqCdGoAch4KOGIyhnhmIQEK+TSZeB
-        GcSAjxrMgFQsA5qYgR3EgI8ayKCcKZIM3LGCcSnYLAh0lVEHXOaDdOCgDly8DlweBulKlD5ADJAP
-        ggxifeCnZiB9gBggH4QYRPugnJqB9AFigHyAGXBrjPXBb9oC9xjdqLIx+t3dgeXNQ7btAZ/bIB8w
-        l+Mu5M32gHc1A7cHr3sgPdeKNyZvNxOHnUOejqHLZDxSFQgPUkUQT6wq9NRlIlWBGCBVhBhEq8JM
-        zUCqAjFAqsAMuG3GqmIWhGBmqpppPSdqDH/xan9nkuj/OtEVshguTvhllEDFwIsDuILf98Bi6F1x
-        PEtzcAVL8XLwOLhiFiwUMyOaUT3nH9PMxx75nPZp/520LP/DiXxkoSA+qFBCfIYWypEPn6WmOZ/i
-        hUsPZ3nk855M9YGPaixbuH6fD7eiRD6yiBAfVESYD/eagUV06jU6zIdH+/MUf8PDfrfa7DbXy4d/
-        +mE7zwivfWktVyY/kgl+m2FeV3XtRsKQOkLJBtJRMNkYqKOXZCPTWG9ImSOM9KUh5YNoIPmEaAyV
-        zyuN9wwzPOsyRnsauTakahANpBpMY7pRv7bV2KUhrYHmHD5K5B54zpls5uc6OT+SFSqtgWAgawRh
-        xFojz/BvtCY9skykNBAMJI0QjGhpZEoBnKGxzVU6A8FAzsAwJosDtKlNPXJlSGeggQc5gwGBvf7n
-        zAU+YhOCOCGdBDnF6iQ490RdYdK1s7YkXVHOPQiCgXQSghGtk+CQHAXDKOssceOt0mFInSAYSCcY
-        xnSRASl30kk6Ddl2L878u2QHpJ0rR4pXtmQECtUQHpI5/Bh4oe5/DBGorv3YXa2sLwQK1RcG9eFp
-        ws/FXz/zxQm2dlSypFSZXpSyyaMpCTV5PCVN9tkAWys3di8sDYVgoE4ehBHbyTPFCY7IjKUhNYRo
-        IA2FaAzVUO44wemyPKUryUOjdA2igVyDaUwWJ1hr3cm8yTCkNdCchKyB56TJ4gRbVqNjN2kNBANZ
-        Iwgj1hp54gRnzXmXl7wypDQQDCSNEIxoaeSJE1xNemyZSGcgGMgZGMZ0cYKvyrF5rHQGGoaQMxjQ
-        F4kT+qEx/zUNxAnpJMgpVid54gTDg9ApuM6oEwQD6SQEI1oneeIEq/nXyLlQ6gTBQDrBMCaME/q9
-        6VEoyUtDtt2LM/82cUJpq7E5rmzJCBSqITwlf8o4QfOFodMeP3lFyfpCoFB9YVAfHifcd+0qY5yg
-        Ku2N7y8cJCOUTR5NSajJ4ylpujhBc++qqHdUMgxpKAQDdfIgjNhOnilOsLp0dek1+XQaUkOIBtJQ
-        iEZ0K6c8n07gMcmZihu6TqchXYNoINdgGpPFCcY68p6sHbE0pDXQnISsgeekyeIE401laq2rETCk
-        NRAMZI0gjFhr5IkTGIX2nE5rl14mUhoIBpJGCEa0NPLECZZvuvNVReWI5iqdgWAgZ2AY08UJ1tWW
-        NPGAmNxcpTPQMIScwYC+SJygK+c9t14/gpPUCeKEdBLkFKuTTHEC8aJRpbcmfdFInSAYSCchGNE6
-        yRMnGOvJc5dRIxqN1AmCgXSCYUwYJxCPLnVp+AJgsk9knVyc+beJEzxRv1vTI7qQrCEECtUQPwfE
-        +znjBOVsyTt8/gBQ8oqS9YVAofrCoD4oTmhvtrt22ccIv7kTEd6jJ/+fAr5q8gE3OSA1TdXcf3cb
-        1vEGJWrs+7dsknH8yY3DI3mNfWlrne5Uer2TK3A/FlXnTzmng/rS1sK3dIHS0y93kSSvqE9trf1+
-        /y+ciJmIj0UAAA==
+        H4sIAAAAAAAAA+2ca0/jOBSG/0s+05HvufyOflutUAVhp1IpM72wQqj/fU96gbLndWs7hrRoOkgz
+        FHfaPHIen/Mm5rVYtM/T5fRpviya181N0S5X08fJqu2+LaS0ovubxrTzdXs7Xz/ePj3cfhhTFc1f
+        r0X78NDerabP7T29tmgKJZQZCTtSeiyqRqhGyh9CiJEwjRDFTUHDJtNV+/g8ma278e5H9+yvdjF9
+        uu/ecfev1cuvdkrfF7/Xk8WqXcxeaNDDdHk3me2fKRp5eOalnSyKht64vCloQDu/nyyORx2eexvn
+        Dm9IQ98/tqPPONJiLAR9Uvr68LEn98+T+d3+IOfr2Wyz+fumqAdGoIIQ0KhwBOVIyxgEkubJoNNA
+        BzGgUcEMpIhlIAdmYIIY0KhABuVISM7A7s5gfCpIdZaBazoJnNYB/TSbDqpAHZA2dtb5oANiEKsD
+        cxZBiBFVlZEBqS5IiRYysPEMbB4G6csCdyJigJzoZRDrRDc0A+5ExAA50ccg2onl0Ay4ExED5ETM
+        gMqDWCeeWRppnVWNKButTlZIJqcT6diCfEBcgBOpsgt04nsdqMZKUHH2saDaVk95Vk1VJuuSqwLh
+        Qarw4olVxflVM2jJSNclVwVigFThYxCtCn15qkAMkCowA1o2Y1Ux8tYOettNqbEUjakbedoV2iSf
+        DLydOjrgk+0UTQ7gCvrcEa7YHaXxumLknST0ymrLRzaavsgGJ7rN7seJ9SWXBeKDZOHlEyiLzqW7
+        o9RbPrRoHDenW5eOvCLRIylHsh7TyxTxoQnS8dnX8v/vxg39x4l8uEgQHyQSH59Qkez40FEqOaZD
+        PFprtke543NqsVFbPnR+0SpVn+ZDp18iH6KxCzDeYgjEB0kG86G1OFAy+7VY+flQ/HNIeu4oEGrn
+        y/Xydvb0bxfI5Il5lCuNoZlHj2SC3FBXGvioqq5tTxhcRwgG0pE3/QrU0Vv6lSn60VLoHYz0qcHl
+        g2gg+fhohMrnncYpw4TnoVorJ3vODa4aRAOpBtMYLg6yurL7yZFRG9caDNWm6nuicIeirphGsaQQ
+        d8WDJURkjcMjeWZwhyIYyKFeGLEOzRMVaaWk6ikNrlAEAynUByNaoZkyI6tl31KDGxTBQAbFMAYL
+        j5Sudd1zZnBnoPYYOYMAgc7wMlOkzyjJECekEy+nWJ14u8Coa7KqtsaUUlUyZ0WGYCCd+GBE68Qb
+        GUTB0MJYI2nhrdJhcJ0gGEgnGMZwAZN7W3eTV12uk6MD/y5BkxR2r930WcPLEwQK+QQnBpQhBfrk
+        CxMnqawtey5QvHRBoJBrfKBCXfOF0ZOsa9e3+uceQqCQhzCoT8+gfk7/+ZkvhDK1lSXJXJTpJyW3
+        F+qtUTGEe+vB7joytbB9ewZuKAQDGcoLI9BQuUMoK6XuS4NrCNFAGvLRCNVQ7hDKqrLsG7tw1yAa
+        yDWYxp8Q6vhmxcHuTjLG2P06lLECRN01cijurgcLoUxZ9Y6uuUMRDORQL4xYh+YJoazRh5o3eWZw
+        hSIYSKE+GNEKzRNC2VqqvqcJNyiCgQyKYQwXQrmq7HtNg9ddqIVGziBAVxJCdVFD/uuCiBPSiZdT
+        rE7yhFCa2sL95Y6MOkEwkE58MKJ1kieEMor+9OySuU4QDKQTDGPAEKo0fd3KdXJ04N8mhOo6mp14
+        k08hXp4gUMgnODK4zBCqNFXfqyS8dEGgkGt8oEJd84UhlKL4d98ZJs8o7iEECnkIg/r0EOqxncwz
+        hlCiUk677rJcMkJuL9Rbo2II99bDhVCK1vhKdo5KhsENhWAgQ3lhxFY8me6EMqq0demUdOk0uIYQ
+        DaQhH41QDeUOoaidpNt/qPBR6TS4axAN5BpM408IdREhlDZWOicNlYHJ2uAORd01cijurgcLobTT
+        la6VqnrA4A5FMJBDvTBiHZonhCIUytEVHmXTZwZXKIKBFOqDEa3QPCGUoS3xrqpk2aPU4AZFMJBB
+        MYzhQihjayOVpFghozNQC42cQYCuJIRSlXWOChHXgxPXCeKEdOLlFKuTTCGUpEkjSmd0+qThOkEw
+        kE58MKJ1kieE0sZJR6uM6LHQcJ0gGEgnGMaAIZRVyqpK97gtjJcgRwf+bUIoSQ1vXWq62SDZu9wn
+        CBTyCY4MLjOEclJ2Va3qsVpz1yBQyDU+UKGu+coQSlhTUl9IN2UmzyjuIQQKeQiD+qQQanK3Wk9m
+        Xfh05ncJwF32/Lct0TXJT9iGhxQ+VBF0biM13GLMQZWy7ns70HXbfbfVWDbm9IZzqS3dTbd9JJ+L
+        V233/Z7j9z3Znp3Vsjrs0EkHddV2x5uz+ZlHW5kO+0GTZ9RF232z2fwHprHOUn1PAAA=
     headers:
       Accept-Ranges:
       - bytes
@@ -156,21 +159,21 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '1606'
+      - '1760'
       Content-Security-Policy:
       - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
         https://seekingalpha.com/report/csp'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 23 May 2024 16:42:06 GMT
+      - Thu, 23 May 2024 18:10:33 GMT
       Etag:
-      - W/"f9c669ff0834e44b6f4d5f742d9bd24a"
+      - W/"12cf4f5afb8ec98c9f2d871548d040a7"
       Referrer-Policy:
       - strict-origin-when-cross-origin
       Set-Cookie:
-      - machine_cookie=0877236483480; expires=Wed, 23 May 2029 16:42:06 GMT; path=/;
-      - machine_cookie_ts=1716482526; expires=Wed, 23 May 2029 16:42:06 GMT; path=/;
+      - machine_cookie=7439933647486; expires=Wed, 23 May 2029 18:10:33 GMT; path=/;
+      - machine_cookie_ts=1716487833; expires=Wed, 23 May 2029 18:10:33 GMT; path=/;
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains; preload
       Vary:
@@ -188,13 +191,13 @@ interactions:
       X-Permitted-Cross-Domain-Policies:
       - none
       X-Request-Id:
-      - d4AY7gCje8V6qzwU
+      - qTivZXS0q5ixQj7N
       X-Runtime:
-      - '0.393826'
+      - '0.390214'
       X-Served-By:
-      - cache-bfi-krnt7300063-BFI
+      - cache-bfi-krnt7300067-BFI
       X-Timer:
-      - S1716482526.130500,VS0,VE589
+      - S1716487833.838951,VS0,VE510
       X-XSS-Protection:
       - '0'
       alt-svc:
