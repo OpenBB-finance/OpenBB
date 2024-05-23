@@ -132,9 +132,10 @@ class SAForwardEpsEstimatesFetcher(
             for i in range(0, items - 4):
                 eps_estimates: Dict = {}
                 eps_estimates["symbol"] = ticker
-                period = seek_object["eps_normalized_num_of_estimates"][str(i)][0].get(
-                    "period", {}
-                )
+                num_estimates = seek_object["eps_normalized_num_of_estimates"].get(str(i))
+                if not num_estimates:
+                    continue
+                period = num_estimates[0].get("period", {})
                 if period:
                     period_type = period.get("periodtypeid")
                     eps_estimates["calendar_year"] = period.get("calendaryear")
@@ -150,9 +151,6 @@ class SAForwardEpsEstimatesFetcher(
                         if period_type == "quarterly"
                         else "FY"
                     )
-                num_estimates = seek_object["revenue_num_of_estimates"].get(str(i))
-                if not num_estimates:
-                    continue
                 eps_estimates["number_of_analysts"] = num_estimates[0].get(
                     "dataitemvalue"
                 )
