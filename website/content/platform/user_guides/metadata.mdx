@@ -75,7 +75,8 @@ Where commands return metadata related to the requested data, it is keyable from
 This dictionary contains contextual information and data for the `results` that is not included in the tables.
 Results metadata will vary by command and provider, so it is worth exploring when it is included, below is a selection of samples.
 
-### FRED
+<details>
+<summary mdxType="summary">FRED</summary>
 
 ```python
 data = obb.economy.fred_series("T10Y2Y")
@@ -95,7 +96,10 @@ The information stored here is used by the `openbb-charting` extension for displ
 
 ![FRED Chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/67746ef0-7d61-4eed-b2e8-c32d001a8a00)
 
-### EconDB
+</details>
+
+<details>
+<summary mdxType="summary">EconDB</summary>
 
 ```python
 data = obb.economy.indicators("PCOPP", provider="econdb")
@@ -120,7 +124,10 @@ data.extra
 }
 ```
 
-### Cboe
+</details>
+
+<details>
+<summary mdxType="summary">Cboe</summary>
 
 ```python
 data = obb.derivatives.options.chains("SPX", provider="cboe")
@@ -151,8 +158,10 @@ data.extra
   'last_trade_timestamp': '2024-05-22 14:50:36'},
 }
 ```
+</details>
 
-### SEC
+<details>
+<summary mdxType="summary">SEC</summary>
 
 ```python
 data = obb.etf.holdings("BIL", provider="sec")
@@ -206,3 +215,4 @@ data.extra
     'value': 198566750.0}]}
 }
 ```
+</details>
