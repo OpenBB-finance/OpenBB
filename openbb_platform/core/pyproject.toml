@@ -22,7 +22,7 @@ requests = "^2.32.1"
 importlib-metadata = "^6.8.0"
 python-dotenv = "^1.0.0"
 aiohttp = "^3.9.5"
-ruff = ">=0.1.6,<=0.4.4"      # Needed here to lint generated code
+ruff = ">=0.1.6"  # Needed here to lint generated code
 pyjwt = "^2.8.0"
 
 [build-system]
