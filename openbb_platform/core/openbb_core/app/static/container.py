@@ -24,11 +24,11 @@ class Container:
             return obbject
         return getattr(obbject, "to_" + output_type)()
 
-    def _check_credentials(self, provider: str) -> bool:
+    def _check_credentials(self, provider: str) -> Optional[bool]:
         """Check required credentials are populated."""
         credentials = self._command_runner.user_settings.credentials
         if provider not in credentials.origins:
-            return False
+            return None
         required = credentials.origins.get(provider)
         return all(getattr(credentials, r, None) for r in required)
 
@@ -37,8 +37,8 @@ class Container:
     ) -> str:
         """Get the provider to use in execution.
 
-        If no choice is specified, the configured fallback is used. A provider is used
-        when its required credentials are populated.
+        If no choice is specified, the configured priority list is used. A provider is used
+        when all of its required credentials are populated.
 
         Parameters
         ----------
@@ -47,7 +47,7 @@ class Container:
         command: str
             The command to get the provider for, for example 'equity.price.historical'
         default_priority: Tuple[str, ...]
-            A tuple of available providers for the given command to use as default fallback.
+            A tuple of available providers for the given command to use as default priority list.
 
         Returns
         -------
@@ -57,17 +57,26 @@ class Container:
         Raises
         ------
         OpenBBError
-            Raises error when all the providers in the fallback failed.
+            Raises error when all the providers in the priority list failed.
         """
         if choice is None:
             commands = self._command_runner.user_settings.defaults.commands
             providers = (
                 commands.get(command, {}).get("provider", []) or default_priority
             )
+            tries = []
             for p in providers:
-                if self._check_credentials(p):
+                result = self._check_credentials(p)
+                if result:
                     return p
+                elif result is False:
+                    tries.append((p, "missing credentials"))
+                else:
+                    tries.append((p, "not found"))
+
+            msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
             raise OpenBBError(
-                f"Fallback failed, please specify the provider or update credentials. Tried: {', '.join(providers)}."
+                f"Provider fallback failed, please specify the provider or update credentials.\n"
+                f"[Providers]\n  {msg}"
             )
         return choice
