@@ -3,8 +3,10 @@
 # pylint: disable=unused-argument
 
 import asyncio
+import json
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
@@ -12,7 +14,7 @@ from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsQueryParams,
 )
 from openbb_core.provider.utils.helpers import amake_request
-from openbb_seeking_alpha.utils.helpers import date_range
+from openbb_seeking_alpha.utils.helpers import HEADERS, date_range
 from pydantic import Field, field_validator
 
 
@@ -89,6 +91,7 @@ class SACalendarEarningsFetcher(
             for date in date_range(query.start_date, query.end_date)
         ]
         currency = "USD" if query.country == "us" else "CAD"
+        messages: List = []
 
         async def get_date(date, currency):
             """Get date for one date."""
@@ -97,12 +100,21 @@ class SACalendarEarningsFetcher(
                 f"filter%5Bselected_date%5D={date}"
                 f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D={currency}"
             )
-            response = await amake_request(url=url)
-            data = response.get("data")  # type: ignore
-            if data:
-                results.extend(data)
+            response = await amake_request(url=url, headers=HEADERS)
+            # Try again if the response is blocked.
+            if "blockScript" in response:
+                response = await amake_request(url=url, headers=HEADERS)
+                if "blockScript" in response:
+                    message = json.dumps(response)
+                    messages.append(message)
+                    warn(message)
+            if "data" in response:
+                results.extend(response.get("data"))
 
         await asyncio.gather(*[get_date(date, currency) for date in dates])
+
+        if not results:
+            raise RuntimeError(f"Error with the Seeking Alpha request -> {messages}")
 
         return results
 
