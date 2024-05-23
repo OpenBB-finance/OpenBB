@@ -58,3 +58,8 @@ try:
     VERSION = get_package_version(PACKAGE)
 except pkg_resources.DistributionNotFound:
     VERSION = "unknown"
+
+try:
+    CORE_VERSION = get_package_version("openbb-core")
+except pkg_resources.DistributionNotFound:
+    CORE_VERSION = "unknown"

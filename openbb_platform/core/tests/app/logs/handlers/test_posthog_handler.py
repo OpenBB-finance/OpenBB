@@ -1,3 +1,5 @@
+"""Tests for the PosthogHandler class."""
+
 import logging
 from pathlib import Path
 from unittest.mock import MagicMock
@@ -8,7 +10,10 @@ from openbb_core.app.logs.handlers.posthog_handler import (
 )
 
 
+# pylint: disable=W0621, R0913
 class MockLoggingSettings:
+    """Mock logging settings."""
+
     def __init__(
         self,
         app_name,
@@ -22,6 +27,7 @@ class MockLoggingSettings:
         platform_version,
         userid,
     ):
+        """Initialize the mock logging settings."""
         self.app_name = app_name
         self.sub_app_name = sub_app_name
         self.user_logs_directory = Path(user_logs_directory)
@@ -52,10 +58,12 @@ logging_settings.user_id = "user123"
 
 @pytest.fixture
 def handler():
+    """Fixture to create a PosthogHandler instance."""
     return PosthogHandler(logging_settings)
 
 
 def test_emit_calls_send(handler):
+    """Test the emit method."""
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -78,6 +86,7 @@ def test_emit_calls_send(handler):
 
 
 def test_emit_calls_handleError_when_send_raises_exception(handler):
+    """Test the emit method."""
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -104,6 +113,7 @@ def test_emit_calls_handleError_when_send_raises_exception(handler):
 
 
 def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(handler):
+    """Test the emit method."""
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -130,6 +140,7 @@ def test_emit_calls_handleError_when_send_raises_exception_of_specific_type(hand
 
 
 def test_emit_calls_handleError_when_send_raises_exception_of_another_type(handler):
+    """Test the emit method."""
     # Arrange
     record = logging.LogRecord(
         name="test_logger",
@@ -176,6 +187,7 @@ def test_emit_calls_handleError_when_send_raises_exception_of_another_type(handl
     ],
 )
 def test_log_to_dict(handler, log_info, expected_dict):
+    """Test the log_to_dict method."""
     # Act
     result = handler.log_to_dict(log_info)
 
@@ -204,6 +216,7 @@ def test_log_to_dict(handler, log_info, expected_dict):
     ],
 )
 def test_extract_log_extra(handler, record, expected_extra):
+    """Test the extract_log_extra method."""
     # Act
     result = handler.extract_log_extra(record)
 

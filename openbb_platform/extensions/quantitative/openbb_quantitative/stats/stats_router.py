@@ -101,8 +101,7 @@ def skew(
     ],
 )
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
-    """
-    Calculate the  variance of a target column.
+    """Calculate the  variance of a target column.
 
     Variance measures the dispersion of a set of data points around their mean. It is a key metric for
     assessing the volatility and stability of financial returns or other time series data.
@@ -150,8 +149,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     ],
 )
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
-    """
-    Calculate the rolling standard deviation of a target column.
+    """Calculate the rolling standard deviation of a target column.
 
     Standard deviation is a measure of the amount of variation or dispersion of a set of values.
     It is widely used to assess the risk and volatility of financial returns or other time series data
@@ -200,8 +198,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     ],
 )
 def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
-    """
-    Calculate the rolling kurtosis of a target column.
+    """Calculate the rolling kurtosis of a target column.
 
     Kurtosis measures the "tailedness" of the probability distribution of a real-valued random variable.
     High kurtosis indicates a distribution with heavy tails (outliers), suggesting a higher risk of extreme outcomes.
@@ -255,8 +252,7 @@ def quantile(
     target: str,
     quantile_pct: NonNegativeFloat = 0.5,
 ) -> OBBject[List[Data]]:
-    """
-    Calculate the quantile of a target column at a specified quantile percentage.
+    """Calculate the quantile of a target column at a specified quantile percentage.
 
     Quantiles are points dividing the range of a probability distribution into  intervals with equal probabilities,
     or dividing the  sample in the same way.
@@ -312,8 +308,7 @@ def mean(
     data: List[Data],
     target: str,
 ) -> OBBject[List[Data]]:
-    """
-    Calculate the  mean (average) of a target column.
+    """Calculate the average of a target column.
 
     The rolling mean is a simple moving average that calculates the average of a target variable.
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends

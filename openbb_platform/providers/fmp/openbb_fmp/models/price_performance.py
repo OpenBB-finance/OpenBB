@@ -2,13 +2,14 @@
 
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_urls
 from pydantic import Field, model_validator
 
 
@@ -18,7 +19,7 @@ class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPPricePerformanceData(RecentPerformanceData):
@@ -70,14 +71,23 @@ class FMPPricePerformanceFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        url = create_url(
-            version=3,
-            endpoint=f"stock-price-change/{query.symbol}",
-            api_key=api_key,
-            exclude=["symbol"],
-        )
-        return await get_data_many(url, **kwargs)
+        symbols = query.symbol.upper().split(",")
+        symbols = list(dict.fromkeys(symbols))
+        chunk_size = 200
+        chunks = [
+            symbols[i : i + chunk_size] for i in range(0, len(symbols), chunk_size)
+        ]
+        urls = [
+            create_url(
+                version=3,
+                endpoint=f"stock-price-change/{','.join(chunk)}",
+                api_key=api_key,
+                exclude=["symbol"],
+            )
+            for chunk in chunks
+        ]
+        data = await get_data_urls(urls, **kwargs)
+        return data
 
     @staticmethod
     def transform_data(
@@ -86,4 +96,14 @@ class FMPPricePerformanceFetcher(
         **kwargs: Any,
     ) -> List[FMPPricePerformanceData]:
         """Return the transformed data."""
+
+        symbols = query.symbol.upper().split(",")
+        symbols = list(dict.fromkeys(symbols))
+        if len(data) != len(symbols):
+            data_symbols = [d["symbol"] for d in data]
+            missing_symbols = [
+                symbol for symbol in symbols if symbol not in data_symbols
+            ]
+            warn(f"Missing data for symbols: {missing_symbols}")
+
         return [FMPPricePerformanceData.model_validate(i) for i in data]

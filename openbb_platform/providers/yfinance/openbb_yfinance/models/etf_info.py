@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.etf_info import (
     EtfInfoData,
     EtfInfoQueryParams,
 )
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -20,7 +21,7 @@ _warn = warnings.warn
 class YFinanceEtfInfoQueryParams(EtfInfoQueryParams):
     """YFinance ETF Info Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class YFinanceEtfInfoData(EtfInfoData):
@@ -77,7 +78,7 @@ class YFinanceEtfInfoData(EtfInfoData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="yield",
     )
     dividend_rate_ttm: Optional[float] = Field(
@@ -88,7 +89,7 @@ class YFinanceEtfInfoData(EtfInfoData):
     dividend_yield_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend yield of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="trailingAnnualDividendYield",
     )
     year_high: Optional[float] = Field(
@@ -114,19 +115,19 @@ class YFinanceEtfInfoData(EtfInfoData):
     return_ytd: Optional[float] = Field(
         default=None,
         description="The year-to-date return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="ytdReturn",
     )
     return_3y_avg: Optional[float] = Field(
         default=None,
         description="The three year average return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="threeYearAverageReturn",
     )
     return_5y_avg: Optional[float] = Field(
         default=None,
         description="The five year average return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="fiveYearAverageReturn",
     )
     beta_3y_avg: Optional[float] = Field(
@@ -190,7 +191,9 @@ class YFinanceEtfInfoData(EtfInfoData):
     @classmethod
     def validate_date(cls, v):
         """Validate first stock price date."""
-        return datetime.utcfromtimestamp(v).date().strftime("%Y-%m-%d") if v else None
+        if isinstance(v, datetime):
+            return v.date().strftime("%Y-%m-%d")
+        return datetime.fromtimestamp(v).date().strftime("%Y-%m-%d") if v else None
 
 
 class YFinanceEtfInfoFetcher(
@@ -249,6 +252,7 @@ class YFinanceEtfInfoFetcher(
             "fiveYearAverageReturn",
             "beta3Year",
             "longBusinessSummary",
+            "firstTradeDateEpochUtc",
         ]
 
         async def get_one(symbol):
@@ -262,9 +266,22 @@ class YFinanceEtfInfoFetcher(
             if ticker:
                 quote_type = ticker.pop("quoteType", "")
                 if quote_type == "ETF":
-                    for field in fields:
-                        if field in ticker:
-                            result[field] = ticker.get(field, None)
+                    try:
+                        for field in fields:
+                            if field in ticker and ticker.get(field) is not None:
+                                result[field] = ticker.get(field, None)
+                        if "firstTradeDateEpochUtc" in result:
+                            _first_trade = result.pop("firstTradeDateEpochUtc")
+                            if (
+                                "fundInceptionDate" not in result
+                                and _first_trade is not None
+                            ):
+                                result["fundInceptionDate"] = safe_fromtimestamp(
+                                    _first_trade
+                                )
+                    except Exception as e:
+                        _warn(f"Error processing data for {symbol}: {e}")
+                        result = {}
                 if quote_type != "ETF":
                     _warn(f"{symbol} is not an ETF.")
                 if result:

@@ -1,3 +1,5 @@
+"""Test the OECD fetchers."""
+
 import datetime
 
 import pytest
@@ -17,6 +19,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -27,6 +30,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
+    """Test the OECD Nominal GDP fetcher."""
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -39,6 +43,7 @@ def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecd_real_gdp_fetcher(credentials=test_credentials):
+    """Test the OECD Real GDP fetcher."""
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -50,6 +55,7 @@ def test_oecd_real_gdp_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
+    """Test the OECD GDP Forecast fetcher."""
     params = {
         "start_date": datetime.date(2020, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -62,6 +68,7 @@ def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecd_unemployment_fetcher(credentials=test_credentials):
+    """Test the OECD Unemployment Rate fetcher."""
     params = {
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -74,6 +81,7 @@ def test_oecd_unemployment_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecdcli_fetcher(credentials=test_credentials):
+    """Test the OECD Composite Leading Indicator fetcher."""
     params = {
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -86,6 +94,7 @@ def test_oecdcli_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecdstir_fetcher(credentials=test_credentials):
+    """Test the OECD Short Term Interest Rate fetcher."""
     params = {
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),
@@ -98,6 +107,7 @@ def test_oecdstir_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_oecdltir_fetcher(credentials=test_credentials):
+    """Test the OECD Long Term Interest Rate fetcher."""
     params = {
         "start_date": datetime.date(2023, 1, 1),
         "end_date": datetime.date(2023, 6, 6),

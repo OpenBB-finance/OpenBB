@@ -1,4 +1,18 @@
-# openbb-tmx: A Community Data Provider Extension
+# OpenBB TMX Provider
+
+This extension integrates the [TMX](https://www.tmx.com) data provider into the OpenBB Platform.
+
+## Installation
+
+To install the extension:
+
+```bash
+pip install openbb-tmx
+```
+
+Documentation available [here](https://docs.openbb.co/platform/development/contributing).
+
+## Additional information
 
 `openbb-tmx` is an unofficial, community, data provider extension for the OpenBB Platform.
 

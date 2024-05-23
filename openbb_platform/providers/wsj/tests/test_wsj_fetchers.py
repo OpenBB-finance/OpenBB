@@ -1,3 +1,5 @@
+"""Tests for the WSJ fetchers."""
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_wsj.models.active import WSJActiveFetcher
@@ -11,6 +13,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -21,6 +24,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_wsj_gainers_fetcher(credentials=test_credentials):
+    """Test the WSJ Gainers fetcher."""
     params = {}
 
     fetcher = WSJGainersFetcher()
@@ -30,6 +34,7 @@ def test_wsj_gainers_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_wsj_losers_fetcher(credentials=test_credentials):
+    """Test the WSJ Losers fetcher."""
     params = {}
 
     fetcher = WSJLosersFetcher()
@@ -39,6 +44,7 @@ def test_wsj_losers_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_wsj_active_fetcher(credentials=test_credentials):
+    """Test the WSJ Active fetcher."""
     params = {}
 
     fetcher = WSJActiveFetcher()

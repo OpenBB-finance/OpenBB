@@ -1,30 +1,31 @@
 ---
 title: Source
 sidebar_position: 3
-description: Comprehensive guide to install the OpenBB Terminal and SDK from source.
+description:
+  Comprehensive guide to install the OpenBB Terminal and SDK from source.
   The guide covers the installation process for Windows, macOS, and Linux systems
   and covers various software installations including Miniconda, Git, Microsoft C++
   Build Tools, Rosetta2, LibOMP, VcXsrv, and GTK toolchains. Instructions for environment
   setup and package management through Conda and Poetry are also included, along with
   troubleshooting tips and community support.
 keywords:
-- Installation
-- Miniconda
-- Git
-- Microsoft C++ Build Tools
-- Rosetta2
-- LibOMP
-- VcXsrv
-- GTK toolchains
-- Conda
-- Poetry
-- Environment setup
-- Python package management
-- Troubleshooting
-- Community support
-- Linux
-- MacOS
-- Windows
+  - Installation
+  - Miniconda
+  - Git
+  - Microsoft C++ Build Tools
+  - Rosetta2
+  - LibOMP
+  - VcXsrv
+  - GTK toolchains
+  - Conda
+  - Poetry
+  - Environment setup
+  - Python package management
+  - Troubleshooting
+  - Community support
+  - Linux
+  - MacOS
+  - Windows
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -34,12 +35,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
 :::warning
-The instructons on this page are for installing the OpenBB Terminal from the source code, which uses a legacy version of the Python SDK.  If you do not wish to install the OpenBB Terminal application, please refer to the installation instructions [here](/platform/installation)
+The instructons on this page are for installing the OpenBB Terminal from the source code, which uses a legacy version of the Python SDK. If you do not wish to install the OpenBB Terminal application, please refer to the installation instructions [here](/platform/installation)
 :::
 
 This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
-<details><summary>Miniconda</summary>
+<details>
+<summary mdxType="summary">Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
 
 Go [here](https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links) to find the download for your operating system or use the links below:
@@ -70,7 +72,8 @@ conda update -n base -c conda-forge conda
 
 </details>
 
-<details><summary>Git</summary>
+<details>
+<summary mdxType="summary">Git</summary>
 
 Check to verify if Git is installed by running the following command:
 
@@ -94,7 +97,8 @@ Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started
 
 </details>
 
-<details><summary>Microsoft C++ Build Tools (Windows only)</summary>
+<details>
+<summary mdxType="summary">Microsoft C++ Build Tools (Windows only)</summary>
 
 Use the instructions [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) to install or update Microsoft C++ Build Tools.
 
@@ -102,19 +106,21 @@ Use the instructions [here](https://visualstudio.microsoft.com/visual-cpp-build-
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
 
-
 </details>
 
-<details><summary>Rosetta2 (Apple Silicon only)</summary>
+<details>
+<summary mdxType="summary">Rosetta2 (Apple Silicon only)</summary>
 
 Install Rosetta from the terminal with:
+
 ```shell
 softwareupdate --install-rosetta
 ```
 
 </details>
 
-<details><summary>LibOMP (Apple Silicon only)</summary>
+<details>
+<summary mdxType="summary">LibOMP (Apple Silicon only)</summary>
 
 Apple Silicon does not ship `libomp` by default. It will need to be installed manually for some features of the ML toolkit to work. The `libomp` library can be installed from [homebrew](https://brew.sh/).
 
@@ -140,7 +146,8 @@ brew install libomp
 
 </details>
 
-<details><summary>VcXsrv (Windows Subsystem for Linux only)</summary>
+<details>
+<summary mdxType="summary">VcXsrv (Windows Subsystem for Linux only)</summary>
 
 Since a WSL installation is headless by default (i.e., there is only access to a terminal running a Linux distribution) there are additional steps required to display visualizations. A more detailed tutorial is found, [here](https://medium.com/@shaoyenyu/make-matplotlib-works-correctly-with-x-server-in-wsl2-9d9928b4e36a).
 
@@ -166,12 +173,13 @@ Alternatives to `VcXsrv` include:
 
 </details>
 
-<details><summary>GTK toolchains (Linux only)</summary>
+<details>
+<summary mdxType="summary">GTK toolchains (Linux only)</summary>
 
 GTK is a window extension that is used to display interactive charts and tables. The library responsible for interactive charts and tables (`pywry`) requires certain dependencies, based on the Linux distribution, to be installed first.
 
 <details>
-<summary>Debian-based / Ubuntu / Mint</summary>
+<summary mdxType="summary">Debian-based / Ubuntu / Mint</summary>
 
 ```shell
 sudo apt install libwebkit2gtk-4.0-dev
@@ -180,7 +188,7 @@ sudo apt install libwebkit2gtk-4.0-dev
 </details>
 
 <details>
-<summary>Arch Linux / Manjaro</summary>
+<summary mdxType="summary">Arch Linux / Manjaro</summary>
 
 ```shell
 sudo pacman -S webkit2gtk
@@ -189,7 +197,7 @@ sudo pacman -S webkit2gtk
 </details>
 
 <details>
-<summary>Fedora</summary>
+<summary mdxType="summary">Fedora</summary>
 
 ```shell
 sudo dnf install gtk3-devel webkit2gtk3-devel
@@ -224,7 +232,7 @@ conda env create -n obb --file build/conda/conda-3-9-env.yaml
 ```
 
 :::note
-Additional `YAML` files provide support for Python versions 3.8 and 3.10.  Substitute the `9`, in the command above, with the desired version.
+Additional `YAML` files provide support for Python versions 3.8 and 3.10. Substitute the `9`, in the command above, with the desired version.
 :::
 
 After the obb environment is created, activate it by entering:
@@ -259,8 +267,11 @@ Install the remaining dependencies and the terminal through Poetry, a package ma
 ```shell
 poetry install -E all
 ```
+
 :::info
-<details><summary>Read about Conda, Poetry and Python package management</summary>
+
+<details>
+<summary mdxType="summary">Read about Conda, Poetry and Python package management</summary>
 
 For the best user experience we advise using `conda` and `poetry` for environment setup and dependency management. Conda ships binaries for packages like `numpy` so these dependencies are not built from source locally by `pip`. Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies use versions that are compatible with each other.
 

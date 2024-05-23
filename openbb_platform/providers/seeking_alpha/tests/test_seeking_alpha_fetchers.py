@@ -1,3 +1,5 @@
+"""Tests for the Seeking Alpha fetchers."""
+
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_seeking_alpha.models.upcoming_release_days import (
@@ -11,6 +13,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -21,6 +24,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_sa_upcoming_release_days_fetcher(credentials=test_credentials):
+    """Test the Seeking Alpha Upcoming Release Days fetcher."""
     params = {"limit": 5}
 
     fetcher = SAUpcomingReleaseDaysFetcher()

@@ -2,12 +2,12 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import (
     date as dateType,
     datetime,
 )
 from typing import Any, Dict, List, Optional, Union
+from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -18,8 +18,6 @@ from openbb_core.provider.standard_models.etf_holdings import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, field_validator
-
-_warn = warnings.warn
 
 
 class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
@@ -75,7 +73,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         description="The weight of the holding, as a normalized percent.",
         alias="pctVal",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",
@@ -139,7 +137,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
     def replace_empty(cls, v):
         """Replace empty strings and 0s with None."""
         if isinstance(v, str):
-            return v if v not in ("", "0") else None
+            return v if v not in ("", "0", "-") else None
         if isinstance(v, (float, int)):
             return v if v and v not in (0.0, 0) else None
         return v if v else None
@@ -174,7 +172,7 @@ class FMPEtfHoldingsFetcher(
             try:
                 data = await get_data_many(url, **kwargs)
             except Exception:
-                _warn(
+                warn(
                     "No data found for this symbol and date, attempting to retrieve the most recent data available."
                 )
 

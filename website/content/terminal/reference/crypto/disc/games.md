@@ -1,28 +1,29 @@
 ---
 title: games
-description: This page provides a list of top blockchain games with sorting options
+description:
+  This page provides a list of top blockchain games with sorting options
   by Name, Daily Users, and Daily Volume. Use this command to discover the most popular
   and lucrative blockchain games.
 keywords:
-- blockchain
-- blockchain games
-- crypto games
-- daily volume
-- daily users
-- sorting
-- top games
-- Splinterlands
-- PancakeSwap
-- Alien Worlds
-- Axie Infinity
-- OpenSea
+  - blockchain
+  - blockchain games
+  - crypto games
+  - daily volume
+  - daily users
+  - sorting
+  - top games
+  - Splinterlands
+  - PancakeSwap
+  - Alien Worlds
+  - Axie Infinity
+  - OpenSea
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="crypto/disc/games - Reference | OpenBB Terminal Docs" />
 
-Shows top blockchain games [Source: https://dappradar.com/] Accepts --sort {Name,Daily Users,Daily Volume [$]} to sort by column
+Shows top blockchain games [Source: https://dappradar.com/] Accepts --sort \{Name,Daily Users,Daily Volume [$]\} to sort by column
 
 ### Usage
 
@@ -34,11 +35,10 @@ games [-l LIMIT] [-s SORTBY [SORTBY ...]]
 
 ## Parameters
 
-| Name | Description | Default | Optional | Choices |
-| ---- | ----------- | ------- | -------- | ------- |
-| limit | Number of records to display | 15 | True | None |
-| sortby | Sort by given column. Default: Daily Volume [$] | Daily Volume [$] | True | Name, Category, Daily Users, Daily Volume [$] |
-
+| Name   | Description                                     | Default          | Optional | Choices                                       |
+| ------ | ----------------------------------------------- | ---------------- | -------- | --------------------------------------------- |
+| limit  | Number of records to display                    | 15               | True     | None                                          |
+| sortby | Sort by given column. Default: Daily Volume [$] | Daily Volume [$] | True     | Name, Category, Daily Users, Daily Volume [$] |
 
 ---
 
@@ -71,4 +71,5 @@ games [-l LIMIT] [-s SORTBY [SORTBY ...]]
 │ Magic Eden    │ 40.2K       │ 18.5M            │
 └───────────────┴─────────────┴──────────────────┘
 ```
+
 ---

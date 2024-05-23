@@ -48,10 +48,10 @@ def filter_by_dates(
 
 
 def calculate_adjusted_prices(df: pd.DataFrame, column: str, dividends: bool = False):
-    """Calculates the split-adjusted prices, or split and dividend adjusted prices.
+    """Calculate the split-adjusted prices, or split and dividend adjusted prices.
 
     Parameters
-    ------------
+    ----------
     df: pd.DataFrame
         DataFrame with unadjusted OHLCV values + split_factor + dividend
     column: str
@@ -60,11 +60,10 @@ def calculate_adjusted_prices(df: pd.DataFrame, column: str, dividends: bool = F
         Whether to adjust for both splits and dividends. Default is split-adjusted only.
 
     Returns
-    --------
+    -------
     pd.DataFrame
         DataFrame with adjusted prices.
     """
-
     df = df.copy()
     adj_column = "adj_" + column
 

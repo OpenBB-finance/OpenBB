@@ -25,6 +25,7 @@ data: dict = {}
 
 
 def get_stocks_data():
+    """Get stocks data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
@@ -40,6 +41,7 @@ def get_stocks_data():
 
 
 def get_crypto_data():
+    """Get crypto data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "crypto_data" in data:
@@ -56,6 +58,7 @@ def get_crypto_data():
 
 
 def get_data(menu: Literal["equity", "crypto"]):
+    """Get data."""
     funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
@@ -69,6 +72,7 @@ def get_data(menu: Literal["equity", "crypto"]):
 )
 @pytest.mark.integration
 def test_econometrics_correlation_matrix(params, data_type, obb):
+    """Test the econometrics correlation matrix."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -94,6 +98,7 @@ def test_econometrics_correlation_matrix(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_ols_regression(params, data_type, obb):
+    """Test the econometrics OLS regression."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -119,6 +124,7 @@ def test_econometrics_ols_regression(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_ols_regression_summary(params, data_type, obb):
+    """Test the econometrics OLS regression summary."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -143,6 +149,7 @@ def test_econometrics_ols_regression_summary(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_autocorrelation(params, data_type, obb):
+    """Test the econometrics autocorrelation."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -177,6 +184,7 @@ def test_econometrics_autocorrelation(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_residual_autocorrelation(params, data_type, obb):
+    """Test the econometrics residual autocorrelation."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -207,6 +215,7 @@ def test_econometrics_residual_autocorrelation(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_cointegration(params, data_type, obb):
+    """Test the econometrics cointegration."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -242,6 +251,7 @@ def test_econometrics_cointegration(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_causality(params, data_type, obb):
+    """Test the econometrics causality."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -264,6 +274,7 @@ def test_econometrics_causality(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_unit_root(params, data_type, obb):
+    """Test the econometrics unit root."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = get_data(data_type)
@@ -282,6 +293,7 @@ def test_econometrics_unit_root(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_random_effects(params, obb):
+    """Test the econometrics panel random effects."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
@@ -301,6 +313,7 @@ def test_econometrics_panel_random_effects(params, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_between(params, obb):
+    """Test the econometrics panel between."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
@@ -320,6 +333,7 @@ def test_econometrics_panel_between(params, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_pooled(params, obb):
+    """Test the econometrics panel pooled."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
@@ -339,6 +353,7 @@ def test_econometrics_panel_pooled(params, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_fixed(params, obb):
+    """Test the econometrics panel fixed."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
@@ -358,6 +373,7 @@ def test_econometrics_panel_fixed(params, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_first_difference(params, obb):
+    """Test the econometrics panel first difference."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
@@ -377,11 +393,13 @@ def test_econometrics_panel_first_difference(params, obb):
 )
 @pytest.mark.integration
 def test_econometrics_panel_fmac(params, obb):
+    """Test the econometrics panel fmac."""
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
 
     result = obb.econometrics.panel_fmac(**params)
+    """Test the econometrics panel fmac."""
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

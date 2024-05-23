@@ -1,7 +1,7 @@
 """Technical Analysis Router."""
 
 # pylint: disable=too-many-lines
-from typing import List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 import pandas_ta as ta
@@ -17,15 +17,151 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
-from .helpers import (
+from openbb_technical.helpers import (
     calculate_cones,
     calculate_fib_levels,
     clenow_momentum,
     validate_data,
 )
+from openbb_technical.relative_rotation import (
+    RelativeRotationData,
+    RelativeRotationFetcher,
+    RelativeRotationQueryParams,
+)
 
 # TODO: Split this into multiple files
-router = Router(prefix="")
+router = Router(prefix="", description="Technical Analysis tools.")
+
+
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Calculate the Relative Strength Ratio and Relative Strength Momentum"
+            + " for a group of symbols against a benchmark.",
+            code=[
+                "stock_data = obb.equity.price.historical("
+                + "symbol='AAPL,MSFT,GOOGL,META,AMZN,TSLA,SPY', start_date='2022-01-01', provider='yfinance')",
+                "rr_data = obb.technical.relative_rotation(data=stock_data.results, benchmark='SPY')",
+                "rs_ratios = rr_data.results.rs_ratios",
+                "rs_momentum = rr_data.results.rs_momentum",
+            ],
+        ),
+        PythonEx(
+            description="When the assets are not traded 252 days per year,"
+            + "adjust the momentum and volatility periods accordingly.",
+            code=[
+                "crypto_data = obb.crypto.price.historical("
+                + " symbol='BTCUSD,ETHUSD,SOLUSD', start_date='2021-01-01', provider='yfinance')",
+                "rr_data = obb.technical.relative_rotation(data=crypto_data.results, benchmark='BTC-USD',"
+                + " long_period=365, short_period=30, window=30, trading_periods=365)",
+            ],
+        ),
+    ],
+)
+async def relative_rotation(
+    data: List[Data],
+    benchmark: str,
+    study: Literal["price", "volume", "volatility"] = "price",
+    long_period: Optional[int] = 252,
+    short_period: Optional[int] = 21,
+    window: Optional[int] = 21,
+    trading_periods: Optional[int] = 252,
+    chart_params: Optional[Dict[str, Any]] = None,
+) -> OBBject[RelativeRotationData]:
+    """Calculate the Relative Strength Ratio and Relative Strength Momentum for a group of symbols against a benchmark.
+
+    Parameters
+    ----------
+    data : list[Data]
+        The data to be used for the relative rotation calculations.
+        This should be the multi-symbol output from the 'equity.price.historical' endpoint, or similar.
+        Or a pivot table with the 'date' column as the index, the symbols as the columns, and the 'study' as the values.
+        It is recommended to use the 'equity.price.historical' endpoint to get the data, and feed the results as-is.
+    benchmark : str
+        The symbol to be used as the benchmark.
+    study : Literal[price, volume, volatility]
+        The data point for the calculations. If 'price', the closing price will be used.
+        If 'volatility', the standard deviation of the closing price will be used.
+        If 'data' is supplied as a pivot table,
+        the 'study' will assume the values are the closing price and 'volume' will be ignored.
+    long_period : int, optional
+        The length of the long period for momentum calculation, by default 252.
+        Adjust this value when supplying a time series with an interval that is not daily.
+        For example, if the data is monthly, the long period should be 12.
+    short_period : int, optional
+        The length of the short period for momentum calculation, by default 21.
+        Adjust this value when supplying a time series with an interval that is not daily.
+    window : int, optional
+        The length of window for the standard deviation calculation, by default 21.
+        Adjust this value when supplying a time series with an interval that is not daily.
+    trading_periods : int, optional
+        The number of trading periods per year, for the standard deviation calculation, by default 252.
+        Adjust this value when supplying a time series with an interval that is not daily.
+    chart_params : dict[str, Any], optional
+        Additional parameters to pass when `chart=True` and the `openbb-charting` extension is installed.
+        Parameters can be passed again to redraw the chart using the charting.to_chart() method of the response.
+
+        ChartParams
+        -----------
+        date : str, optional
+            A target end date within the data to use for the chart, by default is the last date in the data.
+        show_tails : bool
+            Show the tails on the chart, by default True.
+        tail_periods : int
+            Number of periods to show in the tails, by default 16.
+        tail_interval : Literal[day, week, month]
+            Interval to show the tails, by default 'week'.
+        title : str, optional
+            Title of the chart.
+
+    Returns
+    -------
+    OBBject[RelativeRotationData]
+        results : RelativeRotationData
+            symbols : list[str]:
+                The symbols that are being compared against the benchmark.
+            benchmark : str
+                The benchmark symbol.
+            study : Literal[price, volume, volatility]
+                The data point for the selected.
+            long_period : int
+                The length of the long period for momentum calculation, as entered by the user.
+            short_period : int
+                The length of the short period for momentum calculation, as entered by the user.
+            window : int
+                The length of window for the standard deviation calculation.
+            trading_periods : int
+                The number of trading periods per year, for the standard deviation calculation.
+            start_date : str
+                The start date of the data after adjusting the length of the data for the calculations.
+            end_date : str
+                The end date of the data.
+            symbols_data : list[Data]
+                The data representing the selected 'study' for each symbol.
+            benchmark_data : list[Data]
+                The data representing the selected 'study' for the benchmark.
+            rs_ratios : list[Data]
+                The normalized relative strength ratios data.
+            rs_momentum : list[Data]
+                The normalized relative strength momentum data.
+    """
+    params = RelativeRotationQueryParams(
+        data=data,
+        benchmark=benchmark,
+        study=study,
+        long_period=long_period,
+        short_period=short_period,
+        window=window,
+        trading_periods=trading_periods,
+        chart_params=chart_params,
+    )
+
+    return OBBject(
+        results=RelativeRotationFetcher.transform_data(
+            params, RelativeRotationFetcher.extract_data(params, {})
+        )
+    )
 
 
 @router.command(
@@ -489,7 +625,7 @@ def aroon(
     data: List[Data],
     index: str = "date",
     length: int = 25,
-    scalar: int = 100,
+    scalar: float = 100,
 ) -> OBBject[List[Data]]:
     """Calculate the Aroon Indicator.
 
@@ -513,7 +649,7 @@ def aroon(
         Index column name to use with `data`, by default "date".
     length : int, optional
         Number of periods to be used for the calculation, by default 25.
-    scalar : int, optional
+    scalar : float, optional
         Scalar to be used for the calculation, by default 100.
 
     Returns

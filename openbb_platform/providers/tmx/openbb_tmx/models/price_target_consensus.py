@@ -18,7 +18,15 @@ from pydantic import Field, field_validator
 class TmxPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """TMX Price Target Consensus Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_symbol(cls, value):
+        """Check the symbol."""
+        if not value:
+            raise RuntimeError("Error: Symbol is a required field for TMX.")
+        return value
 
 
 class TmxPriceTargetConsensusData(PriceTargetConsensusData):
@@ -34,7 +42,7 @@ class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     target_upside: Optional[float] = Field(
         default=None,
         description="Percent of upside, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     total_analysts: Optional[int] = Field(
         default=None, description="Total number of analyst."
@@ -88,8 +96,8 @@ class TmxPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def create_task(symbol, results):
             """Create a task for each symbol provided."""

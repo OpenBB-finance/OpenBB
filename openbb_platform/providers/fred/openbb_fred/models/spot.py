@@ -16,8 +16,8 @@ class FREDSpotRateQueryParams(SpotRateQueryParams):
     """FRED Spot Rate Query."""
 
     __json_schema_extra__ = {
-        "maturity": ["multiple_items_allowed"],
-        "category": ["multiple_items_allowed"],
+        "maturity": {"multiple_items_allowed": True},
+        "category": {"multiple_items_allowed": True},
     }
 
 

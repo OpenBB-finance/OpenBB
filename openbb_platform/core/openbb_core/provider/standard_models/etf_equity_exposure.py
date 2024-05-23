@@ -28,14 +28,14 @@ class EtfEquityExposureData(Data):
     etf_symbol: str = Field(
         description="The symbol of the ETF with exposure to the requested equity."
     )
-    shares: Optional[int] = Field(
+    shares: Optional[float] = Field(
         default=None,
         description="The number of shares held in the ETF.",
     )
     weight: Optional[float] = Field(
         default=None,
         description="The weight of the equity in the ETF, as a normalized percent.",
-        json_schema_extra={"units_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     market_value: Optional[Union[int, float]] = Field(
         default=None,

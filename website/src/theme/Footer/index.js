@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
-import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
-import StarIcon from "@site/src/components/Icons/Star";
-import GithubIcon from "@site/src/components/Icons/Github";
-import LinkedinIcon from "@site/src/components/Icons/Linkedin";
-import TwitterIcon from "@site/src/components/Icons/Twitter";
-import TiktokIcon from "@site/src/components/Icons/Tiktok";
-import RedditIcon from "@site/src/components/Icons/Reddit";
-import DiscordIcon from "@site/src/components/Icons/Discord";
-import YoutubeIcon from "@site/src/components/Icons/Youtube";
 import ChevronRightIcon from "@site/src/components/Icons/ChevronRight";
+import DiscordIcon from "@site/src/components/Icons/Discord";
+import GithubIcon from "@site/src/components/Icons/Github";
+import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
+import LinkedinIcon from "@site/src/components/Icons/Linkedin";
+import RedditIcon from "@site/src/components/Icons/Reddit";
+import StarIcon from "@site/src/components/Icons/Star";
+import TiktokIcon from "@site/src/components/Icons/Tiktok";
+import TwitterIcon from "@site/src/components/Icons/Twitter";
+import YoutubeIcon from "@site/src/components/Icons/Youtube";
 import clsx from "clsx";
-import { useIFrameContext } from "../Root";
+import React, { useEffect, useState } from "react";
+import { useIFrameContext } from "../Root.tsx";
 const nFormatter = (num, digits) => {
   const si = [
     { value: 1, symbol: "" },

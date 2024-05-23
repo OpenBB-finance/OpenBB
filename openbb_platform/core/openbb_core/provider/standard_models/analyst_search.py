@@ -16,13 +16,13 @@ class AnalystSearchQueryParams(QueryParams):
 
     analyst_name: Optional[str] = Field(
         default=None,
-        description="A comma separated list of analyst names to bring back."
-        + " Omitting will bring back all available analysts.",
+        description="Analyst names to return."
+        + " Omitting will return all available analysts.",
     )
     firm_name: Optional[str] = Field(
         default=None,
-        description="A comma separated list of firm names to bring back."
-        + " Omitting will bring back all available firms.",
+        description="Firm names to return."
+        + " Omitting will return all available firms.",
     )
 
 

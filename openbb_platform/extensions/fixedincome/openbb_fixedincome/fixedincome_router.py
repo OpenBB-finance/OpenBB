@@ -18,7 +18,7 @@ from openbb_fixedincome.government.government_router import router as government
 from openbb_fixedincome.rate.rate_router import router as rate_router
 from openbb_fixedincome.spreads.spreads_router import router as spreads_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Fixed Income market data.")
 router.include_router(rate_router)
 router.include_router(spreads_router)
 router.include_router(government_router)

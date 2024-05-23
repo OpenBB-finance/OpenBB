@@ -1,6 +1,5 @@
 """Test helpers."""
 
-import ast
 import doctest
 import glob
 import importlib
@@ -8,9 +7,11 @@ import inspect
 import logging
 import os
 import re
+from ast import AsyncFunctionDef, Call, FunctionDef, Name, parse, unparse
+from dataclasses import dataclass
 from importlib.metadata import entry_points
 from inspect import getmembers, isfunction
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from openbb_core.app.provider_interface import ProviderInterface
 
@@ -42,11 +43,14 @@ def execute_docstring_examples(module_name: str, path: str) -> List[str]:
     for dt in doc_tests:
         code = "".join([ex.source for ex in dt.examples])
         try:
+            print(f"* Executing example from {path}")  # noqa: T201
             exec(code)  # pylint: disable=exec-used  # noqa: S102
         except Exception as e:
-            errors.append(
-                f"\n\n{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}"
+            error = (
+                f"{'_'*136}\nPath: {path}\nCode:\n{code}\nError: {str(e)}\n{'_'*136}"
             )
+            print(error)  # noqa: T201
+            errors.append(error)
 
     return errors
 
@@ -174,35 +178,37 @@ def find_decorator(file_path: str, function_name: str) -> str:
     return decorator
 
 
-def get_decorator_details(function):
-    """Extract decorators and their arguments from a function as dictionaries."""
-    source = inspect.getsource(function)
-    parsed_source = ast.parse(source)
+@dataclass
+class Decorator:
+    """Decorator."""
 
-    if isinstance(parsed_source.body[0], (ast.FunctionDef, ast.AsyncFunctionDef)):
+    name: str
+    args: Optional[dict] = None
+    kwargs: Optional[dict] = None
+
+
+def get_decorator_details(function) -> Decorator:
+    """Extract decorators and their arguments from a function."""
+    source = inspect.getsource(function)
+    parsed_source = parse(source)
+
+    if isinstance(parsed_source.body[0], (FunctionDef, AsyncFunctionDef)):
         func_def = parsed_source.body[0]
         for decorator in func_def.decorator_list:
-            decorator_detail = {"decorator": "", "args": {}, "keywords": {}}
-            if isinstance(decorator, ast.Call):
-                decorator_detail["decorator"] = (
+            if isinstance(decorator, Call):
+                name = (
                     decorator.func.id
-                    if isinstance(decorator.func, ast.Name)
-                    else ast.unparse(decorator.func)
+                    if isinstance(decorator.func, Name)
+                    else unparse(decorator.func)
                 )
-                decorator_detail["args"] = {
-                    i: ast.unparse(arg) for i, arg in enumerate(decorator.args)
-                }
-                decorator_detail["keywords"] = {
-                    kw.arg: ast.unparse(kw.value) for kw in decorator.keywords
-                }
+                args = {i: unparse(arg) for i, arg in enumerate(decorator.args)}
+                kwargs = {kw.arg: unparse(kw.value) for kw in decorator.keywords}
             else:
-                decorator_detail["decorator"] = (
-                    decorator.id
-                    if isinstance(decorator, ast.Name)
-                    else ast.unparse(decorator)
+                name = (
+                    decorator.id if isinstance(decorator, Name) else unparse(decorator)
                 )
 
-    return decorator_detail
+    return Decorator(name, args, kwargs)
 
 
 def find_missing_router_function_models(
@@ -236,7 +242,7 @@ def find_missing_router_function_models(
 
 
 def parse_example_string(example_string: str) -> Dict[str, Any]:
-    """Parses a string of examples into nested dictionaries.
+    """Parse a string of examples into nested dictionaries.
 
     This is capturing all instances of PythonEx and APIEx, including their "parameters", "code", and "description".
     """

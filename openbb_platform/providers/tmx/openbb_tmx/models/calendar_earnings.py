@@ -1,4 +1,4 @@
-"""TMX Earnings Calendar Model"""
+"""TMX Earnings Calendar Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -45,7 +45,7 @@ class TmxCalendarEarningsData(CalendarEarningsData):
     surprise_percent: Optional[float] = Field(
         default=None,
         description="The EPS surprise as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     reporting_time: Optional[str] = Field(
         default=None,
@@ -85,14 +85,12 @@ class TmxCalendarEarningsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
-        results = []
-        dates = []
+        results: List[Dict] = []
         user_agent = get_random_agent()
         dates = date_range(query.start_date, end=query.end_date)
 
         async def create_task(date, results):
-            """Creates a task for a single date in the range."""
+            """Create a task for a single date in the range."""
             data = []
             date = date.strftime("%Y-%m-%d")
             payload = gql.get_earnings_date_payload.copy()

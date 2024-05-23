@@ -187,7 +187,7 @@ def test_signature_inspector_init(signature_inspector):
 def test_complete_signature(signature_inspector):
     """Test complete_signature."""
 
-    async def sample_function(
+    async def sample_function(  # type: ignore[empty-body]
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,

@@ -59,7 +59,7 @@ def request(url: str) -> BasicResponse:
 async def response_callback(
     response: ClientResponse, _: ClientSession
 ) -> Union[dict, List[dict]]:
-    """Callback for async_request."""
+    """Use callback for async_request."""
     data = await response.json()
 
     if isinstance(data, dict) and response.status != 200:

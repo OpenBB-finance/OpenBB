@@ -1,10 +1,9 @@
 """FRED Series Model."""
 
-import json
-import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
@@ -19,8 +18,6 @@ from openbb_core.provider.utils.helpers import (
 )
 from pydantic import Field
 
-_warn = warnings.warn
-
 
 class FredSeriesQueryParams(SeriesQueryParams):
     """FRED Series Query Params."""
@@ -31,24 +28,25 @@ class FredSeriesQueryParams(SeriesQueryParams):
         "end_date": "observation_end",
         "transform": "units",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
-    frequency: Literal[
-        None,
-        "a",
-        "q",
-        "m",
-        "w",
-        "d",
-        "wef",
-        "weth",
-        "wew",
-        "wetu",
-        "wem",
-        "wesu",
-        "wesa",
-        "bwew",
-        "bwem",
+    frequency: Optional[
+        Literal[
+            "a",
+            "q",
+            "m",
+            "w",
+            "d",
+            "wef",
+            "weth",
+            "wew",
+            "wetu",
+            "wem",
+            "wesu",
+            "wesa",
+            "bwew",
+            "bwem",
+        ]
     ] = Field(
         default=None,
         description="""
@@ -70,7 +68,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
             bwem = Biweekly, Ending Monday
         """,
     )
-    aggregation_method: Literal[None, "avg", "sum", "eop"] = Field(
+    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
         default="eop",
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -80,10 +78,11 @@ class FredSeriesQueryParams(SeriesQueryParams):
             eop = End of Period
         """,
     )
-    transform: Literal[None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] = (
-        Field(
-            default=None,
-            description="""
+    transform: Optional[
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+    ] = Field(
+        default=None,
+        description="""
         Transformation type
             None = No transformation
             chg = Change
@@ -95,7 +94,6 @@ class FredSeriesQueryParams(SeriesQueryParams):
             cca = Continuously Compounded Annual Rate of Change
             log = Natural Log
         """,
-        )
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 
@@ -145,9 +143,18 @@ class FredSeriesFetcher(
                 f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
                 timeout=5,
             )
-            _metadata = metadata_response.get("seriess", [{}])[0]
 
-            observations = observations_response.get("observations")
+            # seriess is not a typo, it's the actual key in the response
+            _metadata = (
+                metadata_response.get("seriess", [{}])[0]
+                if isinstance(metadata_response, dict)
+                else {}
+            ) or {}
+            observations = (
+                observations_response.get("observations")
+                if isinstance(observations_response, dict)
+                else []
+            ) or []
             try:
                 for d in observations:
                     d.pop("realtime_start")
@@ -177,28 +184,24 @@ class FredSeriesFetcher(
 
         results = await amake_requests(urls, callback, timeout=5, **kwargs)
 
-        metadata, data = {}, {}
-        for item in results:
-            for series_id, result in item.items():
-                data[series_id] = result.pop("data")
-                metadata[series_id] = result
-
-        _warn(json.dumps(metadata))
-
-        return data
+        return results
 
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: FredSeriesQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FredSeriesData]:
+        query: FredSeriesQueryParams, data: List[Dict[str, Any]], **kwargs: Any
+    ) -> AnnotatedResult[List[FredSeriesData]]:
         """Transform data."""
-        results = (
-            pd.DataFrame(data)
+        series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
+        metadata = {_id: m for d in data for _id, m in d.items()}
+        records = (
+            pd.DataFrame(series)
+            .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})
             .fillna("N/A")
             .replace("N/A", None)
             .to_dict("records")
         )
-        return [FredSeriesData.model_validate(d) for d in results]
+        validated = [FredSeriesData.model_validate(r) for r in records]
+        return AnnotatedResult(result=validated, metadata=metadata)

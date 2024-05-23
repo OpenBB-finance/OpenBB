@@ -81,11 +81,13 @@ class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
         **kwargs: Any,
     ) -> List[YFActiveData]:
         """Transform data."""
-
         columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 
         data = df_transform_numbers(data, columns)
         data = data.fillna("N/A").replace("N/A", None)
+
+        # parse "Volume" column to float do avoid sorting issues
+        data["Volume"] = data["Volume"].astype(float)
 
         return [
             YFActiveData.model_validate(d)

@@ -1,4 +1,4 @@
-"""TMX Equity Profile fetcher"""
+"""TMX Equity Profile fetcher."""
 
 # pylint: disable=unused-argument
 
@@ -28,7 +28,7 @@ _warn = warnings.warn
 class TmxEquityQuoteQueryParams(EquityQuoteQueryParams):
     """TMX Equity Profile query params."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class TmxEquityQuoteData(EquityQuoteData):
@@ -99,7 +99,7 @@ class TmxEquityQuoteData(EquityQuoteData):
     change_percent: Optional[float] = Field(
         default=None,
         description="The change in price as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     year_high: Optional[float] = Field(
         description="Fifty-two week high.", default=None, alias="weeks52high"
@@ -151,7 +151,7 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The dividend yield as a normalized percentage.",
         default=None,
         alias="dividendYield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     div_freq: Optional[str] = Field(
         description="The frequency of dividend payments.",
@@ -170,13 +170,13 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The three year dividend growth as a normalized percentage.",
         default=None,
         alias="dividend3Years",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     div_growth_5y: Optional[Union[float, str]] = Field(
         description="The five year dividend growth as a normalized percentage.",
         default=None,
         alias="dividend5Years",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     pe: Optional[Union[float, str]] = Field(
         description="The price to earnings ratio.", default=None, alias="peRatio"
@@ -199,13 +199,13 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The return on equity, as a normalized percentage.",
         default=None,
         alias="returnOnEquity",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_assets: Optional[Union[float, str]] = Field(
         description="The return on assets, as a normalized percentage.",
         default=None,
         alias="returnOnAssets",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     beta: Optional[Union[float, str]] = Field(
         description="The beta relative to the TSX Composite.", default=None
@@ -237,7 +237,7 @@ class TmxEquityQuoteData(EquityQuoteData):
     )
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
+        """Return the datetime object from the date string."""
         if v:
             try:
                 return datetime.strptime(v, "%Y-%m-%d").date()
@@ -281,18 +281,16 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         symbols = query.symbol.split(",")
 
         # The list where the results will be stored and appended to.
-        results = []
+        results: List[Dict] = []
         user_agent = get_random_agent()
 
         url = "https://app-money.tmx.com/graphql"
 
         async def create_task(symbol: str, results) -> None:
-            """Makes a POST request to the TMX GraphQL endpoint for a single symbol."""
-
+            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
             symbol = (
                 symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
             )
@@ -332,7 +330,6 @@ class TmxEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[TmxEquityQuoteData]:
         """Return the transformed data."""
-
         # Remove the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",

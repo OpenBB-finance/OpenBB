@@ -79,7 +79,7 @@
       "name": "CRYPTO.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): fmp, polygon.",
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -96,25 +96,19 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "description": "Options: fmp, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Number of days to look back. (provider: fmp)",
-          "name": "timeseries",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Data granularity. (provider: fmp, polygon, tiingo)",
+          "description": "Time interval of the data to return. (provider: fmp);\nTime interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y (provider: polygon)",
           "name": "interval",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Sort order of the data. (provider: polygon)",
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
           "name": "sort",
           "optional": true,
           "type": "string"
@@ -124,13 +118,6 @@
           "name": "limit",
           "optional": true,
           "type": "number"
-        },
-        {
-          "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)",
-          "dimensionality": "matrix",
-          "name": "exchanges",
-          "optional": true,
-          "type": "any"
         }
       ],
       "result": {
@@ -167,7 +154,7 @@
       "name": "CURRENCY.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed for provider(s): polygon.",
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple comma separated items allowed for provider(s): fmp, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -184,19 +171,19 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "description": "Options: fmp, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Data granularity. (provider: fmp, polygon, tiingo)",
+          "description": "Time interval of the data to return. (provider: fmp);\nTime interval of the data to return. The numeric portion of the interval can be any positive integer. The letter portion can be one of the following: s, m, h, d, W, M, Q, Y (provider: polygon)",
           "name": "interval",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Sort order of the data. (provider: polygon)",
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
           "name": "sort",
           "optional": true,
           "type": "string"
@@ -289,6 +276,41 @@
       }
     },
     {
+      "description": "Snapshots of currency exchange rates from an indirect or direct perspective of a base currency.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/currency/snapshots",
+      "id": "CURRENCY.SNAPSHOTS",
+      "name": "CURRENCY.SNAPSHOTS",
+      "parameters": [
+        {
+          "description": "The base currency symbol. Multiple comma separated items allowed for provider(s): fmp.",
+          "name": "base",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.",
+          "name": "quote_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "An optional list of counter currency symbols to filter for. None returns all.",
+          "name": "counter_currencies",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Get the complete options chain for a ticker.",
       "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/options/chains",
       "id": "DERIVATIVES.OPTIONS.CHAINS",
@@ -333,6 +355,48 @@
           "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format. If no symbol is supplied, requests are only allowed for a single date. Use the start_date for the target date. Intrinio appears to have data beginning Feb/2022, but is unclear when it actually began. (provider: intrinio)",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format. If a symbol is not supplied, do not include an end date. (provider: intrinio)",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of unusual activity to query for. (provider: intrinio)",
+          "name": "trade_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The sentiment type to query for. (provider: intrinio)",
+          "name": "sentiment",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The inclusive minimum total value for the unusual activity. (provider: intrinio)",
+          "name": "min_value",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "The inclusive maximum total value for the unusual activity. (provider: intrinio)",
+          "name": "max_value",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "The number of data entries to return. A typical day for all symbols will yield 50-80K records. The API will paginate at 1000 records. The high default limit (100K) is to be able to reliably capture the most days. The high absolute limit (1.25M) is to allow for outlier days. Queries at the absolute limit will take a long time, and might be unreliable. Apply filters to improve performance. (provider: intrinio)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "The source of the data. Either realtime or delayed. (provider: intrinio)",
@@ -405,7 +469,7 @@
           "type": "string"
         },
         {
-          "description": "Country of the event. Multiple items allowed. (provider: tradingeconomics)",
+          "description": "Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)",
           "name": "country",
           "optional": true,
           "type": "string"
@@ -469,7 +533,7 @@
       "name": "ECONOMY.CPI",
       "parameters": [
         {
-          "description": "The country to get data. Multiple items allowed for provider(s): fred.",
+          "description": "The country to get data. Multiple comma separated items allowed for provider(s): fred.",
           "name": "country",
           "type": "string"
         },
@@ -521,7 +585,7 @@
       "name": "ECONOMY.FRED_REGIONAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
+          "description": "Symbol to get data for.",
           "name": "symbol",
           "type": "string"
         },
@@ -680,7 +744,7 @@
       "name": "ECONOMY.FRED_SERIES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fred.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.",
           "name": "symbol",
           "type": "string"
         },
@@ -1287,13 +1351,13 @@
       "name": "EQUITY.ESTIMATES.ANALYST_SEARCH",
       "parameters": [
         {
-          "description": "A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.",
+          "description": "Analyst names to return. Omitting will return all available analysts. Multiple comma separated items allowed for provider(s): benzinga.",
           "name": "analyst_name",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "A comma separated list of firm names to bring back. Omitting will bring back all available firms.",
+          "description": "Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.",
           "name": "firm_name",
           "optional": true,
           "type": "string"
@@ -1305,16 +1369,16 @@
           "type": "string"
         },
         {
-          "description": "A comma separated list of analyst IDs to bring back. (provider: benzinga)",
+          "description": "List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "analyst_ids",
           "optional": true,
-          "type": "any"
+          "type": "string"
         },
         {
-          "description": "A comma separated list of firm IDs to bring back. (provider: benzinga)",
+          "description": "Firm IDs to return. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "firm_ids",
           "optional": true,
-          "type": "any"
+          "type": "string"
         },
         {
           "description": "Number of results returned. Limit 1000. (provider: benzinga)",
@@ -1329,10 +1393,10 @@
           "type": "number"
         },
         {
-          "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)",
+          "description": "Fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "fields",
           "optional": true,
-          "type": "any"
+          "type": "string"
         }
       ],
       "result": {
@@ -1346,7 +1410,7 @@
       "name": "EQUITY.ESTIMATES.CONSENSUS",
       "parameters": [
         {
-          "description": "Symbol to get data for.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -1368,27 +1432,27 @@
       "name": "EQUITY.ESTIMATES.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
-        },
-        {
-          "description": "Time period of the data to return.",
-          "name": "period",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "The number of data entries to return.",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
         },
         {
           "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Time period of the data to return. (provider: fmp)",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: fmp)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -1402,7 +1466,7 @@
       "name": "EQUITY.ESTIMATES.PRICE_TARGET",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): benzinga.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp.",
           "name": "symbol",
           "optional": true,
           "type": "string"
@@ -1462,19 +1526,19 @@
           "type": "string"
         },
         {
-          "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple items allowed. (provider: benzinga)",
+          "description": "Comma-separated list of analyst (person) IDs. Omitting will bring back all available analysts. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "analyst_ids",
           "optional": true,
           "type": "any"
         },
         {
-          "description": "Comma-separated list of firm IDs. Multiple items allowed. (provider: benzinga)",
+          "description": "Comma-separated list of firm IDs. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "firm_ids",
           "optional": true,
           "type": "any"
         },
         {
-          "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple items allowed. (provider: benzinga)",
+          "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. Multiple comma separated items allowed. (provider: benzinga)",
           "name": "fields",
           "optional": true,
           "type": "any"
@@ -1875,12 +1939,6 @@
           "type": "number"
         },
         {
-          "description": "Sort the data in ascending or descending order. (provider: fmp)",
-          "name": "sort",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
           "name": "start_date",
           "optional": true,
@@ -1922,12 +1980,12 @@
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
+          "description": "Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
           "name": "tag",
           "type": "string"
         },
@@ -2187,12 +2245,12 @@
       "name": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.",
+          "description": "Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.",
           "name": "tag",
           "type": "string"
         },
@@ -2236,20 +2294,8 @@
       "name": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Start date of the data, in YYYY-MM-DD format.",
-          "name": "start_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "End date of the data, in YYYY-MM-DD format.",
-          "name": "end_date",
-          "optional": true,
           "type": "string"
         },
         {
@@ -2257,6 +2303,12 @@
           "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Year of the compensation. (provider: fmp)",
+          "name": "year",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -2270,7 +2322,7 @@
       "name": "EQUITY.FUNDAMENTAL.METRICS",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -2310,7 +2362,7 @@
       "name": "EQUITY.FUNDAMENTAL.MULTIPLES",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2354,7 +2406,7 @@
       "name": "EQUITY.FUNDAMENTAL.RATIOS",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2377,7 +2429,7 @@
           "type": "string"
         },
         {
-          "description": "Include trailing twelve months (TTM) data. (provider: fmp, intrinio)",
+          "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
           "name": "with_ttm",
           "optional": true,
           "type": "boolean"
@@ -2536,35 +2588,6 @@
       }
     },
     {
-      "description": "Get the 1 year trailing dividend yield for a given company over time.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/trailing_dividend_yield",
-      "id": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
-      "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
-      "parameters": [
-        {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "The number of data entries to return. Default is 252, the number of trading days in a year.",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Options: tiingo, defaults to tiingo.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Get earnings call transcripts for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/transcript",
       "id": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
@@ -2578,18 +2601,11 @@
         {
           "description": "Year of the earnings call transcript.",
           "name": "year",
-          "optional": true,
           "type": "number"
         },
         {
           "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Date of the earnings call transcript. (provider: fmp)",
-          "name": "earnings_date",
           "optional": true,
           "type": "string"
         }
@@ -2605,7 +2621,7 @@
       "name": "EQUITY.MARKET_SNAPSHOTS",
       "parameters": [
         {
-          "description": "Options: fmp, polygon, defaults to fmp.",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2613,6 +2629,46 @@
         {
           "description": "The market to fetch data for. (provider: fmp)",
           "name": "market",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The date of the data. Can be a datetime or an ISO datetime string. Historical data appears to go back to mid-June 2022. Example: '2024-03-08T12:15:00+0400' (provider: intrinio)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report\nthat is required to be filed by all institutional investment managers with at least\n$100 million in assets under management.\nManagers are required to file Form 13F within 45 days after the last day of the calendar quarter.\nMost funds wait until the end of this period in order to conceal\ntheir investment strategy from competitors and the public.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/form_13f",
+      "id": "EQUITY.OWNERSHIP.FORM_13F",
+      "name": "EQUITY.OWNERSHIP.FORM_13F",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. A CIK or Symbol can be used.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -2691,7 +2747,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2707,12 +2763,6 @@
           "name": "date",
           "optional": true,
           "type": "string"
-        },
-        {
-          "description": "The number of data entries to return. (provider: intrinio)",
-          "name": "page_size",
-          "optional": true,
-          "type": "number"
         }
       ],
       "result": {
@@ -2747,12 +2797,6 @@
           "name": "provider",
           "optional": true,
           "type": "string"
-        },
-        {
-          "description": "Number of records to return. (Ignores page if set. Default: None) (provider: fmp)",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
         }
       ],
       "result": {
@@ -2788,7 +2832,7 @@
       "name": "EQUITY.PRICE.HISTORICAL",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -2811,20 +2855,8 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, tiingo, defaults to fmp.",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of results to return per page. (provider: intrinio);\nThe number of data entries to return. (provider: polygon)",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order of the data. (provider: polygon)",
-          "name": "sort",
           "optional": true,
           "type": "string"
         },
@@ -2853,16 +2885,28 @@
           "type": "string"
         },
         {
-          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
-          "name": "sleep",
+          "description": "The adjustment factor to apply. Default is splits only. (provider: polygon)",
+          "name": "adjustment",
           "optional": true,
-          "type": "number"
+          "type": "string"
         },
         {
-          "description": "Output time series is adjusted by historical split and dividend events. (provider: polygon)",
-          "name": "adjusted",
+          "description": "Include Pre and Post market data. (provider: polygon)",
+          "name": "extended_hours",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -2899,25 +2943,25 @@
           "type": "string"
         },
         {
-          "description": "Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "description": "Query by datetime, less than. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)",
           "name": "timestamp_lt",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "description": "Query by datetime, greater than. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)",
           "name": "timestamp_gt",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Query by datetime, less than or equal to.\nEither a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "description": "Query by datetime, less than or equal to. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)",
           "name": "timestamp_lte",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Query by datetime, greater than or equal to.\nEither a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "description": "Query by datetime, greater than or equal to. Either a date with the format 'YYYY-MM-DD' or a TZ-aware timestamp string, 'YYYY-MM-DDTH:M:S.000000000-04:00'. Include all nanoseconds and the 'T' between the day and hour. (provider: polygon)",
           "name": "timestamp_gte",
           "optional": true,
           "type": "string"
@@ -2934,7 +2978,7 @@
       "name": "EQUITY.PRICE.PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -2956,7 +3000,7 @@
       "name": "EQUITY.PRICE.QUOTE",
       "parameters": [
         {
-          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -2984,7 +3028,7 @@
       "name": "EQUITY.PROFILE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
@@ -3212,7 +3256,7 @@
       "name": "ETF.COUNTRIES",
       "parameters": [
         {
-          "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3234,7 +3278,7 @@
       "name": "ETF.EQUITY_EXPOSURE",
       "parameters": [
         {
-          "description": "Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3243,6 +3287,94 @@
           "name": "provider",
           "optional": true,
           "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "ETF Historical Market Price.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/historical",
+      "id": "ETF.HISTORICAL",
+      "name": "ETF.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, polygon.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Time interval of the data to return.",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
+          "name": "start_time",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
+          "name": "end_time",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)",
+          "name": "timezone",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The source of the data. (provider: intrinio)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The adjustment factor to apply. Default is splits only. (provider: polygon)",
+          "name": "adjustment",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Include Pre and Post market data. (provider: polygon)",
+          "name": "extended_hours",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -3261,13 +3393,13 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, sec, defaults to fmp.",
+          "description": "Options: fmp, intrinio, sec, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);\nA specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)",
+          "description": "A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);\nA specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)",
           "name": "date",
           "optional": true,
           "type": "string"
@@ -3324,7 +3456,7 @@
       "name": "ETF.HOLDINGS_PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.",
           "name": "symbol",
           "type": "string"
         },
@@ -3346,12 +3478,12 @@
       "name": "ETF.INFO",
       "parameters": [
         {
-          "description": "Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3362,19 +3494,31 @@
       }
     },
     {
-      "description": "Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.",
+      "description": "Price performance as a return, over different periods.",
       "helpUrl": "https://docs.openbb.co/excel/reference/etf/price_performance",
       "id": "ETF.PRICE_PERFORMANCE",
       "name": "ETF.PRICE_PERFORMANCE",
       "parameters": [
         {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.",
           "name": "symbol",
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of returns to return, a trailing or calendar window. (provider: intrinio)",
+          "name": "return_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The adjustment factor, 'splits_only' will return pure price performance. (provider: intrinio)",
+          "name": "adjustment",
           "optional": true,
           "type": "string"
         }
@@ -3396,13 +3540,13 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The exchange code the ETF trades on. (provider: fmp)",
+          "description": "The exchange code the ETF trades on. (provider: fmp);\nTarget a specific exchange by providing the MIC code. (provider: intrinio)",
           "name": "exchange",
           "optional": true,
           "type": "string"
@@ -3635,18 +3779,16 @@
           "type": "string"
         },
         {
-          "description": "The maturities in years.",
-          "dimensionality": "matrix",
+          "description": "Maturities in years. Multiple comma separated items allowed for provider(s): fred.",
           "name": "maturity",
           "optional": true,
           "type": "any"
         },
         {
-          "description": "The category.",
-          "dimensionality": "matrix",
+          "description": "Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.",
           "name": "category",
           "optional": true,
-          "type": "any"
+          "type": "string"
         },
         {
           "description": "Options: fred, defaults to fred.",
@@ -4200,101 +4342,7 @@
       "name": "INDEX.MARKET",
       "parameters": [
         {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Start date of the data, in YYYY-MM-DD format.",
-          "name": "start_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "End date of the data, in YYYY-MM-DD format.",
-          "name": "end_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Number of days to look back. (provider: fmp)",
-          "name": "timeseries",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Data granularity. (provider: fmp)",
-          "name": "interval",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
-          "name": "sort",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Index tag. (provider: intrinio)",
-          "name": "tag",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Index type. (provider: intrinio)",
-          "name": "type",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "The number of data entries to return. (provider: intrinio, polygon)",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
-          "name": "sleep",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Timespan of the data. (provider: polygon)",
-          "name": "timespan",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Whether the data is adjusted. (provider: polygon)",
-          "name": "adjusted",
-          "optional": true,
-          "type": "boolean"
-        },
-        {
-          "description": "Multiplier of the timespan. (provider: polygon)",
-          "name": "multiplier",
-          "optional": true,
-          "type": "number"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Historical Index Levels.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/index/price/historical",
-      "id": "INDEX.PRICE.HISTORICAL",
-      "name": "INDEX.PRICE.HISTORICAL",
-      "parameters": [
-        {
-          "description": "Symbol to get data for. Multiple items allowed for provider(s): intrinio, polygon.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon.",
           "name": "symbol",
           "type": "string"
         },
@@ -4317,14 +4365,54 @@
           "type": "string"
         },
         {
-          "description": "The number of data entries to return.",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio, polygon)",
           "name": "limit",
           "optional": true,
           "type": "number"
         },
         {
-          "description": "Sort the data in ascending or descending order.",
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
           "name": "sort",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Index Levels.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/index/price/historical",
+      "id": "INDEX.PRICE.HISTORICAL",
+      "name": "INDEX.PRICE.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, polygon.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time interval of the data to return.",
+          "name": "interval",
           "optional": true,
           "type": "string"
         },
@@ -4335,10 +4423,16 @@
           "type": "string"
         },
         {
-          "description": "Number of days to look back. (provider: fmp)",
-          "name": "timeseries",
+          "description": "The number of data entries to return. (provider: intrinio, polygon)",
+          "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Sort order of the data. This impacts the results in combination with the 'limit' parameter. The results are always returned in ascending order by date. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -4352,7 +4446,7 @@
       "name": "NEWS.COMPANY",
       "parameters": [
         {
-          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo.",
+          "description": "Symbol to get data for. Multiple comma separated items allowed for provider(s): benzinga, fmp, intrinio, polygon.",
           "name": "symbol",
           "optional": true,
           "type": "string"
@@ -4376,7 +4470,7 @@
           "type": "number"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
+          "description": "Options: benzinga, fmp, intrinio, polygon, defaults to benzinga.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4458,18 +4552,6 @@
           "name": "page",
           "optional": true,
           "type": "number"
-        },
-        {
-          "description": "Page offset, used in conjunction with limit. (provider: tiingo)",
-          "name": "offset",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "A comma-separated list of the domains requested. (provider: tiingo)",
-          "name": "source",
-          "optional": true,
-          "type": "string"
         }
       ],
       "result": {
@@ -4501,7 +4583,7 @@
           "type": "string"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga.",
+          "description": "Options: benzinga, fmp, intrinio, defaults to benzinga.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4575,18 +4657,6 @@
         {
           "description": "Content types of the news to retrieve. (provider: benzinga)",
           "name": "content_types",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Page offset, used in conjunction with limit. (provider: tiingo)",
-          "name": "offset",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "A comma-separated list of the domains requested. (provider: tiingo)",
-          "name": "source",
           "optional": true,
           "type": "string"
         }
@@ -4736,7 +4806,6 @@
         {
           "description": "Search query.",
           "name": "query",
-          "optional": true,
           "type": "string"
         },
         {

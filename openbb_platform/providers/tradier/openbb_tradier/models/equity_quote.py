@@ -1,4 +1,4 @@
-"""Tradier Equity Quote Model"""
+"""Tradier Equity Quote Model."""
 
 # pylint: disable = unused-argument
 
@@ -15,7 +15,7 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator, model_validator
 from pytz import timezone
@@ -24,7 +24,7 @@ from pytz import timezone
 class TradierEquityQuoteQueryParams(EquityQuoteQueryParams):
     """Tradier Equity Quote Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class TradierEquityQuoteData(EquityQuoteData):
@@ -157,7 +157,8 @@ class TradierEquityQuoteData(EquityQuoteData):
     def validate_dates(cls, v):
         """Validate the dates."""
         if v != 0 and v is not None and isinstance(v, int):
-            v = datetime.fromtimestamp(int(v) / 1000)
+            v = int(v) / 1000  # milliseconds to seconds
+            v = safe_fromtimestamp(v)
             v = v.replace(microsecond=0)
             v = v.astimezone(timezone("America/New_York"))
             return v
@@ -202,7 +203,6 @@ class TradierEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
-
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -245,7 +245,6 @@ class TradierEquityQuoteFetcher(
         **kwargs: Any,
     ) -> List[TradierEquityQuoteData]:
         """Transform and validate the data."""
-
         results: List[TradierEquityQuoteData] = []
 
         for d in data:

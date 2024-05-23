@@ -18,8 +18,6 @@ import pandas as pd
 import plotly.graph_objects as go
 from openbb_core.env import Env
 from packaging import version
-from reportlab.graphics import renderPDF
-from svglib.svglib import svg2rlg
 
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
@@ -54,7 +52,7 @@ else:
     JUPYTER_NOTEBOOK = True
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
-PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.24.2.min.js"
+PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.32.0.min.js"
 BACKEND = None
 
 
@@ -74,6 +72,7 @@ class Backend(PyWry):
         max_retries: int = 30,
         proc_name: str = "OpenBB Terminal",
     ):
+        """Create a new instance of the backend."""
         self.charting_settings = charting_settings
 
         has_version = hasattr(PyWry, "__version__")
@@ -152,7 +151,6 @@ class Backend(PyWry):
         theme: Optional[str] = None,
     ) -> dict:
         """Get the json update for the backend."""
-
         posthog: Dict[str, Any] = dict(collect_logs=self.charting_settings.log_collect)
         if (
             self.charting_settings.log_collect
@@ -198,6 +196,12 @@ class Backend(PyWry):
         self.check_backend()
         # pylint: disable=C0415
 
+        paper_bg = (
+            "rgba(0,0,0,0)"
+            if self.charting_settings.chart_style == "dark"
+            else "rgba(255,255,255,0)"
+        )
+
         title = "Interactive Chart"
 
         fig.layout.title.text = re.sub(
@@ -210,9 +214,8 @@ class Backend(PyWry):
             export_image = Path(export_image).resolve()
 
         json_data = json.loads(fig.to_json())
-
         json_data.update(self.get_json_update(command_location))
-
+        json_data["layout"]["paper_bgcolor"] = paper_bg
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
@@ -222,11 +225,15 @@ class Backend(PyWry):
         self.send_outgoing(outgoing)
 
         if export_image and isinstance(export_image, Path):
+            if self.loop.is_closed():  # type: ignore[has-type]
+                # Create a new event loop
+                self.loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(self.loop)
+
             self.loop.run_until_complete(self.process_image(export_image))
 
     async def process_image(self, export_image: Path):
         """Check if the image has been exported to the path."""
-        pdf = export_image.suffix == ".pdf"
         img_path = export_image.resolve()
 
         checks = 0
@@ -236,15 +243,7 @@ class Backend(PyWry):
             if checks > 50:
                 break
 
-        if pdf:
-            img_path = img_path.rename(img_path.with_suffix(".svg"))
-
         if img_path.exists():  # noqa: SIM102
-            if pdf:
-                drawing = svg2rlg(img_path)
-                img_path.unlink(missing_ok=True)
-                renderPDF.drawToFile(drawing, str(export_image))
-
             if self.charting_settings.plot_open_export:
                 if sys.platform == "win32":
                     os.startfile(export_image)  # nosec: B606 # noqa: S606
@@ -507,6 +506,7 @@ if not PLOTLYJS_PATH.exists() and not JUPYTER_NOTEBOOK:
 
 
 def create_backend(charting_settings: Optional["ChartingSettings"] = None):
+    """Create the backend."""
     # # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
@@ -517,6 +517,7 @@ def create_backend(charting_settings: Optional["ChartingSettings"] = None):
 
 
 def get_backend() -> Backend:
+    """Get the backend instance."""
     if BACKEND is None:
         raise ValueError("Backend not created")
     return BACKEND

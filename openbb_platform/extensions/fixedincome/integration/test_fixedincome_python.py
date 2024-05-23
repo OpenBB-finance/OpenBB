@@ -26,6 +26,7 @@ def obb(pytestconfig):
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_rates(params, obb):
+    """Test the treasury rates endpoint."""
     result = obb.fixedincome.government.treasury_rates(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -40,6 +41,7 @@ def test_fixedincome_government_treasury_rates(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_government_us_yield_curve(params, obb):
+    """Test the US yield curve endpoint."""
     result = obb.fixedincome.government.us_yield_curve(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -62,6 +64,7 @@ def test_fixedincome_government_us_yield_curve(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_sofr(params, obb):
+    """Test the SOFR endpoint."""
     result = obb.fixedincome.sofr(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -84,6 +87,7 @@ def test_fixedincome_sofr(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_estr(params, obb):
+    """Test the ESTR endpoint."""
     result = obb.fixedincome.rate.estr(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -106,6 +110,7 @@ def test_fixedincome_rate_estr(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_sonia(params, obb):
+    """Test the SONIA endpoint."""
     result = obb.fixedincome.rate.sonia(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -128,6 +133,7 @@ def test_fixedincome_rate_sonia(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_ameribor(params, obb):
+    """Test the Ameribor endpoint."""
     result = obb.fixedincome.rate.ameribor(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -156,6 +162,7 @@ def test_fixedincome_rate_ameribor(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_effr(params, obb):
+    """Test the EFFR endpoint."""
     result = obb.fixedincome.rate.effr(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -171,6 +178,7 @@ def test_fixedincome_rate_effr(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_effr_forecast(params, obb):
+    """Test the EFFR forecast endpoint."""
     result = obb.fixedincome.rate.effr_forecast(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -185,6 +193,7 @@ def test_fixedincome_rate_effr_forecast(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_iorb(params, obb):
+    """Test the IORB endpoint."""
     result = obb.fixedincome.rate.iorb(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -207,6 +216,7 @@ def test_fixedincome_rate_iorb(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_dpcredit(params, obb):
+    """Test the DPCREDIT endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.rate.dpcredit(**params)
@@ -229,6 +239,7 @@ def test_fixedincome_rate_dpcredit(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_ecb(params, obb):
+    """Test the ECB endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.rate.ecb(**params)
@@ -257,6 +268,7 @@ def test_fixedincome_rate_ecb(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_ice_bofa(params, obb):
+    """Test the ICE BofA endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.ice_bofa(**params)
@@ -271,6 +283,7 @@ def test_fixedincome_corporate_ice_bofa(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_moody(params, obb):
+    """Test the Moody endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.moody(**params)
@@ -296,6 +309,7 @@ def test_fixedincome_corporate_moody(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_commercial_paper(params, obb):
+    """Test the commercial paper endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.commercial_paper(**params)
@@ -336,6 +350,7 @@ def test_fixedincome_corporate_commercial_paper(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_spot_rates(params, obb):
+    """Test the spot rates endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.spot_rates(**params)
@@ -350,6 +365,7 @@ def test_fixedincome_corporate_spot_rates(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_hqm(params, obb):
+    """Test the HQM endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.hqm(**params)
@@ -364,6 +380,7 @@ def test_fixedincome_corporate_hqm(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_tcm(params, obb):
+    """Test the TCM endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.spreads.tcm(**params)
@@ -387,6 +404,7 @@ def test_fixedincome_spreads_tcm(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_tcm_effr(params, obb):
+    """Test the TCM EFFR endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.spreads.tcm_effr(**params)
@@ -410,6 +428,7 @@ def test_fixedincome_spreads_tcm_effr(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_treasury_effr(params, obb):
+    """Test the treasury EFFR endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.spreads.treasury_effr(**params)
@@ -433,6 +452,7 @@ def test_fixedincome_spreads_treasury_effr(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_government_eu_yield_curve(params, obb):
+    """Test the EU yield curve endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.eu_yield_curve(**params)
@@ -470,6 +490,7 @@ def test_fixedincome_government_eu_yield_curve(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_auctions(params, obb):
+    """Test the treasury auctions endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.treasury_auctions(**params)
@@ -514,6 +535,7 @@ def test_fixedincome_government_treasury_auctions(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_prices(params, obb):
+    """Test the treasury prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.treasury_prices(**params)
@@ -549,9 +571,52 @@ def test_fixedincome_government_treasury_prices(params, obb):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_bond_prices(params, obb):
+    """Test the bond prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.corporate.bond_prices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"date": "2023-05-01,2024-05-01", "provider": "fmp"}),
+        (
+            {
+                "date": "2023-05-01",
+                "country": "united_kingdom",
+                "provider": "econdb",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "ecb",
+                "yield_curve_type": "par_yield",
+                "date": None,
+                "rating": "aaa",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "yield_curve_type": "nominal",
+                "date": "2023-05-01,2024-05-01",
+            }
+        ),
+        ({"provider": "federal_reserve", "date": "2023-05-01,2024-05-01"}),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_yield_curve(params, obb):
+    """Test the government yield curve endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.government.yield_curve(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

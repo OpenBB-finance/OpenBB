@@ -1,3 +1,5 @@
+"""Test fixedincome API endpoints."""
+
 import base64
 
 import pytest
@@ -11,6 +13,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -24,6 +27,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_rates(params, headers):
+    """Test the treasury rates endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -41,6 +45,7 @@ def test_fixedincome_government_treasury_rates(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_government_us_yield_curve(params, headers):
+    """Test the US yield curve endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -68,6 +73,7 @@ def test_fixedincome_government_us_yield_curve(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_sofr(params, headers):
+    """Test the SOFR endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -93,6 +99,7 @@ def test_fixedincome_sofr(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_estr(params, headers):
+    """Test the ESTR rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -118,6 +125,7 @@ def test_fixedincome_rate_estr(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_sonia(params, headers):
+    """Test the SONIA rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -143,6 +151,7 @@ def test_fixedincome_rate_sonia(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_ameribor(params, headers):
+    """Test the Ameribor rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -174,6 +183,7 @@ def test_fixedincome_rate_ameribor(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_effr(params, headers):
+    """Test the EFFR rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -189,6 +199,7 @@ def test_fixedincome_rate_effr(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_effr_forecast(params, headers):
+    """Test the EFFR forecast rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -204,6 +215,7 @@ def test_fixedincome_rate_effr_forecast(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_iorb(params, headers):
+    """Test the IORB rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -229,6 +241,7 @@ def test_fixedincome_rate_iorb(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_dpcredit(params, headers):
+    """Test the DPCredit rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -252,6 +265,7 @@ def test_fixedincome_rate_dpcredit(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_rate_ecb(params, headers):
+    """Test the ECB rate endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -281,6 +295,7 @@ def test_fixedincome_rate_ecb(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_ice_bofa(params, headers):
+    """Test the ICE BofA corporate yield index endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -296,6 +311,7 @@ def test_fixedincome_corporate_ice_bofa(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_moody(params, headers):
+    """Test the Moody's corporate yield index endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -322,6 +338,7 @@ def test_fixedincome_corporate_moody(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_commercial_paper(params, headers):
+    """Test the commercial paper endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -365,6 +382,7 @@ def test_fixedincome_corporate_commercial_paper(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_spot_rates(params, headers):
+    """Test the corporate spot rates endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -380,6 +398,7 @@ def test_fixedincome_corporate_spot_rates(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_hqm(params, headers):
+    """Test the HQM corporate yield curve endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -395,6 +414,7 @@ def test_fixedincome_corporate_hqm(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_tcm(params, headers):
+    """Test the TCM spreads endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -419,6 +439,7 @@ def test_fixedincome_spreads_tcm(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_tcm_effr(params, headers):
+    """Test the TCM EFFR spreads endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -443,6 +464,7 @@ def test_fixedincome_spreads_tcm_effr(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_treasury_effr(params, headers):
+    """Test the treasury EFFR spreads endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -467,6 +489,7 @@ def test_fixedincome_spreads_treasury_effr(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_government_eu_yield_curve(params, headers):
+    """Test the EU yield curve endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -507,6 +530,7 @@ def test_fixedincome_government_eu_yield_curve(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_auctions(params, headers):
+    """Test the treasury auctions endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -552,13 +576,14 @@ def test_fixedincome_government_treasury_auctions(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_prices(params, headers):
+    """Test the treasury prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = (
         f"http://0.0.0.0:8000/api/v1/fixedincome/government/treasury_prices?{query_str}"
     )
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -590,10 +615,54 @@ def test_fixedincome_government_treasury_prices(params, headers):
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_bond_prices(params, headers):
+    """Test the corporate bond prices endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/corporate/bond_prices?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=40)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"date": "2023-05-01,2024-05-01", "provider": "fmp"}),
+        (
+            {
+                "date": "2023-05-01",
+                "country": "united_kingdom",
+                "provider": "econdb",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "ecb",
+                "yield_curve_type": "par_yield",
+                "date": None,
+                "rating": "aaa",
+                "use_cache": True,
+            }
+        ),
+        (
+            {
+                "provider": "fred",
+                "yield_curve_type": "nominal",
+                "date": "2023-05-01,2024-05-01",
+            }
+        ),
+        ({"provider": "federal_reserve", "date": "2023-05-01,2024-05-01"}),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_yield_curve(params, headers):
+    """Test the treasury rates endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/government/yield_curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

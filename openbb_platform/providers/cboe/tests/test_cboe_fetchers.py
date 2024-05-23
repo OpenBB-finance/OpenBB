@@ -34,6 +34,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [("User-Agent", None)],
         "filter_query_parameters": [
@@ -44,6 +45,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_cboe_index_historical_fetcher(credentials=test_credentials):
+    """Test Cboe index historical fetcher."""
     params = {"symbol": "AAVE10RP", "use_cache": False}
 
     fetcher = CboeIndexHistoricalFetcher()
@@ -53,6 +55,7 @@ def test_cboe_index_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_index_constituents_fetcher(credentials=test_credentials):
+    """Test Cboe index constituents fetcher."""
     params = {"symbol": "BUK100P"}
 
     fetcher = CboeIndexConstituentsFetcher()
@@ -62,6 +65,7 @@ def test_cboe_index_constituents_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_index_search_fetcher(credentials=test_credentials):
+    """Test Cboe index search fetcher."""
     params = {"query": "uk", "use_cache": False}
 
     fetcher = CboeIndexSearchFetcher()
@@ -71,6 +75,7 @@ def test_cboe_index_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_equity_historical_fetcher(credentials=test_credentials):
+    """Test Cboe equity historical fetcher."""
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
@@ -86,6 +91,7 @@ def test_cboe_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_available_indices_fetcher(credentials=test_credentials):
+    """Test Cboe available indices fetcher."""
     params = {"use_cache": False}
 
     fetcher = CboeAvailableIndicesFetcher()
@@ -95,6 +101,7 @@ def test_cboe_available_indices_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_options_chains_fetcher(credentials=test_credentials):
+    """Test Cboe options chains fetcher."""
     params = {"symbol": "AAPL", "use_cache": False}
 
     fetcher = CboeOptionsChainsFetcher()
@@ -104,6 +111,7 @@ def test_cboe_options_chains_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_equity_search_fetcher(credentials=test_credentials):
+    """Test Cboe equity search fetcher."""
     params = {"query": "ETF", "use_cache": False}
 
     fetcher = CboeEquitySearchFetcher()
@@ -113,6 +121,7 @@ def test_cboe_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_equity_quote_fetcher(credentials=test_credentials):
+    """Test Cboe equity quote fetcher."""
     params = {"symbol": "AAPL", "use_cache": False}
 
     fetcher = CboeEquityQuoteFetcher()
@@ -122,6 +131,7 @@ def test_cboe_equity_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_futures_curve_fetcher(credentials=test_credentials):
+    """Test Cboe futures curve fetcher."""
     params = {"symbol": "VX"}
 
     fetcher = CboeFuturesCurveFetcher()
@@ -131,6 +141,7 @@ def test_cboe_futures_curve_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_index_snapshots_fetcher(credentials=test_credentials):
+    """Test Cboe index snapshots fetcher."""
     params = {"region": "eu"}
 
     fetcher = CboeIndexSnapshotsFetcher()

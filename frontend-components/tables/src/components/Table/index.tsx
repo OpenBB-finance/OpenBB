@@ -112,7 +112,7 @@ function getCellWidth(row, column) {
   }
 }
 
-export const EXPORT_TYPES = ["csv", "xlsx", "png"];
+export const EXPORT_TYPES = ["csv", "png"];
 export default function Table({
   data,
   columns,

@@ -76,6 +76,7 @@ class TmxGainersData(EquityPerformanceData):
     @model_validator(mode="before")
     @classmethod
     def check_metric(cls, values):
+        """Check for missing metrics."""
         for k, v in values.items():
             if v is None or v == "-":
                 values[k] = 0
@@ -104,7 +105,6 @@ class TmxGainersFetcher(
         **kwargs: Any,
     ) -> List[TmxGainersData]:
         """Return the raw data from the TMX endpoint."""
-
         user_agent = get_random_agent()
         payload = gql.get_stock_list_payload.copy()
         payload["variables"]["stockListId"] = STOCK_LISTS_DICT[query.category]

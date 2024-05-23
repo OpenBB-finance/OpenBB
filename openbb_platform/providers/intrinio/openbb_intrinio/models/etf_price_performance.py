@@ -27,7 +27,7 @@ class IntrinioEtfPricePerformanceQueryParams(RecentPerformanceQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_etf_analytics_v2
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     return_type: Literal["trailing", "calendar"] = Field(
         default="trailing",

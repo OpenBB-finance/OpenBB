@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_currency.price.price_router import router as price_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Foreign exchange (FX) market data.")
 router.include_router(price_router)
 
 
@@ -21,18 +21,14 @@ router.include_router(price_router)
 @router.command(
     model="CurrencyPairs",
     examples=[
-        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(parameters={"provider": "fmp"}),
         APIEx(
-            description="Search for 'EURUSD' currency pair using 'intrinio' as provider.",
-            parameters={"provider": "intrinio", "symbol": "EURUSD"},
-        ),
-        APIEx(
-            description="Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
-            parameters={"provider": "polygon", "date": "2024-01-02", "active": True},
+            description="Search for 'EUR' currency pair using 'intrinio' as provider.",
+            parameters={"provider": "intrinio", "query": "EUR"},
         ),
         APIEx(
             description="Search for terms  using 'polygon' as provider.",
-            parameters={"provider": "polygon", "search": "Euro zone"},
+            parameters={"provider": "polygon", "query": "EUR"},
         ),
     ],
 )
@@ -65,7 +61,7 @@ async def reference_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current, official, currency reference rates.
+    """Get current, official, currency reference rates.
 
     Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
     serving as a benchmark for the value of currencies around the world.

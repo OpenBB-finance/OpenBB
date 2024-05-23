@@ -2,9 +2,10 @@
 
 # pylint: disable=unused-argument
 
-import warnings
+import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,15 +17,13 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_requests,
+    amake_request,
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
@@ -34,7 +33,7 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
@@ -99,32 +98,55 @@ class FMPCurrencyHistoricalFetcher(
             url_params = f"{symbol}?{query_str}&apikey={api_key}"
             url = f"{base_url}/historical-chart/{interval}/{url_params}"
             if interval == "1day":
-                url = f"{base_url}/historical-price-full/forex/{url_params}"
+                url = f"{base_url}/historical-price-full/{url_params}"
             return url
 
-        # if there are more than 20 symbols, we need to increase the timeout
-        if len(query.symbol.split(",")) > 20:
-            kwargs.update({"preferences": {"request_timeout": 30}})
+        symbols = query.symbol.split(",")
 
-        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            data = await response.json()
-            symbol = response.url.parts[-1]
-            results = []
-            if not data:
-                _warn(f"No data found the the symbol: {symbol}")
-                return results
+        results = []
+        messages = []
 
-            if isinstance(data, dict):
-                results = data.get("historical", [])
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = get_url_params(symbol)
+            data = []
+            response = await amake_request(url, **kwargs)
 
-            if "," in query.symbol:
-                for d in results:
-                    d["symbol"] = symbol
-            return results
+            if isinstance(response, dict) and response.get("Error Message"):
+                message = f"Error fetching data for {symbol}: {response.get('Error Message', '')}"
+                warn(message)
+                messages.append(message)
 
-        urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
+            if not response:
+                message = f"No data found for {symbol}."
+                warn(message)
+                messages.append(message)
 
-        return await amake_requests(urls, callback, **kwargs)
+            if isinstance(response, list) and len(response) > 0:
+                data = response
+                if len(symbols) > 1:
+                    for d in data:
+                        d["symbol"] = symbol
+
+            if isinstance(response, dict) and response.get("historical"):
+                data = response["historical"]
+                if len(symbols) > 1:
+                    for d in data:
+                        d["symbol"] = symbol
+
+            if data:
+                results.extend(data)
+
+        tasks = [get_one(symbol) for symbol in symbols]
+
+        await asyncio.gather(*tasks)
+
+        if not results:
+            raise EmptyDataError(
+                f"{str(','.join(messages)).replace(',',' ') if messages else 'No data found'}"
+            )
+
+        return results
 
     @staticmethod
     def transform_data(
@@ -136,7 +158,15 @@ class FMPCurrencyHistoricalFetcher(
         to_pop = ["label", "changePercent", "unadjustedVolume"]
         results: List[FMPCurrencyHistoricalData] = []
 
-        for d in sorted(data, key=lambda x: x["date"], reverse=False):
+        for d in sorted(
+            data,
+            key=lambda x: (
+                (x["date"], x["symbol"])
+                if len(query.symbol.split(",")) > 1
+                else x["date"]
+            ),
+            reverse=False,
+        ):
             _ = [d.pop(pop) for pop in to_pop if pop in d]
             if d.get("unadjusted_volume") == d.get("volume"):
                 _ = d.pop("unadjusted_volume")

@@ -3,10 +3,7 @@
 import datetime
 from typing import List, Literal, Optional, Union
 
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -16,13 +13,17 @@ from typing_extensions import Annotated
 
 class ROUTER_economy(Container):
     """/economy
+    available_indicators
+    balance_of_payments
     calendar
     composite_leading_indicator
+    country_profile
     cpi
     fred_regional
     fred_search
     fred_series
     /gdp
+    indicators
     long_term_interest_rate
     money_measures
     risk_premium
@@ -35,23 +36,216 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def available_indicators(
+        self,
+        provider: Annotated[
+            Optional[Literal["econdb"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the available economic indicators for a provider.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['econdb']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'econdb' if there is
+            no default.
+        use_cache : bool
+            Whether to use cache or not, by default is True The cache of indicator symbols will persist for one week. (provider: econdb)
+
+        Returns
+        -------
+        OBBject
+            results : List[AvailableIndicators]
+                Serializable results.
+            provider : Optional[Literal['econdb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        AvailableIndicators
+        -------------------
+        symbol_root : Optional[str]
+            The root symbol representing the indicator.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data. The root symbol with additional codes.
+        country : Optional[str]
+            The name of the country, region, or entity represented by the symbol.
+        iso : Optional[str]
+            The ISO code of the country, region, or entity represented by the symbol.
+        description : Optional[str]
+            The description of the indicator.
+        frequency : Optional[str]
+            The frequency of the indicator data.
+        currency : Optional[str]
+            The currency, or unit, the data is based in. (provider: econdb)
+        scale : Optional[str]
+            The scale of the data. (provider: econdb)
+        multiplier : Optional[int]
+            The multiplier of the data to arrive at whole units. (provider: econdb)
+        transformation : Optional[str]
+            Transformation type. (provider: econdb)
+        source : Optional[str]
+            The original source of the data. (provider: econdb)
+        first_date : Optional[date]
+            The first date of the data. (provider: econdb)
+        last_date : Optional[date]
+            The last date of the data. (provider: econdb)
+        last_insert_timestamp : Optional[datetime]
+            The time of the last update. Data is typically reported with a lag. (provider: econdb)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.available_indicators(provider='econdb')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/available_indicators",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/available_indicators",
+                        ("econdb",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def balance_of_payments(
+        self,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Balance of Payments Reports.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        country : Literal['argentina', 'australia', 'austria', 'belgium', 'brazil', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'czechia', 'denmark', 'estonia', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'poland', 'portugal', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'g7', 'g20']
+            The country to get data. Enter as a 3-letter ISO country code, default is USA. (provider: fred)
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format. (provider: fred)
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[BalanceOfPayments]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        BalanceOfPayments
+        -----------------
+        period : Optional[date]
+            The date representing the beginning of the reporting period.
+        balance_percent_of_gdp : Optional[float]
+            Current Account Balance as Percent of GDP
+        balance_total : Optional[float]
+            Current Account Total Balance (USD)
+        balance_total_services : Optional[float]
+            Current Account Total Services Balance (USD)
+        balance_total_secondary_income : Optional[float]
+            Current Account Total Secondary Income Balance (USD)
+        balance_total_goods : Optional[float]
+            Current Account Total Goods Balance (USD)
+        balance_total_primary_income : Optional[float]
+            Current Account Total Primary Income Balance (USD)
+        credits_services_percent_of_goods_and_services : Optional[float]
+            Current Account Credits Services as Percent of Goods and Services
+        credits_services_percent_of_current_account : Optional[float]
+            Current Account Credits Services as Percent of Current Account
+        credits_total_services : Optional[float]
+            Current Account Credits Total Services (USD)
+        credits_total_goods : Optional[float]
+            Current Account Credits Total Goods (USD)
+        credits_total_primary_income : Optional[float]
+            Current Account Credits Total Primary Income (USD)
+        credits_total_secondary_income : Optional[float]
+            Current Account Credits Total Secondary Income (USD)
+        credits_total : Optional[float]
+            Current Account Credits Total (USD)
+        debits_services_percent_of_goods_and_services : Optional[float]
+            Current Account Debits Services as Percent of Goods and Services
+        debits_services_percent_of_current_account : Optional[float]
+            Current Account Debits Services as Percent of Current Account
+        debits_total_services : Optional[float]
+            Current Account Debits Total Services (USD)
+        debits_total_goods : Optional[float]
+            Current Account Debits Total Goods (USD)
+        debits_total_primary_income : Optional[float]
+            Current Account Debits Total Primary Income (USD)
+        debits_total : Optional[float]
+            Current Account Debits Total (USD)
+        debits_total_secondary_income : Optional[float]
+            Current Account Debits Total Secondary Income (USD)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.balance_of_payments(provider='fred')
+        >>> obb.economy.balance_of_payments(provider='fred', country='brazil')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/balance_of_payments",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/balance_of_payments",
+                        ("fred",),
+                    )
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
     def calendar(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "tradingeconomics"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -70,11 +264,13 @@ class ROUTER_economy(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         country : Optional[str]
-            Country of the event. Multiple items allowed. (provider: tradingeconomics)
-        importance : Optional[Literal['Low', 'Medium', 'High']]
+            Country of the event. Multiple comma separated items allowed. (provider: tradingeconomics)
+        importance : Optional[Literal['low', 'medium', 'high']]
             Importance of the event. (provider: tradingeconomics)
-        group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
-            Grouping of events (provider: tradingeconomics)
+        group : Optional[Literal['interest_rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
+            Grouping of events. (provider: tradingeconomics)
+        calendar_id : Optional[Union[int, str]]
+            Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed. (provider: tradingeconomics)
 
         Returns
         -------
@@ -96,38 +292,53 @@ class ROUTER_economy(Container):
             The date of the data.
         country : Optional[str]
             Country of event.
+        category : Optional[str]
+            Category of event.
         event : Optional[str]
             Event name.
-        reference : Optional[str]
-            Abbreviated period for which released data refers to.
+        importance : Optional[str]
+            The importance level for the event.
         source : Optional[str]
             Source of the data.
-        sourceurl : Optional[str]
-            Source URL.
-        actual : Optional[Union[str, float]]
-            Latest released value.
-        previous : Optional[Union[str, float]]
-            Value for the previous period after the revision (if revision is applicable).
-        consensus : Optional[Union[str, float]]
-            Average forecast among a representative group of economists.
-        forecast : Optional[Union[str, float]]
-            Trading Economics projections
-        url : Optional[str]
-            Trading Economics URL
-        importance : Optional[Union[Literal[0, 1, 2, 3], str]]
-            Importance of the event. 1-Low, 2-Medium, 3-High
         currency : Optional[str]
             Currency of the data.
         unit : Optional[str]
             Unit of the data.
+        consensus : Optional[Union[str, float]]
+            Average forecast among a representative group of economists.
+        previous : Optional[Union[str, float]]
+            Value for the previous period after the revision (if revision is applicable).
+        revised : Optional[Union[str, float]]
+            Revised previous value, if applicable.
+        actual : Optional[Union[str, float]]
+            Latest released value.
         change : Optional[float]
             Value change since previous. (provider: fmp)
         change_percent : Optional[float]
             Percentage change since previous. (provider: fmp)
-        updated_at : Optional[datetime]
-            Last updated timestamp. (provider: fmp)
+        last_updated : Optional[datetime]
+            Last updated timestamp. (provider: fmp);
+            Last update of the data. (provider: tradingeconomics)
         created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
+        forecast : Optional[Union[str, float]]
+            TradingEconomics projections. (provider: tradingeconomics)
+        reference : Optional[str]
+            Abbreviated period for which released data refers to. (provider: tradingeconomics)
+        reference_date : Optional[date]
+            Date for the reference period. (provider: tradingeconomics)
+        calendar_id : Optional[int]
+            TradingEconomics Calendar ID. (provider: tradingeconomics)
+        date_span : Optional[int]
+            Date span of the event. (provider: tradingeconomics)
+        symbol : Optional[str]
+            TradingEconomics Symbol. (provider: tradingeconomics)
+        ticker : Optional[str]
+            TradingEconomics Ticker symbol. (provider: tradingeconomics)
+        te_url : Optional[str]
+            TradingEconomics URL path. (provider: tradingeconomics)
+        source_url : Optional[str]
+            Source URL. (provider: tradingeconomics)
 
         Examples
         --------
@@ -152,6 +363,12 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={
+                    "country": {"tradingeconomics": {"multiple_items_allowed": True}},
+                    "calendar_id": {
+                        "tradingeconomics": {"multiple_items_allowed": True}
+                    },
+                },
             )
         )
 
@@ -161,26 +378,25 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """The composite leading indicator (CLI) is designed to provide early signals of turning points
+        """Use the composite leading indicator (CLI).
+
+        It is designed to provide early signals of turning points
         in business cycles showing fluctuation of the economic activity around its long term potential level.
+
         CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
@@ -247,14 +463,116 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def country_profile(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): econdb."
+            ),
+        ],
+        provider: Annotated[
+            Optional[Literal["econdb"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get a profile of country statistics and economic indicators.
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): econdb.
+        provider : Optional[Literal['econdb']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'econdb' if there is
+            no default.
+        latest : bool
+            If True, return only the latest data. If False, return all available data for each indicator. (provider: econdb)
+        use_cache : bool
+            If True, the request will be cached for one day.Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+
+        Returns
+        -------
+        OBBject
+            results : List[CountryProfile]
+                Serializable results.
+            provider : Optional[Literal['econdb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CountryProfile
+        --------------
+        country : str
+
+        population : Optional[int]
+            Population.
+        gdp_usd : Optional[float]
+            Gross Domestic Product, in billions of USD.
+        gdp_qoq : Optional[float]
+            GDP growth quarter-over-quarter change, as a normalized percent.
+        gdp_yoy : Optional[float]
+            GDP growth year-over-year change, as a normalized percent.
+        cpi_yoy : Optional[float]
+            Consumer Price Index year-over-year change, as a normalized percent.
+        core_yoy : Optional[float]
+            Core Consumer Price Index year-over-year change, as a normalized percent.
+        retail_sales_yoy : Optional[float]
+            Retail Sales year-over-year change, as a normalized percent.
+        industrial_production_yoy : Optional[float]
+            Industrial Production year-over-year change, as a normalized percent.
+        policy_rate : Optional[float]
+            Short term policy rate, as a normalized percent.
+        yield_10y : Optional[float]
+            10-year government bond yield, as a normalized percent.
+        govt_debt_gdp : Optional[float]
+            Government debt as a percent (normalized) of GDP.
+        current_account_gdp : Optional[float]
+            Current account balance as a percent (normalized) of GDP.
+        jobless_rate : Optional[float]
+            Unemployment rate, as a normalized percent.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.country_profile(provider='econdb', country='united_kingdom')
+        >>> # Enter the country as the full name, or iso code. If `latest` is False, the complete history for each series is returned.
+        >>> obb.economy.country_profile(country='united_states,jp', latest=False, provider='econdb')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/country_profile",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/country_profile",
+                        ("econdb",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                },
+                extra_params=kwargs,
+                info={"country": {"econdb": {"multiple_items_allowed": True}}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def cpi(
         self,
         country: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="The country to get data. Multiple items allowed for provider(s): fred."
-            ),
-            OpenBBCustomChoices(
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
                 choices=[
                     "australia",
                     "austria",
@@ -305,53 +623,49 @@ class ROUTER_economy(Container):
                     "turkey",
                     "united_kingdom",
                     "united_states",
-                ]
+                ],
             ),
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
             ),
         ] = "growth_same",
         frequency: Annotated[
             Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
             ),
         ] = "monthly",
         harmonized: Annotated[
-            bool,
-            OpenBBCustomParameter(
-                description="Whether you wish to obtain harmonized data."
-            ),
+            bool, OpenBBField(description="Whether you wish to obtain harmonized data.")
         ] = False,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
+        """Get Consumer Price Index (CPI).
+
+        Returns either the rescaled index value, or a rate of change (inflation).
+
 
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple items allowed for provider(s): fred.
+            The country to get data. Multiple comma separated items allowed for provider(s): fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -420,7 +734,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                extra_info={"country": {"multiple_items_allowed": ["fred"]}},
+                info={"country": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -428,34 +742,29 @@ class ROUTER_economy(Container):
     @validate
     def fred_regional(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
         """Query the Geo Fred API for regional economic data by series group.
+
         The series group ID is found by using `fred_search` and the `series_id` parameter.
 
 
@@ -546,7 +855,7 @@ class ROUTER_economy(Container):
             The name of the region. (provider: fred)
         code : Optional[Union[int, str]]
             The code of the region. (provider: fred)
-        value : Optional[Union[float, int]]
+        value : Optional[Union[int, float]]
             The obersvation value. The units are defined in the search results by series ID. (provider: fred)
         series_id : Optional[str]
             The individual series ID for the region. (provider: fred)
@@ -584,17 +893,18 @@ class ROUTER_economy(Container):
     def fred_search(
         self,
         query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="The search word(s).")
+            Optional[str], OpenBBField(description="The search word(s).")
         ] = None,
         provider: Annotated[
             Optional[Literal["fred"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
         """Search for FRED series or economic releases by ID or string.
+
         This does not return the observation values, only the metadata.
         Use this function to find series IDs for `fred_series()`.
 
@@ -615,7 +925,7 @@ class ROUTER_economy(Container):
             The number of data entries to return. (1-1000) (provider: fred)
         offset : Optional[Annotated[int, Ge(ge=0)]]
             Offset the results in conjunction with limit. (provider: fred)
-        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+        filter_variable : Optional[Literal['frequency', 'units', 'seasonal_adjustment']]
             Filter by an attribute. (provider: fred)
         filter_value : Optional[str]
             String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
@@ -712,29 +1022,25 @@ class ROUTER_economy(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100000,
         provider: Annotated[
             Optional[Literal["fred", "intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
             ),
         ] = None,
@@ -745,7 +1051,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fred.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fred.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -756,7 +1062,7 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fred' if there is
             no default.
-        frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert high frequency data to lower frequency.
                     None = No change
@@ -775,7 +1081,7 @@ class ROUTER_economy(Container):
                     bwew = Biweekly, Ending Wednesday
                     bwem = Biweekly, Ending Monday
                  (provider: fred)
-        aggregation_method : Literal[None, 'avg', 'sum', 'eop']
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
 
                 A key that indicates the aggregation method used for frequency aggregation.
                 This parameter has no affect if the frequency parameter is not set.
@@ -783,7 +1089,7 @@ class ROUTER_economy(Container):
                     sum = Sum
                     eop = End of Period
                  (provider: fred)
-        transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
 
                 Transformation type
                     None = No transformation
@@ -849,7 +1155,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
+                info={"symbol": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -862,29 +1168,151 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def indicators(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb."
+            ),
+        ],
+        country: Annotated[
+            Union[str, None, List[Optional[str]]],
+            OpenBBField(
+                description="The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb."
+            ),
+        ] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["econdb"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'econdb' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get economic indicators by country and indicator.
+
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for. The base symbol for the indicator (e.g. GDP, CPI, etc.). Multiple comma separated items allowed for provider(s): econdb.
+        country : Union[str, None, List[Optional[str]]]
+            The country to get data. The country represented by the indicator, if available. Multiple comma separated items allowed for provider(s): econdb.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['econdb']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'econdb' if there is
+            no default.
+        transform : Optional[Literal['toya', 'tpop', 'tusd', 'tpgp']]
+            The transformation to apply to the data, default is None.
+
+            tpop: Change from previous period
+            toya: Change from one year ago
+            tusd: Values as US dollars
+            tpgp: Values as a percent of GDP
+
+            Only 'tpop' and 'toya' are applicable to all indicators. Applying transformations across multiple indicators/countries may produce unexpected results.
+            This is because not all indicators are compatible with all transformations, and the original units and scale differ between entities.
+            `tusd` should only be used where values are currencies. (provider: econdb)
+        frequency : Literal['annual', 'quarter', 'month']
+            The frequency of the data, default is 'quarter'. Only valid when 'symbol' is 'main'. (provider: econdb)
+        use_cache : bool
+            If True, the request will be cached for one day. Using cache is recommended to avoid needlessly requesting the same data. (provider: econdb)
+
+        Returns
+        -------
+        OBBject
+            results : List[EconomicIndicators]
+                Serializable results.
+            provider : Optional[Literal['econdb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        EconomicIndicators
+        ------------------
+        date : date
+            The date of the data.
+        symbol_root : Optional[str]
+            The root symbol for the indicator (e.g. GDP).
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        country : Optional[str]
+            The country represented by the data.
+        value : Optional[Union[int, float]]
+
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.indicators(provider='econdb', symbol='PCOCO')
+        >>> # Enter the country as the full name, or iso code. Use `available_indicators()` to get a list of supported indicators from EconDB.
+        >>> obb.economy.indicators(symbol='CPI', country='united_states,jp', provider='econdb')
+        >>> # Use the `main` symbol to get the group of main indicators for a country.
+        >>> obb.economy.indicators(provider='econdb', symbol='main', country='eu')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/indicators",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/indicators",
+                        ("econdb",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "country": country,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={
+                    "symbol": {"econdb": {"multiple_items_allowed": True}},
+                    "country": {"econdb": {"multiple_items_allowed": True}},
+                },
+            )
+        )
+
+    @exception_handler
+    @validate
     def long_term_interest_rate(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Long-term interest rates refer to government bonds maturing in ten years.
+        """Get Long-term interest rates that refer to government bonds maturing in ten years.
+
         Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
         fall in the capital value. Long-term interest rates are generally averages of daily rates,
         measured as a percentage. These interest rates are implied by the prices at which the government bonds are
@@ -893,6 +1321,7 @@ class ROUTER_economy(Container):
         Long-term interest rates are one of the determinants of business investment.
         Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
         Investment is, in turn, a major source of economic growth.
+
 
         Parameters
         ----------
@@ -963,31 +1392,28 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         adjusted: Annotated[
             Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether to return seasonally adjusted data."
-            ),
+            OpenBBField(description="Whether to return seasonally adjusted data."),
         ] = True,
         provider: Annotated[
             Optional[Literal["federal_reserve"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.
+        """Get Money Measures (M1/M2 and components).
+
+        The Federal Reserve publishes as part of the H.6 Release.
+
 
         Parameters
         ----------
@@ -1067,13 +1493,13 @@ class ROUTER_economy(Container):
         self,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Market Risk Premium by country.
+        """Get Market Risk Premium by country.
 
         Parameters
         ----------
@@ -1134,26 +1560,25 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Short-term interest rates are the rates at which short-term borrowings are effected between
+        """Get Short-term interest rates.
+
+        They are the rates at which short-term borrowings are effected between
         financial institutions or the rate at which short-term government paper is issued or traded in the market.
+
         Short-term interest rates are generally averages of daily rates, measured as a percentage.
         Short-term interest rates are based on three-month money market rates where available.
         Typical standardised names are "money market rate" and "treasury bill rate".
@@ -1228,25 +1653,21 @@ class ROUTER_economy(Container):
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["oecd"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'oecd' if there is\n    no default."
             ),
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Global unemployment data.
+        """Get global unemployment data.
 
         Parameters
         ----------

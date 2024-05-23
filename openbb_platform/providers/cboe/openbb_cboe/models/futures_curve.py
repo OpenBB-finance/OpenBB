@@ -36,6 +36,7 @@ class CboeFuturesCurveFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeFuturesCurveQueryParams:
+        """Transform the query."""
         return CboeFuturesCurveQueryParams(**params)
 
     @staticmethod
@@ -45,7 +46,6 @@ class CboeFuturesCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
-
         symbol = query.symbol.upper().split(",")[0]
         FUTURES = await get_settlement_prices(**kwargs)
         if len(FUTURES) == 0:
@@ -68,4 +68,5 @@ class CboeFuturesCurveFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[CboeFuturesCurveData]:
+        """Transform data."""
         return [CboeFuturesCurveData.model_validate(d) for d in data]

@@ -1,6 +1,8 @@
 """Polygon Market Indices Model."""
 
-from datetime import datetime
+from datetime import (
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
@@ -10,6 +12,7 @@ from openbb_core.provider.standard_models.market_indices import (
     MarketIndicesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import safe_fromtimestamp
 from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, PositiveInt
 
@@ -94,7 +97,8 @@ class PolygonMarketIndicesFetcher(
         data = await get_data_many(request_url, "results", **kwargs)
 
         for d in data:
-            d["t"] = datetime.fromtimestamp(d["t"] / 1000)
+            v = d["t"] / 1000  # milliseconds to seconds
+            d["t"] = safe_fromtimestamp(v)
             if query.timespan not in ["minute", "hour"]:
                 d["t"] = d["t"].date()
 

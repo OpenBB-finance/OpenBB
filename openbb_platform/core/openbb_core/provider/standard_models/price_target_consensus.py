@@ -15,19 +15,22 @@ from openbb_core.provider.utils.descriptions import (
 class PriceTargetConsensusQueryParams(QueryParams):
     """Price Target Consensus Query."""
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("symbol", "")
+    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def to_upper(cls, v: str) -> str:
+    def to_upper(cls, v):
         """Convert field to uppercase."""
-        return v.upper()
+        return v.upper() if v else None
 
 
 class PriceTargetConsensusData(Data):
     """Price Target Consensus Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    name: Optional[str] = Field(default=None, description="The company name")
     target_high: Optional[float] = Field(
         default=None, description="High target of the price target consensus."
     )

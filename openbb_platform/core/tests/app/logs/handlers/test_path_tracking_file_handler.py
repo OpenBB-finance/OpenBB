@@ -12,7 +12,10 @@ from openbb_core.app.logs.handlers.path_tracking_file_handler import (
 
 
 class MockLoggingSettings:
+    """Mock logging settings."""
+
     def __init__(self, app_name, user_logs_directory, session_id, frequency):
+        """Initialize the mock logging settings."""
         self.app_name = app_name
         self.user_logs_directory = Path(user_logs_directory)
         self.session_id = session_id
@@ -31,17 +34,20 @@ logging_settings.frequency = "H"
 
 @pytest.fixture(scope="module")
 def mocked_path(tmp_path_factory):
+    """Fixture to create a mocked file path."""
     return tmp_path_factory.mktemp("mocked_path") / "mocked_file.log"
 
 
 @pytest.fixture(scope="module")
 def handler(mocked_path):
+    """Fixture to create a PathTrackingFileHandler instance."""
     # patch `pathlib.Path.joinpath` to return a string containing the joined path
     with patch.object(Path, "joinpath", return_value=mocked_path):
         return PathTrackingFileHandler(logging_settings)
 
 
 def test_build_log_file_path(handler, mocked_path):
+    """Test build_log_file_path method."""
     # Define a sample LoggingSettings object with mock attributes
     settings = MagicMock(spec=MockLoggingSettings)
     settings.app_name = "my_app"
@@ -60,6 +66,7 @@ def test_build_log_file_path(handler, mocked_path):
 
 
 def test_clean_expired_files(handler):
+    """Test clean_expired_files method."""
     with patch(
         "openbb_core.app.logs.handlers.path_tracking_file_handler.get_expired_file_list"
     ) as mock_get_expired_file_list, patch(

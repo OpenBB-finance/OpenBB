@@ -1,8 +1,8 @@
-"""US Government Treasury Prices"""
+"""US Government Treasury Prices."""
 
 # pylint: disable=unused-argument
 import asyncio
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 
@@ -22,7 +22,7 @@ class GovernmentUSTreasuryPricesQueryParams(TreasuryPricesQueryParams):
     """US Government Treasury Prices Query."""
 
     cusip: Optional[str] = Field(description="Filter by CUSIP.", default=None)
-    security_type: Literal[None, "bill", "note", "bond", "tips", "frn"] = Field(
+    security_type: Optional[Literal["bill", "note", "bond", "tips", "frn"]] = Field(
         description="Filter by security type.",
         default=None,
     )
@@ -38,24 +38,21 @@ class GovernmentUSTreasuryPricesFetcher(
         List[GovernmentUSTreasuryPricesData],
     ]
 ):
+    """US Government Treasury Prices Fetcher."""
+
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
-
+        yesterday = date.today() - timedelta(days=1)
+        last_bd = (
+            yesterday - timedelta(yesterday.weekday() - 4)
+            if yesterday.weekday() > 4
+            else yesterday
+        )
         if params.get("date") is None:
-            _date = datetime.now().date()
-        else:
-            _date = (
-                datetime.strptime(params["date"], "%Y-%m-%d").date()
-                if isinstance(params["date"], str)
-                else params["date"]
-            )
-        if _date.weekday() > 4:
-            _date = _date - timedelta(days=_date.weekday() - 4)
-        params["date"] = _date
-
+            params["date"] = last_bd
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
     # pylint: disable=unused-argument
@@ -66,7 +63,6 @@ class GovernmentUSTreasuryPricesFetcher(
         **kwargs: Any,
     ) -> str:
         """Extract the raw data from US Treasury website."""
-
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
 
         HEADERS = {
@@ -110,7 +106,6 @@ class GovernmentUSTreasuryPricesFetcher(
         **kwargs: Any,
     ) -> List[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
-
         try:
             if not data:
                 raise EmptyDataError("Data not found")

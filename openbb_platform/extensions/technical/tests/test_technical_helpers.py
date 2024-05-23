@@ -20,6 +20,7 @@ from extensions.technical.openbb_technical.helpers import (
 
 @pytest.fixture(scope="module")
 def mock_data(top_range: int = 100):
+    """Mock data for testing."""
     _open = pd.Series(np.arange(1, top_range))
     _high = pd.Series(np.arange(1, top_range))
     _low = pd.Series(np.arange(1, top_range))

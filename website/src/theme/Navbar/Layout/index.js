@@ -7,7 +7,7 @@ import {
 import NavbarMobileSidebar from "@theme/Navbar/MobileSidebar";
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import { useIFrameContext } from "../../Root";
+import { useIFrameContext } from "../../Root.tsx";
 import styles from "./styles.module.css";
 function NavbarBackdrop(props) {
   return (
@@ -29,61 +29,55 @@ export default function NavbarLayout({ children }) {
   const cleanedPath = pathname.replace(/\/v\d+/, "");
 
   useEffect(() => {
-    if (cleanedPath.startsWith("/terminal") ||
-        cleanedPath.startsWith("/pro")
-    ) {
-      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    if (cleanedPath.startsWith("/terminal") || cleanedPath.startsWith("/pro")) {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#669DCB",
+          "#669DCB"
         );
       } else {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#004A87",
+          "#004A87"
         );
       }
     } else if (
-      cleanedPath.startsWith("/sdk") ||
+      cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
       cleanedPath.startsWith("/platform")
     ) {
-      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#F5B166",
+          "#F5B166"
         );
       } else {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#511d11",
+          "#511d11"
         );
       }
-    }
-    else if (
-      cleanedPath.startsWith("/excel")
-    ) {
-      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    } else if (cleanedPath.startsWith("/excel")) {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#16A34A",
+          "#16A34A"
         );
       } else {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#14532D",
+          "#14532D"
         );
       }
-    }
-    else if (cleanedPath.startsWith("/bot")) {
-      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+    } else if (cleanedPath.startsWith("/bot")) {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#b186bb",
+          "#b186bb"
         );
       } else {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
-          "#3a204f",
+          "#3a204f"
         );
       }
     } else {
@@ -99,7 +93,7 @@ export default function NavbarLayout({ children }) {
           header_docs_pro: cleanedPath.startsWith("/pro"),
           header_docs_excel: cleanedPath.startsWith("/excel"),
           header_docs_sdk:
-            cleanedPath.startsWith("/sdk") ||
+            cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/cli") ||
             cleanedPath.startsWith("/platform"),
           header_docs_bot: cleanedPath.startsWith("/bot"),
           header_docs:
@@ -108,7 +102,8 @@ export default function NavbarLayout({ children }) {
             !cleanedPath.startsWith("/platform") &&
             !cleanedPath.startsWith("/bot") &&
             !cleanedPath.startsWith("/pro") &&
-            !cleanedPath.startsWith("/excel"),
+            !cleanedPath.startsWith("/excel") &&
+            !cleanedPath.startsWith("/cli"),
         },
         "navbar",
         "navbar--fixed-top",
@@ -123,7 +118,7 @@ export default function NavbarLayout({ children }) {
         },
         {
           hidden: isIFrame,
-        },
+        }
       )}
     >
       {children}

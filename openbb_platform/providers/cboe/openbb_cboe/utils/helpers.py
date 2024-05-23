@@ -1,4 +1,4 @@
-"""Cboe Helpers"""
+"""Cboe Helpers."""
 
 # pylint: disable=expression-not-assigned, unused-argument
 
@@ -81,7 +81,7 @@ backend = SQLiteBackend(f"{cache_dir}/http/cboe_directories", expire_after=3600 
 
 
 async def response_callback(response: ClientResponse, _: Any):
-    """Callback for HTTP Client Response."""
+    """Use callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
         return await response.json()
@@ -91,7 +91,8 @@ async def response_callback(response: ClientResponse, _: Any):
 
 
 async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
-    """Generic Cboe HTTP request."""
+    """Use the generic Cboe HTTP request."""
+    data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
             try:
@@ -106,15 +107,14 @@ async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
 
 
 async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
-    """
-    Get the US Company Directory for Cboe options. If use_cache is True,
-    the data will be cached for 24 hours.
+    """Get the US Company Directory for Cboe options.
+
+    If use_cache is True, the data will be cached for 24 hours.
 
     Returns
     -------
     DataFrame: Pandas DataFrame of the Cboe listings directory
     """
-
     url = "https://www.cboe.com/us/options/symboldir/equity_index_options/?download=csv"
 
     results = await get_cboe_data(url, use_cache)
@@ -136,15 +136,14 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
 
 
 async def get_index_directory(use_cache: bool = True, **kwargs) -> DataFrame:
-    """
-    Get the Cboe Index Directory. If use_cache is True,
-    the data will be cached for 24 hours.
+    """Get the Cboe Index Directory.
+
+    If use_cache is True, the data will be cached for 24 hours.
 
     Returns
-    --------
+    -------
     List[Dict]: A list of dictionaries containing the index information.
     """
-
     url = "https://cdn.cboe.com/api/global/us_indices/definitions/all_indices.json"
 
     results = await get_cboe_data(url, use_cache=use_cache)
@@ -162,11 +161,10 @@ async def list_futures(**kwargs) -> List[dict]:
     """List of CBOE futures and their underlying symbols.
 
     Returns
-    --------
+    -------
     pd.DataFrame
         Pandas DataFrame with results.
     """
-
     r = await get_cboe_data(
         "https://cdn.cboe.com/api/global/delayed_quotes/symbol_book/futures-roots.json"
     )
@@ -183,10 +181,10 @@ async def get_settlement_prices(
     final_settlement: bool = False,
     **kwargs,
 ) -> DataFrame:
-    """Gets the settlement prices of CBOE futures.
+    """Get the settlement prices of CBOE futures.
 
     Parameters
-    -----------
+    ----------
     settlement_date: Optional[date]
         The settlement date. Only valid for active contracts. [YYYY-MM-DD]
     options: bool

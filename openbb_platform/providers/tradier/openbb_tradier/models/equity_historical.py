@@ -1,4 +1,4 @@
-"""Tradier Equity Historical Model"""
+"""Tradier Equity Historical Model."""
 
 # pylint: disable = unused-argument
 
@@ -16,7 +16,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_tradier.utils.constants import INTERVALS_DICT
 from pandas import to_datetime
 from pydantic import Field
@@ -26,7 +26,7 @@ from pytz import timezone
 class TradierEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """Tradier Equity Historical Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: Literal["1m", "5m", "15m", "1d", "1W", "1M"] = Field(
         description=QUERY_DESCRIPTIONS.get("interval", ""),
@@ -56,7 +56,6 @@ class TradierEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TradierEquityHistoricalQueryParams:
         """Transform the query."""
-
         if params.get("interval") in ["1d", "1W", "1M"]:
             if params.get("start_date") is None:
                 params["start_date"] = (datetime.now() - timedelta(days=365)).date()
@@ -85,7 +84,6 @@ class TradierEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
-
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -120,7 +118,6 @@ class TradierEquityHistoricalFetcher(
 
         async def get_one(symbol):
             """Get data for one symbol."""
-
             result = []
 
             url = (
@@ -150,7 +147,7 @@ class TradierEquityHistoricalFetcher(
                         r["symbol"] = symbol
                     _ = r.pop("time")
                     r["timestamp"] = (
-                        datetime.fromtimestamp(r.get("timestamp"))
+                        safe_fromtimestamp(r.get("timestamp"))
                         .replace(microsecond=0)
                         .astimezone(timezone("America/New_York"))
                     )

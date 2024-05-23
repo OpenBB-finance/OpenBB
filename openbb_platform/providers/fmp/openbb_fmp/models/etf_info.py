@@ -3,8 +3,8 @@
 # pylint: disable=unused-argument
 
 import asyncio
-import warnings
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_info import (
@@ -14,13 +14,11 @@ from openbb_core.provider.standard_models.etf_info import (
 from openbb_core.provider.utils.helpers import amake_request
 from pydantic import Field
 
-_warn = warnings.warn
-
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
     """FMP ETF Info Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEtfInfoData(EtfInfoData):
@@ -45,7 +43,7 @@ class FMPEtfInfoData(EtfInfoData):
     expense_ratio: Optional[float] = Field(
         default=None,
         description="The expense ratio, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     holdings_count: Optional[int] = Field(
         default=None, description="Number of holdings."
@@ -78,14 +76,14 @@ class FMPEtfInfoFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
-        results = []
+        results: List = []
 
         async def get_one(symbol):
             """Get one symbol."""
             url = f"https://financialmodelingprep.com/api/v4/etf-info?symbol={symbol}&apikey={api_key}"
             response = await amake_request(url)
             if not response:
-                _warn(f"No results found for {symbol}.")
+                warn(f"No results found for {symbol}.")
             results.extend(response)
 
         await asyncio.gather(*[get_one(symbol) for symbol in symbols])

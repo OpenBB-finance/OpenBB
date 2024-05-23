@@ -1,33 +1,47 @@
 # ---- Base Python ----
-FROM python:3.10-slim-buster AS base
+    FROM python:3.11-slim-bullseye AS base
 
-# set work directory
-WORKDIR /openbb
+    # set work directory
+    WORKDIR /openbb
 
-# set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+    # set environment variables
+    ENV PYTHONDONTWRITEBYTECODE 1
+    ENV PYTHONUNBUFFERED 1
 
-# install dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential openssh-client \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    # install dependencies
+    RUN apt-get update \
+        && apt-get install -y --no-install-recommends build-essential openssh-client curl \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
-# ---- Copy Files/Build ----
-FROM base AS builder
+    # install toml and poetry
+    RUN pip install toml poetry
 
-WORKDIR /openbb
+    # ---- Copy Files/Build ----
+    FROM base AS builder
 
-COPY ./openbb_platform ./openbb_platform
+    WORKDIR /openbb
 
-# Install the SDK
-RUN pip install /openbb/openbb_platform
+    # install Rust
+    RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+        && apt-get update \
+        && apt-get install -y --no-install-recommends libwebkit2gtk-4.0-dev \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*
 
-# ---- Copy Files ----
-FROM base
+    # add Rust to PATH
+    ENV PATH="/root/.cargo/bin:${PATH}"
 
-COPY --from=builder /usr/local /usr/local
+    COPY ./openbb_platform ./openbb_platform
 
-# Specify the command to run
-CMD ["uvicorn", "openbb_core.api.rest_api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    # Install the SDK
+    RUN pip install /openbb/openbb_platform[all]
+    RUN pip install openbb-devtools
+
+    # ---- Copy Files ----
+    FROM base
+
+    COPY --from=builder /usr/local /usr/local
+
+    # Specify the command to run
+    CMD ["uvicorn", "openbb_core.api.rest_api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

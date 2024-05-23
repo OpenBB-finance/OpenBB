@@ -6,7 +6,7 @@ from warnings import simplefilter, warn
 
 from annotated_types import Ge
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -50,19 +50,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -412,16 +410,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -570,19 +565,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -626,9 +619,9 @@ class ROUTER_equity_fundamental(Container):
             Period of report date greater than or equal to the given date. (provider: polygon)
         include_sources : bool
             Whether to include the sources of the financial statement. (provider: polygon)
-        order : Literal[None, 'asc', 'desc']
+        order : Optional[Literal['asc', 'desc']]
             Order of the financial statement. (provider: polygon)
-        sort : Literal[None, 'filing_date', 'period_of_report_date']
+        sort : Optional[Literal['filing_date', 'period_of_report_date']]
             Sort of the financial statement. (provider: polygon)
 
         Returns
@@ -840,16 +833,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -980,24 +970,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def dividends(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1086,12 +1070,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def employee_count(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1171,21 +1153,20 @@ class ROUTER_equity_fundamental(Container):
     def filings(
         self,
         symbol: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str], OpenBBField(description="Symbol to get data for.")
         ] = None,
         form_type: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="Filter by form type. Check the data provider for available types."
             ),
         ] = None,
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1218,8 +1199,6 @@ class ROUTER_equity_fundamental(Container):
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
         cik : Optional[Union[int, str]]
             Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)
-        type : Optional[Literal['1', '1-A', '1-A POS', '1-A-W', '1-E', '1-E AD', '1-K', '1-SA', '1-U', '1-Z', '1-Z-W', '10-12B', '10-12G', '10-D', '10-K', '10-KT', '10-Q', '10-QT', '11-K', '11-KT', '13F-HR', '13F-NT', '13FCONP', '144', '15-12B', '15-12G', '15-15D', '15F-12B', '15F-12G', '15F-15D', '18-12B', '18-K', '19B-4E', '2-A', '2-AF', '2-E', '20-F', '20FR12B', '20FR12G', '24F-2NT', '25', '25-NSE', '253G1', '253G2', '253G3', '253G4', '3', '305B2', '34-12H', '4', '40-17F1', '40-17F2', '40-17G', '40-17GCS', '40-202A', '40-203A', '40-206A', '40-24B2', '40-33', '40-6B', '40-8B25', '40-8F-2', '40-APP', '40-F', '40-OIP', '40FR12B', '40FR12G', '424A', '424B1', '424B2', '424B3', '424B4', '424B5', '424B7', '424B8', '424H', '425', '485APOS', '485BPOS', '485BXT', '486APOS', '486BPOS', '486BXT', '487', '497', '497AD', '497H2', '497J', '497K', '497VPI', '497VPU', '5', '6-K', '6B NTC', '6B ORDR', '8-A12B', '8-A12G', '8-K', '8-K12B', '8-K12G3', '8-K15D5', '8-M', '8F-2 NTC', '8F-2 ORDR', '9-M', 'ABS-15G', 'ABS-EE', 'ADN-MTL', 'ADV-E', 'ADV-H-C', 'ADV-H-T', 'ADV-NR', 'ANNLRPT', 'APP NTC', 'APP ORDR', 'APP WD', 'APP WDG', 'ARS', 'ATS-N', 'ATS-N-C', 'ATS-N/UA', 'AW', 'AW WD', 'C', 'C-AR', 'C-AR-W', 'C-TR', 'C-TR-W', 'C-U', 'C-U-W', 'C-W', 'CB', 'CERT', 'CERTARCA', 'CERTBATS', 'CERTCBO', 'CERTNAS', 'CERTNYS', 'CERTPAC', 'CFPORTAL', 'CFPORTAL-W', 'CORRESP', 'CT ORDER', 'D', 'DEF 14A', 'DEF 14C', 'DEFA14A', 'DEFA14C', 'DEFC14A', 'DEFC14C', 'DEFM14A', 'DEFM14C', 'DEFN14A', 'DEFR14A', 'DEFR14C', 'DEL AM', 'DFAN14A', 'DFRN14A', 'DOS', 'DOSLTR', 'DRS', 'DRSLTR', 'DSTRBRPT', 'EFFECT', 'F-1', 'F-10', 'F-10EF', 'F-10POS', 'F-1MEF', 'F-3', 'F-3ASR', 'F-3D', 'F-3DPOS', 'F-3MEF', 'F-4', 'F-4 POS', 'F-4MEF', 'F-6', 'F-6 POS', 'F-6EF', 'F-7', 'F-7 POS', 'F-8', 'F-8 POS', 'F-80', 'F-80POS', 'F-9', 'F-9 POS', 'F-N', 'F-X', 'FOCUSN', 'FWP', 'G-405', 'G-405N', 'G-FIN', 'G-FINW', 'IRANNOTICE', 'MA', 'MA-A', 'MA-I', 'MA-W', 'MSD', 'MSDCO', 'MSDW', 'N-1', 'N-14', 'N-14 8C', 'N-14MEF', 'N-18F1', 'N-1A', 'N-2', 'N-2 POSASR', 'N-23C-2', 'N-23C3A', 'N-23C3B', 'N-23C3C', 'N-2ASR', 'N-2MEF', 'N-30B-2', 'N-30D', 'N-4', 'N-5', 'N-54A', 'N-54C', 'N-6', 'N-6F', 'N-8A', 'N-8B-2', 'N-8F', 'N-8F NTC', 'N-8F ORDR', 'N-CEN', 'N-CR', 'N-CSR', 'N-CSRS', 'N-MFP', 'N-MFP1', 'N-MFP2', 'N-PX', 'N-Q', 'N-VP', 'N-VPFS', 'NO ACT', 'NPORT-EX', 'NPORT-NP', 'NPORT-P', 'NRSRO-CE', 'NRSRO-UPD', 'NSAR-A', 'NSAR-AT', 'NSAR-B', 'NSAR-BT', 'NSAR-U', 'NT 10-D', 'NT 10-K', 'NT 10-Q', 'NT 11-K', 'NT 20-F', 'NT N-CEN', 'NT N-MFP', 'NT N-MFP1', 'NT N-MFP2', 'NT NPORT-EX', 'NT NPORT-P', 'NT-NCEN', 'NT-NCSR', 'NT-NSAR', 'NTFNCEN', 'NTFNCSR', 'NTFNSAR', 'NTN 10D', 'NTN 10K', 'NTN 10Q', 'NTN 20F', 'OIP NTC', 'OIP ORDR', 'POS 8C', 'POS AM', 'POS AMI', 'POS EX', 'POS462B', 'POS462C', 'POSASR', 'PRE 14A', 'PRE 14C', 'PREC14A', 'PREC14C', 'PREM14A', 'PREM14C', 'PREN14A', 'PRER14A', 'PRER14C', 'PRRN14A', 'PX14A6G', 'PX14A6N', 'QRTLYRPT', 'QUALIF', 'REG-NR', 'REVOKED', 'RW', 'RW WD', 'S-1', 'S-11', 'S-11MEF', 'S-1MEF', 'S-20', 'S-3', 'S-3ASR', 'S-3D', 'S-3DPOS', 'S-3MEF', 'S-4', 'S-4 POS', 'S-4EF', 'S-4MEF', 'S-6', 'S-8', 'S-8 POS', 'S-B', 'S-BMEF', 'SBSE', 'SBSE-A', 'SBSE-BD', 'SBSE-C', 'SBSE-W', 'SC 13D', 'SC 13E1', 'SC 13E3', 'SC 13G', 'SC 14D9', 'SC 14F1', 'SC 14N', 'SC TO-C', 'SC TO-I', 'SC TO-T', 'SC13E4F', 'SC14D1F', 'SC14D9C', 'SC14D9F', 'SD', 'SDR', 'SE', 'SEC ACTION', 'SEC STAFF ACTION', 'SEC STAFF LETTER', 'SF-1', 'SF-3', 'SL', 'SP 15D2', 'STOP ORDER', 'SUPPL', 'T-3', 'TA-1', 'TA-2', 'TA-W', 'TACO', 'TH', 'TTW', 'UNDER', 'UPLOAD', 'WDL-REQ', 'X-17A-5']]
-            Type of the SEC filing form. (provider: sec)
         use_cache : bool
             Whether or not to use cache.  If True, cache will store for one day. (provider: sec)
 
@@ -1324,47 +1303,41 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): intrinio."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio."
+            OpenBBField(
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
         ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         frequency: Annotated[
             Optional[Literal["daily", "weekly", "monthly", "quarterly", "yearly"]],
-            OpenBBCustomParameter(description="The frequency of the data."),
+            OpenBBField(description="The frequency of the data."),
         ] = "yearly",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 1000,
         tag_type: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(description="Filter by type, when applicable."),
+            Optional[str], OpenBBField(description="Filter by type, when applicable.")
         ] = None,
         sort: Annotated[
-            Optional[Literal["asc", "desc"]],
-            OpenBBCustomParameter(description="Sort order."),
+            Optional[Literal["asc", "desc"]], OpenBBField(description="Sort order.")
         ] = "desc",
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -1375,9 +1348,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): intrinio.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.
+            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -1447,9 +1420,9 @@ class ROUTER_equity_fundamental(Container):
                     "sort": sort,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                info={
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -1458,12 +1431,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_eps(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1546,12 +1517,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_splits(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1586,12 +1555,12 @@ class ROUTER_equity_fundamental(Container):
         ----------------
         date : date
             The date of the data.
-        label : str
-            Label of the historical stock splits.
-        numerator : float
-            Numerator of the historical stock splits.
-        denominator : float
-            Denominator of the historical stock splits.
+        numerator : Optional[float]
+            Numerator of the split.
+        denominator : Optional[float]
+            Denominator of the split.
+        split_ratio : Optional[str]
+            Split ratio.
 
         Examples
         --------
@@ -1620,19 +1589,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
             Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 5,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -1984,20 +1951,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income_growth(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 10,
         period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            Literal["annual", "quarter"],
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2011,7 +1975,7 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        period : Literal['quarter', 'annual']
+        period : Literal['annual', 'quarter']
             Time period of the data to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -2125,19 +2089,19 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): intrinio."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio."
+            OpenBBField(
+                description="Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio."
             ),
         ],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -2148,9 +2112,9 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): intrinio.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         tag : Union[str, List[str]]
-            Intrinio data tag ID or code. Multiple items allowed for provider(s): intrinio.
+            Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -2200,9 +2164,9 @@ class ROUTER_equity_fundamental(Container):
                     "tag": tag,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio"]},
-                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                info={
+                    "symbol": {"intrinio": {"multiple_items_allowed": True}},
+                    "tag": {"intrinio": {"multiple_items_allowed": True}},
                 },
             )
         )
@@ -2211,12 +2175,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def management(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2297,25 +2259,13 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2326,15 +2276,13 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp.
-        start_date : Union[datetime.date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
-            End date of the data, in YYYY-MM-DD format.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        year : Optional[int]
+            Year of the compensation. (provider: fmp)
 
         Returns
         -------
@@ -2356,28 +2304,32 @@ class ROUTER_equity_fundamental(Container):
             Symbol representing the entity requested in the data.
         cik : Optional[str]
             Central Index Key (CIK) for the requested entity.
-        filing_date : date
-            Date of the filing.
-        accepted_date : datetime
-            Date the filing was accepted.
-        name_and_position : str
-            Name and position of the executive.
-        year : int
+        company_name : Optional[str]
+            The name of the company.
+        industry : Optional[str]
+            The industry of the company.
+        year : Optional[int]
             Year of the compensation.
-        salary : float
-            Salary of the executive.
-        bonus : float
-            Bonus of the executive.
-        stock_award : float
-            Stock award of the executive.
-        incentive_plan_compensation : float
-            Incentive plan compensation of the executive.
-        all_other_compensation : float
-            All other compensation of the executive.
-        total : float
-            Total compensation of the executive.
-        url : str
-            URL of the filing data.
+        name_and_position : Optional[str]
+            Name and position.
+        salary : Optional[Annotated[float, Ge(ge=0)]]
+            Salary.
+        bonus : Optional[Annotated[float, Ge(ge=0)]]
+            Bonus payments.
+        stock_award : Optional[Annotated[float, Ge(ge=0)]]
+            Stock awards.
+        incentive_plan_compensation : Optional[Annotated[float, Ge(ge=0)]]
+            Incentive plan compensation.
+        all_other_compensation : Optional[Annotated[float, Ge(ge=0)]]
+            All other compensation.
+        total : Optional[Annotated[float, Ge(ge=0)]]
+            Total compensation.
+        filing_date : Optional[date]
+            Date of the filing. (provider: fmp)
+        accepted_date : Optional[datetime]
+            Date the filing was accepted. (provider: fmp)
+        url : Optional[str]
+            URL to the filing data. (provider: fmp)
 
         Examples
         --------
@@ -2397,11 +2349,9 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "start_date": start_date,
-                    "end_date": end_date,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -2411,21 +2361,21 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 100,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2436,7 +2386,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
@@ -2470,14 +2420,16 @@ class ROUTER_equity_fundamental(Container):
             Market capitalization
         pe_ratio : Optional[float]
             Price-to-earnings ratio (P/E ratio)
-        date : Optional[date]
-            The date of the data. (provider: fmp)
-        period : Optional[str]
+        period_ending : Optional[date]
+            Period ending date. (provider: fmp)
+        fiscal_period : Optional[str]
             Period of the data. (provider: fmp)
         calendar_year : Optional[int]
-            Calendar year. (provider: fmp)
+            Calendar year for the fiscal period. (provider: fmp)
         revenue_per_share : Optional[float]
             Revenue per share (provider: fmp, yfinance)
+        capex_per_share : Optional[float]
+            Capital expenditures per share (provider: fmp)
         net_income_per_share : Optional[float]
             Net income per share (provider: fmp)
         operating_cash_flow_per_share : Optional[float]
@@ -2494,21 +2446,19 @@ class ROUTER_equity_fundamental(Container):
             Shareholders equity per share (provider: fmp)
         interest_debt_per_share : Optional[float]
             Interest debt per share (provider: fmp)
-        enterprise_value : Optional[int]
-            Enterprise value (provider: fmp, intrinio, yfinance)
-        price_to_sales_ratio : Optional[float]
+        price_to_sales : Optional[float]
             Price-to-sales ratio (provider: fmp)
-        pocf_ratio : Optional[float]
+        price_to_operating_cash_flow : Optional[float]
             Price-to-operating cash flow ratio (provider: fmp)
-        pfcf_ratio : Optional[float]
+        price_to_free_cash_flow : Optional[float]
             Price-to-free cash flow ratio (provider: fmp)
-        pb_ratio : Optional[float]
-            Price-to-book ratio (provider: fmp)
-        ptb_ratio : Optional[float]
-            Price-to-tangible book ratio (provider: fmp)
+        price_to_book : Optional[float]
+            Price-to-book ratio (provider: fmp, intrinio, yfinance)
+        price_to_tangible_book : Optional[float]
+            Price-to-tangible book ratio (provider: fmp, intrinio)
         ev_to_sales : Optional[float]
             Enterprise value-to-sales ratio (provider: fmp)
-        enterprise_value_over_ebitda : Optional[float]
+        ev_to_ebitda : Optional[float]
             Enterprise value-to-EBITDA ratio (provider: fmp)
         ev_to_operating_cash_flow : Optional[float]
             Enterprise value-to-operating cash flow ratio (provider: fmp)
@@ -2519,6 +2469,8 @@ class ROUTER_equity_fundamental(Container):
             Earnings yield, as a normalized percent. (provider: intrinio)
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
+        debt_to_market_cap : Optional[float]
+            Debt-to-market capitalization ratio (provider: fmp)
         debt_to_equity : Optional[float]
             Debt-to-equity ratio (provider: fmp, yfinance)
         debt_to_assets : Optional[float]
@@ -2531,8 +2483,6 @@ class ROUTER_equity_fundamental(Container):
             Interest coverage (provider: fmp)
         income_quality : Optional[float]
             Income quality (provider: fmp)
-        dividend_yield : Optional[float]
-            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
         payout_ratio : Optional[float]
             Payout ratio (provider: fmp, yfinance)
         sales_general_and_administrative_to_revenue : Optional[float]
@@ -2549,20 +2499,14 @@ class ROUTER_equity_fundamental(Container):
             Capital expenditures-to-depreciation ratio (provider: fmp)
         stock_based_compensation_to_revenue : Optional[float]
             Stock-based compensation-to-revenue ratio (provider: fmp)
-        graham_number : Optional[float]
-            Graham number (provider: fmp)
-        roic : Optional[float]
-            Return on invested capital (provider: fmp)
-        return_on_tangible_assets : Optional[float]
-            Return on tangible assets (provider: fmp)
-        graham_net_net : Optional[float]
-            Graham net-net working capital (provider: fmp)
         working_capital : Optional[float]
             Working capital (provider: fmp)
         tangible_asset_value : Optional[float]
             Tangible asset value (provider: fmp)
         net_current_asset_value : Optional[float]
             Net current asset value (provider: fmp)
+        enterprise_value : Optional[int]
+            Enterprise value (provider: fmp, intrinio, yfinance)
         invested_capital : Optional[float]
             Invested capital (provider: fmp)
         average_receivables : Optional[float]
@@ -2583,14 +2527,21 @@ class ROUTER_equity_fundamental(Container):
             Payables turnover (provider: fmp)
         inventory_turnover : Optional[float]
             Inventory turnover (provider: fmp)
-        roe : Optional[float]
-            Return on equity (provider: fmp)
-        capex_per_share : Optional[float]
-            Capital expenditures per share (provider: fmp)
-        price_to_book : Optional[float]
-            Price to book ratio. (provider: intrinio, yfinance)
-        price_to_tangible_book : Optional[float]
-            Price to tangible book ratio. (provider: intrinio)
+        return_on_equity : Optional[float]
+            Return on equity (provider: fmp);
+            Return on equity, as a normalized percent. (provider: intrinio);
+            Return on equity, as a normalized percent. (provider: yfinance)
+        return_on_invested_capital : Optional[float]
+            Return on invested capital (provider: fmp);
+            Return on invested capital, as a normalized percent. (provider: intrinio)
+        return_on_tangible_assets : Optional[float]
+            Return on tangible assets (provider: fmp)
+        dividend_yield : Optional[float]
+            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
+        graham_number : Optional[float]
+            Graham number (provider: fmp)
+        graham_net_net : Optional[float]
+            Graham net-net working capital (provider: fmp)
         price_to_revenue : Optional[float]
             Price to revenue ratio. (provider: intrinio)
         quick_ratio : Optional[float]
@@ -2619,10 +2570,6 @@ class ROUTER_equity_fundamental(Container):
             Invested capital growth, as a normalized percent. (provider: intrinio)
         return_on_assets : Optional[float]
             Return on assets, as a normalized percent. (provider: intrinio, yfinance)
-        return_on_equity : Optional[float]
-            Return on equity, as a normalized percent. (provider: intrinio, yfinance)
-        return_on_invested_capital : Optional[float]
-            Return on invested capital, as a normalized percent. (provider: intrinio)
         ebitda : Optional[int]
             Earnings before interest, taxes, depreciation, and amortization. (provider: intrinio)
         ebit : Optional[int]
@@ -2718,9 +2665,11 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={
+                info={
                     "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                        "fmp": {"multiple_items_allowed": True},
+                        "intrinio": {"multiple_items_allowed": True},
+                        "yfinance": {"multiple_items_allowed": True},
                     }
                 },
             )
@@ -2732,13 +2681,13 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            OpenBBField(
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp."
             ),
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -2749,7 +2698,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for provider(s): fmp.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2914,7 +2863,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                info={"symbol": {"fmp": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -2926,12 +2875,10 @@ class ROUTER_equity_fundamental(Container):
     )
     def overview(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3071,19 +3018,16 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def ratios(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            int, OpenBBField(description="The number of data entries to return.")
         ] = 12,
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3271,27 +3215,25 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def reported_financials(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
-            str, OpenBBCustomParameter(description="Time period of the data to return.")
+            str, OpenBBField(description="Time period of the data to return.")
         ] = "annual",
         statement_type: Annotated[
             str,
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The type of financial statement - i.e, balance, income, cash."
             ),
         ] = "balance",
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks."
             ),
         ] = 100,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -3375,20 +3317,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_geography(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
             Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            OpenBBField(description="Structure of the returned data."),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3466,20 +3406,18 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_segment(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         period: Annotated[
             Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
+            OpenBBField(description="Time period of the data to return."),
         ] = "annual",
         structure: Annotated[
             Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
+            OpenBBField(description="Structure of the returned data."),
         ] = "flat",
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,
@@ -3557,16 +3495,14 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def search_attributes(
         self,
-        query: Annotated[
-            str, OpenBBCustomParameter(description="Query to search for.")
-        ],
+        query: Annotated[str, OpenBBField(description="Query to search for.")],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
+            OpenBBField(description="The number of data entries to return."),
         ] = 1000,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -3652,18 +3588,16 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def trailing_dividend_yield(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         limit: Annotated[
             Optional[int],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The number of data entries to return. Default is 252, the number of trading days in a year."
             ),
         ] = 252,
         provider: Annotated[
             Optional[Literal["tiingo"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default."
             ),
         ] = None,
@@ -3732,16 +3666,13 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def transcript(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         year: Annotated[
-            int,
-            OpenBBCustomParameter(description="Year of the earnings call transcript."),
+            int, OpenBBField(description="Year of the earnings call transcript.")
         ],
         provider: Annotated[
             Optional[Literal["fmp"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
             ),
         ] = None,

@@ -1,15 +1,25 @@
 """Provider helpers."""
 
 import asyncio
+import os
 import re
-from datetime import datetime
+from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
+from typing import (
+    Awaitable,
+    Callable,
+    List,
+    Literal,
+    Optional,
+    TypeVar,
+    Union,
+    cast,
+)
 
 import requests
-from anyio import start_blocking_portal
+from anyio.from_thread import start_blocking_portal
 from typing_extensions import ParamSpec
 
 from openbb_core.provider.abstract.data import Data
@@ -21,6 +31,7 @@ from openbb_core.provider.utils.client import (
 
 T = TypeVar("T")
 P = ParamSpec("P")
+D = TypeVar("D", bound="Data")
 
 
 def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
@@ -177,13 +188,13 @@ async def amake_requests(
             is_exception = isinstance(result, Exception)
 
             if is_exception and kwargs.get("raise_for_status", False):
-                raise result
+                raise result  # type: ignore[misc]
 
             if is_exception or not result:
                 continue
 
-            results.extend(  # type: ignore
-                result if isinstance(result, list) else [result]
+            results.extend(
+                result if isinstance(result, list) else [result]  # type: ignore[list-item]
             )
 
         return results
@@ -283,17 +294,32 @@ def run_async(
 
 
 def filter_by_dates(
-    data: List[Data],
-    start_date: datetime,
-    end_date: datetime,
-) -> List[Data]:
+    data: List[D], start_date: Optional[date] = None, end_date: Optional[date] = None
+) -> List[D]:
     """Filter data by dates."""
-    if not any([start_date, end_date]):
+    if start_date is None and end_date is None:
         return data
 
-    return list(
-        filter(
-            lambda d: start_date <= d.date.date() <= end_date,
-            data,
-        )
-    )
+    def _filter(d: Data) -> bool:
+        _date = getattr(d, "date", None)
+        dt = _date.date() if _date and isinstance(_date, datetime) else _date
+        if dt:
+            if start_date and end_date:
+                return start_date <= dt <= end_date
+            if start_date:
+                return dt >= start_date
+            if end_date:
+                return dt <= end_date
+            return True
+        return False
+
+    return list(filter(_filter, data))
+
+
+def safe_fromtimestamp(
+    timestamp: Union[float, int], tz: Optional[timezone] = None
+) -> datetime:
+    """datetime.fromtimestamp alternative which supports negative timestamps on Windows platform."""
+    if os.name == "nt" and timestamp < 0:
+        return datetime(1970, 1, 1, tzinfo=tz) + timedelta(seconds=timestamp)
+    return datetime.fromtimestamp(timestamp, tz)

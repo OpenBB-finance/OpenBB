@@ -1,5 +1,8 @@
-import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
-
+import "@docsearch/css";
+import {
+  DocSearchButton,
+  useDocSearchKeyboardEvents,
+} from "@docsearch/react";
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
@@ -12,13 +15,16 @@ import {
 } from "@docusaurus/theme-search-algolia/client";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import translations from "@theme/SearchTranslations";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useIFrameContext } from "../Root";
+import { useIFrameContext } from "../Root.tsx";
+
 let DocSearchModal = null;
+
 function Hit({ hit, children }) {
   return <Link to={hit.url}>{children}</Link>;
 }
+
 function ResultsFooter({ state, onClose }) {
   return (
     <Link to={`/search?q=${state.query}`} onClick={onClose}>
@@ -31,10 +37,12 @@ function ResultsFooter({ state, onClose }) {
     </Link>
   );
 }
+
 function mergeFacetFilters(f1, f2) {
   const normalize = (f) => (typeof f === "string" ? [f] : f);
   return [...normalize(f1), ...normalize(f2)];
 }
+
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const location = useLocation();
   const { siteMetadata } = useDocusaurusContext();
@@ -43,9 +51,9 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const facetFilters = contextualSearch
     ? // Merge contextual search filters with config filters
-    mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
+      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
     : // ... or use config facetFilters
-    configFacetFilters;
+      configFacetFilters;
   // We let user override default searchParameters if she wants to
   const searchParameters = {
     ...props.searchParameters,
@@ -62,7 +70,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     }
     return Promise.all([
       import("@docsearch/react/modal"),
-      import("@docsearch/react/style"),
+      // import("@docsearch/react/style"),
       import("./styles.css"),
     ]).then(([{ DocSearchModal: Modal }]) => {
       DocSearchModal = Modal;
@@ -105,19 +113,18 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const transformItems = useRef((items) =>
     (props.transformItems
       ? // Custom transformItems
-      props.transformItems(items)
+        props.transformItems(items)
       : // Default transformItems
-      items.map((item) => ({
-        ...item,
-        url: processSearchResultUrl(item.url),
-      }))).filter((item) => {
-        const firstPathSegment = location.pathname.split("/")[1];
-        return (
-          !firstPathSegment ? true :
-            item.url.startsWith(`/${firstPathSegment}/`)
-        );
-      }
-      )
+        items.map((item) => ({
+          ...item,
+          url: processSearchResultUrl(item.url),
+        }))
+    ).filter((item) => {
+      const firstPathSegment = location.pathname.split("/")[1];
+      return !firstPathSegment
+        ? true
+        : item.url.startsWith(`/${firstPathSegment}/`);
+    })
   ).current;
   const resultsFooterComponent = useMemo(
     () =>
@@ -166,7 +173,8 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       />
 
       <BrowserOnly>
-        {() => isOpen &&
+        {() =>
+          isOpen &&
           DocSearchModal &&
           searchContainer.current &&
           createPortal(
@@ -187,11 +195,13 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
               translations={translations.modal}
             />,
             searchContainer.current
-          )}
+          )
+        }
       </BrowserOnly>
     </>
   );
 }
+
 export default function SearchBar() {
   const { siteConfig } = useDocusaurusContext();
   const { isIFrame } = useIFrameContext();

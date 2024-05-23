@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
-import clsx from "clsx";
-import { useThemeConfig, usePrismTheme } from "@docusaurus/theme-common";
+import { usePrismTheme, useThemeConfig } from "@docusaurus/theme-common";
 import {
+  containsLineNumbers,
   parseCodeBlockTitle,
   parseLanguage,
   parseLines,
-  containsLineNumbers,
   useCodeWordWrap,
 } from "@docusaurus/theme-common/internal";
-import Highlight, { defaultProps } from "prism-react-renderer";
-import Line from "@theme/CodeBlock/Line";
-import CopyButton from "@theme/CodeBlock/CopyButton";
-import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
 import Container from "@theme/CodeBlock/Container";
-import styles from "./styles.module.css";
+import CopyButton from "@theme/CodeBlock/CopyButton";
+import Line from "@theme/CodeBlock/Line";
+import WordWrapButton from "@theme/CodeBlock/WordWrapButton";
+import clsx from "clsx";
+import { Highlight } from "prism-react-renderer";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import styles from "./styles.module.css";
 
 function getImageUrl(pathname, text) {
   if (!pathname.startsWith("/bot/")) {
@@ -29,7 +29,7 @@ function getImageUrl(pathname, text) {
   ) {
     imgname = text.split(" ")[0].toLowerCase().replace("/", "");
   } else if (platform == "telegram") {
-    console.log(pathvalue)
+    console.log(pathvalue);
     if (pathvalue.toString() == "etf" || pathvalue.toString() == "screeners") {
       imgname = text.split(" ")[1].toLowerCase();
     } else {
@@ -118,7 +118,6 @@ export default function CodeBlockString({
         {title && <div className={styles.codeBlockTitle}>{title}</div>}
         <div className={styles.codeBlockContent} ref={ref}>
           <Highlight
-            {...defaultProps}
             theme={prismTheme}
             code={newCode}
             language={language ?? "text"}
@@ -171,14 +170,16 @@ export default function CodeBlockString({
         </div>
       </Container>
       {imageUrl && (
-            <img width="70%" height="70%"
-              onError={() => {
-                setImageUrl(null);
-              }}
-              src={imageUrl}
-              alt="example"
-            />
-          )}
+        <img
+          width="70%"
+          height="70%"
+          onError={() => {
+            setImageUrl(null);
+          }}
+          src={imageUrl}
+          alt="example"
+        />
+      )}
     </>
   );
 }

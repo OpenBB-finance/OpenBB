@@ -15,6 +15,85 @@ class BalanceOfPaymentsQueryParams(QueryParams):
     """Balance Of Payments Query."""
 
 
+class BP6BopUsdData(Data):
+    """OECD BP6 Balance of Payments Items, in USD."""
+
+    period: dateType = Field(
+        default=None,
+        description="The date representing the beginning of the reporting period.",
+    )
+    balance_percent_of_gdp: Optional[float] = Field(
+        default=None,
+        description="Current Account Balance as Percent of GDP",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    balance_total: Optional[float] = Field(
+        default=None, description="Current Account Total Balance (USD)"
+    )
+    balance_total_services: Optional[float] = Field(
+        default=None, description="Current Account Total Services Balance (USD)"
+    )
+    balance_total_secondary_income: Optional[float] = Field(
+        default=None, description="Current Account Total Secondary Income Balance (USD)"
+    )
+    balance_total_goods: Optional[float] = Field(
+        default=None, description="Current Account Total Goods Balance (USD)"
+    )
+    balance_total_primary_income: Optional[float] = Field(
+        default=None, description="Current Account Total Primary Income Balance (USD)"
+    )
+    credits_services_percent_of_goods_and_services: Optional[float] = Field(
+        default=None,
+        description="Current Account Credits Services as Percent of Goods and Services",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    credits_services_percent_of_current_account: Optional[float] = Field(
+        default=None,
+        description="Current Account Credits Services as Percent of Current Account",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    credits_total_services: Optional[float] = Field(
+        default=None, description="Current Account Credits Total Services (USD)"
+    )
+    credits_total_goods: Optional[float] = Field(
+        default=None, description="Current Account Credits Total Goods (USD)"
+    )
+    credits_total_primary_income: Optional[float] = Field(
+        default=None, description="Current Account Credits Total Primary Income (USD)"
+    )
+    credits_total_secondary_income: Optional[float] = Field(
+        default=None, description="Current Account Credits Total Secondary Income (USD)"
+    )
+    credits_total: Optional[float] = Field(
+        default=None, description="Current Account Credits Total (USD)"
+    )
+    debits_services_percent_of_goods_and_services: Optional[float] = Field(
+        default=None,
+        description="Current Account Debits Services as Percent of Goods and Services",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    debits_services_percent_of_current_account: Optional[float] = Field(
+        default=None,
+        description="Current Account Debits Services as Percent of Current Account",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    debits_total_services: Optional[float] = Field(
+        default=None, description="Current Account Debits Total Services (USD)"
+    )
+    debits_total_goods: Optional[float] = Field(
+        default=None, description="Current Account Debits Total Goods (USD)"
+    )
+    debits_total_primary_income: Optional[float] = Field(
+        default=None, description="Current Account Debits Total Primary Income (USD)"
+    )
+    debits_total: Optional[float] = Field(
+        default=None, description="Current Account Debits Total (USD)"
+    )
+    debits_total_secondary_income: Optional[float] = Field(
+        default=None, description="Current Account Debits Total Secondary Income (USD)"
+    )
+
+
 class ECBMain(Data):
     """ECB Main Balance of Payments Items."""
 

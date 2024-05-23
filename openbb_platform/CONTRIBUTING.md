@@ -37,6 +37,7 @@
       - [Important classes](#important-classes)
       - [Import statements](#import-statements)
       - [The TET pattern](#the-tet-pattern)
+      - [Error](#errors)
       - [Data processing commands](#data-processing-commands)
         - [Python Interface](#python-interface)
         - [API Interface](#api-interface)
@@ -63,7 +64,7 @@ This document provides guidelines for contributing to the OpenBB Platform.
 Throughout this document, we will be differentiating between two types of contributors: Developers and Contributors.
 
 1. **Developers**: Those who are building new features or extensions for the OpenBB Platform or leveraging the OpenBB Platform.
-2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#how-to-create-a-pr) thus giving back to the community.
+2. **Contributors**: Those who contribute to the existing codebase, by opening a [Pull Request](#getting_started-create-a-pr) thus giving back to the community.
 
 **Why is this distinction important?**
 
@@ -538,6 +539,16 @@ As the OpenBB Platform has its own standardization framework and the data fetche
 2. Extract - `extract_data(query: ExampleQueryParams,credentials: Optional[Dict[str, str]],**kwargs: Any,) -> Dict`: makes the request to the API endpoint and returns the raw data. Given the transformed query parameters, the credentials and any other extra arguments, this method should return the raw data as a dictionary.
 3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) children.
 
+#### Errors
+
+To ensure a consistent error handling behavior our API relies on the convention below.
+
+| Status code | Exception | Detail | Description |
+| -------- | ------- | ------- | ------- |
+| 400 | `OpenBBError` or child of `OpenBBError` | Custom message. | Use this to explicitly raise custom exceptions, like `EmptyDataError`. |
+| 422 | `ValidationError` | `Pydantic` errors dict message. | Automatically raised to inform the user about query validation errors. ValidationErrors outside of the query are treated with status code 500 by default. |
+| 500 | Any exception not covered above, eg `ValueError`, `ZeroDivisionError` | Unexpected error. | Unexpected exceptions, most likely a bug. |
+
 #### Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
@@ -665,7 +676,7 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
 
 The Contributor Guidelines are intended to be a continuation of the [Developer Guidelines](#developer-guidelines). They are not a replacement, but rather an expansion, focusing specifically on those who seek to directly enhance the OpenBB Platform's codebase. It's crucial for Contributors to be familiar with both sets of guidelines to ensure a harmonious and productive engagement with the OpenBB Platform.
 
-There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#how-to-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#how-to-build-openbb-extensions), fix a bug, improve or create documentation, etc.
+There are many ways to contribute to the OpenBB Platform. You can add a [new data point](#getting_started-add-a-new-data-point), add a [new command](#openbb-platform-commands), add a [new visualization](/openbb_platform/extensions/charting/README.md), add a [new extension](#getting_started-build-openbb-extensions), fix a bug, improve or create documentation, etc.
 
 ### Expectations for Contributors
 

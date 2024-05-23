@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -23,12 +23,10 @@ class ROUTER_derivatives_options(Container):
     @validate
     def chains(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -183,13 +181,11 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[
             Optional[str],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. (the underlying symbol)"
-            ),
+            OpenBBField(description="Symbol to get data for. (the underlying symbol)"),
         ] = None,
         provider: Annotated[
             Optional[Literal["intrinio"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
         ] = None,
@@ -213,9 +209,9 @@ class ROUTER_derivatives_options(Container):
             The type of unusual activity to query for. (provider: intrinio)
         sentiment : Optional[Literal['bullish', 'bearish', 'neutral']]
             The sentiment type to query for. (provider: intrinio)
-        min_value : Optional[Union[float, int]]
+        min_value : Optional[Union[int, float]]
             The inclusive minimum total value for the unusual activity. (provider: intrinio)
-        max_value : Optional[Union[float, int]]
+        max_value : Optional[Union[int, float]]
             The inclusive maximum total value for the unusual activity. (provider: intrinio)
         limit : int
             The number of data entries to return. A typical day for all symbols will yield 50-80K records. The API will paginate at 1000 records. The high default limit (100K) is to be able to reliably capture the most days. The high absolute limit (1.25M) is to allow for outlier days. Queries at the absolute limit will take a long time, and might be unreliable. Apply filters to improve performance. (provider: intrinio)
@@ -264,7 +260,7 @@ class ROUTER_derivatives_options(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual(provider='intrinio')
+        >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         >>> # Use the 'symbol' parameter to get the most recent activity for a specific symbol.
         >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         """  # noqa: E501

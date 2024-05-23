@@ -2,15 +2,19 @@
 
 # pylint: disable=unused-argument
 
+import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
     PriceTargetData,
     PriceTargetQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_urls
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import create_url, response_callback
 from pydantic import Field, field_validator
 
 
@@ -19,6 +23,8 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/#Price-Target
     """
+
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     with_grade: bool = Field(
         False,
@@ -81,12 +87,30 @@ class FMPPriceTargetFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         endpoint = "upgrades-downgrades" if query.with_grade else "price-target"
 
-        urls = []
-        for symbol in query.symbol.split(","):
-            query.symbol = symbol
-            urls.append(create_url(4, endpoint, api_key, query, exclude=["limit"]))
+        symbols = query.symbol.split(",")  # type: ignore
 
-        return await get_data_urls(urls)
+        results: List[dict] = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = create_url(4, endpoint, api_key, query, exclude=["limit", "symbol"])
+            url += f"&symbol={symbol}"
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result or len(result) == 0:
+                warn(f"Symbol Error: No data found for {symbol}")
+            if result:
+                results.extend(result)
+
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError("No data returned for the given symbols.")
+
+        return sorted(
+            results, key=lambda x: (x["publishedDate"], x["symbol"]), reverse=True
+        )
 
     @staticmethod
     def transform_data(

@@ -1,4 +1,4 @@
-"""TMX Index Constituents Model"""
+"""TMX Index Constituents Model."""
 
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
@@ -49,6 +49,8 @@ class TmxIndexConstituentsFetcher(
         List[TmxIndexConstituentsData],
     ]
 ):
+    """TMX Index Constituents Fetcher."""
+
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxIndexConstituentsQueryParams:
         """Transform the query."""
@@ -61,7 +63,6 @@ class TmxIndexConstituentsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the TMX endpoint."""
-
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
 
         data = await get_data_from_url(

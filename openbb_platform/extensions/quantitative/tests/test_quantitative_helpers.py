@@ -7,6 +7,7 @@ from extensions.quantitative.openbb_quantitative.helpers import (
 
 
 def test_validate_window():
+    """Test the validate_window function."""
     input_data = pd.Series(range(1, 100))
     validate_window(
         input_data=input_data,
