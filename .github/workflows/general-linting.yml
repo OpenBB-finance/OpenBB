@@ -60,7 +60,7 @@ jobs:
       - run: bandit -x ./tests -r . || true
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: |
-          # Run linters for openbb_platform
+          # Run linters for openbb_platform | cli
           if [ -n "${{ env.diff_files }}" ]; then
             black --diff --check ${{ env.diff_files }}
             mypy ${{ env.diff_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
@@ -68,7 +68,7 @@ jobs:
             pylint ${{ env.diff_files }}
             ruff check ${{ env.diff_files }}
           else
-            echo "No Python files changed in openbb_platform"
+            echo "No Python files changed in openbb_platform | cli"
           fi
 
   markdown-link-check:
