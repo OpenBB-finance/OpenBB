@@ -1,0 +1,71 @@
+---
+title: Metadata
+sidebar_position: 6
+description: This guide provides instructions for returning metadata from the provider interface that gets included in the `extra` attribute of the OBBject response.
+keywords:
+- OpenBB Platform
+- metadata
+- provider
+- results metadata
+- fetcher
+- AnnotatedResult
+- annotations
+- develop
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Metadata - Developer Guides | OpenBB Platform Docs" />
+
+## Overview
+
+When data needs to be included in the output, but should not be included in the serialized results,
+it can sent to the `extra` attribute of the [OBBject](obbject) command response by using the `AnnotatedResult` class.
+
+A simple modification to the `transform_data` static method, in the provider's Fetcher class, is all that is required. The steps are outlined below.
+
+## How-To Add Metadata
+
+### Import Statement
+
+- Add an additional import to the provider's model file.
+
+```python
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
+```
+
+### Transform Data
+
+- Wrap the output type in the `transform_data` static method with this imported class.
+
+```python
+    @staticmethod
+    def transform_data(
+        query: FredSeriesQueryParams,
+        data: List[Dict[str, Any]],
+        **kwargs: Any,
+    ) -> AnnotatedResult[List[FredSeriesData]]:
+        """Transform data."""
+```
+- Return the `AnnotatedResult` class by initializing it with a dictionary of metadata and the validated data model.
+
+Instead of something like this:
+
+```python
+return [FredSeriesData.model_validate(d) for d in data]
+```
+
+It will be like this:
+
+```python
+return AnnotatedResult(
+    result=[FredSeriesData.model_validate(r) for r in records],
+    metadata=metadata,
+)
+```
+
+:::important
+`metadata` should be a valid Python dictionary with keys and values that are JSON-serializable.
+:::
+
+The example above is a snippet from the [`FredSeries`](/platform/data_models/FredSeries) data model.
