@@ -58,14 +58,15 @@ jobs:
           pip install openbb-devtools
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
-      - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
-      - run: ruff .
       - run: |
           # Run linters for openbb_platform
           if [ -n "${{ env.platform_files }}" ]; then
-            pylint ${{ env.platform_files }}
+            black --diff --check ${{ env.platform_files }}
+            mypy ${{ env.platform_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
             pydocstyle ${{ env.platform_files }}
+            pylint ${{ env.platform_files }}
+            ruff check ${{ env.platform_files }}
           else
             echo "No Python files changed in openbb_platform"
           fi
