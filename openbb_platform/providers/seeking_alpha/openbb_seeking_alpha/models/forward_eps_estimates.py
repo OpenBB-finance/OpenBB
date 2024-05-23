@@ -150,45 +150,41 @@ class SAForwardEpsEstimatesFetcher(
                         if period_type == "quarterly"
                         else "FY"
                     )
-                eps_estimates["number_of_analysts"] = seek_object[
-                    "eps_normalized_num_of_estimates"
-                ][str(i)][0].get("dataitemvalue")
+                num_estimates = seek_object["revenue_num_of_estimates"].get(str(i))
+                if not num_estimates:
+                    continue
+                eps_estimates["number_of_analysts"] = num_estimates[0].get(
+                    "dataitemvalue"
+                )
                 actual = seek_object["eps_normalized_actual"].get(str(i))
-                gaap_actual = seek_object["eps_gaap_actual"].get(str(i))
                 if actual:
                     eps_estimates["normalized_actual"] = actual[0].get("dataitemvalue")
+                gaap_actual = seek_object["eps_gaap_actual"].get(str(i))
                 if gaap_actual:
                     eps_estimates["gaap_actual"] = gaap_actual[0].get("dataitemvalue")
-                low = seek_object["eps_normalized_consensus_low"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                low = seek_object["eps_normalized_consensus_low"].get(str(i))
                 if low:
-                    eps_estimates["low_estimate"] = low
-                gaap_low = seek_object["eps_gaap_consensus_low"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                    eps_estimates["low_estimate"] = low[0].get("dataitemvalue")
+                gaap_low = seek_object["eps_gaap_consensus_low"].get(str(i))
                 if gaap_low:
-                    eps_estimates["low_estimate_gaap"] = gaap_low
-                high = seek_object["eps_normalized_consensus_high"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                    eps_estimates["low_estimate_gaap"] = gaap_low[0].get(
+                        "dataitemvalue"
+                    )
+                high = seek_object["eps_normalized_consensus_high"].get(str(i))
                 if high:
-                    eps_estimates["high_estimate"] = high
-                gaap_high = seek_object["eps_gaap_consensus_high"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                    eps_estimates["high_estimate"] = high[0].get("dataitemvalue")
+                gaap_high = seek_object["eps_gaap_consensus_high"].get(str(i))
                 if gaap_high:
-                    eps_estimates["high_estimate_gaap"] = gaap_high
-                mean = seek_object["eps_normalized_consensus_mean"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                    eps_estimates["high_estimate_gaap"] = gaap_high[0].get(
+                        "dataitemvalue"
+                    )
+                mean = seek_object["eps_normalized_consensus_mean"].get(str(i))
                 if mean:
+                    mean = mean[0].get("dataitemvalue")
                     eps_estimates["mean"] = mean
-                gaap_mean = seek_object["eps_gaap_consensus_mean"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                gaap_mean = seek_object["eps_gaap_consensus_mean"].get(str(i))
                 if gaap_mean:
-                    eps_estimates["mean_gaap"] = gaap_mean
+                    eps_estimates["mean_gaap"] = gaap_mean[0].get("dataitemvalue")
                 # Calculate the estimated growth percent.
                 this = float(mean) if mean else None
                 prev = None

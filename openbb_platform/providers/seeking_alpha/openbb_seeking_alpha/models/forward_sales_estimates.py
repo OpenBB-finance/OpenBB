@@ -80,7 +80,7 @@ class SAForwardSalesEstimatesFetcher(
             "estimates_data_items": "revenue_actual,revenue_consensus_low,revenue_consensus_mean,"
             "revenue_consensus_high,revenue_num_of_estimates",
             "period_type": fp,
-            "relative_periods": "-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11",
+            "relative_periods": "-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12",
         }
         ids = {ticker: await get_seekingalpha_id(ticker) for ticker in tickers}
         querystring["ticker_ids"] = (",").join(list(ids.values()))
@@ -111,7 +111,7 @@ class SAForwardSalesEstimatesFetcher(
                 warn(f"Symbol Error: No data found for, {ticker}")
             seek_object = estimates.get(sa_id)
             items = len(seek_object["revenue_num_of_estimates"])
-            for i in range(0, items - 3):
+            for i in range(0, items - 4):
                 rev_estimates: Dict = {}
                 rev_estimates["symbol"] = ticker
                 period = seek_object["revenue_num_of_estimates"][str(i)][0].get(
@@ -132,13 +132,15 @@ class SAForwardSalesEstimatesFetcher(
                         if period_type == "quarterly"
                         else "FY"
                     )
-                rev_estimates["number_of_analysts"] = seek_object[
-                    "revenue_num_of_estimates"
-                ][str(i)][0].get("dataitemvalue")
-                mean = seek_object["revenue_consensus_mean"][str(i)][0].get(
+                num_estimates = seek_object["revenue_num_of_estimates"].get(str(i))
+                if not num_estimates:
+                    continue
+                rev_estimates["number_of_analysts"] = num_estimates[0].get(
                     "dataitemvalue"
                 )
+                mean = seek_object["revenue_consensus_mean"].get(str(i))
                 if mean:
+                    mean = mean[0].get("dataitemvalue")
                     rev_estimates["mean"] = int(float(mean))
                 actual = (
                     seek_object["revenue_actual"][str(i)][0].get("dataitemvalue")
@@ -147,15 +149,13 @@ class SAForwardSalesEstimatesFetcher(
                 )
                 if actual:
                     rev_estimates["actual"] = int(float(actual))
-                low = seek_object["revenue_consensus_low"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                low = seek_object["revenue_consensus_low"].get(str(i))
                 if low:
+                    low = low[0].get("dataitemvalue")
                     rev_estimates["low_estimate"] = int(float(low))
-                high = seek_object["revenue_consensus_high"][str(i)][0].get(
-                    "dataitemvalue"
-                )
+                high = seek_object["revenue_consensus_high"].get(str(i))
                 if high:
+                    high = high[0].get("dataitemvalue")
                     rev_estimates["high_estimate"] = int(float(high))
                 # Calculate the estimated growth percent.
                 this = float(mean) if mean else None
