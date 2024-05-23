@@ -1,0 +1,205 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+    method: GET
+    uri: https://seekingalpha.com/api/v3/searches?filter%5Blist%5D=all&filter%5Bquery%5D=NVDA&filter%5Btype%5D=symbols&page%5Bsize%5D=100
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WU0W7aMBSGX8XK1SZBiO3ESVBViRKYkDo2CVqBpl0E4lJLJmF2UhFVvHvtQkm8
+        JNV26eM4/vSd4//VkuV+k3FpDX+9WiyxhhB6Ts/KywO1hpdNq2fJbSZUwQ8CF2Mb96xCcLU/OJ8e
+        zB+jkfoqjff61M3mVhduBptbVdxmaU7TXNXnj7NoNgLjTBwyEecsS/WfebFTe+lLElun3pnBR2FI
+        UCcF9AMH22HQQrGuKBSCXlXXrxnlyff4CGp84MdBc4BZus32FCxyxUV3JZgspwZbWbER18OfsBHf
+        g7aGbxoajpuSVO2/PQ23lSpCfOIrEx0NgwRBz8a+18Jzb7jSq8rVNxGnLKeL51hQCdAR3GfpzhAX
+        xYw3PfGrJ4IIwmpQusCwh13libSALQwwvarAliJOBIA28lYGzh2NBWhnklcmD7rqvi4iFBJsE6eN
+        yABqEyWvohbPmcj/wVRtoLBPVH86sXDg2CFu6+CDwaVXlaiICXrUo32WomdePTE9a+Cu4BygFbh0
+        9+9ZL0w0txMtxKFru21gkQGmV5+CXcICvDcRdoIlNTAP4u6pD7Abts3WWmWC8QirQiOlvtRS4it4
+        z44PYT8LFWCSmiFRqgSrP0yMHBR0t5XYyCEQea1RuupHk+nDfLzsn/9S2bxArRqZMeJcHgRTjzRi
+        L1RI9sRoAiZ/CpaXYFqkCeiDMY+lBCOgU6gWu8d+Qp+KdJt/3Hb6fXoDDIUZXRgGAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '1'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=60, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '563'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 May 2024 16:42:05 GMT
+      Etag:
+      - W/"6ebd3b8b31f60ee2d65508ba12e0ddb5"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Set-Cookie:
+      - machine_cookie=7180006338193; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
+      - machine_cookie_ts=1716482525; expires=Wed, 23 May 2029 16:42:05 GMT; path=/;
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - HIT
+      X-Cache-Hits:
+      - '1'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - bjGXyEWvMWky3Xmi
+      X-Runtime:
+      - '0.056442'
+      X-Served-By:
+      - cache-bfi-krnt7300049-BFI
+      X-Timer:
+      - S1716482526.954398,VS0,VE2
+      X-XSS-Protection:
+      - '0'
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Accept-Language:
+      - de,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Sec-Fetch-Dest:
+      - empty
+      Sec-Fetch-Mode:
+      - cors
+      Sec-Fetch-Site:
+      - same-origin
+    method: GET
+    uri: https://seekingalpha.com/api/v3/symbol_data/estimates?estimates_data_items=revenue_actual%2Crevenue_consensus_low%2Crevenue_consensus_mean%2Crevenue_consensus_high%2Crevenue_num_of_estimates&period_type=quarterly&relative_periods=-3%2C-2%2C-1%2C0%2C1%2C2%2C3%2C4%2C5%2C6%2C7%2C8%2C9%2C10%2C11&ticker_ids=1150
+  response:
+    body:
+      string: !!binary |
+        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
+        /y+ciJmIj0UAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '0'
+      Allow:
+      - GET, POST, HEAD, PUT, PATCH, DELETE, OPTIONS
+      Cache-Control:
+      - max-age=60, public
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1606'
+      Content-Security-Policy:
+      - 'default-src https: wss: data: blob: ''unsafe-inline'' ''unsafe-eval''; report-uri
+        https://seekingalpha.com/report/csp'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 23 May 2024 16:42:06 GMT
+      Etag:
+      - W/"f9c669ff0834e44b6f4d5f742d9bd24a"
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Set-Cookie:
+      - machine_cookie=0877236483480; expires=Wed, 23 May 2029 16:42:06 GMT; path=/;
+      - machine_cookie_ts=1716482526; expires=Wed, 23 May 2029 16:42:06 GMT; path=/;
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains; preload
+      Vary:
+      - User-Agent, Accept-Encoding
+      X-Cache:
+      - MISS
+      X-Cache-Hits:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - d4AY7gCje8V6qzwU
+      X-Runtime:
+      - '0.393826'
+      X-Served-By:
+      - cache-bfi-krnt7300063-BFI
+      X-Timer:
+      - S1716482526.130500,VS0,VE589
+      X-XSS-Protection:
+      - '0'
+      alt-svc:
+      - h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+    status:
+      code: 200
+      message: OK
+version: 1
