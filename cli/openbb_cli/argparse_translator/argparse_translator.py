@@ -135,7 +135,9 @@ class ArgparseTranslator:
             kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
             model_choices = kwargs.get("choices", ()) or ()
             # extend choices
-            choices = tuple(set(_get_arg_choices(argument.name) + model_choices))
+            existing_choices = _get_arg_choices(argument.name)
+            choices = tuple(set(existing_choices + model_choices))
+            optional_choices = bool(existing_choices and not model_choices)
 
             # check if the argument is in the required arguments
             if _in_group(argument.name, group_title="required arguments"):
@@ -143,6 +145,8 @@ class ArgparseTranslator:
                     if action.dest == argument.name and choices:
                         # update choices
                         action.choices = choices
+                        if not hasattr(action, "optional_choices") and optional_choices:
+                            setattr(action, "optional_choices", optional_choices)
                 return
 
             # check if the argument is in the optional arguments
@@ -152,6 +156,11 @@ class ArgparseTranslator:
                         # update choices
                         if choices:
                             action.choices = choices
+                            if (
+                                not hasattr(action, "optional_choices")
+                                and optional_choices
+                            ):
+                                setattr(action, "optional_choices", optional_choices)
                         if argument.name not in self.signature.parameters:
                             # update help
                             action.help = _update_providers(
@@ -169,7 +178,9 @@ class ArgparseTranslator:
                 kwargs["choices"] = choices  # update choices
             # add provider info to the help
             kwargs["help"] = _update_providers(argument.help or "", groups_w_arg)
-            self._parser.add_argument(f"--{argument.name}", **kwargs)
+            action = self._parser.add_argument(f"--{argument.name}", **kwargs)
+            if not hasattr(action, "optional_choices") and optional_choices:
+                setattr(action, "optional_choices", optional_choices)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
