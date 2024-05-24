@@ -3,9 +3,11 @@
 from argparse import ArgumentParser
 
 import pytest
-from openbb_cli.argparse_translator.argparse_translator import (
+from openbb_cli.argparse_translator.argparse_argument import (
     ArgparseArgumentGroupModel,
     ArgparseArgumentModel,
+)
+from openbb_cli.argparse_translator.argparse_translator import (
     ArgparseTranslator,
 )
 

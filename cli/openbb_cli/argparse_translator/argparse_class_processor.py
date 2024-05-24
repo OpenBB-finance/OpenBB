@@ -6,8 +6,8 @@ from typing import Any, Dict, Optional, Type
 # TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
 
-from openbb_cli.argparse_translator.argparse_translator import (
-    ArgparseTranslator,
+from openbb_cli.argparse_translator.argparse_translator import ArgparseTranslator
+from openbb_cli.argparse_translator.reference_processor import (
     ReferenceToArgumentsProcessor,
 )
 
