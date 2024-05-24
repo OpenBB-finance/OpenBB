@@ -27,6 +27,12 @@ from openbb_cli.argparse_translator.argparse_argument import (
     ArgparseArgumentGroupModel,
     ArgparseArgumentModel,
 )
+from openbb_cli.argparse_translator.utils import (
+    get_argument_choices,
+    in_group,
+    remove_argument,
+    set_optional_choices,
+)
 
 # pylint: disable=protected-access
 
@@ -75,45 +81,6 @@ class ArgparseTranslator:
     def _handle_argument_in_groups(self, argument, group):
         """Handle the argument and add it to the parser."""
 
-        def _in_group(arg, group_title):
-            for action_group in self._parser._action_groups:
-                if action_group.title == group_title:
-                    for action in action_group._group_actions:
-                        opts = action.option_strings
-                        if (opts and opts[0] == arg) or action.dest == arg:
-                            return True
-            return False
-
-        def _remove_argument(arg) -> List[Optional[str]]:
-            groups_w_arg = []
-
-            # remove the argument from the parser
-            for action in self._parser._actions:
-                opts = action.option_strings
-                if (opts and opts[0] == arg) or action.dest == arg:
-                    self._parser._remove_action(action)
-                    break
-
-            # remove from all groups
-            for action_group in self._parser._action_groups:
-                for action in action_group._group_actions:
-                    opts = action.option_strings
-                    if (opts and opts[0] == arg) or action.dest == arg:
-                        action_group._group_actions.remove(action)
-                        groups_w_arg.append(action_group.title)
-
-            # remove from _action_groups dict
-            self._parser._option_string_actions.pop(f"--{arg}", None)
-
-            return groups_w_arg
-
-        def _get_arg_choices(arg) -> Tuple:
-            for action in self._parser._actions:
-                opts = action.option_strings
-                if (opts and opts[0] == arg) or action.dest == arg:
-                    return tuple(action.choices or ())
-            return ()
-
         def _update_providers(
             input_string: str, new_provider: List[Optional[str]]
         ) -> str:
@@ -135,32 +102,27 @@ class ArgparseTranslator:
             kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
             model_choices = kwargs.get("choices", ()) or ()
             # extend choices
-            existing_choices = _get_arg_choices(argument.name)
+            existing_choices = get_argument_choices(self._parser, argument.name)
             choices = tuple(set(existing_choices + model_choices))
             optional_choices = bool(existing_choices and not model_choices)
 
             # check if the argument is in the required arguments
-            if _in_group(argument.name, group_title="required arguments"):
+            if in_group(self._parser, argument.name, group_title="required arguments"):
                 for action in self._required._group_actions:
                     if action.dest == argument.name and choices:
                         # update choices
                         action.choices = choices
-                        if not hasattr(action, "optional_choices") and optional_choices:
-                            setattr(action, "optional_choices", optional_choices)
+                        set_optional_choices(action, optional_choices)
                 return
 
             # check if the argument is in the optional arguments
-            if _in_group(argument.name, group_title="optional arguments"):
+            if in_group(self._parser, argument.name, group_title="optional arguments"):
                 for action in self._parser._actions:
                     if action.dest == argument.name:
                         # update choices
                         if choices:
                             action.choices = choices
-                            if (
-                                not hasattr(action, "optional_choices")
-                                and optional_choices
-                            ):
-                                setattr(action, "optional_choices", optional_choices)
+                            set_optional_choices(action, optional_choices)
                         if argument.name not in self.signature.parameters:
                             # update help
                             action.help = _update_providers(
@@ -170,7 +132,7 @@ class ArgparseTranslator:
 
             # if the argument is in use, remove it from all groups
             # and return the groups that had the argument
-            groups_w_arg = _remove_argument(argument.name)
+            groups_w_arg = remove_argument(self._parser, argument.name)
             groups_w_arg.append(group.title)  # add current group
 
             # add it to the optional arguments group instead
@@ -179,8 +141,7 @@ class ArgparseTranslator:
             # add provider info to the help
             kwargs["help"] = _update_providers(argument.help or "", groups_w_arg)
             action = self._parser.add_argument(f"--{argument.name}", **kwargs)
-            if not hasattr(action, "optional_choices") and optional_choices:
-                setattr(action, "optional_choices", optional_choices)
+            set_optional_choices(action, optional_choices)
 
     @property
     def parser(self) -> argparse.ArgumentParser:
