@@ -1,8 +1,9 @@
+"""Module for translating a function into an argparse program."""
+
 import argparse
 import inspect
 import re
 from copy import deepcopy
-from enum import Enum
 from typing import (
     Any,
     Callable,
@@ -27,32 +28,31 @@ from typing_extensions import Annotated
 SEP = "__"
 
 
-class ArgparseActionType(Enum):
-    store = "store"
-    store_true = "store_true"
+class ArgparseArgumentModel(BaseModel):
+    """Pydantic model for an argparse argument."""
 
-
-class CustomArgument(BaseModel):
     name: str
-    type: Optional[Any]
+    type: Any
     dest: str
     default: Any
     required: bool
     action: Literal["store_true", "store"]
-    help: str
+    help: Optional[str]
     nargs: Optional[Literal["+"]]
     choices: Optional[Tuple]
 
     @model_validator(mode="after")  # type: ignore
     @classmethod
-    def validate_action(cls, values: "CustomArgument"):
+    def validate_action(cls, values: "ArgparseArgumentModel"):
+        """Validate the action based on the type."""
         if values.type is bool and values.action != "store_true":
             raise ValueError('If type is bool, action must be "store_true"')
         return values
 
     @model_validator(mode="after")  # type: ignore
     @classmethod
-    def remove_props_on_store_true(cls, values: "CustomArgument"):
+    def remove_props_on_store_true(cls, values: "ArgparseArgumentModel"):
+        """Remove type, nargs, and choices if action is store_true."""
         if values.action == "store_true":
             values.type = None
             values.nargs = None
@@ -61,6 +61,7 @@ class CustomArgument(BaseModel):
 
     # override
     def model_dump(self, **kwargs):
+        """Override the model_dump method to remove empty choices."""
         res = super().model_dump(**kwargs)
 
         # Check if choices is present and if it's an empty tuple remove it
@@ -70,16 +71,20 @@ class CustomArgument(BaseModel):
         return res
 
 
-class CustomArgumentGroup(BaseModel):
+class ArgparseArgumentGroupModel(BaseModel):
+    """Pydantic model for a custom argument group."""
+
     name: str
-    arguments: List[CustomArgument]
+    arguments: List[ArgparseArgumentModel]
 
 
-class ReferenceToCustomArgumentsProcessor:
+class ReferenceToArgumentsProcessor:
+    """Class to process the reference and build custom argument groups."""
+
     def __init__(self, reference: Dict[str, Dict]):
-        """Initializes the ReferenceToCustomArgumentsProcessor."""
+        """Initialize the ReferenceToArgumentsProcessor."""
         self.reference = reference
-        self.custom_groups: Dict[str, List[CustomArgumentGroup]] = {}
+        self.custom_groups: Dict[str, List[ArgparseArgumentGroupModel]] = {}
 
         self.build_custom_groups()
 
@@ -120,7 +125,7 @@ class ReferenceToCustomArgumentsProcessor:
         type_ = self._make_type_parsable(type_)  # type: ignore
         type_origin = get_origin(type_)
 
-        choices = ()
+        choices: tuple[Any, ...] = ()
 
         if type_origin is Literal:
             choices = get_args(type_)
@@ -162,7 +167,7 @@ class ReferenceToCustomArgumentsProcessor:
                     type_ = self._parse_type(arg["type"])
 
                     custom_arguments.append(
-                        CustomArgument(
+                        ArgparseArgumentModel(
                             name=arg["name"],
                             type=type_,
                             dest=arg["name"],
@@ -177,7 +182,9 @@ class ReferenceToCustomArgumentsProcessor:
                         )
                     )
 
-                group = CustomArgumentGroup(name=provider, arguments=custom_arguments)
+                group = ArgparseArgumentGroupModel(
+                    name=provider, arguments=custom_arguments
+                )
 
                 if route not in self.custom_groups:
                     self.custom_groups[route] = []
@@ -186,14 +193,16 @@ class ReferenceToCustomArgumentsProcessor:
 
 
 class ArgparseTranslator:
+    """Class to translate a function into an argparse program."""
+
     def __init__(
         self,
         func: Callable,
-        custom_argument_groups: Optional[List[CustomArgumentGroup]] = None,
+        custom_argument_groups: Optional[List[ArgparseArgumentGroupModel]] = None,
         add_help: Optional[bool] = True,
     ):
         """
-        Initializes the ArgparseTranslator.
+        Initialize the ArgparseTranslator.
 
         Args:
             func (Callable): The function to translate into an argparse program.
@@ -323,12 +332,12 @@ class ArgparseTranslator:
 
     @property
     def parser(self) -> argparse.ArgumentParser:
+        """Get the argparse parser."""
         return deepcopy(self._parser)
 
     @staticmethod
     def _build_description(func_doc: str) -> str:
-        """Builds the description of the argparse program from the function docstring."""
-
+        """Build the description of the argparse program from the function docstring."""
         patterns = ["openbb\n        ======", "Parameters\n        ----------"]
 
         if func_doc:
@@ -341,31 +350,34 @@ class ArgparseTranslator:
 
     @staticmethod
     def _param_is_default(param: inspect.Parameter) -> bool:
-        """Returns True if the parameter has a default value."""
+        """Return True if the parameter has a default value."""
         return param.default != inspect.Parameter.empty
 
     def _get_action_type(self, param: inspect.Parameter) -> str:
-        """Returns the argparse action type for the given parameter."""
+        """Return the argparse action type for the given parameter."""
         param_type = self.type_hints[param.name]
+        type_origin = get_origin(param_type)
 
-        if param_type == bool:
-            return ArgparseActionType.store_true.value
-        return ArgparseActionType.store.value
+        if param_type == bool or (
+            type_origin is Union and bool in get_args(param_type)
+        ):
+            return "store_true"
+        return "store"
 
     def _get_type_and_choices(
         self, param: inspect.Parameter
     ) -> Tuple[Type[Any], Tuple[Any, ...]]:
-        """Returns the type and choices for the given parameter."""
+        """Return the type and choices for the given parameter."""
         param_type = self.type_hints[param.name]
         type_origin = get_origin(param_type)
 
-        choices = ()
+        choices: tuple[Any, ...] = ()
 
         if type_origin is Literal:
             choices = get_args(param_type)
             param_type = type(choices[0])  # type: ignore
 
-        if type_origin is list:  # TODO: dict should also go here
+        if type_origin is list:
             param_type = get_args(param_type)[0]
 
             if get_origin(param_type) is Literal:
@@ -413,32 +425,26 @@ class ArgparseTranslator:
 
     @classmethod
     def _get_argument_custom_help(cls, param: inspect.Parameter) -> Optional[str]:
-        """Returns the help annotation for the given parameter."""
+        """Return the help annotation for the given parameter."""
         base_annotation = param.annotation
         _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
         help_annotation = (
             custom_annotations[0].description if custom_annotations else None
         )
-        if not help_annotation:
-            # try to get it from the docstring
-            pass
         return help_annotation
 
     @classmethod
     def _get_argument_custom_choices(cls, param: inspect.Parameter) -> Optional[str]:
-        """Returns the help annotation for the given parameter."""
+        """Return the help annotation for the given parameter."""
         base_annotation = param.annotation
         _, custom_annotations = cls._split_annotation(base_annotation, OpenBBField)
         choices_annotation = (
             custom_annotations[0].choices if custom_annotations else None
         )
-        if not choices_annotation:
-            # try to get it from the docstring
-            pass
         return choices_annotation
 
     def _get_nargs(self, param: inspect.Parameter) -> Optional[str]:
-        """Returns the nargs annotation for the given parameter."""
+        """Return the nargs annotation for the given parameter."""
         param_type = self.type_hints[param.name]
         origin = get_origin(param_type)
 
@@ -453,11 +459,8 @@ class ArgparseTranslator:
         return None
 
     def _generate_argparse_arguments(self, parameters) -> None:
-        """Generates the argparse arguments from the function parameters."""
+        """Generate the argparse arguments from the function parameters."""
         for param in parameters.values():
-            # TODO : how to handle kwargs?
-            # it's possible to add unknown arguments when parsing as follows:
-            # args, unknown_args = parser.parse_known_args()
             if param.name == "kwargs":
                 continue
 
@@ -505,32 +508,27 @@ class ArgparseTranslator:
 
             required = not self._param_is_default(param)
 
-            kwargs = {
-                "type": param_type,
-                "dest": param.name,
-                "default": param.default,
-                "required": required,
-                "action": self._get_action_type(param),
-                "help": self._get_argument_custom_help(param),
-                "nargs": self._get_nargs(param),
-            }
-
-            if choices:
-                kwargs["choices"] = choices
-
-            if param_type == bool:
-                # store_true action does not accept the below kwargs
-                kwargs.pop("type")
-                kwargs.pop("nargs")
+            argument = ArgparseArgumentModel(
+                name=param.name,
+                type=param_type,
+                dest=param.name,
+                default=param.default,
+                required=required,
+                action=self._get_action_type(param),
+                help=self._get_argument_custom_help(param),
+                nargs=self._get_nargs(param),
+                choices=choices,
+            )
+            kwargs = argument.model_dump(exclude={"name"}, exclude_none=True)
 
             if required:
                 self._required.add_argument(
-                    f"--{param.name}",
+                    f"--{argument.name}",
                     **kwargs,
                 )
             else:
                 self._parser.add_argument(
-                    f"--{param.name}",
+                    f"--{argument.name}",
                     **kwargs,
                 )
 
@@ -556,7 +554,6 @@ class ArgparseTranslator:
         # for each argument in the signature that is a custom type, we need to
         # update the kwargs with the custom type kwargs
         for param in self.signature.parameters.values():
-            # TODO : how to handle kwargs?
             if param.name == "kwargs":
                 continue
             param_type, _ = self._get_type_and_choices(param)
@@ -571,7 +568,7 @@ class ArgparseTranslator:
         parsed_args: Optional[argparse.Namespace] = None,
     ) -> Any:
         """
-        Executes the original function with the parsed arguments.
+        Execute the original function with the parsed arguments.
 
         Args:
             parsed_args (Optional[argparse.Namespace], optional): The parsed arguments. Defaults to None.
@@ -602,7 +599,7 @@ class ArgparseTranslator:
 
     def parse_args_and_execute(self) -> Any:
         """
-        Parses the arguments and executes the original function.
+        Parse the arguments and executes the original function.
 
         Returns:
             Any: The return value of the original function.
@@ -612,7 +609,7 @@ class ArgparseTranslator:
 
     def translate(self) -> Callable:
         """
-        Wraps the original function with an argparse program.
+        Wrap the original function with an argparse program.
 
         Returns:
             Callable: The original function wrapped with an argparse program.
