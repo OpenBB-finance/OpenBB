@@ -14,3 +14,4 @@
 ./build/pyinstaller
 ./website/config.toml
 ./**/node_modules
+./frontend-components/**
