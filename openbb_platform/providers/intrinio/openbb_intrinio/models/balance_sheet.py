@@ -458,7 +458,7 @@ class IntrinioBalanceSheetFetcher(
             for p in fiscal_periods
         ]
 
-        return await amake_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
@@ -466,6 +466,7 @@ class IntrinioBalanceSheetFetcher(
     ) -> List[IntrinioBalanceSheetData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioBalanceSheetData] = []
+        period = "FY" if query.period == "annual" else "QTR"
         units = []
         for item in data:
             sub_dict: Dict[str, Any] = {}
@@ -487,7 +488,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict["reported_currency"] = list(set(units))[0]
 
             # Intrinio does not return Q4 data but FY data instead
-            if query.period == "QTR" and item["fiscal_period"] == "FY":
+            if period == "QTR" and item["fiscal_period"] == "FY":
                 sub_dict["fiscal_period"] = "Q4"
 
             transformed_data.append(IntrinioBalanceSheetData(**sub_dict))
