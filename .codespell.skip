@@ -15,3 +15,4 @@
 ./website/config.toml
 ./**/node_modules
 ./frontend-components/**
+./website/content/terminal/reference/crypto/onchain/**
