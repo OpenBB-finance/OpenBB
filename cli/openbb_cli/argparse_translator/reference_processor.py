@@ -23,10 +23,15 @@ class ReferenceToArgumentsProcessor:
 
     def __init__(self, reference: Dict[str, Dict]):
         """Initialize the ReferenceToArgumentsProcessor."""
-        self.reference = reference
-        self.custom_groups: Dict[str, List[ArgparseArgumentGroupModel]] = {}
+        self._reference = reference
+        self._custom_groups: Dict[str, List[ArgparseArgumentGroupModel]] = {}
 
-        self.build_custom_groups()
+        self._build_custom_groups()
+
+    @property
+    def custom_groups(self) -> Dict[str, List[ArgparseArgumentGroupModel]]:
+        """Get the custom groups."""
+        return self._custom_groups
 
     @staticmethod
     def _make_type_parsable(type_: str) -> type:
@@ -92,9 +97,9 @@ class ReferenceToArgumentsProcessor:
 
         return choices
 
-    def build_custom_groups(self):
+    def _build_custom_groups(self):
         """Build the custom groups from the reference."""
-        for route, v in self.reference.items():
+        for route, v in self._reference.items():
             for provider, args in v["parameters"].items():
                 if provider == "standard":
                     continue
@@ -126,7 +131,7 @@ class ReferenceToArgumentsProcessor:
                     name=provider, arguments=custom_arguments
                 )
 
-                if route not in self.custom_groups:
-                    self.custom_groups[route] = []
+                if route not in self._custom_groups:
+                    self._custom_groups[route] = []
 
-                self.custom_groups[route].append(group)
+                self._custom_groups[route].append(group)
