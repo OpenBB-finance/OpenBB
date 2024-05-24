@@ -232,62 +232,62 @@ class Fetcher(Generic[Q, R]):
             ), f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"
 
 
-class StreamFetcher(Generic[Q, R]):
-    """Class to fetch live streaming data using WebSocket connections."""
+# class StreamFetcher(Generic[Q, R]):
+#     """Class to fetch live streaming data using WebSocket connections."""
 
-    @classmethod
-    async def connect(
-        cls,
-        uri: str,
-    ):
-        """Connect to a WebSocket server."""
-        cls.websocket = await websockets.connect(uri)
-        print("Connected to WebSocket server.")
-        asyncio.create_task(cls.receive_data())
+#     @classmethod
+#     async def connect(
+#         cls,
+#         uri: str,
+#     ):
+#         """Connect to a WebSocket server."""
+#         cls.websocket = await websockets.connect(uri)
+#         print("Connected to WebSocket server.")
+#         asyncio.create_task(cls.receive_data())
 
-    @staticmethod
-    def transform_data(data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
-        """Transform the provider-specific data."""
-        raise NotImplementedError
+#     @staticmethod
+#     def transform_data(data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
+#         """Transform the provider-specific data."""
+#         raise NotImplementedError
 
-    @classmethod
-    async def receive_data(cls, **kwargs):
-        """Receive data from the WebSocket server."""
-        try:
-            while True:
-                message = await cls.websocket.recv()
-                processed_data = await cls.process_message(message, **kwargs)
-                if processed_data:
-                    print(processed_data)
+#     @classmethod
+#     async def receive_data(cls, **kwargs):
+#         """Receive data from the WebSocket server."""
+#         try:
+#             while True:
+#                 message = await cls.websocket.recv()
+#                 processed_data = await cls.process_message(message, **kwargs)
+#                 if processed_data:
+#                     print(processed_data)
 
-        except websockets.exceptions.ConnectionClosed:
-            print("WebSocket connection closed.")
+#         except websockets.exceptions.ConnectionClosed:
+#             print("WebSocket connection closed.")
 
-    @classmethod
-    async def process_message(cls, message: str, **kwargs) -> Optional[R]:
-        """Process incoming WebSocket messages."""
-        try:
-            json_data = json.loads(message)
-            transformed_data = cls.transform_data(json_data, **kwargs)
-            return transformed_data
-        except Exception as e:
-            print(f"Error processing message: {e}")
-            return None
+#     @classmethod
+#     async def process_message(cls, message: str, **kwargs) -> Optional[R]:
+#         """Process incoming WebSocket messages."""
+#         try:
+#             json_data = json.loads(message)
+#             transformed_data = cls.transform_data(json_data, **kwargs)
+#             return transformed_data
+#         except Exception as e:
+#             print(f"Error processing message: {e}")
+#             return None
 
-    @classmethod
-    async def disconnect(cls):
-        """Disconnect the WebSocket."""
-        await cls.websocket.close()
+#     @classmethod
+#     async def disconnect(cls):
+#         """Disconnect the WebSocket."""
+#         await cls.websocket.close()
 
-    @classmethod
-    async def fetch_data(
-        cls,  # pylint: disable=unused-argument
-        params: Dict[str, Any],
-        credentials: Optional[Dict[str, str]] = None,  # pylint: disable=unused-argument
-        **kwargs,
-    ) -> Union[R, AnnotatedResult[R]]:
-        """Fetch live data from a provider."""
-        # In a streaming context, this method may just ensure the connection is open.
-        if not hasattr(cls, "websocket"):
-            await cls.connect(params.get("uri"))
-        # Data handling is asynchronous and managed by `receive_data`.
+#     @classmethod
+#     async def fetch_data(
+#         cls,  # pylint: disable=unused-argument
+#         params: Dict[str, Any],
+#         credentials: Optional[Dict[str, str]] = None,  # pylint: disable=unused-argument
+#         **kwargs,
+#     ) -> Union[R, AnnotatedResult[R]]:
+#         """Fetch live data from a provider."""
+#         # In a streaming context, this method may just ensure the connection is open.
+#         if not hasattr(cls, "websocket"):
+#             await cls.connect(params.get("uri"))
+#         # Data handling is asynchronous and managed by `receive_data`.

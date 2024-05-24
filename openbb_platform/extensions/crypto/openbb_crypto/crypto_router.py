@@ -1,6 +1,6 @@
 """Crypto Router."""
 
-import asyncio
+# import asyncio
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
@@ -12,8 +12,9 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+
 from providers.binance.openbb_binance.models.crypto_historical import (
-    BinanceStreamFetcher,
+    BinanceCryptoHistoricalFetcher,
 )
 
 from openbb_crypto.price.price_router import router as price_router
@@ -41,21 +42,10 @@ async def search(
 
 
 # pylint: disable=unused-argument
+@router.command(method=["POST"])
 async def crypto_historical():
     "Define the POC."
-    full_url = "wss://stream.binance.com:9443/ws/ethbtc@miniTicker"
-    await BinanceStreamFetcher.connect(full_url)
-    try:
-        await asyncio.sleep(10)  # Keep connection open for 60 seconds
-    finally:
-        await BinanceStreamFetcher.disconnect()
-
-    # Adjusted setup for existing asyncio event loops
-    loop = asyncio.get_event_loop()
-
-    if loop.is_running():
-        # Scheduling the coroutine to run and handling with the existing event loop
-        loop.create_task(crypto_historical())
-    else:
-        # If the loop is not running, run until complete
-        loop.run_until_complete(crypto_historical())
+    yield BinanceCryptoHistoricalFetcher().fetch_data(
+        params={"symbol": "ethbtc", "lifetime": 10},
+        credentials=None,
+    )
