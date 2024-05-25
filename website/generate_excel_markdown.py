@@ -15,7 +15,7 @@ XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
 XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
-# URLs: the platorm url should match the backend being used by excel.openbb.co
+# URLs: the platform url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
 
