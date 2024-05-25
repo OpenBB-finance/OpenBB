@@ -3,8 +3,6 @@
 # ruff: noqa: S101, E501
 # pylint: disable=E1101, C0301
 
-import asyncio
-import json
 from typing import (
     Any,
     Dict,
@@ -16,7 +14,6 @@ from typing import (
     get_origin,
 )
 
-import websockets
 from pandas import DataFrame
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -91,6 +88,21 @@ class Fetcher(Generic[Q, R]):
             cls.extract_data, query=query, credentials=credentials, **kwargs
         )
         return cls.transform_data(query=query, data=data, **kwargs)
+
+    @classmethod
+    async def stream_data(
+        cls,
+        params: Dict[str, Any],
+        credentials: Optional[Dict[str, str]] = None,
+        **kwargs,
+    ) -> Union[R, AnnotatedResult[R]]:
+        """Fetch data from a provider."""
+        query = cls.transform_query(params=params)
+        data = await maybe_coroutine(
+            cls.aextract_data, query=query, credentials=credentials, **kwargs
+        )
+        async for d in data:
+            yield d
 
     @classproperty
     def query_params_type(self) -> Q:

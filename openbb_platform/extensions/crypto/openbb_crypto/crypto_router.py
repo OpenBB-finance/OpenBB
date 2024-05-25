@@ -12,7 +12,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-
 from providers.binance.openbb_binance.models.crypto_historical import (
     BinanceCryptoHistoricalFetcher,
 )
@@ -41,11 +40,13 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-# pylint: disable=unused-argument
-@router.command(method=["POST"])
-async def crypto_historical():
-    "Define the POC."
-    yield BinanceCryptoHistoricalFetcher().fetch_data(
-        params={"symbol": "ethbtc", "lifetime": 10},
+@router.command(
+    methods=["GET"],
+)
+async def stream_price(symbol: str = "ethbtc", lifetime: int = 10) -> OBBject:
+    """Define the POC."""
+    generator = BinanceCryptoHistoricalFetcher().stream_data(
+        params={"symbol": symbol, "lifetime": lifetime},
         credentials=None,
     )
+    return OBBject(results=generator, provider="binance")

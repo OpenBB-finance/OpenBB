@@ -1,27 +1,23 @@
 """Binance Crypto Historical WS Data."""
 
-import asyncio
 import json
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
+import websockets
 from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
 from pydantic import Field
-import websockets
 
-from openbb_platform.core.openbb_core.provider.abstract.fetcher import (
-    # StreamFetcher,
-    Fetcher,
-)
+from openbb_platform.core.openbb_core.provider.abstract.fetcher import Fetcher
 
-# pylint: disable=unused-kwargs
+# pylint: disable=unused-argument, arguments-differ
 
 
 class BinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
-    """Binance Crypto Historical Query Params"""
+    """Binance Crypto Historical Query Params."""
 
     lifetime: Optional[int] = Field(
         default=60, description="Lifetime of WebSocket in seconds"
@@ -78,10 +74,10 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
                     transformed_data = BinanceCryptoHistoricalFetcher.transform_data(
                         query, data
                     )
-                    # print(transformed_data)
                     yield transformed_data
-            except websockets.exceptions.ConnectionClosed:
+            except websockets.exceptions.ConnectionClosed as e:
                 print("WebSocket connection closed.")
+                raise e
             finally:
                 print("WebSocket connection closed.")
 
@@ -95,27 +91,3 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
             datetime.now().isoformat() if "date" not in data else data["date"]
         )
         return BinanceCryptoHistoricalData(**data)
-
-
-# class BinanceStreamFetcher(StreamFetcher):
-#     """Define Binance Stream Fetcher."""
-
-#     @staticmethod
-#     def transform_data(data: Dict[str, Any], **kwargs) -> BinanceCryptoHistoricalData:
-#         """Transform the incoming data."""
-#         if "date" not in data:
-#             data["date"] = datetime.now().isoformat()
-#         return BinanceCryptoHistoricalData(**data)
-
-#     @classmethod
-#     async def process_message(
-#         cls, message: str, **kwargs
-#     ) -> Optional[BinanceCryptoHistoricalData]:
-#         """Process incoming WebSocket messages."""
-#         try:
-#             json_data = json.loads(message)
-#             transformed_data = cls.transform_data(json_data)
-#             return transformed_data
-#         except Exception as e:
-#             print(f"Error processing message from Binance: {e}")
-#             return None
