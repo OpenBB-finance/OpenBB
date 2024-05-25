@@ -94,7 +94,7 @@ print(summary[['full_name', 'open_issues', 'stargazers_count']])
 
 ### alt.oss.summary
 
-The alt.oss.summary SDK command gets you some info on a reposity - You just pass the repo path and can see all kinds of interesting information.
+The alt.oss.summary SDK command gets you some info on a repository - You just pass the repo path and can see all kinds of interesting information.
 
 ```python
 summary = pd.DataFrame.from_dict(openbb.alt.oss.summary(repo="openbb-finance/openbbterminal"))
