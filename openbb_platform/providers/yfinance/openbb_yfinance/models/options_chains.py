@@ -1,0 +1,159 @@
+"""YFinance Options Chains Model."""
+
+# pylint: disable=unused-argument
+
+import asyncio
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+import yfinance as yf
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.options_chains import (
+    OptionsChainsData,
+    OptionsChainsQueryParams,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from pandas import concat
+from pydantic import Field
+from pytz import timezone
+
+
+class YFinanceOptionsChainsQueryParams(OptionsChainsQueryParams):
+    """YFinance Options Chains Query Parameters."""
+
+
+class YFinanceOptionsChainsData(OptionsChainsData):
+    """YFinance Options Chains Data."""
+
+    __alias_dict__ = {
+        "contract_symbol": "contractSymbol",
+        "last_trade_timestamp": "lastTradeDate",
+        "last_trade_price": "lastPrice",
+        "change_percent": "percentChange",
+        "open_interest": "openInterest",
+        "implied_volatility": "impliedVolatility",
+        "in_the_money": "inTheMoney",
+    }
+    dte: Optional[int] = Field(
+        default=None,
+        description="Days to expiration.",
+    )
+    in_the_money: Optional[bool] = Field(
+        default=None,
+        description="Whether the option is in the money.",
+    )
+    last_trade_timestamp: Optional[datetime] = Field(
+        default=None,
+        description="Timestamp for when the option was last traded.",
+    )
+
+
+class YFinanceOptionsChainsFetcher(
+    Fetcher[YFinanceOptionsChainsQueryParams, List[YFinanceOptionsChainsData]]
+):
+    """YFinance Options Chains Fetcher."""
+
+    @staticmethod
+    def transform_query(params: Dict[str, Any]) -> YFinanceOptionsChainsQueryParams:
+        """Transform the query."""
+        return YFinanceOptionsChainsQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: YFinanceOptionsChainsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> Dict:
+        """Extract the raw data from YFinance."""
+        symbol = query.symbol.upper()
+        ticker = yf.Ticker(symbol)
+        expirations = list(ticker.options)
+        if not expirations or len(expirations) == 0:
+            raise ValueError(f"No options found for {symbol}")
+        chains_output: List = []
+        underlying = ticker.option_chain(expirations[0])[2]
+        underlying_output: Dict = {
+            "symbol": symbol,
+            "name": underlying.get("longName"),
+            "exchange": underlying.get("fullExchangeName"),
+            "exchange_tz": underlying.get("exchangeTimezoneName"),
+            "currency": underlying.get("currency"),
+            "bid": underlying.get("bid"),
+            "bid_size": underlying.get("bidSize"),
+            "ask": underlying.get("ask"),
+            "ask_size": underlying.get("askSize"),
+            "last_price": underlying.get(
+                "postMarketPrice", underlying.get("regularMarketPrice")
+            ),
+            "open": underlying.get("regularMarketOpen"),
+            "high": underlying.get("regularMarketDayHigh"),
+            "low": underlying.get("regularMarketDayLow"),
+            "close": underlying.get("regularMarketPrice"),
+            "prev_close": underlying.get("regularMarketPreviousClose"),
+            "change": underlying.get("regularMarketChange"),
+            "change_percent": underlying.get("regularMarketChangePercent"),
+            "volume": underlying.get("regularMarketVolume"),
+            "dividend_yield": float(underlying.get("dividendYield", 0)) / 100,
+            "dividend_yield_ttm": underlying.get("trailingAnnualDividendYield"),
+            "year_high": underlying.get("fiftyTwoWeekHigh"),
+            "year_low": underlying.get("fiftyTwoWeekLow"),
+            "ma_50": underlying.get("fiftyDayAverage"),
+            "ma_200": underlying.get("twoHundredDayAverage"),
+            "volume_avg_10d": underlying.get("averageDailyVolume10Day"),
+            "volume_avg_3m": underlying.get("averageDailyVolume3Month"),
+            "market_cap": underlying.get("marketCap"),
+            "shares_outstanding": underlying.get("sharesOutstanding"),
+        }
+        tz = timezone(underlying_output.get("exchange_tz", "UTC"))
+
+        async def get_chain(ticker, expiration, tz):
+            """Get the data for one expiration."""
+            exp = datetime.strptime(expiration, "%Y-%m-%d").date()
+            now = datetime.now().date()
+            dte = (exp - now).days
+            calls = ticker.option_chain(expiration, tz=tz)[0]
+            calls["option_type"] = "call"
+            calls["expiration"] = expiration
+            puts = ticker.option_chain(expiration, tz=tz)[1]
+            puts["option_type"] = "put"
+            puts["expiration"] = expiration
+            chain = concat([calls, puts])
+            chain = (
+                chain.set_index(["strike", "option_type", "contractSymbol"])
+                .sort_index()
+                .reset_index()
+            )
+            chain["dte"] = dte
+            chain["percentChange"] = chain["percentChange"] / 100
+            for col in ["currency", "contractSize"]:
+                if col in chain.columns:
+                    chain = chain.drop(col, axis=1)
+            if len(chain) > 0:
+                chains_output.extend(
+                    chain.fillna("N/A").replace("N/A", None).to_dict("records")
+                )
+
+        await asyncio.gather(
+            *[get_chain(ticker, expiration, tz) for expiration in expirations]
+        )
+
+        if not chains_output:
+            raise EmptyDataError(f"No data was returned for {symbol}")
+        return {"underlying": underlying_output, "chains": chains_output}
+
+    @staticmethod
+    def transform_data(
+        query: YFinanceOptionsChainsQueryParams,
+        data: Dict,
+        **kwargs: Any,
+    ) -> List[YFinanceOptionsChainsData]:
+        """Transform the data."""
+        if not data:
+            raise EmptyDataError()
+        metadata = data.get("underlying", {})
+        records = data.get("chains", [])
+        return AnnotatedResult(
+            result=[YFinanceOptionsChainsData.model_validate(r) for r in records],
+            metadata=metadata,
+        )
