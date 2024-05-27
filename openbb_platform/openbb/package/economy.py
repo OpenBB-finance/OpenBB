@@ -16,6 +16,7 @@ class ROUTER_economy(Container):
     available_indicators
     balance_of_payments
     calendar
+    central_bank_holdings
     composite_leading_indicator
     country_profile
     cpi
@@ -369,6 +370,139 @@ class ROUTER_economy(Container):
                         "tradingeconomics": {"multiple_items_allowed": True}
                     },
                 },
+            )
+        )
+
+    @exception_handler
+    @validate
+    def central_bank_holdings(
+        self,
+        date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="A specific date to get data for."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve"]],
+            OpenBBField(
+                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the balance sheet holdings of a central bank.
+
+        Parameters
+        ----------
+        date : Union[datetime.date, None, str]
+            A specific date to get data for.
+        provider : Optional[Literal['federal_reserve']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'federal_reserve' if there is
+            no default.
+        holding_type : Literal['all_agency', 'agency_debts', 'mbs', 'cmbs', 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips']
+            Type of holdings to return. (provider: federal_reserve)
+        summary : bool
+            If True, returns historical weekly summary by holding type. This parameter takes priority over other parameters. (provider: federal_reserve)
+        cusip : Optional[str]
+             Multiple comma separated items allowed.
+        wam : bool
+            If True, returns weighted average maturity aggregated by agency or treasury securities. This parameter takes priority over `holding_type`, `cusip`, and `monthly`. (provider: federal_reserve)
+        monthly : bool
+            If True, returns historical data for all Treasury securities at a monthly interval. This parameter takes priority over other parameters, except `wam`. Only valid when `holding_type` is set to: 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips'. (provider: federal_reserve)
+
+        Returns
+        -------
+        OBBject
+            results : List[CentralBankHoldings]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        CentralBankHoldings
+        -------------------
+        date : date
+            The date of the data.
+        security_type : Optional[str]
+            Type of security - i.e. TIPs, FRNs, etc. (provider: federal_reserve)
+        description : Optional[str]
+            Description of the security. Only returned for Agency securities. (provider: federal_reserve)
+        is_aggreated : Optional[Literal['Y']]
+            Whether the security is aggregated. Only returned for Agency securities. (provider: federal_reserve)
+        cusip : Optional[str]
+
+        issuer : Optional[str]
+            Issuer of the security. (provider: federal_reserve)
+        maturity_date : Optional[date]
+            Maturity date of the security. (provider: federal_reserve)
+        term : Optional[str]
+            Term of the security. Only returned for Agency securities. (provider: federal_reserve)
+        face_value : Optional[float]
+            Current face value of the security (Thousands). Current face value of the securities, which is the remaining principal balance of the securities. (provider: federal_reserve)
+        par_value : Optional[float]
+            Par value of the security (Thousands). Changes in par may reflect primary and secondary market transactions and/or custodial account activity. (provider: federal_reserve)
+        coupon : Optional[float]
+            Coupon rate of the security. (provider: federal_reserve)
+        spread : Optional[float]
+            Spread to the current reference rate, as determined at each security's initial auction. (provider: federal_reserve)
+        percent_outstanding : Optional[float]
+            Total percent of the outstanding CUSIP issuance. (provider: federal_reserve)
+        bills : Optional[float]
+            Treasury bills amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        frn : Optional[float]
+            Floating rate Treasury notes amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        notes_and_bonds : Optional[float]
+            Treasuy Notes and bonds amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        tips : Optional[float]
+            Treasury inflation-protected securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        mbs : Optional[float]
+            Mortgage-backed securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        cmbs : Optional[float]
+            Commercial mortgage-backed securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        agencies : Optional[float]
+            Agency securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        total : Optional[float]
+            Total SOMA holdings amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        tips_inflation_compensation : Optional[float]
+            Treasury inflation-protected securities inflation compensation amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+        change_prior_week : Optional[float]
+            Change in SOMA holdings from the prior week (Thousands). (provider: federal_reserve)
+        change_prior_year : Optional[float]
+            Change in SOMA holdings from the prior year (Thousands). (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # The default is the latest Treasury securities held by the Federal Reserve.
+        >>> obb.economy.central_bank_holdings(provider='federal_reserve')
+        >>> # Get historical summaries of the Fed's holdings.
+        >>> obb.economy.central_bank_holdings(provider='federal_reserve', summary=True)
+        >>> # Get the balance sheet holdings as-of a historical date.
+        >>> obb.economy.central_bank_holdings(provider='federal_reserve', date='2019-05-21')
+        >>> # Use the `holding_type` parameter to select Agency securities, or specific categories or Treasury securities.
+        >>> obb.economy.central_bank_holdings(provider='federal_reserve', holding_type='agency_debts')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/central_bank_holdings",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/central_bank_holdings",
+                        ("federal_reserve",),
+                    )
+                },
+                standard_params={
+                    "date": date,
+                },
+                extra_params=kwargs,
+                info={"cusip": {"federal_reserve": {"multiple_items_allowed": True}}},
             )
         )
 

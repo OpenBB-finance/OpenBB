@@ -5175,6 +5175,313 @@
             },
             "model": "EconomicIndicators"
         },
+        "/economy/central_bank_holdings": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the balance sheet holdings of a central bank.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default is the latest Treasury securities held by the Federal Reserve.\nobb.economy.central_bank_holdings(provider='federal_reserve')\n# Get historical summaries of the Fed's holdings.\nobb.economy.central_bank_holdings(provider='federal_reserve', summary=True)\n# Get the balance sheet holdings as-of a historical date.\nobb.economy.central_bank_holdings(provider='federal_reserve', date='2019-05-21')\n# Use the `holding_type` parameter to select Agency securities, or specific categories or Treasury securities.\nobb.economy.central_bank_holdings(provider='federal_reserve', holding_type=agency_debts)\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "Union[date, str]",
+                        "description": "A specific date to get data for.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['federal_reserve']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'federal_reserve' if there is no default.",
+                        "default": "federal_reserve",
+                        "optional": true
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "holding_type",
+                        "type": "Literal['all_agency', 'agency_debts', 'mbs', 'cmbs', 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips']",
+                        "description": "Type of holdings to return.",
+                        "default": "all_treasury",
+                        "optional": true,
+                        "choices": [
+                            "all_agency",
+                            "agency_debts",
+                            "mbs",
+                            "cmbs",
+                            "all_treasury",
+                            "bills",
+                            "notesbonds",
+                            "frn",
+                            "tips"
+                        ]
+                    },
+                    {
+                        "name": "summary",
+                        "type": "bool",
+                        "description": "If True, returns historical weekly summary by holding type. This parameter takes priority over other parameters.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cusip",
+                        "type": "Union[str, List[str]]",
+                        "description": " Multiple items allowed for provider(s): federal_reserve.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "wam",
+                        "type": "bool",
+                        "description": "If True, returns weighted average maturity aggregated by agency or treasury securities. This parameter takes priority over `holding_type`, `cusip`, and `monthly`.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "monthly",
+                        "type": "bool",
+                        "description": "If True, returns historical data for all Treasury securities at a monthly interval. This parameter takes priority over other parameters, except `wam`. Only valid when `holding_type` is set to: 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips'.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[CentralBankHoldings]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "security_type",
+                        "type": "str",
+                        "description": "Type of security - i.e. TIPs, FRNs, etc.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of the security. Only returned for Agency securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "is_aggreated",
+                        "type": "Literal['Y']",
+                        "description": "Whether the security is aggregated. Only returned for Agency securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cusip",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "issuer",
+                        "type": "str",
+                        "description": "Issuer of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity_date",
+                        "type": "date",
+                        "description": "Maturity date of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "term",
+                        "type": "str",
+                        "description": "Term of the security. Only returned for Agency securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "face_value",
+                        "type": "float",
+                        "description": "Current face value of the security (Thousands). Current face value of the securities, which is the remaining principal balance of the securities.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "par_value",
+                        "type": "float",
+                        "description": "Par value of the security (Thousands). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "coupon",
+                        "type": "float",
+                        "description": "Coupon rate of the security.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "spread",
+                        "type": "float",
+                        "description": "Spread to the current reference rate, as determined at each security's initial auction.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_outstanding",
+                        "type": "float",
+                        "description": "Total percent of the outstanding CUSIP issuance.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bills",
+                        "type": "float",
+                        "description": "Treasury bills amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frn",
+                        "type": "float",
+                        "description": "Floating rate Treasury notes amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "notes_and_bonds",
+                        "type": "float",
+                        "description": "Treasuy Notes and bonds amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "tips",
+                        "type": "float",
+                        "description": "Treasury inflation-protected securities amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "mbs",
+                        "type": "float",
+                        "description": "Mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "cmbs",
+                        "type": "float",
+                        "description": "Commercial mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "agencies",
+                        "type": "float",
+                        "description": "Agency securities amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "total",
+                        "type": "float",
+                        "description": "Total SOMA holdings amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "tips_inflation_compensation",
+                        "type": "float",
+                        "description": "Treasury inflation-protected securities inflation compensation amount (Thousands). Only returned when 'summary' is True.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_prior_week",
+                        "type": "float",
+                        "description": "Change in SOMA holdings from the prior week (Thousands).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "change_prior_year",
+                        "type": "float",
+                        "description": "Change in SOMA holdings from the prior year (Thousands).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "CentralBankHoldings"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
