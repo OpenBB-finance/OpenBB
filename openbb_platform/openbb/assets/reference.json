@@ -10527,7 +10527,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -10537,7 +10540,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     },
                     {
                         "name": "fiscal_year",
@@ -10555,7 +10561,11 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm"
+                        ]
                     },
                     {
                         "name": "filing_date",
@@ -10669,7 +10679,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ]
             },
@@ -11856,7 +11869,7 @@
                 "polygon": [
                     {
                         "name": "accounts_receivable",
-                        "type": "int",
+                        "type": "float",
                         "description": "Accounts receivable",
                         "default": null,
                         "optional": true,
@@ -11864,7 +11877,7 @@
                     },
                     {
                         "name": "marketable_securities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Marketable securities",
                         "default": null,
                         "optional": true,
@@ -11872,7 +11885,7 @@
                     },
                     {
                         "name": "prepaid_expenses",
-                        "type": "int",
+                        "type": "float",
                         "description": "Prepaid expenses",
                         "default": null,
                         "optional": true,
@@ -11880,7 +11893,7 @@
                     },
                     {
                         "name": "other_current_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Other current assets",
                         "default": null,
                         "optional": true,
@@ -11888,7 +11901,7 @@
                     },
                     {
                         "name": "total_current_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total current assets",
                         "default": null,
                         "optional": true,
@@ -11896,7 +11909,7 @@
                     },
                     {
                         "name": "property_plant_equipment_net",
-                        "type": "int",
+                        "type": "float",
                         "description": "Property plant and equipment net",
                         "default": null,
                         "optional": true,
@@ -11904,7 +11917,7 @@
                     },
                     {
                         "name": "inventory",
-                        "type": "int",
+                        "type": "float",
                         "description": "Inventory",
                         "default": null,
                         "optional": true,
@@ -11912,7 +11925,7 @@
                     },
                     {
                         "name": "other_non_current_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Other non-current assets",
                         "default": null,
                         "optional": true,
@@ -11920,7 +11933,7 @@
                     },
                     {
                         "name": "total_non_current_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total non-current assets",
                         "default": null,
                         "optional": true,
@@ -11928,7 +11941,7 @@
                     },
                     {
                         "name": "intangible_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Intangible assets",
                         "default": null,
                         "optional": true,
@@ -11936,7 +11949,7 @@
                     },
                     {
                         "name": "total_assets",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total assets",
                         "default": null,
                         "optional": true,
@@ -11944,7 +11957,7 @@
                     },
                     {
                         "name": "accounts_payable",
-                        "type": "int",
+                        "type": "float",
                         "description": "Accounts payable",
                         "default": null,
                         "optional": true,
@@ -11952,7 +11965,7 @@
                     },
                     {
                         "name": "employee_wages",
-                        "type": "int",
+                        "type": "float",
                         "description": "Employee wages",
                         "default": null,
                         "optional": true,
@@ -11960,7 +11973,7 @@
                     },
                     {
                         "name": "other_current_liabilities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Other current liabilities",
                         "default": null,
                         "optional": true,
@@ -11968,7 +11981,7 @@
                     },
                     {
                         "name": "total_current_liabilities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total current liabilities",
                         "default": null,
                         "optional": true,
@@ -11976,7 +11989,7 @@
                     },
                     {
                         "name": "other_non_current_liabilities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Other non-current liabilities",
                         "default": null,
                         "optional": true,
@@ -11984,7 +11997,7 @@
                     },
                     {
                         "name": "total_non_current_liabilities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total non-current liabilities",
                         "default": null,
                         "optional": true,
@@ -11992,7 +12005,7 @@
                     },
                     {
                         "name": "long_term_debt",
-                        "type": "int",
+                        "type": "float",
                         "description": "Long term debt",
                         "default": null,
                         "optional": true,
@@ -12000,7 +12013,7 @@
                     },
                     {
                         "name": "total_liabilities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Total liabilities",
                         "default": null,
                         "optional": true,
@@ -12008,7 +12021,7 @@
                     },
                     {
                         "name": "minority_interest",
-                        "type": "int",
+                        "type": "float",
                         "description": "Minority interest",
                         "default": null,
                         "optional": true,
@@ -12016,7 +12029,7 @@
                     },
                     {
                         "name": "temporary_equity_attributable_to_parent",
-                        "type": "int",
+                        "type": "float",
                         "description": "Temporary equity attributable to parent",
                         "default": null,
                         "optional": true,
@@ -12024,7 +12037,7 @@
                     },
                     {
                         "name": "equity_attributable_to_parent",
-                        "type": "int",
+                        "type": "float",
                         "description": "Equity attributable to parent",
                         "default": null,
                         "optional": true,
@@ -12032,7 +12045,7 @@
                     },
                     {
                         "name": "temporary_equity",
-                        "type": "int",
+                        "type": "float",
                         "description": "Temporary equity",
                         "default": null,
                         "optional": true,
@@ -12040,7 +12053,7 @@
                     },
                     {
                         "name": "preferred_stock",
-                        "type": "int",
+                        "type": "float",
                         "description": "Preferred stock",
                         "default": null,
                         "optional": true,
@@ -12048,7 +12061,7 @@
                     },
                     {
                         "name": "redeemable_non_controlling_interest",
-                        "type": "int",
+                        "type": "float",
                         "description": "Redeemable non-controlling interest",
                         "default": null,
                         "optional": true,
@@ -12056,32 +12069,32 @@
                     },
                     {
                         "name": "redeemable_non_controlling_interest_other",
-                        "type": "int",
+                        "type": "float",
                         "description": "Redeemable non-controlling interest other",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "total_stock_holders_equity",
-                        "type": "int",
+                        "name": "total_shareholders_equity",
+                        "type": "float",
                         "description": "Total stock holders equity",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "total_liabilities_and_stock_holders_equity",
-                        "type": "int",
-                        "description": "Total liabilities and stockholders equity",
+                        "name": "total_equity",
+                        "type": "float",
+                        "description": "Total equity",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "total_equity",
-                        "type": "int",
-                        "description": "Total equity",
+                        "name": "total_liabilities_and_shareholders_equity",
+                        "type": "float",
+                        "description": "Total liabilities and stockholders equity",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -12109,6 +12122,14 @@
                         "choices": null
                     },
                     {
+                        "name": "period",
+                        "type": "str",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "limit",
                         "type": "int",
                         "description": "The number of data entries to return.",
@@ -12124,7 +12145,19 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -12158,25 +12191,35 @@
             "data": {
                 "standard": [
                     {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol representing the entity requested in the data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "date",
+                        "name": "period_ending",
                         "type": "date",
-                        "description": "The date of the data.",
+                        "description": "The end date of the reporting period.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "period",
+                        "name": "fiscal_period",
                         "type": "str",
-                        "description": "Reporting period.",
+                        "description": "The fiscal period of the report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The fiscal year of the fiscal period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -12185,56 +12228,56 @@
                         "name": "growth_cash_and_cash_equivalents",
                         "type": "float",
                         "description": "Growth rate of cash and cash equivalents.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_short_term_investments",
                         "type": "float",
                         "description": "Growth rate of short-term investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_cash_and_short_term_investments",
                         "type": "float",
                         "description": "Growth rate of cash and short-term investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_net_receivables",
                         "type": "float",
                         "description": "Growth rate of net receivables.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_inventory",
                         "type": "float",
                         "description": "Growth rate of inventory.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_current_assets",
                         "type": "float",
                         "description": "Growth rate of other current assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_current_assets",
                         "type": "float",
                         "description": "Growth rate of total current assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12273,136 +12316,136 @@
                         "name": "growth_long_term_investments",
                         "type": "float",
                         "description": "Growth rate of long-term investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_tax_assets",
                         "type": "float",
                         "description": "Growth rate of tax assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_non_current_assets",
                         "type": "float",
                         "description": "Growth rate of other non-current assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_non_current_assets",
                         "type": "float",
                         "description": "Growth rate of total non-current assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_assets",
                         "type": "float",
                         "description": "Growth rate of other assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_assets",
                         "type": "float",
                         "description": "Growth rate of total assets.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_account_payables",
                         "type": "float",
                         "description": "Growth rate of accounts payable.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_short_term_debt",
                         "type": "float",
                         "description": "Growth rate of short-term debt.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_tax_payables",
                         "type": "float",
                         "description": "Growth rate of tax payables.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_deferred_revenue",
                         "type": "float",
                         "description": "Growth rate of deferred revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_current_liabilities",
                         "type": "float",
                         "description": "Growth rate of other current liabilities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_current_liabilities",
                         "type": "float",
                         "description": "Growth rate of total current liabilities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_long_term_debt",
                         "type": "float",
                         "description": "Growth rate of long-term debt.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_deferred_revenue_non_current",
                         "type": "float",
                         "description": "Growth rate of non-current deferred revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_deferrred_tax_liabilities_non_current",
                         "type": "float",
                         "description": "Growth rate of non-current deferred tax liabilities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_non_current_liabilities",
                         "type": "float",
                         "description": "Growth rate of other non-current liabilities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_non_current_liabilities",
                         "type": "float",
                         "description": "Growth rate of total non-current liabilities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
@@ -12438,7 +12481,7 @@
                         "choices": null
                     },
                     {
-                        "name": "growth_accumulated_other_comprehensive_income_loss",
+                        "name": "growth_accumulated_other_comprehensive_income",
                         "type": "float",
                         "description": "Growth rate of accumulated other comprehensive income/loss.",
                         "default": "",
@@ -12446,55 +12489,54 @@
                         "choices": null
                     },
                     {
-                        "name": "growth_othertotal_stockholders_equity",
+                        "name": "growth_other_total_shareholders_equity",
                         "type": "float",
                         "description": "Growth rate of other total stockholders' equity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_total_stockholders_equity",
+                        "name": "growth_total_shareholders_equity",
                         "type": "float",
                         "description": "Growth rate of total stockholders' equity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_total_liabilities_and_stockholders_equity",
+                        "name": "growth_total_liabilities_and_shareholders_equity",
                         "type": "float",
                         "description": "Growth rate of total liabilities and stockholders' equity.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_investments",
                         "type": "float",
                         "description": "Growth rate of total investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_debt",
                         "type": "float",
                         "description": "Growth rate of total debt.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_net_debt",
                         "type": "float",
                         "description": "Growth rate of net debt.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
-                ],
-                "fmp": []
+                ]
             },
             "model": "BalanceSheetGrowth"
         },
@@ -12546,7 +12588,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -12556,7 +12601,12 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm",
+                            "ytd"
+                        ]
                     },
                     {
                         "name": "fiscal_year",
@@ -12570,11 +12620,15 @@
                 "polygon": [
                     {
                         "name": "period",
-                        "type": "Literal['annual', 'quarter']",
+                        "type": "Literal['annual', 'quarter', 'ttm']",
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm"
+                        ]
                     },
                     {
                         "name": "filing_date",
@@ -13403,7 +13457,7 @@
                 "polygon": [
                     {
                         "name": "net_cash_flow_from_operating_activities_continuing",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from operating activities continuing.",
                         "default": null,
                         "optional": true,
@@ -13411,7 +13465,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_operating_activities_discontinued",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from operating activities discontinued.",
                         "default": null,
                         "optional": true,
@@ -13419,7 +13473,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_operating_activities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from operating activities.",
                         "default": null,
                         "optional": true,
@@ -13427,7 +13481,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_investing_activities_continuing",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from investing activities continuing.",
                         "default": null,
                         "optional": true,
@@ -13435,7 +13489,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_investing_activities_discontinued",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from investing activities discontinued.",
                         "default": null,
                         "optional": true,
@@ -13443,7 +13497,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_investing_activities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from investing activities.",
                         "default": null,
                         "optional": true,
@@ -13451,7 +13505,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_financing_activities_continuing",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from financing activities continuing.",
                         "default": null,
                         "optional": true,
@@ -13459,7 +13513,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_financing_activities_discontinued",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from financing activities discontinued.",
                         "default": null,
                         "optional": true,
@@ -13467,7 +13521,7 @@
                     },
                     {
                         "name": "net_cash_flow_from_financing_activities",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow from financing activities.",
                         "default": null,
                         "optional": true,
@@ -13475,7 +13529,7 @@
                     },
                     {
                         "name": "net_cash_flow_continuing",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow continuing.",
                         "default": null,
                         "optional": true,
@@ -13483,7 +13537,7 @@
                     },
                     {
                         "name": "net_cash_flow_discontinued",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow discontinued.",
                         "default": null,
                         "optional": true,
@@ -13491,7 +13545,7 @@
                     },
                     {
                         "name": "exchange_gains_losses",
-                        "type": "int",
+                        "type": "float",
                         "description": "Exchange gains losses.",
                         "default": null,
                         "optional": true,
@@ -13499,7 +13553,7 @@
                     },
                     {
                         "name": "net_cash_flow",
-                        "type": "int",
+                        "type": "float",
                         "description": "Net cash flow.",
                         "default": null,
                         "optional": true,
@@ -13664,6 +13718,14 @@
                         "choices": null
                     },
                     {
+                        "name": "period",
+                        "type": "str",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "limit",
                         "type": "int",
                         "description": "The number of data entries to return.",
@@ -13679,7 +13741,19 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -13713,25 +13787,35 @@
             "data": {
                 "standard": [
                     {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol representing the entity requested in the data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "date",
+                        "name": "period_ending",
                         "type": "date",
-                        "description": "The date of the data.",
+                        "description": "The end date of the reporting period.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "period",
+                        "name": "fiscal_period",
                         "type": "str",
-                        "description": "Period the statement is returned for.",
+                        "description": "The fiscal period of the report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The fiscal year of the fiscal period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -13740,244 +13824,243 @@
                         "name": "growth_net_income",
                         "type": "float",
                         "description": "Growth rate of net income.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_depreciation_and_amortization",
                         "type": "float",
                         "description": "Growth rate of depreciation and amortization.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_deferred_income_tax",
                         "type": "float",
                         "description": "Growth rate of deferred income tax.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_stock_based_compensation",
                         "type": "float",
                         "description": "Growth rate of stock-based compensation.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_change_in_working_capital",
                         "type": "float",
                         "description": "Growth rate of change in working capital.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_accounts_receivables",
+                        "name": "growth_account_receivables",
                         "type": "float",
                         "description": "Growth rate of accounts receivables.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_inventory",
                         "type": "float",
                         "description": "Growth rate of inventory.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_accounts_payables",
+                        "name": "growth_account_payable",
                         "type": "float",
-                        "description": "Growth rate of accounts payables.",
-                        "default": "",
-                        "optional": false,
+                        "description": "Growth rate of account payable.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_working_capital",
                         "type": "float",
                         "description": "Growth rate of other working capital.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_non_cash_items",
                         "type": "float",
                         "description": "Growth rate of other non-cash items.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_cash_provided_by_operating_activities",
+                        "name": "growth_net_cash_from_operating_activities",
                         "type": "float",
                         "description": "Growth rate of net cash provided by operating activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_investments_in_property_plant_and_equipment",
+                        "name": "growth_purchase_of_property_plant_and_equipment",
                         "type": "float",
                         "description": "Growth rate of investments in property, plant, and equipment.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_acquisitions_net",
+                        "name": "growth_acquisitions",
                         "type": "float",
                         "description": "Growth rate of net acquisitions.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_purchases_of_investments",
+                        "name": "growth_purchase_of_investment_securities",
                         "type": "float",
                         "description": "Growth rate of purchases of investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_sales_maturities_of_investments",
+                        "name": "growth_sale_and_maturity_of_investments",
                         "type": "float",
                         "description": "Growth rate of sales maturities of investments.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_investing_activities",
                         "type": "float",
                         "description": "Growth rate of other investing activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_cash_used_for_investing_activities",
+                        "name": "growth_net_cash_from_investing_activities",
                         "type": "float",
                         "description": "Growth rate of net cash used for investing activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_debt_repayment",
+                        "name": "growth_repayment_of_debt",
                         "type": "float",
                         "description": "Growth rate of debt repayment.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_common_stock_issued",
                         "type": "float",
                         "description": "Growth rate of common stock issued.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_common_stock_repurchased",
                         "type": "float",
                         "description": "Growth rate of common stock repurchased.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_dividends_paid",
                         "type": "float",
                         "description": "Growth rate of dividends paid.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_financing_activities",
                         "type": "float",
                         "description": "Growth rate of other financing activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_cash_used_provided_by_financing_activities",
+                        "name": "growth_net_cash_from_financing_activities",
                         "type": "float",
                         "description": "Growth rate of net cash used/provided by financing activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_effect_of_forex_changes_on_cash",
+                        "name": "growth_effect_of_exchange_rate_changes_on_cash",
                         "type": "float",
                         "description": "Growth rate of the effect of foreign exchange changes on cash.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_change_in_cash",
+                        "name": "growth_net_change_in_cash_and_equivalents",
                         "type": "float",
                         "description": "Growth rate of net change in cash.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "growth_cash_at_end_of_period",
-                        "type": "float",
-                        "description": "Growth rate of cash at the end of the period.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_cash_at_beginning_of_period",
                         "type": "float",
                         "description": "Growth rate of cash at the beginning of the period.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "growth_cash_at_end_of_period",
+                        "type": "float",
+                        "description": "Growth rate of cash at the end of the period.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_operating_cash_flow",
                         "type": "float",
                         "description": "Growth rate of operating cash flow.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_capital_expenditure",
                         "type": "float",
                         "description": "Growth rate of capital expenditure.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_free_cash_flow",
                         "type": "float",
                         "description": "Growth rate of free cash flow.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
-                ],
-                "fmp": []
+                ]
             },
             "model": "CashFlowStatementGrowth"
         },
@@ -14896,7 +14979,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -14906,7 +14992,12 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm",
+                            "ytd"
+                        ]
                     },
                     {
                         "name": "fiscal_year",
@@ -14924,7 +15015,11 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "ttm"
+                        ]
                     },
                     {
                         "name": "filing_date",
@@ -15038,7 +15133,10 @@
                         "description": "None",
                         "default": "annual",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
                     }
                 ]
             },
@@ -16366,18 +16464,18 @@
                         "choices": null
                     },
                     {
-                        "name": "limit",
-                        "type": "int",
-                        "description": "The number of data entries to return.",
-                        "default": 10,
+                        "name": "period",
+                        "type": "str",
+                        "description": "Time period of the data to return.",
+                        "default": "annual",
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "period",
-                        "type": "Literal['annual', 'quarter']",
-                        "description": "Time period of the data to return.",
-                        "default": "annual",
+                        "name": "limit",
+                        "type": "int",
+                        "description": "The number of data entries to return.",
+                        "default": 10,
                         "optional": true,
                         "choices": null
                     },
@@ -16389,7 +16487,19 @@
                         "optional": true
                     }
                 ],
-                "fmp": []
+                "fmp": [
+                    {
+                        "name": "period",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "None",
+                        "default": "annual",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -16423,25 +16533,35 @@
             "data": {
                 "standard": [
                     {
-                        "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol representing the entity requested in the data.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "date",
+                        "name": "period_ending",
                         "type": "date",
-                        "description": "The date of the data.",
+                        "description": "The end date of the reporting period.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
-                        "name": "period",
+                        "name": "fiscal_period",
                         "type": "str",
-                        "description": "Period the statement is returned for.",
+                        "description": "The fiscal period of the report.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "fiscal_year",
+                        "type": "int",
+                        "description": "The fiscal year of the fiscal period.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fmp": [
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -16450,212 +16570,211 @@
                         "name": "growth_revenue",
                         "type": "float",
                         "description": "Growth rate of total revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_cost_of_revenue",
                         "type": "float",
                         "description": "Growth rate of cost of goods sold.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_gross_profit",
                         "type": "float",
                         "description": "Growth rate of gross profit.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_gross_profit_ratio",
+                        "name": "growth_gross_profit_margin",
                         "type": "float",
                         "description": "Growth rate of gross profit as a percentage of revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_research_and_development_expenses",
-                        "type": "float",
-                        "description": "Growth rate of expenses on research and development.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    },
-                    {
-                        "name": "growth_general_and_administrative_expenses",
+                        "name": "growth_general_and_admin_expense",
                         "type": "float",
                         "description": "Growth rate of general and administrative expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_selling_and_marketing_expenses",
+                        "name": "growth_research_and_development_expense",
+                        "type": "float",
+                        "description": "Growth rate of expenses on research and development.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "growth_selling_and_marketing_expense",
                         "type": "float",
                         "description": "Growth rate of expenses on selling and marketing activities.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_other_expenses",
                         "type": "float",
                         "description": "Growth rate of other operating expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_operating_expenses",
                         "type": "float",
                         "description": "Growth rate of total operating expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_cost_and_expenses",
                         "type": "float",
                         "description": "Growth rate of total costs and expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_interest_expense",
                         "type": "float",
                         "description": "Growth rate of interest expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_depreciation_and_amortization",
                         "type": "float",
                         "description": "Growth rate of depreciation and amortization expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_ebitda",
                         "type": "float",
                         "description": "Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_ebitda_ratio",
+                        "name": "growth_ebitda_margin",
                         "type": "float",
                         "description": "Growth rate of EBITDA as a percentage of revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_operating_income",
                         "type": "float",
                         "description": "Growth rate of operating income.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_operating_income_ratio",
+                        "name": "growth_operating_income_margin",
                         "type": "float",
                         "description": "Growth rate of operating income as a percentage of revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_total_other_income_expenses_net",
                         "type": "float",
                         "description": "Growth rate of net total other income and expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_income_before_tax",
                         "type": "float",
                         "description": "Growth rate of income before taxes.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_income_before_tax_ratio",
+                        "name": "growth_income_before_tax_margin",
                         "type": "float",
                         "description": "Growth rate of income before taxes as a percentage of revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
                         "name": "growth_income_tax_expense",
                         "type": "float",
                         "description": "Growth rate of income tax expenses.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_income",
+                        "name": "growth_consolidated_net_income",
                         "type": "float",
                         "description": "Growth rate of net income.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_net_income_ratio",
+                        "name": "growth_net_income_margin",
                         "type": "float",
                         "description": "Growth rate of net income as a percentage of revenue.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_eps",
+                        "name": "growth_basic_earings_per_share",
                         "type": "float",
                         "description": "Growth rate of Earnings Per Share (EPS).",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_eps_diluted",
+                        "name": "growth_diluted_earnings_per_share",
                         "type": "float",
                         "description": "Growth rate of diluted Earnings Per Share (EPS).",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_weighted_average_shs_out",
+                        "name": "growth_weighted_average_basic_shares_outstanding",
                         "type": "float",
                         "description": "Growth rate of weighted average shares outstanding.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "growth_weighted_average_shs_out_dil",
+                        "name": "growth_weighted_average_diluted_shares_outstanding",
                         "type": "float",
                         "description": "Growth rate of diluted weighted average shares outstanding.",
-                        "default": "",
-                        "optional": false,
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
-                ],
-                "fmp": []
+                ]
             },
             "model": "IncomeStatementGrowth"
         },
