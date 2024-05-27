@@ -5,6 +5,7 @@
 
 from typing import (
     Any,
+    AsyncIterator,
     Dict,
     Generic,
     Optional,
@@ -54,13 +55,18 @@ class Fetcher(Generic[Q, R]):
         """Asynchronously extract the data from the provider."""
 
     @staticmethod
+    async def atransform_data(
+        query: Q, data: Any, **kwargs
+    ) -> Union[R, AnnotatedResult[R]]:
+        """Asynchronously transform the provider-specific data."""
+
+    @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
         """Extract the data from the provider."""
 
     @staticmethod
     def transform_data(query: Q, data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
         """Transform the provider-specific data."""
-        raise NotImplementedError
 
     def __init_subclass__(cls, *args, **kwargs):
         """Initialize the subclass."""
@@ -72,6 +78,15 @@ class Fetcher(Generic[Q, R]):
             raise NotImplementedError(
                 "Fetcher subclass must implement either extract_data or aextract_data"
                 " method. If both are implemented, aextract_data will be used as the"
+                " default."
+            )
+
+        if cls.atransform_data != Fetcher.atransform_data:
+            cls.transform_data = cls.atransform_data
+        elif cls.transform_data == Fetcher.transform_data:
+            raise NotImplementedError(
+                "Fetcher subclass must implement either transform_data or atransform_data"
+                " method. If both are implemented, atransform_data will be used as the"
                 " default."
             )
 
@@ -95,13 +110,14 @@ class Fetcher(Generic[Q, R]):
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
         **kwargs,
-    ) -> Union[R, AnnotatedResult[R]]:
+    ) -> Union[AsyncIterator[R], AsyncIterator[AnnotatedResult[R]]]:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = await maybe_coroutine(
             cls.aextract_data, query=query, credentials=credentials, **kwargs
         )
-        async for d in data:
+        transformed_data = cls.atransform_data(query=query, data=data, **kwargs)
+        async for d in transformed_data:
             yield d
 
     @classproperty
@@ -242,64 +258,3 @@ class Fetcher(Generic[Q, R]):
             assert issubclass(
                 type(transformed_data), cls.return_type
             ), f"Transformed data must be of the correct type. Expected: {cls.return_type} Got: {type(transformed_data)}"
-
-
-# class StreamFetcher(Generic[Q, R]):
-#     """Class to fetch live streaming data using WebSocket connections."""
-
-#     @classmethod
-#     async def connect(
-#         cls,
-#         uri: str,
-#     ):
-#         """Connect to a WebSocket server."""
-#         cls.websocket = await websockets.connect(uri)
-#         print("Connected to WebSocket server.")
-#         asyncio.create_task(cls.receive_data())
-
-#     @staticmethod
-#     def transform_data(data: Any, **kwargs) -> Union[R, AnnotatedResult[R]]:
-#         """Transform the provider-specific data."""
-#         raise NotImplementedError
-
-#     @classmethod
-#     async def receive_data(cls, **kwargs):
-#         """Receive data from the WebSocket server."""
-#         try:
-#             while True:
-#                 message = await cls.websocket.recv()
-#                 processed_data = await cls.process_message(message, **kwargs)
-#                 if processed_data:
-#                     print(processed_data)
-
-#         except websockets.exceptions.ConnectionClosed:
-#             print("WebSocket connection closed.")
-
-#     @classmethod
-#     async def process_message(cls, message: str, **kwargs) -> Optional[R]:
-#         """Process incoming WebSocket messages."""
-#         try:
-#             json_data = json.loads(message)
-#             transformed_data = cls.transform_data(json_data, **kwargs)
-#             return transformed_data
-#         except Exception as e:
-#             print(f"Error processing message: {e}")
-#             return None
-
-#     @classmethod
-#     async def disconnect(cls):
-#         """Disconnect the WebSocket."""
-#         await cls.websocket.close()
-
-#     @classmethod
-#     async def fetch_data(
-#         cls,  # pylint: disable=unused-argument
-#         params: Dict[str, Any],
-#         credentials: Optional[Dict[str, str]] = None,  # pylint: disable=unused-argument
-#         **kwargs,
-#     ) -> Union[R, AnnotatedResult[R]]:
-#         """Fetch live data from a provider."""
-#         # In a streaming context, this method may just ensure the connection is open.
-#         if not hasattr(cls, "websocket"):
-#             await cls.connect(params.get("uri"))
-#         # Data handling is asynchronous and managed by `receive_data`.

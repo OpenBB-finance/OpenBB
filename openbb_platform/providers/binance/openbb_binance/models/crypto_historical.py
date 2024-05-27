@@ -1,6 +1,7 @@
 """Binance Crypto Historical WS Data."""
 
 import json
+import logging
 from datetime import datetime, timedelta
 from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
 
@@ -56,39 +57,36 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
         return BinanceCryptoHistoricalQueryParams(**params)
 
     @staticmethod
-    def transform_data(
-        query: BinanceCryptoHistoricalQueryParams,
-        data: Dict[str, Any],
-    ) -> BinanceCryptoHistoricalData:
-        """Return the transformed data."""
-        data["date"] = (
-            datetime.now().isoformat() if "date" not in data else data["date"]
-        )
-
-        return BinanceCryptoHistoricalData(**data)
-
-    @staticmethod
     async def aextract_data(
         query: BinanceCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]] = None,
         **kwargs: Any,
-    ) -> AsyncIterator[str]:
+    ) -> AsyncGenerator[dict, None]:
         """Return the raw data from the Binance endpoint."""
         async with websockets.connect(
             f"wss://stream.binance.com:9443/ws/{query.symbol.lower()}@miniTicker"
         ) as websocket:
-            print("Connected to WebSocket server.")
+            logging.info("Connected to WebSocket server.")
             end_time = datetime.now() + timedelta(seconds=query.lifetime)
             try:
                 while datetime.now() < end_time:
-                    message = await websocket.recv()
-                    data = json.loads(message)
-                    transformed_data = BinanceCryptoHistoricalFetcher.transform_data(
-                        query, data
-                    )
-                    yield transformed_data.model_dump_json() + "\n"
+                    chunk = await websocket.recv()
+                    yield json.loads(chunk)
             except websockets.exceptions.ConnectionClosed as e:
-                print("WebSocket connection closed.")
+                logging.error("WebSocket connection closed.")
                 raise e
             finally:
-                print("WebSocket connection closed.")
+                logging.info("WebSocket connection closed.")
+
+    @staticmethod
+    async def atransform_data(
+        query: BinanceCryptoHistoricalQueryParams,
+        data: Dict[str, Any],
+    ) -> AsyncIterator[str]:
+        """Return the transformed data."""
+        async for chunk in data:
+            chunk["date"] = (
+                datetime.now().isoformat() if "date" not in chunk else chunk["date"]
+            )
+            result = BinanceCryptoHistoricalData(**chunk)
+            yield result.model_dump_json() + "\n"

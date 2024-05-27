@@ -12,12 +12,8 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from providers.binance.openbb_binance.models.crypto_historical import (
-    BinanceCryptoHistoricalFetcher,
-)
 
 from openbb_crypto.price.price_router import router as price_router
-from fastapi.responses import StreamingResponse
 
 router = Router(prefix="", description="Cryptocurrency market data.")
 router.include_router(price_router)
@@ -39,15 +35,3 @@ async def search(
 ) -> OBBject:
     """Search available cryptocurrency pairs within a provider."""
     return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    methods=["GET"],
-)
-async def stream_price(symbol: str = "ethbtc", lifetime: int = 10) -> OBBject:
-    """Define the POC."""
-    generator = BinanceCryptoHistoricalFetcher().stream_data(
-        params={"symbol": symbol, "lifetime": lifetime},
-        credentials=None,
-    )
-    return StreamingResponse(generator, media_type="application/x-ndjson")
