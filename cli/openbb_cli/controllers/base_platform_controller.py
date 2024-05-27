@@ -6,6 +6,8 @@ from types import MethodType
 from typing import Dict, List, Optional
 
 import pandas as pd
+from anyio.from_thread import start_blocking_portal
+from fastapi.responses import StreamingResponse
 from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
@@ -199,6 +201,23 @@ class PlatformController(BaseController):
 
                         elif isinstance(obbject, dict):
                             df = pd.DataFrame.from_dict(obbject, orient="columns")
+                            print_rich_table(df=df, show_index=True, title=title)
+
+                        elif isinstance(obbject, StreamingResponse):
+                            received_data = []
+
+                            async def stream_data(obbject):
+                                async for data in obbject.body_iterator:
+                                    received_data.append(data)
+                                    session.console.print(data)
+
+                            with start_blocking_portal() as portal:
+                                try:
+                                    portal.start_task_soon(stream_data, obbject)
+                                finally:
+                                    portal.call(portal.stop)
+
+                            df = pd.DataFrame(received_data)
                             print_rich_table(df=df, show_index=True, title=title)
 
                         elif not isinstance(obbject, OBBject):
