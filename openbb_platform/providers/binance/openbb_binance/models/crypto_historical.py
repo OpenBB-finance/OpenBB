@@ -6,15 +6,16 @@ from datetime import datetime, timedelta
 from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
 
 import websockets
+from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
 from pydantic import Field
 
-from openbb_platform.core.openbb_core.provider.abstract.fetcher import Fetcher
-
 # pylint: disable=unused-argument, arguments-differ
+
+logger = logging.getLogger(__name__)
 
 
 class BinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
@@ -66,17 +67,17 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
         async with websockets.connect(
             f"wss://stream.binance.com:9443/ws/{query.symbol.lower()}@miniTicker"
         ) as websocket:
-            logging.info("Connected to WebSocket server.")
+            logger.info("Connected to WebSocket server.")
             end_time = datetime.now() + timedelta(seconds=query.lifetime)
             try:
                 while datetime.now() < end_time:
                     chunk = await websocket.recv()
                     yield json.loads(chunk)
             except websockets.exceptions.ConnectionClosed as e:
-                logging.error("WebSocket connection closed.")
+                logger.error("WebSocket connection closed.")
                 raise e
             finally:
-                logging.info("WebSocket connection closed.")
+                logger.info("WebSocket connection closed.")
 
     @staticmethod
     async def atransform_data(

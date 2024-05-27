@@ -45,8 +45,11 @@ class HandlersManager:
     def _add_stdout_handler(self):
         """Add a stdout handler."""
         handler = logging.StreamHandler(sys.stdout)
-        formatter = FormatterWithExceptions(settings=self._settings)
+        formatter = logging.Formatter(
+            "%(asctime)s - %(levelname)s - %(name)s - %(message)s"
+        )
         handler.setFormatter(formatter)
+        handler.setLevel(logging.DEBUG)
         logging.getLogger().addHandler(handler)
 
     def _add_stderr_handler(self):
@@ -68,6 +71,7 @@ class HandlersManager:
         handler = PathTrackingFileHandler(settings=self._settings)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
+        handler.setLevel(logging.INFO)
         logging.getLogger().addHandler(handler)
 
     def update_handlers(self, settings: LoggingSettings):
