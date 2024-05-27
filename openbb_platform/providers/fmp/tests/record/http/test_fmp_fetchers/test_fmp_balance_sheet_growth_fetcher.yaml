@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement-growth/AAPL?apikey=MOCK_API_KEY&limit=10
+    uri: https://financialmodelingprep.com/api/v3/balance-sheet-statement-growth/AAPL?apikey=MOCK_API_KEY&limit=10&period=annual
   response:
     body:
       string: !!binary |

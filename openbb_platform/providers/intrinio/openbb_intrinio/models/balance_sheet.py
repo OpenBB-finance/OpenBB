@@ -22,7 +22,10 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    period: Literal["annual", "quarter"] = Field(default="annual")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual",
+        json_schema_extra={"choices": ["annual", "quarter"]},
+    )
     fiscal_year: Optional[int] = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
