@@ -275,11 +275,6 @@ class OBBject(Tagged, Generic[T]):
         show_function: Callable = getattr(self.chart.fig, "show")
         show_function(**kwargs)
 
-    async def stream(self) -> None:
-        """Stream response."""
-        async for result in self.results:  # pylint: disable=not-an-iterable
-            print(result)
-
     @classmethod
     async def from_query(cls, query: "Query") -> "OBBject":
         """Create OBBject from query.

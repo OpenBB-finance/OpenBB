@@ -17,6 +17,7 @@ from providers.binance.openbb_binance.models.crypto_historical import (
 )
 
 from openbb_crypto.price.price_router import router as price_router
+from fastapi.responses import StreamingResponse
 
 router = Router(prefix="", description="Cryptocurrency market data.")
 router.include_router(price_router)
@@ -49,4 +50,4 @@ async def stream_price(symbol: str = "ethbtc", lifetime: int = 10) -> OBBject:
         params={"symbol": symbol, "lifetime": lifetime},
         credentials=None,
     )
-    return OBBject(results=generator, provider="binance")
+    return StreamingResponse(generator, media_type="application/x-ndjson")

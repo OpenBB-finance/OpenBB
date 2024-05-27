@@ -2,7 +2,7 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Any, Dict, Optional
+from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
 
 import websockets
 from openbb_core.provider.standard_models.crypto_historical import (
@@ -20,7 +20,7 @@ class BinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     """Binance Crypto Historical Query Params."""
 
     lifetime: Optional[int] = Field(
-        default=60, description="Lifetime of WebSocket in seconds"
+        default=60, description="Lifetime of WebSocket in seconds."
     )
 
 
@@ -56,11 +56,23 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
         return BinanceCryptoHistoricalQueryParams(**params)
 
     @staticmethod
+    def transform_data(
+        query: BinanceCryptoHistoricalQueryParams,
+        data: Dict[str, Any],
+    ) -> BinanceCryptoHistoricalData:
+        """Return the transformed data."""
+        data["date"] = (
+            datetime.now().isoformat() if "date" not in data else data["date"]
+        )
+
+        return BinanceCryptoHistoricalData(**data)
+
+    @staticmethod
     async def aextract_data(
         query: BinanceCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]] = None,
         **kwargs: Any,
-    ) -> BinanceCryptoHistoricalData:
+    ) -> AsyncIterator[str]:
         """Return the raw data from the Binance endpoint."""
         async with websockets.connect(
             f"wss://stream.binance.com:9443/ws/{query.symbol.lower()}@miniTicker"
@@ -74,20 +86,9 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
                     transformed_data = BinanceCryptoHistoricalFetcher.transform_data(
                         query, data
                     )
-                    yield transformed_data
+                    yield transformed_data.model_dump_json() + "\n"
             except websockets.exceptions.ConnectionClosed as e:
                 print("WebSocket connection closed.")
                 raise e
             finally:
                 print("WebSocket connection closed.")
-
-    @staticmethod
-    def transform_data(
-        query: BinanceCryptoHistoricalQueryParams,
-        data: Dict[str, Any],
-    ) -> BinanceCryptoHistoricalData:
-        """Return the transformed data."""
-        data["date"] = (
-            datetime.now().isoformat() if "date" not in data else data["date"]
-        )
-        return BinanceCryptoHistoricalData(**data)

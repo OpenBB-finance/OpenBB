@@ -3,9 +3,10 @@
 import inspect
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
-from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
+from typing import Any, Callable, Dict, Optional, Tuple, TypeVar, Union
 
 from fastapi import APIRouter, Depends, Header
+from fastapi.responses import StreamingResponse
 from fastapi.routing import APIRoute
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
@@ -188,7 +189,9 @@ def build_api_wrapper(
     func.__annotations__ = new_annotations_map
 
     @wraps(wrapped=func)
-    async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]) -> OBBject:
+    async def wrapper(
+        *args: Tuple[Any], **kwargs: Dict[str, Any]
+    ) -> Union[OBBject, StreamingResponse]:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -196,9 +199,11 @@ def build_api_wrapper(
             )
         )
         execute = partial(command_runner.run, path, user_settings)
-        output: OBBject = await execute(*args, **kwargs)
+        output = await execute(*args, **kwargs)
 
-        return validate_output(output)
+        if isinstance(output, OBBject):
+            return validate_output(output)
+        return output
 
     return wrapper
 

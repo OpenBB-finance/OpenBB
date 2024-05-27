@@ -8,9 +8,10 @@ from datetime import datetime
 from inspect import Parameter, signature
 from sys import exc_info
 from time import perf_counter_ns
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type
+from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
 from warnings import catch_warnings, showwarning, warn
 
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, create_model
 
 from openbb_core.app.logs.logging_service import LoggingService
@@ -420,7 +421,7 @@ class StaticCommandRunner:
         /,
         *args,
         **kwargs,
-    ) -> OBBject:
+    ) -> Union[OBBject, StreamingResponse]:
         """Run a command and return the OBBject as output."""
         timestamp = datetime.now()
         start_ns = perf_counter_ns()
@@ -429,7 +430,7 @@ class StaticCommandRunner:
         route = execution_context.route
 
         if func := command_map.get_command(route=route):
-            obbject = await cls._execute_func(
+            result = await cls._execute_func(
                 route=route,
                 args=args,  # type: ignore
                 execution_context=execution_context,
@@ -442,19 +443,20 @@ class StaticCommandRunner:
         duration = perf_counter_ns() - start_ns
 
         if execution_context.user_settings.preferences.metadata:
-            try:
-                obbject.extra["metadata"] = Metadata(
-                    arguments=kwargs,
-                    duration=duration,
-                    route=route,
-                    timestamp=timestamp,
-                )
-            except Exception as e:
-                if Env().DEBUG_MODE:
-                    raise OpenBBError(e) from e
-                warn(str(e), OpenBBWarning)
+            if isinstance(result, OBBject):
+                try:
+                    result.extra["metadata"] = Metadata(
+                        arguments=kwargs,
+                        duration=duration,
+                        route=route,
+                        timestamp=timestamp,
+                    )
+                except Exception as e:
+                    if Env().DEBUG_MODE:
+                        raise OpenBBError(e) from e
+                    warn(str(e), OpenBBWarning)
 
-        return obbject
+        return result
 
 
 class CommandRunner:
