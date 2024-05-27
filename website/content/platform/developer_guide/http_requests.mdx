@@ -1,0 +1,237 @@
+---
+title: HTTP Requests
+sidebar_position: 6
+description: This guide outlines OpenBB processes for making HTTP requests synchronously and asynchronously. Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
+keywords:
+- OpenBB Platform
+- Open source
+- Python interface
+- REST API
+- Code contribution
+- Requests
+- HTTP
+- Async
+- Synchronous
+- provider
+- extension
+- data
+- fetch
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="HTTP Requests - Contributor Guidelines - Development | OpenBB Platform Docs" />
+
+## Overview
+
+Any function fetching data requires making an outbound HTTP request. Utility functions within the `openbb-core` simplify the procedure for making both asynchronous and synchronous requests. These cover the majority of typical requests and should be imported for use instead of creating a new client from scratch.
+
+Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
+
+## Generate Query String
+
+To pass parameters to a URL, they need to be formatted as a query string. The helper function, `get_querystring()`, converts a dictionary of parameters to a standard query URL string.
+
+```python
+from openbb_core.provider.utils.helpers import get_querystring
+```
+
+```python
+    Parameters
+    ----------
+    items: dict
+        The dictionary to be turned into a querystring.
+
+    exclude: List[str]
+        The keys to be excluded from the querystring.
+
+    Returns
+    -------
+    str
+        The querystring.
+```
+
+Within the context of the Fetcher, the "query" object is a Pydantic model. To pass the query parameters to the helper function, apply `model_dump()` to the query object. This removes any key:values where the value is `None`.
+
+There may be parameters that are not intended to be included in the parameters portion of the URL string. Pass those as a `List` to the `exclude` parameter of `get_querystring()`.
+
+```python
+query_string = get_querystring(query.model_dump(), ["interval"])
+```
+
+In the example above, the "base url" is dedicated to the "interval" of the OHLC data. We want to exclude `&interval=1d` from the parameters portion of the final URL. Or, daily/monthly/intraday levels are all different end points from the provider's API.
+
+## Asynchronous vs Synchronous
+
+Every function in the router is asynchronous. This is the only place an asynchronous function *must* be used. Data-fetching router functions all follow the same format.
+
+```python
+@router.command(model="MarketSnapshots")
+async def market_snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a current, complete, market snapshot."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+The code above executes the endpoint consumed by the user. Each data provider model mapped to the model name in the router decorator could be asynchronous or synchronous.
+
+### Why Async?
+
+An asynchronous fetcher is suitable for data sources demanding multiple queries per command. Options chains, for example, could be served as only a single expiration date, but others will provide the complete chain as a single request.
+
+In the case of the former, dozens of requests, an asynchronous fetcher will dramatically improve performance. The latter is only one request and the code can be simplified as a synchronous process.
+
+Some data providers allow for bulk downloading from a list of symbols, while many do not. It might be desirable to enhance a data source by adding support for bulk downloading. Wrapping it as list of asynchronous tasks makes it an efficient process. The time to download one item should be the same as two because the tasks are carried out concurrently.
+
+Ultimately, the choice is at the discretion of the developer. OpenBB has made the implementation of both methods easy and fast, the next sections will elaborate.
+
+
+### Synchronous - Requests
+<details>
+```python
+from openbb_core.provider.utils import make_request
+```
+
+This function is an abstract helper to make requests from a URL with potential headers and parameters. It accepts `**kwargs` and returns a `requests.Response` object. If no headers are supplied, it will attempt to use a generic user-agent. Add headers as a dictionary to the `headers` parameter of the query.
+
+All parameters of `requests.get` or `requests.post`are accessible and passed through as `**kwargs`.
+
+```python
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+```
+</details>
+
+### Asynchronous - AIOHTTP
+
+<details>
+Single-URL requests can be made asynchronously. The name of the function now starts with, `a`.
+
+```python
+from openbb_core.provider.utils.helpers import amake_request
+```
+
+This function uses the `aiohttp` client and accepts `kwargs`. It has a default callback function that assumes the content is `json`. No post-request object parsing is required, but this behaviour is overridden with the `response_callback` parameter.
+
+```python
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+```
+
+:::tip
+Don't forget to `await`!
+
+```python
+url = "https://someurlwithdata.profit"
+response_json = await amake_requests(url)
+```
+
+Absent `await`, the response is a coroutine - a task waiting to be executed.
+
+:::
+
+</details>
+
+### Multi-URL Requests
+<details>
+The helper function becomes plural, `amake_requests`, when fetching for a list of URLs. Under the hood, it is using `asyncio.gather` to perform the tasks concurrently. The same default callback function from `amake_request` exists, only here it appends the expected `json` output to a `List[Dict]`.
+
+```python
+from openbb_core.provider.utils.helpers import amake_requests
+```
+
+```python
+    Parameters
+    ----------
+    urls : Union[str, List[str]]
+        List of urls to make requests to
+    method : Literal["GET", "POST"], optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+```
+</details>
+
+### Custom Callback
+<details>
+Customize the response parsing by creating a specific callback function. The example below is a method for converting CSV data to a dictionary and appending it to a list.
+
+```python
+from io import StringIO
+from typing import Any
+from pandas import DataFrame
+
+results = []
+
+async def response_callback(response, _: Any):
+    """Callback for HTTP Client Response."""
+    response = await response.text()
+    data = DataFrame(StringIO(response), skiprows=2)
+    results.append(data.to_dict("records"))
+```
+</details>
+
+
+### Asynchronous Fetchers
+<details>
+When a Fetcher is asynchronous, the `extract_data` static method needs to be defined accordingly - `aextract_data` instead of `extract_data`.
+
+```python
+    @staticmethod
+    async def aextract_data(
+        query: SourceModelQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> List[Dict]:
+```
+
+These helper functions simplify and standardize the majority of HTTP requests.
+
+They are starting points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
+</details>

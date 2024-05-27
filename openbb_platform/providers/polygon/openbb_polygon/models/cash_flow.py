@@ -1,5 +1,7 @@
 """Polygon Cash Flow Statement Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
@@ -10,7 +12,7 @@ from openbb_core.provider.standard_models.cash_flow import (
 )
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field
+from pydantic import Field, model_validator
 
 
 class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -21,7 +23,10 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    period: Literal["annual", "quarter"] = Field(default="annual")
+    period: Literal["annual", "quarter", "ttm"] = Field(
+        default="annual",
+        json_schema_extra={"choices": ["annual", "quarter", "ttm"]},
+    )
 
     filing_date: Optional[dateType] = Field(
         default=None, description="Filing date of the financial statement."
@@ -64,10 +69,10 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default=False,
         description="Whether to include the sources of the financial statement.",
     )
-    order: Literal[None, "asc", "desc"] = Field(
+    order: Optional[Literal["asc", "desc"]] = Field(
         default=None, description="Order of the financial statement."
     )
-    sort: Literal[None, "filing_date", "period_of_report_date"] = Field(
+    sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
         default=None, description="Sort of the financial statement."
     )
 
@@ -75,46 +80,56 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 class PolygonCashFlowStatementData(CashFlowStatementData):
     """Polygon Cash Flow Statement Data."""
 
-    net_cash_flow_from_operating_activities_continuing: Optional[int] = Field(
+    net_cash_flow_from_operating_activities_continuing: Optional[float] = Field(
         description="Net cash flow from operating activities continuing.", default=None
     )
-    net_cash_flow_from_operating_activities_discontinued: Optional[int] = Field(
+    net_cash_flow_from_operating_activities_discontinued: Optional[float] = Field(
         description="Net cash flow from operating activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_operating_activities: Optional[int] = Field(
+    net_cash_flow_from_operating_activities: Optional[float] = Field(
         description="Net cash flow from operating activities.", default=None
     )
-    net_cash_flow_from_investing_activities_continuing: Optional[int] = Field(
+    net_cash_flow_from_investing_activities_continuing: Optional[float] = Field(
         description="Net cash flow from investing activities continuing.", default=None
     )
-    net_cash_flow_from_investing_activities_discontinued: Optional[int] = Field(
+    net_cash_flow_from_investing_activities_discontinued: Optional[float] = Field(
         description="Net cash flow from investing activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_investing_activities: Optional[int] = Field(
+    net_cash_flow_from_investing_activities: Optional[float] = Field(
         description="Net cash flow from investing activities.", default=None
     )
-    net_cash_flow_from_financing_activities_continuing: Optional[int] = Field(
+    net_cash_flow_from_financing_activities_continuing: Optional[float] = Field(
         description="Net cash flow from financing activities continuing.", default=None
     )
-    net_cash_flow_from_financing_activities_discontinued: Optional[int] = Field(
+    net_cash_flow_from_financing_activities_discontinued: Optional[float] = Field(
         description="Net cash flow from financing activities discontinued.",
         default=None,
     )
-    net_cash_flow_from_financing_activities: Optional[int] = Field(
+    net_cash_flow_from_financing_activities: Optional[float] = Field(
         description="Net cash flow from financing activities.", default=None
     )
-    net_cash_flow_continuing: Optional[int] = Field(
+    net_cash_flow_continuing: Optional[float] = Field(
         description="Net cash flow continuing.", default=None
     )
-    net_cash_flow_discontinued: Optional[int] = Field(
+    net_cash_flow_discontinued: Optional[float] = Field(
         description="Net cash flow discontinued.", default=None
     )
-    exchange_gains_losses: Optional[int] = Field(
+    exchange_gains_losses: Optional[float] = Field(
         description="Exchange gains losses.", default=None
     )
-    net_cash_flow: Optional[int] = Field(description="Net cash flow.", default=None)
+    net_cash_flow: Optional[float] = Field(description="Net cash flow.", default=None)
+
+    @model_validator(mode="before")
+    @classmethod
+    def replace_zero(cls, values):
+        """Check for zero values and replace with None."""
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class PolygonCashFlowStatementFetcher(
@@ -123,7 +138,7 @@ class PolygonCashFlowStatementFetcher(
         List[PolygonCashFlowStatementData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Cash Flow Statement Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCashFlowStatementQueryParams:
@@ -135,7 +150,7 @@ class PolygonCashFlowStatementFetcher(
         query: PolygonCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
@@ -156,16 +171,16 @@ class PolygonCashFlowStatementFetcher(
 
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
 
-        return await get_data_many(request_url, "results", **kwargs)
+        return await get_data_many(request_url, "results", **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
         query: PolygonCashFlowStatementQueryParams,
-        data: dict,
+        data: Dict,
         **kwargs: Any,
     ) -> List[PolygonCashFlowStatementData]:
         """Return the transformed data."""
-        transformed_data = []
+        transformed_data: List[PolygonCashFlowStatementData] = []
 
         for item in data:
             sub_data = {

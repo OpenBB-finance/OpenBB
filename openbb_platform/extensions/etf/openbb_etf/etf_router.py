@@ -13,7 +13,7 @@ from openbb_core.app.router import Router
 
 from openbb_etf.discovery.discovery_router import router as discovery_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Exchange Traded Funds market data.")
 router.include_router(discovery_router)
 
 # pylint: disable=unused-argument
@@ -167,20 +167,6 @@ async def holdings_date(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Use this function to get the holdings dates, if available."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
-    model="EtfHoldingsPerformance",
-    examples=[APIEx(parameters={"symbol": "XLK", "provider": "fmp"})],
-)
-async def holdings_performance(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get the recent price performance of each ticker held in the ETF."""
     return await OBBject.from_query(Query(**locals()))
 
 

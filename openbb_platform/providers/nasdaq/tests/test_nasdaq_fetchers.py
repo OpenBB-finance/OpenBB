@@ -1,3 +1,5 @@
+"""Tests for the Nasdaq fetchers."""
+
 import datetime
 
 import pytest
@@ -21,6 +23,7 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 
 @pytest.fixture(scope="module")
 def vcr_config():
+    """VCR configuration."""
     return {
         "filter_headers": [
             ("User-Agent", None),
@@ -36,6 +39,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Equity Search fetcher."""
     params = {"query": "", "is_etf": True, "use_cache": False}
 
     fetcher = NasdaqEquitySearchFetcher()
@@ -45,6 +49,7 @@ def test_nasdaq_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Economic Calendar fetcher."""
     params = {
         "start_date": datetime.date(2023, 11, 3),
         "end_date": datetime.date(2023, 11, 3),
@@ -57,6 +62,7 @@ def test_nasdaq_economic_calendar_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Calendar Dividend fetcher."""
     params = {
         "start_date": datetime.date(2023, 11, 6),
         "end_date": datetime.date(2023, 11, 6),
@@ -69,6 +75,7 @@ def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_calendar_ipo_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Calendar IPO fetcher."""
     params = {
         "start_date": datetime.date(2023, 11, 1),
         "end_date": datetime.date(2023, 11, 30),
@@ -82,6 +89,7 @@ def test_nasdaq_calendar_ipo_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_top_retail_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Top Retail fetcher."""
     params = {}
 
     fetcher = NasdaqTopRetailFetcher()
@@ -91,6 +99,7 @@ def test_nasdaq_top_retail_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_sp500_multiples_fetcher(credentials=test_credentials):
+    """Test the Nasdaq SP500 Multiples fetcher."""
     params = {}
 
     fetcher = NasdaqSP500MultiplesFetcher()
@@ -100,6 +109,7 @@ def test_nasdaq_sp500_multiples_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_cot_fetcher(credentials=test_credentials):
+    """Test the Nasdaq COT fetcher."""
     params = {}
 
     fetcher = NasdaqCotFetcher()
@@ -108,6 +118,7 @@ def test_nasdaq_cot_fetcher(credentials=test_credentials):
 
 
 def test_nasdaq_cot_search_fetcher(credentials=test_credentials):
+    """Test the Nasdaq COT Search fetcher."""
     params = {}
 
     fetcher = NasdaqCotSearchFetcher()
@@ -117,6 +128,7 @@ def test_nasdaq_cot_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Calendar Earnings fetcher."""
     params = {
         "start_date": datetime.date(2023, 11, 1),
         "end_date": datetime.date(2023, 11, 30),
@@ -129,6 +141,7 @@ def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_historical_dividends_fetcher(credentials=test_credentials):
+    """Test the Nasdaq Historical Dividends fetcher."""
     params = {"symbol": "AAPL"}
 
     fetcher = NasdaqHistoricalDividendsFetcher()
@@ -138,6 +151,7 @@ def test_nasdaq_historical_dividends_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_nasdaq_lbma_fixing_fetcher(credentials=test_credentials):
+    """Test the Nasdaq LBMA Fixing fetcher."""
     params = {"asset": "gold"}
 
     fetcher = NasdaqLbmaFixingFetcher()

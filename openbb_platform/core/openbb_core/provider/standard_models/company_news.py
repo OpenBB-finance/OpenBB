@@ -22,8 +22,7 @@ class CompanyNewsQueryParams(QueryParams):
 
     symbol: Optional[str] = Field(
         default=None,
-        description=QUERY_DESCRIPTIONS.get("symbol", "")
-        + " This endpoint will accept multiple symbols separated by commas.",
+        description=QUERY_DESCRIPTIONS.get("symbol", ""),
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")

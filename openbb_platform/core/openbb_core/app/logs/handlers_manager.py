@@ -1,9 +1,8 @@
-# IMPORT STANDARD
+"""Handlers Manager."""
+
 import logging
 import sys
 
-# IMPORT THIRD-PARTY
-# IMPORT INTERNAL
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
@@ -15,7 +14,10 @@ from openbb_core.app.logs.models.logging_settings import LoggingSettings
 
 
 class HandlersManager:
+    """Handlers Manager."""
+
     def __init__(self, settings: LoggingSettings):
+        """Initialize the HandlersManager."""
         self._handlers = settings.handler_list
         self._settings = settings
 
@@ -34,36 +36,42 @@ class HandlersManager:
                 logging.getLogger().debug("Unknown log handler.")
 
     def _add_posthog_handler(self):
+        """Add a Posthog handler."""
         handler = PosthogHandler(settings=self._settings)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
 
     def _add_stdout_handler(self):
+        """Add a stdout handler."""
         handler = logging.StreamHandler(sys.stdout)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
 
     def _add_stderr_handler(self):
+        """Add a stderr handler."""
         handler = logging.StreamHandler(sys.stderr)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
 
     def _add_noop_handler(self):
+        """Add a null handler."""
         handler = logging.NullHandler()
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
 
     def _add_file_handler(self):
+        """Add a file handler."""
         handler = PathTrackingFileHandler(settings=self._settings)
         formatter = FormatterWithExceptions(settings=self._settings)
         handler.setFormatter(formatter)
         logging.getLogger().addHandler(handler)
 
     def update_handlers(self, settings: LoggingSettings):
+        """Update the handlers with new settings."""
         logger = logging.getLogger()
         for hdlr in logger.handlers:
             if isinstance(hdlr, (PathTrackingFileHandler, PosthogHandler)):

@@ -91,3 +91,101 @@ async def analyst_search(
 ) -> OBBject:
     """Search for specific analysts and get their forecast track record."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ForwardSalesEstimates",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "fiscal_year": 2025,
+                "fiscal_period": "fy",
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+async def forward_sales(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get forward sales estimates."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ForwardEbitdaEstimates",
+    examples=[
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "fiscal_period": "annual",
+                "provider": "intrinio",
+            }
+        ),
+        APIEx(
+            parameters={
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "quarter",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+async def forward_ebitda(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get forward EBITDA estimates."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ForwardEpsEstimates",
+    examples=[
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "fiscal_year": 2025,
+                "fiscal_period": "fy",
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+async def forward_eps(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get forward EPS estimates."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ForwardPeEstimates",
+    examples=[
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL,MSFT,GOOG",
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+async def forward_pe(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get forward PE estimates."""
+    return await OBBject.from_query(Query(**locals()))

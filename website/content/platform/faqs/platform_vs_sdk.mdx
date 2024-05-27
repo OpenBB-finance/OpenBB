@@ -1,0 +1,154 @@
+---
+title: Platform vs SDK
+sidebar_position: 1
+description: The OpenBB SDK has evolved to become the OpenBB Platform. This page describes some of the key differences between the legacy version and the new architecture.
+keywords:
+- what's new
+- v3
+- legacy
+- sdk
+- platform
+- api
+- FastAPI
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="What's the Difference Between OpenBB Platform and SDK? - FAQs | OpenBB Platform Docs" />
+
+If you're already an OpenBB user, you may be familiar with some of the legacy pain points. As [this](https://openbb.co/blog/celebrating-the-openbb-platform-v4-beta) blog post highlights, there were many challenges with maintaining the existing codebase.
+
+We needed to refresh the architecture to make it modular, resilient, and scalable. The core components have been trimmed substantially to be lean and efficient - the number of dependencies has reduced from nearly four-hundred down to about twenty.
+
+The result is a much smoother installation procedure, with the tradeoff being some breaking changes for those transitioning from V3 SDK to the V4 Platform. The major differences are described below.
+
+### Terminal Application
+
+The OpenBB Terminal is not installed with the Platform. The Terminal will be reimagined with the new extension framework, it won't get left behind for long!
+
+### Extension Framework
+
+The extension framework lets users install or uninstall individual data and toolkit extensions. No more bloated environments.
+
+```bash
+pip install openbb-yfinance
+
+pip uninstall openbb-yfinance
+```
+
+### Import Statement
+
+Initialize the OpenBB Platform with a shorter statement and reduced import time.
+
+```python
+from openbb import obb
+```
+
+### REST API Compliant
+
+The OpenBB Platform is built for REST API deployments, out-of-the-box. Outputs are JSON serializable, and this is a major difference between the SDK and Platform.
+
+Start the API on `localhost` with:
+
+```bash
+uvicorn openbb_core.api.rest_api:app
+```
+
+### Verbose Namespaces
+
+After careful consideration, the decision was made to name functions with more verbosity. This adds clarity to the functions and lets the user better understand its purpose.
+
+It also improves the performance of AI tooling built on top of the Platform.
+
+```python
+obb.equity.fundamental.employee_count("AAPL")
+```
+
+### Asset Class Names
+
+Some asset classes have been renamed:
+
+- stocks -> equity
+- forex -> currency
+- stocks.options -> derivatives.options
+- futures -> derivatives.futures
+
+### Source -> Provider
+
+V3 SDK users should note that the `source` parameter is now, `provider`.
+
+:::note
+OpenBB Hub Preferences for default sources do not currently sync with V4 Platform, and some API keys not used in the Terminal application are not able to be saved to the Hub.
+:::
+
+### API Key Management
+
+API keys and user preferences are stored in a JSON file - `$HOME/.openbb_platform/user_settings.json` - instead of the `ENV` file in `$HOME/.openbb_sdk/.env`.
+
+Credentials can be entered directly from the Python interface:
+
+```python
+from openbb import obb
+obb.user.credentials.fmp_api_key="REPLACE_WITH_YOUR_KEY"
+```
+
+### OpenBB Hub Login
+
+Login to your OpenBB Hub account with an email/password combo or a revokable Personal Access Token (recommended):
+
+```python
+from openbb import obb
+obb.account.login()
+```
+
+### Function Outputs
+
+The default output format can be selected by the user, and all outputs are Pydantic models.
+
+If you are transitioning from V3 SDK and like working with Pandas DataFrames, set the preference to "dataframe" to get a V3-like response.
+
+```python
+from openbb import obb
+obb.user.preferences.output_type="dataframe"
+df = obb.equity.price.historical("AAPL", provider="yfinance")
+```
+
+When the `output_type` is set to, `OBBject`, DataFrames are created from the response object after it is returned.
+
+```python
+from openbb import obb
+data = obb.equity.price.historical("AAPL", provider="yfinance")
+df = data.to_df()
+```
+
+:::warning
+DataFrames are not JSON serializable. Changing this preference will remove REST API compatibility.
+:::
+
+### Jupyter
+
+Jupyter does not get installed with the OpenBB Platform. Install from `pip` in the environment containing the Platform.
+
+```bash
+pip install jupyter-lab
+```
+
+### Views
+
+Most of the development has been on the core architecture and data providers.
+
+Most views from the V3 SDK and Terminal have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
+
+Install the charting extension with:
+
+```bash
+pip install openbb-charting
+```
+
+The equivalent to `openbb.stocks.candle("AAPL")` is, `obb.equity.price.historical("AAPL", chart=True).show()`.
+
+More views to come soon!
+
+### Getting Started
+
+See the [getting started](/platform/getting_started) page for examples on getting started using the OpenBB Platform.

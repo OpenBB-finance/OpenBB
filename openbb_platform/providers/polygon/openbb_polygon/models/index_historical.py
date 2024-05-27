@@ -18,6 +18,7 @@ from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
     amake_requests,
+    safe_fromtimestamp,
 )
 from pydantic import (
     Field,
@@ -36,7 +37,7 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     Source: https://polygon.io/docs/indices/getting-started
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: str = Field(
         default="1d",
@@ -143,19 +144,18 @@ class PolygonIndexHistoricalFetcher(
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)
-            results: list = data.get("results", [])
+            next_url = data.get("next_url", None)  # type: ignore[union-attr]
+            results: list = data.get("results", [])  # type: ignore[union-attr]
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))
-                next_url = data.get("next_url", None)
+                results.extend(data.get("results", []))  # type: ignore[union-attr]
+                next_url = data.get("next_url", None)  # type: ignore[union-attr]
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(
-                    r["t"] / 1000, tz=timezone("America/New_York")
-                )
+                v = r["t"] / 1000  # milliseconds to seconds
+                r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))  # type: ignore[arg-type]
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:

@@ -1,22 +1,23 @@
 ---
 title: Interactive Tables
 sidebar_position: 1
-description: Learn how to navigate and utilize OpenBB's interactive tables using our
+description:
+  Learn how to navigate and utilize OpenBB's interactive tables using our
   open source PyWry technology. Understand how to sort and filter columns, hide or
   remove columns, select number of rows per page, freeze index and column headers,
   and export the data.
 keywords:
-- interactive tables
-- PyWry technology
-- sorting columns
-- filtering columns
-- hiding columns
-- rows per page
-- freeze index
-- freeze column headers
-- exporting data
-- data visualization
-- customizing tables
+  - interactive tables
+  - PyWry technology
+  - sorting columns
+  - filtering columns
+  - hiding columns
+  - rows per page
+  - freeze index
+  - freeze column headers
+  - exporting data
+  - data visualization
+  - customizing tables
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -33,7 +34,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 A common type of output in OpenBB are interactive tables which open in a separated window (utilizing our [open source PyWry](https://github.com/OpenBB-finance/pywry) technology). These provide methods for searching, sorting, filtering, exporting and even adapting settings directly on the table.
 
 <details>
-<summary>Table cheat sheet </summary>
+<summary mdxType="summary">Table cheat sheet </summary>
 
 ![Chart Intro (5)](https://user-images.githubusercontent.com/85772166/234315026-de098953-111b-4b69-9124-31530c01407a.png)
 
@@ -41,7 +42,7 @@ A common type of output in OpenBB are interactive tables which open in a separat
 
 ## Sorting
 
-Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title.  The status of the filtering is shown as a blue indicator.
+Columns can be sorted ascending/descending/unsorted, by clicking the controls to the right of each header title. The status of the filtering is shown as a blue indicator.
 
 ![Sort Columns](https://user-images.githubusercontent.com/85772166/233248754-20c18390-a7af-490c-9571-876447b1b0ae.png)
 
@@ -57,7 +58,7 @@ The columns can be filtered with min/max values or by letters, depending on the 
 
 ## Hiding columns
 
-The table will scroll to the right as far as there are columns.  Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
+The table will scroll to the right as far as there are columns. Columns can be removed from the table by clicking the icon to the right of the settings button and unchecking it from the list.
 
 ![Select Columns](https://user-images.githubusercontent.com/85772166/233248976-849791a6-c126-437c-bb54-454ba6ea4fa2.png)
 
@@ -75,6 +76,6 @@ Right-click on the index name to enable/disable freezing when scrolling to the r
 
 ## Exporting Data
 
-At the bottom-right corner of the table window, there is a button for exporting the data.  To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file.  Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not visible will not be captured.
+At the bottom-right corner of the table window, there is a button for exporting the data. To the left, the drop down selection for `Type` can be defined as a CSV, XLSX, or PNG file. Exporting the table as a PNG file will create a screenshot of the table at its current view, and data that is not visible will not be captured.
 
 ![Export Data](https://user-images.githubusercontent.com/85772166/233249065-60728dd1-612e-4684-b196-892f3604c0f4.png)

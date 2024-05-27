@@ -1,3 +1,5 @@
+"""Integration tests for the ETF API."""
+
 import base64
 
 import pytest
@@ -9,6 +11,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -43,6 +46,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_etf_search(params, headers):
+    """Test the ETF search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -227,6 +231,7 @@ def test_etf_search(params, headers):
 )
 @pytest.mark.integration
 def test_etf_historical(params, headers):
+    """Test the ETF historical endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -247,6 +252,7 @@ def test_etf_historical(params, headers):
 )
 @pytest.mark.integration
 def test_etf_info(params, headers):
+    """Test the ETF info endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -265,6 +271,7 @@ def test_etf_info(params, headers):
 )
 @pytest.mark.integration
 def test_etf_sectors(params, headers):
+    """Test the ETF sectors endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -282,6 +289,7 @@ def test_etf_sectors(params, headers):
 )
 @pytest.mark.integration
 def test_etf_holdings_date(params, headers):
+    """Test the ETF holdings date endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -337,12 +345,21 @@ def test_etf_holdings_date(params, headers):
             {
                 "symbol": "DJIA",
                 "provider": "intrinio",
+                "date": None,
+            }
+        ),
+        (
+            {
+                "symbol": "QQQ",
+                "provider": "intrinio",
+                "date": "2020-04-03",
             }
         ),
     ],
 )
 @pytest.mark.integration
 def test_etf_holdings(params, headers):
+    """Test the ETF holdings endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -369,6 +386,7 @@ def test_etf_holdings(params, headers):
 )
 @pytest.mark.integration
 def test_etf_price_performance(params, headers):
+    """Test the ETF price performance endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -387,6 +405,7 @@ def test_etf_price_performance(params, headers):
 )
 @pytest.mark.integration
 def test_etf_countries(params, headers):
+    """Test the ETF countries endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -402,6 +421,7 @@ def test_etf_countries(params, headers):
 )
 @pytest.mark.integration
 def test_etf_discovery_gainers(params, headers):
+    """Test the ETF discovery gainers endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -417,6 +437,7 @@ def test_etf_discovery_gainers(params, headers):
 )
 @pytest.mark.integration
 def test_etf_discovery_losers(params, headers):
+    """Test the ETF discovery losers endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -432,28 +453,11 @@ def test_etf_discovery_losers(params, headers):
 )
 @pytest.mark.integration
 def test_etf_discovery_active(params, headers):
+    """Test the ETF discovery active endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/etf/discovery/active?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [
-        ({"symbol": "SPY", "provider": "fmp"}),
-        ({"symbol": "QQQ", "provider": "fmp"}),
-    ],
-)
-@pytest.mark.integration
-def test_etf_holdings_performance(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/etf/holdings_performance?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -467,6 +471,7 @@ def test_etf_holdings_performance(params, headers):
 )
 @pytest.mark.integration
 def test_etf_equity_exposure(params, headers):
+    """Test the ETF equity exposure endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

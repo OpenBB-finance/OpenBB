@@ -12,7 +12,6 @@ from typing import (
     Mapping,
     Optional,
     Type,
-    Union,
     get_args,
     get_origin,
     get_type_hints,
@@ -20,7 +19,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel, Field, SerializeAsAny, Tag, create_model
+from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
@@ -203,15 +202,33 @@ class Router:
         """API Router."""
         return self._api_router
 
+    @property
+    def prefix(self) -> str:
+        """Prefix."""
+        return self._api_router.prefix
+
+    @property
+    def description(self) -> Optional[str]:
+        """Description."""
+        return self._description
+
+    @property
+    def routers(self) -> Dict[str, "Router"]:
+        """Routers nested within the Router, i.e. sub-routers."""
+        return self._routers
+
     def __init__(
         self,
         prefix: str = "",
+        description: Optional[str] = None,
     ) -> None:
         """Initialize Router."""
         self._api_router = APIRouter(
             prefix=prefix,
             responses={404: {"description": "Not found"}},
         )
+        self._description = description
+        self._routers: Dict[str, Router] = {}
 
     @overload
     def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
@@ -290,10 +307,41 @@ class Router:
         prefix: str = "",
     ):
         """Include router."""
-        tags = [prefix[1:]] if prefix else None
+        tags = [prefix.strip("/")] if prefix else None
         self._api_router.include_router(
             router=router.api_router, prefix=prefix, tags=tags  # type: ignore
         )
+        name = prefix if prefix else router.prefix
+        self._routers[name.strip("/")] = router
+
+    def get_attr(self, path: str, attr: str) -> Any:
+        """Get router attribute from path.
+
+        Parameters
+        ----------
+        path : str
+            Path to the router or nested router.
+            E.g. "/equity" or "/equity/price".
+        attr : str
+            Attribute to get.
+
+        Returns
+        -------
+        Any
+            Attribute value.
+        """
+        return self._search_attr(self, path, attr)
+
+    @staticmethod
+    def _search_attr(router: "Router", path: str, attr: str) -> Any:
+        """Recursively search router attribute from path."""
+        path = path.strip("/")
+        first = path.split("/")[0]
+        if first in router.routers:
+            return Router._search_attr(
+                router.routers[first], "/".join(path.split("/")[1:]), attr
+            )
+        return getattr(router, attr, None)
 
 
 class SignatureInspector:
@@ -348,10 +396,9 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            func = cls.inject_return_type(
+            func = cls.inject_return_annotation(
                 func=func,
-                return_map=provider_interface.return_map.get(model),
-                model=model,
+                annotation=provider_interface.return_annotations[model],
             )
 
         else:
@@ -366,64 +413,6 @@ class SignatureInspector:
                     callable_=provider_interface.provider_choices,
                 )
 
-        return func
-
-    @staticmethod
-    def inject_return_type(
-        func: Callable[P, OBBject],
-        return_map: Dict[str, dict],
-        model: str,
-    ) -> Callable[P, OBBject]:
-        """
-        Inject full return model into the function.
-        Also updates __name__ and __doc__ for API schemas.
-        """
-
-        results: Dict[str, Any] = {"list_type": [], "dict_type": []}
-
-        for provider, return_data in return_map.items():
-            if return_data["is_list"]:
-                results["list_type"].append(
-                    Annotated[return_data["model"], Tag(provider)]
-                )
-                continue
-
-            results["dict_type"].append(Annotated[return_data["model"], Tag(provider)])
-
-        list_models, union_models = results.values()
-
-        return_types = []
-        for t, v in results.items():
-            if not v:
-                continue
-
-            inner_type = SerializeAsAny[
-                Annotated[
-                    Union[tuple(v)],  # type: ignore
-                    Field(discriminator="provider"),
-                ]
-            ]
-            return_types.append(List[inner_type] if t == "list_type" else inner_type)
-
-        return_type = create_model(
-            f"OBBject_{model}",
-            __base__=OBBject,
-            __doc__=f"OBBject with results of type {model}",
-            results=(
-                Optional[Union[tuple(return_types)]],  # type: ignore
-                Field(
-                    None,
-                    description="Serializable results.",
-                    json_schema_extra={
-                        "model": model,
-                        "has_list": bool(len(list_models) > 0),
-                        "is_union": bool(list_models and union_models),
-                    },
-                ),
-            ),
-        )
-
-        func.__annotations__["return"] = return_type
         return func
 
     @staticmethod
@@ -470,6 +459,14 @@ class SignatureInspector:
     ) -> Callable[P, OBBject]:
         """Annotate function with dependency injection."""
         func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
+        return func
+
+    @staticmethod
+    def inject_return_annotation(
+        func: Callable[P, OBBject], annotation: Type[OBBject]
+    ) -> Callable[P, OBBject]:
+        """Annotate function with return annotation."""
+        func.__annotations__["return"] = annotation
         return func
 
     @staticmethod
@@ -647,7 +644,7 @@ class RouterLoader:
         """Load routes from extensions."""
         router = Router()
 
-        for name, entry in ExtensionLoader().core_objects.items():
+        for name, entry in ExtensionLoader().core_objects.items():  # type: ignore[attr-defined]
             try:
                 router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:

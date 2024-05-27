@@ -1,4 +1,4 @@
-"""Tradier Options Chains Model"""
+"""Tradier Options Chains Model."""
 
 # pylint: disable = unused-argument
 
@@ -13,15 +13,14 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator, model_validator
 from pytz import timezone
 
 
 class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
-    """
-    Tradier Options Chains Query.
+    """Tradier Options Chains Query.
 
     Source: https://documentation.tradier.com/brokerage-api/markets/get-options-chains
 
@@ -31,7 +30,7 @@ class TradierOptionsChainsQueryParams(OptionsChainsQueryParams):
 
 
 class TradierOptionsChainsData(OptionsChainsData):
-    """Tradier Options Chains Data"""
+    """Tradier Options Chains Data."""
 
     __alias_dict__ = {
         "expiration": "expiration_date",
@@ -127,7 +126,8 @@ class TradierOptionsChainsData(OptionsChainsData):
     def validate_dates(cls, v):
         """Validate the dates."""
         if v != 0 and v is not None and isinstance(v, int):
-            v = datetime.fromtimestamp(int(v) / 1000)
+            v = int(v) / 1000  # milliseconds to seconds
+            v = safe_fromtimestamp(v)
             v = v.replace(microsecond=0)
             v = v.astimezone(timezone("America/New_York"))
             return v
@@ -177,6 +177,7 @@ class TradierOptionsChainsFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TradierOptionsChainsQueryParams:
+        """Transform the query parameters."""
         return TradierOptionsChainsQueryParams(**params)
 
     @staticmethod
@@ -185,8 +186,7 @@ class TradierOptionsChainsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Return the raw data from the Tradier endpoint"""
-
+        """Return the raw data from the Tradier endpoint."""
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
@@ -216,7 +216,6 @@ class TradierOptionsChainsFetcher(
         # Get the expiration dates for the symbol so we can gather the chains data.
         async def get_expirations(symbol):
             """Get the expiration dates for the given symbol."""
-
             url = (
                 f"{BASE_URL}expirations?symbol={symbol}&includeAllRoots=true"
                 "&strikes=false&contractSize=false&expirationType=false"

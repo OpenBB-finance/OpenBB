@@ -29,7 +29,7 @@ async def forecast(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Forecasted GDP Data."""
+    """Get Forecasted GDP Data."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -46,7 +46,7 @@ async def nominal(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Nominal GDP Data."""
+    """Get Nominal GDP Data."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -63,5 +63,5 @@ async def real(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Real GDP Data."""
+    """Get Real GDP Data."""
     return await OBBject.from_query(Query(**locals()))

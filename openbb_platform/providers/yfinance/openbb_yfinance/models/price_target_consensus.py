@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
     PriceTargetConsensusQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 _warn = warnings.warn
@@ -19,7 +19,15 @@ _warn = warnings.warn
 class YFinancePriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """YFinance Price Target Consensus Query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_symbol(cls, value):
+        """Check the symbol."""
+        if not value:
+            raise RuntimeError("Error: Symbol is a required field for yFinance.")
+        return value
 
 
 class YFinancePriceTargetConsensusData(PriceTargetConsensusData):
@@ -78,7 +86,7 @@ class YFinancePriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
-        symbols = query.symbol.split(",")
+        symbols = query.symbol.split(",")  # type: ignore
         results = []
         fields = [
             "symbol",

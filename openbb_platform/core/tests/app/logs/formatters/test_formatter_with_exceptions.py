@@ -1,3 +1,5 @@
+"""Tests for the FormatterWithExceptions class."""
+
 import logging
 import os
 from unittest.mock import Mock
@@ -6,6 +8,8 @@ import pytest
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
+
+# pylint: disable=W0621
 
 logging_settings = Mock()
 logging_settings.app_name = "test_app_name"
@@ -16,11 +20,13 @@ logging_settings.user_id = "test_user_id"
 
 @pytest.fixture
 def formatter():
+    """Return a FormatterWithExceptions instance."""
     return FormatterWithExceptions(logging_settings)
 
 
 # Test when exc_text is not empty (should return "X")
 def test_level_name_with_exc_text(formatter):
+    """Test the calculate_level_name method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.INFO,
@@ -37,6 +43,7 @@ def test_level_name_with_exc_text(formatter):
 
 # Test when levelname is not empty (should return the first character of levelname)
 def test_level_name_with_levelname(formatter):
+    """Test the calculate_level_name method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.WARNING,
@@ -53,6 +60,7 @@ def test_level_name_with_levelname(formatter):
 
 # Test when func_name_override and session_id are present in the record
 def test_extract_log_extra_with_override_and_session_id(formatter):
+    """Test the extract_log_extra method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.INFO,
@@ -75,6 +83,7 @@ def test_extract_log_extra_with_override_and_session_id(formatter):
 
 # Test when only func_name_override is present in the record
 def test_extract_log_extra_with_override(formatter):
+    """Test the extract_log_extra method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.INFO,
@@ -96,6 +105,7 @@ def test_extract_log_extra_with_override(formatter):
 
 # Test when only session_id is present in the record
 def test_extract_log_extra_with_session_id(formatter):
+    """Test the extract_log_extra method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.INFO,
@@ -117,6 +127,7 @@ def test_extract_log_extra_with_session_id(formatter):
 
 # Test when neither func_name_override nor session_id are present in the record
 def test_extract_log_extra_with_no_override_or_session_id(formatter):
+    """Test the extract_log_extra method."""
     record = logging.LogRecord(
         name="test_logger",
         level=logging.INFO,
@@ -144,6 +155,7 @@ def test_extract_log_extra_with_no_override_or_session_id(formatter):
     ],
 )
 def test_mock_ipv4(input_text, expected_output, formatter):
+    """Test the mock_ipv4 method."""
     assert formatter.mock_ipv4(input_text) == expected_output
 
 
@@ -158,6 +170,7 @@ def test_mock_ipv4(input_text, expected_output, formatter):
     ],
 )
 def test_mock_email(input_text, expected_output, formatter):
+    """Test the mock_email method."""
     assert formatter.mock_email(input_text) == expected_output
 
 
@@ -175,6 +188,7 @@ def test_mock_email(input_text, expected_output, formatter):
     ],
 )
 def test_mock_password(input_text, expected_output, formatter):
+    """Test the mock_password method."""
     assert formatter.mock_password(input_text) == expected_output
 
 
@@ -190,6 +204,7 @@ def test_mock_password(input_text, expected_output, formatter):
     ],
 )
 def test_mock_flair(input_text, expected_output, formatter):
+    """Test the mock_flair method."""
     assert formatter.mock_flair(input_text) == expected_output
 
 
@@ -212,6 +227,7 @@ def test_mock_flair(input_text, expected_output, formatter):
     ],
 )
 def test_mock_home_directory(input_text, expected_output, formatter):
+    """Test the mock_home_directory method."""
     assert formatter.mock_home_directory(input_text) == expected_output
 
 
@@ -232,6 +248,7 @@ def test_mock_home_directory(input_text, expected_output, formatter):
     ],
 )
 def test_filter_special_tags(input_text, expected_output, formatter):
+    """Test the filter_special_tags method."""
     assert formatter.filter_special_tags(input_text) == expected_output
 
 
@@ -249,6 +266,7 @@ def test_filter_special_tags(input_text, expected_output, formatter):
     ],
 )
 def test_filter_piis(input_text, expected_output, formatter):
+    """Test the filter_piis method."""
     assert formatter.filter_piis(input_text) == expected_output
 
 
@@ -267,15 +285,18 @@ def test_filter_piis(input_text, expected_output, formatter):
     ],
 )
 def test_filter_log_line(input_text, expected_output, formatter):
+    """Test the filter_log_line method."""
     assert formatter.filter_log_line(input_text) == expected_output
 
 
 def test_formatException_invalid():
+    """Test the formatException method with an invalid exception."""
     with pytest.raises(Exception):
-        formatter.formatException(Exception("Big bad error"))
+        formatter.formatException(Exception("Big bad error"))  # type: ignore[attr-defined]
 
 
 def test_format(formatter):
+    """Test the format method."""
     # Prepare the log record
     log_record = logging.LogRecord(
         name="test_logger",

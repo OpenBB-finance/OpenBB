@@ -41,6 +41,7 @@ class ClientResponse(aiohttp.ClientResponse):
     """Client response class."""
 
     def __init__(self, *args, **kwargs):
+        """Initialize the response."""
         kwargs["request_info"] = self.obfuscate_request_info(kwargs["request_info"])
         super().__init__(*args, **kwargs)
 
@@ -61,10 +62,13 @@ class ClientResponse(aiohttp.ClientResponse):
 
 
 class ClientSession(aiohttp.ClientSession):
+    """Client session."""
+
     _response_class: Type[ClientResponse]
     _session: "ClientSession"
 
     def __init__(self, *args, **kwargs):
+        """Initialize the session."""
         kwargs["connector"] = kwargs.get(
             "connector", aiohttp.TCPConnector(ttl_dns_cache=300)
         )

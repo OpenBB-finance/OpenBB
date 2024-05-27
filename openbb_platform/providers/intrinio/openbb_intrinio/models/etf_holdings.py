@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -24,6 +25,12 @@ class IntrinioEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 
     Source: https://docs.intrinio.com/documentation/web_api/get_etf_holdings_v2
     """
+
+    __alias_dict__ = {"date": "as_of_date"}
+
+    date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
+    )
 
 
 class IntrinioEtfHoldingsData(EtfHoldingsData):
@@ -145,14 +152,12 @@ class IntrinioEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-
         symbol = query.symbol + ":US" if ":" not in query.symbol else query.symbol
-
         URL = f"https://api-v2.intrinio.com/etfs/{symbol}/holdings?page_size=10000&api_key={api_key}"
-
-        data = []
+        if query.date:
+            URL += f"&as_of_date={query.date}"
+        data: List = []
 
         async def response_callback(response: ClientResponse, session: ClientSession):
             """Async response callback."""

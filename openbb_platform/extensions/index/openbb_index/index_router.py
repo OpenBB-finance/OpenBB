@@ -14,7 +14,7 @@ from openbb_core.app.router import Router
 
 from openbb_index.price.price_router import router as price_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Indices data.")
 router.include_router(price_router)
 
 # pylint: disable=unused-argument
@@ -36,7 +36,7 @@ async def market(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Market Indices."""
+    """Get Historical Market Indices."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -56,7 +56,7 @@ async def constituents(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Index Constituents."""
+    """Get Index Constituents."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -107,7 +107,7 @@ async def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Filters indices for rows containing the query."""
+    """Filter indices for rows containing the query."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -124,7 +124,7 @@ async def sp500_multiples(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical S&P 500 multiples and Shiller PE ratios."""
+    """Get historical S&P 500 multiples and Shiller PE ratios."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -138,5 +138,5 @@ async def sectors(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Index Sectors. Sector weighting of an index."""
+    """Get Index Sectors. Sector weighting of an index."""
     return await OBBject.from_query(Query(**locals()))

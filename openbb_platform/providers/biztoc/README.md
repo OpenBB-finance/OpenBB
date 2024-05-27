@@ -8,5 +8,7 @@ into the OpenBB Platform.
 To install the extension, run the following command in this folder:
 
 ```bash
-pip install .
+pip install openbb-biztoc
 ```
+
+Documentation available [here](https://docs.openbb.co/platform/development/contributing).

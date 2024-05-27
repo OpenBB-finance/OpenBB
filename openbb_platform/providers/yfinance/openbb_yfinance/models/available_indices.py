@@ -1,5 +1,7 @@
 """Yahoo Finance Available Indices Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -43,10 +45,11 @@ class YFinanceAvailableIndicesFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceAvailableIndicesQueryParams,
+        query: YFinanceAvailableIndicesQueryParams,  # pylint disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract the data."""
         indices = pd.DataFrame(INDICES).transpose().reset_index()
         indices.columns = ["code", "name", "ticker"]
 

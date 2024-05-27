@@ -1,3 +1,5 @@
+"""Test the extension map."""
+
 import json
 from pathlib import Path
 from typing import Dict
@@ -6,12 +8,10 @@ from poetry.core.constraints.version import Version, VersionConstraint, parse_co
 from poetry.core.pyproject.toml import PyProjectTOML
 
 
-def load_ext_map(file: Path) -> Dict[str, Version]:
-    """Load the extension map from extension_map.json."""
+def create_ext_map(extensions: dict) -> Dict[str, Version]:
+    """Create the extension map from extension."""
     ext_map = {}
-    with open(file) as f:
-        ext_map_json = json.load(f)
-    for _, v in ext_map_json.items():
+    for _, v in extensions.items():
         for value in v:
             name, version = value.split("@")
             ext_map[name] = Version.parse(version)
@@ -36,9 +36,9 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
 def test_extension_map():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
     this_dir = Path(__file__).parent
-    ext_map = load_ext_map(
-        Path(this_dir, "..", "openbb", "assets", "extension_map.json")
-    )
+    with open(Path(this_dir, "..", "openbb", "assets", "reference.json")) as f:
+        reference = json.load(f)
+    ext_map = create_ext_map(reference.get("info", {}).get("extensions", {}))
     req_ext = load_req_ext(Path(this_dir, "..", "pyproject.toml"))
 
     for ext in req_ext:

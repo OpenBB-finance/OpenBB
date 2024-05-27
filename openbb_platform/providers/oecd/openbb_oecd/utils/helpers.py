@@ -1,3 +1,5 @@
+"""OECD helper functions."""
+
 import ssl
 from datetime import date
 from io import StringIO
@@ -20,14 +22,16 @@ Path(cache).mkdir(parents=True, exist_ok=True)
 
 
 class CustomHttpAdapter(requests.adapters.HTTPAdapter):
-    # "Transport adapter" that allows us to use custom ssl_context.
+    """Transport adapter" that allows us to use custom ssl_context."""
 
     def __init__(self, ssl_context=None, **kwargs):
+        """Initialize the adapter with a custom ssl_context."""
         self.ssl_context = ssl_context
         super().__init__(**kwargs)
 
     # pylint: disable=arguments-differ
     def init_poolmanager(self, connections, maxsize, block=False):
+        """Initialize the poolmanager with a custom ssl_context."""
         self.poolmanager = urllib3.poolmanager.PoolManager(  # pylint: disable=attribute-defined-outside-init
             num_pools=connections,
             maxsize=maxsize,
@@ -40,7 +44,7 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):
 
 
 def get_legacy_session():
-    """Stackoverflow code to create a custom session."""
+    """Create a custom session."""
     ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
     ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
     session = requests.Session()
@@ -64,9 +68,9 @@ def fetch_data(url: str, csv_kwargs: Optional[Dict] = None, **kwargs: Any) -> Da
 
 
 def oecd_xml_to_df(xml_string: str) -> DataFrame:
-    """Helper function to parse the OECD XML and return a dataframe.
+    """Parse the OECD XML and return a dataframe.
 
-     Parameters
+    Parameters
     ----------
     xml_string : str
         A string containing the OECD XML data.
@@ -108,7 +112,7 @@ def oecd_xml_to_df(xml_string: str) -> DataFrame:
 
 
 def parse_url(url: str) -> DataFrame:
-    """Helper function to parse the SDMX url and return a dataframe.
+    """Parse the SDMX url and return a dataframe.
 
     Parameters
     ----------
@@ -193,7 +197,7 @@ def write_to_cache(cache_str: str, data: DataFrame, cache_method: str) -> None:
 
 
 def query_dict_to_path(query_dict: dict) -> str:
-    """Convert the query dict into something usable for writing file"""
+    """Convert the query dict into something usable for writing file."""
     items = sorted(query_dict.items())
     key_parts = [f"{key}_{value}" for key, value in items]
     return "-".join(key_parts).replace("/", "_").replace(" ", "_")
@@ -206,8 +210,7 @@ def get_possibly_cached_data(
     cache_method: str = "csv",
     skip_cache: bool = False,
 ) -> DataFrame:
-    """
-    Retrieve data from a given URL or from the cache if available and valid.
+    """Retrieve data from a given URL or from the cache if available and valid.
 
     Parameters
     ----------
@@ -225,8 +228,9 @@ def get_possibly_cached_data(
     DataFrame
         A Pandas DataFrame containing the fetched or cached data.
     """
-
-    base_cache = f"{cache}/{function}_{query_dict_to_path(query_dict)}"
+    base_cache = (
+        f"{cache}/{function}_{query_dict_to_path(query_dict if query_dict else {})}"
+    )
     if cache_method == "parquet":
         cache_path = base_cache + ".parquet"
     elif cache_method == "csv":
@@ -248,7 +252,7 @@ def get_possibly_cached_data(
 
 
 def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
-    """Darrens good idea to make the dates filterable"""
+    """Use Darrens good idea to make the dates filterable."""
     input_date = str(input_date)
     if "Q" in input_date:
         return to_datetime(input_date).to_period("Q").to_timestamp("Q").date()

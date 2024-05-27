@@ -1,12 +1,15 @@
-# Helper functions for FINRA API
+"""Helper functions for FINRA API."""
+
 import datetime
 from typing import List
 
 import requests
 
+# pylint: disable=W0621
+
 
 def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
-    """Fetches the available weeks from FINRA that can be used."""
+    """Fetch the available weeks from FINRA that can be used."""
     request_header = {"Accept": "application/json", "Content-Type": "application/json"}
 
     request_data = {
@@ -40,6 +43,7 @@ def get_finra_weeks(tier: str = "T1", is_ats: bool = True):
 
 
 def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
+    """Get the data for a symbol from FINRA."""
     req_hdr = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -93,6 +97,7 @@ def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
 
 
 def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
+    """Get the full data for a symbol from FINRA."""
     weeks = [week["weekStartDate"] for week in get_finra_weeks(tier, is_ats)]
 
     data = []
@@ -106,6 +111,7 @@ def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
 
 
 def get_adjusted_date(year, month, day):
+    """Find the closest date if the date falls on a weekend."""
     # Get the date
     date = datetime.date(year, month, day)
 
@@ -120,13 +126,14 @@ def get_adjusted_date(year, month, day):
 
 
 def get_short_interest_dates() -> List[str]:
-    """
-    Get a list of dates for which the short interest data is available.  It is reported on the 15th and the
-    last day of each month,but if the date falls on a weekend, the date is adjusted to the closest friday.
+    """Get a list of dates for which the short interest data is available.
+
+    It is reported on the 15th and the last day of each month,but if the date falls on a weekend,
+    the date is adjusted to the closest friday.
     """
 
     def get_adjusted_date(year, month, day):
-        """If the date falls on a weekend, find the closest date"""
+        """Find the closest date if the date falls on a weekend."""
         # Get the date
         date = datetime.date(year, month, day)
 

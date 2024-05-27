@@ -71,11 +71,6 @@ CPI_COUNTRIES = [
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     """FRED Consumer Price Index Query."""
 
-    country: str = Field(
-        description=QUERY_DESCRIPTIONS.get("country"),
-        default="united_states",
-        choices=CPI_COUNTRIES,  # type: ignore
-    )
     __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
 
     @field_validator("country", mode="before", check_fields=False)
@@ -149,8 +144,7 @@ class FREDConsumerPriceIndexFetcher(
                 transformed_data[item["date"]].update({country: item["value"]})
 
         # Convert the dictionary to a list of dictionaries
-        transformed_data = list(transformed_data.values())
-
         return [
-            FREDConsumerPriceIndexData.model_validate(item) for item in transformed_data
+            FREDConsumerPriceIndexData.model_validate(item)
+            for item in list(transformed_data.values())
         ]

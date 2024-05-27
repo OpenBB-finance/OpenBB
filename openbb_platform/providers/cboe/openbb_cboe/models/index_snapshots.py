@@ -1,5 +1,7 @@
 """CBOE Index Snapshots Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -21,15 +23,15 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Literal[None, "us", "eu"] = Field(
+    region: Optional[Literal["us", "eu"]] = Field(
         default="us",
     )
 
     @field_validator("region", mode="after", check_fields=False)
     @classmethod
-    def validate_region(cls, v: str):
+    def validate_region(cls, v):
         """Validate region."""
-        return "us" if v is None else v
+        return v if v else "us"
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):
@@ -89,27 +91,29 @@ class CboeIndexSnapshotsFetcher(
     @staticmethod
     async def aextract_data(
         query: CboeIndexSnapshotsQueryParams,
-        credentials: Optional[Dict[str, str]],
+        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
-
+        url: str = ""
         if query.region == "us":
             url = "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
         if query.region == "eu":
             url = "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
 
         data = await amake_request(url, **kwargs)
-        return data.get("data")
+        return data.get("data")  # type: ignore
 
     @staticmethod
     def transform_data(
-        query: CboeIndexSnapshotsQueryParams, data: dict, **kwargs: Any
+        query: CboeIndexSnapshotsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[CboeIndexSnapshotsData]:
         """Transform the data to the standard format"""
         if not data:
             raise EmptyDataError()
-        data = DataFrame(data)
+        df = DataFrame(data)
         percent_cols = [
             "price_change_percent",
             "iv30",
@@ -117,10 +121,10 @@ class CboeIndexSnapshotsFetcher(
             "iv30_change_percent",
         ]
         for col in percent_cols:
-            if col in data.columns:
-                data[col] = round(data[col] / 100, 6)
-        data = (
-            data.replace(0, None)
+            if col in df.columns:
+                df[col] = round(df[col] / 100, 6)
+        df = (
+            df.replace(0, None)
             .replace("", None)
             .dropna(how="all", axis=1)
             .fillna("N/A")
@@ -135,9 +139,9 @@ class CboeIndexSnapshotsFetcher(
             "bid_size",
         ]
         for col in drop_cols:
-            if col in data.columns:
-                data = data.drop(columns=col)
+            if col in df.columns:
+                df = df.drop(columns=col)
         return [
             CboeIndexSnapshotsData.model_validate(d)
-            for d in data.to_dict(orient="records")
+            for d in df.to_dict(orient="records")
         ]

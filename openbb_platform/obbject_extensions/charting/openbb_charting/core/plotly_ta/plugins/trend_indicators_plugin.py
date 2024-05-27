@@ -1,4 +1,7 @@
+"""Trend technical indicators."""
+
 import pandas as pd
+
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import (
     PltTA,
@@ -94,7 +97,7 @@ class Trend(PltTA):
 
     @indicator()
     def plot_aroon(self, fig: OpenBBFigure, df_ta: pd.DataFrame, subplot_row: int):
-        """Adds aroon to plotly figure"""
+        """Add aroon to plotly figure."""
         aroon_up_col = columns_regex(df_ta, "AROONU")[0]
         aroon_down_col = columns_regex(df_ta, "AROOND")[0]
         aroon_osc_col = columns_regex(df_ta, "AROONOSC")[0]

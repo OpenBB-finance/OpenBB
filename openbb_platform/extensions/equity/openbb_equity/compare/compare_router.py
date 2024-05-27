@@ -28,7 +28,8 @@ async def peers(
     """Get the closest peers for a given company.
 
     Peers consist of companies trading on the same exchange, operating within the same sector
-    and with comparable market capitalizations."""
+    and with comparable market capitalizations.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -67,5 +68,37 @@ async def groups(
     """Get company data grouped by sector, industry or country and display either performance or valuation metrics.
 
     Valuation metrics include price to earnings, price to book, price to sales ratios and price to cash flow.
-    Performance metrics include the stock price change for different time periods."""
+    Performance metrics include the stock price change for different time periods.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CompareCompanyFacts",
+    examples=[
+        APIEx(parameters={"provider": "sec"}),
+        APIEx(
+            parameters={
+                "provider": "sec",
+                "fact": "PaymentsForRepurchaseOfCommonStock",
+                "year": 2023,
+            }
+        ),
+        APIEx(
+            parameters={
+                "provider": "sec",
+                "symbol": "NVDA,AAPL,AMZN,MSFT,GOOG,SMCI",
+                "fact": "RevenueFromContractWithCustomerExcludingAssessedTax",
+                "year": 2024,
+            }
+        ),
+    ],
+)
+async def company_facts(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Copmare reported company facts and fundamental data points."""
     return await OBBject.from_query(Query(**locals()))

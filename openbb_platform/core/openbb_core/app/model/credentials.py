@@ -52,7 +52,7 @@ class CredentialsLoader:
                 formatted[c] = (
                     Optional[OBBSecretStr],
                     Field(
-                        default=None, description=origin
+                        default=None, description=origin, alias=c.upper()
                     ),  # register the credential origin (obbject, providers)
                 )
 
@@ -61,7 +61,7 @@ class CredentialsLoader:
     def from_obbject(self) -> None:
         """Load credentials from OBBject extensions."""
         self.credentials["obbject"] = set()
-        for name, entry in ExtensionLoader().obbject_objects.items():
+        for name, entry in ExtensionLoader().obbject_objects.items():  # type: ignore[attr-defined]
             try:
                 for c in entry.credentials:
                     self.credentials["obbject"].add(c)
@@ -88,7 +88,7 @@ class CredentialsLoader:
         self.from_obbject()
         return create_model(  # type: ignore
             "Credentials",
-            __config__=ConfigDict(validate_assignment=True),
+            __config__=ConfigDict(validate_assignment=True, populate_by_name=True),
             **self.prepare(self.credentials),
         )
 
@@ -100,7 +100,7 @@ class Credentials(_Credentials):  # type: ignore
     """Credentials model used to store provider credentials."""
 
     def __repr__(self) -> str:
-        """String representation of the credentials."""
+        """Define the string representation of the credentials."""
         return (
             self.__class__.__name__
             + "\n\n"
@@ -116,3 +116,7 @@ class Credentials(_Credentials):  # type: ignore
                 [f"{k}: {v}" for k, v in sorted(self.model_dump(mode="json").items())]
             )
         )
+
+    def update(self, incoming: "Credentials"):
+        """Update current credentials."""
+        self.__dict__.update(incoming.model_dump(exclude_none=True))

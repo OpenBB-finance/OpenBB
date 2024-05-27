@@ -10,8 +10,9 @@ from openbb_tiingo.models.world_news import TiingoWorldNewsFetcher
 
 tiingo_provider = Provider(
     name="tiingo",
-    website="https://tiingo.com/",
-    description="""""",
+    website="https://tiingo.com",
+    description="""A Reliable, Enterprise-Grade Financial Markets API. Tiingo's APIs
+power hedge funds, tech companies, and individuals.""",
     credentials=["token"],
     fetcher_dict={
         "EquityHistorical": TiingoEquityHistoricalFetcher,
@@ -22,4 +23,5 @@ tiingo_provider = Provider(
         "CurrencyHistorical": TiingoCurrencyHistoricalFetcher,
         "TrailingDividendYield": TiingoTrailingDivYieldFetcher,
     },
+    repr_name="Tiingo",
 )

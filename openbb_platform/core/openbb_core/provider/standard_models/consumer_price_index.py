@@ -68,7 +68,7 @@ class ConsumerPriceIndexQueryParams(QueryParams):
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
-        choices=CPI_STANDARD_COUNTRIES,  # type: ignore
+        json_schema_extra={"choices": CPI_COUNTRIES},  # type: ignore[dict-item]
     )
     units: Literal["index", "yoy", "mom"] = Field(
         description="Units to get CPI for. Either index, month over month or year over year. Defaults to year over year.",

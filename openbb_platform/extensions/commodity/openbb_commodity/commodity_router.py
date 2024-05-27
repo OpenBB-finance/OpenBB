@@ -12,7 +12,7 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
-router = Router(prefix="")
+router = Router(prefix="", description="Commodity market data.")
 
 
 # pylint: disable=unused-argument

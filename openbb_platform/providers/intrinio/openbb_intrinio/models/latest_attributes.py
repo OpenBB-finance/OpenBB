@@ -23,8 +23,8 @@ class IntrinioLatestAttributesQueryParams(LatestAttributesQueryParams):
     """
 
     __json_schema_extra__ = {
-        "tag": ["multiple_items_allowed"],
-        "symbol": ["multiple_items_allowed"],
+        "tag": {"multiple_items_allowed": True},
+        "symbol": {"multiple_items_allowed": True},
     }
 
 
@@ -57,7 +57,7 @@ class IntrinioLatestAttributesFetcher(
         base_url = "https://api-v2.intrinio.com/companies"
 
         def generate_url(symbol: str, tag: str) -> str:
-            """Returns the url for the given symbol and tag."""
+            """Return the url for the given symbol and tag."""
             return f"{base_url}/{symbol}/data_point/{tag}?api_key={api_key}"
 
         async def callback(response: ClientResponse, _: Any) -> Dict:
@@ -68,7 +68,8 @@ class IntrinioLatestAttributesFetcher(
                 "error" in response_data or "message" in response_data
             ):
                 warnings.warn(
-                    message=response_data.get("error") or response_data.get("message"),
+                    message=str(response_data.get("error"))
+                    or str(response_data.get("message")),
                     category=OpenBBWarning,
                 )
                 return {}

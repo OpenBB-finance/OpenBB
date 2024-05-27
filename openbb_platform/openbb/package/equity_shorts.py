@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
@@ -22,12 +22,10 @@ class ROUTER_equity_shorts(Container):
     @validate
     def fails_to_deliver(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
             Optional[Literal["sec"]],
-            OpenBBCustomParameter(
+            OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
             ),
         ] = None,
@@ -52,6 +50,8 @@ class ROUTER_equity_shorts(Container):
 
                 Skip N number of reports from current. A value of 1 will skip the most recent report.
                  (provider: sec)
+        use_cache : Optional[bool]
+            Whether or not to use cache for the request, default is True. Each reporting period is a separate URL, new reports will be added to the cache. (provider: sec)
 
         Returns
         -------

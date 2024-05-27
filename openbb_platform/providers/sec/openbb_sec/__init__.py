@@ -3,6 +3,7 @@
 from openbb_core.provider.abstract.provider import Provider
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
+from openbb_sec.models.compare_company_facts import SecCompareCompanyFactsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
@@ -15,12 +16,13 @@ from openbb_sec.models.symbol_map import SecSymbolMapFetcher
 
 sec_provider = Provider(
     name="sec",
-    website="https://sec.gov",
+    website="https://www.sec.gov/data",
     description="SEC is the public listings regulatory body for the United States.",
     credentials=None,
     fetcher_dict={
         "CikMap": SecCikMapFetcher,
         "CompanyFilings": SecCompanyFilingsFetcher,
+        "CompareCompanyFacts": SecCompareCompanyFactsFetcher,
         "EquityFTD": SecEquityFtdFetcher,
         "EquitySearch": SecEquitySearchFetcher,
         "EtfHoldings": SecEtfHoldingsFetcher,
@@ -32,4 +34,5 @@ sec_provider = Provider(
         "SicSearch": SecSicSearchFetcher,
         "SymbolMap": SecSymbolMapFetcher,
     },
+    repr_name="Securities and Exchange Commission (SEC)",
 )

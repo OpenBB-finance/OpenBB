@@ -1,3 +1,5 @@
+"""Test the CommandContext model."""
+
 from openbb_core.app.model.command_context import (
     CommandContext,
     SystemSettings,
@@ -6,6 +8,7 @@ from openbb_core.app.model.command_context import (
 
 
 def test_command_context():
+    """Test the CommandContext model."""
     cc = CommandContext()
     assert isinstance(cc, CommandContext)
     assert isinstance(cc.user_settings, UserSettings)
@@ -13,7 +16,8 @@ def test_command_context():
 
 
 def test_fields():
-    fields = CommandContext.__fields__
+    """Test the CommandContext fields."""
+    fields = CommandContext.model_fields
     fields_keys = fields.keys()
 
     assert "user_settings" in fields_keys

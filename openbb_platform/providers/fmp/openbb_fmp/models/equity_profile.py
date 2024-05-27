@@ -2,10 +2,12 @@
 
 # pylint: disable=unused-argument
 
+import asyncio
 from datetime import (
     date as dateType,
 )
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,7 +15,9 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from openbb_fmp.utils.helpers import response_callback
 from pydantic import Field, field_validator, model_validator
 
 
@@ -23,7 +27,7 @@ class FMPEquityProfileQueryParams(EquityInfoQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
 
 class FMPEquityProfileData(EquityInfoData):
@@ -44,7 +48,7 @@ class FMPEquityProfileData(EquityInfoData):
         "long_description": "description",
         "first_stock_price_date": "ipoDate",
     }
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     is_etf: bool = Field(description="If the symbol is an ETF.")
     is_actively_trading: bool = Field(description="If the company is actively trading.")
@@ -126,9 +130,30 @@ class FMPEquityProfileFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
         base_url = "https://financialmodelingprep.com/api/v3"
-        urls = [f"{base_url}/profile/{symbol}?apikey={api_key}" for symbol in symbols]
 
-        return await amake_requests(urls, **kwargs)
+        results = []
+
+        async def get_one(symbol):
+            """Get data for one symbol."""
+            url = f"{base_url}/profile/{symbol}?apikey={api_key}"
+            result = await amake_request(
+                url, response_callback=response_callback, **kwargs
+            )
+            if not result:
+                warn(f"Symbol Error: No data found for {symbol}")
+
+            if result:
+                results.append(result[0])
+
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError("No data found for the given symbols.")
+
+        return sorted(
+            results,
+            key=(lambda item: (symbols.index(item.get("symbol", len(symbols))))),
+        )
 
     @staticmethod
     def transform_data(

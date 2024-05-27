@@ -23,6 +23,7 @@ def obb(pytestconfig):
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
         ({"provider": "tradier", "symbol": "AAPL"}),
+        ({"provider": "yfinance", "symbol": "AAPL"}),
         (
             {
                 "provider": "tmx",
@@ -35,6 +36,7 @@ def obb(pytestconfig):
 )
 @pytest.mark.integration
 def test_derivatives_options_chains(params, obb):
+    """Test the options chains endpoint."""
     result = obb.derivatives.options.chains(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -62,6 +64,7 @@ def test_derivatives_options_chains(params, obb):
 )
 @pytest.mark.integration
 def test_derivatives_options_unusual(params, obb):
+    """Test the unusual options endpoint."""
     result = obb.derivatives.options.unusual(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -85,6 +88,7 @@ def test_derivatives_options_unusual(params, obb):
 )
 @pytest.mark.integration
 def test_derivatives_futures_historical(params, obb):
+    """Test the futures historical endpoint."""
     result = obb.derivatives.futures.historical(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -100,6 +104,7 @@ def test_derivatives_futures_historical(params, obb):
 )
 @pytest.mark.integration
 def test_derivatives_futures_curve(params, obb):
+    """Test the futures curve endpoint."""
     result = obb.derivatives.futures.curve(**params)
     assert result
     assert isinstance(result, OBBject)

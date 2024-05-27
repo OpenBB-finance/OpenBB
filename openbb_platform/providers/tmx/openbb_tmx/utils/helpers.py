@@ -12,7 +12,7 @@ from datetime import (
     timedelta,
 )
 from io import StringIO
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
 
 import exchange_calendars as xcals
 import pandas as pd
@@ -265,7 +265,7 @@ NASDAQ_GIDS = {
 
 
 async def response_callback(response, _: Any):
-    """Callback for HTTP Client Response."""
+    """Use callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
         return await response.json()
@@ -281,6 +281,7 @@ async def get_data_from_url(
     **kwargs: Any,
 ) -> Any:
     """Make an asynchronous HTTP request to a static file."""
+    data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
             try:
@@ -296,7 +297,6 @@ async def get_data_from_url(
 
 async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
     """Make an asynchronous GraphQL request."""
-
     response = await amake_request(
         url=url,
         method="POST",
@@ -310,7 +310,7 @@ async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
 
 
 def replace_values_in_list_of_dicts(data):
-    """Helper function to replace "NA" and "-" with None in a list of dictionaries."""
+    """Replace "NA" and "-" with None in a list of dictionaries."""
     for d in data:
         for k, v in d.items():
             if isinstance(v, dict):
@@ -329,7 +329,7 @@ def replace_values_in_list_of_dicts(data):
 
 
 def check_weekday(date) -> str:
-    """Helper function to check if the input date is a weekday, and if not, returns the next weekday.
+    """Check if the input date is a weekday, and if not, returns the next weekday.
 
     Parameters
     ----------
@@ -341,32 +341,27 @@ def check_weekday(date) -> str:
     str
         Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
     """
-
     if pd.to_datetime(date).weekday() > 4:
         return next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
     return date
 
 
 async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
-    """
-    Gets a summary of the TMX ETF universe.
+    """Get a summary of the TMX ETF universe.
 
     Returns
     -------
     Dict
         Dictionary with all TMX-listed ETFs.
     """
-
     url = "https://dgr53wu9i7rmp.cloudfront.net/etfs/etfs.json"
 
     response = await get_data_from_url(
         url, use_cache=use_cache, backend=tmx_etfs_backend
     )
 
-    if response is None:
-        raise RuntimeError(
-            f"There was a problem with the request. Could not get ETFs.  -> {response.status_code}"
-        )
+    if not response or response is None:
+        raise RuntimeError("There was a problem with the request. Could not get ETFs.")
 
     response = replace_values_in_list_of_dicts(response)
 
@@ -403,8 +398,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 async def get_tmx_tickers(
     exchange: Literal["tsx", "tsxv"] = "tsx", use_cache: bool = True
 ) -> Dict:
-    """Gets a dictionary of either TSX or TSX-V symbols and names."""
-
+    """Get a dictionary of either TSX or TSX-V symbols and names."""
     tsx_json_url = "https://www.tsx.com/json/company-directory/search"
     url = f"{tsx_json_url}/{exchange}/*"
     response = await get_data_from_url(
@@ -420,7 +414,7 @@ async def get_tmx_tickers(
 
 
 async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
-    """Merges TSX and TSX-V listings into a single dictionary."""
+    """Merge TSX and TSX-V listings into a single dictionary."""
     all_tmx = {}
     tsx_tickers = await get_tmx_tickers(use_cache=use_cache)
     tsxv_tickers = await get_tmx_tickers("tsxv", use_cache=use_cache)
@@ -430,14 +424,13 @@ async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
 
 
 async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
-    """Returns a DataFrame with all valid ticker symbols."""
-
+    """Return a DataFrame with all valid ticker symbols."""
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
 
-    if r is None:
-        raise RuntimeError(f"Error with the request:  {r.status_code}")
+    if r is None or r == []:
+        raise RuntimeError("Error with the request")  # mypy: ignore
 
     options_listings = pd.read_html(StringIO(r))
     listings = pd.concat(options_listings)
@@ -456,8 +449,7 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
 
 
 async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFrame:
-    """Gets the current quotes for the complete options chain."""
-
+    """Get the current quotes for the complete options chain."""
     SYMBOLS = await get_all_options_tickers(use_cache=use_cache)
     data = pd.DataFrame()
     symbol = symbol.upper()
@@ -558,8 +550,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
 async def download_eod_chains(
     symbol: str, date: Optional[dateType] = None, use_cache: bool = False
 ) -> pd.DataFrame:
-    """Downloads EOD chains data for a given symbol and date."""
-
+    """Download EOD chains data for a given symbol and date."""
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
     # Remove echange  identifiers from the symbol.
@@ -582,10 +573,10 @@ async def download_eod_chains(
         EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
     if date is not None:
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date) is False:
+        if cal.is_session(date) is False:  # type: ignore
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
-        if cal.is_session(date=date) is False:
+        if cal.is_session(date=date) is False:  # type: ignore
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = (
@@ -717,8 +708,8 @@ async def get_company_filings(
 
 async def get_daily_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     adjustment: Literal[
         "splits_only", "unadjusted", "splits_and_dividends"
     ] = "splits_only",
@@ -834,21 +825,23 @@ async def get_daily_price_history(
 
 async def get_weekly_or_monthly_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
-    start_date = (
-        datetime.strptime(start_date, "%Y-%m-%d")
-        if isinstance(start_date, str)
-        else start_date
-    )
-    end_date = (
-        datetime.strptime(end_date, "%Y-%m-%d")
-        if isinstance(end_date, str)
-        else end_date
-    )
+    if start_date:
+        start_date = (
+            datetime.strptime(start_date, "%Y-%m-%d")
+            if isinstance(start_date, str)
+            else start_date
+        )
+    if end_date:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d")
+            if isinstance(end_date, str)
+            else end_date
+        )
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
@@ -868,8 +861,14 @@ async def get_weekly_or_monthly_price_history(
         payload["variables"].pop("endDateTime")
     payload["variables"]["symbol"] = symbol
     payload["variables"]["freq"] = interval
-    payload["variables"]["end"] = end_date.strftime("%Y-%m-%d")
-    payload["variables"]["start"] = start_date.strftime("%Y-%m-%d")
+    payload["variables"]["end"] = (
+        end_date.strftime("%Y-%m-%d") if isinstance(end_date, dateType) else end_date
+    )
+    payload["variables"]["start"] = (
+        start_date.strftime("%Y-%m-%d")
+        if isinstance(start_date, dateType)
+        else start_date
+    )
     url = "https://app-money.tmx.com/graphql"
     data = await get_data_from_gql(
         method="POST",
@@ -914,21 +913,23 @@ async def get_weekly_or_monthly_price_history(
 
 async def get_intraday_price_history(
     symbol: str,
-    start_date: Optional[dateType] = None,
-    end_date: Optional[dateType] = None,
+    start_date: Optional[Union[str, dateType]] = None,
+    end_date: Optional[Union[str, dateType]] = None,
     interval: Optional[int] = 1,
 ):
     """Get historical price data."""
-    start_date = (
-        datetime.strptime(start_date, "%Y-%m-%d")
-        if isinstance(start_date, str)
-        else start_date
-    )
-    end_date = (
-        datetime.strptime(end_date, "%Y-%m-%d")
-        if isinstance(end_date, str)
-        else end_date
-    )
+    if start_date:
+        start_date = (
+            datetime.strptime(start_date, "%Y-%m-%d")
+            if isinstance(start_date, str)
+            else start_date
+        )
+    if end_date:
+        end_date = (
+            datetime.strptime(end_date, "%Y-%m-%d")
+            if isinstance(end_date, str)
+            else end_date
+        )
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
@@ -941,11 +942,11 @@ async def get_intraday_price_history(
     # This is the first date of available intraday data.
     date_check = datetime(2022, 4, 12).date()
     start_date = max(start_date, date_check)
-    if end_date < date_check:
+    if end_date < date_check:  # type: ignore
         end_date = datetime.now().date()
     # Generate a list of dates from start_date to end_date with a frequency of 3 weeks
     dates = list(
-        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)
+        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)  # type: ignore
     )
 
     if dates[-1] != end_date:
@@ -1039,8 +1040,10 @@ async def get_intraday_price_history(
 
 
 async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
-    """Gets all bonds reference data published by CIRO. The complete list is approximately 70-100K securities."""
+    """Get all bonds reference data published by CIRO.
 
+    The complete list is approximately 70-100K securities.
+    """
     url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
     response = await get_data_from_url(
         url, use_cache=use_cache, timeout=30, backend=tmx_bonds_backend

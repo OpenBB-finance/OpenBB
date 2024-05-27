@@ -1,9 +1,11 @@
+"""Path Tracking File Handler."""
+
 # IMPORTATION STANDARD
 from copy import deepcopy
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
-# IMPORTATION THIRDPARTY
+# IMPORTATION THIRD PARTY
 # IMPORTATION INTERNAL
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.app.logs.utils.expired_files import (
@@ -17,8 +19,11 @@ TMP_FOLDER_NAME = "tmp"
 
 
 class PathTrackingFileHandler(TimedRotatingFileHandler):
+    """Path Tracking File Handler."""
+
     @staticmethod
     def build_log_file_path(settings: LoggingSettings) -> Path:
+        """Build the log file path."""
         app_name = settings.app_name
         directory = settings.user_logs_directory
         session_id = settings.session_id
@@ -27,8 +32,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         return path
 
     def clean_expired_files(self, before_timestamp: float):
-        """Remove expired files from logs directory"""
-
+        """Remove expired files from logs directory."""
         logs_dir = self.settings.user_logs_directory
         archives_directory = logs_dir / ARCHIVES_FOLDER_NAME
         tmp_directory = logs_dir / TMP_FOLDER_NAME
@@ -51,10 +55,12 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
 
     @property
     def settings(self) -> LoggingSettings:
+        """Get the settings."""
         return deepcopy(self.__settings)
 
     @settings.setter
     def settings(self, settings: LoggingSettings) -> None:
+        """Set the settings."""
         self.__settings = settings
 
     # OVERRIDE
@@ -64,6 +70,7 @@ class PathTrackingFileHandler(TimedRotatingFileHandler):
         *args,
         **kwargs,
     ) -> None:
+        """Initialize the PathTrackingFileHandler."""
         # SETUP PARENT CLASS
         filename = str(self.build_log_file_path(settings=settings))
         frequency = settings.frequency

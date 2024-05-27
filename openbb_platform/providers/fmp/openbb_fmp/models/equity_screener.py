@@ -1,5 +1,7 @@
 """FMP Equity Screener Model."""
 
+# pylint: disable=unused-argument
+from copy import deepcopy
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
@@ -8,6 +10,7 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
     EquityScreenerQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fmp.utils.definitions import EXCHANGES, SECTORS
 from openbb_fmp.utils.helpers import create_url, get_data
 from pydantic import Field
@@ -162,23 +165,26 @@ class FMPEquityScreenerFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        _query = deepcopy(query)
+        if _query.sector is not None:
+            _query.sector = _query.sector.replace("_", " ").title()
         url = create_url(
             version=3,
             endpoint="stock-screener",
             api_key=api_key,
-            query=query,
+            query=_query,
             exclude=["query", "is_symbol", "industry"],
         ).replace(" ", "%20")
-        return await get_data(url, **kwargs)
+        return await get_data(url, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
         query: FMPEquityScreenerQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityScreenerData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError("The request was returned empty.")
         results = pd.DataFrame(data)
-        if len(results) == 0:
-            return []
         if query.industry:
             results = results[
                 results["sector"].str.contains(query.industry, case=False)

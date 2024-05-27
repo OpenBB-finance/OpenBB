@@ -6,7 +6,8 @@ import inspect
 import re
 import shutil
 import sys
-from dataclasses import Field
+from dataclasses import Field as DCField
+from functools import partial
 from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
@@ -24,6 +25,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -36,15 +38,15 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
-from openbb_core.app.model.custom_parameter import (
-    OpenBBCustomChoices,
-    OpenBBCustomParameter,
-)
 from openbb_core.app.model.example import Example
+from openbb_core.app.model.field import OpenBBField
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
+from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
@@ -86,13 +88,17 @@ class PackageBuilder:
         self.lint = lint
         self.verbose = verbose
         self.console = Console(verbose)
+        self.route_map = PathHandler.build_route_map()
+        self.path_list = PathHandler.build_path_list(route_map=self.route_map)
 
     def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(
-                self.directory / "assets" / "extension_map.json"
+            reference = PackageBuilder._read(
+                self.directory / "assets" / "reference.json"
             )
+            ext_map = reference.get("info", {}).get("extensions", {})
+            add, remove = PackageBuilder._diff(ext_map)
             if add:
                 a = ", ".join(sorted(add))
                 print(f"Extensions to add: {a}")  # noqa: T201
@@ -113,10 +119,9 @@ class PackageBuilder:
         self.console.log("\nBuilding extensions package...\n")
         self._clean(modules)
         ext_map = self._get_extension_map()
-        self._save_extension_map(ext_map)
         self._save_modules(modules, ext_map)
         self._save_package()
-        self._save_reference_file()
+        self._save_reference_file(ext_map)
         if self.lint:
             self._run_linters()
 
@@ -143,12 +148,6 @@ class PackageBuilder:
             ]
         return ext_map
 
-    def _save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
-        """Save the map of extensions available at build time."""
-        code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
-        self.console.log("Writing extension map...")
-        self._write(code=code, name="extension_map", extension="json", folder="assets")
-
     def _save_modules(
         self,
         modules: Optional[Union[str, List[str]]] = None,
@@ -156,28 +155,26 @@ class PackageBuilder:
     ):
         """Save the modules."""
         self.console.log("\nWriting modules...")
-        route_map = PathHandler.build_route_map()
-        path_list = PathHandler.build_path_list(route_map=route_map)
 
-        if not path_list:
+        if not self.path_list:
             self.console.log("\nThere is nothing to write.")
             return
 
-        MAX_LEN = max([len(path) for path in path_list if path != "/"])
+        MAX_LEN = max([len(path) for path in self.path_list if path != "/"])
 
-        if modules:
-            path_list = [path for path in path_list if path in modules]
+        _path_list = (
+            [path for path in self.path_list if path in modules]
+            if modules
+            else self.path_list
+        )
 
-        for path in path_list:
-            route = PathHandler.get_route(path=path, route_map=route_map)
+        for path in _path_list:
+            route = PathHandler.get_route(path, self.route_map)
             if route is None:
-                module_code = ModuleBuilder.build(
-                    path=path,
-                    ext_map=ext_map,
-                )
-                module_name = PathHandler.build_module_name(path=path)
+                code = ModuleBuilder.build(path, ext_map)
+                name = PathHandler.build_module_name(path)
                 self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
-                self._write(code=module_code, name=module_name)
+                self._write(code, name)
 
     def _save_package(self):
         """Save the package."""
@@ -185,11 +182,23 @@ class PackageBuilder:
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
         self._write(code=code, name="__init__")
 
-    def _save_reference_file(self):
+    def _save_reference_file(self, ext_map: Optional[Dict[str, List[str]]] = None):
         """Save the reference.json file."""
         self.console.log("\nWriting reference file...")
-        data = ReferenceGenerator.get_reference_data()
-        code = dumps(obj=data, indent=4)
+        code = dumps(
+            obj={
+                "openbb": VERSION.replace("dev", ""),
+                "info": {
+                    "title": "OpenBB Platform (Python)",
+                    "description": "Investment research for everyone, anywhere.",
+                    "core": CORE_VERSION.replace("dev", ""),
+                    "extensions": ext_map,
+                },
+                "paths": ReferenceGenerator.get_paths(self.route_map),
+                "routers": ReferenceGenerator.get_routers(self.route_map),
+            },
+            indent=4,
+        )
         self._write(code=code, name="reference", extension="json", folder="assets")
 
     def _run_linters(self):
@@ -224,13 +233,28 @@ class PackageBuilder:
         return content
 
     @staticmethod
-    def _diff(path: Path) -> Tuple[Set[str], Set[str]]:
+    def _diff(ext_map: Dict[str, List[str]]) -> Tuple[Set[str], Set[str]]:
         """Check differences between built and installed extensions.
 
         Parameters
         ----------
-        path: Path
-            The path to the folder where the extension map is stored.
+        ext_map: Dict[str, List[str]]
+            Dictionary containing the extensions.
+            Example:
+                {
+                    "openbb_core_extension": [
+                        "commodity@1.0.1",
+                        ...
+                    ],
+                    "openbb_provider_extension": [
+                        "benzinga@1.1.3",
+                        ...
+                    ],
+                    "openbb_obbject_extension": [
+                        "openbb_charting@1.0.0",
+                        ...
+                    ]
+                }
 
         Returns
         -------
@@ -238,8 +262,6 @@ class PackageBuilder:
             First element: set of installed extensions that are not in the package.
             Second element: set of extensions in the package that are not installed.
         """
-        ext_map = PackageBuilder._read(path)
-
         add: Set[str] = set()
         remove: Set[str] = set()
         groups = OpenBBGroups.groups()
@@ -263,7 +285,7 @@ class ModuleBuilder:
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the module."""
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n"
-        code += ImportDefinition.build(path=path)
+        code += ImportDefinition.build(path)
         code += ClassDefinition.build(path, ext_map)
 
         return code
@@ -297,10 +319,12 @@ class ImportDefinition:
             hint_type_list.append(parameter.annotation)
 
         if return_type:
+            if not issubclass(return_type, OBBject):
+                raise ValueError("Return type must be an OBBject.")
             hint_type = get_args(get_type_hints(return_type)["results"])[0]
             hint_type_list.append(hint_type)
 
-        hint_type_list = cls.filter_hint_type_list(hint_type_list=hint_type_list)
+        hint_type_list = cls.filter_hint_type_list(hint_type_list)
 
         return hint_type_list
 
@@ -330,7 +354,6 @@ class ImportDefinition:
         hint_type_list = cls.get_path_hint_type_list(path=path)
         code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
-        code += "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter, OpenBBCustomChoices"
 
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
@@ -339,11 +362,12 @@ class ImportDefinition:
         code += "\nimport pandas"
         code += "\nimport numpy"
         code += "\nimport datetime"
+        code += "\nfrom datetime import date"
         code += "\nimport pydantic"
         code += "\nfrom pydantic import BaseModel"
         code += "\nfrom inspect import Parameter"
         code += "\nimport typing"
-        code += "\nfrom typing import List, Dict, Union, Optional, Literal"
+        code += "\nfrom typing import List, Dict, Union, Optional, Literal, Any"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
         code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
@@ -355,6 +379,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
+        code += "\nfrom openbb_core.app.model.field import OpenBBField"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -380,7 +405,7 @@ class ClassDefinition:
         code = f"class {class_name}(Container):\n"
 
         route_map = PathHandler.build_route_map()
-        path_list = PathHandler.build_path_list(route_map=route_map)
+        path_list = PathHandler.build_path_list(route_map)
         child_path_list = sorted(
             PathHandler.get_child_path_list(
                 path=path,
@@ -391,7 +416,7 @@ class ClassDefinition:
         doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
         for c in child_path_list:
-            route = PathHandler.get_route(path=c, route_map=route_map)
+            route = PathHandler.get_route(c, route_map)
             if route:
                 doc += f"    {route.name}\n"
                 methods += MethodDefinition.build_command_method(
@@ -528,10 +553,12 @@ class MethodDefinition:
         return getattr(PathHandler.build_route_map()[path], "summary", "")
 
     @staticmethod
-    def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
-        """Reorder the params."""
+    def reorder_params(
+        params: Dict[str, Parameter], var_kw: Optional[List[str]] = None
+    ) -> "OrderedDict[str, Parameter]":
+        """Reorder the params and make sure VAR_KEYWORD come after 'provider."""
         formatted_keys = list(params.keys())
-        for k in ["provider", "extra_params"]:
+        for k in ["provider"] + (var_kw or []):
             if k in formatted_keys:
                 formatted_keys.remove(k)
                 formatted_keys.append(k)
@@ -555,18 +582,19 @@ class MethodDefinition:
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=Annotated[
                     bool,
-                    OpenBBCustomParameter(
-                        description="Whether to create a chart or not, by default False."
+                    OpenBBField(
+                        description="Whether to create a chart or not, by default False.",
                     ),
                 ],
                 default=False,
             )
 
         formatted: Dict[str, Parameter] = {}
-
+        var_kw = []
         for name, param in parameter_map.items():
             if name == "extra_params":
                 formatted[name] = Parameter(name="kwargs", kind=Parameter.VAR_KEYWORD)
+                var_kw.append(name)
             elif name == "provider_choices":
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 field = fields["provider"]
@@ -577,14 +605,14 @@ class MethodDefinition:
                     name="provider",
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     annotation=Annotated[
-                        Union[MethodDefinition.get_type(field), None],
-                        OpenBBCustomParameter(
+                        Optional[MethodDefinition.get_type(field)],
+                        OpenBBField(
                             description=(
                                 "The provider to use for the query, by default None.\n"
                                 f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
                                 "    no default."
                                 ""
-                            )
+                            ),
                         ),
                     ],
                     default=None,
@@ -620,12 +648,14 @@ class MethodDefinition:
 
                 formatted[name] = Parameter(
                     name=name,
-                    kind=Parameter.POSITIONAL_OR_KEYWORD,
+                    kind=param.kind,
                     annotation=updated_type,
                     default=param.default,
                 )
+                if param.kind == Parameter.VAR_KEYWORD:
+                    var_kw.append(name)
 
-        return MethodDefinition.reorder_params(params=formatted)
+        return MethodDefinition.reorder_params(params=formatted, var_kw=var_kw)
 
     @staticmethod
     def add_field_custom_annotations(
@@ -633,7 +663,7 @@ class MethodDefinition:
     ):
         """Add the field custom description and choices to the param signature as annotations."""
         if model_name:
-            available_fields: Dict[str, Field] = (
+            available_fields: Dict[str, DCField] = (
                 ProviderInterface().params[model_name]["standard"].__dataclass_fields__
             )
 
@@ -642,27 +672,26 @@ class MethodDefinition:
                     continue
 
                 field_default = available_fields[param].default
-
                 choices = getattr(field_default, "json_schema_extra", {}).get(
                     "choices", []
                 )
                 description = getattr(field_default, "description", "")
 
-                if choices:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            OpenBBCustomParameter(description=description),
-                            OpenBBCustomChoices(choices=choices),
-                        ],
-                    )
-                else:
-                    new_value = value.replace(
-                        annotation=Annotated[
-                            value.annotation,
-                            OpenBBCustomParameter(description=description),
-                        ],
-                    )
+                PartialParameter = partial(
+                    OpenBBField,
+                    description=description,
+                )
+
+                new_value = value.replace(
+                    annotation=Annotated[
+                        value.annotation,
+                        (
+                            PartialParameter(choices=choices)
+                            if choices
+                            else PartialParameter()
+                        ),
+                    ],
+                )
 
                 od[param] = new_value
 
@@ -783,13 +812,18 @@ class MethodDefinition:
             code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
-        extra_info = {}
+        info = {}
 
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
+                fields = param.annotation.__args__[0].__dataclass_fields__
+                values = {k: k for k in fields}
+                for k in values:
+                    if extra := MethodDefinition.get_extra(fields[k]):
+                        info[k] = extra
                 code += f"                {name}=kwargs,\n"
             elif name == "provider_choices":
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
@@ -803,19 +837,18 @@ class MethodDefinition:
                 code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
-                value = {k: k for k in fields}
+                values = {k: k for k in fields}
                 code += f"                {name}={{\n"
-                for k, v in value.items():
+                for k, v in values.items():
                     code += f'                    "{k}": {v},\n'
-                    # TODO: Extend this to extra_params
                     if extra := MethodDefinition.get_extra(fields[k]):
-                        extra_info[k] = extra
+                        info[k] = extra
                 code += "                },\n"
             else:
                 code += f"                {name}={name},\n"
 
-        if extra_info:
-            code += f"                extra_info={extra_info},\n"
+        if info:
+            code += f"                info={info},\n"
 
         if MethodDefinition.is_data_processing_function(path):
             code += "                data_processing=True,\n"
@@ -833,7 +866,15 @@ class MethodDefinition:
         original_type: Optional[type] = None,
     ) -> object:
         """Expand the original field type."""
-        if extra and "multiple_items_allowed" in extra:
+        if extra and any(
+            (
+                v.get("multiple_items_allowed")
+                if isinstance(v, dict)
+                # For backwards compatibility, before this was a list
+                else "multiple_items_allowed" in v
+            )
+            for v in extra.values()
+        ):
             if original_type is None:
                 raise ValueError(
                     "multiple_items_allowed requires the original type to be specified."
@@ -892,17 +933,17 @@ class DocstringGenerator:
 
         Parameters
         ----------
-            field_type (Any):
-                Typing object containing the field type.
-            is_required (bool):
-                Flag to indicate if the field is required.
-            target (Literal["docstring", "website"], optional):
-                Target to return type for. Defaults to "docstring".
+        field_type : Any
+            Typing object containing the field type.
+        is_required : bool
+            Flag to indicate if the field is required.
+        target : Literal["docstring", "website"]
+            Target to return type for. Defaults to "docstring".
 
         Returns
         -------
-            str:
-                String representation of the field type.
+        str
+            String representation of the field type.
         """
         is_optional = not is_required
 
@@ -1007,10 +1048,11 @@ class DocstringGenerator:
         cls,
         model_name: str,
         summary: str,
-        explicit_params: dict,
+        explicit_params: Dict[str, Parameter],
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
+        sections: List[str],
     ) -> str:
         """Create the docstring for model."""
 
@@ -1029,8 +1071,10 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{create_indent(2)}")
             return description
 
-        def get_param_info(parameter: Parameter) -> Tuple[str, str]:
+        def get_param_info(parameter: Optional[Parameter]) -> Tuple[str, str]:
             """Get the parameter info."""
+            if not parameter:
+                return "", ""
             annotation = getattr(parameter, "_annotation", None)
             if isinstance(annotation, _AnnotatedAlias):
                 args = getattr(annotation, "__args__", []) if annotation else []
@@ -1044,50 +1088,56 @@ class DocstringGenerator:
             description = getattr(metadata[0], "description", "") if metadata else ""
             return type_, description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
-        docstring += "\n\n"
-        docstring += f"{create_indent(2)}Parameters\n"
-        docstring += f"{create_indent(2)}----------\n"
+        # Description summary
+        if "description" in sections:
+            docstring = summary.strip("\n").replace("\n    ", f"\n{create_indent(2)}")
+            docstring += "\n\n"
+        if "parameters" in sections:
+            docstring += f"{create_indent(2)}Parameters\n"
+            docstring += f"{create_indent(2)}----------\n"
 
-        # Explicit parameters
-        for param_name, param in explicit_params.items():
-            type_, description = get_param_info(param)
-            type_str = format_type(str(type_), char_limit=79)
-            docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            # Explicit parameters
+            for param_name, param in explicit_params.items():
+                type_, description = get_param_info(param)
+                type_str = format_type(str(type_), char_limit=79)
+                docstring += f"{create_indent(2)}{param_name} : {type_str}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Kwargs
-        for param_name, param in kwarg_params.items():
-            p_type = getattr(param, "type", "")
-            type_ = (
-                getattr(p_type, "__name__", "") if inspect.isclass(p_type) else p_type
-            )
+            # Kwargs
+            for param_name, param in kwarg_params.items():
+                p_type = getattr(param, "type", "")
+                type_ = (
+                    getattr(p_type, "__name__", "")
+                    if inspect.isclass(p_type)
+                    else p_type
+                )
 
-            if "NoneType" in str(type_):
-                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+                if "NoneType" in str(type_):
+                    type_ = f"Optional[{type_}]".replace(", NoneType", "")
 
-            default = getattr(param, "default", "")
-            description = getattr(default, "description", "")
-            docstring += f"{create_indent(2)}{param_name} : {type_}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+                default = getattr(param, "default", "")
+                description = getattr(default, "description", "")
+                docstring += f"{create_indent(2)}{param_name} : {type_}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
 
-        # Returns
-        docstring += "\n"
-        docstring += f"{create_indent(2)}Returns\n"
-        docstring += f"{create_indent(2)}-------\n"
-        providers, _ = get_param_info(explicit_params.get("provider", None))
-        docstring += cls.get_OBBject_description(results_type, providers)
+        if "returns" in sections:
+            # Returns
+            docstring += "\n"
+            docstring += f"{create_indent(2)}Returns\n"
+            docstring += f"{create_indent(2)}-------\n"
+            providers, _ = get_param_info(explicit_params.get("provider"))
+            docstring += cls.get_OBBject_description(results_type, providers)
 
-        # Schema
-        underline = "-" * len(model_name)
-        docstring += f"\n{create_indent(2)}{model_name}\n"
-        docstring += f"{create_indent(2)}{underline}\n"
+            # Schema
+            underline = "-" * len(model_name)
+            docstring += f"\n{create_indent(2)}{model_name}\n"
+            docstring += f"{create_indent(2)}{underline}\n"
 
-        for name, field in returns.items():
-            field_type = cls.get_field_type(field.annotation, field.is_required())
-            description = getattr(field, "description", "")
-            docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
-            docstring += f"{create_indent(3)}{format_description(description)}\n"
+            for name, field in returns.items():
+                field_type = cls.get_field_type(field.annotation, field.is_required())
+                description = getattr(field, "description", "")
+                docstring += f"{create_indent(2)}{field.alias or name} : {field_type}\n"
+                docstring += f"{create_indent(3)}{format_description(description)}\n"
         return docstring
 
     @classmethod
@@ -1103,6 +1153,11 @@ class DocstringGenerator:
         doc = func.__doc__ or ""
         param_types = {}
 
+        sections = SystemService().system_settings.python_settings.docstring_sections
+        max_length = (
+            SystemService().system_settings.python_settings.docstring_max_length
+        )
+
         # Parameters explicit in the function signature
         explicit_params = dict(formatted_params)
         explicit_params.pop("extra_params", None)
@@ -1116,31 +1171,104 @@ class DocstringGenerator:
                 # Parameters passed as **kwargs
                 kwarg_params = params["extra"].__dataclass_fields__
                 param_types.update({k: v.type for k, v in kwarg_params.items()})
-
-                returns = return_schema.model_fields
-                results_type = func.__annotations__.get("return", model_name)
-                if hasattr(results_type, "results_type_repr"):
-                    results_type = results_type.results_type_repr()
-
+                # Format the annotation to hide the metadata, tags, etc.
+                annotation = func.__annotations__.get("return")
+                results_type = (
+                    cls._get_repr(
+                        cls._get_generic_types(
+                            annotation.model_fields["results"].annotation,  # type: ignore[union-attr,arg-type]
+                            [],
+                        ),
+                        model_name,
+                    )
+                    if isclass(annotation) and issubclass(annotation, OBBject)  # type: ignore[arg-type]
+                    else model_name
+                )
                 doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_params,
                     kwarg_params=kwarg_params,
-                    returns=returns,
+                    returns=return_schema.model_fields,
                     results_type=results_type,
+                    sections=sections,
                 )
         else:
             doc = doc.replace("\n    ", f"\n{create_indent(2)}")
 
-        if doc and examples:
+        if doc and examples and "examples" in sections:
             doc += cls.build_examples(
                 path.replace("/", "."),
                 param_types,
                 examples,
             )
 
+        if (
+            max_length  # pylint: disable=chained-comparison
+            and len(doc) > max_length
+            and max_length > 3
+        ):
+            doc = doc[: max_length - 3] + "..."
         return doc
+
+    @classmethod
+    def _get_generic_types(cls, type_: type, items: list) -> List[str]:
+        """Unpack generic types recursively.
+
+        Parameters
+        ----------
+        type_ : type
+            Type to unpack.
+        items : list
+            List to store the unpacked types.
+
+        Returns
+        -------
+        List[str]
+            List of unpacked type names.
+
+        Examples
+        --------
+        Union[List[str], Dict[str, str], Tuple[str]] -> ["List", "Dict", "Tuple"]
+        """
+        if hasattr(type_, "__args__"):
+            origin = get_origin(type_)
+            # pylint: disable=unidiomatic-typecheck
+            if (
+                type(origin) is type
+                and origin is not Annotated
+                and (name := getattr(type_, "_name", getattr(type_, "__name__", None)))
+            ):
+                items.append(name.title())
+            func = partial(cls._get_generic_types, items=items)
+            set().union(*map(func, type_.__args__), items)
+        return items
+
+    @staticmethod
+    def _get_repr(items: List[str], model: str) -> str:
+        """Get the string representation of the types list with the model name.
+
+        Parameters
+        ----------
+        items : List[str]
+            List of type names.
+        model : str
+            Model name to access the model providers.
+
+        Returns
+        -------
+        str
+            String representation of the unpacked types list.
+
+        Examples
+        --------
+        [List, Dict, Tuple], M -> "Union[List[M], Dict[str, M], Tuple[M]]"
+        """
+        if s := [
+            f"Dict[str, {model}]" if i == "Dict" else f"{i}[{model}]" for i in items
+        ]:
+            return f"Union[{', '.join(s)}]" if len(s) > 1 else s[0]
+        return model
 
 
 class PathHandler:
@@ -1174,7 +1302,7 @@ class PathHandler:
     @staticmethod
     def get_route(path: str, route_map: Dict[str, BaseRoute]):
         """Get the route from the path."""
-        return route_map.get(path, None)
+        return route_map.get(path)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: List[str]) -> List[str]:
@@ -1226,7 +1354,7 @@ class ReferenceGenerator:
     pi = DocstringGenerator.provider_interface
 
     @classmethod
-    def get_endpoint_examples(
+    def _get_endpoint_examples(
         cls,
         path: str,
         func: Callable,
@@ -1239,18 +1367,18 @@ class ReferenceGenerator:
 
         Parameters
         ----------
-            path (str):
-                Path of the router.
-            func (Callable):
-                Router endpoint function.
-            examples (Optional[List[Example]]):
-                List of Examples (APIEx or PythonEx type)
-            for the endpoint.
+        path : str
+            Path of the router.
+        func : Callable
+            Router endpoint function.
+        examples : Optional[List[Example]]
+            List of Examples (APIEx or PythonEx type)
+        for the endpoint.
 
         Returns
         -------
-            str:
-                Formatted string containing the examples for the endpoint.
+        str:
+            Formatted string containing the examples for the endpoint.
         """
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -1269,18 +1397,18 @@ class ReferenceGenerator:
         )
 
     @classmethod
-    def get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
+    def _get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
 
         Parameters
         ----------
-            model (str):
-                Standard model to access the model providers.
+        model : str
+            Standard model to access the model providers.
 
         Returns
         -------
-            Dict[str, str]:
-                Dictionary of the provider parameter information
+        Dict[str, str]
+            Dictionary of the provider parameter information
         """
         pi_model_provider = cls.pi.model_providers[model]
         provider_params_field = pi_model_provider.__dataclass_fields__["provider"]
@@ -1307,7 +1435,7 @@ class ReferenceGenerator:
         return provider_parameter_info
 
     @classmethod
-    def get_provider_field_params(
+    def _get_provider_field_params(
         cls,
         model: str,
         params_type: str,
@@ -1317,22 +1445,26 @@ class ReferenceGenerator:
 
         Parameters
         ----------
-            model (str):
-                Model name to access the provider interface
-            params_type (str):
-                Parameters to fetch data for (QueryParams or Data)
-            provider (str, optional):
-                Provider name. Defaults to "openbb".
+        model : str
+            Model name to access the provider interface
+        params_type : str
+            Parameters to fetch data for (QueryParams or Data)
+        provider : str
+            Provider name. Defaults to "openbb".
 
         Returns
         -------
-            List[Dict[str, str]]:
-                List of dictionaries containing the field name, type, description, default,
-                optional flag and standard flag for each provider.
+        List[Dict[str, str]]
+            List of dictionaries containing the field name, type, description, default,
+            optional flag and standard flag for each provider.
         """
         provider_field_params = []
         expanded_types = MethodDefinition.TYPE_EXPANSION
-        model_map = cls.pi._map[model]  # pylint: disable=protected-access
+        model_map = cls.pi.map[model]
+
+        # TODO: Change this to read the package data instead of pi.map directly
+        # We change some items (types, descriptions), so the reference.json
+        # does not reflect entirely the package code.
 
         for field, field_info in model_map[provider][params_type]["fields"].items():
             # Determine the field type, expanding it if necessary and if params_type is "Parameters"
@@ -1353,13 +1485,21 @@ class ReferenceGenerator:
                 .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
             )  # fmt: skip
 
+            extra = field_info.json_schema_extra or {}
+
             # Add information for the providers supporting multiple symbols
-            if params_type == "QueryParams" and field_info.json_schema_extra:
-                multiple_items_list = field_info.json_schema_extra.get(
-                    "multiple_items_allowed", None
-                )
-                if multiple_items_list:
-                    multiple_items = ", ".join(multiple_items_list)
+            if params_type == "QueryParams" and extra:
+
+                providers = []
+                for p, v in extra.items():  # type: ignore[union-attr]
+                    if isinstance(v, dict) and v.get("multiple_items_allowed"):
+                        providers.append(p)
+                    elif isinstance(v, list) and "multiple_items_allowed" in v:
+                        # For backwards compatibility, before this was a list
+                        providers.append(p)
+
+                if providers:
+                    multiple_items = ", ".join(providers)
                     cleaned_description += (
                         f" Multiple items allowed for provider(s): {multiple_items}."
                     )
@@ -1376,30 +1516,31 @@ class ReferenceGenerator:
                     "description": cleaned_description,
                     "default": default_value,
                     "optional": not is_required,
+                    "choices": extra.get("choices"),
                 }
             )
 
         return provider_field_params
 
     @staticmethod
-    def get_obbject_returns_fields(
+    def _get_obbject_returns_fields(
         model: str,
         providers: str,
     ) -> List[Dict[str, str]]:
         """Get the fields of the OBBject returns object for the given standard_model.
 
-        Args
-        ----
-            model (str):
-                Standard model of the returned object.
-            providers (str):
-                Available providers for the model.
+        Parameters
+        ----------
+        model : str
+            Standard model of the returned object.
+        providers : str
+            Available providers for the model.
 
         Returns
         -------
-            List[Dict[str, str]]:
-                List of dictionaries containing the field name, type, description, default
-                and optionality of each field.
+        List[Dict[str, str]]
+            List of dictionaries containing the field name, type, description, default
+            and optionality of each field.
         """
         obbject_list = [
             {
@@ -1432,21 +1573,21 @@ class ReferenceGenerator:
         return obbject_list
 
     @staticmethod
-    def get_post_method_parameters_info(
+    def _get_post_method_parameters_info(
         docstring: str,
     ) -> List[Dict[str, Union[bool, str]]]:
         """Get the parameters for the POST method endpoints.
 
         Parameters
         ----------
-            docstring (str):
-                Router endpoint function's docstring
+        docstring : str
+            Router endpoint function's docstring
 
         Returns
         -------
-            List[Dict[str, str]]:
-                List of dictionaries containing the name,type, description, default
-                and optionality of each parameter.
+        List[Dict[str, str]]
+            List of dictionaries containing the name,type, description, default
+            and optionality of each parameter.
         """
         parameters_list = []
 
@@ -1488,19 +1629,19 @@ class ReferenceGenerator:
         return parameters_list
 
     @staticmethod
-    def get_post_method_returns_info(docstring: str) -> List[Dict[str, str]]:
+    def _get_post_method_returns_info(docstring: str) -> List[Dict[str, str]]:
         """Get the returns information for the POST method endpoints.
 
         Parameters
         ----------
-            docstring (str):
-                Router endpoint function's docstring
+        docstring: str
+            Router endpoint function's docstring
 
         Returns
         -------
-            List[Dict[str, str]]:
-                Single element list having a dictionary containing the name, type,
-                description of the return value
+        List[Dict[str, str]]
+            Single element list having a dictionary containing the name, type,
+            description of the return value
         """
         returns_list = []
 
@@ -1529,8 +1670,8 @@ class ReferenceGenerator:
         return returns_list
 
     @classmethod
-    def get_reference_data(cls) -> Dict[str, Dict[str, Any]]:
-        """Get the reference data for the Platform.
+    def get_paths(cls, route_map: Dict[str, BaseRoute]) -> Dict[str, Dict[str, Any]]:
+        """Get path reference data.
 
         The reference data is a dictionary containing the description, parameters,
         returns and examples for each endpoint. This is currently useful for
@@ -1538,14 +1679,15 @@ class ReferenceGenerator:
 
         Returns
         -------
-            Dict[str, Dict[str, Any]]:
-                Dictionary containing the description, parameters, returns and
-                examples for each endpoint.
+        Dict[str, Dict[str, Any]]
+            Dictionary containing the description, parameters, returns and
+            examples for each endpoint.
         """
         reference: Dict[str, Dict] = {}
-        route_map = PathHandler.build_route_map()
 
         for path, route in route_map.items():
+            # Initialize the provider parameter fields as an empty dictionary
+            provider_parameter_fields = {"type": ""}
             # Initialize the reference fields as empty dictionaries
             reference[path] = {field: {} for field in cls.REFERENCE_FIELDS}
             # Route method is used to distinguish between GET and POST methods
@@ -1565,7 +1707,7 @@ class ReferenceGenerator:
             }
             # Add endpoint examples
             examples = openapi_extra.get("examples", [])
-            reference[path]["examples"] = cls.get_endpoint_examples(
+            reference[path]["examples"] = cls._get_endpoint_examples(
                 path,
                 route_func,
                 examples,  # type: ignore
@@ -1575,19 +1717,21 @@ class ReferenceGenerator:
                 reference[path]["description"] = getattr(
                     route, "description", "No description available."
                 )
+
+                # TODO: The reference is not getting populated when a command does not use a standard model
                 # Access model map from the ProviderInterface
-                model_map = cls.pi._map[
-                    standard_model
-                ]  # pylint: disable=protected-access
+                model_map = cls.pi.map.get(standard_model, {})
 
                 for provider in model_map:
                     if provider == "openbb":
                         # openbb provider is always present hence its the standard field
                         reference[path]["parameters"]["standard"] = (
-                            cls.get_provider_field_params(standard_model, "QueryParams")
+                            cls._get_provider_field_params(
+                                standard_model, "QueryParams"
+                            )
                         )
                         # Add `provider` parameter fields to the openbb provider
-                        provider_parameter_fields = cls.get_provider_parameter_info(
+                        provider_parameter_fields = cls._get_provider_parameter_info(
                             standard_model
                         )
                         reference[path]["parameters"]["standard"].append(
@@ -1596,23 +1740,23 @@ class ReferenceGenerator:
 
                         # Add endpoint data fields for standard provider
                         reference[path]["data"]["standard"] = (
-                            cls.get_provider_field_params(standard_model, "Data")
+                            cls._get_provider_field_params(standard_model, "Data")
                         )
                         continue
                     # Adds provider specific parameter fields to the reference
                     reference[path]["parameters"][provider] = (
-                        cls.get_provider_field_params(
+                        cls._get_provider_field_params(
                             standard_model, "QueryParams", provider
                         )
                     )
                     # Adds provider specific data fields to the reference
-                    reference[path]["data"][provider] = cls.get_provider_field_params(
+                    reference[path]["data"][provider] = cls._get_provider_field_params(
                         standard_model, "Data", provider
                     )
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
                 providers = provider_parameter_fields["type"]
-                reference[path]["returns"]["OBBject"] = cls.get_obbject_returns_fields(
+                reference[path]["returns"]["OBBject"] = cls._get_obbject_returns_fields(
                     standard_model, providers
                 )
             # Add data for the endpoints without a standard model (data processing endpoints)
@@ -1626,12 +1770,43 @@ class ReferenceGenerator:
                 reference[path]["description"] = re.sub(" +", " ", description)
                 # Add endpoint parameters fields for POST methods
                 reference[path]["parameters"]["standard"] = (
-                    ReferenceGenerator.get_post_method_parameters_info(docstring)
+                    cls._get_post_method_parameters_info(docstring)
                 )
                 # Add endpoint returns data
                 # Currently only OBBject object is returned
                 reference[path]["returns"]["OBBject"] = (
-                    cls.get_post_method_returns_info(docstring)
+                    cls._get_post_method_returns_info(docstring)
                 )
 
         return reference
+
+    @classmethod
+    def get_routers(cls, route_map: Dict[str, BaseRoute]) -> Dict[str, Dict[str, Any]]:
+        """Get router reference data.
+
+        Parameters
+        ----------
+        route_map : Dict[str, BaseRoute]
+            Dictionary containing the path and route object for the router.
+
+        Returns
+        -------
+        Dict[str, Dict[str, Any]]
+            Dictionary containing the description for each router.
+        """
+        main_router = RouterLoader.from_extensions()
+        routers = {}
+        for path in route_map:
+            path_parts = path.split("/")
+            # We start at 2: ["/", "some_router"] "/some_router"
+            i = 2
+            p = "/".join(path_parts[:i])
+            while p != path:
+                if p not in routers:
+                    description = main_router.get_attr(p, "description")
+                    if description is not None:
+                        routers[p] = {"description": description}
+                # We go down the path to include sub-routers
+                i += 1
+                p = "/".join(path_parts[:i])
+        return routers

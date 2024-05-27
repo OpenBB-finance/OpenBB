@@ -1,3 +1,5 @@
+"""Test the index API endpoints."""
+
 import base64
 
 import pytest
@@ -9,6 +11,7 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
+    """Get the headers for the API request."""
     userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
     userpass_bytes = userpass.encode("ascii")
     base64_bytes = base64.b64encode(userpass_bytes)
@@ -29,6 +32,7 @@ def headers():
 )
 @pytest.mark.integration
 def test_index_constituents(params, headers):
+    """Test the index constituents endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -58,6 +62,15 @@ def test_index_constituents(params, headers):
                 "symbol": "^DJI",
                 "start_date": "2024-01-01",
                 "end_date": "2024-02-05",
+            }
+        ),
+        (
+            {
+                "interval": "1h",
+                "provider": "fmp",
+                "symbol": "^DJI,^NDX",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -105,6 +118,7 @@ def test_index_constituents(params, headers):
 )
 @pytest.mark.integration
 def test_index_price_historical(params, headers):
+    """Test the index historical price endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -182,6 +196,7 @@ def test_index_price_historical(params, headers):
 @pytest.mark.integration
 @pytest.mark.skip(reason="Deprecating this endpoint")
 def test_index_market(params, headers):
+    """Test the index market endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -202,6 +217,7 @@ def test_index_market(params, headers):
 )
 @pytest.mark.integration
 def test_index_available(params, headers):
+    """Test the index available endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -219,6 +235,7 @@ def test_index_available(params, headers):
 )
 @pytest.mark.integration
 def test_index_search(params, headers):
+    """Test the index search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -237,6 +254,7 @@ def test_index_search(params, headers):
 )
 @pytest.mark.integration
 def test_index_snapshots(params, headers):
+    """Test the index snapshots endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -263,6 +281,7 @@ def test_index_snapshots(params, headers):
 )
 @pytest.mark.integration
 def test_index_sp500_multiples(params, headers):
+    """Test the index sp500 multiples endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -280,6 +299,7 @@ def test_index_sp500_multiples(params, headers):
 )
 @pytest.mark.integration
 def test_index_sectors(params, headers):
+    """Test the index sectors endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

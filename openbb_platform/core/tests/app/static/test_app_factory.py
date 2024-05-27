@@ -47,3 +47,10 @@ def test_app_coverage(app_factory):
     coverage = app_factory.coverage
     assert coverage
     assert isinstance(coverage, Coverage)
+
+
+def test_app_reference(app_factory):
+    """Test app reference."""
+    reference = app_factory.reference
+    assert reference
+    assert isinstance(reference, dict)

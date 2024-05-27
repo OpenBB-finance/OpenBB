@@ -20,12 +20,14 @@ def mock_futures_csv(monkeypatch):
 
 
 def test_get_futures_data(mock_futures_csv):
+    """Test get_futures_data."""
     df = get_futures_data()
     assert not df.empty
     assert df.equals(MOCK_FUTURES_DATA)
 
 
 def test_df_transform_numbers():
+    """Test df_transform_numbers."""
     data = pd.DataFrame(
         {"Value": ["1M", "2.5B", "3T"], "% Change": ["1%", "-2%", "3.5%"]}
     )

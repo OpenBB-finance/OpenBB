@@ -10,7 +10,7 @@ from openbb_core.provider.abstract.data import Data
 def test_filter_inputs_not_df():
     """Test filter_inputs."""
     kwargs = {"num": 1}
-    kwargs = filter_inputs(**kwargs)
+    kwargs = filter_inputs(False, None, **kwargs)
 
     assert kwargs["num"] == 1
 
@@ -19,7 +19,7 @@ def test_filter_inputs_df():
     """Test filter_inputs."""
     df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
     kwargs = {"data": df}
-    kwargs = filter_inputs(data_processing=True, **kwargs)
+    kwargs = filter_inputs(True, None, **kwargs)
 
     assert isinstance(kwargs["data"], list)
 
@@ -49,6 +49,7 @@ test_data = [
 def test_filter_inputs(
     input_data,
 ):
+    """Test the filter_inputs function."""
     result = filter_inputs(data=input_data, data_processing=True)
 
     # Assert that the result is a dictionary

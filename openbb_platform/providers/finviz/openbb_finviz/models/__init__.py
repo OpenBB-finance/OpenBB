@@ -1,0 +1,1 @@
+"""Finviz Provider models."""

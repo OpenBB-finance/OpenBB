@@ -1,15 +1,16 @@
 ---
 title: Windows
 sidebar_position: 1
-description: Learn how to install the OpenBB Terminal on Windows, understand its minimum
+description:
+  Learn how to install the OpenBB Terminal on Windows, understand its minimum
   requirements, and follow the step-by-step instructions to ensure successful installation.
 keywords:
-- OpenBB Terminal installation
-- Windows installation guide
-- Windows OpenBB Terminal
-- Download OpenBB Terminal
-- Install OpenBB Terminal
-- OpenBB Terminal requirements
+  - OpenBB Terminal installation
+  - Windows installation guide
+  - Windows OpenBB Terminal
+  - Download OpenBB Terminal
+  - Install OpenBB Terminal
+  - OpenBB Terminal requirements
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -22,7 +23,8 @@ This section provides you with the installation file as well as the guide to ins
 
 <InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.5/Windows.OpenBB.Terminal.v3.2.5.exe" label="Windows Installer" />
 
-<details><summary>Minimum Requirements</summary>
+<details>
+<summary mdxType="summary">Minimum Requirements</summary>
 
 - Windows 10 or newer
 - Modern CPU (Intel or AMD processor made in the last 5 years)

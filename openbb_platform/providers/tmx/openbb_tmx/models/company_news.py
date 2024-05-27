@@ -20,15 +20,23 @@ from pydantic import Field, field_validator
 class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
     """TMX Stock News query."""
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     page: Optional[int] = Field(
         default=1, description="The page number to start from. Use with limit."
     )
 
+    @field_validator("symbol", mode="before")
+    @classmethod
+    def symbols_validate(cls, v):
+        """Validate the symbols."""
+        if v is None:
+            raise ValueError("Symbol is a required field for TMX.")
+        return v
+
 
 class TmxCompanyNewsData(CompanyNewsData):
-    """TMX Stock News Data"""
+    """TMX Stock News Data."""
 
     __alias_dict__ = {
         "date": "datetime",
@@ -63,12 +71,11 @@ class TmxCompanyNewsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
         user_agent = get_random_agent()
-        symbols = query.symbol.split(",")
-        results = []
+        symbols = query.symbol.split(",")  # type: ignore
+        results: List[Dict] = []
 
         async def create_task(symbol, results):
-            """Makes a POST request to the TMX GraphQL endpoint for a single symbol."""
-
+            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
             symbol = (
                 symbol.upper().replace(".TO", "").replace(".TSX", "").replace("-", ".")
             )
@@ -78,7 +85,7 @@ class TmxCompanyNewsFetcher(
             payload["variables"]["limit"] = query.limit
             payload["variables"]["locale"] = "en"
             url = "https://app-money.tmx.com/graphql"
-            data = {}
+            data: Dict = {}
             response = await get_data_from_gql(
                 method="POST",
                 url=url,

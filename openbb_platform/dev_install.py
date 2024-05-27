@@ -4,12 +4,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-import toml
+from tomlkit import dumps, load, loads
 
 PLATFORM_PATH = Path(__file__).parent.resolve()
 LOCK = PLATFORM_PATH / "poetry.lock"
 PYPROJECT = PLATFORM_PATH / "pyproject.toml"
-
+CLI_PATH = Path(__file__).parent.parent.resolve() / "cli"
+CLI_PYPROJECT = CLI_PATH / "pyproject.toml"
+CLI_LOCK = CLI_PATH / "poetry.lock"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
@@ -18,6 +20,7 @@ openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
+openbb-econdb = { path = "./providers/econdb", develop = true }
 openbb-federal-reserve = { path = "./providers/federal_reserve", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
@@ -67,7 +70,8 @@ def extract_dev_dependencies(local_dep_path):
     """Extract development dependencies from a given package's pyproject.toml."""
     package_pyproject_path = PLATFORM_PATH / local_dep_path
     if package_pyproject_path.exists():
-        package_pyproject_toml = toml.load(package_pyproject_path / "pyproject.toml")
+        with open(package_pyproject_path / "pyproject.toml") as f:
+            package_pyproject_toml = load(f)
         return (
             package_pyproject_toml.get("tool", {})
             .get("poetry", {})
@@ -81,7 +85,7 @@ def extract_dev_dependencies(local_dep_path):
 def get_all_dev_dependencies():
     """Aggregate development dependencies from all local packages."""
     all_dev_dependencies = {}
-    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
+    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     for _, package_info in local_deps.items():
         if "path" in package_info:
             dev_deps = extract_dev_dependencies(Path(package_info["path"]))
@@ -89,25 +93,28 @@ def get_all_dev_dependencies():
     return all_dev_dependencies
 
 
-def install_local(_extras: bool = False):
+def install_platform_local(_extras: bool = False):
     """Install the Platform locally for development purposes."""
     original_lock = LOCK.read_text()
     original_pyproject = PYPROJECT.read_text()
 
-    pyproject_toml = toml.load(PYPROJECT)
-    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
-    pyproject_toml["tool"]["poetry"]["dependencies"].update(local_deps)
+    local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
+    with open(PYPROJECT) as f:
+        pyproject_toml = load(f)
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
+        local_deps
+    )
 
     if _extras:
         dev_dependencies = get_all_dev_dependencies()
-        pyproject_toml["tool"]["poetry"].setdefault("group", {}).setdefault(
-            "dev", {}
-        ).setdefault("dependencies", {})
-        pyproject_toml["tool"]["poetry"]["group"]["dev"]["dependencies"].update(
-            dev_dependencies
-        )
+        pyproject_toml.get("tool", {}).get("poetry", {}).setdefault(
+            "group", {}
+        ).setdefault("dev", {}).setdefault("dependencies", {})
+        pyproject_toml.get("tool", {}).get("poetry", {})["group"]["dev"][
+            "dependencies"
+        ].update(dev_dependencies)
 
-    TEMP_PYPROJECT = toml.dumps(pyproject_toml)
+    TEMP_PYPROJECT = dumps(pyproject_toml)
 
     try:
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
@@ -128,7 +135,7 @@ def install_local(_extras: bool = False):
         print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
 
     finally:
-        # Revert pyproject.toml and poetry.lock to their original state
+        # Revert pyproject.toml and poetry.lock to their original state.
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(original_pyproject)
 
@@ -136,7 +143,49 @@ def install_local(_extras: bool = False):
             f.write(original_lock)
 
 
+def install_platform_cli():
+    """Install the CLI locally for development purposes."""
+    original_lock = CLI_LOCK.read_text()
+    original_pyproject = CLI_PYPROJECT.read_text()
+
+    with open(CLI_PYPROJECT) as f:
+        pyproject_toml = load(f)
+
+    # remove "openbb" from dependencies
+    pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).pop(
+        "openbb", None
+    )
+
+    TEMP_PYPROJECT = dumps(pyproject_toml)
+
+    try:
+        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(TEMP_PYPROJECT)
+
+        CMD = [sys.executable, "-m", "poetry"]
+
+        subprocess.run(
+            CMD + ["lock", "--no-update"], cwd=CLI_PATH, check=True  # noqa: S603
+        )
+        subprocess.run(CMD + ["install"], cwd=CLI_PATH, check=True)  # noqa: S603
+
+    except (Exception, KeyboardInterrupt) as e:
+        print(e)  # noqa: T201
+        print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
+
+    finally:
+        # Revert pyproject.toml and poetry.lock to their original state.
+        with open(CLI_PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_pyproject)
+
+        with open(CLI_LOCK, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_lock)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:]
     extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
-    install_local(extras)
+    cli = any(arg.lower() in ["-c", "--cli"] for arg in args)
+    install_platform_local(extras)
+    if cli:
+        install_platform_cli()

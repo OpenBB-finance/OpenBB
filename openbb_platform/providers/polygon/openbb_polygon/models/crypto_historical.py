@@ -3,7 +3,10 @@
 # pylint: disable=unused-argument,protected-access,line-too-long
 
 import warnings
-from datetime import datetime
+from datetime import (
+    datetime,
+    timezone,
+)
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
@@ -18,6 +21,7 @@ from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
     amake_requests,
+    safe_fromtimestamp,
 )
 from pydantic import (
     Field,
@@ -25,7 +29,6 @@ from pydantic import (
     PrivateAttr,
     model_validator,
 )
-from pytz import timezone
 
 _warn = warnings.warn
 
@@ -36,7 +39,7 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
 
     interval: str = Field(
         default="1d",
@@ -146,17 +149,18 @@ class PolygonCryptoHistoricalFetcher(
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)
-            results: list = data.get("results", [])
+            next_url = data.get("next_url", None)  # type: ignore
+            results: list = data.get("results", [])  # type: ignore
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))
-                next_url = data.get("next_url", None)
+                results.extend(data.get("results", []))  # type: ignore
+                next_url = data.get("next_url", None)  # type: ignore
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
+                v = r["t"] / 1000  # milliseconds to seconds
+                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:

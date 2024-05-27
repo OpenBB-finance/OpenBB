@@ -1,7 +1,7 @@
 """Analyst Estimates Standard Model."""
 
 from datetime import date as dateType
-from typing import List, Literal, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -17,10 +17,6 @@ class AnalystEstimatesQueryParams(QueryParams):
     """Analyst Estimates Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["quarter", "annual"] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
-    )
-    limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
@@ -28,57 +24,69 @@ class AnalystEstimatesQueryParams(QueryParams):
         """Convert field to uppercase."""
         return v.upper()
 
-    @field_validator("period", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
-
 
 class AnalystEstimatesData(Data):
     """Analyst Estimates data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    estimated_revenue_low: ForceInt = Field(description="Estimated revenue low.")
-    estimated_revenue_high: ForceInt = Field(description="Estimated revenue high.")
-    estimated_revenue_avg: ForceInt = Field(description="Estimated revenue average.")
-    estimated_ebitda_low: ForceInt = Field(description="Estimated EBITDA low.")
-    estimated_ebitda_high: ForceInt = Field(description="Estimated EBITDA high.")
-    estimated_ebitda_avg: ForceInt = Field(description="Estimated EBITDA average.")
-    estimated_ebit_low: ForceInt = Field(description="Estimated EBIT low.")
-    estimated_ebit_high: ForceInt = Field(description="Estimated EBIT high.")
-    estimated_ebit_avg: ForceInt = Field(description="Estimated EBIT average.")
-    estimated_net_income_low: ForceInt = Field(description="Estimated net income low.")
-    estimated_net_income_high: ForceInt = Field(
-        description="Estimated net income high."
+    estimated_revenue_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated revenue low."
     )
-    estimated_net_income_avg: ForceInt = Field(
-        description="Estimated net income average."
+    estimated_revenue_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated revenue high."
     )
-    estimated_sga_expense_low: ForceInt = Field(
-        description="Estimated SGA expense low."
+    estimated_revenue_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated revenue average."
     )
-    estimated_sga_expense_high: ForceInt = Field(
-        description="Estimated SGA expense high."
+    estimated_sga_expense_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense low."
     )
-    estimated_sga_expense_avg: ForceInt = Field(
-        description="Estimated SGA expense average."
+    estimated_sga_expense_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense high."
     )
-    estimated_eps_avg: float = Field(description="Estimated EPS average.")
-    estimated_eps_high: float = Field(description="Estimated EPS high.")
-    estimated_eps_low: float = Field(description="Estimated EPS low.")
-    number_analyst_estimated_revenue: ForceInt = Field(
-        description="Number of analysts who estimated revenue."
+    estimated_sga_expense_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated SGA expense average."
     )
-    number_analysts_estimated_eps: ForceInt = Field(
-        description="Number of analysts who estimated EPS."
+    estimated_ebitda_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBITDA low."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert field to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
+    estimated_ebitda_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBITDA high."
+    )
+    estimated_ebitda_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBITDA average."
+    )
+    estimated_ebit_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBIT low."
+    )
+    estimated_ebit_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBIT high."
+    )
+    estimated_ebit_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated EBIT average."
+    )
+    estimated_net_income_low: Optional[ForceInt] = Field(
+        default=None, description="Estimated net income low."
+    )
+    estimated_net_income_high: Optional[ForceInt] = Field(
+        default=None, description="Estimated net income high."
+    )
+    estimated_net_income_avg: Optional[ForceInt] = Field(
+        default=None, description="Estimated net income average."
+    )
+    estimated_eps_avg: Optional[float] = Field(
+        default=None, description="Estimated EPS average."
+    )
+    estimated_eps_high: Optional[float] = Field(
+        default=None, description="Estimated EPS high."
+    )
+    estimated_eps_low: Optional[float] = Field(
+        default=None, description="Estimated EPS low."
+    )
+    number_analyst_estimated_revenue: Optional[ForceInt] = Field(
+        default=None, description="Number of analysts who estimated revenue."
+    )
+    number_analysts_estimated_eps: Optional[ForceInt] = Field(
+        default=None, description="Number of analysts who estimated EPS."
+    )

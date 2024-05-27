@@ -85,8 +85,7 @@ class NasdaqCotData(COTData):
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the datetime object from the date string"""
-
+        """Return the datetime object from the date string."""
         return datetime.strptime(v, "%Y-%m-%d").date()
 
 
@@ -95,6 +94,7 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqCotQueryParams:
+        """Transform the query parameters."""
         return NasdaqCotQueryParams(**params)
 
     @staticmethod
@@ -103,6 +103,7 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract the data from the Nasdaq Data Link API."""
         api_key = credentials.get("nasdaq_api_key") if credentials else ""
 
         # The "code" can be an exact name, a symbol, or a CFTC series code.
@@ -174,4 +175,5 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
         data: List[Dict],
         **kwargs: Any,
     ) -> List[NasdaqCotData]:
+        """Transform the data."""
         return [NasdaqCotData.model_validate(d) for d in data]

@@ -29,7 +29,7 @@ class AuthService(metaclass=SingletonMeta):
     """Auth service."""
 
     def __init__(self, ext_name: Optional[str] = EXT_NAME) -> None:
-        """Initializes AuthService."""
+        """Initialize AuthService."""
         if not self._load_extension(ext_name):
             self._router = default_router
             self._auth_hook = default_auth_hook
@@ -37,22 +37,22 @@ class AuthService(metaclass=SingletonMeta):
 
     @property
     def router(self) -> APIRouter:
-        """Gets router."""
+        """Get router."""
         return self._router
 
     @property
     def auth_hook(self) -> Callable[..., Awaitable[None]]:
-        """Gets general authentication hook."""
+        """Get general authentication hook."""
         return self._auth_hook
 
     @property
     def user_settings_hook(self) -> Callable[..., Awaitable[UserSettings]]:
-        """Gets user settings hook."""
+        """Get user settings hook."""
         return self._user_settings_hook
 
     @staticmethod
     def _is_installed(ext_name: str) -> bool:
-        """Checks if auth_extension is installed."""
+        """Check if auth_extension is installed."""
         extension = ExtensionLoader().get_core_entry_point(ext_name) or False
         return extension and ext_name == extension.name  # type: ignore
 

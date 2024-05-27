@@ -18,3 +18,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Reference files
+content/excel/reference/*
+content/excel/reference/*/*
+content/platform/data_models/*
+content/platform/reference/*

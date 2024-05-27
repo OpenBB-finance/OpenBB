@@ -12,7 +12,7 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Financial market news data.")
 
 
 @router.command(

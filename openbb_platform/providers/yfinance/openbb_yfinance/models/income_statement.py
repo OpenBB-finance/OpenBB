@@ -21,7 +21,10 @@ class YFinanceIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual",
+        json_schema_extra={"choices": ["annual", "quarter"]},
+    )
 
 
 class YFinanceIncomeStatementData(IncomeStatementData):

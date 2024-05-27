@@ -1,17 +1,15 @@
 """Platform V4 Markdown Generator Script."""
 
-import argparse
 import json
 import re
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict, List, Optional
 
-import toml
-from openbb_core.app.static.utils.console import Console
 from openbb_core.provider import standard_models
-from packaging import specifiers
+from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
+from poetry.core.pyproject.toml import PyProjectTOML
 
 # Number of spaces to substitute tabs for indentation
 TAB_WIDTH = 4
@@ -19,157 +17,38 @@ TAB_WIDTH = 4
 # Maximum number of commands to display on the cards
 MAX_COMMANDS = 8
 
-# Path to the Platform directory and the reference.json file
+# Input paths
 PLATFORM_PATH = Path(__file__).parent.parent / "openbb_platform"
+PLATFORM_PYPROJECT_PATH = Path(PLATFORM_PATH / "pyproject.toml")
 REFERENCE_FILE_PATH = Path(PLATFORM_PATH / "openbb/assets/reference.json")
 
-# Paths to use for generating and storing the markdown files
+# Output paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
 PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
 PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
 PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 
-# Imports used in the generated markdown files
+# Markdown imports and elements
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
 PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # noqa: E501
 
 
 # pylint: disable=redefined-outer-name
-def check_installed_packages(
-    console: Console,
-    debug: bool,
-) -> None:
-    """Checks if the installed packages are the same as those on the platform pyproject.toml file.
 
-    Compares the versions of the installed packages with the versions specified in the pyproject.toml file.
-    The source of truth for the package versions is the pyproject.toml file, and the installed packages are
-    checked against the specified versions. If the installed packages do not satisfy the version requirements,
-    an error is raised.
 
-    Parameters
-    ----------
-        console (Console): Console object to display messages and save logs
-        debug (bool): Flag to enable debug mode
-    """
+class Console:
+    """Console class to log messages to the console."""
 
-    def convert_poetry_version_specifier(
-        poetry_version: Union[str, Dict[str, str]]
-    ) -> str:
-        """
-        Convert a Poetry version specifier to a format compatible with the packaging library.
-        Handles both simple string specifiers and dictionary specifiers, extracting only the version value if it's a dict.
+    def __init__(self, verbose: bool = False):
+        self.verbose = verbose
 
-        Parameters
-        ----------
-            poetry_version (Union[str, Dict[str, str]]):
-                Poetry version specifier
+    def log(self, message: str) -> None:
+        if self.verbose:
+            print(message)
 
-        Returns
-        -------
-            str:
-                Version specifier compatible with the packaging library
-        """
-        if isinstance(poetry_version, dict):
-            poetry_version = poetry_version.get("version", "")
 
-        if isinstance(poetry_version, str):
-            if poetry_version.startswith("^"):
-                base_version = poetry_version[1:]
-                # Use regex to split the version and convert to integers only if they are purely numeric
-                parts = re.split(r"\.|\-", base_version)
-                try:
-                    major, minor = (int(x) for x in parts[:2])
-                except ValueError:
-                    # If conversion fails, return the original version specifier
-                    return poetry_version
-                next_major_version = major + 1
-                # Construct a version specifier that represents the range.
-                return f">={base_version},<{next_major_version}.0.0"
-
-            if poetry_version.startswith("~"):
-                base_version = poetry_version[1:]
-                parts = re.split(r"\.|\-", base_version)
-                try:
-                    major, minor = (int(x) for x in parts[:2])
-                except ValueError:
-                    # If conversion fails, return the original version specifier
-                    return poetry_version
-                next_minor_version = minor + 1
-                # Construct a version specifier that represents the range.
-                return f">={base_version},<{major}.{next_minor_version}.0"
-
-            # No need to modify other specifiers, as they are compatible with packaging library
-        return poetry_version
-
-    def check_dependency(
-        package_name: str, version_spec: str, installed_packages_dict: Dict[str, str]
-    ) -> None:
-        """
-        Check if the installed package version satisfies the required version specifier.
-        Raises DependencyCheckError if the package is not installed or does not satisfy the version requirements.
-
-        Parameters
-        ----------
-            package_name (str):
-                Name of the package to check
-            version_spec (str):
-                Version specifier to check against
-            installed_packages_dict (Dict[str, str]):
-                Dictionary of installed packages and their versions
-        """
-        installed_version = installed_packages_dict.get(package_name.lower())
-        if not installed_version:
-            raise Exception(f"{package_name} is not installed.")
-
-        converted_version_spec = convert_poetry_version_specifier(version_spec)
-        specifier_set = specifiers.SpecifierSet(converted_version_spec)
-
-        if not specifier_set.contains(installed_version, prereleases=True):
-            message = f"{package_name} version {installed_version} does not satisfy the specified version {converted_version_spec}."  # noqa: E501, pylint: disable=line-too-long
-            raise Exception(message)
-
-    console.log("\n[CRITICAL] Ensuring all the extensions are installed before the script runs...")  # fmt: skip
-
-    # Execute the pip list command once and store the output
-    pip_list_output = subprocess.run(
-        "pip list | grep openbb",  # noqa: S607
-        shell=True,  # noqa: S602
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    installed_packages = pip_list_output.stdout.splitlines()
-    installed_packages_dict = {
-        line.split()[0].lower(): line.split()[1] for line in installed_packages
-    }
-
-    # Load the pyproject.toml file once
-    with open(PLATFORM_PATH / "pyproject.toml") as f:
-        toml_dict = toml.load(f)
-
-    # Extract the openbb dependencies, excluding the python dependency
-    dependencies = toml_dict["tool"]["poetry"]["dependencies"]
-    dependencies.pop("python", None)
-
-    # Compare versions and check dependencies
-    for package, version_spec in dependencies.items():
-        normalized_package_name = package.replace("_", "-").lower()
-        try:
-            # Convert the version specifier before checking
-            converted_version_spec = convert_poetry_version_specifier(version_spec)
-            check_dependency(
-                normalized_package_name, converted_version_spec, installed_packages_dict
-            )
-
-            # Ensure debug_mode output shows the processed version specifier
-            if debug:
-                installed_version = installed_packages_dict.get(normalized_package_name)
-                console.log(
-                    f"{normalized_package_name}: Specified version {converted_version_spec}, Installed version {installed_version}"  # noqa: E501, pylint: disable=line-too-long
-                )
-        except Exception as e:
-            raise e
+console = Console(verbose=True)
 
 
 def create_reference_markdown_seo(path: str, description: str) -> str:
@@ -177,15 +56,15 @@ def create_reference_markdown_seo(path: str, description: str) -> str:
 
     Parameters
     ----------
-        path (str):
-            Command path relative to the obb class
-        description (str):
-            Description of the command
+    path: str
+        Command path relative to the obb class
+    description: str
+        Description of the command
 
     Returns
     -------
-        str:
-            SEO section for the markdown file
+    str
+        SEO section for the markdown file
     """
 
     with open(SEO_METADATA_PATH) as f:
@@ -228,17 +107,17 @@ def create_reference_markdown_intro(
 
     Parameters
     ----------
-        path (str):
-            Command path relative to the obb class
-        description (str):
-            Description of the command
-        deprecated (Dict[str, str]):
-            Deprecated flag and message
+    path: str
+        Command path relative to the obb class
+    description: str
+        Description of the command
+    deprecated: Dict[str, str]
+        Deprecated flag and message
 
     Returns
     -------
-        str:
-            Introduction section for the markdown file
+    str
+        Introduction section for the markdown file
     """
 
     deprecation_message = (
@@ -262,62 +141,58 @@ def create_reference_markdown_intro(
 
 
 def create_reference_markdown_tabular_section(
-    parameters: Dict[str, List[Dict[str, str]]], heading: str
+    parameters: Dict[str, List[Dict[str, Optional[str]]]], heading: str
 ) -> str:
     """Create the tabular section for the markdown file.
 
     Parameters
     ----------
-        parameters (Dict[str, List[Dict[str, str]]]):
-            Dictionary of providers and their corresponding parameters
-        heading (str):
-            Section heading for the tabular section
+    parameters: Dict[str, List[Dict[str, str]]]
+        Dictionary of providers and their corresponding parameters
+    heading: str
+        Section heading for the tabular section
 
     Returns
     -------
-        str:
-            Tabular section for the markdown file
+    str
+        Tabular section for the markdown file
     """
 
-    standard_params_list = []
     tables_list = []
 
     # params_list is a list of dictionaries containing the
     # information for all the parameters of the provider.
     for provider, params_list in parameters.items():
-        # Exclude the standard parameters from the table
-        filtered_params = [
-            {k: v for k, v in params.items() if k != "standard"}
-            for params in params_list
-        ]
+
+        if provider != "standard":
+            result = {v.get("name"): v for v in parameters["standard"]}
+            provider_params = {v.get("name"): v for v in params_list}
+            result.update(provider_params)
+            params = [{**{"name": k}, **v} for k, v in result.items()]
+        else:
+            params = params_list
 
         # Exclude default and optional columns in the Data section
-        if heading == "Data":
-            filtered_params = [
-                {k: v for k, v in params.items() if k not in ["default", "optional"]}
-                for params in filtered_params
+        filtered = (
+            [
+                {k: v for k, v in p.items() if k not in ["default", "optional"]}
+                for p in params
             ]
-
-        if provider == "standard":
-            standard_params_list = filtered_params
-        else:
-            filtered_params = standard_params_list + filtered_params
+            if heading == "Data"
+            else params
+        )
 
         # Parameter information for every provider is extracted from the dictionary
         # and joined to form a row of the table.
         # A `|` is added at the start and end of the row to create the table cell.
-        params_table_rows = [
-            f"| {' | '.join(map(str, params.values()))} |" for params in filtered_params
-        ]
-        # All rows are joined to form the table.
-        params_table_rows_str = "\n".join(params_table_rows)
+        rows = "\n".join([f"| {' | '.join(map(str, p.values()))} |" for p in filtered])
 
         if heading == "Parameters":
             tables_list.append(
                 f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
                 "| Name | Type | Description | Default | Optional |\n"
                 "| ---- | ---- | ----------- | ------- | -------- |\n"
-                f"{params_table_rows_str}\n"
+                f"{rows}\n"
                 "</TabItem>\n"
             )
         elif heading == "Data":
@@ -325,7 +200,7 @@ def create_reference_markdown_tabular_section(
                 f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
                 "| Name | Type | Description |\n"
                 "| ---- | ---- | ----------- |\n"
-                f"{params_table_rows_str}\n"
+                f"{rows}\n"
                 "</TabItem>\n"
             )
 
@@ -339,14 +214,15 @@ def create_reference_markdown_tabular_section(
 def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
     """Create the returns section for the markdown file.
 
-    Args
-    ----
-        returns (List[Dict[str, str]]):
-            List of dictionaries containing the name, type and description of the returns
+    Parameters
+    ----------
+    returns: List[Dict[str, str]]
+        List of dictionaries containing the name, type and description of the returns
+
     Returns
     -------
-        str:
-            Returns section for the markdown file
+    str
+        Returns section for the markdown file
     """
 
     returns_str = ""
@@ -371,17 +247,17 @@ def create_data_model_markdown(title: str, description: str, model: str) -> str:
 
     Parameters
     ----------
-        title (str):
-            Title of the data model
-        description (str):
-            Description of the data model
-        model (str):
-            Model name
+    title: str
+        Title of the data model
+    description: str
+        Description of the data model
+    model: str
+        Model name
 
     Returns
     -------
-        str:
-            Basic markdown file content for the data model
+    str
+        Basic markdown file content for the data model
     """
 
     # File name is used in the import statement
@@ -431,13 +307,13 @@ def find_data_model_implementation_file(data_model: str) -> str:
 
     Parameters
     ----------
-        data_model (str):
-            Data model name
+    data_model: str
+        Data model name
 
     Returns
     -------
-        str:
-            File name containing the data model class
+    str
+        File name containing the data model class
     """
 
     # Function to search for the data model class in the file
@@ -465,8 +341,8 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
 
     Parameters
     ----------
-        reference_content (Dict[str, str]):
-            Endpoints and their corresponding descriptions.
+    reference_content: Dict[str, str]
+        Endpoints and their corresponding descriptions.
     """
 
     def generate_index_and_category(
@@ -599,17 +475,17 @@ def create_data_models_index(title: str, description: str, model: str) -> str:
 
     Parameters
     ----------
-        title (str):
-            Title of the data model
-        description (str):
-            Description of the data model
-        model (str):
-            Model name
+    title: str
+        Title of the data model
+    description: str
+        Description of the data model
+    model: str
+        Model name
 
     Returns
     -------
-        str:
-            Index content for the data models
+    str
+        Index content for the data models
     """
 
     # Get the first sentence of the description
@@ -632,8 +508,8 @@ def generate_data_models_index_files(content: str) -> None:
 
     Parameters
     ----------
-        content (str):
-            Content for the data models index file
+    content: str
+        Content for the data models index file
     """
 
     index_content = (
@@ -661,17 +537,17 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
 
     Parameters
     ----------
-        path (str):
-            Path to the markdown file
-        markdown_content (str):
-            Content for the markdown file
-        directory (str):
-            Directory to save the markdown file
+    path: str
+        Path to the markdown file
+    markdown_content: str
+        Content for the markdown file
+    directory: str
+        Directory to save the markdown file
 
     Raises
     ------
-        ValueError:
-            If the content type is invalid
+    ValueError:
+        If the content type is invalid
     """
 
     # For reference, split the path to separate the
@@ -697,23 +573,11 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
 
 
 # pylint: disable=redefined-outer-name
-def generate_platform_markdown(
-    console: Console,
-) -> None:
+def generate_platform_markdown(paths: Dict) -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
 
     data_models_index_content = []
     reference_index_content_dict = {}
-
-    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
-    # Load the reference.json file
-    try:
-        with open(REFERENCE_FILE_PATH) as f:
-            reference = json.load(f)
-    except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            "File not found! Please ensure the file exists."
-        ) from exc
 
     # Clear the platform/reference folder
     console.log(f"\n[INFO] Clearing the {PLATFORM_REFERENCE_PATH} folder...")
@@ -728,7 +592,7 @@ def generate_platform_markdown(
     )  # noqa: E501
     console.log(f"\n[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
-    for path, path_data in reference.items():
+    for path, path_data in paths.items():
         reference_markdown_content = ""
         data_markdown_content = ""
 
@@ -808,28 +672,101 @@ def generate_platform_markdown(
     console.log("\n[INFO] Markdown files generated successfully!")
 
 
+def read_reference() -> dict:
+    """Read the reference.json file."""
+    console.log(f"\n[INFO] Reading the {REFERENCE_FILE_PATH} file...")
+    # Load the reference.json file
+    try:
+        with open(REFERENCE_FILE_PATH) as f:
+            reference = json.load(f)
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            "File not found! Please ensure the file exists."
+        ) from exc
+
+    return reference
+
+
+def get_openbb_versions() -> Dict[str, VersionConstraint]:
+    """Get the openbb package version constraints from pyproject.toml."""
+    pyproject = PyProjectTOML(PLATFORM_PYPROJECT_PATH)
+    deps = pyproject.data["tool"]["poetry"]["dependencies"]
+    dep_spec = {}
+    for p, v in deps.items():
+        if p.startswith("openbb"):
+            if isinstance(v, str):
+                dep_spec[p] = parse_constraint(v)
+            elif isinstance(v, dict):
+                dep_spec[p] = parse_constraint(v["version"])
+    return dep_spec
+
+
+def check_installed(openbb_versions: Dict[str, VersionConstraint]) -> None:
+    """Check all the openbb packages are installed and have the correct version."""
+    console.log("\n[INFO] Ensuring all packages installed...")
+    pip_list_output = subprocess.run(
+        "pip list | grep openbb",  # noqa: S607
+        shell=True,  # noqa: S602
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    result = pip_list_output.stdout.splitlines()
+    installed = {
+        line.split()[0].lower(): Version.parse(line.split()[1]) for line in result
+    }
+
+    failures = set()
+    for o, v in openbb_versions.items():
+        if o not in installed:
+            console.log(f"[INFO] Package '{o}' not installed.")
+            failures.add(o)
+        elif not v.allows(installed[o]):
+            console.log(
+                f"[INFO] Version '{installed[o]}' of '{o}' not compatible. Expected '{v}'."
+            )
+            failures.add(o)
+
+    if failures:
+        raise ValueError(f"Failures: {failures}")
+
+
+def check_built(openbb_versions: Dict[str, VersionConstraint], reference: dict) -> None:
+    """Check all the openbb packages installed are in the reference file."""
+    console.log("\n[INFO] Ensuring all packages built...")
+    core_version = reference.get("info", {}).get("core", "")
+    extensions = reference.get("info", {}).get("extensions", {})
+    built = {}
+    built["openbb-core"] = Version.parse(core_version)
+    for value in extensions.values():
+        for v in value:
+            name, version = v.split("@")
+            if name.startswith("openbb_"):
+                name = name[7:]
+            name = "openbb-" + name.replace("_", "-")
+            built[name] = Version.parse(version)
+
+    failures = set()
+    for o, v in openbb_versions.items():
+        if o not in built:
+            console.log(f"[INFO] Package '{o}' not in reference file.")
+            failures.add(o)
+        elif not v.allows(built[o]):
+            console.log(
+                f"[INFO] Version '{built[o]}' of '{o}' not compatible. Expected '{v}'."
+            )
+            failures.add(o)
+
+    if failures:
+        raise ValueError(f"Failures: {failures}")
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        prog="Platform Markdown Generator V2",
-        description="Generate markdown files for the Platform website docs.",
-    )
 
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        help="Enable verbose output for debugging.",
-    )
+    openbb_versions = get_openbb_versions()
+    check_installed(openbb_versions)
 
-    args = parser.parse_args()
-    console = Console(True)
-    verbose = False
+    reference = read_reference()
+    check_built(openbb_versions, reference)
 
-    if args.verbose:
-        verbose = True
-
-    check_installed_packages(
-        console=console,
-        debug=verbose,
-    )
-    generate_platform_markdown(console=console)
+    generate_platform_markdown(reference.get("paths", {}))

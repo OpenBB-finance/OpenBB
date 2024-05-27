@@ -42,6 +42,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 )
 @pytest.mark.integration
 def test_commodity_lbma_fixing(params, obb):
+    """Test the LBMA fixing endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.commodity.lbma_fixing(**params)

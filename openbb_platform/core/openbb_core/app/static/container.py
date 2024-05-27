@@ -11,6 +11,7 @@ class Container:
     """Container class for the command runner session."""
 
     def __init__(self, command_runner: CommandRunner) -> None:
+        """Initialize the container."""
         self._command_runner = command_runner
         OBBject._user_settings = command_runner.user_settings
         OBBject._system_settings = command_runner.system_settings

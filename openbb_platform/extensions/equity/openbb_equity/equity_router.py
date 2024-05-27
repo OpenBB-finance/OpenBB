@@ -21,7 +21,7 @@ from openbb_equity.ownership.ownership_router import router as ownership_router
 from openbb_equity.price.price_router import router as price_router
 from openbb_equity.shorts.shorts_router import router as shorts_router
 
-router = Router(prefix="")
+router = Router(prefix="", description="Equity market data.")
 router.include_router(calendar_router)
 router.include_router(compare_router)
 router.include_router(estimates_router)
@@ -68,8 +68,10 @@ async def screener(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Screen for companies meeting various criteria. These criteria include
-    market cap, price, beta, volume, and dividend yield."""
+    """Screen for companies meeting various criteria.
+
+    These criteria include market cap, price, beta, volume, and dividend yield.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 

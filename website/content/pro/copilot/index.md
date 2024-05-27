@@ -1,6 +1,6 @@
 ---
 title: OpenBB Copilot
-sidebar_position: 7
+sidebar_position: 8
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal Pro
 keywords:
 - OpenBB Copilot
@@ -108,7 +108,7 @@ Sometimes you may wish to focus your analysis and utilize OpenBB Copilot to anal
  a specific subset of widgets. For example, you may want to use OpenBB Copilot
  is assist you in a deep analysis of an earnings transcript in the "Earnings
  Transcript" widget, without retrieving data from the rest of the dashboard.
- 
+
  To achieve this, you can chat with specifically selected widgets by clicking on
  the "Add widgets as context" button on each widget you wish to use while
  querying OpenBB Copilot. Selecting a widget in this manner will make that
@@ -139,4 +139,4 @@ filenames that are descriptive of the data that they contain. For example, given
 a PDF file containing a technical report from TSLA released in 2024, a good
 filename would be `tsla_technical_report_2024.pdf`.
 
-::: 
+:::

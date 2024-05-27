@@ -2,7 +2,10 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime
+from datetime import (
+    datetime,
+    timezone,
+)
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,7 +14,7 @@ from openbb_core.provider.standard_models.currency_snapshots import (
     CurrencySnapshotsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
 from pandas import DataFrame, concat
 from pydantic import Field, field_validator
 
@@ -22,7 +25,7 @@ class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
     """
 
-    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"base": {"multiple_items_allowed": True}}
 
 
 class FMPCurrencySnapshotsData(CurrencySnapshotsData):
@@ -85,7 +88,6 @@ class FMPCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the FMP endpoint."""
-
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = f"https://financialmodelingprep.com/api/v3/quotes/forex?apikey={api_key}"
@@ -99,7 +101,6 @@ class FMPCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[FMPCurrencySnapshotsData]:
         """Filter by the query parameters and validate the model."""
-
         if not data:
             raise EmptyDataError("No data was returned from the FMP endpoint.")
 
@@ -143,7 +144,7 @@ class FMPCurrencySnapshotsFetcher(
             if len(temp) > 0:
                 # Convert the Unix timestamp to a datetime.
                 temp.timestamp = temp.timestamp.apply(
-                    lambda x: datetime.fromtimestamp(x)
+                    lambda x: safe_fromtimestamp(x, tz=timezone.utc)
                 )
                 new_df = concat([new_df, temp])
             if len(new_df) == 0:

@@ -42,6 +42,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 )
 @pytest.mark.integration
 def test_etf_search(params, obb):
+    """Test the ETF search endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.search(**params)
@@ -225,6 +226,7 @@ def test_etf_search(params, obb):
 )
 @pytest.mark.integration
 def test_etf_historical(params, obb):
+    """Test the ETF historical endpoint."""
     result = obb.equity.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -242,6 +244,7 @@ def test_etf_historical(params, obb):
 )
 @pytest.mark.integration
 def test_etf_info(params, obb):
+    """Test the ETF info endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.info(**params)
@@ -259,6 +262,7 @@ def test_etf_info(params, obb):
 )
 @pytest.mark.integration
 def test_etf_sectors(params, obb):
+    """Test the ETF sectors endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.sectors(**params)
@@ -275,6 +279,7 @@ def test_etf_sectors(params, obb):
 )
 @pytest.mark.integration
 def test_etf_holdings_date(params, obb):
+    """Test the ETF holdings date endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.holdings_date(**params)
@@ -329,12 +334,21 @@ def test_etf_holdings_date(params, obb):
             {
                 "symbol": "DJIA",
                 "provider": "intrinio",
+                "date": None,
+            }
+        ),
+        (
+            {
+                "symbol": "QQQ",
+                "provider": "intrinio",
+                "date": "2020-04-03",
             }
         ),
     ],
 )
 @pytest.mark.integration
 def test_etf_holdings(params, obb):
+    """Test the ETF holdings endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.holdings(**params)
@@ -360,6 +374,7 @@ def test_etf_holdings(params, obb):
 )
 @pytest.mark.integration
 def test_etf_price_performance(params, obb):
+    """Test the ETF price performance endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.price_performance(**params)
@@ -377,6 +392,7 @@ def test_etf_price_performance(params, obb):
 )
 @pytest.mark.integration
 def test_etf_countries(params, obb):
+    """Test the ETF countries endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.countries(**params)
@@ -391,6 +407,7 @@ def test_etf_countries(params, obb):
 )
 @pytest.mark.integration
 def test_etf_discovery_gainers(params, obb):
+    """Test the ETF discovery gainers endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.discovery.gainers(**params)
@@ -405,6 +422,7 @@ def test_etf_discovery_gainers(params, obb):
 )
 @pytest.mark.integration
 def test_etf_discovery_losers(params, obb):
+    """Test the ETF discovery losers endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.discovery.losers(**params)
@@ -419,26 +437,10 @@ def test_etf_discovery_losers(params, obb):
 )
 @pytest.mark.integration
 def test_etf_discovery_active(params, obb):
+    """Test the ETF discovery active endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.discovery.active(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@parametrize(
-    "params",
-    [
-        ({"symbol": "SPY", "provider": "fmp"}),
-        ({"symbol": "QQQ", "provider": "fmp"}),
-    ],
-)
-@pytest.mark.integration
-def test_etf_holdings_performance(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.etf.holdings_performance(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -452,6 +454,7 @@ def test_etf_holdings_performance(params, obb):
 )
 @pytest.mark.integration
 def test_etf_equity_exposure(params, obb):
+    """Test the ETF equity exposure endpoint."""
     params = {p: v for p, v in params.items() if v}
 
     result = obb.etf.equity_exposure(**params)

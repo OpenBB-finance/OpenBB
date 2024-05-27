@@ -24,6 +24,7 @@ data: dict = {}
 
 
 def get_stocks_data():
+    """Get stocks data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "stocks_data" in data:
@@ -39,6 +40,7 @@ def get_stocks_data():
 
 
 def get_crypto_data():
+    """Get crypto data."""
     import openbb  # pylint:disable=import-outside-toplevel
 
     if "crypto_data" in data:
@@ -55,6 +57,7 @@ def get_crypto_data():
 
 
 def get_data(menu: Literal["equity", "crypto"]):
+    """Get data."""
     funcs = {"equity": get_stocks_data, "crypto": get_crypto_data}
     return funcs[menu]()
 
@@ -68,6 +71,7 @@ def get_data(menu: Literal["equity", "crypto"]):
 )
 @pytest.mark.integration
 def test_quantitative_normality(params, data_type, obb):
+    """Test normality."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -85,6 +89,7 @@ def test_quantitative_normality(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_capm(params, data_type, obb):
+    """Test capm."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -118,6 +123,7 @@ def test_quantitative_capm(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_performance_omega_ratio(params, data_type, obb):
+    """Test omega ratio."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -135,6 +141,7 @@ def test_quantitative_performance_omega_ratio(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_kurtosis(params, data_type, obb):
+    """Test rolling kurtosis."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -169,6 +176,7 @@ def test_quantitative_rolling_kurtosis(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_unitroot_test(params, data_type, obb):
+    """Test unitroot test."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -204,6 +212,7 @@ def test_quantitative_unitroot_test(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_performance_sharpe_ratio(params, data_type, obb):
+    """Test sharpe ratio."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -241,6 +250,7 @@ def test_quantitative_performance_sharpe_ratio(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_performance_sortino_ratio(params, data_type, obb):
+    """Test sortino ratio."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -257,6 +267,7 @@ def test_quantitative_performance_sortino_ratio(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_skew(params, data_type, obb):
+    """Test rolling skew."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -293,6 +304,7 @@ def test_quantitative_rolling_skew(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_quantile(params, data_type, obb):
+    """Test rolling quantile."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -311,6 +323,7 @@ def test_quantitative_rolling_quantile(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_summary(params, data_type, obb):
+    """Test summary."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -344,6 +357,7 @@ def test_quantitative_summary(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_stdev(params, data_type, obb):
+    """Test rolling stdev."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -378,6 +392,7 @@ def test_quantitative_rolling_stdev(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_mean(params, data_type, obb):
+    """Test rolling mean."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -412,6 +427,7 @@ def test_quantitative_rolling_mean(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_rolling_variance(params, data_type, obb):
+    """Test rolling variance."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -429,6 +445,7 @@ def test_quantitative_rolling_variance(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_skew(params, data_type, obb):
+    """Test skew."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -446,6 +463,7 @@ def test_quantitative_stats_skew(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_kurtosis(params, data_type, obb):
+    """Test kurtosis."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -463,6 +481,7 @@ def test_quantitative_stats_kurtosis(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_variance(params, data_type, obb):
+    """Test variance."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -480,6 +499,7 @@ def test_quantitative_stats_variance(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_stdev(params, data_type, obb):
+    """Test stdev."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -497,6 +517,7 @@ def test_quantitative_stats_stdev(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_mean(params, data_type, obb):
+    """Test mean."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -529,6 +550,7 @@ def test_quantitative_stats_mean(params, data_type, obb):
 )
 @pytest.mark.integration
 def test_quantitative_stats_quantile(params, data_type, obb):
+    """Test quantile."""
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 

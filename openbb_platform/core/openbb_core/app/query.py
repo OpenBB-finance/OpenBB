@@ -47,6 +47,9 @@ class Query:
         for k, v in original.items():
             f = fields[k]
             providers = f.title.split(",") if hasattr(f, "title") else []
+
+            # We only filter/warn if the value is not the default, because fastapi
+            # Depends always sends the default value, even if it's not in the request.
             if v != f.default:
                 if provider_name in providers:
                     filtered[k] = v
