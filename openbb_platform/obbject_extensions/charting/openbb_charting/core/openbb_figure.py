@@ -91,7 +91,7 @@ class OpenBBFigure(go.Figure):
         if fig:
             self.__dict__ = fig.__dict__
 
-        self._charting_settings: Optional["ChartingSettings"] = kwargs.pop(
+        self._charting_settings: Optional[ChartingSettings] = kwargs.pop(
             "charting_settings", None
         )
         self._has_secondary_y = kwargs.pop("has_secondary_y", False)

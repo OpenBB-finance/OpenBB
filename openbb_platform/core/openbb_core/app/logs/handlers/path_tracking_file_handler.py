@@ -5,7 +5,7 @@ from copy import deepcopy
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
-# IMPORTATION THIRDPARTY
+# IMPORTATION THIRD PARTY
 # IMPORTATION INTERNAL
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.app.logs.utils.expired_files import (
