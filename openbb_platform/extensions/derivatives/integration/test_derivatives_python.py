@@ -23,6 +23,7 @@ def obb(pytestconfig):
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
         ({"provider": "tradier", "symbol": "AAPL"}),
+        ({"provider": "yfinance", "symbol": "AAPL"}),
         (
             {
                 "provider": "tmx",
