@@ -508,7 +508,7 @@ class SomaHoldings:
         as_of: Optional[str]
             The as-of date to get data for. Defaults to the latest.
         cusip: Optional[str]
-            The CUSIP of the security to search for. This paramter takes priority over `holding_type`.
+            The CUSIP of the security to search for. This parameter takes priority over `holding_type`.
         holding_type: Optional[str]
             The holding type for which to retrieve. Choices are: ['all', 'agency debts', 'mbs', 'cmbs']
         wam: Optional[bool]
@@ -580,7 +580,7 @@ class SomaHoldings:
             The holding type for which to retrieve. Choices are: ['all', 'bills', 'notesbonds', 'frn', 'tips']
         wam: Optional[bool]
             Whether to return a single date weighted average maturity for Agency debt. Defaults to False.
-            This paramter takes priority over `holding_type`, `cusip`, and `monthly`.
+            This parameter takes priority over `holding_type`, `cusip`, and `monthly`.
         monthly: Optional[bool]
             If true, returns historical data for all securities at a monthly interval.
             This parameter takes priority over other parameters except `wam`.
