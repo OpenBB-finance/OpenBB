@@ -83,7 +83,7 @@ def test_equity_fundamental_balance(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
     ],
 )
 @pytest.mark.integration
@@ -132,6 +132,14 @@ def test_equity_calendar_splits(params, obb):
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "nasdaq"}),
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "tmx"}),
+        (
+            {
+                "start_date": None,
+                "end_date": None,
+                "provider": "seeking_alpha",
+                "country": "us",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -206,7 +214,7 @@ def test_equity_fundamental_cash(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"}),
     ],
 )
 @pytest.mark.integration
@@ -705,7 +713,14 @@ def test_equity_estimates_consensus(params, obb):
                 "calendar_period": None,
                 "provider": "intrinio",
             }
-        )
+        ),
+        (
+            {
+                "symbol": "AAPL,BAM:CA",
+                "period": "annual",
+                "provider": "seeking_alpha",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -737,6 +752,13 @@ def test_equity_estimates_forward_sales(params, obb):
                 "limit": None,
                 "include_historical": False,
                 "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,BAM:CA",
+                "period": "annual",
+                "provider": "seeking_alpha",
             }
         ),
     ],
@@ -1565,21 +1587,6 @@ def test_equity_discovery_top_retail(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.equity.discovery.top_retail(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@parametrize(
-    "params",
-    [({"provider": "seeking_alpha"})],
-)
-@pytest.mark.integration
-def test_equity_discovery_upcoming_release_days(params, obb):
-    """Test the equity discovery upcoming release days endpoint."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.discovery.upcoming_release_days(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
