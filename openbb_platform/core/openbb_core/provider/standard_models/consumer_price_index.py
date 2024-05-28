@@ -51,3 +51,5 @@ class ConsumerPriceIndexData(Data):
     """CPI data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
+    country: str = Field(description=DATA_DESCRIPTIONS.get("country"))
+    value: float = Field(description="CPI index value or period change.")

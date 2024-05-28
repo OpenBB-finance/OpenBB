@@ -3226,6 +3226,22 @@
                         "default": "",
                         "optional": false,
                         "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "None",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "CPI index value or period change.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
                     }
                 ],
                 "fred": [],

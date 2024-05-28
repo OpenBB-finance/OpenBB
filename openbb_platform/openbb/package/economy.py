@@ -648,6 +648,10 @@ class ROUTER_economy(Container):
         ------------------
         date : date
             The date of the data.
+        country : str
+            None
+        value : float
+            CPI index value or period change.
         expenditure : Optional[str]
             Expenditure component of CPI. (provider: oecd)
 
