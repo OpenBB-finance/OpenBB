@@ -2938,7 +2938,7 @@
                 "message": null
             },
             "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `units` parameter to define the reference period for the change in values.\nobb.economy.cpi(country='united_states,united_kingdom', units=growth_previous, provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `transform` parameter to define the reference period for the change in values. Default is YoY.\nobb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {

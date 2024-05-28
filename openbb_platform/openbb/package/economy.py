@@ -659,8 +659,8 @@ class ROUTER_economy(Container):
         --------
         >>> from openbb import obb
         >>> obb.economy.cpi(country='japan,china,turkey', provider='fred')
-        >>> # Use the `units` parameter to define the reference period for the change in values.
-        >>> obb.economy.cpi(country='united_states,united_kingdom', units=growth_previous, provider='fred')
+        >>> # Use the `transform` parameter to define the reference period for the change in values. Default is YoY.
+        >>> obb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')
         """  # noqa: E501
 
         return self._run(

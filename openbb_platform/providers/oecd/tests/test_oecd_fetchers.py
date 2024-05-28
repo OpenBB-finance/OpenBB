@@ -5,6 +5,7 @@ import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
+from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
@@ -114,5 +115,19 @@ def test_oecdltir_fetcher(credentials=test_credentials):
     }
 
     fetcher = OECDLTIRFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_oecd_cpi_fetcher(credentials=test_credentials):
+    """Test the OECD CPI fetcher."""
+    params = {
+        "start_date": datetime.date(2021, 1, 1),
+        "end_date": datetime.date(2023, 1, 1),
+        "country": "united_kingdom",
+    }
+
+    fetcher = OECDCPIFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
