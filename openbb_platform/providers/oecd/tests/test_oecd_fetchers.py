@@ -30,6 +30,19 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+def test_oecd_cpi_fetcher(credentials=test_credentials):
+    """Test the OECD CPI fetcher."""
+    params = {
+        "country": "united_kingdom",
+        "frequency": "annual",
+    }
+
+    fetcher = OECDCPIFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_oecd_nominal_gdp_fetcher(credentials=test_credentials):
     """Test the OECD Nominal GDP fetcher."""
     params = {
@@ -115,19 +128,5 @@ def test_oecdltir_fetcher(credentials=test_credentials):
     }
 
     fetcher = OECDLTIRFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_oecd_cpi_fetcher(credentials=test_credentials):
-    """Test the OECD CPI fetcher."""
-    params = {
-        "start_date": datetime.date(2021, 1, 1),
-        "end_date": datetime.date(2023, 1, 1),
-        "country": "united_kingdom",
-    }
-
-    fetcher = OECDCPIFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -132,11 +132,11 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
     def transform_query(params: Dict[str, Any]) -> OECDCPIQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
-        if transformed_params["start_date"] is None:
+        if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = date(1950, 1, 1)
-        if transformed_params["end_date"] is None:
+        if transformed_params.get("end_date") is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
-        if transformed_params["country"] is None:
+        if transformed_params.get("country") is None:
             transformed_params["country"] = "united_states"
 
         return OECDCPIQueryParams(**transformed_params)
