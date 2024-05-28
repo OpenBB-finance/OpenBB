@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item
 from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
@@ -60,18 +61,19 @@ class FREDConsumerPriceIndexFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
-        # api_key = credentials.get("fred_api_key") if credentials else ""
+        frequency = "quarterly" if query.frequency == "quarter" else query.frequency
 
         # Convert the params to series IDs.
         all_options = all_cpi_options(query.harmonized)
-        units = {
+        units_dict = {
             "period": "growth_previous",
             "yoy": "growth_same",
             "index": "index_2015",
-        }[query.transform]
+        }
+        units = units_dict.get(query.transform)
         step_1 = [x for x in all_options if x["country"] in query.country]
         step_2 = [x for x in step_1 if x["units"] == units]
-        step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
+        step_3 = [x for x in step_2 if x["frequency"] == frequency]
         ids = [item["series_id"] for item in step_3]
         country_map = {item["series_id"]: item["country"] for item in step_3}
         item_query = dict(
@@ -97,6 +99,10 @@ class FREDConsumerPriceIndexFetcher(
     ) -> AnnotatedResult[List[FREDConsumerPriceIndexData]]:
         """Transform data and validate the model."""
         df = DataFrame.from_records(data["data"])
+        if df.empty:
+            raise EmptyDataError(
+                "No data found for the given query. Try adjusting the parameters."
+            )
         # Flatten the data as a pivot table.
         df = (
             df.melt(id_vars="date", var_name="country", value_name="value")
