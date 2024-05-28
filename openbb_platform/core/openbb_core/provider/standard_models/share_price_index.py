@@ -21,7 +21,7 @@ class SharePriceIndexQueryParams(QueryParams):
         default="united_states",
     )
     frequency: Literal["monthly", "quarter", "annual"] = Field(
-        description="Frequency to get share price index for.",
+        description=QUERY_DESCRIPTIONS.get("frequency", ""),
         default="monthly",
         json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
@@ -41,7 +41,7 @@ class SharePriceIndexData(Data):
     )
     country: Optional[str] = Field(
         default=None,
-        description="Country for which interest rate is given",
+        description=DATA_DESCRIPTIONS.get("country", ""),
     )
     value: Optional[float] = Field(
         default=None,

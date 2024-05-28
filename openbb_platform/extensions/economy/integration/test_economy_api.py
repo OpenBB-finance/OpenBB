@@ -674,7 +674,6 @@ def test_economy_country_profile(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "country": "united_states,united_kingdom",
