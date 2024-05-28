@@ -2938,15 +2938,76 @@
                 "message": null
             },
             "description": "Get Consumer Price Index (CPI).\n\nReturns either the rescaled index value, or a rate of change (inflation).",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `units` parameter to define the reference period for the change in values.\nobb.economy.cpi(country='united_states,united_kingdom', units='growth_previous', provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.cpi(country='japan,china,turkey', provider='fred')\n# Use the `units` parameter to define the reference period for the change in values.\nobb.economy.cpi(country='united_states,united_kingdom', units=growth_previous, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "country",
                         "type": "Union[str, List[str]]",
-                        "description": "The country to get data. Multiple items allowed for provider(s): fred.",
-                        "default": "",
-                        "optional": false,
+                        "description": "The country to get data. Multiple items allowed for provider(s): fred, oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['index', 'yoy', 'period']",
+                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                        "default": "yoy",
+                        "optional": true,
+                        "choices": [
+                            "index",
+                            "yoy",
+                            "period"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "str",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "harmonized",
+                        "type": "bool",
+                        "description": "If true, returns harmonized data.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred', 'oecd']",
+                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default.",
+                        "default": "fred",
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
                         "choices": [
                             "australia",
                             "austria",
@@ -3000,54 +3061,132 @@
                         ]
                     },
                     {
-                        "name": "units",
-                        "type": "Literal['growth_previous', 'growth_same', 'index_2015']",
-                        "description": "The unit of measurement for the data.   Options:   - `growth_previous`: Percent growth from the previous period.    If monthly data, this is month-over-month, etc   - `growth_same`: Percent growth from the same period in the previous year.    If looking at monthly data, this would be year-over-year, etc.   - `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
-                        "default": "growth_same",
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "monthly",
+                            "annual"
+                        ]
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country to get CPI for. This is the list of OECD supported countries",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "G20",
+                            "G7",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "brazil",
+                            "canada",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "costa_rica",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "euro_area_20",
+                            "europe",
+                            "european_union_27",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "oecd_total",
+                            "poland",
+                            "portugal",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
                     },
                     {
                         "name": "frequency",
                         "type": "Literal['monthly', 'quarter', 'annual']",
-                        "description": "The frequency of the data.   Options: `monthly`, `quarter`, and `annual`.",
+                        "description": "The frequency of the data.",
                         "default": "monthly",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
                     },
                     {
-                        "name": "harmonized",
-                        "type": "bool",
-                        "description": "Whether you wish to obtain harmonized data.",
-                        "default": false,
+                        "name": "expenditure",
+                        "type": "Literal['total', 'all', 'actual_rentals', 'alcoholic_beverages_tobacco_narcotics', 'all_non_food_non_energy', 'clothing_footwear', 'communication', 'education', 'electricity_gas_other_fuels', 'energy', 'overall_excl_energy_food_alcohol_tobacco', 'food_non_alcoholic_beverages', 'fuels_lubricants_personal', 'furniture_household_equipment', 'goods', 'housing', 'housing_excluding_rentals', 'housing_water_electricity_gas', 'health', 'imputed_rentals', 'maintenance_repair_dwelling', 'miscellaneous_goods_services', 'recreation_culture', 'residuals', 'restaurants_hotels', 'services_less_housing', 'services_less_house_excl_rentals', 'services', 'transport', 'water_supply_other_services']",
+                        "description": "Expenditure component of CPI.",
+                        "default": "total",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "start_date",
-                        "type": "Union[date, str]",
-                        "description": "Start date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "end_date",
-                        "type": "Union[date, str]",
-                        "description": "End date of the data, in YYYY-MM-DD format.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'fred' if there is no default.",
-                        "default": "fred",
-                        "optional": true
+                        "choices": [
+                            "total",
+                            "food_non_alcoholic_beverages",
+                            "alcoholic_beverages_tobacco_narcotics",
+                            "clothing_footwear",
+                            "housing_water_electricity_gas",
+                            "furniture_household_equipment",
+                            "health",
+                            "transport",
+                            "communication",
+                            "recreation_culture",
+                            "education",
+                            "restaurants_hotels",
+                            "miscellaneous_goods_services",
+                            "energy",
+                            "goods",
+                            "housing",
+                            "housing_excluding_rentals",
+                            "all_non_food_non_energy",
+                            "services_less_housing",
+                            "services_less_house_excl_rentals",
+                            "services",
+                            "overall_excl_energy_food_alcohol_tobacco",
+                            "residuals",
+                            "fuels_lubricants_personal",
+                            "actual_rentals",
+                            "imputed_rentals",
+                            "maintenance_repair_dwelling",
+                            "water_supply_other_services",
+                            "electricity_gas_other_fuels",
+                            "all"
+                        ]
                     }
-                ],
-                "fred": []
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -3058,7 +3197,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fred']]",
+                        "type": "Optional[Literal['fred', 'oecd']]",
                         "description": "Provider name."
                     },
                     {
@@ -3089,7 +3228,17 @@
                         "choices": null
                     }
                 ],
-                "fred": []
+                "fred": [],
+                "oecd": [
+                    {
+                        "name": "expenditure",
+                        "type": "str",
+                        "description": "Expenditure component of CPI.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
             },
             "model": "ConsumerPriceIndex"
         },
@@ -4301,7 +4450,7 @@
                     {
                         "name": "country",
                         "type": "Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
-                        "description": "Country to get GDP for.",
+                        "description": "Country to get interest rate for.",
                         "default": "united_states",
                         "optional": true,
                         "choices": null
@@ -4413,7 +4562,7 @@
                     {
                         "name": "country",
                         "type": "Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
-                        "description": "Country to get GDP for.",
+                        "description": "Country to get interest rate for.",
                         "default": "united_states",
                         "optional": true,
                         "choices": null

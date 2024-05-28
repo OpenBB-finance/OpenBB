@@ -71,7 +71,18 @@ def test_economy_calendar(params, headers):
         (
             {
                 "country": "spain",
-                "units": "growth_same",
+                "transform": "yoy",
+                "frequency": "annual",
+                "harmonized": False,
+                "start_date": "2020-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "country": "portugal,spain",
+                "transform": "period",
                 "frequency": "monthly",
                 "harmonized": True,
                 "start_date": "2023-01-01",
@@ -82,12 +93,13 @@ def test_economy_calendar(params, headers):
         (
             {
                 "country": "portugal,spain",
-                "units": "growth_same",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
+                "transform": "yoy",
+                "frequency": "quarter",
+                "harmonized": False,
+                "start_date": "2020-01-01",
                 "end_date": "2023-06-06",
-                "provider": "fred",
+                "provider": "oecd",
+                "expenditure": "transport",
             }
         ),
     ],

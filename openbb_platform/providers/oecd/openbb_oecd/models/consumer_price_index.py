@@ -1,14 +1,16 @@
 """OECD CPI Data."""
 
-import re
-from datetime import date, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union
+# pylint: disable=unused-argument
+
+from datetime import date
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import (
@@ -16,6 +18,7 @@ from openbb_oecd.utils.constants import (
     COUNTRY_TO_CODE_CPI,
 )
 from pydantic import Field, field_validator
+from requests.exceptions import HTTPError
 
 countries = tuple(CODE_TO_COUNTRY_CPI.values()) + ("all",)
 CountriesList = list(countries)  # type: ignore
@@ -53,7 +56,38 @@ expenditure_dict_rev = {
 }
 expenditure_dict = {v: k for k, v in expenditure_dict_rev.items()}
 expenditures = tuple(expenditure_dict.keys()) + ("all",)
-ExpenditureLiteral = Literal[expenditures]  # type: ignore
+ExpenditureChoices = Literal[
+    "total",
+    "all",
+    "actual_rentals",
+    "alcoholic_beverages_tobacco_narcotics",
+    "all_non_food_non_energy",
+    "clothing_footwear",
+    "communication",
+    "education",
+    "electricity_gas_other_fuels",
+    "energy",
+    "overall_excl_energy_food_alcohol_tobacco",
+    "food_non_alcoholic_beverages",
+    "fuels_lubricants_personal",
+    "furniture_household_equipment",
+    "goods",
+    "housing",
+    "housing_excluding_rentals",
+    "housing_water_electricity_gas",
+    "health",
+    "imputed_rentals",
+    "maintenance_repair_dwelling",
+    "miscellaneous_goods_services",
+    "recreation_culture",
+    "residuals",
+    "restaurants_hotels",
+    "services_less_housing",
+    "services_less_house_excl_rentals",
+    "services",
+    "transport",
+    "water_supply_other_services",
+]
 
 
 class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
@@ -62,38 +96,33 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
     Source: https://data-explorer.oecd.org/?lc=en
     """
 
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
     country: str = Field(
         description="Country to get CPI for.  This is the list of OECD supported countries",
         default="united_states",
         choices=CountriesList,
     )
-
-    seasonal_adjustment: bool = Field(
-        description="Whether to get seasonally adjusted CPI. Defaults to False.",
-        default=False,
-    )
-
-    units: Literal["index", "yoy", "mom"] = Field(
-        description="Units to get CPI for. Either index, month over month or year over year. Defaults to year over year.",
-        default="yoy",
-    )
-
-    expenditure: ExpenditureLiteral = Field(
+    expenditure: ExpenditureChoices = Field(
         description="Expenditure component of CPI.",
         default="total",
+        json_schema_extra={"choices": list(expenditures)},
+    )
+    frequency: Literal["monthly", "quarter", "annual"] = Field(
+        default="monthly",
+        description=QUERY_DESCRIPTIONS.get("frequency", ""),
+        json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
 
     @field_validator("country", mode="before", check_fields=False)
     def validate_country(cls, c: str):  # pylint: disable=E0213
         """Validate country."""
-        result = []
+        result: List = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), CountriesList)
             result.append(v.lower())
         return ",".join(result)
-
-    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
 
 
 class OECDCPIData(ConsumerPriceIndexData):
@@ -101,42 +130,9 @@ class OECDCPIData(ConsumerPriceIndexData):
 
     expenditure: str = Field(description="Expenditure component of CPI.")
 
-    @field_validator("date", mode="before")
-    @classmethod
-    def date_validate(cls, in_date: Union[date, str]):  # pylint: disable=E0213
-        """Validate value."""
-        if isinstance(in_date, str):
-            # i.e 2022-Q1
-            if re.match(r"\d{4}-Q[1-4]$", in_date):
-                year, quarter = in_date.split("-")
-                _year = int(year)
-                if quarter == "Q1":
-                    return date(_year, 3, 31)
-                if quarter == "Q2":
-                    return date(_year, 6, 30)
-                if quarter == "Q3":
-                    return date(_year, 9, 30)
-                if quarter == "Q4":
-                    return date(_year, 12, 31)
-            # Now match if it is monthly, i.e 2022-01
-            elif re.match(r"\d{4}-\d{2}$", in_date):
-                year, month = map(int, in_date.split("-"))  # type: ignore
-                if month == 12:
-                    return date(year, month, 31)  # type: ignore
-                next_month = date(year, month + 1, 1)  # type: ignore
-                return date(next_month.year, next_month.month, 1) - timedelta(days=1)
-            # Now match if it is yearly, i.e 2022
-            elif re.match(r"\d{4}$", in_date):
-                return date(int(in_date), 12, 31)
-        # If the input date is a year
-        if isinstance(in_date, int):
-            return date(in_date, 12, 31)
-
-        return in_date
-
 
 class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
-    """Transform the query, extract and transform the data from the OECD endpoints."""
+    """OECD CPI Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> OECDCPIQueryParams:
@@ -151,7 +147,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
 
         return OECDCPIQueryParams(**transformed_params)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: OECDCPIQueryParams,
@@ -159,7 +154,13 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
-        methodology = ["N", "HICP"][query.harmonized]
+        methodology = "HICP" if query.harmonized is True else "N"
+        query.units = "mom" if query.transform == "period" else query.transform
+        query.frequency = (
+            "monthly"
+            if query.harmonized is True and query.frequency == "quarter"
+            else query.frequency
+        )
         frequency = query.frequency[0].upper()
         units = {
             "index": "IX",
@@ -169,7 +170,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         expenditure = (
             "" if query.expenditure == "all" else expenditure_dict[query.expenditure]
         )
-        seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
 
         def country_string(input_str: str):
             if input_str == "all":
@@ -187,15 +187,15 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
 
         url = (
             f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/"
-            f"{country}.{frequency}.{methodology}.CPI.{units}.{expenditure}.{seasonal_adjustment}."
+            f"{country}.{frequency}.{methodology}.CPI.{units}.{expenditure}.N."
         )
-        data = helpers.get_possibly_cached_data(
-            url, function="economy_cpi", query_dict=query_dict
-        )
-        url_query = (
-            f"METHODOLOGY=='{methodology}' & UNIT_MEASURE=='{units}' & FREQ=='{frequency}' & "
-            f"ADJUSTMENT=='{seasonal_adjustment}' "
-        )
+        try:
+            data = helpers.get_possibly_cached_data(
+                url, function="economy_cpi", query_dict=query_dict
+            )
+        except HTTPError:
+            raise ValueError("No data found for the given query.")
+        url_query = f"METHODOLOGY=='{methodology}' & UNIT_MEASURE=='{units}' & FREQ=='{frequency}'"
 
         if country != "all":
             if "+" in country:
@@ -226,15 +226,16 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         )
         data["country"] = data["country"].map(CODE_TO_COUNTRY_CPI)
         data["expenditure"] = data["expenditure"].map(expenditure_dict_rev)
-
         data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
         data = data[
             (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
         ]
+        # Normalize the percent value.
+        if query.transform in ("yoy", "period"):
+            data["value"] = data["value"].astype(float) / 100
 
-        return data.to_dict(orient="records")
+        return data.fillna("N/A").replace("N/A", None).to_dict(orient="records")
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: OECDCPIQueryParams, data: List[Dict], **kwargs: Any

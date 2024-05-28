@@ -1,71 +1,19 @@
 """FRED Consumer Price Index Model."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
-from openbb_core.provider.utils.descriptions import (
-    QUERY_DESCRIPTIONS,
-)
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import check_item
-from openbb_fred.utils.fred_base import Fred
-from openbb_fred.utils.fred_helpers import all_cpi_options
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
+from pandas import DataFrame
 from pydantic import Field, field_validator
-
-CPI_COUNTRIES = [
-    "australia",
-    "austria",
-    "belgium",
-    "brazil",
-    "bulgaria",
-    "canada",
-    "chile",
-    "china",
-    "croatia",
-    "cyprus",
-    "czech_republic",
-    "denmark",
-    "estonia",
-    "euro_area",
-    "finland",
-    "france",
-    "germany",
-    "greece",
-    "hungary",
-    "iceland",
-    "india",
-    "indonesia",
-    "ireland",
-    "israel",
-    "italy",
-    "japan",
-    "korea",
-    "latvia",
-    "lithuania",
-    "luxembourg",
-    "malta",
-    "mexico",
-    "netherlands",
-    "new_zealand",
-    "norway",
-    "poland",
-    "portugal",
-    "romania",
-    "russian_federation",
-    "slovak_republic",
-    "slovakia",
-    "slovenia",
-    "south_africa",
-    "spain",
-    "sweden",
-    "switzerland",
-    "turkey",
-    "united_kingdom",
-    "united_states",
-]
 
 
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
@@ -73,10 +21,22 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
 
     __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
 
+    country: str = Field(
+        description=QUERY_DESCRIPTIONS.get("country"),
+        default="united_states",
+        json_schema_extra={"choices": CPI_COUNTRIES},  # type: ignore[dict-item]
+    )
+    frequency: Literal["monthly", "annual"] = Field(
+        default="monthly",
+        description=QUERY_DESCRIPTIONS.get("frequency"),
+        json_schema_extra={"choices": ["monthly", "annual"]},
+    )
+
     @field_validator("country", mode="before", check_fields=False)
-    def validate_country(cls, c: str):  # pylint: disable=E0213
+    @classmethod
+    def validate_country(cls, c: str):
         """Validate country."""
-        result = []
+        result: List = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), CPI_COUNTRIES)
@@ -99,52 +59,64 @@ class FREDConsumerPriceIndexFetcher(
         return FREDConsumerPriceIndexQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FREDConsumerPriceIndexQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
-        api_key = credentials.get("fred_api_key") if credentials else ""
+        # api_key = credentials.get("fred_api_key") if credentials else ""
 
+        # Convert the params to series IDs.
         all_options = all_cpi_options(query.harmonized)
-        units = {"mom": "growth_previous", "yoy": "growth_same", "index": "index_2015"}[
-            query.units
-        ]
+        units = {
+            "period": "growth_previous",
+            "yoy": "growth_same",
+            "index": "index_2015",
+        }[query.transform]
         step_1 = [x for x in all_options if x["country"] in query.country]
         step_2 = [x for x in step_1 if x["units"] == units]
         step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
+        ids = [item["series_id"] for item in step_3]
+        country_map = {item["series_id"]: item["country"] for item in step_3}
+        item_query = dict(
+            symbol=",".join(ids),
+            start_date=query.start_date,
+            end_date=query.end_date,
+        )
+        results: Dict = {}
+        temp = await FredSeriesFetcher.fetch_data(item_query, credentials)
+        result = [d.model_dump() for d in temp.result]
+        results["metadata"] = {country_map.get(k): v for k, v in temp.metadata.items()}
+        results["data"] = [
+            {country_map.get(k, k): v for k, v in d.items()} for d in result
+        ]
 
-        series_dict = {}
-        fred = Fred(api_key)
-        for item in step_3:
-            loc = f"{item['country']}"
-            temp = fred.get_series(
-                item["series_id"], query.start_date, query.end_date, **kwargs
-            )
-            temp = [{"date": item["date"], "value": item["value"]} for item in temp]
-            series_dict[loc] = [item for item in temp if item["value"] != "."]
-
-        return series_dict
+        return results
 
     @staticmethod
     def transform_data(
-        query: FREDConsumerPriceIndexQueryParams, data: Dict, **kwargs: Any
-    ) -> List[FREDConsumerPriceIndexData]:
-        """Transform data."""
-        transformed_data = {}
+        query: FREDConsumerPriceIndexQueryParams,
+        data: Dict,
+        **kwargs: Any,
+    ) -> AnnotatedResult[List[FREDConsumerPriceIndexData]]:
+        """Transform data and validate the model."""
+        df = DataFrame.from_records(data["data"])
+        # Flatten the data as a pivot table.
+        df = (
+            df.melt(id_vars="date", var_name="country", value_name="value")
+            .query("value.notnull()")
+            .set_index(["date", "country"])
+            .sort_index()
+            .reset_index()
+        )
+        # Normalize the percent values.
+        if query.transform in ("period", "yoy"):
+            df["value"] = df["value"] / 100
 
-        # Iterate over the series_dict
-        for country, data_list in data.items():
-            for item in data_list:
-                # If the date is not in the dictionary, add it
-                if item["date"] not in transformed_data:
-                    transformed_data[item["date"]] = {"date": item["date"]}
-                # Update the dictionary with the country's value data
-                transformed_data[item["date"]].update({country: item["value"]})
-
-        # Convert the dictionary to a list of dictionaries
-        return [
-            FREDConsumerPriceIndexData.model_validate(item)
-            for item in list(transformed_data.values())
-        ]
+        records = df.to_dict(orient="records")
+        metadata = data.get("metadata", {})
+        return AnnotatedResult(
+            result=[FREDConsumerPriceIndexData.model_validate(r) for r in records],
+            metadata=metadata,
+        )
