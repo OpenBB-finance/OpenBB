@@ -70,7 +70,12 @@ class FREDConsumerPriceIndexFetcher(
             "yoy": "growth_same",
             "index": "index_2015",
         }
-        units = units_dict.get(query.transform)
+        units = (
+            "growth_same"
+            if query.transform == "period"
+            and frequency == "annual"
+            else units_dict.get(query.transform)
+        )
         step_1 = [x for x in all_options if x["country"] in query.country]
         step_2 = [x for x in step_1 if x["units"] == units]
         step_3 = [x for x in step_2 if x["frequency"] == frequency]
