@@ -1,6 +1,6 @@
 """FRED Consumer Price Index Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -25,11 +25,6 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
         description=QUERY_DESCRIPTIONS.get("country"),
         default="united_states",
         json_schema_extra={"choices": CPI_COUNTRIES},  # type: ignore[dict-item]
-    )
-    frequency: Literal["monthly", "annual"] = Field(
-        default="monthly",
-        description=QUERY_DESCRIPTIONS.get("frequency"),
-        json_schema_extra={"choices": ["monthly", "annual"]},
     )
 
     @field_validator("country", mode="before", check_fields=False)

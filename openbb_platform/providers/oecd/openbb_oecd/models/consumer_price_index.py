@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import (
@@ -107,11 +106,6 @@ class OECDCPIQueryParams(ConsumerPriceIndexQueryParams):
         description="Expenditure component of CPI.",
         default="total",
         json_schema_extra={"choices": list(expenditures)},
-    )
-    frequency: Literal["monthly", "quarter", "annual"] = Field(
-        default="monthly",
-        description=QUERY_DESCRIPTIONS.get("frequency", ""),
-        json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
 
     @field_validator("country", mode="before", check_fields=False)

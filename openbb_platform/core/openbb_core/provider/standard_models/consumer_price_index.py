@@ -26,9 +26,10 @@ class ConsumerPriceIndexQueryParams(QueryParams):
         default="yoy",
         json_schema_extra={"choices": ["index", "yoy", "period"]},
     )
-    frequency: str = Field(
+    frequency: Literal["annual", "quarter", "monthly"] = Field(
         default="monthly",
-        description=QUERY_DESCRIPTIONS.get("frequency", ""),
+        description=QUERY_DESCRIPTIONS.get("frequency"),
+        json_schema_extra={"choices": ["annual", "quarter", "monthly"]},
     )
     harmonized: bool = Field(
         default=False, description="If true, returns harmonized data."
