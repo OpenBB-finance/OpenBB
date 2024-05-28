@@ -630,3 +630,29 @@ def test_economy_indicators(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_share_price_index(params, obb):
+    """Test economy share price index."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.share_price_index(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

@@ -12,6 +12,7 @@ python = "^3.8"
 openbb-core = "^1.2.3"
 urllib3 = ">1.26.16"
 defusedxml = "^0.8.0rc2"
+xmltodict = "^0.13.0"
 
 [build-system]
 requires = ["poetry-core"]

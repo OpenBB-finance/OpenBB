@@ -1,0 +1,88 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/GBR.M.SHARE......?dimensionAtObservation=AllDimensions&endPeriod=2024-04&startPeriod=2020-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ih7/Hu8W
+        ZXqZ101RLT/7aHe881GaL6fVrFhefPbRuj3fPvjo9zh6/Ltub794fZZ+N5+kr/P6spjm6eXBePdg
+        /GC8s7199HiRN012kT/6PF/mdTF9mrVZSoCXzaPzqmrz+rOP5m27enT37tXV1biZLd6Nq/ribp03
+        1bqe5s1dfLQo7zbTeb7ImruXe7//7l2FeVcgfKTwLqSHrwNwRljd1fcNOO3k64DTVw2kabVYgITv
+        D0jeNHDeNUUA5Ooeg9jb2dm9+3t/8fw1v7ldLJs2W05t7/Rv7C164e7uw4cHd5cZobvK6AU3Wd/O
+        s1leu7/Pnh6dvTp9trO39+m9Tx+b8eFj2+RN3rRHbb3O3df8kW3wss5XWZ3PjvZ29va3d+5v7z18
+        s7Pz6P7DR/sH7h3byr73Ol8SLmkx++yjp0XT5ItimbX57/+MfpS//9Mvfuqj9K7XmDCYtus6Txvz
+        29nTzz768vTk6e//+in9/83p69//6Wv9JWt//6fPfv9nZy++OH71e/3++78/cfisWORLcPxx++Wk
+        IYbOWvrjs4+Oy/Kp+aohSsnMuP6+QvdHj1/l5yn9spxem27H1O0YvX0kQ9C+f0/X8UdOyPYhZDQc
+        nfgeeEsm+4UbOiTrdd4eT4Hw0dnyvKoXjLx7K2zSfZNm02DXe4W+c591uUPbpBnD/ewjr++P3DwQ
+        aYQit5qIo8dERYjjI5qG4I/fK792f/9kVq5zJuybsy9Of/+Xp6/OvnxKBMXHn31EnLazvbPLJO2/
+        QQz9+x+/Oj22zT9/8mqg6bNXpz9hm30x0OiL0+PXX706te1ef/sYf0XbfvXi7M3v333h7PceaH18
+        8ubsJ8/e/D625e8vXB9p+fQ7X71+88Xpizc3t33z6vjF62dfvvri+M3Zly9u0R4U/vaXr86owU1t
+        vzh98+0vn375/MvPHdLUBbU1arY3lfS3vK/Nd3f3x/cf3r/Hb5lGx21bF5N1m3s8IW+hV6HqV8/d
+        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
+        2UX+6GnWZq/z1vvkc2mHL47+H8o217z6nAAA
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/vnd.sdmx.genericdata+xml; charset=utf-8; version=2.1
+      Date:
+      - Tue, 28 May 2024 22:59:49 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 1
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

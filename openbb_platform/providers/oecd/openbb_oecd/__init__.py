@@ -7,6 +7,7 @@ from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
 from openbb_oecd.models.long_term_interest_rate import OECDLTIRFetcher
+from openbb_oecd.models.share_price_index import OECDSharePriceIndexFetcher
 from openbb_oecd.models.short_term_interest_rate import OECDSTIRFetcher
 from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
@@ -21,6 +22,7 @@ non-member economies.""",
         "GdpForecast": OECDGdpForecastFetcher,
         "Unemployment": OECDUnemploymentFetcher,
         "CLI": OECDCLIFetcher,
+        "SharePriceIndex": OECDSharePriceIndexFetcher,
         "STIR": OECDSTIRFetcher,
         "LTIR": OECDLTIRFetcher,
         "ConsumerPriceIndex": OECDCPIFetcher,
