@@ -148,13 +148,17 @@ class CommandLib:
             )
         ):
             models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
-            if models.get("type") == "array":
-                models = models["items"]
-
+            models = (
+                models["items"].get("oneOf", [models["items"]])
+                if models.get("type") == "array"
+                else [models]
+            )
             d = {}
-            for k, v in self._traverse(["discriminator", "mapping"], models).items():
-                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
-                d[k] = {
+            for model in models:
+                ref = model.get("$ref", "")
+                model_schema = self._traverse(ref.split("/"), self.openapi, ["#"])
+                provider = model_schema.get("description", "").split(" ")[0].lower()
+                d[provider] = {
                     name: {"description": info.get("description", "").replace("\n", "")}
                     for name, info in model_schema["properties"].items()
                 }
