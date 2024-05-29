@@ -3,10 +3,10 @@
 # pylint: disable=unused-argument
 
 from datetime import date
+from io import StringIO
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
-import xmltodict
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.share_price_index import (
     SharePriceIndexData,
@@ -16,13 +16,14 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item, make_request
 from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_CPI,
-    COUNTRY_TO_CODE_CPI,
+    CODE_TO_COUNTRY_RGDP,
+    COUNTRY_TO_CODE_RGDP,
 )
 from openbb_oecd.utils.helpers import oecd_date_to_python_date
+from pandas import read_csv
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_CPI.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
 CountriesList = list(countries)  # type: ignore
 frequency_dict = {
     "monthly": "M",
@@ -52,8 +53,8 @@ class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
         result: List = []
         values = c.replace(" ", "_").split(",")
         for v in values:
-            if v.upper() in CODE_TO_COUNTRY_CPI:
-                result.append(CODE_TO_COUNTRY_CPI.get(v.upper()))
+            if v.upper() in CODE_TO_COUNTRY_RGDP:
+                result.append(CODE_TO_COUNTRY_RGDP.get(v.upper()))
                 continue
             try:
                 check_item(v.lower(), CountriesList)
@@ -108,7 +109,7 @@ class OECDSharePriceIndexFetcher(
             if input_str == "all":
                 return ""
             countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_CPI[country] for country in countries])
+            return "+".join([COUNTRY_TO_CODE_RGDP[country] for country in countries])
 
         country = country_string(query.country)
         start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
@@ -116,41 +117,31 @@ class OECDSharePriceIndexFetcher(
         url = (
             "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/"
             + f"{country}.{frequency}.SHARE......?"
-            + f"startPeriod={start_date}&endPeriod={end_date}&dimensionAtObservation=AllDimensions"
+            + f"startPeriod={start_date}&endPeriod={end_date}"
+            + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
         )
-        response = make_request(url)
+        headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
+        response = make_request(url, headers=headers)
         if response.status_code != 200:
             raise Exception(f"Error: {response.status_code}")
-        xml = xmltodict.parse(response.text)
-        obs = (
-            xml.get("message:GenericData", {})
-            .get("message:DataSet", {})
-            .get("generic:Obs", [])
+        df = read_csv(StringIO(response.text)).get(
+            ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )
-        results: List = []
-        for item in obs:
-            new_item: Dict = {}
-            date: str = ""
-            country: str = ""
-            obs_key = item.get("generic:ObsKey", {}).get("generic:Value", [])
-            for key_obs in obs_key:
-                if key_obs.get("@id") == "TIME_PERIOD":
-                    date = key_obs.get("@value")
-                    date = oecd_date_to_python_date(date) if date else ""
-                elif key_obs.get("@id") == "REF_AREA":
-                    country = CODE_TO_COUNTRY_CPI.get(key_obs.get("@value", ""), "")
-                else:
-                    continue
-            obs_value = item.get("generic:ObsValue", {}).get("@value", "")
-            if obs_value and ((date <= query.end_date) & (date >= query.start_date)):
-                new_item["date"] = date
-                new_item["country"] = country
-                new_item["value"] = obs_value
-                results.append(new_item)
-        if not results:
+        if df.empty:
             raise EmptyDataError()
+        df = df.rename(
+            columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
+        )
+        df = (
+            df.query("value.notnull()")
+            .set_index(["date", "country"])
+            .sort_index()
+            .reset_index()
+        )
+        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
+        df.date = df.date.apply(oecd_date_to_python_date)
 
-        return results
+        return df.to_dict("records")
 
     @staticmethod
     def transform_data(
