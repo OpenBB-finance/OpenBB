@@ -5,10 +5,12 @@ import datetime
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
+from openbb_oecd.models.consumer_price_index import OECDCPIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
 from openbb_oecd.models.long_term_interest_rate import OECDLTIRFetcher
+from openbb_oecd.models.share_price_index import OECDSharePriceIndexFetcher
 from openbb_oecd.models.short_term_interest_rate import OECDSTIRFetcher
 from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
@@ -26,6 +28,19 @@ def vcr_config():
             ("token", "MOCK_TOKEN"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_oecd_cpi_fetcher(credentials=test_credentials):
+    """Test the OECD CPI fetcher."""
+    params = {
+        "country": "united_kingdom",
+        "frequency": "annual",
+    }
+
+    fetcher = OECDCPIFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
@@ -114,5 +129,19 @@ def test_oecdltir_fetcher(credentials=test_credentials):
     }
 
     fetcher = OECDLTIRFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_oecd_share_price_index_fetcher(credentials=test_credentials):
+    """Test the OECD Share Price Index fetcher."""
+    params = {
+        "start_date": datetime.date(2020, 1, 1),
+        "end_date": datetime.date(2024, 4, 1),
+        "country": "united_kingdom",
+    }
+
+    fetcher = OECDSharePriceIndexFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

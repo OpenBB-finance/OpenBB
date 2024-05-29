@@ -54,11 +54,12 @@ async def calendar(
     examples=[
         APIEx(parameters={"country": "japan,china,turkey", "provider": "fred"}),
         APIEx(
-            description="Use the `units` parameter to define the reference period for the change in values.",
+            description="Use the `transform` parameter to define the reference period for the change in values."
+            + " Default is YoY.",
             parameters={
                 "country": "united_states,united_kingdom",
-                "units": "growth_previous",
-                "provider": "fred",
+                "transform": "period",
+                "provider": "oecd",
             },
         ),
     ],
