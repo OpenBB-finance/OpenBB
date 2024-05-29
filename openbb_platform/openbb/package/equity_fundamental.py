@@ -61,7 +61,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
             ),
         ] = None,
         **kwargs
@@ -77,9 +77,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -391,7 +389,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/balance",
+                        "equity.fundamental.balance",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -419,7 +417,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -435,9 +433,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -555,7 +551,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/balance_growth",
+                        "equity.fundamental.balance_growth",
                         ("fmp",),
                     )
                 },
@@ -583,7 +579,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
             ),
         ] = None,
         **kwargs
@@ -599,9 +595,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -823,7 +817,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/cash",
+                        "equity.fundamental.cash",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -851,7 +845,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -867,9 +861,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -969,7 +961,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/cash_growth",
+                        "equity.fundamental.cash_growth",
                         ("fmp",),
                     )
                 },
@@ -998,7 +990,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -1014,9 +1006,7 @@ class ROUTER_equity_fundamental(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
 
@@ -1069,7 +1059,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/dividends",
+                        "equity.fundamental.dividends",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -1090,7 +1080,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1102,9 +1092,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -1153,7 +1141,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/employee_count",
+                        "equity.fundamental.employee_count",
                         ("fmp",),
                     )
                 },
@@ -1183,7 +1171,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec."
             ),
         ] = None,
         **kwargs
@@ -1204,9 +1192,7 @@ class ROUTER_equity_fundamental(Container):
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'sec']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
         end_date : Optional[datetime.date]
@@ -1300,7 +1286,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/filings",
+                        "equity.fundamental.filings",
                         ("fmp", "intrinio", "sec"),
                     )
                 },
@@ -1354,7 +1340,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -1380,9 +1366,7 @@ class ROUTER_equity_fundamental(Container):
         sort : Optional[Literal['asc', 'desc']]
             Sort order.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
@@ -1421,7 +1405,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_attributes",
+                        "equity.fundamental.historical_attributes",
                         ("intrinio",),
                     )
                 },
@@ -1451,7 +1435,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1463,9 +1447,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         limit : Optional[int]
             The number of data entries to return. (provider: fmp)
 
@@ -1518,7 +1500,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_eps",
+                        "equity.fundamental.historical_eps",
                         ("fmp",),
                     )
                 },
@@ -1537,7 +1519,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1549,9 +1531,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -1590,7 +1570,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/historical_splits",
+                        "equity.fundamental.historical_splits",
                         ("fmp",),
                     )
                 },
@@ -1616,7 +1596,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance."
             ),
         ] = None,
         **kwargs
@@ -1632,9 +1612,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, yfinance.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
         filing_date : Optional[datetime.date]
@@ -1950,7 +1928,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/income",
+                        "equity.fundamental.income",
                         ("fmp", "intrinio", "polygon", "yfinance"),
                     )
                 },
@@ -1978,7 +1956,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1994,9 +1972,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -2088,7 +2064,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/income_growth",
+                        "equity.fundamental.income_growth",
                         ("fmp",),
                     )
                 },
@@ -2120,7 +2096,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -2134,9 +2110,7 @@ class ROUTER_equity_fundamental(Container):
         tag : Union[str, List[str]]
             Intrinio data tag ID or code. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
@@ -2173,7 +2147,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/latest_attributes",
+                        "equity.fundamental.latest_attributes",
                         ("intrinio",),
                     )
                 },
@@ -2197,7 +2171,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance."
             ),
         ] = None,
         **kwargs
@@ -2209,9 +2183,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, yfinance.
 
         Returns
         -------
@@ -2260,7 +2232,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/management",
+                        "equity.fundamental.management",
                         ("fmp", "yfinance"),
                     )
                 },
@@ -2284,7 +2256,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -2296,9 +2268,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         year : Optional[int]
             Year of the compensation. (provider: fmp)
 
@@ -2361,7 +2331,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/management_compensation",
+                        "equity.fundamental.management_compensation",
                         ("fmp",),
                     )
                 },
@@ -2394,7 +2364,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -2410,9 +2380,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         with_ttm : Optional[bool]
             Include trailing twelve months (TTM) data. (provider: fmp)
 
@@ -2673,7 +2641,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/metrics",
+                        "equity.fundamental.metrics",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -2706,7 +2674,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -2718,9 +2686,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -2873,7 +2839,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/multiples",
+                        "equity.fundamental.multiples",
                         ("fmp",),
                     )
                 },
@@ -2897,7 +2863,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -2909,9 +2875,7 @@ class ROUTER_equity_fundamental(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -3021,7 +2985,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/overview",
+                        "equity.fundamental.overview",
                         ("fmp",),
                     )
                 },
@@ -3046,7 +3010,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -3062,9 +3026,7 @@ class ROUTER_equity_fundamental(Container):
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
@@ -3216,7 +3178,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/ratios",
+                        "equity.fundamental.ratios",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -3252,7 +3214,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -3270,9 +3232,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         fiscal_year : Optional[int]
             The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)
 
@@ -3317,7 +3277,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/reported_financials",
+                        "equity.fundamental.reported_financials",
                         ("intrinio",),
                     )
                 },
@@ -3347,7 +3307,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -3363,9 +3323,7 @@ class ROUTER_equity_fundamental(Container):
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -3407,7 +3365,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/revenue_per_geography",
+                        "equity.fundamental.revenue_per_geography",
                         ("fmp",),
                     )
                 },
@@ -3436,7 +3394,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -3452,9 +3410,7 @@ class ROUTER_equity_fundamental(Container):
         structure : Literal['hierarchical', 'flat']
             Structure of the returned data.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -3496,7 +3452,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/revenue_per_segment",
+                        "equity.fundamental.revenue_per_segment",
                         ("fmp",),
                     )
                 },
@@ -3521,7 +3477,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -3535,9 +3491,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
@@ -3590,7 +3544,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/search_attributes",
+                        "equity.fundamental.search_attributes",
                         ("intrinio",),
                     )
                 },
@@ -3616,7 +3570,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["tiingo"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'tiingo' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo."
             ),
         ] = None,
         **kwargs
@@ -3630,9 +3584,7 @@ class ROUTER_equity_fundamental(Container):
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
         provider : Optional[Literal['tiingo']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tiingo' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tiingo.
 
         Returns
         -------
@@ -3668,7 +3620,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/trailing_dividend_yield",
+                        "equity.fundamental.trailing_dividend_yield",
                         ("tiingo",),
                     )
                 },
@@ -3691,7 +3643,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -3705,9 +3657,7 @@ class ROUTER_equity_fundamental(Container):
         year : int
             Year of the earnings call transcript.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -3748,7 +3698,7 @@ class ROUTER_equity_fundamental(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/fundamental/transcript",
+                        "equity.fundamental.transcript",
                         ("fmp",),
                     )
                 },

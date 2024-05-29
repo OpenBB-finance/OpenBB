@@ -177,52 +177,6 @@ def test_parameters_builder_update_command_context(
     assert result["cc"].user_settings == user_settings
 
 
-@pytest.mark.parametrize(
-    "command_coverage, route, kwargs, route_default, expected_result",
-    [
-        (
-            {"route1": ["choice1", "choice2"]},
-            "route1",
-            {"provider_choices": {"provider": None}},
-            None,
-            {"provider_choices": {"provider": None}},
-        ),
-        (
-            {"route1": ["choice1", "choice2"]},
-            "route1",
-            {"provider_choices": {"provider": ["choice1", "choice2"]}},
-            {"provider": "choice1"},
-            {"provider_choices": {"provider": ["choice1", "choice2"]}},
-        ),
-        (
-            {},
-            "route2",
-            {},
-            {"provider": "default_provider"},
-            {},
-        ),
-        (
-            {},
-            "route3",
-            {"provider_choices": {"provider": "existing_provider"}},
-            None,
-            {"provider_choices": {"provider": "existing_provider"}},
-        ),
-    ],
-)
-def test_parameters_builder_update_provider_choices(
-    command_coverage, route, kwargs, route_default, expected_result
-):
-    """Test update_provider_choices."""
-    with patch("openbb_core.app.command_runner.ProviderInterface") as mock_pi:
-        mock_pi.available_providers = ["provider1", "provider2"]
-        result = ParametersBuilder.update_provider_choices(
-            mock_func, command_coverage, route, kwargs, route_default
-        )
-
-        assert result == expected_result
-
-
 def test_parameters_builder_validate_kwargs(mock_func):
     """Test validate_kwargs."""
     # TODO: add more test cases with @pytest.mark.parametrize
@@ -253,7 +207,7 @@ def test_parameters_builder__warn_kwargs(extra_params, base, expect):
     """Test _warn_kwargs."""
 
     @dataclass
-    class SomeModel(base):
+    class SomeModel(base):  # type: ignore[misc,valid-type]
         """SomeModel"""
 
         exists: QueryParam = Query(...)
@@ -276,7 +230,7 @@ def test_parameters_builder_build(mock_func, execution_context):
     """Test build."""
     # TODO: add more test cases with @pytest.mark.parametrize
 
-    with patch("openbb_core.app.command_runner.ProviderInterface") as mock_pi:
+    with patch("openbb_core.app.provider_interface.ProviderInterface") as mock_pi:
         mock_pi.available_providers = ["provider1", "provider2"]
 
         result = ParametersBuilder.build(
@@ -284,11 +238,10 @@ def test_parameters_builder_build(mock_func, execution_context):
             kwargs={
                 "c": 3,
                 "d": "4",
-                "provider_choices": {"provider": ["provider1", "provider2"]},
+                "provider_choices": {"provider": "provider1"},
             },
             func=mock_func,
             execution_context=execution_context,
-            route="mock/route",
         )
 
         assert result == {
@@ -296,7 +249,7 @@ def test_parameters_builder_build(mock_func, execution_context):
             "b": 2,
             "c": 3.0,
             "d": 4,
-            "provider_choices": {"provider": ["provider1", "provider2"]},
+            "provider_choices": {"provider": "provider1"},
         }
 
 

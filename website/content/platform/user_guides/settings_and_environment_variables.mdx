@@ -19,7 +19,47 @@ This page outlines configuring the OpenBB Platform with user settings and enviro
 
 ## User Settings
 
-User preferences are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`. It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, it will be created on the first run.
+User settings are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`. It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, it will be created on the first run.
+
+This file stores:
+
+- [credentials](/platform/getting_started/api_keys#local-environment)
+- [preferences](#preferences)
+- [defaults](#defaults)
+
+This is an example of how it might look after setup:
+
+```json
+{
+    "credentials": {
+        "fmp_api_key": "REPLACE",
+        "polygon_api_key": "REPLACE",
+    },
+    "preferences": {
+        "data_directory": "~/OpenBBUserData",
+        "export_directory": "~/OpenBBUserData/exports",
+        "request_timeout": 15,
+        "metadata": true,
+        "output_type": "OBBject"
+    },
+    "defaults": {
+        "commands": {
+            "equity.price.historical": {
+                "provider": "fmp"
+            },
+            "equity.fundamental.balance": {
+                "provider": [
+                    "intrinio",
+                    "fmp",
+                    "polygon"
+                ]
+            },
+        }
+    }
+}
+```
+
+### Preferences
 
 | **Preference**        | **Default**                      | **Options**                                                         | **Description**                                                                                                                                                                                                                                                                                                          |
 | --------------------- | -------------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -39,8 +79,6 @@ User preferences are stored locally, `~/.openbb_platform/`, as a JSON file, `use
 | output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars", "llm"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python such as `dataframe`, `numpy` or `polars` will render the application's API non-functional.                                                                       |
 | show_warnings         | True                             | [True, False]                                                       | Enables or disables the display of warnings.                                                                                                                                                                                                                                                                             |
 
-### Notes on Preferences
-
 :::note
 
 - If a `OpenBBUserData` folder in not in the home directory, the application will create one on first run. The user preferences with paths all default to this folder, be it exports, styles or data - this can be changed at any time to suit.
@@ -49,26 +87,40 @@ User preferences are stored locally, `~/.openbb_platform/`, as a JSON file, `use
 
 :::
 
-````json
-{
-    "preferences": {
-        "data_directory": "~/OpenBBUserData",
-        "export_directory": "~/OpenBBUserData/exports",
-        "cache_directory": "~/OpenBBUserData/cache",
-        "user_styles_directory": "~/OpenBBUserData/styles/user",
-        "charting_extension": "openbb_charting",
-        "chart_style": "dark",
-        "plot_enable_pywry": true,
-        "plot_pywry_width": 1400,
-        "plot_pywry_height": 762,
-        "plot_open_export": false,
-        "table_style": "dark",
-        "request_timeout": 15,
-        "metadata": true,
-        "output_type": "OBBject"
-}
-}
+### Defaults
 
+Here you can define provider defaults for Python commands, if no `provider` argument is explicitly sent when the command runs. You can choose from 2 options:
+
+1. **Single provider**: this provider will be selected by default for the given command.
+2. **Priority list**: the first provider in the list with all required credentials setup will be used.
+
+```json
+{
+    ...
+    "defaults": {
+        "commands": {
+            # single provider
+            "equity.price.historical": {
+                "provider": "fmp"
+            },
+            # priority list
+            "equity.fundamental.balance": {
+                "provider": [
+                    "intrinio",
+                    "fmp",
+                    "polygon"
+                ]
+            },
+        }
+    }
+}
+```
+
+:::note
+
+- If no configuration is specified the command will use the default priority list. This is the list of available providers for the command sorted alphabetically.
+
+:::
 
 ## Environment Variables
 
