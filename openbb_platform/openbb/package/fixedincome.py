@@ -65,7 +65,7 @@ class ROUTER_fixedincome(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -83,9 +83,7 @@ class ROUTER_fixedincome(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
             Period of SOFR rate. (provider: fred)
 
@@ -123,7 +121,7 @@ class ROUTER_fixedincome(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/sofr",
+                        "fixedincome.sofr",
                         ("fred",),
                     )
                 },
