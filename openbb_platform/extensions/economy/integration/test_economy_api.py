@@ -657,3 +657,42 @@ def test_economy_country_profile(params, headers):
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "date": None,
+                "provider": "federal_reserve",
+                "holding_type": "all_treasury",
+                "summary": False,
+                "monthly": False,
+                "cusip": None,
+                "wam": False,
+            }
+        ),
+        (
+            {
+                "date": None,
+                "provider": "federal_reserve",
+                "holding_type": "all_agency",
+                "summary": False,
+                "monthly": False,
+                "cusip": None,
+                "wam": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_central_bank_holdings(params, headers):
+    """Test the economy central bank holdings."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/central_bank_holdings?{query_str}"
+    result = requests.get(url, headers=headers, timeout=5)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

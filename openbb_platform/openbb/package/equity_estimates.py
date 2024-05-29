@@ -44,7 +44,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["benzinga"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga."
             ),
         ] = None,
         **kwargs
@@ -58,9 +58,7 @@ class ROUTER_equity_estimates(Container):
         firm_name : Union[str, None, List[Optional[str]]]
             Firm names to return. Omitting will return all available firms. Multiple comma separated items allowed for provider(s): benzinga.
         provider : Optional[Literal['benzinga']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'benzinga' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga.
         analyst_ids : Optional[str]
             List of analyst IDs to return. Multiple comma separated items allowed. (provider: benzinga)
         firm_ids : Optional[str]
@@ -214,7 +212,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/analyst_search",
+                        "equity.estimates.analyst_search",
                         ("benzinga",),
                     )
                 },
@@ -246,7 +244,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -258,9 +256,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
         industry_group_number : Optional[int]
             The Zacks industry group number. (provider: intrinio)
 
@@ -328,7 +324,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/consensus",
+                        "equity.estimates.consensus",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -359,7 +355,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -371,9 +367,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         fiscal_period : Optional[Literal['annual', 'quarter']]
             The future fiscal period to retrieve estimates for. (provider: fmp);
             Filter for only full-year or quarterly estimates. (provider: intrinio)
@@ -445,7 +439,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_ebitda",
+                        "equity.estimates.forward_ebitda",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -475,7 +469,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -487,9 +481,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         fiscal_period : Optional[Union[Literal['annual', 'quarter'], Literal['fy', 'q1', 'q2', 'q3', 'q4']]]
             The future fiscal period to retrieve estimates for. (provider: fmp, intrinio)
         limit : Optional[int]
@@ -569,7 +561,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_eps",
+                        "equity.estimates.forward_eps",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -599,7 +591,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -611,9 +603,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
 
         Returns
         -------
@@ -665,7 +655,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_pe",
+                        "equity.estimates.forward_pe",
                         ("intrinio",),
                     )
                 },
@@ -690,7 +680,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -702,9 +692,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): intrinio.
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         fiscal_year : Optional[int]
             The future fiscal year to retrieve estimates for. When no symbol and year is supplied the current calendar year is used. (provider: intrinio)
         fiscal_period : Optional[Literal['fy', 'q1', 'q2', 'q3', 'q4']]
@@ -788,7 +776,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/forward_sales",
+                        "equity.estimates.forward_sales",
                         ("intrinio",),
                     )
                 },
@@ -813,7 +801,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -825,9 +813,7 @@ class ROUTER_equity_estimates(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         period : Literal['quarter', 'annual']
             Time period of the data to return. (provider: fmp)
         limit : Optional[int]
@@ -906,7 +892,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/historical",
+                        "equity.estimates.historical",
                         ("fmp",),
                     )
                 },
@@ -934,7 +920,7 @@ class ROUTER_equity_estimates(Container):
         provider: Annotated[
             Optional[Literal["benzinga", "fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'benzinga' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp."
             ),
         ] = None,
         **kwargs
@@ -948,9 +934,7 @@ class ROUTER_equity_estimates(Container):
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'benzinga' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: benzinga, fmp.
         page : Optional[int]
             Page offset. For optimization, performance and technical reasons, page offsets are limited from 0 - 100000. Limit the query results by other parameters such as date. Used in conjunction with the limit and date parameters. (provider: benzinga)
         date : Optional[datetime.date]
@@ -1061,7 +1045,7 @@ class ROUTER_equity_estimates(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/estimates/price_target",
+                        "equity.estimates.price_target",
                         ("benzinga", "fmp"),
                     )
                 },
