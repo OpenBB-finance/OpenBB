@@ -40,7 +40,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -52,9 +52,7 @@ class ROUTER_etf(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -87,7 +85,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/countries",
+                        "etf.countries",
                         ("fmp",),
                     )
                 },
@@ -112,7 +110,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -124,9 +122,7 @@ class ROUTER_etf(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. (Stock) Multiple comma separated items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -169,7 +165,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/equity_exposure",
+                        "etf.equity_exposure",
                         ("fmp",),
                     )
                 },
@@ -206,7 +202,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance."
             ),
         ] = None,
         **kwargs
@@ -224,9 +220,7 @@ class ROUTER_etf(Container):
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon, tiingo, yfinance.
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -334,7 +328,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/historical",
+                        "etf.historical",
                         ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
@@ -368,7 +362,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "sec"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec."
             ),
         ] = None,
         **kwargs
@@ -380,9 +374,7 @@ class ROUTER_etf(Container):
         symbol : str
             Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp', 'intrinio', 'sec']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, sec.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for. (provider: intrinio);
@@ -608,7 +600,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/holdings",
+                        "etf.holdings",
                         ("fmp", "intrinio", "sec"),
                     )
                 },
@@ -629,7 +621,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -641,9 +633,7 @@ class ROUTER_etf(Container):
         symbol : str
             Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
 
@@ -678,7 +668,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/holdings_date",
+                        "etf.holdings_date",
                         ("fmp",),
                     )
                 },
@@ -702,7 +692,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -714,9 +704,7 @@ class ROUTER_etf(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. (ETF) Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
 
         Returns
         -------
@@ -1065,7 +1053,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/info",
+                        "etf.info",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -1096,7 +1084,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -1108,9 +1096,7 @@ class ROUTER_etf(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         return_type : Literal['trailing', 'calendar']
             The type of returns to return, a trailing or calendar window. (provider: intrinio)
         adjustment : Literal['splits_only', 'splits_and_dividends']
@@ -1210,7 +1196,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/price_performance",
+                        "etf.price_performance",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -1235,7 +1221,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
             ),
         ] = None,
         **kwargs
@@ -1250,9 +1236,7 @@ class ROUTER_etf(Container):
         query : Optional[str]
             Search query.
         provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
         exchange : Optional[Union[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT'], Literal['xnas', 'arcx', 'bats', 'xnys', 'bvmf', 'xshg', 'xshe', 'xhkg', 'xbom', 'xnse', 'xidx', 'tase', 'xkrx', 'xkls', 'xmex', 'xses', 'roco', 'xtai', 'xbkk', 'xist']]]
             The exchange code the ETF trades on. (provider: fmp);
             Target a specific exchange by providing the MIC code. (provider: intrinio)
@@ -1328,7 +1312,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/search",
+                        "etf.search",
                         ("fmp", "intrinio"),
                     )
                 },
@@ -1349,7 +1333,7 @@ class ROUTER_etf(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -1361,9 +1345,7 @@ class ROUTER_etf(Container):
         symbol : str
             Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -1398,7 +1380,7 @@ class ROUTER_etf(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/etf/sectors",
+                        "etf.sectors",
                         ("fmp",),
                     )
                 },

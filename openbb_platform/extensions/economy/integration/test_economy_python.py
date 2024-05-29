@@ -637,6 +637,44 @@ def test_economy_indicators(params, obb):
     [
         (
             {
+                "date": None,
+                "provider": "federal_reserve",
+                "holding_type": "all_treasury",
+                "summary": False,
+                "monthly": False,
+                "cusip": None,
+                "wam": False,
+            }
+        ),
+        (
+            {
+                "date": None,
+                "provider": "federal_reserve",
+                "holding_type": "all_agency",
+                "summary": False,
+                "monthly": False,
+                "cusip": None,
+                "wam": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_central_bank_holdings(params, obb):
+    """Test economy central bank holdings."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.central_bank_holdings(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
                 "country": "united_states,united_kingdom",
                 "frequency": "monthly",
                 "provider": "oecd",

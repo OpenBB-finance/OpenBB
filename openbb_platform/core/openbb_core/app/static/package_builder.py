@@ -599,8 +599,7 @@ class MethodDefinition:
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 field = fields["provider"]
                 type_ = getattr(field, "type")
-                args = getattr(type_, "__args__")
-                first = args[0] if args else None
+                default_priority = getattr(type_, "__args__")
                 formatted["provider"] = Parameter(
                     name="provider",
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -608,10 +607,9 @@ class MethodDefinition:
                         Optional[MethodDefinition.get_type(field)],
                         OpenBBField(
                             description=(
-                                "The provider to use for the query, by default None.\n"
-                                f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
-                                "    no default."
-                                ""
+                                "The provider to use, by default None. "
+                                "If None, the priority list configured in the settings is used. "
+                                f"Default priority: {', '.join(default_priority)}."
                             ),
                         ),
                     ],
@@ -828,10 +826,11 @@ class MethodDefinition:
             elif name == "provider_choices":
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
                 available = field.type.__args__
+                cmd = path.strip("/").replace("/", ".")
                 code += "                provider_choices={\n"
                 code += '                    "provider": self._get_provider(\n'
                 code += "                        provider,\n"
-                code += f'                        "{path}",\n'
+                code += f'                        "{cmd}",\n'
                 code += f"                        {available},\n"
                 code += "                    )\n"
                 code += "                },\n"
@@ -1397,7 +1396,7 @@ class ReferenceGenerator:
         )
 
     @classmethod
-    def _get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
+    def _get_provider_parameter_info(cls, model: str) -> Dict[str, Any]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
 
         Parameters
@@ -1407,7 +1406,7 @@ class ReferenceGenerator:
 
         Returns
         -------
-        Dict[str, str]
+        Dict[str, Any]
             Dictionary of the provider parameter information
         """
         pi_model_provider = cls.pi.model_providers[model]
@@ -1417,18 +1416,18 @@ class ReferenceGenerator:
         field_type = DocstringGenerator.get_field_type(
             provider_params_field.type, False, "website"
         )
-        default = provider_params_field.type.__args__[0]
+        default_priority = provider_params_field.type.__args__[0]
         description = (
-            "The provider to use for the query, by default None. "
-            "If None, the provider specified in defaults is selected "
-            f"or '{default}' if there is no default."
+            "The provider to use, by default None. "
+            "If None, the priority list configured in the settings is used. "
+            f"Default priority: {', '.join(default_priority)}."
         )
 
         provider_parameter_info = {
             "name": name,
             "type": field_type,
             "description": description,
-            "default": default,
+            "default": None,
             "optional": True,
         }
 

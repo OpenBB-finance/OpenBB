@@ -382,6 +382,38 @@ async def indicators(
 
 
 @router.command(
+    model="CentralBankHoldings",
+    examples=[
+        APIEx(
+            description="The default is the latest Treasury securities held by the Federal Reserve.",
+            parameters={"provider": "federal_reserve"},
+        ),
+        APIEx(
+            description="Get historical summaries of the Fed's holdings.",
+            parameters={"provider": "federal_reserve", "summary": True},
+        ),
+        APIEx(
+            description="Get the balance sheet holdings as-of a historical date.",
+            parameters={"provider": "federal_reserve", "date": "2019-05-21"},
+        ),
+        APIEx(
+            description="Use the `holding_type` parameter to select Agency securities,"
+            + " or specific categories or Treasury securities.",
+            parameters={"provider": "federal_reserve", "holding_type": "agency_debts"},
+        ),
+    ],
+)
+async def central_bank_holdings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the balance sheet holdings of a central bank."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="SharePriceIndex",
     examples=[
         APIEx(parameters={"provider": "oecd"}),
