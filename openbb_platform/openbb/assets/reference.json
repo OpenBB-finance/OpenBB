@@ -1199,7 +1199,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['intrinio']",
+                        "type": "Literal['intrinio', 'yfinance']",
                         "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
                         "default": null,
                         "optional": true
@@ -1214,7 +1214,8 @@
                         "optional": true,
                         "choices": null
                     }
-                ]
+                ],
+                "yfinance": []
             },
             "returns": {
                 "OBBject": [
@@ -1225,7 +1226,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['intrinio']]",
+                        "type": "Optional[Literal['intrinio', 'yfinance']]",
                         "description": "Provider name."
                     },
                     {
@@ -1597,6 +1598,32 @@
                         "name": "exercise_style",
                         "type": "str",
                         "description": "The exercise style of the option, American or European.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "yfinance": [
+                    {
+                        "name": "dte",
+                        "type": "int",
+                        "description": "Days to expiration.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "in_the_money",
+                        "type": "bool",
+                        "description": "Whether the option is in the money.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_trade_timestamp",
+                        "type": "datetime",
+                        "description": "Timestamp for when the option was last traded.",
                         "default": null,
                         "optional": true,
                         "choices": null

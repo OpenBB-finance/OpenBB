@@ -27,6 +27,7 @@ from openbb_yfinance.models.index_historical import (
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
 from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
+from openbb_yfinance.models.options_chains import YFinanceOptionsChainsFetcher
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
 )
@@ -69,6 +70,7 @@ financial markets and assets.""",
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
         "KeyMetrics": YFinanceKeyMetricsFetcher,
         "MarketIndices": YFinanceIndexHistoricalFetcher,
+        "OptionsChains": YFinanceOptionsChainsFetcher,
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,
     },

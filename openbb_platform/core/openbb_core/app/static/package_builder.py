@@ -1685,6 +1685,8 @@ class ReferenceGenerator:
         reference: Dict[str, Dict] = {}
 
         for path, route in route_map.items():
+            # Initialize the provider parameter fields as an empty dictionary
+            provider_parameter_fields = {"type": ""}
             # Initialize the reference fields as empty dictionaries
             reference[path] = {field: {} for field in cls.REFERENCE_FIELDS}
             # Route method is used to distinguish between GET and POST methods

@@ -153,7 +153,7 @@ shares = obb.equity.profile(
     symbols, provider="yfinance"
 ).to_df().set_index("symbol")["shares_float"]
 df = volume.to_frame().join(shares)
-df["Turnover"] = (df.shares_float/df.volume).round(4)
+df["Turnover"] = (df.volume/df.shares_float).round(4)
 df = df.sort_values(by="Turnover", ascending=False).reset_index()
 create_bar_chart(
     data=df,
@@ -163,4 +163,4 @@ create_bar_chart(
 )
 ```
 
-![S&P 500 Energy Sector Turnover Rate](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4f59eb36-e637-4a54-87ab-e730e43baf8d)
+![S&P 500 Energy Sector Turnover Rate](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d29a1c17-6d3b-4925-8b7e-f661da404967)
