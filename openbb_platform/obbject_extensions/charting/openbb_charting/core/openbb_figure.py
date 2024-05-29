@@ -917,7 +917,7 @@ class OpenBBFigure(go.Figure):
                     self._exported = True
 
                 # We send the figure to the backend to be displayed
-                return self._backend.send_figure(self, export_image)
+                return self._backend.send_figure(fig=self, export_image=export_image)
             except Exception as e:
                 # If the backend fails, we just show the figure normally
                 # This is a very rare case, but it's better to have a fallback
