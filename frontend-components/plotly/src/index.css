@@ -1,14 +1,13 @@
-@font-face {
-  font-family: "Fira Code";
-  src: url("../../fonts/FiraCode-VF.ttf") format("truetype");
-  /* fix Fire Code font width issue that makes Text get cut off in Plotly.js */
-  font-weight: 400 700;
-  font-stretch: 50%;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap") format("truetype");
+  font-weight: 400 700;
+  font-stretch: 50%;
+}
 
 @layer components {
   ._input {

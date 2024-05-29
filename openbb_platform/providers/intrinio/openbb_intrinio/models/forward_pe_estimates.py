@@ -40,7 +40,7 @@ class IntrinioForwardPeEstimatesData(ForwardPeEstimatesData):
         "year5": "forward_pe_year5",
         "peg_ratio_year1": "forward_peg_ratio_year1",
         "eps_ttm": "latest_ttm_eps",
-        "last_udpated": "updated_date",
+        "last_updated": "updated_date",
     }
 
     peg_ratio_year1: Optional[float] = Field(
@@ -51,7 +51,7 @@ class IntrinioForwardPeEstimatesData(ForwardPeEstimatesData):
         default=None,
         description="The latest trailing twelve months earnings per share.",
     )
-    last_udpated: Optional[dateType] = Field(
+    last_updated: Optional[dateType] = Field(
         default=None,
         description="The date the data was last updated.",
     )

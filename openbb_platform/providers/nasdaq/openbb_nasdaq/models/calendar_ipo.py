@@ -161,7 +161,7 @@ class NasdaqCalendarIpoFetcher(
                 else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
             )
             r = requests.get(url, headers=IPO_HEADERS, timeout=5)
-            r_json = r.json()["data"] if "data" in r.json() else {}
+            r_json = r.json().get("data", {})
             if query.status in r_json:
                 response = (
                     r_json["upcoming"]["upcomingTable"]["rows"]

@@ -28,7 +28,7 @@ router.include_router(price_router)
         ),
         APIEx(
             description="Search for terms  using 'polygon' as provider.",
-            parameters={"provider": "polygon", "query": "Euro zone"},
+            parameters={"provider": "polygon", "query": "EUR"},
         ),
     ],
 )

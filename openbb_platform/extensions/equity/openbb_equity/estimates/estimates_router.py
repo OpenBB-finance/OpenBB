@@ -117,6 +117,36 @@ async def forward_sales(
 
 
 @router.command(
+    model="ForwardEbitdaEstimates",
+    examples=[
+        APIEx(parameters={"provider": "intrinio"}),
+        APIEx(
+            parameters={
+                "symbol": "AAPL",
+                "fiscal_period": "annual",
+                "provider": "intrinio",
+            }
+        ),
+        APIEx(
+            parameters={
+                "symbol": "AAPL,MSFT",
+                "fiscal_period": "quarter",
+                "provider": "fmp",
+            }
+        ),
+    ],
+)
+async def forward_ebitda(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get forward EBITDA estimates."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="ForwardEpsEstimates",
     examples=[
         APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),

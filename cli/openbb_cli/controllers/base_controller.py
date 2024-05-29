@@ -745,11 +745,11 @@ class BaseController(metaclass=ABCMeta):
                 choices_export = ["csv", "json", "xlsx"]
                 help_export = "Export raw data into csv, json, xlsx"
             elif export_allowed == "figures_only":
-                choices_export = ["png", "jpg", "pdf", "svg"]
-                help_export = "Export figure into png, jpg, pdf, svg "
+                choices_export = ["png", "jpg", "svg"]
+                help_export = "Export figure into png, jpg, svg "
             else:
-                choices_export = ["csv", "json", "xlsx", "png", "jpg", "pdf", "svg"]
-                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg "
+                choices_export = ["csv", "json", "xlsx", "png", "jpg", "svg"]
+                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, svg "
 
             parser.add_argument(
                 "--export",
@@ -799,11 +799,22 @@ class BaseController(metaclass=ABCMeta):
             return None
 
         try:
-            # If the user uses a comma separated list of arguments, split them
-            for index, arg in enumerate(other_args):
-                if "," in arg:
-                    parts = arg.split(",")
-                    other_args[index : index + 1] = parts
+            # Determine the index of the routine arguments
+            routine_args_index = next(
+                (
+                    i + 1
+                    for i, arg in enumerate(other_args)
+                    if arg in ("-i", "--input")
+                    and "routine_args" in [action.dest for action in parser._actions]
+                ),
+                -1,
+            )
+            # Split comma-separated arguments, except for the argument at routine_args_index
+            other_args = [
+                part
+                for index, arg in enumerate(other_args)
+                for part in (arg.split(",") if index != routine_args_index else [arg])
+            ]
 
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
@@ -812,7 +823,7 @@ class BaseController(metaclass=ABCMeta):
                 "raw_data_and_figures",
             ]:
                 ns_parser.is_image = any(
-                    ext in ns_parser.export for ext in ["png", "svg", "jpg", "pdf"]
+                    ext in ns_parser.export for ext in ["png", "svg", "jpg"]
                 )
 
         except SystemExit:

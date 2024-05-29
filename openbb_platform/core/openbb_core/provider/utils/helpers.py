@@ -19,7 +19,7 @@ from typing import (
 )
 
 import requests
-from anyio import start_blocking_portal
+from anyio.from_thread import start_blocking_portal
 from typing_extensions import ParamSpec
 
 from openbb_core.provider.abstract.data import Data

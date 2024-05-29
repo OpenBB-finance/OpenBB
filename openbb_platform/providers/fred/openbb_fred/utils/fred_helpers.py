@@ -49,6 +49,55 @@ YIELD_CURVE_SERIES_CORPORATE_PAR = {
     "10Year": "HQMCB10YRP",
     "30Year": "HQMCB30YRP",
 }
+YIELD_CURVES = {
+    "nominal": {
+        "DGS1MO": "month_1",
+        "DGS3MO": "month_3",
+        "DGS6MO": "month_6",
+        "DGS1": "year_1",
+        "DGS2": "year_2",
+        "DGS3": "year_3",
+        "DGS5": "year_5",
+        "DGS7": "year_7",
+        "DGS10": "year_10",
+        "DGS20": "year_20",
+        "DGS30": "year_30",
+    },
+    "real": {
+        "DFII5": "year_5",
+        "DFII7": "year_7",
+        "DFII10": "year_10",
+        "DFII20": "year_20",
+        "DFII30": "year_30",
+    },
+    "breakeven": {
+        "T5YIEM": "year_5",
+        "T7YIEM": "year_7",
+        "T10YIEM": "year_10",
+        "T20YIEM": "year_20",
+        "T30YIEM": "year_30",
+    },
+    "corporate_spot": {
+        "HQMCB6MT": "month_6",
+        "HQMCB1YR": "year_1",
+        "HQMCB2YR": "year_2",
+        "HQMCB3YR": "year_3",
+        "HQMCB5YR": "year_5",
+        "HQMCB7YR": "year_7",
+        "HQMCB10YR": "year_10",
+        "HQMCB20YR": "year_20",
+        "HQMCB30YR": "year_30",
+        "HQMCB50YR": "year_50",
+        "HQMCB75YR": "year_75",
+        "HQMCB100YR": "year_100",
+    },
+    "corporate_par": {
+        "HQMCB2YRP": "year_2",
+        "HQMCB5YRP": "year_5",
+        "HQMCB10YRP": "year_10",
+        "HQMCB30YRP": "year_30",
+    },
+}
 
 
 def comma_to_float_list(v: str) -> List[float]:

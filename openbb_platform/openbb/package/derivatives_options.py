@@ -25,7 +25,7 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
-            Optional[Literal["intrinio"]],
+            Optional[Literal["intrinio", "yfinance"]],
             OpenBBField(
                 description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
             ),
@@ -38,7 +38,7 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
+        provider : Optional[Literal['intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
@@ -50,7 +50,7 @@ class ROUTER_derivatives_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -149,6 +149,12 @@ class ROUTER_derivatives_options(Container):
             Rho of the option.
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
+        dte : Optional[int]
+            Days to expiration. (provider: yfinance)
+        in_the_money : Optional[bool]
+            Whether the option is in the money. (provider: yfinance)
+        last_trade_timestamp : Optional[datetime]
+            Timestamp for when the option was last traded. (provider: yfinance)
 
         Examples
         --------
@@ -165,7 +171,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": self._get_provider(
                         provider,
                         "/derivatives/options/chains",
-                        ("intrinio",),
+                        ("intrinio", "yfinance"),
                     )
                 },
                 standard_params={
@@ -260,7 +266,7 @@ class ROUTER_derivatives_options(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual(provider='intrinio')
+        >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         >>> # Use the 'symbol' parameter to get the most recent activity for a specific symbol.
         >>> obb.derivatives.options.unusual(symbol='TSLA', provider='intrinio')
         """  # noqa: E501

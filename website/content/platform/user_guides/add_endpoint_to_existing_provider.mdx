@@ -1,0 +1,804 @@
+---
+title: Add Command To An Existing Provider
+sidebar_position: 11
+description: This guide outlines the process for adding a new endpoint to an existing data provider, that does not yet have a standard model.
+keywords:
+  - OpenBB Platform
+  - Open source
+  - Python interface
+  - REST API
+  - contribution
+  - contributing
+  - documentation
+  - code
+  - provider
+  - new endpoint
+  - fmp
+  - OpenBB extensions
+  - OpenBB provider
+  - standard model
+  - data model
+  - currency
+  - snapshot
+  - router
+  - how to
+---
+
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
+
+<HeadTitle title="Add Command To An Existing Provider - How-To | OpenBB Platform Docs" />
+
+This page will walk through adding a new router endpoint to an existing data provider, and how to go about creating a new standard model.
+
+To demonstrate, we will be extending the `openbb-currency` router. The objective is to add a snapshot of currencies relative to a base currency.
+The process will be very similar to adding a data provider to an existing endpoint - described on [this page](add_data_to_existing_endpoint) -
+only here, we need to create a new router function and standard model.
+
+It's about the same amount of work, but effort should be placed in consideration of others inheriting from this model in the future.
+
+At a high level, the workflow is going to look something like:
+
+- With clear objectives, define the requirements for inputs and outputs of this function.
+- Create a standard model that will be suitable for any provider to inherit from.
+- Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
+- Create a new router endpoint in the `openbb-currency` module.
+- Rebuild the Python interface and static assets.
+- Create unit tests.
+- Create integration tests.
+- Submit a pull request.
+
+:::note
+
+Before getting started, get a few housekeeping items in order:
+
+- Clone the GitHub repo and navigate into the project's folder.
+  - If you have already done this, update your local branch:
+    - `git fetch`
+    - `git pull origin develop`
+    - `git fetch`
+    - `git pull origin develop`
+- Install the OpenBB Platform in "editable" mode.
+  - `cd openbb_platform`
+  - `python dev_install.py -e`
+- Rebuild the Python interface and static assets.
+  - `import openbb`
+  - `openbb.build()`
+- Create a new local branch (pick a relevant name and use dashes for multiple words), always beginning with `feature/`.
+  - `git checkout -b feature/currency-snapshots`
+
+:::
+
+## Let's Get Started
+
+Currencies, as an asset class, have different data properties than securities.
+For this exercise, we're really only concerned about the differences within the market data we are working with.
+Things to keep in mind are:
+
+- Market trading hours are relative to three major centers: Hong Kong, London, New York.
+- Between the active global trading sessions, FX markets are 24/5.
+- The data returned from a source could be time-indexed to any of the three market centers, localized as UTC, or make you guess.
+- OHLC time series data will not always have volume.
+- Not all sources will provide bid/ask, and/or, lot sizes.
+- Perspective for the data is a relative relationship, there are always two "symbols".
+  - Similar to index benchmarking, but with a layer of interest rate expectations.
+- Gold and silver are typically included as, XAU and XAG, respectively.
+
+## How To Build A Standard Model
+
+The essence of a standard model is to be a shared resource with common ground between all sources.
+It should not be so specific that it is relevant only to one provider, and it needs to have defining characteristics that warrant its existence.
+
+Mandatory fields and parameters should be minimal, and names need to be consistent with similar ones across the OpenBB Platform.
+
+### Requirements
+
+Our objective in this exercise has similar endpoints in the Equity and Index modules, `obb.equity.market_snapshots()` and `obb.index.snapshots()`;
+however, there are differences between currency data and stocks.
+
+The normal parameter for most asset classes, "symbol", fits our requirement; but, it is not the correct description. Instead, we want to name it, "base".
+We need data providers to have an option to "allow" querying multiple base symbols.
+
+We want to view the universe relative to a base currency, but we also want the option for comparative analysis between multiple bases.
+
+In the data model, we'll need to split the typical "symbol" field into two: "base" and "currency".
+
+It's quite likely that a large portion of users will not desire the entire universe, but maybe 20-30 of them.
+It would be a good idea to have a parameter that filters for a list of desired currencies.
+
+For this purpose, we want to express the view as an "[indirect quote](https://www.investopedia.com/terms/i/indirectquote.asp)" from the perspective of the "base currency".
+How many units of "currency" X are received by selling one unit of the "base".
+Compared against the USD, EUR should be less than 1, AUD should be greater than 1, and gold is a large decimal.
+
+We can easily apply an inverse that allows users to decide for themselves which perspective they want to view
+the exchange rate from. This is something that will need to be applied at the provider level, and it should be a requirement.
+
+We will add a parameter, "quote_type", with choices ["indirect", "direct"].
+
+There is one major monkey wrench in all of this. Is it, EUR/USD or USD/EUR? Do all providers return the same conventions?
+It's a known-unknown, and we can't assume blindly that all follow the norm - or are even consistent with themselves.
+We'll need to check a variety of response data from each source to find out.
+
+The output needs to be usable as a conversion table, and this will likely need to be manually enforced.
+
+:::important
+
+The rule must be clearly communicated and each provider's output should be verified for compliance, else coerced to be.
+
+:::
+
+### Create File
+
+We're going to map this new endpoint in the interface to, `obb.currency.snapshots()`. We'll name the model accordingly, `CurrencySnapshots`, and create a file, `currency_snapshots.py`. The file should be created here:
+
+```console
+~/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/
+```
+
+The first line of the file should be a docstring, the second line should be empty, and the import statements follow.
+
+### Import Statements
+
+The code block below are the typical imports in a standard model file, modify to suit the specific requirements.
+
+:::tip
+
+Constrained types can be imported from the Pydantic library, i.e. `PositiveInt`, `NonNegativeFloat`, etc.
+
+:::
+
+```python
+"""Currency Snapshots Standard Model."""
+
+from typing import Literal, Optional
+
+from pydantic import Field, field_validator
+
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+```
+
+### QueryParams
+
+Don't try to add every possible parameter unless it is certain that the majority of providers will have this available from their API.
+The same applies to `Literal` types, set as a generic `str` or `int` type and redefine it within the provider model as a `Literal["choice1", "choice2"]`.
+We don't want a standard model parameter to provide invalid choices for individual providers.
+
+Our `CurrencySnapshotsQueryParams` model is going to be very similar to `MarketSnapshotsQueryParams`, with the only difference being the field name "base".
+
+:::important
+
+If the field will only sometimes accept a list of values, DO NOT define it in the standard model as a Union - `Union[str, List[str]]`.
+Instead, define it for the single value, `str`, and then add the property below to the provider's QueryParams model.
+
+```python
+__json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+```
+
+:::
+
+The code block below is a continuation of the section above.
+
+```python
+class CurrencySnapshotsQueryParams(QueryParams):
+    """Currency Snapshots Query Params."""
+
+    base: str = Field(description="The base currency symbol.", default="usd")
+    quote_type: Literal["direct", "indirect"] = Field(
+        description="Whether the quote is direct or indirect."
+        + " Selecting 'direct' will return the exchange rate"
+        + " as the amount of domestic currency required to buy one unit"
+        + " of the foreign currency."
+        + " Selecting 'indirect' (default) will return the exchange rate"
+        + " as the amount of foreign currency required to buy one unit"
+        + " of the domestic currency.",
+        default="indirect",
+    )
+    counter_currencies: Optional[Union[str, List[str]]] = Field(
+        description="An optional list of counter currency symbols to filter for."
+        + " None returns all.",
+        default=None,
+    )
+
+    @field_validator("base", mode="before", check_fields=False)
+    @classmethod
+    def to_upper(cls, v):
+        """Convert the base currency to uppercase."""
+        return v.upper()
+
+    @field_validator("counter_currencies", mode="before", check_fields=False)
+    @classmethod
+    def convert_string(cls, v):
+        """Convert the counter currencies to an upper case string list."""
+        if v is not None:
+            return ",".join(v).upper() if isinstance(v, list) else v.upper()
+        return None
+```
+
+It would be nice to have a list of valid choices, but each source may not have data for all currencies. Or, we could miss choices by only consulting one provider.
+This can be a consideration for the data provider models to handle, and country codes for currencies are widely known ISO three-letter abbreviations.
+
+### Data
+
+Like `QueryParams`, we don't want to attempt to define every potential future field. We want a core foundation for others to build on.
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
+We will define three fields as mandatory, "base_currency", "counter_currency", and "last_rate". This is enough to communicate our
+data parsing requirements for this endpoint:
+
+- Split the six-letter symbol as two symbols.
+- If the provider only returns `{"symbol": "price"}`, it will need to coerced accordingly within the `transform_data` static method of the `Fetcher` class.
+
+```python
+class CurrencySnapshotsData(Data):
+    """Currency Snapshots Data."""
+
+    base_currency: str = Field(description="The base, or domestic, currency.")
+    counter_currency: str = Field(description="The counter, or foreign, currency.")
+    last_rate: float = Field(
+        description="The exchange rate, relative to the base currency."
+        + " By default, rates are expressed as the amount of foreign currency"
+        + " received from selling one unit of the base currency,"
+        + " or the quantity of foreign currency required to purchase"
+        + " one unit of the domestic currency."
+        + " To inverse the perspective, set the 'quote_type' parameter as 'direct'.
+    )
+    open: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("open", ""),
+        default=None,
+    )
+    high: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("high", ""),
+        default=None,
+    )
+    low: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("low", ""),
+        default=None,
+    )
+    close: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("close", ""),
+        default=None,
+    )
+    volume: Optional[int] = Field(
+        description=DATA_DESCRIPTIONS.get("volume", ""), default=None
+    )
+    prev_close: Optional[float] = Field(
+        description=DATA_DESCRIPTIONS.get("prev_close", ""),
+        default=None,
+    )
+```
+
+Combine the three code blocks above to make a complete standard model file, and then we have completed the first two tasks.
+
+- [x] With clear objectives, define the requirements for inputs and outputs of this function.
+- [x] Create a standard model that will be suitable for any provider to inherit from.
+
+## Build Provider Models
+
+We're going to start with one provider, [FMP](https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote), and this section will look a lot like the process outlined [here](add_data_to_existing_endpoint).
+
+Sample output data from the source is pasted below, and we can see that there are some fields which don't have anything to do with currencies. Those will be dropped.
+
+```json
+[
+  {
+    "symbol": "AEDAUD",
+    "name": "AED/AUD",
+    "price": 0.40401,
+    "changesPercentage": 0.3901,
+    "change": 0.0016,
+    "dayLow": 0.40211,
+    "dayHigh": 0.40535,
+    "yearHigh": 0.440948,
+    "yearLow": 0.356628,
+    "marketCap": null,
+    "priceAvg50": 0.39494148,
+    "priceAvg200": 0.40097216,
+    "volume": 0,
+    "avgVolume": 0,
+    "exchange": "FOREX",
+    "open": 0.40223,
+    "previousClose": 0.40244,
+    "eps": null,
+    "pe": null,
+    "earningsAnnouncement": null,
+    "sharesOutstanding": null,
+    "timestamp": 1677792573
+  }
+]
+```
+
+### Create File For Provider
+
+We need to create a new file in the FMP provider extension. This will have the same name as our standard model.
+
+```console
+~/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py
+```
+
+The first line in the file will always be a docstring, with the import statements beginning below an empty line.
+
+```python
+"""FMP Currency Snapshots Model."""
+
+# pylint: disable=unused-argument
+
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.currency_snapshots import (
+    CurrencySnapshotsData,
+    CurrencySnapshotsQueryParams,
+)
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
+from pandas import DataFrame, concat
+from pydantic import Field, field_validator
+```
+
+### Provider QueryParams
+
+Here, we won't need to define any new parameters. All that's added is a URL to the endpoint's documentation,
+and then the `__json_schema_extra__` dictionary which will allow multiple base symbols to be accepted by this provider.
+
+```python
+class FMPCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
+    """
+    FMP Currency Snapshots Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs#exchange-prices-quote
+    """
+
+    __json_schema_extra__ = {"base": ["multiple_items_allowed"]}
+```
+
+### Provider Data
+
+We'll then need to map the fields in the sample output data to the corresponding ones in the standard model, and then define the remaining.
+
+A validator is setup to convert the percentage to a normalized value (1% -> 0.01).
+
+```python
+class FMPCurrencySnapshotsData(CurrencySnapshotsData):
+    """FMP Currency Snapshots Data."""
+
+    __alias_dict__ = {
+        "last_rate": "price",
+        "high": "dayHigh",
+        "low": "dayLow",
+        "ma50": "priceAvg50",
+        "ma200": "priceAvg200",
+        "year_high": "yearHigh",
+        "year_low": "yearLow",
+        "prev_close": "previousClose",
+        "change_percent": "changesPercentage",
+        "last_rate_timestamp": "timestamp",
+    }
+
+    change: Optional[float] = Field(
+        description="The change in the price from the previous close.", default=None
+    )
+    change_percent: Optional[float] = Field(
+        description="The change in the price from the previous close, as a normalized percent.",
+        default=None,
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    ma50: Optional[float] = Field(
+        description="The 50-day moving average.", default=None
+    )
+    ma200: Optional[float] = Field(
+        description="The 200-day moving average.", default=None
+    )
+    year_high: Optional[float] = Field(description="The 52-week high.", default=None)
+    year_low: Optional[float] = Field(description="The 52-week low.", default=None)
+    last_rate_timestamp: Optional[datetime] = Field(
+        description="The timestamp of the last rate.", default=None
+    )
+
+    @field_validator("change_percent", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize the percent."""
+        return v / 100 if v is not None else None
+```
+
+### Build The Fetcher
+
+The Fetcher class will always have the same general construction, in this instance we will use the `transform_data` stage to parse and filter the returned data before validating the model on output.
+
+```python
+class FMPCurrencySnapshotsFetcher(
+    Fetcher[FMPCurrencySnapshotsQueryParams, List[FMPCurrencySnapshotsData]]
+):
+    """FMP Currency Snapshots Fetcher."""
+
+    @staticmethod
+    def transform_query(params: Dict[str, Any]) -> FMPCurrencySnapshotsQueryParams:
+        """Transform the query parameters."""
+        return FMPCurrencySnapshotsQueryParams(**params)
+
+    @staticmethod
+    async def aextract_data(
+        query: FMPCurrencySnapshotsQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> List[Dict]:
+        """Extract the data from the FMP endpoint."""
+
+        api_key = credentials.get("fmp_api_key") if credentials else ""
+
+        url = f"https://financialmodelingprep.com/api/v3/quotes/forex?apikey={api_key}"
+
+        return await amake_request(url, **kwargs)  # type: ignore
+
+    @staticmethod
+    def transform_data(
+        query: FMPCurrencySnapshotsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
+    ) -> List[FMPCurrencySnapshotsData]:
+        """Filter by the query parameters and validate the model."""
+
+        if not data:
+            raise EmptyDataError("No data was returned from the FMP endpoint.")
+
+        # Drop all the zombie columns FMP returns.
+        df = (
+            DataFrame(data)
+            .dropna(how="all", axis=1)
+            .drop(columns=["exchange", "avgVolume"])
+        )
+
+        new_df = DataFrame()
+
+        # Filter for the base currencies requested and the quote_type.
+        for symbol in query.base.split(","):
+            temp = (
+                df.query("`symbol`.str.startswith(@symbol)")
+                if query.quote_type == "indirect"
+                else df.query("`symbol`.str.endswith(@symbol)")
+            ).rename(columns={"symbol": "base_currency", "name": "counter_currency"})
+            temp["base_currency"] = symbol
+            temp["counter_currency"] = (
+                [d.split("/")[1] for d in temp["counter_currency"]]
+                if query.quote_type == "indirect"
+                else [d.split("/")[0] for d in temp["counter_currency"]]
+            )
+            # Filter for the counter currencies, if requested.
+            if query.counter_currencies is not None:
+                counter_currencies = (  # noqa: F841  # pylint: disable=unused-variable
+                    query.counter_currencies
+                    if isinstance(query.counter_currencies, list)
+                    else query.counter_currencies.split(",")
+                )
+                temp = (
+                    temp.query("`counter_currency`.isin(@counter_currencies)")
+                    .set_index("counter_currency")
+                    # Sets the counter currencies in the order they were requested.
+                    .filter(items=counter_currencies, axis=0)
+                    .reset_index()
+                )
+            # If there are no records, don't concatenate.
+            if len(temp) > 0:
+                # Convert the Unix timestamp to a datetime.
+                temp.timestamp = temp.timestamp.apply(
+                    lambda x: datetime.fromtimestamp(x)
+                )
+                new_df = concat([new_df, temp])
+            if len(new_df) == 0:
+                raise EmptyDataError(
+                    "No data was found using the applied filters. Check the parameters."
+                )
+            # Fill and replace any NaN values with NoneType.
+            new_df = new_df.fillna("N/A").replace("N/A", None)
+        return [
+            FMPCurrencySnapshotsData.model_validate(d)
+            for d in new_df.reset_index(drop=True).to_dict(orient="records")
+        ]
+```
+
+The last four code blocks combined are the entire contents of the new provider model file.
+
+Next, open `~/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/__init__.py`, import the new model, and map it in the Provider class.
+
+Step 3 is now done.
+
+- [x] Catalogue parameters and returned fields from the specific source of data, then build the models and fetcher.
+
+## Create Router Endpoint
+
+To use our new function, we need to create a router command. The currency router is located here:
+
+```python
+~/OpenBBTerminal/openbb_platform/extensions/currency/openbb_currency/currency_router.py
+```
+
+It's as simple as copying and pasting the function above and modifying details to suit.
+The examples will be included in the docstring of the endpoint.
+
+```python
+@router.command(
+    model="CurrencySnapshots",
+    examples=[
+        APIEx(parameters={}),
+        APIEx(
+            description="Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.",
+            parameters={
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            },
+        ),
+    ],
+)
+async def snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency."""
+    return await OBBject.from_query(Query(**locals()))
+```
+
+Save the file, start a new Python session in a Terminal window, rebuild the app, and it's ready to use!
+
+```console
+import openbb
+
+openbb.build()
+
+exit()
+```
+
+Steps 4 and 5 are done!
+
+- [x] Create a new router endpoint in the `openbb-currency` module.
+- [x] Rebuild the Python interface and static assets.
+
+```python
+from openbb import obb
+
+obb.currency.snapshots(base="xau,xag", counter_currencies=["usd", "gbp", "eur", "hkd"],quote_type="indirect").to_df()
+```
+
+| base_currency | counter_currency | last_rate |    open |    high |     low | volume | prev_close | change | change_percent |    ma50 |   ma200 | year_high | year_low | last_rate_timestamp |
+| :------------ | :--------------- | --------: | ------: | ------: | ------: | -----: | ---------: | -----: | -------------: | ------: | ------: | --------: | -------: | :------------------ |
+| XAU           | USD              |   2092.76 | 2083.17 |  2092.8 |  2079.4 |   2246 |       2083 |   9.76 |      0.0046855 | 2030.83 | 1976.63 |   2084.35 |  1813.82 | 2024-03-04 06:16:12 |
+| XAU           | GBP              |   1645.45 |  1644.1 |  1645.6 |    1640 |    643 |       1644 |   1.45 |    0.000881995 | 1603.92 | 1573.46 |   1652.15 |   1482.2 | 2024-03-04 05:45:11 |
+| XAU           | EUR              |      1924 |  1921.5 |    1924 | 1917.15 |   1517 |       1921 |      3 |      0.0015617 | 1874.69 |  1826.4 |    1921.6 |  1719.35 | 2024-03-04 05:51:11 |
+| XAU           | HKD              |   16341.8 |   16310 | 16341.9 | 16276.4 |   1665 |      16307 |  34.75 |       0.002131 | 15891.1 | 15452.8 |   16306.3 |    14238 | 2024-03-04 05:57:11 |
+| XAG           | USD              |    23.299 | 23.1091 | 23.3062 | 23.0172 |   2074 |         23 |  0.299 |          0.013 | 22.7862 | 23.4349 |    26.035 |   20.005 | 2024-03-04 05:56:41 |
+| XAG           | GBP              |     18.26 |   18.21 |   18.26 |   18.14 |    413 |         18 |   0.26 |      0.0144444 | 17.9988 | 18.5021 |     20.67 |    16.81 | 2024-03-04 05:24:10 |
+| XAG           | EUR              |     21.36 |   21.32 |   21.37 | 21.2087 |   1079 |         21 |   0.36 |      0.0171429 | 21.0393 | 21.4906 |     23.64 |    18.97 | 2024-03-04 05:30:10 |
+| XAG           | HKD              |   181.237 | 180.881 | 181.399 | 180.124 |   1596 |        180 |  1.237 |      0.0068722 | 178.342 | 181.815 |   204.411 |  157.209 | 2024-03-04 05:30:10 |
+
+## Write Tests
+
+We'll need to create a unit test for the FMP provider, and then integration tests for the Python interface and Fast API. It's as simple as creating a new router function was, copying and pasting.
+
+### Unit Test
+
+This is located in the `openbb-fmp` extension:
+
+```console
+~/OpenBBTerminal/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py
+```
+
+- Import the new fetcher with the rest of the imports (keep them alphabetically sorted).
+- Copy and paste the last test function in the file.
+
+```python
+@pytest.mark.record_http
+def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
+    params = {
+        "base": "XAU",
+        "quote_type": "indirect",
+        "counter_currencies": "USD,EUR,GBP,JPY,HKD,AUD,CAD,CHF,SEK,NZD,SGD",
+    }
+
+    fetcher = FMPCurrencySnapshotsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+```
+
+- Navigate to the path above and enter: `pytest test_fmp_fetchers.py --record http --record-no-overwrite`
+
+This will generate a new file:
+
+```console
+~/OpenBBTerminal/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml
+```
+
+Check the file for any obvious errors, like a bad HTTP request status code.
+
+### Integration Tests
+
+The Python interface and Fast API each require a new integration test. Again, emulate an existing test and make sure to declare all parameters available to each provider.
+
+#### API
+
+Open the file below, and go to the last test in the file.
+
+```console
+~/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_api.py
+```
+
+We can copy this one:
+
+```python
+@parametrize(
+    "params",
+    [({"provider": "ecb"})],
+)
+@pytest.mark.integration
+def test_currency_reference_rates(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/currency/reference_rates?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+```
+
+Converting it for our new endpoint:
+
+```python
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_currency_snapshots(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/currency/snapshots?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+```
+
+#### Python
+
+The `@parameterize` section can be copied directly to the Python integration test.
+
+```console
+~/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_python.py
+```
+
+```python
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_currency_snapshots(params, obb):
+    result = obb.currency.snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+```
+
+Now run `pytest` for both of these files.
+
+Step 6 & 7 are done.
+
+- [x] Add unit test.
+- [x] Add integration tests.
+
+## Submit A Pull Request
+
+We're already on the correct branch, `feature/currency-snapshots`, but it may be out-of-sync with the `develop` branch. Let's update it just to be sure.
+
+```console
+git fetch
+git pull origin develop
+```
+
+### Linters
+
+Before opening a pull request, run the linters over all files that were touched.
+
+- black
+- ruff
+- mypy
+- pylint
+
+Fix all items, and valid fixes for `pylint` can be disabling on that line. It won't always know what is contextually correct.
+
+Here are all the files we touched in this process:
+
+- `/OpenBBTerminal/openbb_platform/core/openbb_core/provider/standard_models/currency_snapshots.py`
+- `/OpenBBTerminal/openbb_platform/providers/fmp/openbb_fmp/models/currency_snapshots.py`
+- `/OpenBBTerminal/openbb_platform/providers/fmp/tests/test_fmp_fetchers.py`
+- `/OpenBBTerminal/openbb_platform/providers/fmp/tests/record/test_fmp_currency_snapshots_fetcher.yaml`
+- `/OpenBBTerminal/openbb_platform/extensions/currency/openbb_currency/currency_router.py`
+- `/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_api.py`
+- `/OpenBBTerminal/openbb_platform/extensions/currency/integration/test_currency_python.py`
+- `/OpenBBTerminal/openbb_platform/openbb/assets/module_map.json`
+- `/OpenBBTerminal/openbb_platform/openbb/package/currency.py`
+
+### Install Pre-Commit Hooks
+
+The pre-commit hooks will run the testing suite locally before the commit is made. Install them from the root of the GitHub project folder, `OpenBBTerminal`.
+
+```console
+pre-commit install
+```
+
+### Commit Changes
+
+Add all the files then commit the results to the local branch.
+
+```console
+git commit -m "add obb.currency.snapshots() endpoint and create new standard model"
+```
+
+### Push Changes
+
+Assuming the commit is successful, push the changes to the remote branch.
+
+```console
+git push --set-upstream origin feature/currency-snapshots
+```
+
+### Open a Pull Request
+
+A pull request, in general, should have details on why the PR was created, what the changes are, what the impact is to existing users and infrastructure, how it was tested, and any other relevant information for reviewers and maintainers to consider.
+
+1. **Why**?:
+
+   - This PR is the result of creating a piece of contributor documentation (not included in this PR) for creating a new router endpoint and standard model.
+   - Endpoint was requested by @minhhoang1023.
+
+2. **What**?:
+
+   - `obb.currency.snapshots()`
+
+   - This endpoint provides a similar data set to `obb.equity.market_snapshots()` or `obb.index.snapshots()`, with minor twists:
+     - Set one, or multiple, 'base' currencies.
+     - Filter results for a list of supplied counter currencies.
+     - A `quote_type` parameter for the perspective on the exchange rate, "direct" or "indirect".
+
+3. **Impact**:
+
+   - Not a breaking change.
+
+   - Future providers to this endpoint will require parsing symbols and filtering as part of the `transform_data` stage, as well as ensure the `quote_type` is correctly applied.
+
+4. **Testing Done**:
+
+   - A variety of `base` and `counter_currencies`, checking both `quote_type` settings.
+
+   - `obb.currency.snapshots(base="usd,xau,xag", counter_currencies="usd,eur,gbp,chf,aud,jpy,cny,cad", quote_type="indirect"`
+
+5. **Any other information**:
+
+![Screenshot 2024-03-04 at 10 05 00 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7943d2ef-05b9-4a25-9d17-32618e2c57cf)
+
+### Enjoy
+
+With this final step, we have completed all the tasks outlined at the top of the page. Thank you for your contributions!
+
+This guide was based on a true story, see the pull request [here](https://github.com/OpenBB-finance/OpenBBTerminal/pull/6162)

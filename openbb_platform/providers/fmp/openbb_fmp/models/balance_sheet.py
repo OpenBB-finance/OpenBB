@@ -22,7 +22,9 @@ class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Balance-Sheet
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", json_schema_extra={"choices": ["annual", "quarter"]}
+    )
 
 
 class FMPBalanceSheetData(BalanceSheetData):
