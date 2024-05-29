@@ -1,17 +1,20 @@
-"""Settings model"""
+"""Settings model."""
 
 from typing import Any
 
 from dotenv import dotenv_values, set_key
 from openbb_cli.config.constants import ENV_FILE_SETTINGS
+from openbb_core.app.version import get_package_version
 from pydantic import BaseModel, ConfigDict, model_validator
+
+VERSION = get_package_version("openbb-cli")
 
 
 class Settings(BaseModel):
     """Settings model."""
 
     # Platform CLI version
-    VERSION: str = "1.0.0"
+    VERSION: str = VERSION
 
     # DEVELOPMENT FLAGS
     TEST_MODE: bool = False
