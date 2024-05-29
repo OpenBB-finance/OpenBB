@@ -410,3 +410,51 @@ async def central_bank_holdings(
 ) -> OBBject:
     """Get the balance sheet holdings of a central bank."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SharePriceIndex",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "quarter",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def share_price_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Share Price Index by country from the OECD Short-Term Economics Statistics."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="HousePriceIndex",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "quarter",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def house_price_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the House Price Index by country from the OECD Short-Term Economics Statistics."""
+    return await OBBject.from_query(Query(**locals()))

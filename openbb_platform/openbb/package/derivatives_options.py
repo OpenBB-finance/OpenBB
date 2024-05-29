@@ -25,9 +25,9 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
-            Optional[Literal["intrinio", "yfinance"]],
+            Optional[Literal["cboe", "intrinio", "tmx", "tradier", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, tmx, tradier, yfinance."
             ),
         ] = None,
         **kwargs
@@ -38,17 +38,21 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
+        provider : Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier', 'yfinance'...
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, tmx, tradier, yfinance.
+        use_cache : bool
+            When True, the company directories will be cached for24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe);
+            Caching is used to validate the supplied ticker symbol, or if a historical EOD chain is requested. To bypass, set to False. (provider: tmx)
         date : Optional[datetime.date]
-            The end-of-day date for options chains data. (provider: intrinio)
+            The end-of-day date for options chains data. (provider: intrinio);
+            A specific date to get data for. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['intrinio', 'yfinance']]
+            provider : Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -145,14 +149,52 @@ class ROUTER_derivatives_options(Container):
             Vega of the option.
         rho : Optional[float]
             Rho of the option.
+        last_trade_timestamp : Optional[datetime]
+            Last trade timestamp of the option. (provider: cboe);
+            Timestamp of the last trade. (provider: tradier);
+            Timestamp for when the option was last traded. (provider: yfinance)
+        dte : Optional[int]
+            Days to expiration for the option. (provider: cboe, tmx);
+            Days to expiration. (provider: tradier);
+            Days to expiration. (provider: yfinance)
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
-        dte : Optional[int]
-            Days to expiration. (provider: yfinance)
+        transactions : Optional[int]
+            Number of transactions for the contract. (provider: tmx)
+        total_value : Optional[float]
+            Total value of the transactions. (provider: tmx)
+        settlement_price : Optional[float]
+            Settlement price on that date. (provider: tmx)
+        underlying_price : Optional[float]
+            Price of the underlying stock on that date. (provider: tmx)
+        phi : Optional[float]
+            Phi of the option. The sensitivity of the option relative to dividend yield. (provider: tradier)
+        bid_iv : Optional[float]
+            Implied volatility of the bid price. (provider: tradier)
+        ask_iv : Optional[float]
+            Implied volatility of the ask price. (provider: tradier)
+        orats_final_iv : Optional[float]
+            ORATS final implied volatility of the option, updated once per hour. (provider: tradier)
+        year_high : Optional[float]
+            52-week high price of the option. (provider: tradier)
+        year_low : Optional[float]
+            52-week low price of the option. (provider: tradier)
+        last_trade_volume : Optional[int]
+            Volume of the last trade. (provider: tradier)
+        contract_size : Optional[int]
+            Size of the contract. (provider: tradier)
+        bid_exchange : Optional[str]
+            Exchange of the bid price. (provider: tradier)
+        bid_timestamp : Optional[datetime]
+            Timestamp of the bid price. (provider: tradier)
+        ask_exchange : Optional[str]
+            Exchange of the ask price. (provider: tradier)
+        ask_timestamp : Optional[datetime]
+            Timestamp of the ask price. (provider: tradier)
+        greeks_timestamp : Optional[datetime]
+            Timestamp of the last greeks update. Greeks/IV data is updated once per hour. (provider: tradier)
         in_the_money : Optional[bool]
             Whether the option is in the money. (provider: yfinance)
-        last_trade_timestamp : Optional[datetime]
-            Timestamp for when the option was last traded. (provider: yfinance)
 
         Examples
         --------
@@ -169,7 +211,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": self._get_provider(
                         provider,
                         "derivatives.options.chains",
-                        ("intrinio", "yfinance"),
+                        ("cboe", "intrinio", "tmx", "tradier", "yfinance"),
                     )
                 },
                 standard_params={
