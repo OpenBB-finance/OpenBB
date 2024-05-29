@@ -6,8 +6,8 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,

@@ -28,6 +28,7 @@ class ROUTER_economy(Container):
     long_term_interest_rate
     money_measures
     risk_premium
+    share_price_index
     short_term_interest_rate
     unemployment
     """
@@ -378,7 +379,7 @@ class ROUTER_economy(Container):
         provider: Annotated[
             Optional[Literal["federal_reserve"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'federal_reserve' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve."
             ),
         ] = None,
         **kwargs
@@ -390,9 +391,7 @@ class ROUTER_economy(Container):
         date : Union[datetime.date, None, str]
             A specific date to get data for.
         provider : Optional[Literal['federal_reserve']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'federal_reserve' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve.
         holding_type : Literal['all_agency', 'agency_debts', 'mbs', 'cmbs', 'all_treasury', 'bills', 'notesbonds', 'frn', 'tips']
             Type of holdings to return. (provider: federal_reserve)
         summary : bool
@@ -488,7 +487,7 @@ class ROUTER_economy(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/economy/central_bank_holdings",
+                        "economy.central_bank_holdings",
                         ("federal_reserve",),
                     )
                 },
@@ -696,74 +695,25 @@ class ROUTER_economy(Container):
         country: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="The country to get data. Multiple comma separated items allowed for provider(s): fred.",
-                choices=[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ],
+                description="The country to get data. Multiple comma separated items allowed for provider(s): fred, oecd."
             ),
-        ],
-        units: Annotated[
-            Literal["growth_previous", "growth_same", "index_2015"],
+        ] = "united_states",
+        transform: Annotated[
+            Literal["index", "yoy", "period"],
             OpenBBField(
-                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
+                description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                choices=["index", "yoy", "period"],
             ),
-        ] = "growth_same",
+        ] = "yoy",
         frequency: Annotated[
-            Literal["monthly", "quarter", "annual"],
+            Literal["annual", "quarter", "monthly"],
             OpenBBField(
-                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
+                description="The frequency of the data.",
+                choices=["annual", "quarter", "monthly"],
             ),
         ] = "monthly",
         harmonized: Annotated[
-            bool, OpenBBField(description="Whether you wish to obtain harmonized data.")
+            bool, OpenBBField(description="If true, returns harmonized data.")
         ] = False,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -774,9 +724,9 @@ class ROUTER_economy(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fred"]],
+            Optional[Literal["fred", "oecd"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd."
             ),
         ] = None,
         **kwargs
@@ -789,33 +739,28 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple comma separated items allowed for provider(s): fred.
-        units : Literal['growth_previous', 'growth_same', 'index_2015']
-            The unit of measurement for the data.
-            Options:
-            - `growth_previous`: Percent growth from the previous period.
-              If monthly data, this is month-over-month, etc
-            - `growth_same`: Percent growth from the same period in the previous year.
-              If looking at monthly data, this would be year-over-year, etc.
-            - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
-        frequency : Literal['monthly', 'quarter', 'annual']
+            The country to get data. Multiple comma separated items allowed for provider(s): fred, oecd.
+        transform : Literal['index', 'yoy', 'period']
+            Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).
+        frequency : Literal['annual', 'quarter', 'monthly']
             The frequency of the data.
-            Options: `monthly`, `quarter`, and `annual`.
         harmonized : bool
-            Whether you wish to obtain harmonized data.
+            If true, returns harmonized data.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        provider : Optional[Literal['fred', 'oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred, oecd.
+        expenditure : Literal['total', 'all', 'actual_rentals', 'alcoholic_beverages_tobacco_narcotics', 'all_non_food_non_energy', 'clothing_footwear', 'communication', 'education', 'electricity_gas_other_fuels', 'energy', 'overall_excl_energy_food_alcohol_tobacco', 'food_non_alcoholic_beverages', 'fuels_lubricants_personal', 'furniture_household_equipment', 'goods', 'housing', 'housing_excluding_rentals', 'housing_water_electricity_gas', 'health', 'imputed_rentals', 'maintenance_repair_dwelling', 'miscellaneous_goods_services', 'recreation_culture', 'residuals', 'restaurants_hotels', 'services_less_housing', 'services_less_house_excl_rentals', 'services', 'transport', 'water_supply_other_services']
+            Expenditure component of CPI. (provider: oecd)
 
         Returns
         -------
         OBBject
             results : List[ConsumerPriceIndex]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[Literal['fred', 'oecd']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -828,13 +773,19 @@ class ROUTER_economy(Container):
         ------------------
         date : date
             The date of the data.
+        country : str
+            None
+        value : float
+            CPI index value or period change.
+        expenditure : Optional[str]
+            Expenditure component of CPI. (provider: oecd)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.economy.cpi(country='japan,china,turkey', provider='fred')
-        >>> # Use the `units` parameter to define the reference period for the change in values.
-        >>> obb.economy.cpi(country='united_states,united_kingdom', units='growth_previous', provider='fred')
+        >>> # Use the `transform` parameter to define the reference period for the change in values. Default is YoY.
+        >>> obb.economy.cpi(country='united_states,united_kingdom', transform='period', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -844,19 +795,24 @@ class ROUTER_economy(Container):
                     "provider": self._get_provider(
                         provider,
                         "economy.cpi",
-                        ("fred",),
+                        ("fred", "oecd"),
                     )
                 },
                 standard_params={
                     "country": country,
-                    "units": units,
+                    "transform": transform,
                     "frequency": frequency,
                     "harmonized": harmonized,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                info={"country": {"fred": {"multiple_items_allowed": True}}},
+                info={
+                    "country": {
+                        "fred": ["multiple_items_allowed"],
+                        "oecd": ["multiple_items_allowed"],
+                    }
+                },
             )
         )
 
@@ -1446,7 +1402,7 @@ class ROUTER_economy(Container):
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-            Country to get GDP for. (provider: oecd)
+            Country to get interest rate for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
             Frequency to get interest rate for for. (provider: oecd)
 
@@ -1664,6 +1620,106 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def share_price_index(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): oecd."
+            ),
+        ] = "united_states",
+        frequency: Annotated[
+            Literal["monthly", "quarter", "annual"],
+            OpenBBField(
+                description="The frequency of the data.",
+                choices=["monthly", "quarter", "annual"],
+            ),
+        ] = "monthly",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the Share Price Index by country from the OECD Short-Term Economics Statistics.
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+        frequency : Literal['monthly', 'quarter', 'annual']
+            The frequency of the data.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+
+        Returns
+        -------
+        OBBject
+            results : List[SharePriceIndex]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        SharePriceIndex
+        ---------------
+        date : Optional[date]
+            The date of the data.
+        country : Optional[str]
+
+        value : Optional[float]
+            Share price index value.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.share_price_index(provider='oecd')
+        >>> # Multiple countries can be passed in as a list.
+        >>> obb.economy.share_price_index(country='united_kingdom,germany', frequency='quarterly', provider='oecd')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/share_price_index",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.share_price_index",
+                        ("oecd",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "frequency": frequency,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={"country": {"oecd": ["multiple_items_allowed"]}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def short_term_interest_rate(
         self,
         start_date: Annotated[
@@ -1701,7 +1757,7 @@ class ROUTER_economy(Container):
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
         country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-            Country to get GDP for. (provider: oecd)
+            Country to get interest rate for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
             Frequency to get interest rate for for. (provider: oecd)
 

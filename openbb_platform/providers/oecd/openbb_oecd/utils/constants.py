@@ -169,8 +169,8 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
 CODE_TO_COUNTRY_GDP_FORECAST = {v: k for k, v in COUNTRY_TO_CODE_GDP_FORECAST.items()}
 
 COUNTRY_TO_CODE_CPI = {
-    "G20": "G-20",
-    "G7": "G-7",
+    "G20": "G20",
+    "G7": "G7",
     "argentina": "ARG",
     "australia": "AUS",
     "austria": "AUT",
@@ -184,7 +184,7 @@ COUNTRY_TO_CODE_CPI = {
     "czech_republic": "CZE",
     "denmark": "DNK",
     "estonia": "EST",
-    "euro_area_19": "EA19",
+    "euro_area_20": "EA20",
     "europe": "OECDE",
     "european_union_27": "EU27_2020",
     "finland": "FIN",
@@ -222,6 +222,7 @@ COUNTRY_TO_CODE_CPI = {
     "united_kingdom": "GBR",
     "united_states": "USA",
 }
+CODE_TO_COUNTRY_CPI = {v: k for k, v in COUNTRY_TO_CODE_CPI.items()}
 
 COUNTRY_TO_CODE_BALANCE = {
     "australia": "AUS",
@@ -581,3 +582,52 @@ COUNTRY_TO_CODE_IR = {
 }
 
 CODE_TO_COUNTRY_IR = {v: k for k, v in COUNTRY_TO_CODE_IR.items()}
+
+COUNTRY_TO_CODE_SHARES = {
+    "slovenia": "SVN",
+    "russia": "RUS",
+    "latvia": "LVA",
+    "korea": "KOR",
+    "brazil": "BRA",
+    "france": "FRA",
+    "sweden": "SWE",
+    "luxembourg": "LUX",
+    "belgium": "BEL",
+    "china": "CHN",
+    "finland": "FIN",
+    "euro_area19": "EA19",
+    "japan": "JPN",
+    "hungary": "HUN",
+    "australia": "AUS",
+    "switzerland": "CHE",
+    "portugal": "PRT",
+    "estonia": "EST",
+    "canada": "CAN",
+    "slovak_republic": "SVK",
+    "turkey": "TUR",
+    "croatia": "HRV",
+    "denmark": "DNK",
+    "italy": "ITA",
+    "india": "IND",
+    "south_africa": "ZAF",
+    "czech_republic": "CZE",
+    "new_zealand": "NZL",
+    "netherlands": "NLD",
+    "iceland": "ISL",
+    "germany": "DEU",
+    "indonesia": "IDN",
+    "ireland": "IRL",
+    "united_states": "USA",
+    "chile": "CHL",
+    "lithuania": "LTU",
+    "greece": "GRC",
+    "united_kingdom": "GBR",
+    "colombia": "COL",
+    "norway": "NOR",
+    "spain": "ESP",
+    "israel": "ISR",
+    "poland": "POL",
+    "austria": "AUT",
+    "mexico": "MEX",
+}
+CODE_TO_COUNTRY_SHARES = {v: k for k, v in COUNTRY_TO_CODE_SHARES.items()}

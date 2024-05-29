@@ -54,11 +54,12 @@ async def calendar(
     examples=[
         APIEx(parameters={"country": "japan,china,turkey", "provider": "fred"}),
         APIEx(
-            description="Use the `units` parameter to define the reference period for the change in values.",
+            description="Use the `transform` parameter to define the reference period for the change in values."
+            + " Default is YoY.",
             parameters={
                 "country": "united_states,united_kingdom",
-                "units": "growth_previous",
-                "provider": "fred",
+                "transform": "period",
+                "provider": "oecd",
             },
         ),
     ],
@@ -409,4 +410,28 @@ async def central_bank_holdings(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get the balance sheet holdings of a central bank."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SharePriceIndex",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "quarterly",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def share_price_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Share Price Index by country from the OECD Short-Term Economics Statistics."""
     return await OBBject.from_query(Query(**locals()))

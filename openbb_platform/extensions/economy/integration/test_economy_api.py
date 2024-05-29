@@ -71,7 +71,18 @@ def test_economy_calendar(params, headers):
         (
             {
                 "country": "spain",
-                "units": "growth_same",
+                "transform": "yoy",
+                "frequency": "annual",
+                "harmonized": False,
+                "start_date": "2020-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "country": "portugal,spain",
+                "transform": "period",
                 "frequency": "monthly",
                 "harmonized": True,
                 "start_date": "2023-01-01",
@@ -82,12 +93,13 @@ def test_economy_calendar(params, headers):
         (
             {
                 "country": "portugal,spain",
-                "units": "growth_same",
-                "frequency": "monthly",
-                "harmonized": True,
-                "start_date": "2023-01-01",
+                "transform": "yoy",
+                "frequency": "quarter",
+                "harmonized": False,
+                "start_date": "2020-01-01",
                 "end_date": "2023-06-06",
-                "provider": "fred",
+                "provider": "oecd",
+                "expenditure": "transport",
             }
         ),
     ],
@@ -694,5 +706,31 @@ def test_economy_central_bank_holdings(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/central_bank_holdings?{query_str}"
     result = requests.get(url, headers=headers, timeout=5)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_share_price_index(params, headers):
+    """Test the economy share price index."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/share_price_index?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

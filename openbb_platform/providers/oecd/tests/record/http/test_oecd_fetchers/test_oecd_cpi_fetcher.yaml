@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0/GBR.A.N.CPI.PA._T.N.
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEAO29B2AcSZYlJi9tynt/SvVK1+B0oQiAYBMk2JBAEOzBiM3mkuwdaUcjKasqgcpl
+        VmVdZhZAzO2dvPfee++999577733ujudTif33/8/XGZkAWz2zkrayZ4hgKrIHz9+fB8/Ih7/Hu8W
+        ZXqZ101RLT/7aHe881GaL6fVrFhefPbRuj3fPvjo9zh6/Ltub794fZZ+N5+kr/P6spjm6eXBePdg
+        /GC8s7199HiRN012kT/6PF/mdTF9mrVZSoCXzaPzqmrz+rOP5m27enT37tXV1biZLd6Nq/ribp03
+        1bqe5s1dfLQo7zbTeb7ImruXe7//7l2FeVcgfKTwLqSHrwNwRljd1fcNOO3k64DTVw2kabVYgITv
+        D0jeNHDeNUUA5Ooeg9jb2dm9+3t/8fw1v7ldLJs2W05t7/Rv7C164e7uw4cHd5cZobvK6AU3Wd/O
+        s1leu7/Pnh6dvTp9trO3/+Dep4/N+PCxbfImb9qjtl7n7mv+yDZ4WeerrM5nR3sEZnvn/vbewZu9
+        3Ud7+4/299w7tpV973W+JFzSYvbZR0+LpskXxTJr89//Gf0of/+nX/zUR+ldrzFhMG3XdZ425rez
+        p5999OXpydPf//XTp7//m5evf/+nr5/+/i9fnZ2cvv79s/b3f/rM/HH8/Pnvv/v7E5fPikW+BNcf
+        t19OGmLqrKU/PvvozdkXp7//y9NXZ18+JVrJ3LgevwICR49f5ecp/bKcXpuOx9TxmDr+SMZge/89
+        g64/6ogaDUqnv9eFJZb9whEA8vU6b4+nQPnobHle1QtG370VNum+SXPqUOy9RN+6z7pcom3SjCF/
+        9pHX+0duPohAQpdbT8jRY6InRJN4oS7ypvv375Vfu49+MivXOVOaGPb3P351ekyUxWefffT5k1dM
+        137TZ69Of8I2oxeijb44ffPtL59++fzLz38f2/bFYNvj11+9OrXtTl6eDbT86sXZm9+/2/zlEA6n
+        v/fL0xdPz974jX//NwONj59+56vXb744fUENtO0Qvm9eHb94/ezLV18cvzn7khppc4yU2hvVGKP3
+        cdvWxWTd+tPi4D49PTn74vg58b5C3AsBxt4mmQv+eGrEkSH6QmiA7j68/ynD9d4SHLTB/vjhwc7+
+        /f2gUaxveQv9fPnk9e//+s3xm68c7jIpUdzth9Szg9b941YjecC9eG8JTtrg3vjTh7v3du4FjXxM
+        zGfyFvr5ORvJAffivSU4aYO98cOHewf3/j8xkofci/eW4KQNdsb3D3Z3H9zbDVr5qJjP5DV09HM1
+        lE/FtHhvCU6mwXhn5979B/9fmJRPQ3LTW4KTNrg33t9/sP8wlCYfE/OZvIV+fs5GIkrRe0tw0gb7
+        Y2pyP2ji42E+k3fQy8/ZOEK2obcEJ22wN97ZPbi///8FJfxpiCS9JThpg3vjvYPd+wehVvAxMZ/J
+        W+jn52wkIePQW4KTNtgfP3hw78GDUJR8TMxn8hb6+TkbyWYTf2/8cId0QmhzfEzMZ/IW+vk5G0mo
+        lOgtwUkb7I33D/bIngSNfEzMZ/IW+vnZGMmtRhKSuzuSfXJWHuzvhcL0/9KRhMJMbwlO2uA+WZNP
+        P+1MnI+J+UzeQj8/VyN5sNnCfzq+9+mn9zsT52NiPpO30M/P2UhCtURvCU7a4CHNyf7B/xeY68Fm
+        A0+Zsge7Ow/D0fqYmM/kLfTzczaSzSb+IVyVnf9PmPgHIZL0luBkGnw63tm/9zDUCj4m5jN5C/38
+        nI1ks4nf2x/v7TzY+//ESDabeJqT+/cf3g+FycfEfCZvoZ+fs5GEloLeEpxMg/vjg/2dvbCRj4n5
+        TN5CPz/skaBjQvThg9BSdEdyMN779N7uvf9PcFeIJL0lOJkGFDHu7f5/Qk4ONpv43Qdj8vsfhqra
+        x8R8Jm+hn5+zkYRGj94SnEyD3fHBg0878bGPiflM3kI/P2cjCZGktwQnbXAwvv/w4OD/CwJ/EPIN
+        vSU4aQPy6Xce3tsJR+tjYj6Tt9DPz9lINpt4Sgp/So7X/ydGstnEk6/ygHRwOFwfE/OZvIV+fs5G
+        stnEQwc/+HQ3HK6PiflM3kI/P2cjCYWZ3hKctAFl7fYPHv5/Ih9xECJJbwEnbyR7Ox/KW0/4dYuy
+        /779kPp10Lp/3Gocoe2mtwQnbXB/HM6Yj4T5TF5AF5FB/FAm4+Fm2x5OlY+C+Uyao4OfsyFsNuoP
+        xv9fEO+HoV2gtwQnbUBmMPjeR8J8Ji+gi5+zQWy25Xv/3xhEqHvoLcFJG+yNw5nykTCfyQvo4uds
+        ECHP01uCkzbY+/+GbgrZhd4SnLQBregG3/tImM/kBXTxczaIkNL0luCkDf4/wk6hHaC3BCfTYBx+
+        7yNhPpMX0EV0EHjd4uu/bz+kTh207h+3GkTILvSW4GQa/H9AJvZ2djbb693/D7ATDWKzxd79/4Cd
+        oEGElKa3BCdtsPv/AbeDBrHZYu+OQ2PoI2E+kxfQxc/ZIEIk6S3BSRv8f2QQIbvQW4KTaTAOZcZH
+        wnwmL6CLn7NBhIJLbwlOpsH/N2QitAP0luBkGvx/g51Ci0xvCU7a4N7/y2ZiYBCbLXaogH06ms+k
+        Oaj0czUPu5vt9f83JGI31D30luCkDe79f8D9o0GE7EJvCU6mwf8nnI7dzfZ6bxx+7yNhPpMX0MXP
+        2SBCBUpvCU7a4P8bnlMnaUxvCU7aYOf/E1ZiN+R5ektw0gah2PsomM+kOTr4ORvCTdY6HKKPhPlM
+        XkAXP2eDCBUovSU4mQb/3xDrzdb6/xvx9d5me/3/BYnYC5GktwQn0+D/E+p1b7O1fvD/gdwfDSIU
+        W3pLcNIGn/7Q/Cb712v6l79e5E2TXeSPnmZt9jpvvU8+l6b44uj/AX9HqkKVOwAA
+    headers:
+      Accept-Ranges:
+      - values
+      Cache-Control:
+      - no-store,no-cache
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/vnd.sdmx.genericdata+xml; charset=utf-8; version=2.1
+      Date:
+      - Tue, 28 May 2024 19:24:42 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=2592000
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding,Accept-Encoding
+      X-Server-Node:
+      - Server 2
+      api-supported-versions:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1
