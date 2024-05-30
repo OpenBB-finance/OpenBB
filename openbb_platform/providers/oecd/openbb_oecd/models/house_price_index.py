@@ -139,14 +139,14 @@ class OECDHousePriceIndexFetcher(
         df = df.rename(
             columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
         )
+        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
+        df.date = df.date.apply(oecd_date_to_python_date)
         df = (
             df.query("value.notnull()")
             .set_index(["date", "country"])
             .sort_index()
             .reset_index()
         )
-        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
-        df.date = df.date.apply(oecd_date_to_python_date)
 
         return df.to_dict("records")
 

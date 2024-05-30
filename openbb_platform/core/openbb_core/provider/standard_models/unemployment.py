@@ -39,12 +39,12 @@ class UnemploymentData(Data):
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
+    country: Optional[str] = Field(
+        default=None,
+        description="Country for which unemployment rate is given",
+    )
     value: Optional[float] = Field(
         default=None,
         description="Unemployment rate, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )
-    country: Optional[str] = Field(
-        default=None,
-        description="Country for which unemployment rate is given",
     )

@@ -168,14 +168,14 @@ class OECDUnemploymentFetcher(
             columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
         )
         df["value"] = df["value"].astype(float) / 100
+        df["country"] = df["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
+        df["date"] = df["date"].apply(helpers.oecd_date_to_python_date)
         df = (
             df.query("value.notnull()")
             .set_index(["date", "country"])
             .sort_index()
             .reset_index()
         )
-        df["country"] = df["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
-        df["date"] = df["date"].apply(helpers.oecd_date_to_python_date)
         df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
 
         return df.to_dict(orient="records")

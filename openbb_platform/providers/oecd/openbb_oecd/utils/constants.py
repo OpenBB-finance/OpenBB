@@ -67,6 +67,7 @@ COUNTRY_TO_CODE_RGDP = {
     "czech_republic": "CZE",
     "denmark": "DNK",
     "estonia": "EST",
+    "euro_area_20": "EA20",
     "euro_area_19": "EA19",
     "europe": "OECDE",
     "european_union_27": "EU27_2020",
