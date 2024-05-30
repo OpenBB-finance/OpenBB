@@ -25,6 +25,7 @@ class ROUTER_economy(Container):
     fred_series
     /gdp
     house_price_index
+    immediate_interest_rate
     indicators
     long_term_interest_rate
     money_measures
@@ -1351,6 +1352,98 @@ class ROUTER_economy(Container):
 
     @exception_handler
     @validate
+    def immediate_interest_rate(
+        self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): oecd."
+            ),
+        ] = "united_states",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["oecd"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get immediate interest rates by country.
+
+        Parameters
+        ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
+        frequency : Literal['monthly', 'quarter', 'annual']
+            The frequency of the data. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[ImmediateInterestRate]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        ImmediateInterestRate
+        ---------------------
+        date : Optional[date]
+            The date of the data.
+        country : Optional[str]
+            Country for which interest rate is given
+        value : Optional[float]
+            Immediate interest rates, call money, interbank rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.immediate_interest_rate(provider='oecd')
+        >>> # Multiple countries can be passed in as a list.
+        >>> obb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency='monthly', provider='oecd')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/immediate_interest_rate",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.immediate_interest_rate",
+                        ("oecd",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={"country": {"oecd": ["multiple_items_allowed"]}},
+            )
+        )
+
+    @exception_handler
+    @validate
     def indicators(
         self,
         symbol: Annotated[
@@ -1512,7 +1605,7 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+        country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
             Country to get interest rate for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
             Frequency to get interest rate for for. (provider: oecd)
@@ -1867,7 +1960,7 @@ class ROUTER_economy(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+        country : Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
             Country to get interest rate for. (provider: oecd)
         frequency : Literal['monthly', 'quarterly', 'annual']
             Frequency to get interest rate for for. (provider: oecd)
@@ -1992,10 +2085,10 @@ class ROUTER_economy(Container):
         ------------
         date : Optional[date]
             The date of the data.
-        value : Optional[float]
-            Unemployment rate, as a normalized percent.
         country : Optional[str]
             Country for which unemployment rate is given
+        value : Optional[float]
+            Unemployment rate, as a normalized percent.
 
         Examples
         --------

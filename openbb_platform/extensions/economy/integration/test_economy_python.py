@@ -718,3 +718,28 @@ def test_economy_house_price_index(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_immediate_interest_rate(params, obb):
+    """Test economy immediate interest rate."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.immediate_interest_rate(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

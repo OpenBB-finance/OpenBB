@@ -459,3 +459,27 @@ async def house_price_index(
 ) -> OBBject:
     """Get the House Price Index by country from the OECD Short-Term Economics Statistics."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ImmediateInterestRate",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "monthly",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def immediate_interest_rate(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get immediate interest rates by country."""
+    return await OBBject.from_query(Query(**locals()))

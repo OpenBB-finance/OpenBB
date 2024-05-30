@@ -534,6 +534,8 @@ CODE_TO_COUNTRY_CLI = {v: k for k, v in COUNTRY_TO_CODE_CLI.items()}
 
 COUNTRY_TO_CODE_IR = {
     "belgium": "BEL",
+    "bulgaria": "BGR",
+    "brazil": "BRA",
     "ireland": "IRL",
     "mexico": "MEX",
     "indonesia": "IDN",
@@ -571,6 +573,7 @@ COUNTRY_TO_CODE_IR = {
     "slovakia": "SVK",
     "finland": "FIN",
     "spain": "ESP",
+    "romania": "ROU",
     "russia": "RUS",
     "euro_area19": "EA19",
     "colombia": "COL",
