@@ -3,7 +3,7 @@
 import json
 import logging
 from datetime import datetime, timedelta
-from typing import Any, AsyncGenerator, AsyncIterator, Dict, Optional
+from typing import Any, AsyncGenerator, AsyncIterator, Dict, Literal, Optional
 
 import websockets
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -21,6 +21,9 @@ logger = logging.getLogger(__name__)
 class BinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     """Binance Crypto Historical Query Params."""
 
+    tld: Optional[Literal["us", "com"]] = Field(
+        default="us", description="Top-level domain of the Binance endpoint."
+    )
     lifetime: Optional[int] = Field(
         default=60, description="Lifetime of WebSocket in seconds."
     )
@@ -65,11 +68,14 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
     ) -> AsyncGenerator[dict, None]:
         """Return the raw data from the Binance endpoint."""
         async with websockets.connect(
-            f"wss://stream.binance.com:9443/ws/{query.symbol.lower()}@miniTicker"
+            f"wss://stream.binance.{query.tld}:9443/ws/{query.symbol.lower()}@miniTicker"
         ) as websocket:
             logger.info("Connected to WebSocket server.")
             end_time = datetime.now() + timedelta(seconds=query.lifetime)
+            print("Connected to WebSocket server.")
             try:
+                chunk = await websocket.recv()
+                print(f"Chunk me baby: {chunk}")
                 while datetime.now() < end_time:
                     chunk = await websocket.recv()
                     yield json.loads(chunk)

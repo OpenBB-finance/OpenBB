@@ -13,7 +13,6 @@ from openbb_core.app.provider_interface import (
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from providers.binance.openbb_binance.models.crypto_historical import (
-    BinanceCryptoHistoricalData,
     BinanceCryptoHistoricalFetcher,
 )
 
@@ -63,13 +62,11 @@ async def historical(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(methods=["GET"])
-async def live(
-    symbol: str = "ethbtc", lifetime: int = 10
-) -> BinanceCryptoHistoricalData:
+@router.stream(methods=["GET"])
+async def live(symbol: str = "ethbtc", lifetime: int = 10, tld: str = "us") -> OBBject:
     """Connect to Binance WebSocket Crypto Price data feed."""
     generator = BinanceCryptoHistoricalFetcher().stream_data(
-        params={"symbol": symbol, "lifetime": lifetime},
+        params={"symbol": symbol, "lifetime": lifetime, "tld": tld},
         credentials=None,
     )
     return StreamingResponse(generator, media_type="application/x-ndjson")

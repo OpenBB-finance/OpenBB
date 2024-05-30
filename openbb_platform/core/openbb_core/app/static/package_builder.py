@@ -342,7 +342,8 @@ class ImportDefinition:
             if route:
                 if route.deprecated:
                     hint_type_list.append(type(route.summary.metadata))
-                function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
+                if not route.openapi_extra.get("is_stream", False):
+                    function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
         hint_type_list = list(set(hint_type_list))

@@ -19,6 +19,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
@@ -231,6 +232,26 @@ class Router:
         self._routers: Dict[str, Router] = {}
 
     @overload
+    def stream(self, func: Callable[P, OBBject]) -> Callable[P, StreamingResponse]:
+        pass
+
+    @overload
+    def stream(self, **kwargs) -> Callable:
+        pass
+
+    def stream(
+        self,
+        func: Optional[Callable[P, OBBject]] = None,
+        **kwargs,
+    ) -> Optional[Callable]:
+        """Stream decorator for routes."""
+        if func is None:
+            return lambda f: self.stream(f, **kwargs)
+
+        kwargs["is_stream"] = True
+        return self.command(func, **kwargs)
+
+    @overload
     def command(self, func: Optional[Callable[P, OBBject]]) -> Callable[P, OBBject]:
         pass
 
@@ -260,6 +281,8 @@ class Router:
                 examples=kwargs.pop("examples", []),
                 providers=ProviderInterface().available_providers,
             )
+            kwargs["openapi_extra"]["is_stream"] = kwargs.pop("is_stream", False)
+
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -349,7 +372,7 @@ class SignatureInspector:
 
     @classmethod
     def complete(
-        cls, func: Callable[P, OBBject], model: str
+        cls, func: Callable[P, OBBject], model: str, is_stream: bool = False
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
         if isclass(return_type := func.__annotations__["return"]) and not issubclass(
