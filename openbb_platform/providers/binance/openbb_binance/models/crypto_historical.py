@@ -72,13 +72,12 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
         ) as websocket:
             logger.info("Connected to WebSocket server.")
             end_time = datetime.now() + timedelta(seconds=query.lifetime)
-            print("Connected to WebSocket server.")
             try:
-                chunk = await websocket.recv()
-                print(f"Chunk me baby: {chunk}")
-                while datetime.now() < end_time:
-                    chunk = await websocket.recv()
-                    yield json.loads(chunk)
+                async for message in websocket:
+                    data = json.loads(message)
+                    yield data
+                    if datetime.now() >= end_time:
+                        break
             except websockets.exceptions.ConnectionClosed as e:
                 logger.error("WebSocket connection closed.")
                 raise e
