@@ -693,3 +693,29 @@ def test_economy_share_price_index(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "quarter",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+                "transform": "index",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_house_price_index(params, obb):
+    """Test economy house price index."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.house_price_index(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

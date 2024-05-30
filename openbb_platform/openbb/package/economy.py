@@ -1255,14 +1255,14 @@ class ROUTER_economy(Container):
                 description="The frequency of the data.",
                 choices=["monthly", "quarter", "annual"],
             ),
-        ] = "monthly",
+        ] = "quarter",
         transform: Annotated[
             Literal["index", "yoy", "period"],
             OpenBBField(
                 description="Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
                 choices=["index", "yoy", "period"],
             ),
-        ] = "yoy",
+        ] = "index",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
@@ -1805,7 +1805,7 @@ class ROUTER_economy(Container):
         >>> from openbb import obb
         >>> obb.economy.share_price_index(provider='oecd')
         >>> # Multiple countries can be passed in as a list.
-        >>> obb.economy.share_price_index(country='united_kingdom,germany', frequency='quarterly', provider='oecd')
+        >>> obb.economy.share_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')
         """  # noqa: E501
 
         return self._run(
@@ -1924,6 +1924,19 @@ class ROUTER_economy(Container):
     @validate
     def unemployment(
         self,
+        country: Annotated[
+            Union[str, List[str]],
+            OpenBBField(
+                description="The country to get data. Multiple comma separated items allowed for provider(s): oecd."
+            ),
+        ] = "united_states",
+        frequency: Annotated[
+            Literal["monthly", "quarter", "annual"],
+            OpenBBField(
+                description="The frequency of the data.",
+                choices=["monthly", "quarter", "annual"],
+            ),
+        ] = "monthly",
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
@@ -1944,19 +1957,19 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
+        country : Union[str, List[str]]
+            The country to get data. Multiple comma separated items allowed for provider(s): oecd.
+        frequency : Literal['monthly', 'quarter', 'annual']
+            The frequency of the data.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: oecd.
-        country : Literal['colombia', 'new_zealand', 'united_kingdom', 'italy', 'luxembourg', 'euro_area19', 'sweden', 'oecd', 'south_africa', 'denmark', 'canada', 'switzerland', 'slovakia', 'hungary', 'portugal', 'spain', 'france', 'czech_republic', 'costa_rica', 'japan', 'slovenia', 'russia', 'austria', 'latvia', 'netherlands', 'israel', 'iceland', 'united_states', 'ireland', 'mexico', 'germany', 'greece', 'turkey', 'australia', 'poland', 'south_korea', 'chile', 'finland', 'european_union27_2020', 'norway', 'lithuania', 'euro_area20', 'estonia', 'belgium', 'brazil', 'indonesia', 'all']
-            Country to get GDP for. (provider: oecd)
         sex : Literal['total', 'male', 'female']
             Sex to get unemployment for. (provider: oecd)
-        frequency : Literal['monthly', 'quarterly', 'annual']
-            Frequency to get unemployment for. (provider: oecd)
-        age : Literal['total', '15-24', '15-64', '25-54', '55-64']
+        age : Literal['total', '15-24', '25-54', '55-64', '15-64', '15-74']
             Age group to get unemployment for. Total indicates 15 years or over (provider: oecd)
         seasonal_adjustment : bool
             Whether to get seasonally adjusted unemployment. Defaults to False. (provider: oecd)
@@ -1980,7 +1993,7 @@ class ROUTER_economy(Container):
         date : Optional[date]
             The date of the data.
         value : Optional[float]
-            Unemployment rate (given as a whole number, i.e 10=10%)
+            Unemployment rate, as a normalized percent.
         country : Optional[str]
             Country for which unemployment rate is given
 
@@ -2004,9 +2017,12 @@ class ROUTER_economy(Container):
                     )
                 },
                 standard_params={
+                    "country": country,
+                    "frequency": frequency,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"country": {"oecd": ["multiple_items_allowed"]}},
             )
         )
