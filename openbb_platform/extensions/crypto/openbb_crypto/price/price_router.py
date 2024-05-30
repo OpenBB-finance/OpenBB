@@ -69,4 +69,7 @@ async def live(symbol: str = "ethbtc", lifetime: int = 10, tld: str = "us") -> O
         params={"symbol": symbol, "lifetime": lifetime, "tld": tld},
         credentials=None,
     )
-    return StreamingResponse(generator, media_type="application/x-ndjson")
+    return OBBject(
+        results=StreamingResponse(generator, media_type="application/x-ndjson"),
+        provider="binance",
+    )

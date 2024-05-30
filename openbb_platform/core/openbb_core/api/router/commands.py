@@ -201,8 +201,12 @@ def build_api_wrapper(
         execute = partial(command_runner.run, path, user_settings)
         output = await execute(*args, **kwargs)
 
+        if route.openapi_extra.get("is_stream", False):
+            return output.results
+
         if isinstance(output, OBBject):
             return validate_output(output)
+
         return output
 
     return wrapper
