@@ -2340,7 +2340,7 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
+                        "type": "Literal['G20', 'G7', 'argentina', 'australia', 'austria', 'belgium', 'brazil', 'bulgaria', 'canada', 'chile', 'china', 'colombia', 'costa_rica', 'croatia', 'czech_republic', 'denmark', 'estonia', 'euro_area_20', 'euro_area_19', 'europe', 'european_union_27', 'finland', 'france', 'germany', 'greece', 'hungary', 'iceland', 'india', 'indonesia', 'ireland', 'israel', 'italy', 'japan', 'korea', 'latvia', 'lithuania', 'luxembourg', 'mexico', 'netherlands', 'new_zealand', 'norway', 'oecd_total', 'poland', 'portugal', 'romania', 'russia', 'saudi_arabia', 'slovak_republic', 'slovenia', 'south_africa', 'spain', 'sweden', 'switzerland', 'turkey', 'united_kingdom', 'united_states', 'all']",
                         "description": "Country to get GDP for.",
                         "default": "united_states",
                         "optional": true,
@@ -4176,9 +4176,29 @@
                 "message": null
             },
             "description": "Get global unemployment data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country=all, frequency=quarterly, provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country=all, frequency=quarterly, age=25-54, provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarterly', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarterly', age=25-54, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
+                    },
                     {
                         "name": "start_date",
                         "type": "Union[date, str]",
@@ -4206,11 +4226,57 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['colombia', 'new_zealand', 'united_kingdom', 'italy', 'luxembourg', 'euro_area19', 'sweden', 'oecd', 'south_africa', 'denmark', 'canada', 'switzerland', 'slovakia', 'hungary', 'portugal', 'spain', 'france', 'czech_republic', 'costa_rica', 'japan', 'slovenia', 'russia', 'austria', 'latvia', 'netherlands', 'israel', 'iceland', 'united_states', 'ireland', 'mexico', 'germany', 'greece', 'turkey', 'australia', 'poland', 'south_korea', 'chile', 'finland', 'european_union27_2020', 'norway', 'lithuania', 'euro_area20', 'estonia', 'belgium', 'brazil', 'indonesia', 'all']",
-                        "description": "Country to get GDP for.",
+                        "type": "str",
+                        "description": "The country to get data.",
                         "default": "united_states",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "all",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "canada",
+                            "chile",
+                            "colombia",
+                            "costa_rica",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "euro_area20",
+                            "european_union27_2020",
+                            "finland",
+                            "france",
+                            "g7",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "oecd",
+                            "poland",
+                            "portugal",
+                            "russia",
+                            "slovakia",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states"
+                        ]
                     },
                     {
                         "name": "sex",
@@ -4218,23 +4284,26 @@
                         "description": "Sex to get unemployment for.",
                         "default": "total",
                         "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "frequency",
-                        "type": "Literal['monthly', 'quarterly', 'annual']",
-                        "description": "Frequency to get unemployment for.",
-                        "default": "monthly",
-                        "optional": true,
-                        "choices": null
+                        "choices": [
+                            "total",
+                            "male",
+                            "female"
+                        ]
                     },
                     {
                         "name": "age",
-                        "type": "Literal['total', '15-24', '15-64', '25-54', '55-64']",
+                        "type": "Literal['total', '15-24', '25-54', '55-64', '15-64', '15-74']",
                         "description": "Age group to get unemployment for. Total indicates 15 years or over",
                         "default": "total",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "total",
+                            "15-24",
+                            "25-54",
+                            "55-64",
+                            "15-64",
+                            "15-74"
+                        ]
                     },
                     {
                         "name": "seasonal_adjustment",
@@ -4286,17 +4355,17 @@
                         "choices": null
                     },
                     {
-                        "name": "value",
-                        "type": "float",
-                        "description": "Unemployment rate (given as a whole number, i.e 10=10%)",
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country for which unemployment rate is given",
                         "default": null,
                         "optional": true,
                         "choices": null
                     },
                     {
-                        "name": "country",
-                        "type": "str",
-                        "description": "Country for which unemployment rate is given",
+                        "name": "value",
+                        "type": "float",
+                        "description": "Unemployment rate, as a normalized percent.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -4446,7 +4515,7 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
+                        "type": "Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
                         "description": "Country to get interest rate for.",
                         "default": "united_states",
                         "optional": true,
@@ -4558,7 +4627,7 @@
                 "oecd": [
                     {
                         "name": "country",
-                        "type": "Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
+                        "type": "Literal['belgium', 'bulgaria', 'brazil', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'romania', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']",
                         "description": "Country to get interest rate for.",
                         "default": "united_states",
                         "optional": true,
@@ -5661,7 +5730,7 @@
                 "message": null
             },
             "description": "Get the Share Price Index by country from the OECD Short-Term Economics Statistics.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.share_price_index(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.share_price_index(country='united_kingdom,germany', frequency='quarterly', provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.share_price_index(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.share_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -5718,19 +5787,23 @@
                         "choices": [
                             "G20",
                             "G7",
+                            "all",
                             "argentina",
                             "australia",
                             "austria",
                             "belgium",
                             "brazil",
+                            "bulgaria",
                             "canada",
                             "chile",
                             "china",
                             "colombia",
                             "costa_rica",
+                            "croatia",
                             "czech_republic",
                             "denmark",
                             "estonia",
+                            "euro_area_19",
                             "euro_area_20",
                             "europe",
                             "european_union_27",
@@ -5757,6 +5830,7 @@
                             "oecd_total",
                             "poland",
                             "portugal",
+                            "romania",
                             "russia",
                             "saudi_arabia",
                             "slovak_republic",
@@ -5767,8 +5841,7 @@
                             "switzerland",
                             "turkey",
                             "united_kingdom",
-                            "united_states",
-                            "all"
+                            "united_states"
                         ]
                     }
                 ]
@@ -5832,6 +5905,370 @@
                 "oecd": []
             },
             "model": "SharePriceIndex"
+        },
+        "/economy/house_price_index": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get the House Price Index by country from the OECD Short-Term Economics Statistics.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.house_price_index(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.house_price_index(country='united_kingdom,germany', frequency='quarter', provider='oecd')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "quarter",
+                        "optional": true,
+                        "choices": [
+                            "monthly",
+                            "quarter",
+                            "annual"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['index', 'yoy', 'period']",
+                        "description": "Transformation of the CPI data. Period represents the change since previous. Defaults to change from one year ago (yoy).",
+                        "default": "index",
+                        "optional": true,
+                        "choices": [
+                            "index",
+                            "yoy",
+                            "period"
+                        ]
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "G20",
+                            "G7",
+                            "argentina",
+                            "australia",
+                            "austria",
+                            "belgium",
+                            "brazil",
+                            "bulgaria",
+                            "canada",
+                            "chile",
+                            "china",
+                            "colombia",
+                            "costa_rica",
+                            "croatia",
+                            "czech_republic",
+                            "denmark",
+                            "estonia",
+                            "euro_area_20",
+                            "euro_area_19",
+                            "europe",
+                            "european_union_27",
+                            "finland",
+                            "france",
+                            "germany",
+                            "greece",
+                            "hungary",
+                            "iceland",
+                            "india",
+                            "indonesia",
+                            "ireland",
+                            "israel",
+                            "italy",
+                            "japan",
+                            "korea",
+                            "latvia",
+                            "lithuania",
+                            "luxembourg",
+                            "mexico",
+                            "netherlands",
+                            "new_zealand",
+                            "norway",
+                            "oecd_total",
+                            "poland",
+                            "portugal",
+                            "romania",
+                            "russia",
+                            "saudi_arabia",
+                            "slovak_republic",
+                            "slovenia",
+                            "south_africa",
+                            "spain",
+                            "sweden",
+                            "switzerland",
+                            "turkey",
+                            "united_kingdom",
+                            "united_states",
+                            "all"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[HousePriceIndex]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['oecd']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Share price index value.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": []
+            },
+            "model": "HousePriceIndex"
+        },
+        "/economy/immediate_interest_rate": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get immediate interest rates by country.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.immediate_interest_rate(provider='oecd')\n# Multiple countries can be passed in as a list.\nobb.economy.immediate_interest_rate(country='united_kingdom,germany', frequency=monthly, provider='oecd')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "country",
+                        "type": "Union[str, List[str]]",
+                        "description": "The country to get data. Multiple items allowed for provider(s): oecd.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['oecd']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: o, e, c, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "oecd": [
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": [
+                            "belgium",
+                            "bulgaria",
+                            "brazil",
+                            "ireland",
+                            "mexico",
+                            "indonesia",
+                            "new_zealand",
+                            "japan",
+                            "united_kingdom",
+                            "france",
+                            "chile",
+                            "canada",
+                            "netherlands",
+                            "united_states",
+                            "south_korea",
+                            "norway",
+                            "austria",
+                            "south_africa",
+                            "denmark",
+                            "switzerland",
+                            "hungary",
+                            "luxembourg",
+                            "australia",
+                            "germany",
+                            "sweden",
+                            "iceland",
+                            "turkey",
+                            "greece",
+                            "israel",
+                            "czech_republic",
+                            "latvia",
+                            "slovenia",
+                            "poland",
+                            "estonia",
+                            "lithuania",
+                            "portugal",
+                            "costa_rica",
+                            "slovakia",
+                            "finland",
+                            "spain",
+                            "romania",
+                            "russia",
+                            "euro_area19",
+                            "colombia",
+                            "italy",
+                            "india",
+                            "china",
+                            "croatia",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['monthly', 'quarter', 'annual']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ImmediateInterestRate]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['oecd']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "Country for which interest rate is given",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Immediate interest rates, call money, interbank rate.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "oecd": []
+            },
+            "model": "ImmediateInterestRate"
         },
         "/equity/calendar/ipo": {
             "deprecated": {

@@ -1,4 +1,4 @@
-"""OECD Share Price Index Model."""
+"""OECD House Price Index Model."""
 
 # pylint: disable=unused-argument
 
@@ -8,9 +8,9 @@ from typing import Any, Dict, List, Optional
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.share_price_index import (
-    SharePriceIndexData,
-    SharePriceIndexQueryParams,
+from openbb_core.provider.standard_models.house_price_index import (
+    HousePriceIndexData,
+    HousePriceIndexQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
@@ -24,16 +24,17 @@ from pandas import read_csv
 from pydantic import Field, field_validator
 
 countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
-CountriesList = sorted(list(countries))  # type: ignore
+CountriesList = list(countries)  # type: ignore
 frequency_dict = {
     "monthly": "M",
     "quarter": "Q",
     "annual": "A",
 }
+transform_dict = {"yoy": "PA", "period": "PC", "index": "IX"}
 
 
-class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
-    """OECD Share Price Index Query.
+class OECDHousePriceIndexQueryParams(HousePriceIndexQueryParams):
+    """OECD House Price Index Query.
 
     Source: https://data-explorer.oecd.org/?lc=en
     """
@@ -70,40 +71,41 @@ class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
         raise ValueError(f"No valid country found. -> {values}")
 
 
-class OECDSharePriceIndexData(SharePriceIndexData):
-    """OECD Share Price Index Data."""
+class OECDHousePriceIndexData(HousePriceIndexData):
+    """OECD House Price Index Data."""
 
 
-class OECDSharePriceIndexFetcher(
-    Fetcher[OECDSharePriceIndexQueryParams, List[OECDSharePriceIndexData]]
+class OECDHousePriceIndexFetcher(
+    Fetcher[OECDHousePriceIndexQueryParams, List[OECDHousePriceIndexData]]
 ):
-    """OECD Share Price Index Fetcher."""
+    """OECD House Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDSharePriceIndexQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDHousePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
                 date(2000, 1, 1)
                 if transformed_params.get("country") == "all"
-                else date(1958, 1, 1)
+                else date(1969, 1, 1)
             )
         if transformed_params.get("end_date") is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
         if transformed_params.get("country") is None:
             transformed_params["country"] = "united_states"
 
-        return OECDSharePriceIndexQueryParams(**transformed_params)
+        return OECDHousePriceIndexQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDSharePriceIndexQueryParams,
+        query: OECDHousePriceIndexQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
-        frequency = frequency_dict.get(query.frequency)
+        frequency = frequency_dict.get(query.frequency, "Q")
+        transform = transform_dict.get(query.transform, "PA")
 
         def country_string(input_str: str):
             if input_str == "all":
@@ -111,19 +113,24 @@ class OECDSharePriceIndexFetcher(
             countries = input_str.split(",")
             return "+".join([COUNTRY_TO_CODE_RGDP[country] for country in countries])
 
-        country = country_string(query.country)
+        country = country_string(query.country) if query.country else ""
         start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
         end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
         url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/"
-            + f"{country}.{frequency}.SHARE......?"
+            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_RHPI_TARGET@DF_RHPI_TARGET,1.0/"
+            + f"COU.{country}.{frequency}.RHPI.{transform}....?"
             + f"startPeriod={start_date}&endPeriod={end_date}"
             + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
         )
         headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
         response = make_request(url, headers=headers, timeout=20)
+        if response.status_code == 404 and frequency == "M":
+            warn("No monthly data found. Switching to quarterly data.")
+            response = make_request(
+                url.replace(".M.RHPI.", ".Q.RHPI."), headers=headers
+            )
         if response.status_code != 200:
-            raise Exception(f"Error: {response.status_code}")
+            raise Exception(f"Error with the OECD request: {response.status_code}")
         df = read_csv(StringIO(response.text)).get(
             ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )
@@ -132,20 +139,20 @@ class OECDSharePriceIndexFetcher(
         df = df.rename(
             columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
         )
+        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
+        df.date = df.date.apply(oecd_date_to_python_date)
         df = (
             df.query("value.notnull()")
             .set_index(["date", "country"])
             .sort_index()
             .reset_index()
         )
-        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
-        df.date = df.date.apply(oecd_date_to_python_date)
 
         return df.to_dict("records")
 
     @staticmethod
     def transform_data(
-        query: OECDSharePriceIndexQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDSharePriceIndexData]:
+        query: OECDHousePriceIndexQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[OECDHousePriceIndexData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDSharePriceIndexData.model_validate(d) for d in data]
+        return [OECDHousePriceIndexData.model_validate(d) for d in data]

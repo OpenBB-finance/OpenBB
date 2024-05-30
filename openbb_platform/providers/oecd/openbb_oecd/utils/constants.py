@@ -67,6 +67,7 @@ COUNTRY_TO_CODE_RGDP = {
     "czech_republic": "CZE",
     "denmark": "DNK",
     "estonia": "EST",
+    "euro_area_20": "EA20",
     "euro_area_19": "EA19",
     "europe": "OECDE",
     "european_union_27": "EU27_2020",
@@ -464,7 +465,6 @@ COUNTRY_TO_CODE_UNEMPLOYMENT = {
     "united_kingdom": "GBR",
     "italy": "ITA",
     "luxembourg": "LUX",
-    "euro_area19": "EA19",
     "sweden": "SWE",
     "oecd": "OECD",
     "south_africa": "ZAF",
@@ -494,7 +494,7 @@ COUNTRY_TO_CODE_UNEMPLOYMENT = {
     "turkey": "TUR",
     "australia": "AUS",
     "poland": "POL",
-    "south_korea": "KOR",
+    "korea": "KOR",
     "chile": "CHL",
     "finland": "FIN",
     "european_union27_2020": "EU27_2020",
@@ -503,8 +503,7 @@ COUNTRY_TO_CODE_UNEMPLOYMENT = {
     "euro_area20": "EA20",
     "estonia": "EST",
     "belgium": "BEL",
-    "brazil": "BRA",
-    "indonesia": "IDN",
+    "g7": "G7",
 }
 
 CODE_TO_COUNTRY_UNEMPLOYMENT = {v: k for k, v in COUNTRY_TO_CODE_UNEMPLOYMENT.items()}
@@ -535,6 +534,8 @@ CODE_TO_COUNTRY_CLI = {v: k for k, v in COUNTRY_TO_CODE_CLI.items()}
 
 COUNTRY_TO_CODE_IR = {
     "belgium": "BEL",
+    "bulgaria": "BGR",
+    "brazil": "BRA",
     "ireland": "IRL",
     "mexico": "MEX",
     "indonesia": "IDN",
@@ -572,6 +573,7 @@ COUNTRY_TO_CODE_IR = {
     "slovakia": "SVK",
     "finland": "FIN",
     "spain": "ESP",
+    "romania": "ROU",
     "russia": "RUS",
     "euro_area19": "EA19",
     "colombia": "COL",

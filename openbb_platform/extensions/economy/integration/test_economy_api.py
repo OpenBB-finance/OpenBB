@@ -431,7 +431,6 @@ def test_economy_money_measures(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",
@@ -731,6 +730,59 @@ def test_economy_share_price_index(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/share_price_index?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "quarter",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+                "transform": "index",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_house_price_index(params, headers):
+    """Test the economy house price index."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/house_price_index?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states,united_kingdom",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_immediate_interest_rate(params, headers):
+    """Test the economy immediate_interest_rate."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/immediate_interest_rate?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
