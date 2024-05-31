@@ -336,7 +336,7 @@ def test_fred_yield_curve_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fred_retail_prices_fetcher(credentials=test_credentials):
     """Test FREDRetailPricesFetcher."""
-    params = {"item": "produce", "start_date": datetime.date(2024, 1, 1)}
+    params = {"item": "eggs", "start_date": datetime.date(2024, 1, 1)}
 
     fetcher = FredRetailPricesFetcher()
     result = fetcher.test(params, credentials)
