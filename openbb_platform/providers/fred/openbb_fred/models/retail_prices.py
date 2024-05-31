@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 import json
-from importlib.resources import files
+from importlib.resources import path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -286,7 +286,10 @@ class FredRetailPricesFetcher(
         frequency = frequency_dict.get(query.frequency)
         transform = query.transform
         region = regions_dict[query.region]
-        all_symbols = json.load((files("openbb_fred.utils") / f"{region}.json").open())
+
+        with path("openbb_fred.utils", f"{region}.json") as p:
+            all_symbols = json.load(p.open())
+
         items_dict = {
             "beverages": PRICES_BEVERAGES,
             "cereals": PRICES_CEREALS,
@@ -333,7 +336,10 @@ class FredRetailPricesFetcher(
     ) -> AnnotatedResult[List[FredRetailPricesData]]:
         """Transform data."""
         region = regions_dict[query.region]
-        all_symbols = json.load((files("openbb_fred.utils") / f"{region}.json").open())
+
+        with path("openbb_fred.utils", f"{region}.json") as p:
+            all_symbols = json.load(p.open())
+
         df = DataFrame(data["data"])
         metadata = data["metadata"]
         # Flatten data
