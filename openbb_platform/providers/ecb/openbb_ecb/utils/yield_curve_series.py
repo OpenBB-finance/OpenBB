@@ -10,6 +10,41 @@ YIELD_TYPE_DICT = {
     "par_yield": "PY",
 }
 
+MATURITIES = [
+    "month_3",
+    "month_6",
+    "year_1",
+    "year_2",
+    "year_3",
+    "year_4",
+    "year_5",
+    "year_6",
+    "year_7",
+    "year_8",
+    "year_9",
+    "year_10",
+    "year_11",
+    "year_12",
+    "year_13",
+    "year_14",
+    "year_15",
+    "year_16",
+    "year_17",
+    "year_18",
+    "year_19",
+    "year_20",
+    "year_21",
+    "year_22",
+    "year_23",
+    "year_24",
+    "year_25",
+    "year_26",
+    "year_27",
+    "year_28",
+    "year_29",
+    "year_30",
+]
+
 
 def get_yield_curve_ids(
     rating: Literal["aaa", "all_ratings"] = "aaa",

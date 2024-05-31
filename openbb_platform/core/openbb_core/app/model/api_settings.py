@@ -20,7 +20,7 @@ class Servers(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    url: str = "http://localhost:8000"
+    url: str = ""
     description: str = "Local OpenBB development server"
 
 
@@ -31,12 +31,12 @@ class APISettings(BaseModel):
 
     version: str = "1"
     title: str = "OpenBB Platform API"
-    description: str = "This is the OpenBB Platform API."
+    description: str = "Investment research for everyone, anywhere."
     terms_of_service: str = "http://example.com/terms/"
     contact_name: str = "OpenBB Team"
     contact_url: str = "https://openbb.co"
     contact_email: str = "hello@openbb.co"
-    license_name: str = "MIT"
+    license_name: str = "AGPLv3"
     license_url: str = (
         "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/LICENSE"
     )

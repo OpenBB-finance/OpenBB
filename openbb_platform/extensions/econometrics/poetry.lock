@@ -747,13 +747,13 @@ socks = ["socksio (==1.*)"]
 
 [[package]]
 name = "idna"
-version = "3.4"
+version = "3.7"
 description = "Internationalized Domain Names in Applications (IDNA)"
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "idna-3.4-py3-none-any.whl", hash = "sha256:90b77e79eaa3eba6de819a0c442c0b4ceefc341a7a2ab77d7562bf49f425c5c2"},
-    {file = "idna-3.4.tar.gz", hash = "sha256:814f528e8dead7d329833b91c5faa87d60bf71824cd12a7530b5526063d02cb4"},
+    {file = "idna-3.7-py3-none-any.whl", hash = "sha256:82fee1fc78add43492d3a1898bfa6d8a904cc97d8427f683ed8e798d07761aa0"},
+    {file = "idna-3.7.tar.gz", hash = "sha256:028ff3aadf0609c1fd278d8ea3089299412a7a8b9bd005dd08b9f8285bcb5cfc"},
 ]
 
 [[package]]
@@ -1095,13 +1095,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.2.1"
-description = "OpenBB package with core functionality"
+version = "1.2.3"
+description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "openbb_core-1.2.1-py3-none-any.whl", hash = "sha256:15f6ea596d0e6e9748a4f44d819a12a5823f30a8c4787316892159b16737a794"},
-    {file = "openbb_core-1.2.1.tar.gz", hash = "sha256:818c6b1fb517c3fe66c7e0225dd1fe7a7352602dde3ec98662e4f8b7c42617ea"},
+    {file = "openbb_core-1.2.3-py3-none-any.whl", hash = "sha256:0a8a0671024651ebf249a96532303ec9cc2776e3985751443dadcf7da9489e97"},
+    {file = "openbb_core-1.2.3.tar.gz", hash = "sha256:043541fa099a866544dd239a69f91797d5305c86a54efc61039c7f5dd049a504"},
 ]
 
 [package.dependencies]
@@ -1115,8 +1115,8 @@ pydantic = ">=2.5.1,<3.0.0"
 pyjwt = ">=2.8.0,<3.0.0"
 python-dotenv = ">=1.0.0,<2.0.0"
 python-multipart = ">=0.0.7,<0.0.8"
-requests = ">=2.31.0,<3.0.0"
-ruff = ">=0.1.6,<0.2.0"
+requests = ">=2.32.1,<3.0.0"
+ruff = ">=0.1.6,<=0.4.4"
 uuid7 = ">=0.1.0,<0.2.0"
 uvicorn = ">=0.24,<0.25"
 websockets = ">=12.0,<13.0"
@@ -1570,6 +1570,7 @@ files = [
     {file = "PyYAML-6.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:bf07ee2fef7014951eeb99f56f39c9bb4af143d8aa3c21b1677805985307da34"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:855fb52b0dc35af121542a76b9a84f8d1cd886ea97c84703eaa6d88e37a2ad28"},
     {file = "PyYAML-6.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:40df9b996c2b73138957fe23a16a4f0ba614f4c0efce1e9406a184b6d07fa3a9"},
+    {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a08c6f0fe150303c1c6b71ebcd7213c2858041a7e01975da3a99aed1e7a378ef"},
     {file = "PyYAML-6.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c22bec3fbe2524cde73d7ada88f6566758a8f7227bfbf93a408a9d86bcc12a0"},
     {file = "PyYAML-6.0.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:8d4e9c88387b0f5c7d5f281e55304de64cf7f9c0021a3525bd3b1c542da3b0e4"},
     {file = "PyYAML-6.0.1-cp312-cp312-win32.whl", hash = "sha256:d483d2cdf104e7c9fa60c544d92981f12ad66a457afae824d146093b8c294c54"},
@@ -1606,13 +1607,13 @@ files = [
 
 [[package]]
 name = "requests"
-version = "2.31.0"
+version = "2.32.1"
 description = "Python HTTP for Humans."
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "requests-2.31.0-py3-none-any.whl", hash = "sha256:58cd2187c01e70e6e26505bca751777aa9f2ee0b7f4300988b709f44e013003f"},
-    {file = "requests-2.31.0.tar.gz", hash = "sha256:942c5a758f98d790eaed1a29cb6eefc7ffb0d1cf7af05c3d2791656dbd6ad1e1"},
+    {file = "requests-2.32.1-py3-none-any.whl", hash = "sha256:21ac9465cdf8c1650fe1ecde8a71669a93d4e6f147550483a2967d08396a56a5"},
+    {file = "requests-2.32.1.tar.gz", hash = "sha256:eb97e87e64c79e64e5b8ac75cee9dd1f97f49e289b083ee6be96268930725685"},
 ]
 
 [package.dependencies]
@@ -2420,4 +2421,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "b1ae3f44b795f06ae99d6479ca47baf278886a1dec181e17924047a6732b6bbf"
+content-hash = "2404f0a143321a70f94c4f3d566cecb191bbb1cb9e7303a86911d181b94d623c"

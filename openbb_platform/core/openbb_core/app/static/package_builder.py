@@ -190,7 +190,7 @@ class PackageBuilder:
                 "openbb": VERSION.replace("dev", ""),
                 "info": {
                     "title": "OpenBB Platform (Python)",
-                    "description": "This is the OpenBB Platform (Python).",
+                    "description": "Investment research for everyone, anywhere.",
                     "core": CORE_VERSION.replace("dev", ""),
                     "extensions": ext_map,
                 },
@@ -599,8 +599,7 @@ class MethodDefinition:
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 field = fields["provider"]
                 type_ = getattr(field, "type")
-                args = getattr(type_, "__args__")
-                first = args[0] if args else None
+                default_priority = getattr(type_, "__args__")
                 formatted["provider"] = Parameter(
                     name="provider",
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -608,10 +607,9 @@ class MethodDefinition:
                         Optional[MethodDefinition.get_type(field)],
                         OpenBBField(
                             description=(
-                                "The provider to use for the query, by default None.\n"
-                                f"    If None, the provider specified in defaults is selected or '{first}' if there is\n"
-                                "    no default."
-                                ""
+                                "The provider to use, by default None. "
+                                "If None, the priority list configured in the settings is used. "
+                                f"Default priority: {', '.join(default_priority)}."
                             ),
                         ),
                     ],
@@ -828,10 +826,11 @@ class MethodDefinition:
             elif name == "provider_choices":
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
                 available = field.type.__args__
+                cmd = path.strip("/").replace("/", ".")
                 code += "                provider_choices={\n"
                 code += '                    "provider": self._get_provider(\n'
                 code += "                        provider,\n"
-                code += f'                        "{path}",\n'
+                code += f'                        "{cmd}",\n'
                 code += f"                        {available},\n"
                 code += "                    )\n"
                 code += "                },\n"
@@ -1048,7 +1047,7 @@ class DocstringGenerator:
         cls,
         model_name: str,
         summary: str,
-        explicit_params: dict,
+        explicit_params: Dict[str, Parameter],
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
@@ -1071,8 +1070,10 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{create_indent(2)}")
             return description
 
-        def get_param_info(parameter: Parameter) -> Tuple[str, str]:
+        def get_param_info(parameter: Optional[Parameter]) -> Tuple[str, str]:
             """Get the parameter info."""
+            if not parameter:
+                return "", ""
             annotation = getattr(parameter, "_annotation", None)
             if isinstance(annotation, _AnnotatedAlias):
                 args = getattr(annotation, "__args__", []) if annotation else []
@@ -1123,7 +1124,7 @@ class DocstringGenerator:
             docstring += "\n"
             docstring += f"{create_indent(2)}Returns\n"
             docstring += f"{create_indent(2)}-------\n"
-            providers, _ = get_param_info(explicit_params.get("provider", None))
+            providers, _ = get_param_info(explicit_params.get("provider"))
             docstring += cls.get_OBBject_description(results_type, providers)
 
             # Schema
@@ -1300,7 +1301,7 @@ class PathHandler:
     @staticmethod
     def get_route(path: str, route_map: Dict[str, BaseRoute]):
         """Get the route from the path."""
-        return route_map.get(path, None)
+        return route_map.get(path)
 
     @staticmethod
     def get_child_path_list(path: str, path_list: List[str]) -> List[str]:
@@ -1395,7 +1396,7 @@ class ReferenceGenerator:
         )
 
     @classmethod
-    def _get_provider_parameter_info(cls, model: str) -> Dict[str, str]:
+    def _get_provider_parameter_info(cls, model: str) -> Dict[str, Any]:
         """Get the name, type, description, default value and optionality information for the provider parameter.
 
         Parameters
@@ -1405,7 +1406,7 @@ class ReferenceGenerator:
 
         Returns
         -------
-        Dict[str, str]
+        Dict[str, Any]
             Dictionary of the provider parameter information
         """
         pi_model_provider = cls.pi.model_providers[model]
@@ -1415,18 +1416,18 @@ class ReferenceGenerator:
         field_type = DocstringGenerator.get_field_type(
             provider_params_field.type, False, "website"
         )
-        default = provider_params_field.type.__args__[0]
+        default_priority = provider_params_field.type.__args__[0]
         description = (
-            "The provider to use for the query, by default None. "
-            "If None, the provider specified in defaults is selected "
-            f"or '{default}' if there is no default."
+            "The provider to use, by default None. "
+            "If None, the priority list configured in the settings is used. "
+            f"Default priority: {', '.join(default_priority)}."
         )
 
         provider_parameter_info = {
             "name": name,
             "type": field_type,
             "description": description,
-            "default": default,
+            "default": None,
             "optional": True,
         }
 
@@ -1684,6 +1685,8 @@ class ReferenceGenerator:
         reference: Dict[str, Dict] = {}
 
         for path, route in route_map.items():
+            # Initialize the provider parameter fields as an empty dictionary
+            provider_parameter_fields = {"type": ""}
             # Initialize the reference fields as empty dictionaries
             reference[path] = {field: {} for field in cls.REFERENCE_FIELDS}
             # Route method is used to distinguish between GET and POST methods

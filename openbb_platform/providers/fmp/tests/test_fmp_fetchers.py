@@ -38,12 +38,12 @@ from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
 from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
-from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
 from openbb_fmp.models.etf_info import FMPEtfInfoFetcher
 from openbb_fmp.models.etf_search import FMPEtfSearchFetcher
 from openbb_fmp.models.etf_sectors import FMPEtfSectorsFetcher
 from openbb_fmp.models.executive_compensation import FMPExecutiveCompensationFetcher
 from openbb_fmp.models.financial_ratios import FMPFinancialRatiosFetcher
+from openbb_fmp.models.forward_ebitda_estimates import FMPForwardEbitdaEstimatesFetcher
 from openbb_fmp.models.forward_eps_estimates import FMPForwardEpsEstimatesFetcher
 from openbb_fmp.models.historical_dividends import FMPHistoricalDividendsFetcher
 from openbb_fmp.models.historical_employees import FMPHistoricalEmployeesFetcher
@@ -70,6 +70,7 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
+from openbb_fmp.models.yield_curve import FMPYieldCurveFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -252,7 +253,7 @@ def test_fmp_world_news_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_income_statement_growth_fetcher(credentials=test_credentials):
     """Test FMP income statement growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPIncomeStatementGrowthFetcher()
     result = fetcher.test(params, credentials)
@@ -262,7 +263,7 @@ def test_fmp_income_statement_growth_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_balance_sheet_growth_fetcher(credentials=test_credentials):
     """Test FMP balance sheet growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPBalanceSheetGrowthFetcher()
     result = fetcher.test(params, credentials)
@@ -272,7 +273,7 @@ def test_fmp_balance_sheet_growth_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_cash_flow_statement_growth_fetcher(credentials=test_credentials):
     """Test FMP cash flow statement growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPCashFlowStatementGrowthFetcher()
     result = fetcher.test(params, credentials)
@@ -542,7 +543,7 @@ def test_fmp_equity_quote_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_equity_screener_fetcher(credentials=test_credentials):
     """Test FMP equity screener fetcher."""
-    params = {"query": "midstream", "sector": "Energy", "beta_max": 0.5}
+    params = {"industry": "midstream", "sector": "energy", "beta_max": 0.5}
 
     fetcher = FMPEquityScreenerFetcher()
     result = fetcher.test(params, credentials)
@@ -650,16 +651,6 @@ def test_fmp_etf_countries_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
-    """Test FMP ETF holdings performance fetcher."""
-    params = {"symbol": "QQQ"}
-
-    fetcher = FMPEtfHoldingsPerformanceFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_fmp_discovery_filings_fetcher(credentials=test_credentials):
     """Test FMP discovery filings fetcher."""
     params = {
@@ -744,5 +735,30 @@ def test_fmp_equity_forward_eps_fetcher(credentials=test_credentials):
     }
 
     fetcher = FMPForwardEpsEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_forward_ebitda_fetcher(credentials=test_credentials):
+    """Test FMP forward EBITDA estimates fetcher."""
+    params = {
+        "symbol": "MSFT,AAPL",
+        "fiscal_period": "annual",
+        "include_historical": False,
+        "limit": None,
+    }
+
+    fetcher = FMPForwardEbitdaEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_yield_curve_fetcher(credentials=test_credentials):
+    """Test FMP Yield Curve Fetcher."""
+    params = {"date": "2024-05-14,2023-05-14,2022-05-14,2021-05-14,2020-05-14"}
+
+    fetcher = FMPYieldCurveFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

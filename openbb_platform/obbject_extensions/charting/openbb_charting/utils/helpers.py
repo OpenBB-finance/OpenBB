@@ -92,3 +92,22 @@ def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
         df[item] = ha[f"HA_{item}"]
 
     return df
+
+
+def duration_sorter(durations: list) -> list:
+    """Sort durations labeled as month_5, year_5, etc."""
+
+    def duration_to_months(duration):
+        """Convert duration to months."""
+        if duration == "long_term":
+            return 360
+        parts = duration.split("_")
+        months = 0
+        for i in range(0, len(parts), 2):
+            number = int(parts[i + 1])
+            if parts[i] == "year":
+                number *= 12  # Convert years to months
+            months += number
+        return months
+
+    return sorted(durations, key=duration_to_months)

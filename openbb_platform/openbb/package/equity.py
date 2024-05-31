@@ -79,7 +79,7 @@ class ROUTER_equity(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "polygon"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon."
             ),
         ] = None,
         **kwargs
@@ -89,9 +89,7 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, polygon.
         market : Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']
             The market to fetch data for. (provider: fmp)
         date : Optional[Union[datetime.date, datetime.datetime, str]]
@@ -222,7 +220,7 @@ class ROUTER_equity(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/market_snapshots",
+                        "equity.market_snapshots",
                         ("fmp", "intrinio", "polygon"),
                     )
                 },
@@ -260,7 +258,7 @@ class ROUTER_equity(Container):
         provider: Annotated[
             Optional[Literal["fmp", "intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -272,9 +270,7 @@ class ROUTER_equity(Container):
         symbol : Union[str, List[str]]
             Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
 
         Returns
         -------
@@ -426,7 +422,7 @@ class ROUTER_equity(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/profile",
+                        "equity.profile",
                         ("fmp", "intrinio", "yfinance"),
                     )
                 },
@@ -451,7 +447,7 @@ class ROUTER_equity(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -464,9 +460,7 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         mktcap_min : Optional[int]
             Filter by market cap greater than this value. (provider: fmp)
         mktcap_max : Optional[int]
@@ -491,7 +485,7 @@ class ROUTER_equity(Container):
             If true, returns only ETFs. (provider: fmp)
         is_active : Optional[bool]
             If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']]
+        sector : Optional[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']]
             Filter by sector. (provider: fmp)
         industry : Optional[str]
             Filter by industry. (provider: fmp)
@@ -559,7 +553,7 @@ class ROUTER_equity(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/screener",
+                        "equity.screener",
                         ("fmp",),
                     )
                 },
@@ -582,7 +576,7 @@ class ROUTER_equity(Container):
         provider: Annotated[
             Optional[Literal["intrinio", "sec"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec."
             ),
         ] = None,
         **kwargs
@@ -598,9 +592,7 @@ class ROUTER_equity(Container):
         use_cache : Optional[bool]
             Whether to use the cache or not.
         provider : Optional[Literal['intrinio', 'sec']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.
         active : Optional[bool]
             When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)
         limit : Optional[int]
@@ -648,7 +640,7 @@ class ROUTER_equity(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/search",
+                        "equity.search",
                         ("intrinio", "sec"),
                     )
                 },

@@ -2,8 +2,9 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -26,7 +27,10 @@ from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
-from openbb_fred.models.us_yield_curve import FREDYieldCurveFetcher
+from openbb_fred.models.us_yield_curve import (
+    FREDYieldCurveFetcher as FREDUSYieldCurveFetcher,
+)
+from openbb_fred.models.yield_curve import FREDYieldCurveFetcher
 
 fred_provider = Provider(
     name="fred",
@@ -36,8 +40,9 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
 816,000 economic time series from various sources.""",
     credentials=["api_key"],
     fetcher_dict={
+        "BalanceOfPayments": FredBalanceOfPaymentsFetcher,
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
-        "USYieldCurve": FREDYieldCurveFetcher,
+        "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
         "ESTR": FREDESTRFetcher,
         "SONIA": FREDSONIAFetcher,
@@ -58,6 +63,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
+        "YieldCurve": FREDYieldCurveFetcher,
     },
     repr_name="Federal Reserve Economic Data | St. Louis FED (FRED)",
     v3_credentials=["API_FRED_KEY"],

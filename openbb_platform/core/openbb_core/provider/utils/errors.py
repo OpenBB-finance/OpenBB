@@ -1,7 +1,9 @@
 """Custom exceptions for the provider."""
 
+from openbb_core.app.model.abstract.error import OpenBBError
 
-class EmptyDataError(Exception):
+
+class EmptyDataError(OpenBBError):
     """Exception raised for empty data."""
 
     def __init__(
