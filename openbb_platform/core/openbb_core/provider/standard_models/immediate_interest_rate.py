@@ -1,7 +1,7 @@
-"""Unemployment Standard Model."""
+"""Immediate Interest Rates Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -13,17 +13,12 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class UnemploymentQueryParams(QueryParams):
-    """Unemployment Query."""
+class ImmediateInterestRateQueryParams(QueryParams):
+    """Immediate (Call money, interbank rate) Rate Query."""
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
         default="united_states",
-    )
-    frequency: Literal["monthly", "quarter", "annual"] = Field(
-        description=QUERY_DESCRIPTIONS.get("frequency", ""),
-        default="monthly",
-        json_schema_extra={"choices": ["monthly", "quarter", "annual"]},
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -33,18 +28,18 @@ class UnemploymentQueryParams(QueryParams):
     )
 
 
-class UnemploymentData(Data):
-    """Unemployment Data."""
+class ImmediateInterestRateData(Data):
+    """Immediate Interest Rates Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
     country: Optional[str] = Field(
         default=None,
-        description="Country for which unemployment rate is given",
+        description="Country for which interest rate is given",
     )
     value: Optional[float] = Field(
         default=None,
-        description="Unemployment rate, as a normalized percent.",
+        description="Immediate interest rates, call money, interbank rate.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

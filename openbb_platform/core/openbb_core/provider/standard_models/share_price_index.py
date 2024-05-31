@@ -1,4 +1,4 @@
-"""Unemployment Standard Model."""
+"""Share Price Index Standard Model."""
 
 from datetime import date as dateType
 from typing import Literal, Optional
@@ -13,8 +13,8 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class UnemploymentQueryParams(QueryParams):
-    """Unemployment Query."""
+class SharePriceIndexQueryParams(QueryParams):
+    """Share Price Index Query."""
 
     country: str = Field(
         description=QUERY_DESCRIPTIONS.get("country", ""),
@@ -33,18 +33,17 @@ class UnemploymentQueryParams(QueryParams):
     )
 
 
-class UnemploymentData(Data):
-    """Unemployment Data."""
+class SharePriceIndexData(Data):
+    """Share Price Index Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
     )
     country: Optional[str] = Field(
         default=None,
-        description="Country for which unemployment rate is given",
+        description=DATA_DESCRIPTIONS.get("country", ""),
     )
     value: Optional[float] = Field(
         default=None,
-        description="Unemployment rate, as a normalized percent.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        description="Share price index value.",
     )

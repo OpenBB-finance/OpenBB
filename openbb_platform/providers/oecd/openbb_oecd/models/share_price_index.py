@@ -1,50 +1,39 @@
-"""OECD Unemployment Data."""
+"""OECD Share Price Index Model."""
 
 # pylint: disable=unused-argument
 
 from datetime import date
 from io import StringIO
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.unemployment import (
-    UnemploymentData,
-    UnemploymentQueryParams,
+from openbb_core.provider.standard_models.share_price_index import (
+    SharePriceIndexData,
+    SharePriceIndexQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item, make_request
-from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import (
-    CODE_TO_COUNTRY_UNEMPLOYMENT,
-    COUNTRY_TO_CODE_UNEMPLOYMENT,
+    CODE_TO_COUNTRY_RGDP,
+    COUNTRY_TO_CODE_RGDP,
 )
+from openbb_oecd.utils.helpers import oecd_date_to_python_date
 from pandas import read_csv
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_UNEMPLOYMENT.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_RGDP.values()) + ("all",)
 CountriesList = sorted(list(countries))  # type: ignore
-AGES = [
-    "total",
-    "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
-]
-AgesLiteral = Literal[
-    "total",
-    "15-24",
-    "25-54",
-    "55-64",
-    "15-64",
-    "15-74",
-]
+frequency_dict = {
+    "monthly": "M",
+    "quarter": "Q",
+    "annual": "A",
+}
 
 
-class OECDUnemploymentQueryParams(UnemploymentQueryParams):
-    """OECD Unemployment Query.
+class OECDSharePriceIndexQueryParams(SharePriceIndexQueryParams):
+    """OECD Share Price Index Query.
 
     Source: https://data-explorer.oecd.org/?lc=en
     """
@@ -56,20 +45,6 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
         default="united_states",
         choices=CountriesList,
     )
-    sex: Literal["total", "male", "female"] = Field(
-        description="Sex to get unemployment for.",
-        default="total",
-        json_schema_extra={"choices": ["total", "male", "female"]},
-    )
-    age: Literal[AgesLiteral] = Field(
-        description="Age group to get unemployment for. Total indicates 15 years or over",
-        default="total",
-        json_schema_extra={"choices": AGES},
-    )
-    seasonal_adjustment: bool = Field(
-        description="Whether to get seasonally adjusted unemployment. Defaults to False.",
-        default=False,
-    )
 
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
@@ -78,8 +53,8 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
         result: List = []
         values = c.replace(" ", "_").split(",")
         for v in values:
-            if v.upper() in CODE_TO_COUNTRY_UNEMPLOYMENT:
-                result.append(CODE_TO_COUNTRY_UNEMPLOYMENT.get(v.upper()))
+            if v.upper() in CODE_TO_COUNTRY_RGDP:
+                result.append(CODE_TO_COUNTRY_RGDP.get(v.upper()))
                 continue
             try:
                 check_item(v.lower(), CountriesList)
@@ -95,64 +70,54 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
         raise ValueError(f"No valid country found. -> {values}")
 
 
-class OECDUnemploymentData(UnemploymentData):
-    """OECD Unemployment Data."""
+class OECDSharePriceIndexData(SharePriceIndexData):
+    """OECD Share Price Index Data."""
 
 
-class OECDUnemploymentFetcher(
-    Fetcher[OECDUnemploymentQueryParams, List[OECDUnemploymentData]]
+class OECDSharePriceIndexFetcher(
+    Fetcher[OECDSharePriceIndexQueryParams, List[OECDSharePriceIndexData]]
 ):
-    """Transform the query, extract and transform the data from the OECD endpoints."""
+    """OECD Share Price Index Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDUnemploymentQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDSharePriceIndexQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
-        if transformed_params["start_date"] is None:
+        if transformed_params.get("start_date") is None:
             transformed_params["start_date"] = (
-                date(2010, 1, 1)
+                date(2000, 1, 1)
                 if transformed_params.get("country") == "all"
-                else date(1950, 1, 1)
+                else date(1958, 1, 1)
             )
-        if transformed_params["end_date"] is None:
+        if transformed_params.get("end_date") is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
+        if transformed_params.get("country") is None:
+            transformed_params["country"] = "united_states"
 
-        return OECDUnemploymentQueryParams(**transformed_params)
+        return OECDSharePriceIndexQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDUnemploymentQueryParams,
+        query: OECDSharePriceIndexQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
-        sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
-        frequency = query.frequency[0].upper()
-        age = {
-            "total": "Y_GE15",
-            "15-24": "Y15T24",
-            "15-64": "Y15T64",
-            "15-74": "Y15T74",
-            "25-54": "Y25T54",
-            "55-64": "Y55T64",
-        }[query.age]
-        seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
+        frequency = frequency_dict.get(query.frequency)
 
         def country_string(input_str: str):
             if input_str == "all":
                 return ""
             countries = input_str.split(",")
-            return "+".join(
-                [COUNTRY_TO_CODE_UNEMPLOYMENT[country] for country in countries]
-            )
+            return "+".join([COUNTRY_TO_CODE_RGDP[country] for country in countries])
 
         country = country_string(query.country)
         start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
         end_date = query.end_date.strftime("%Y-%m") if query.end_date else ""
         url = (
-            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M,1.0/"
-            + f"{country}..._Z.{seasonal_adjustment}.{sex}.{age}..{frequency}"
-            + f"?startPeriod={start_date}&endPeriod={end_date}"
+            "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_STES@DF_FINMARK,4.0/"
+            + f"{country}.{frequency}.SHARE......?"
+            + f"startPeriod={start_date}&endPeriod={end_date}"
             + "&dimensionAtObservation=TIME_PERIOD&detail=dataonly"
         )
         headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
@@ -167,22 +132,20 @@ class OECDUnemploymentFetcher(
         df = df.rename(
             columns={"REF_AREA": "country", "TIME_PERIOD": "date", "OBS_VALUE": "value"}
         )
-        df["value"] = df["value"].astype(float) / 100
-        df["country"] = df["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
-        df["date"] = df["date"].apply(helpers.oecd_date_to_python_date)
         df = (
             df.query("value.notnull()")
             .set_index(["date", "country"])
             .sort_index()
             .reset_index()
         )
-        df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
+        df.country = df.country.map(CODE_TO_COUNTRY_RGDP)
+        df.date = df.date.apply(oecd_date_to_python_date)
 
-        return df.to_dict(orient="records")
+        return df.to_dict("records")
 
     @staticmethod
     def transform_data(
-        query: OECDUnemploymentQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDUnemploymentData]:
+        query: OECDSharePriceIndexQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[OECDSharePriceIndexData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDUnemploymentData.model_validate(d) for d in data]
+        return [OECDSharePriceIndexData.model_validate(d) for d in data]
