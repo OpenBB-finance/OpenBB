@@ -6270,6 +6270,246 @@
             },
             "model": "ImmediateInterestRate"
         },
+        "/economy/retail_prices": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get retail prices for common items.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.retail_prices(provider='fred')\n# The price of eggs in the northeast census region.\nobb.economy.retail_prices(item='eggs', region=northeast, provider='fred')\n# The percentage change in price, from one-year ago, of various meats, US City Average.\nobb.economy.retail_prices(item='meats', transform=pc1, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "item",
+                        "type": "str",
+                        "description": "The item or basket of items to query.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "item",
+                        "type": "Literal['beverages', 'cereals', 'dairy', 'fuel', 'produce', 'meats', 'bacon', 'bananas', 'beans', 'beef', 'beer', 'bread', 'butter', 'cheese', 'chicken', 'chops', 'coffee', 'cookies', 'corn', 'diesel', 'eggs', 'electricity', 'flour', 'gas', 'gasoline', 'grapefruit', 'ground_beef', 'ham', 'ice_cream', 'lemons', 'lettuce', 'malt_beverages', 'milk', 'oil', 'orange_juice', 'oranges', 'pork', 'potato_chips', 'potatoes', 'rice', 'soft_drinks', 'spaghetti', 'steak', 'strawberries', 'sugar', 'tea', 'tomatoes', 'unleaded', 'usda', 'vodka', 'wine', 'yogurt']",
+                        "description": "The item or basket of items to query.",
+                        "default": "fuel",
+                        "optional": true,
+                        "choices": [
+                            "beverages",
+                            "cereals",
+                            "dairy",
+                            "fuel",
+                            "meats",
+                            "produce",
+                            "bacon",
+                            "bananas",
+                            "beans",
+                            "beef",
+                            "beer",
+                            "bread",
+                            "butter",
+                            "cheese",
+                            "chicken",
+                            "chops",
+                            "coffee",
+                            "cookies",
+                            "corn",
+                            "diesel",
+                            "eggs",
+                            "electricity",
+                            "flour",
+                            "gas",
+                            "gasoline",
+                            "grapefruit",
+                            "groud_beef",
+                            "ham",
+                            "ice_cream",
+                            "lemons",
+                            "lettuce",
+                            "malt_beverages",
+                            "milk",
+                            "oil",
+                            "orange_juice",
+                            "oranges",
+                            "potato_chips",
+                            "potatoes",
+                            "pork",
+                            "rice",
+                            "soft_drinks",
+                            "spaghetti",
+                            "steak",
+                            "strawberries",
+                            "sugar",
+                            "tea",
+                            "tomatoes",
+                            "unleaded",
+                            "usda",
+                            "vodka",
+                            "wine",
+                            "yogurt"
+                        ]
+                    },
+                    {
+                        "name": "country",
+                        "type": "Literal['united_states']",
+                        "description": "The country to get data.",
+                        "default": "united_states",
+                        "optional": true,
+                        "choices": "united_states"
+                    },
+                    {
+                        "name": "region",
+                        "type": "Literal['all_city', 'northeast', 'midwest', 'south', 'west']",
+                        "description": "The region to get average price levels for.",
+                        "default": "all_city",
+                        "optional": true,
+                        "choices": [
+                            "all_city",
+                            "northeast",
+                            "midwest",
+                            "south",
+                            "west"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter', 'monthly']",
+                        "description": "The frequency of the data.",
+                        "default": "monthly",
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter",
+                            "monthly"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[RetailPrices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "country",
+                        "type": "str",
+                        "description": "",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "description",
+                        "type": "str",
+                        "description": "Description of the item.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Price, or change in price, per unit.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "RetailPrices"
+        },
         "/equity/calendar/ipo": {
             "deprecated": {
                 "flag": null,
