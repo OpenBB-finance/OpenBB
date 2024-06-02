@@ -29,6 +29,7 @@ class ROUTER_economy(Container):
     indicators
     long_term_interest_rate
     money_measures
+    retail_prices
     risk_premium
     share_price_index
     short_term_interest_rate
@@ -1752,6 +1753,122 @@ class ROUTER_economy(Container):
                     "start_date": start_date,
                     "end_date": end_date,
                     "adjusted": adjusted,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def retail_prices(
+        self,
+        item: Annotated[
+            Optional[str],
+            OpenBBField(description="The item or basket of items to query."),
+        ] = None,
+        country: Annotated[
+            str, OpenBBField(description="The country to get data.")
+        ] = "united_states",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get retail prices for common items.
+
+        Parameters
+        ----------
+        item : Optional[str]
+            The item or basket of items to query.
+        country : str
+            The country to get data.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        region : Literal['all_city', 'northeast', 'midwest', 'south', 'west']
+            The region to get average price levels for. (provider: fred)
+        frequency : Literal['annual', 'quarter', 'monthly']
+            The frequency of the data. (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[RetailPrices]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        RetailPrices
+        ------------
+        date : Optional[date]
+            The date of the data.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        country : Optional[str]
+
+        description : Optional[str]
+            Description of the item.
+        value : Optional[float]
+            Price, or change in price, per unit.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.economy.retail_prices(provider='fred')
+        >>> # The price of eggs in the northeast census region.
+        >>> obb.economy.retail_prices(item='eggs', region='northeast', provider='fred')
+        >>> # The percentage change in price, from one-year ago, of various meats, US City Average.
+        >>> obb.economy.retail_prices(item='meats', transform='pc1', provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/retail_prices",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "economy.retail_prices",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "item": item,
+                    "country": country,
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )

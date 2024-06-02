@@ -483,3 +483,35 @@ async def immediate_interest_rate(
 ) -> OBBject:
     """Get immediate interest rates by country."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="RetailPrices",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            description="The price of eggs in the northeast census region.",
+            parameters={
+                "item": "eggs",
+                "region": "northeast",
+                "provider": "fred",
+            },
+        ),
+        APIEx(
+            description="The percentage change in price, from one-year ago, of various meats, US City Average.",
+            parameters={
+                "item": "meats",
+                "transform": "pc1",
+                "provider": "fred",
+            },
+        ),
+    ],
+)
+async def retail_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get retail prices for common items."""
+    return await OBBject.from_query(Query(**locals()))
