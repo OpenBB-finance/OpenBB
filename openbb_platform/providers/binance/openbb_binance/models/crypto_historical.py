@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.crypto_historical import (
 )
 from pydantic import Field
 
-# pylint: disable=unused-argument, arguments-differ
+# pylint: disable=unused-argument
 
 logger = logging.getLogger(__name__)
 
@@ -52,7 +52,9 @@ class BinanceCryptoHistoricalData(CryptoHistoricalData):
     )
 
 
-class BinanceCryptoHistoricalFetcher(Fetcher):
+class BinanceCryptoHistoricalFetcher(
+    Fetcher[BinanceCryptoHistoricalQueryParams, BinanceCryptoHistoricalData]
+):
     """Define Binance Crypto Historical Fetcher."""
 
     @staticmethod
@@ -71,7 +73,7 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
             f"wss://stream.binance.{query.tld}:9443/ws/{query.symbol.lower()}@miniTicker"
         ) as websocket:
             logger.info("Connected to WebSocket server.")
-            end_time = datetime.now() + timedelta(seconds=query.lifetime)
+            end_time = datetime.now() + timedelta(seconds=query.lifetime)  # type: ignore
             try:
                 async for message in websocket:
                     data = json.loads(message)
@@ -88,9 +90,10 @@ class BinanceCryptoHistoricalFetcher(Fetcher):
     async def atransform_data(
         query: BinanceCryptoHistoricalQueryParams,
         data: Dict[str, Any],
+        **kwargs: Any,
     ) -> AsyncIterator[str]:
         """Return the transformed data."""
-        async for chunk in data:
+        async for chunk in data:  # type: ignore
             chunk["date"] = (
                 datetime.now().isoformat() if "date" not in chunk else chunk["date"]
             )

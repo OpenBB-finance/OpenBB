@@ -1,7 +1,5 @@
 """Crypto Router."""
 
-# import asyncio
-
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject

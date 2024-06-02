@@ -1,1 +1,1 @@
-"""Biztoc Provider models."""
+"""Binance Provider models."""

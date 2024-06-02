@@ -1,1 +1,1 @@
-"""Biztoc provider."""
+"""Binance provider."""
