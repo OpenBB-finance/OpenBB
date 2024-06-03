@@ -252,12 +252,12 @@ def get_possibly_cached_data(
 
 
 def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
-    """Use Darrens good idea to make the dates filterable."""
+    """Date formatter helper."""
     input_date = str(input_date)
     if "Q" in input_date:
-        return to_datetime(input_date).to_period("Q").to_timestamp("Q").date()
+        return to_datetime(input_date).to_period("Q").start_time.date()
     if len(input_date) == 4:
-        return date(int(input_date), 12, 31)
+        return date(int(input_date), 1, 1)
     if len(input_date) == 7:
-        return to_datetime(input_date).to_period("M").to_timestamp("M").date()
+        return to_datetime(input_date).to_period("M").start_time.date()
     raise ValueError("Date not in expected format")

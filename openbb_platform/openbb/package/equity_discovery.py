@@ -39,7 +39,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -51,9 +51,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -103,7 +101,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/active",
+                        "equity.discovery.active",
                         ("yfinance",),
                     )
                 },
@@ -127,7 +125,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -139,9 +137,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -191,7 +187,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/aggressive_small_caps",
+                        "equity.discovery.aggressive_small_caps",
                         ("yfinance",),
                     )
                 },
@@ -226,7 +222,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -250,9 +246,7 @@ class ROUTER_equity_discovery(Container):
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
         is_done : Optional[bool]
             Flag for whether or not the filing is done. (provider: fmp)
 
@@ -299,7 +293,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/filings",
+                        "equity.discovery.filings",
                         ("fmp",),
                     )
                 },
@@ -326,7 +320,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -338,9 +332,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -390,7 +382,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/gainers",
+                        "equity.discovery.gainers",
                         ("yfinance",),
                     )
                 },
@@ -414,7 +406,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -426,9 +418,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -478,7 +468,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/growth_tech",
+                        "equity.discovery.growth_tech",
                         ("yfinance",),
                     )
                 },
@@ -502,7 +492,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -514,9 +504,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -566,7 +554,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/losers",
+                        "equity.discovery.losers",
                         ("yfinance",),
                     )
                 },
@@ -590,7 +578,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -602,9 +590,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -654,7 +640,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/undervalued_growth",
+                        "equity.discovery.undervalued_growth",
                         ("yfinance",),
                     )
                 },
@@ -678,7 +664,7 @@ class ROUTER_equity_discovery(Container):
         provider: Annotated[
             Optional[Literal["yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'yfinance' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance."
             ),
         ] = None,
         **kwargs
@@ -690,9 +676,7 @@ class ROUTER_equity_discovery(Container):
         sort : Literal['asc', 'desc']
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
         provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: yfinance.
 
         Returns
         -------
@@ -742,7 +726,7 @@ class ROUTER_equity_discovery(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/discovery/undervalued_large_caps",
+                        "equity.discovery.undervalued_large_caps",
                         ("yfinance",),
                     )
                 },
