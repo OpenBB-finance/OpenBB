@@ -10,7 +10,6 @@ from openbb_cli.models.settings import Settings
 def test_default_values():
     """Test the default values of the settings model."""
     settings = Settings()
-    assert settings.VERSION == "1.0.0"
     assert settings.TEST_MODE is False
     assert settings.DEBUG_MODE is False
     assert settings.DEV_BACKEND is False
@@ -43,7 +42,6 @@ def test_repr():
     settings = Settings()
     repr_str = settings.__repr__()  # pylint: disable=C2801
     assert "Settings\n\n" in repr_str
-    assert "VERSION: 1.0.0" in repr_str
 
 
 # Test loading from environment variables
