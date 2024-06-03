@@ -743,3 +743,31 @@ def test_economy_immediate_interest_rate(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "country": "united_states",
+                "item": "meats",
+                "region": "all_city",
+                "frequency": "annual",
+                "provider": "fred",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+                "transform": "pc1",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_retail_prices(params, obb):
+    """Test economy retail prices."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.retail_prices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
