@@ -62,7 +62,7 @@ options:
   --adjustment {splits_and_dividends,unadjusted,splits_only}
                         The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
   -h, --help            show this help message
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, svg
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
   --sheet-name SHEET_NAME [SHEET_NAME ...]
                         Name of excel sheet to save data to. Only valid for .xlsx files.
 
