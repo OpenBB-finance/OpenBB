@@ -29,6 +29,7 @@ from openbb_cli.argparse_translator.argparse_argument import (
 )
 from openbb_cli.argparse_translator.utils import (
     get_argument_choices,
+    get_argument_optional_choices,
     in_group,
     remove_argument,
     set_optional_choices,
@@ -129,6 +130,13 @@ class ArgparseTranslator:
                                 action.help or "", [group.title]
                             )
                 return
+
+            # we need to check if the optional choices were set in other group
+            # before we remove the argument from the group, otherwise we will lose info
+            if not optional_choices:
+                optional_choices = get_argument_optional_choices(
+                    self._parser, argument.name
+                )
 
             # if the argument is in use, remove it from all groups
             # and return the groups that had the argument

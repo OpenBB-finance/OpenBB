@@ -55,7 +55,18 @@ def get_argument_choices(parser: ArgumentParser, argument_name: str) -> Tuple:
     return ()
 
 
+def get_argument_optional_choices(parser: ArgumentParser, argument_name: str) -> bool:
+    """Get the optional_choices attribute of an argument from an ArgumentParser."""
+    for action in parser._actions:  # pylint: disable=protected-access
+        opts = action.option_strings
+        if (opts and opts[0] == argument_name) or action.dest == argument_name:
+            if hasattr(action, "optional_choices"):
+                return action.optional_choices
+    return False
+
+
 def set_optional_choices(action: Action, optional_choices: bool):
     """Set the optional_choices attribute of an action."""
     if not hasattr(action, "optional_choices") and optional_choices:
-        setattr(action, "optional_choices", optional_choices)
+        # setattr(action, "optional_choices", optional_choices)
+        action.optional_choices = optional_choices
