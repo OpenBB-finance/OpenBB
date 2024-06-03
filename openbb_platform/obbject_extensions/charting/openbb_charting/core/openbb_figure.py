@@ -464,24 +464,6 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(barmode="overlay", bargap=0.01, bargroupgap=0)
 
-    def is_image_export(self, export: Optional[str] = "") -> bool:
-        """Check if the export format is an image format.
-
-        Parameters
-        ----------
-        export : `str`
-            Export format
-
-        Returns
-        -------
-        `bool`
-            True if the export format is an image format, False otherwise
-        """
-        if not export:
-            return False
-
-        return any(ext in export for ext in ["jpg", "png", "svg"])
-
     def set_title(
         self, title: str, wrap: bool = False, wrap_width: int = 80, **kwargs
     ) -> "OpenBBFigure":
