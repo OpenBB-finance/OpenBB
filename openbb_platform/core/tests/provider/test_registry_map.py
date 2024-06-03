@@ -16,7 +16,8 @@ def test_get_credentials(load_registry_map):
     """Test if the _get_credentials method behaves as expected."""
     required_creds = load_registry_map.credentials
 
-    assert "fmp_api_key" in required_creds
+    assert "fmp" in required_creds
+    assert required_creds["fmp"] == ["fmp_api_key"]
 
 
 def test_get_available_providers(load_registry_map):
