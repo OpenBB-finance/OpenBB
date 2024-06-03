@@ -68,5 +68,4 @@ def get_argument_optional_choices(parser: ArgumentParser, argument_name: str) ->
 def set_optional_choices(action: Action, optional_choices: bool):
     """Set the optional_choices attribute of an action."""
     if not hasattr(action, "optional_choices") and optional_choices:
-        # setattr(action, "optional_choices", optional_choices)
-        action.optional_choices = optional_choices
+        setattr(action, "optional_choices", optional_choices)
