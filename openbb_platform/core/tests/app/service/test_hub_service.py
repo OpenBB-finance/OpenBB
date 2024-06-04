@@ -312,7 +312,7 @@ def test_platform2hub():
 
 
 @pytest.mark.parametrize(
-    "token, message",
+    "offset, message",
     [
         # valid
         (
