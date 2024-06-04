@@ -1,3 +1,8 @@
 """OpenBB Economy Extension."""
 
-from openbb_economy import economy_views
+try:
+    from openbb_charting import Charting  # type: ignore
+
+    from openbb_economy import economy_views
+except ImportError:
+    pass

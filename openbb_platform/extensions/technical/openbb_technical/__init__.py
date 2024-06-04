@@ -1,3 +1,8 @@
 """OpenBB Technical Analysis Extension."""
 
-from openbb_technical import technical_views
+try:
+    from openbb_charting import Charting  # type: ignore
+
+    from openbb_technical import technical_views
+except ImportError:
+    pass

@@ -1,3 +1,8 @@
 """Fixed income router init."""
 
-from openbb_fixedincome import fixedincome_views
+try:
+    from openbb_charting import Charting  # type: ignore
+
+    from openbb_fixedincome import fixedincome_views
+except ImportError:
+    pass
