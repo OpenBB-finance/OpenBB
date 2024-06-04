@@ -24,7 +24,7 @@
     > For a single package release, the following steps are optional since the package can be bumped manually.
 
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
-    2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
+    2. For the extension packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
          1. Bump the dependency package versions
 
