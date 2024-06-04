@@ -27,7 +27,6 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
-from openbb_charting import charting_router
 from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.query_params import ChartParams, IndicatorsParams
