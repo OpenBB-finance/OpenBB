@@ -9,7 +9,7 @@ The library includes:
 - prebuilt charts for a set of commands that are built-in OpenBB extensions
 
 >[!NOTE]
-> The charting library is an [`OBBject` extension](https://docs.openbb.co/platform/developer_guide/contributing) which means you'll have the functionality it exposes on every command result.
+> The charting library is an [`OBBject` extension](https://docs.openbb.co/platform/development/developer-guidelines/obbject_extensions) which means you'll have the functionality it exposes on every command result.
 
 ## Installation
 
