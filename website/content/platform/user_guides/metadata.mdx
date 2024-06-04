@@ -1,0 +1,218 @@
+---
+title: Metadata
+sidebar_position: 6
+description: This guide provides an overview of the types of metadata returned within function responses, and shows samples demonstrating what to expect.
+keywords:
+- OpenBB Platform
+- metadata
+- provider
+- arguments
+- fred
+- econdb
+- macroeconomic
+- user settings
+- preferences
+- Python Interface
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Metadata | OpenBB Platform Docs" />
+
+## Overview
+
+The OpenBB Platform returns metadata related to the command execution, as well as any returned from a Provider endpoint.
+Both are stored in the `extra` attribute of the [OBBject](/platform/developer_guide/obbject.mdx) response object.
+
+It will always contain these elements:
+
+- `arguments`: Any parameters supplied, and the selected provider source, to the function.
+- `duration`: The number of nanoseconds the function took to complete.
+- `route`: The command path.
+- `timestamp`: Timestamp for when the command was run.
+
+## Execution Metadata
+
+Metadata for the command execution is captured under the `metadata` key.
+
+```python
+from openbb import obb
+
+data = obb.economy.calendar(provider="nasdaq")
+
+data.extra
+```
+
+```console
+{'metadata': Metadata
+
+ arguments: {'provider_choices': {'provider': 'nasdaq'}, 'standard_params': {'start_date': None, 'end_date': None}, 'extra_params': {}}
+ duration: 565256375
+ route: /economy/calendar
+ timestamp: 2024-05-22 11:28:57.149548}
+```
+
+### Disabling
+
+This content can be disabled as a setting in the [`user_settings.json`](settings_and_environment_variables) file.
+
+```json
+{
+  "preferences": {
+    "metadata": false
+}
+}
+```
+
+:::note
+Metadata included as part of the command results will not be disabled by this setting.
+:::
+
+## Results Metadata
+
+Where commands return metadata related to the requested data, it is keyable from the `extra` attribute with, `results_metadata`.
+
+This dictionary contains contextual information and data for the `results` that is not included in the tables.
+Results metadata will vary by command and provider, so it is worth exploring when it is included, below is a selection of samples.
+
+<details>
+<summary mdxType="summary">FRED</summary>
+
+```python
+data = obb.economy.fred_series("T10Y2Y")
+
+data.extra["results_metadata"]
+```
+
+```console
+{'T10Y2Y': {'title': '10-Year Treasury Constant Maturity Minus 2-Year Treasury Constant Maturity',
+  'units': 'Percent',
+  'frequency': 'Daily',
+  'seasonal_adjustment': 'Not Seasonally Adjusted',
+  'notes': 'Starting with the update on June 21, 2019, the Treasury bond data used in calculating interest rate spreads is obtained directly from the U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield).\r\nSeries is calculated as the spread between 10-Year Treasury Constant Maturity (BC_10YEAR) and 2-Year Treasury Constant Maturity (BC_2YEAR). Both underlying series are published at the U.S. Treasury Department (https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yield).'}}
+```
+
+The information stored here is used by the `openbb-charting` extension for display.
+
+![FRED Chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/67746ef0-7d61-4eed-b2e8-c32d001a8a00)
+
+</details>
+
+<details>
+<summary mdxType="summary">EconDB</summary>
+
+```python
+data = obb.economy.indicators("PCOPP", provider="econdb")
+
+data.extra
+```
+
+```console
+{'results_metadata': {'PCOPP': {'title': 'World - Copper',
+   'country': 'World',
+   'frequency': 'M',
+   'dataset': 'IMF_PCPS',
+   'transform': None,
+   'units': 'USD',
+   'scale': 'Units',
+   'multiplier': 1,
+   'additional_info': {'FREQ:Frequency': 'M:Monthly',
+    'REF_AREA:Reference Area': 'W00:All Countries, excluding the IO',
+    'COMMODITY:Commodity': 'PCOPP:Primary Commodity Prices, Copper',
+    'UNIT_MEASURE:Unit of Measure': 'USD:US Dollars',
+    'UNIT_MULT:Scale': '0:Units'}}},
+}
+```
+
+</details>
+
+<details>
+<summary mdxType="summary">Cboe</summary>
+
+```python
+data = obb.derivatives.options.chains("SPX", provider="cboe")
+
+data.extra
+```
+
+```console
+{'results_metadata': {'symbol': '^SPX',
+  'security_type': 'index',
+  'bid': 5293.0298,
+  'bid_size': 1,
+  'ask': 5295.2002,
+  'ask_size': 1,
+  'open': 5319.2798,
+  'high': 5323.1802,
+  'low': 5286.0098,
+  'close': 5294.0898,
+  'volume': 0,
+  'current_price': 5294.0898,
+  'prev_close': 5321.4102,
+  'change': -27.3202,
+  'change_percent': None,
+  'iv30': 10.291,
+  'iv30_change': 0.546,
+  'iv30_change_percent': 0.056029,
+  'last_tick': 'down',
+  'last_trade_timestamp': '2024-05-22 14:50:36'},
+}
+```
+</details>
+
+<details>
+<summary mdxType="summary">SEC</summary>
+
+```python
+data = obb.etf.holdings("BIL", provider="sec")
+
+data.extra
+```
+
+```console
+{'results_metadata': {'fund_name': 'SPDR(R) Bloomberg 1-3 Month T-Bill ETF',
+  'series_id': 'S000017326',
+  'lei': '549300GQCVCME1YJ6B50',
+  'period_ending': '2023-12-31',
+  'fiscal_year_end': '2024-06-30',
+  'total_assets': 35015168619.91,
+  'total_liabilities': 1638123692.3,
+  'net_assets': 33377044927.61,
+  'cash_and_equivalents': '0.00000000',
+  'returns': {'2023-10-31': 0.0044,
+   '2023-11-30': 0.0044,
+   '2023-12-31': 0.0046},
+  'flow': {'2023-10-31': {'creation': 6591274706.7,
+    'redemption': 604472521.85},
+   '2023-11-30': {'creation': 3244045301.3, 'redemption': 4478684406.9},
+   '2023-12-31': {'creation': 639802303.2, 'redemption': 3018629744.0}},
+  'gains': {'2023-10-31': {'realized': -65924.99, 'unrealized': -3793500.04},
+   '2023-11-30': {'realized': 360345.39, 'unrealized': 292210.09},
+   '2023-12-31': {'realized': 319796.93, 'unrealized': 3862704.46}},
+  'borrowers': [{'name': 'BofA Securities, Inc.',
+    'lei': '549300HN4UKV1E2R3U73',
+    'value': 211562959.29},
+   {'name': 'J.P. Morgan Securities LLC',
+    'lei': 'ZBUT11V806EZRVTWT807',
+    'value': 957576952.9},
+   {'name': 'ING Financial Markets LLC',
+    'lei': 'KBVRJ5K57JZ3E2AVWX40',
+    'value': 247944722.5},
+   {'name': 'Barclays Capital Inc.',
+    'lei': 'AC28XWWI3WIBK2824319',
+    'value': 248250000.0},
+   {'name': 'Goldman Sachs & Co. LLC',
+    'lei': 'FOR8UP27PHTHYVLBNG30',
+    'value': 110741598.05},
+   {'name': 'Bank of Montreal',
+    'lei': 'NQQ6HPCNCCU6TUTQYE16',
+    'value': 87276542.32},
+   {'name': 'Nomura Securities International, Inc.',
+    'lei': 'OXTKY6Q8X53C9ILVV871',
+    'value': 469556172.09},
+   {'name': 'Daiwa Capital Markets America Inc.',
+    'lei': 'M67H5PRC0NQKM73ZAS82',
+    'value': 198566750.0}]}
+}
+```
+</details>
