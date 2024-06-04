@@ -42,6 +42,16 @@ class Extension:
 
         return self.register_accessor(self.name, OBBject)
 
+    @property
+    def charting_accessor(self) -> Callable:
+        """Extend a Charting, inspired by pandas."""
+        # pylint: disable=import-outside-toplevel
+        # Avoid circular imports
+
+        from openbb_charting import Charting
+
+        return self.register_accessor(self.name, Charting)
+
     @staticmethod
     def register_accessor(name, cls) -> Callable:
         """Register a custom accessor."""
