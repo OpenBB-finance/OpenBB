@@ -121,16 +121,16 @@ def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     mock_get_backend.assert_called_once()
 
 
-@patch("openbb_charting.charting_router")
-def test_get_chart_function(mock_charting_router):
+def test_get_chart_function(obbject):
     """Test _get_chart_function method."""
     # Arrange
     mock_function = MagicMock()
-    mock_charting_router.some_function = mock_function
+    charting = Charting(obbject)
+    charting._functions = {"some_function": mock_function}
     route = "/some/function"
 
     # Act
-    result = Charting._get_chart_function(route)
+    result = charting._get_chart_function(route)
 
     # Assert
     assert result == mock_function
