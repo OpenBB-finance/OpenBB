@@ -126,7 +126,7 @@ class Charting:
         if route is None:
             raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
-        if adjusted_route not in self.functions():
+        if adjusted_route not in self._functions:
             raise ValueError(
                 f"Could not find the route `{adjusted_route}` in the charting functions."
             )
