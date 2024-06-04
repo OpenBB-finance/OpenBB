@@ -11,7 +11,9 @@ def get_charting_functions(
     accessor: Type, with_objects: bool = False
 ) -> Union[List[str], Dict[str, Callable]]:
     """Discover charting functions."""
-    implemented_functions = [] if not with_objects else {}
+    implemented_functions: Union[List[str], Dict[str, Callable]] = (
+        [] if not with_objects else {}
+    )
 
     for name, obj in getmembers(accessor, isfunction):
         if (
@@ -69,7 +71,6 @@ def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         DataFrame copy with Heikin Ashi candle calculations.
     """
-
     df = data.copy()
 
     check_columns = ["open", "high", "low", "close"]

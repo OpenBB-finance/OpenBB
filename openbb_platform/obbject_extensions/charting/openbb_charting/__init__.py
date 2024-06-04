@@ -6,14 +6,15 @@ import warnings
 from typing import (
     Any,
     Callable,
+    ClassVar,
     Dict,
     List,
     Literal,
     Optional,
-    Tuple,
-    Union,
-    ClassVar,
     Set,
+    Tuple,
+    Type,
+    Union,
 )
 from warnings import warn
 
@@ -92,11 +93,11 @@ class Charting:
     @classmethod
     def functions(cls) -> List[str]:
         """Return a list of the available functions."""
-        acc_cls = []
+        acc_cls: List[Type] = []
         for acc in cls.accessors:
             acc_cls.append(getattr(cls, acc))
 
-        functions = []
+        functions: List[str] = []
         for acc in acc_cls:
             functions.extend(get_charting_functions(acc))
 
@@ -104,11 +105,11 @@ class Charting:
 
     def _get_functions(self) -> Dict[str, Callable]:
         """Return a dict with the available functions."""
-        acc_cls = []
+        acc_cls: List[Type] = []
         for acc in self.accessors:
             acc_cls.append(getattr(self, acc))
 
-        functions = {}
+        functions: Dict[str, Callable] = {}
         for acc in acc_cls:
             functions.update(get_charting_functions(acc, with_objects=True))
 
