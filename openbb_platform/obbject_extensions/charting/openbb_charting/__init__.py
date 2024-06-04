@@ -12,6 +12,8 @@ from typing import (
     Optional,
     Tuple,
     Union,
+    ClassVar,
+    Set,
 )
 from warnings import warn
 
@@ -64,6 +66,8 @@ class Charting:
         Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
+    accessors: ClassVar[Set[str]] = set()
+
     def __init__(self, obbject):
         """Initialize Charting extension."""
         # pylint: disable=import-outside-toplevel
@@ -75,6 +79,7 @@ class Charting:
             system_settings=self._obbject._system_settings,  # type: ignore
         )
         self._backend: Backend = self._handle_backend()
+        self._functions: Dict[str, Callable] = self._get_functions()
 
     @classmethod
     def indicators(cls):
@@ -85,9 +90,29 @@ class Charting:
         return IndicatorsParams()
 
     @classmethod
-    def functions(cls):
+    def functions(cls) -> List[str]:
         """Return a list of the available functions."""
-        return get_charting_functions()
+        acc_cls = []
+        for acc in cls.accessors:
+            acc_cls.append(getattr(cls, acc))
+
+        functions = []
+        for acc in acc_cls:
+            functions.extend(get_charting_functions(acc))
+
+        return functions
+
+    def _get_functions(self) -> Dict[str, Callable]:
+        """Return a dict with the available functions."""
+        acc_cls = []
+        for acc in self.accessors:
+            acc_cls.append(getattr(self, acc))
+
+        functions = {}
+        for acc in acc_cls:
+            functions.update(get_charting_functions(acc, with_objects=True))
+
+        return functions
 
     def _handle_backend(self) -> Backend:
         """Create and start the backend."""
@@ -96,13 +121,16 @@ class Charting:
         backend.start(debug=self._charting_settings.debug_mode)
         return backend
 
-    @staticmethod
-    def _get_chart_function(route: str) -> Callable:
+    def _get_chart_function(self, route: str) -> Callable:
         """Given a route, it returns the chart function. The module must contain the given route."""
         if route is None:
             raise ValueError("OBBject was initialized with no function route.")
         adjusted_route = route.replace("/", "_")[1:]
-        return getattr(charting_router, adjusted_route)
+        if adjusted_route not in self.functions():
+            raise ValueError(
+                f"Could not find the route `{adjusted_route}` in the charting functions."
+            )
+        return self._functions[adjusted_route]
 
     def get_params(self) -> ChartParams:
         """Return the ChartQueryParams class for the function the OBBject was created from.
@@ -345,9 +373,7 @@ class Charting:
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
-            self._obbject.chart = Chart(
-                fig=fig, content=content, format=charting_router.CHART_FORMAT
-            )
+            self._obbject.chart = Chart(fig=fig, content=content)
             if render:
                 fig.show(**kwargs)
         except Exception:  # pylint: disable=W0718
@@ -355,9 +381,7 @@ class Charting:
                 fig = self.create_line_chart(data=self._obbject.results, render=False, **kwargs)  # type: ignore
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(
-                    fig=fig, content=content, format=charting_router.CHART_FORMAT
-                )
+                self._obbject.chart = Chart(fig=fig, content=content)
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:
@@ -475,9 +499,7 @@ class Charting:
                 fig = self.create_line_chart(data=data_as_df, render=False, **kwargs)
                 fig = self._set_chart_style(fig)
                 content = fig.show(external=True, **kwargs).to_plotly_json()  # type: ignore
-                self._obbject.chart = Chart(
-                    fig=fig, content=content, format=charting_router.CHART_FORMAT
-                )
+                self._obbject.chart = Chart(fig=fig, content=content)
                 if render:
                     return fig.show(**kwargs)  # type: ignore
             except Exception as e:  # pylint: disable=W0718

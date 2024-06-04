@@ -1,27 +1,28 @@
 """Helper functions for charting."""
 
-import importlib
 from inspect import getmembers, getsource, isfunction
-from typing import List
+from typing import Callable, Dict, List, Type, Union
 
 import pandas as pd
 from pandas_ta import candles
 
 
-def get_charting_functions() -> List[str]:
+def get_charting_functions(
+    accessor: Type, with_objects: bool = False
+) -> Union[List[str], Dict[str, Callable]]:
     """Discover charting functions."""
+    implemented_functions = [] if not with_objects else {}
 
-    charting_router = importlib.import_module("openbb_charting.charting_router")
-
-    implemented_functions = []
-
-    for name, obj in getmembers(charting_router, isfunction):
+    for name, obj in getmembers(accessor, isfunction):
         if (
-            obj.__module__ == charting_router.__name__
+            obj.__module__ == accessor.__module__
             and not name.startswith("_")
             and "NotImplementedError" not in getsource(obj)
         ):
-            implemented_functions.append(name)
+            if with_objects:
+                implemented_functions[name] = obj
+            else:
+                implemented_functions.append(name)
 
     return implemented_functions
 
