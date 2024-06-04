@@ -154,7 +154,7 @@ class PlatformController(BaseController):
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
                     df: pd.DataFrame = pd.DataFrame()
-                    fig: OpenBBFigure = None
+                    fig: Optional[OpenBBFigure] = None
                     title = f"{self.PATH}{translator.func.__name__}"
 
                     if obbject:

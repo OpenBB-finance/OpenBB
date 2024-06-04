@@ -56,14 +56,14 @@ def __mock_parse_known_args_and_warn(
 
         if export_allowed == "raw_data_only":
             choices_export = ["csv", "json", "xlsx"]
-            help_export = "Export raw data into csv, json, xlsx"
+            help_export = "Export raw data into csv, json or xlsx."
         elif export_allowed == "figures_only":
-            choices_export = ["png", "jpg", "svg"]
-            help_export = "Export figure into png, jpg, svg "
+            choices_export = ["png", "jpg"]
+            help_export = "Export figure into png or jpg."
         else:
-            choices_export = ["csv", "json", "xlsx", "png", "jpg", "svg"]
+            choices_export = ["csv", "json", "xlsx", "png", "jpg"]
             help_export = (
-                "Export raw data into csv, json, xlsx and figure into png, jpg, svg "
+                "Export raw data into csv, json, xlsx and figure into png or jpg."
             )
 
         parser.add_argument(
