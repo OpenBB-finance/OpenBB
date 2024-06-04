@@ -576,3 +576,16 @@ class Charting:
                 ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
             else:
                 warn("IPython.display is not available.")
+
+    def url(
+        self,
+        url: str,
+        title: str = "",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
+        """Return the URL of the chart."""
+        try:
+            self._backend.send_url(url=url, title=title, width=width, height=height)
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Failed to show figure with backend. {e}")
