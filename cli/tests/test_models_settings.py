@@ -9,31 +9,31 @@ from openbb_cli.models.settings import Settings
 
 def test_default_values():
     """Test the default values of the settings model."""
-    settings = Settings()
-    assert settings.TEST_MODE is False
-    assert settings.DEBUG_MODE is False
-    assert settings.DEV_BACKEND is False
-    assert settings.FILE_OVERWRITE is False
-    assert settings.SHOW_VERSION is True
-    assert settings.USE_INTERACTIVE_DF is True
-    assert settings.USE_CLEAR_AFTER_CMD is False
-    assert settings.USE_DATETIME is True
-    assert settings.USE_PROMPT_TOOLKIT is True
-    assert settings.ENABLE_EXIT_AUTO_HELP is True
-    assert settings.REMEMBER_CONTEXTS is True
-    assert settings.ENABLE_RICH_PANEL is True
-    assert settings.TOOLBAR_HINT is True
-    assert settings.SHOW_MSG_OBBJECT_REGISTRY is False
-    assert settings.TIMEZONE == "America/New_York"
-    assert settings.FLAIR == ":openbb"
-    assert settings.PREVIOUS_USE is False
-    assert settings.N_TO_KEEP_OBBJECT_REGISTRY == 10
-    assert settings.N_TO_DISPLAY_OBBJECT_REGISTRY == 5
-    assert settings.RICH_STYLE == "dark"
-    assert settings.ALLOWED_NUMBER_OF_ROWS == 20
-    assert settings.ALLOWED_NUMBER_OF_COLUMNS == 5
-    assert settings.HUB_URL == "https://my.openbb.co"
-    assert settings.BASE_URL == "https://payments.openbb.co"
+    fields = Settings.model_fields
+    assert fields["TEST_MODE"].default is False
+    assert fields["DEBUG_MODE"].default is False
+    assert fields["DEV_BACKEND"].default is False
+    assert fields["FILE_OVERWRITE"].default is False
+    assert fields["SHOW_VERSION"].default is True
+    assert fields["USE_INTERACTIVE_DF"].default is True
+    assert fields["USE_CLEAR_AFTER_CMD"].default is False
+    assert fields["USE_DATETIME"].default is True
+    assert fields["USE_PROMPT_TOOLKIT"].default is True
+    assert fields["ENABLE_EXIT_AUTO_HELP"].default is True
+    assert fields["REMEMBER_CONTEXTS"].default is True
+    assert fields["ENABLE_RICH_PANEL"].default is True
+    assert fields["TOOLBAR_HINT"].default is True
+    assert fields["SHOW_MSG_OBBJECT_REGISTRY"].default is False
+    assert fields["TIMEZONE"].default == "America/New_York"
+    assert fields["FLAIR"].default == ":openbb"
+    assert fields["PREVIOUS_USE"].default is False
+    assert fields["N_TO_KEEP_OBBJECT_REGISTRY"].default == 10
+    assert fields["N_TO_DISPLAY_OBBJECT_REGISTRY"].default == 5
+    assert fields["RICH_STYLE"].default == "dark"
+    assert fields["ALLOWED_NUMBER_OF_ROWS"].default == 20
+    assert fields["ALLOWED_NUMBER_OF_COLUMNS"].default == 5
+    assert fields["HUB_URL"].default == "https://my.openbb.co"
+    assert fields["BASE_URL"].default == "https://payments.openbb.co"
 
 
 # Test __repr__ output

@@ -4176,7 +4176,7 @@
                 "message": null
             },
             "description": "Get global unemployment data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarterly', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarterly', age=25-54, provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarter', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarter', age=25-54, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {

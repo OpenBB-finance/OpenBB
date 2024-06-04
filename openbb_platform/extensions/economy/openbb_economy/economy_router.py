@@ -178,13 +178,13 @@ async def money_measures(
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+            parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}
         ),
         APIEx(
             description="Demographics for the statistics are selected with the `age` parameter.",
             parameters={
                 "country": "all",
-                "frequency": "quarterly",
+                "frequency": "quarter",
                 "age": "25-54",
                 "provider": "oecd",
             },
