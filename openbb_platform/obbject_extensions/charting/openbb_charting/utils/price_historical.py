@@ -1,6 +1,4 @@
-"""Charting router."""
-
-# pylint: disable=too-many-arguments, too-many-locals, too-many-branches, too-many-statements, unused-argument, too-many-lines
+"""Price historical charting utility."""
 
 from typing import Any, Dict, Tuple
 
@@ -17,6 +15,8 @@ from openbb_charting.utils.helpers import (
     should_share_axis,
     z_score_standardization,
 )
+
+# pylint: disable=too-many-branches
 
 
 def price_historical(  # noqa: PLR0912
