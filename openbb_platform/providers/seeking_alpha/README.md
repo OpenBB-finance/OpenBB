@@ -10,4 +10,4 @@ To install the extension:
 pip install openbb-seeking-alpha
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/development/contributing).
+Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).

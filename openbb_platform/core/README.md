@@ -42,7 +42,7 @@ We welcome contributions! If you're looking to contribute, please:
 - Ensure your code does not negatively impact performance.
 - Test your contributions thoroughly.
 
-Please refer to our [Contributing Guidelines](https://docs.openbb.co/platform/development).
+Please refer to our [Contributing Guidelines](https://docs.openbb.co/platform/developer_guide/contributing).
 
 ### Collaboration
 
@@ -50,7 +50,7 @@ Engage with the development team and the community. Be open to feedback and coll
 
 ### Support
 
-For support, questions, or more information, please visit [OpenBB Platform Documentation](https://docs.openbb.co/platform/development).
+For support, questions, or more information, please visit [OpenBB Platform Documentation](https://docs.openbb.co/platform).
 
 ### License
 
