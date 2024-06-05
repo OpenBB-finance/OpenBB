@@ -203,6 +203,7 @@ def indicator(
         if not attrs.pop("name", ""):
             name = func.__name__
 
+        # pylint: disable=possibly-used-before-assignment
         return Indicator(func, name, **attrs)
 
     return decorator

@@ -72,7 +72,6 @@ class ECBYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
-
         results: List = []
 
         IDS = get_yield_curve_ids(
@@ -100,9 +99,9 @@ class ECBYieldCurveFetcher(
                         await session.close()
             else:
                 response = await amake_request(url=url)
-            if not response:  # pylint: disable=E0606
+            if not response:
                 raise RuntimeError("Error: No data was returned.")
-            if isinstance(response, List):  # pylint: disable=E0606
+            if isinstance(response, List):
                 for item in response:
                     d = {
                         "date": item.get("PERIOD"),

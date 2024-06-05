@@ -16,13 +16,14 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import requests
-from openbb import obb
 from openbb_charting.core.backend import create_backend, get_backend
 from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_cli.session import Session
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
 from pytz import all_timezones, timezone
 from rich.table import Table
+
+from openbb import obb
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -680,7 +681,6 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         The dataframe with timezone information removed
     """
-
     date_cols = []
     index_is_date = False
 
@@ -844,7 +844,6 @@ def export_data(
     margin : bool
         Automatically adjust subplot parameters to give specified padding.
     """
-
     if export_type:
         saved_path = compose_export_path(func_name, dir_path).resolve()
         saved_path.parent.mkdir(parents=True, exist_ok=True)

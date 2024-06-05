@@ -402,8 +402,11 @@ class IntrinioIncomeStatementFetcher(
         statement_code = "income_statement"
         if query.period in ["quarter", "annual"]:
             period_type = "FY" if query.period == "annual" else "QTR"
-        if query.period in ["ttm", "ytd"]:
+        elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
+        else:
+            raise ValueError(f"Period '{query.period}' not supported.")
+
         data_tags = [
             "ebit",
             "ebitda",

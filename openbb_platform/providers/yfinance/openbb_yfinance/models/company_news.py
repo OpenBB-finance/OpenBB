@@ -70,6 +70,7 @@ class YFinanceCompanyNewsFetcher(
         async def get_one(symbol):
             data = Ticker(symbol).get_news()
             for d in data:
+                images = None
                 if d.get("thumbnail"):
                     images = d["thumbnail"].get("resolutions")
                 _ = d.pop("uuid")
