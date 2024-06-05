@@ -274,6 +274,7 @@ def _get_argument_parser(
                 " - parse_known_args_and_warn\n"
             )
 
+    # pylint: disable=possibly-used-before-assignment
     return argument_parser
 
 
