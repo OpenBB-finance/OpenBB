@@ -71,7 +71,7 @@ Welcome to OpenBB Platform CLI v1.0.0
 You can install the Platform CLI from [GitHub Container Registry](https://github.com/orgs/OpenBB-finance/packages/container/package/openbb-cli) with:
 
 ```bash
-docker run -it --rm -p 8000:8000 -v ~/.openbb_platform:/root/.openbb_platform ghcr.io/openbb-finance/openbb-cli:latest
+docker run -it --rm -v ~/.openbb_platform:/root/.openbb_platform ghcr.io/openbb-finance/openbb-cli:latest
 ```
 
 Alternatively, we provide a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
