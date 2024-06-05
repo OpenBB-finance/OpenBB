@@ -14,7 +14,6 @@ from openbb_cli.controllers.utils import (
     print_goodbye,
     print_guest_block_msg,
     remove_file,
-    reset,
     welcome_message,
 )
 
