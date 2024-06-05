@@ -40,8 +40,8 @@ class RegistryMap:
         return self._available_providers
 
     @property
-    def credentials(self) -> List[str]:
-        """Get list of required credentials."""
+    def credentials(self) -> Dict[str, List[str]]:
+        """Get map of providers to credentials."""
         return self._credentials
 
     @property
@@ -59,13 +59,11 @@ class RegistryMap:
         """Get available models."""
         return self._models
 
-    def _get_credentials(self, registry: Registry) -> List[str]:
-        """Get list of required credentials."""
-        cred_list = []
-        for provider in registry.providers.values():
-            for c in provider.credentials:
-                cred_list.append(c)
-        return cred_list
+    def _get_credentials(self, registry: Registry) -> Dict[str, List[str]]:
+        """Get map of providers to credentials."""
+        return {
+            name: provider.credentials for name, provider in registry.providers.items()
+        }
 
     def _get_available_providers(self, registry: Registry) -> List[str]:
         """Get list of available providers."""

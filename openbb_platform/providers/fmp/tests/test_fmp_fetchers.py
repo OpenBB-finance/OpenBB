@@ -253,7 +253,7 @@ def test_fmp_world_news_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_income_statement_growth_fetcher(credentials=test_credentials):
     """Test FMP income statement growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPIncomeStatementGrowthFetcher()
     result = fetcher.test(params, credentials)
@@ -263,7 +263,7 @@ def test_fmp_income_statement_growth_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_balance_sheet_growth_fetcher(credentials=test_credentials):
     """Test FMP balance sheet growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPBalanceSheetGrowthFetcher()
     result = fetcher.test(params, credentials)
@@ -273,7 +273,7 @@ def test_fmp_balance_sheet_growth_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fmp_cash_flow_statement_growth_fetcher(credentials=test_credentials):
     """Test FMP cash flow statement growth fetcher."""
-    params = {"symbol": "AAPL"}
+    params = {"symbol": "AAPL", "limit": 10, "period": "annual"}
 
     fetcher = FMPCashFlowStatementGrowthFetcher()
     result = fetcher.test(params, credentials)

@@ -10,4 +10,4 @@ To install the extension, run the following command in this folder:
 pip install openbb-regulators
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/development/contributing).
+Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).

@@ -1,7 +1,8 @@
 """Polygon Income Statement Model."""
 
 # pylint: disable=unused-argument
-from datetime import date
+
+from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -22,41 +23,44 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    period: Literal["annual", "quarter", "ttm"] = Field(default="annual")
-    filing_date: Optional[date] = Field(
+    period: Literal["annual", "quarter", "ttm"] = Field(
+        default="annual",
+        json_schema_extra={"choices": ["annual", "quarter", "ttm"]},
+    )
+    filing_date: Optional[dateType] = Field(
         default=None, description="Filing date of the financial statement."
     )
-    filing_date_lt: Optional[date] = Field(
+    filing_date_lt: Optional[dateType] = Field(
         default=None, description="Filing date less than the given date."
     )
-    filing_date_lte: Optional[date] = Field(
+    filing_date_lte: Optional[dateType] = Field(
         default=None,
         description="Filing date less than or equal to the given date.",
     )
-    filing_date_gt: Optional[date] = Field(
+    filing_date_gt: Optional[dateType] = Field(
         default=None,
         description="Filing date greater than the given date.",
     )
-    filing_date_gte: Optional[date] = Field(
+    filing_date_gte: Optional[dateType] = Field(
         default=None,
         description="Filing date greater than or equal to the given date.",
     )
-    period_of_report_date: Optional[date] = Field(
+    period_of_report_date: Optional[dateType] = Field(
         default=None, description="Period of report date of the financial statement."
     )
-    period_of_report_date_lt: Optional[date] = Field(
+    period_of_report_date_lt: Optional[dateType] = Field(
         default=None,
         description="Period of report date less than the given date.",
     )
-    period_of_report_date_lte: Optional[date] = Field(
+    period_of_report_date_lte: Optional[dateType] = Field(
         default=None,
         description="Period of report date less than or equal to the given date.",
     )
-    period_of_report_date_gt: Optional[date] = Field(
+    period_of_report_date_gt: Optional[dateType] = Field(
         default=None,
         description="Period of report date greater than the given date.",
     )
-    period_of_report_date_gte: Optional[date] = Field(
+    period_of_report_date_gte: Optional[dateType] = Field(
         default=None,
         description="Period of report date greater than or equal to the given date.",
     )
@@ -261,7 +265,7 @@ class PolygonIncomeStatementFetcher(
         List[PolygonIncomeStatementData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Income Statement Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonIncomeStatementQueryParams:
@@ -290,7 +294,7 @@ class PolygonIncomeStatementFetcher(
 
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
 
-        return await get_data_many(request_url, "results", **kwargs)
+        return await get_data_many(request_url, "results", **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
@@ -299,7 +303,7 @@ class PolygonIncomeStatementFetcher(
         **kwargs: Any,
     ) -> List[PolygonIncomeStatementData]:
         """Return the transformed data."""
-        transformed_data = []
+        transformed_data: List[PolygonIncomeStatementData] = []
 
         for item in data:
             sub_data = {

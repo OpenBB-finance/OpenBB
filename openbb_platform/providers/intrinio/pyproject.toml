@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-intrinio"
-version = "1.2.1"
+version = "1.2.2"
 description = "Intrinio extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
@@ -10,7 +10,7 @@ packages = [{ include = "openbb_intrinio" }]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests-cache = "^1.1.0"
-openbb-core = "^1.2.3"
+openbb-core = "^1.2.4"
 
 [build-system]
 requires = ["poetry-core"]

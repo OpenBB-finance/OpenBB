@@ -25,9 +25,9 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
-            Optional[Literal["intrinio"]],
+            Optional[Literal["intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -38,10 +38,8 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+        provider : Optional[Literal['intrinio', 'yfinance']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
 
@@ -50,7 +48,7 @@ class ROUTER_derivatives_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -149,6 +147,12 @@ class ROUTER_derivatives_options(Container):
             Rho of the option.
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
+        dte : Optional[int]
+            Days to expiration. (provider: yfinance)
+        in_the_money : Optional[bool]
+            Whether the option is in the money. (provider: yfinance)
+        last_trade_timestamp : Optional[datetime]
+            Timestamp for when the option was last traded. (provider: yfinance)
 
         Examples
         --------
@@ -164,8 +168,8 @@ class ROUTER_derivatives_options(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/derivatives/options/chains",
-                        ("intrinio",),
+                        "derivatives.options.chains",
+                        ("intrinio", "yfinance"),
                     )
                 },
                 standard_params={
@@ -186,7 +190,7 @@ class ROUTER_derivatives_options(Container):
         provider: Annotated[
             Optional[Literal["intrinio"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'intrinio' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
             ),
         ] = None,
         **kwargs
@@ -198,9 +202,7 @@ class ROUTER_derivatives_options(Container):
         symbol : Optional[str]
             Symbol to get data for. (the underlying symbol)
         provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format. If no symbol is supplied, requests are only allowed for a single date. Use the start_date for the target date. Intrinio appears to have data beginning Feb/2022, but is unclear when it actually began. (provider: intrinio)
         end_date : Optional[datetime.date]
@@ -271,7 +273,7 @@ class ROUTER_derivatives_options(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/derivatives/options/unusual",
+                        "derivatives.options.unusual",
                         ("intrinio",),
                     )
                 },

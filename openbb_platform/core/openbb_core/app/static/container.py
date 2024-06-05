@@ -24,18 +24,59 @@ class Container:
             return obbject
         return getattr(obbject, "to_" + output_type)()
 
+    def _check_credentials(self, provider: str) -> Optional[bool]:
+        """Check required credentials are populated."""
+        credentials = self._command_runner.user_settings.credentials
+        if provider not in credentials.origins:
+            return None
+        required = credentials.origins.get(provider)
+        return all(getattr(credentials, r, None) for r in required)
+
     def _get_provider(
-        self, choice: Optional[str], cmd: str, available: Tuple[str, ...]
+        self, choice: Optional[str], command: str, default_priority: Tuple[str, ...]
     ) -> str:
-        """Get the provider to use in execution."""
+        """Get the provider to use in execution.
+
+        If no choice is specified, the configured priority list is used. A provider is used
+        when all of its required credentials are populated.
+
+        Parameters
+        ----------
+        choice: Optional[str]
+            The provider choice, for example 'fmp'.
+        command: str
+            The command to get the provider for, for example 'equity.price.historical'
+        default_priority: Tuple[str, ...]
+            A tuple of available providers for the given command to use as default priority list.
+
+        Returns
+        -------
+        str
+            The provider to use in the command.
+
+        Raises
+        ------
+        OpenBBError
+            Raises error when all the providers in the priority list failed.
+        """
         if choice is None:
-            if config_default := self._command_runner.user_settings.defaults.routes.get(
-                cmd, {}
-            ).get("provider"):
-                if config_default in available:
-                    return config_default
-                raise OpenBBError(
-                    f"provider '{config_default}' is not available. Choose from: {', '.join(available)}."
-                )
-            return available[0]
+            commands = self._command_runner.user_settings.defaults.commands
+            providers = (
+                commands.get(command, {}).get("provider", []) or default_priority
+            )
+            tries = []
+            for p in providers:
+                result = self._check_credentials(p)
+                if result:
+                    return p
+                elif result is False:
+                    tries.append((p, "missing credentials"))
+                else:
+                    tries.append((p, "not found"))
+
+            msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
+            raise OpenBBError(
+                f"Provider fallback failed, please specify the provider or update credentials.\n"
+                f"[Providers]\n  {msg}"
+            )
         return choice
