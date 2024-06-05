@@ -34,6 +34,7 @@ from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.market_indices import (
     YFinanceMarketIndicesFetcher,
 )
+from openbb_yfinance.models.options_chains import YFinanceOptionsChainsFetcher
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
 )
@@ -61,8 +62,19 @@ def vcr_config():
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
             ("crumb", "MOCK_CRUMB"),
+            ("date", "MOCK_DATE"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_y_finance_options_chains_fetcher(credentials=test_credentials):
+    """Test YFinanceOptionsChainsFetcher."""
+    params = {"symbol": "OXY"}
+
+    fetcher = YFinanceOptionsChainsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http

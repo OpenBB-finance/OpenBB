@@ -54,11 +54,12 @@ async def calendar(
     examples=[
         APIEx(parameters={"country": "japan,china,turkey", "provider": "fred"}),
         APIEx(
-            description="Use the `units` parameter to define the reference period for the change in values.",
+            description="Use the `transform` parameter to define the reference period for the change in values."
+            + " Default is YoY.",
             parameters={
                 "country": "united_states,united_kingdom",
-                "units": "growth_previous",
-                "provider": "fred",
+                "transform": "period",
+                "provider": "oecd",
             },
         ),
     ],
@@ -177,13 +178,13 @@ async def money_measures(
     examples=[
         APIEx(parameters={"provider": "oecd"}),
         APIEx(
-            parameters={"country": "all", "frequency": "quarterly", "provider": "oecd"}
+            parameters={"country": "all", "frequency": "quarter", "provider": "oecd"}
         ),
         APIEx(
             description="Demographics for the statistics are selected with the `age` parameter.",
             parameters={
                 "country": "all",
-                "frequency": "quarterly",
+                "frequency": "quarter",
                 "age": "25-54",
                 "provider": "oecd",
             },
@@ -377,4 +378,140 @@ async def indicators(
     extra_params: ExtraParams,
 ) -> OBBject:
     """Get economic indicators by country and indicator."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CentralBankHoldings",
+    examples=[
+        APIEx(
+            description="The default is the latest Treasury securities held by the Federal Reserve.",
+            parameters={"provider": "federal_reserve"},
+        ),
+        APIEx(
+            description="Get historical summaries of the Fed's holdings.",
+            parameters={"provider": "federal_reserve", "summary": True},
+        ),
+        APIEx(
+            description="Get the balance sheet holdings as-of a historical date.",
+            parameters={"provider": "federal_reserve", "date": "2019-05-21"},
+        ),
+        APIEx(
+            description="Use the `holding_type` parameter to select Agency securities,"
+            + " or specific categories or Treasury securities.",
+            parameters={"provider": "federal_reserve", "holding_type": "agency_debts"},
+        ),
+    ],
+)
+async def central_bank_holdings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the balance sheet holdings of a central bank."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SharePriceIndex",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "quarter",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def share_price_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the Share Price Index by country from the OECD Short-Term Economics Statistics."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="HousePriceIndex",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "quarter",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def house_price_index(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get the House Price Index by country from the OECD Short-Term Economics Statistics."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ImmediateInterestRate",
+    examples=[
+        APIEx(parameters={"provider": "oecd"}),
+        APIEx(
+            description="Multiple countries can be passed in as a list.",
+            parameters={
+                "country": "united_kingdom,germany",
+                "frequency": "monthly",
+                "provider": "oecd",
+            },
+        ),
+    ],
+)
+async def immediate_interest_rate(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get immediate interest rates by country."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="RetailPrices",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            description="The price of eggs in the northeast census region.",
+            parameters={
+                "item": "eggs",
+                "region": "northeast",
+                "provider": "fred",
+            },
+        ),
+        APIEx(
+            description="The percentage change in price, from one-year ago, of various meats, US City Average.",
+            parameters={
+                "item": "meats",
+                "transform": "pc1",
+                "provider": "fred",
+            },
+        ),
+    ],
+)
+async def retail_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get retail prices for common items."""
     return await OBBject.from_query(Query(**locals()))

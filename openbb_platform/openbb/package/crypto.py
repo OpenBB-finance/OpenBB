@@ -36,7 +36,7 @@ class ROUTER_crypto(Container):
         provider: Annotated[
             Optional[Literal["fmp"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fmp' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
             ),
         ] = None,
         **kwargs
@@ -48,9 +48,7 @@ class ROUTER_crypto(Container):
         query : Optional[str]
             Search query.
         provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
 
         Returns
         -------
@@ -92,7 +90,7 @@ class ROUTER_crypto(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/crypto/search",
+                        "crypto.search",
                         ("fmp",),
                     )
                 },

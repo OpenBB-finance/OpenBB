@@ -45,8 +45,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           # "Checking PR diff"
-          echo "platform_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
-          echo $platform_files
+          echo "diff_files=$(git diff --diff-filter=d --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$|cli/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          echo $diff_files
 
       - uses: actions/cache@v3
         with:
@@ -58,16 +58,17 @@ jobs:
           pip install openbb-devtools
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
-      - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
-      - run: ruff .
       - run: |
-          # Run linters for openbb_platform
-          if [ -n "${{ env.platform_files }}" ]; then
-            pylint ${{ env.platform_files }}
-            pydocstyle ${{ env.platform_files }}
+          # Run linters for openbb_platform | cli
+          if [ -n "${{ env.diff_files }}" ]; then
+            black --diff --check ${{ env.diff_files }}
+            mypy ${{ env.diff_files }}  --ignore-missing-imports  --scripts-are-modules --check-untyped-defs
+            pydocstyle ${{ env.diff_files }}
+            pylint ${{ env.diff_files }}
+            ruff check ${{ env.diff_files }}
           else
-            echo "No Python files changed in openbb_platform"
+            echo "No Python files changed in openbb_platform | cli"
           fi
 
   markdown-link-check:

@@ -81,9 +81,8 @@ def test_v3tov4_map():
     for provider in providers:
         if provider in v3_keys:
             keys = v3_keys[provider]
-            if not isinstance(keys, list):
-                keys = [keys]
-            for k in keys:
+            keys_list = keys if isinstance(keys, list) else [keys]
+            for k in keys_list:
                 assert k in HubService.V3TOV4
 
 
@@ -313,30 +312,35 @@ def test_platform2hub():
 
 
 @pytest.mark.parametrize(
-    "token, message",
+    "offset, message",
     [
         # valid
         (
-            encode(
-                {"some": "payload", "exp": int(time()) + 100},
-                "secret",
-                algorithm="HS256",
-            ),
+            100,
             None,
         ),
         # expired
         (
-            encode(
-                {"some": "payload", "exp": int(time())}, "secret", algorithm="HS256"
-            ),
+            0,
             "Platform personal access token expired.",
         ),
         # invalid
-        ("invalid_token", "Failed to decode Platform token."),
+        (None, "Failed to decode Platform token."),
     ],
 )
-def test__check_token_expiration(token, message):
+def test__check_token_expiration(offset, message):
     """Test check token expiration function."""
+
+    token = (
+        encode(
+            {"some": "payload", "exp": int(time()) + offset},
+            "secret",
+            algorithm="HS256",
+        )
+        if offset is not None
+        else "invalid_token"
+    )
+
     if message:
         with pytest.raises(OpenBBError, match=message):
             HubService._check_token_expiration(token)

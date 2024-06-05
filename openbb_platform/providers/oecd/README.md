@@ -10,4 +10,4 @@ To install the extension:
 pip install openbb-oecd
 ```
 
-Documentation available [here](https://docs.openbb.co/platform/development/contributing).
+Documentation available [here](https://docs.openbb.co/platform/developer_guide/contributing).
