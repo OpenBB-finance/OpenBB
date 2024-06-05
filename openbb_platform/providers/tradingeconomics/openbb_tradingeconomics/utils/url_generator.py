@@ -48,6 +48,7 @@ def generate_url(in_query):
     # Construct URL based on query parameters
     # Country Only
     if check_args(query, ["country"]):
+        # pylint: disable=possibly-used-before-assignment
         url = f"{base_url}/country/{country}?c="
     # Country + Date
     elif check_args(query, ["country", "start_date", "end_date"]):
@@ -59,6 +60,7 @@ def generate_url(in_query):
         url = f"{base_url}/country/{country}?{urlencode(query)}&c="
     # Country + Group
     elif check_args(query, ["country", "group"]):
+        # pylint: disable=possibly-used-before-assignment
         url = f"{base_url}/country/{country}/group/{group}?c="
     # Country + Group + Date
     elif check_args(query, ["country", "group", "start_date", "end_date"]):

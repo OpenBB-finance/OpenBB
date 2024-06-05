@@ -210,7 +210,7 @@ class FredRegionalDataFetcher(
     ) -> Dict:
         """Extract the raw data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
-        if query.is_series_group is True:
+        if query.is_series_group:
             base_url = "https://api.stlouisfed.org/geofred/regional/data?"
             url = (
                 base_url
@@ -219,7 +219,7 @@ class FredRegionalDataFetcher(
                 )
                 + f"&file_type=json&api_key={api_key}"
             )
-        if query.is_series_group is False:
+        else:
             base_url = "https://api.stlouisfed.org/geofred/series/data?"
             url = (
                 base_url
@@ -246,7 +246,6 @@ class FredRegionalDataFetcher(
         **kwargs,
     ) -> List[FredRegionalData]:
         """Flatten the response object and validate the model."""
-
         results: List[FredRegionalData] = []
         if data.get("meta") is None:
             raise EmptyDataError()

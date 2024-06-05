@@ -137,7 +137,7 @@ def check_router_command_examples() -> List[str]:
             )
             if decorator:
                 decorator_details = get_decorator_details(function)
-                if decorator_details.name == "router.command":
+                if decorator_details and decorator_details.name == "router.command":
                     keywords = decorator_details.kwargs or {}
                     examples = keywords.get("examples", [])
                     # General checks

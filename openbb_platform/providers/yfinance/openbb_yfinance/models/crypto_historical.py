@@ -81,14 +81,12 @@ class YFinanceCryptoHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-
         tickers = query.symbol.split(",")
         new_tickers = []
         for ticker in tickers:
-            if "-" not in ticker:
-                new_ticker = ticker[:-3] + "-" + ticker[-3:]
-            if "-" in ticker:
-                new_ticker = ticker
+            new_ticker = (
+                ticker[:-3] + "-" + ticker[-3:] if "-" not in ticker else ticker
+            )
             new_tickers.append(new_ticker)
 
         symbols = ",".join(new_tickers)

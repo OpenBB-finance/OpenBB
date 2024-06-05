@@ -59,9 +59,12 @@ def get_argument_optional_choices(parser: ArgumentParser, argument_name: str) ->
     """Get the optional_choices attribute of an argument from an ArgumentParser."""
     for action in parser._actions:  # pylint: disable=protected-access
         opts = action.option_strings
-        if (opts and opts[0] == argument_name) or action.dest == argument_name:
-            if hasattr(action, "optional_choices"):
-                return action.optional_choices
+        if (
+            (opts and opts[0] == argument_name)
+            or action.dest == argument_name
+            and hasattr(action, "optional_choices")
+        ):
+            return action.optional_choices
     return False
 
 

@@ -18,7 +18,6 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import requests
-from openbb import obb
 from openbb_cli.config import constants
 from openbb_cli.config.constants import (
     ASSETS_DIRECTORY,
@@ -47,6 +46,8 @@ from openbb_cli.session import Session
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
+
+from openbb import obb
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -291,7 +292,7 @@ class CLIController(BaseController):
                 : session.settings.N_TO_DISPLAY_OBBJECT_REGISTRY
             ]:
                 mt.add_raw(
-                    f"[yellow]OBB{key}[/yellow]: {value['command']}",
+                    f"[yellow]OBB{key}[/yellow]: {value['command']}",  # type: ignore[index]
                     left_spacing=True,
                 )
 
@@ -769,7 +770,6 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     str
         The new string
     """
-
     cleaned = match[0].replace("{", "").replace("}", "").replace("$", "")
     key, default = cleaned.split("=")
     dict_value = special_arguments.get(key, default)
@@ -939,7 +939,6 @@ def launch(
     debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
 ) -> None:
     """Launch CLI."""
-
     if queue:
         main(debug, dev, queue, module="")
     else:
