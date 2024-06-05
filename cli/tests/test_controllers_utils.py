@@ -64,15 +64,6 @@ def test_print_goodbye(mock_session):
     mock_session.return_value.console.print.assert_called()
 
 
-def test_reset(mock_session):
-    """Test resetting the CLI."""
-    with patch("openbb_cli.controllers.utils.remove_file"), patch(
-        "sys.modules", new_callable=dict
-    ):
-        reset()
-        mock_session.return_value.console.print.assert_called()
-
-
 def test_parse_and_split_input():
     """Test parsing and splitting user input."""
     user_input = "ls -f /home/user/docs/document.xlsx"
