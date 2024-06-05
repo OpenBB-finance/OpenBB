@@ -3,10 +3,12 @@
 from argparse import ArgumentParser
 
 import pytest
+from openbb_cli.argparse_translator.argparse_argument import (
+    ArgparseArgumentGroupModel,
+    ArgparseArgumentModel,
+)
 from openbb_cli.argparse_translator.argparse_translator import (
     ArgparseTranslator,
-    CustomArgument,
-    CustomArgumentGroup,
 )
 
 # pylint: disable=protected-access
@@ -15,7 +17,7 @@ from openbb_cli.argparse_translator.argparse_translator import (
 def test_custom_argument_action_validation():
     """Test that CustomArgument raises an error for invalid actions."""
     with pytest.raises(ValueError) as excinfo:
-        CustomArgument(
+        ArgparseArgumentModel(
             name="test",
             type=bool,
             dest="test",
@@ -31,7 +33,7 @@ def test_custom_argument_action_validation():
 
 def test_custom_argument_remove_props_on_store_true():
     """Test that CustomArgument removes type, nargs, and choices on store_true."""
-    argument = CustomArgument(
+    argument = ArgparseArgumentModel(
         name="verbose",
         type=None,
         dest="verbose",
@@ -50,7 +52,7 @@ def test_custom_argument_remove_props_on_store_true():
 def test_custom_argument_group():
     """Test the CustomArgumentGroup class."""
     args = [
-        CustomArgument(
+        ArgparseArgumentModel(
             name="test",
             type=int,
             dest="test",
@@ -62,7 +64,7 @@ def test_custom_argument_group():
             choices=None,
         )
     ]
-    group = CustomArgumentGroup(name="Test Group", arguments=args)
+    group = ArgparseArgumentGroupModel(name="Test Group", arguments=args)
     assert group.name == "Test Group"
     assert len(group.arguments) == 1
     assert group.arguments[0].name == "test"

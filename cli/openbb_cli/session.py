@@ -4,11 +4,11 @@ import sys
 from pathlib import Path
 from typing import Optional
 
-from openbb import obb
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.user_settings import UserSettings as User
 from prompt_toolkit import PromptSession
 
+from openbb import obb
 from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_cli.config.completer import CustomFileHistory
 from openbb_cli.config.console import Console
@@ -81,9 +81,6 @@ class Session(metaclass=SingletonMeta):
     def is_local(self) -> bool:
         """Check if user is local."""
         return not bool(self.user.profile.hub_session)
-
-    def reset(self) -> None:
-        pass
 
     def max_obbjects_exceeded(self) -> bool:
         """Check if max obbjects exceeded."""

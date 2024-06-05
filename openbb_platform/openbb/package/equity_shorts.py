@@ -26,7 +26,7 @@ class ROUTER_equity_shorts(Container):
         provider: Annotated[
             Optional[Literal["sec"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'sec' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec."
             ),
         ] = None,
         **kwargs
@@ -38,9 +38,7 @@ class ROUTER_equity_shorts(Container):
         symbol : str
             Symbol to get data for.
         provider : Optional[Literal['sec']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'sec' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: sec.
         limit : Optional[int]
 
                 Limit the number of reports to parse, from most recent.
@@ -94,7 +92,7 @@ class ROUTER_equity_shorts(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/equity/shorts/fails_to_deliver",
+                        "equity.shorts.fails_to_deliver",
                         ("sec",),
                     )
                 },

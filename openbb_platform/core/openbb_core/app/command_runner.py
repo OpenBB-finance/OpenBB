@@ -21,7 +21,7 @@ from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.provider_interface import ExtraParams, ProviderInterface
+from openbb_core.app.provider_interface import ExtraParams
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -118,68 +118,6 @@ class ParametersBuilder:
         return kwargs
 
     @staticmethod
-    def update_provider_choices(
-        func: Callable,
-        command_coverage: Dict[str, List[str]],
-        route: str,
-        kwargs: Dict[str, Any],
-        route_default: Optional[Dict[str, Optional[str]]],
-    ) -> Dict[str, Any]:
-        """Update the provider choices with the available providers and set default provider."""
-
-        def _needs_provider(func: Callable) -> bool:
-            """Check if the function needs a provider."""
-            parameters = signature(func).parameters.keys()
-            return "provider_choices" in parameters
-
-        def _has_provider(kwargs: Dict[str, Any]) -> bool:
-            """Check if the kwargs already have a provider."""
-            provider_choices = kwargs.get("provider_choices")
-
-            if isinstance(provider_choices, dict):  # when in python
-                return provider_choices.get("provider", None) is not None
-            if isinstance(provider_choices, object):  # when running as fastapi
-                return getattr(provider_choices, "provider", None) is not None
-            return False
-
-        def _get_first_provider() -> Optional[str]:
-            """Get the first available provider."""
-            available_providers = ProviderInterface().available_providers
-            return available_providers[0] if available_providers else None
-
-        def _get_default_provider(
-            command_coverage: Dict[str, List[str]],
-            route_default: Optional[Dict[str, Optional[str]]],
-        ) -> Optional[str]:
-            """
-            Get the default provider for the given route.
-
-            Either pick it from the user defaults or from the command coverage.
-            """
-            cmd_cov_given_route = command_coverage.get(route)
-            command_cov_provider = (
-                cmd_cov_given_route[0] if cmd_cov_given_route else None
-            )
-
-            if route_default:
-                return route_default.get("provider", None) or command_cov_provider  # type: ignore
-
-            return command_cov_provider
-
-        if not _has_provider(kwargs) and _needs_provider(func):
-            provider = (
-                _get_default_provider(
-                    command_coverage,
-                    route_default,
-                )
-                if route in command_coverage
-                else _get_first_provider()
-            )
-            kwargs["provider_choices"] = {"provider": provider}
-
-        return kwargs
-
-    @staticmethod
     def _warn_kwargs(
         extra_params: Dict[str, Any],
         model: Type[BaseModel],
@@ -246,14 +184,12 @@ class ParametersBuilder:
         args: Tuple[Any, ...],
         execution_context: ExecutionContext,
         func: Callable,
-        route: str,
         kwargs: Dict[str, Any],
     ) -> Dict[str, Any]:
         """Build the parameters for a function."""
         func = cls.get_polished_func(func=func)
         system_settings = execution_context.system_settings
         user_settings = execution_context.user_settings
-        command_map = execution_context.command_map
 
         kwargs = cls.merge_args_and_kwargs(
             func=func,
@@ -265,13 +201,6 @@ class ParametersBuilder:
             kwargs=kwargs,
             system_settings=system_settings,
             user_settings=user_settings,
-        )
-        kwargs = cls.update_provider_choices(
-            func=func,
-            command_coverage=command_map.command_coverage,
-            route=route,
-            kwargs=kwargs,
-            route_default=user_settings.defaults.routes.get(route, None),
         )
         kwargs = cls.validate_kwargs(
             func=func,
@@ -364,7 +293,6 @@ class StaticCommandRunner:
                 args=args,
                 execution_context=execution_context,
                 func=func,
-                route=route,
                 kwargs=kwargs,
             )
 

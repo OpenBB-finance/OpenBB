@@ -62,7 +62,7 @@ options:
   --adjustment {splits_and_dividends,unadjusted,splits_only}
                         The adjustment factor to apply. Default is splits only. (provider: polygon, yfinance)
   -h, --help            show this help message
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, svg
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
   --sheet-name SHEET_NAME [SHEET_NAME ...]
                         Name of excel sheet to save data to. Only valid for .xlsx files.
 
@@ -92,19 +92,20 @@ Provider-specific parameters are listed at the bottom of the print out. They are
 
 ## Setting The Default Source
 
-The default data source for each command (where multiple sources are available) can be defined within the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`.
+The default data providers for each command can be defined within the user configuration file: `/home/your-user/.openbb_platform/user_settings.json`. You can set a single provider or a priority list. If a list is set, the command will use the first provider for which all required credentials set.
 
-Set the default data provider for the `/equity/price/historical` command by adding the following line to your `user_settings.json` file:
+See the example below for `obb.equity.price.historical` command:
 
 ```json
+# user_settings.json
 {
     "defaults": {
-        "routes": {
-            "/equity/price/historical": {
+        "commands": {
+            "equity.price.historical": {
                 "provider": "fmp"
             },
-            "/equity/fundamental/balance": {
-                "provider": "polygon"
+            "equity.fundamental.balance": {
+                "provider": ["intrinio", "fmp", "polygon"]
             },
             ...
         }

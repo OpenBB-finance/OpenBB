@@ -1,0 +1,119 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?aggregation_method=eop&api_key=MOCK_API_KEY&file_type=json&frequency=m&limit=100000&observation_start=2024-01-01&series_id=APU0000708111
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1TU2VNJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNQBpRlYA0W9paWmpa2gEMbs0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
+        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKREcpPy2t
+        OLVEycpARyknMzezRMnK0AAEdJBNKlayiqYkQMAOgQUgNAzKEnNKU0Ehp2dqZKRUq0M1840gYYww
+        39LSjJrmG2OaT1X3m6CbD5iFmYlSbWwtALXyNYCSAgAA
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '261'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 31 May 2024 23:29:08 GMT
+      Expires:
+      - Fri, 31 May 2024 23:29:08 GMT
+      Last-Modified:
+      - Wed, 15 May 2024 12:34:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Set-Cookie:
+      - ak_bmsc=7CC40B347FF3801DD5A9616C8B5361B5~000000000000000000000000000000~YAAQZWIsF1cdwsmPAQAAVVP80BeM/fVit7bGr//6qLfWUwg34wwaU9yeny3MAxdG4imiLRzrbkKhpD59pjMyEhh8WfWkzCdmyevT7xgPIRmL1/PxKOEiIoJAuJuD4M/5HPt+W+wCZZFcRf5tr9cCms2KFRqhPv8Af+J7KxdgcyFA0Bc/IwhrLQp/ypJ2JGQH1Ar52ip1rcabHkC9PJP9DOmd34XWTxfoQBO4r5ygA7HjKiqDRsOm/j3c59RVsc1k1hxYoTXo58JlzsfvQf5JobIJP6Kx9ZC5SGTQhO2/R2XG+zf7iQbWD04uY+3MGMu3O1zLrNmcmgAvTXc5FB/rYqT18Ze/6wZUw+l464+LKsXIosHFfGxe+sgIeMx1BdQb;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 01 Jun 2024 01:29:08 GMT; Max-Age=7200
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - ak_bmsc=7CC40B347FF3801DD5A9616C8B5361B5~000000000000000000000000000000~YAAQZWIsF1cdwsmPAQAAVVP80BeM/fVit7bGr//6qLfWUwg34wwaU9yeny3MAxdG4imiLRzrbkKhpD59pjMyEhh8WfWkzCdmyevT7xgPIRmL1/PxKOEiIoJAuJuD4M/5HPt+W+wCZZFcRf5tr9cCms2KFRqhPv8Af+J7KxdgcyFA0Bc/IwhrLQp/ypJ2JGQH1Ar52ip1rcabHkC9PJP9DOmd34XWTxfoQBO4r5ygA7HjKiqDRsOm/j3c59RVsc1k1hxYoTXo58JlzsfvQf5JobIJP6Kx9ZC5SGTQhO2/R2XG+zf7iQbWD04uY+3MGMu3O1zLrNmcmgAvTXc5FB/rYqT18Ze/6wZUw+l464+LKsXIosHFfGxe+sgIeMx1BdQb
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=APU0000708111
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy0TUw1TUyVtJByKbmpaDLFacWZaYWFytZ
+        RVcrZYJkHQNCDQwMDMwNLAwNDZE1k2x0SWZJTqqSlZJjWWpRYnqqQkBRZnKqlYJrenqxjoJ7UWJK
+        qoKjjoJPYlF6qoKGc35xiUJBapGCS35Vap6mQmaeQqhesJ6Cc2ZJpQLUBCUdpfyk4tSissSSzPw8
+        uF8NLS0MdA0MdQ1AzkVWgOxdE4h0WlFqYWlqXnKlkpWSb35eSUZOpZKOElw0vjgjHxx+vko6SqV5
+        mSXFSlZKYHe45OfkJBYVw4ThCsGSKko6SsWpicX5eYk58YkpWaXFJbmpeaB48MsvUQiGyuRUKjiC
+        5VJTsKuHG+oX7Kiko5STWFwSX1qQkliSCooYWJQamioYmFsZm1gZGOkamCrpKBXkF5TmJBZlllQq
+        WZmb6Sjl5ZekgtwNCdnyjMySVHh4KyRnZCZnp+YppIJjoTg/JwUU1IkKyYlFJfl5CvlpCokKKaAo
+        0FPwzEvOKU1JLVbIL0pPzMtM1lHIy8/ThXOSQXGaVpSaqqMAIhWKEvPSU3UUEvNSFEqKElMyQXGU
+        mKMXkxeTB40/heT8vOLS3NQihQJQUihWSCxKVUhOzEkuzQH5USEtv0ghI7+0ODUD5Ky00tQcHYXc
+        /JL8IgUIG2R0Wn5+ikJmSWpusUJaUX6uAtSk5PycnNTkktQUsCElGakKzjC7wMlOwTMvJbVCQcM5
+        wFNTTwHmHqhmkDOSUotLFEqLU1MUSvIVclMTi0uLUhVA5oDVKOSklqXmQEKqILGoJBPk5CKFXFAK
+        AgVLCbIuiI7kDFB4KOSXpRYpgLKmnoJniUJmsUJuflGqQmJBQVF+QVFmYkkqSGdpcaqCc4CnQibY
+        kWWJOaWpxXCPINkH8rdCcmJJano+KNeCtMKcimwpOMzB3i7WUUitSE4tKAGblgoKoqLM5MySSh0F
+        kKcRoQb2SU6lQlKlgpNPsEJRakFRanFqXkliSWZZajHI46CwMDdVKC1KSswDaU4shoQ9UogHeOop
+        uCLsgMhDYxkjfkDWgCIcZG5xYm6qgrkp1Nj8PIVESNCCHJRYnFkMchZInUsqKDBAWQuUUF3zUovS
+        KxVKizPz0hVyEzNzFApLU4tByS4vMbMotVhPwTEnB5x0YC7JzAOnaFDw52QmJyblpCq4paakFiXm
+        6CgElySC8gkojeXkJyfmKJQkVqQWW8O0gpyal1hSWpSYo5CeWAxO5kjhqZCYU5yvADMflFzBKgpK
+        i5IzEkGpCqwHnPtBzi8GR5FbPigJFaUqZOal5Rflgks1HYWCnNTE4lSFsszizBJwCnQqLUpNLAX5
+        2CcxKb8I7NLM4pLM5GIFjYySkoJiqxj9GP3y8nK9pJxivfT8shj95ILMGP20xOSS4ozU1JLiGP1E
+        SBmsC04mgBXrZZTkauop1cbWAgDAQJpOOwYAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1111'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Fri, 31 May 2024 23:29:08 GMT
+      Expires:
+      - Fri, 31 May 2024 23:29:08 GMT
+      Last-Modified:
+      - Wed, 15 May 2024 12:34:02 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Set-Cookie:
+      - ak_bmsc=7CC40B347FF3801DD5A9616C8B5361B5~000000000000000000000000000000~YAAQZWIsF2sdwsmPAQAAGFT80BeBGZ+DcstvJcNYu58S2LUcYJ+3a6gda+ujtIz2BEnL70cjWzBoDscvnFvCadeHK03gCcb7FieNjVzvEZD/T8+1iwfJbV/BfjmFnr2CvTI6jbxA8ASbhF2GBG2faJXy3mahDEqCHQeSB3HFkAUqE+HzcAqCmhWAJn/2/xsfNGJwSTjSpodcsUzhqJNmRmn3BFQYWFdJ+/pYoJo/MNve6y77lmFZ2uaReioNf1pp0Ap7w5lflvOvflkit2shfgYJbMicOFfnOOAT24owqeXg1BCZ9EcjNQn05q6fogJaeS7CsKVbUU94wpvIbaUO8GdA3xcuSyUxTdN/Afw+Vd972Qs0bJ56l85tnJhKS6izd3TdOCmbBgs/TdY=;
+        Domain=.stlouisfed.org; Path=/; Expires=Sat, 01 Jun 2024 01:29:08 GMT; Max-Age=7200
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

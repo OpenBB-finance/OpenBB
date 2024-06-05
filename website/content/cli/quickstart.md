@@ -167,7 +167,7 @@ options:
                             no default.
   --country COUNTRY     Country of the event. (provider: nasdaq, tradingeconomics)
   -h, --help            show this help message
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, svg
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png or jpg
   --sheet-name SHEET_NAME [SHEET_NAME ...]
                         Name of excel sheet to save data to. Only valid for .xlsx files.
 
