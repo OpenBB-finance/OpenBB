@@ -51,37 +51,37 @@ BAML_CATEGORIES = {
             "yield_to_worst": "BAMLH0A0HYM2SYTW",
         },
         "yield_curve": {
-            "1y_3y": {
+            "year1_year3": {
                 "total_return": "BAMLCC1A013YTRIV",
                 "yield": "BAMLC1A0C13YEY",
                 "oas": "BAMLC1A0C13Y",
                 "yield_to_worst": "BAMLC1A0C13YSYTW",
             },
-            "3y_5y": {
+            "year3_year5": {
                 "total_return": "BAMLCC2A035YTRIV",
                 "yield": "BAMLC2A0C35YEY",
                 "oas": "BAMLC2A0C35Y",
                 "yield_to_worst": "BAMLC2A0C35YSYTW",
             },
-            "5y_7y": {
+            "year5_year7": {
                 "total_return": "BAMLCC3A057YTRIV",
                 "yield": "BAMLC3A0C57YEY",
                 "oas": "BAMLC3A0C57Y",
                 "yield_to_worst": "BAMLC3A0C57YSYTW",
             },
-            "7y_10y": {
+            "year7_year10": {
                 "total_return": "BAMLCC4A0710YTRIV",
                 "yield": "BAMLC4A0C710YEY",
                 "oas": "BAMLC4A0C710Y",
                 "yield_to_worst": "BAMLC4A0C710YSYTW",
             },
-            "10y_15y": {
+            "year10_year15": {
                 "total_return": "BAMLCC7A01015YTRIV",
                 "yield": "BAMLC7A0C1015YEY",
                 "oas": "BAMLC7A0C1015Y",
                 "yield_to_worst": "BAMLC7A0C1015YSYTW",
             },
-            "15y+": {
+            "year15+": {
                 "total_return": "BAMLCC8A015PYTRIV",
                 "yield": "BAMLC8A0C15PYEY",
                 "oas": "BAMLC8A0C15PY",
