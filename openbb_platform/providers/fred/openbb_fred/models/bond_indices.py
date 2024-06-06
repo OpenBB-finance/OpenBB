@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.bond_indices import (
@@ -417,12 +418,9 @@ class FredBondIndicesFetcher(
         values = params.copy()
         new_index = []
         messages = []
-        if "index" not in values:
-            values["index"] = "yield_curve"
-        if "category" not in values:
-            values["category"] = "us"
-        if "index_type" not in values:
-            values["index_type"] = "yield"
+        values.setdefault("index", "yield_curve")
+        values.setdefault("category", "us")
+        values.setdefault("index_type", "yield")
         is_yield_curve = False
         if "yield_curve" in values["index"]:
             values["category"] = "us"
@@ -472,7 +470,7 @@ class FredBondIndicesFetcher(
                     else:
                         new_index.append(index)
         if not new_index:
-            raise ValueError(
+            raise OpenBBError(
                 "No valid combinations of parameters were found."
                 + f"\n{','.join(messages) if messages else ''}"
             )
@@ -500,7 +498,7 @@ class FredBondIndicesFetcher(
             ]
             symbols = [symbol for symbol in symbols if symbol]
         if not symbols:
-            raise ValueError(
+            raise OpenBBError(
                 "Error mapping the provided choices to series ID."
                 + f"\n{','.join(messages) if messages else ''}"
             )
