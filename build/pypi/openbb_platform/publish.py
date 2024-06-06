@@ -68,7 +68,7 @@ def publish(dry_run: bool = False, core: bool = False, extensions: bool = False)
     for sub_path in package_paths:
         is_extension = sub_path in EXTENSION_PACKAGES
 
-        for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
+        for path in sorted(PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml")):
             try:
                 # Update dependencies
                 if is_extension and "devtools" not in str(path):

@@ -34,6 +34,8 @@ def get_integration_tests(
         file_end = "_python.py"
     elif test_type == "api":
         file_end = "_api.py"
+    else:
+        raise ValueError(f"test_type '{test_type}' not valid")
 
     for extension in find_extensions(filter_charting_ext):
         integration_folder = os.path.join(extension, "integration")

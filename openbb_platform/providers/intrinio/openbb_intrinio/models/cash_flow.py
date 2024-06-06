@@ -251,13 +251,14 @@ class IntrinioCashFlowStatementFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "cash_flow_statement"
         if query.period in ["quarter", "annual"]:
             period_type = "FY" if query.period == "annual" else "QTR"
-        if query.period in ["ttm", "ytd"]:
+        elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
+        else:
+            raise ValueError(f"Period '{query.period}' not supported.")
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (
