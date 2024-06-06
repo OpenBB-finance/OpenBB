@@ -115,7 +115,11 @@ def test_fredameribor_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fred_federal_funds_rate_fetcher(credentials=test_credentials):
     """Test FRED Federal Funds Rate Fetcher."""
-    params = {}
+    params = {
+        "start_date": datetime.date(2023, 1, 1),
+        "end_date": datetime.date(2023, 6, 6),
+        "effr_only": True,
+    }
 
     fetcher = FredFederalFundsRateFetcher()
     result = fetcher.test(params, credentials)
