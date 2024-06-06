@@ -2,13 +2,15 @@
 
 import datetime
 from typing import Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_fixedincome(Container):
@@ -52,6 +54,10 @@ class ROUTER_fixedincome(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/fixedincome/rate/sofr` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def sofr(
         self,
         start_date: Annotated[
@@ -114,6 +120,13 @@ class ROUTER_fixedincome(Container):
         >>> obb.fixedincome.sofr(provider='fred')
         >>> obb.fixedincome.sofr(period='overnight', provider='fred')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; use `/fixedincome/rate/sofr` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/fixedincome/sofr",

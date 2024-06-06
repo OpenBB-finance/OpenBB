@@ -4,7 +4,9 @@ from openbb_core.provider.abstract.provider import Provider
 from openbb_federal_reserve.models.central_bank_holdings import (
     FederalReserveCentralBankHoldingsFetcher,
 )
-from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
+from openbb_federal_reserve.models.federal_funds_rate import (
+    FederalReserveFederalFundsRateFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -21,7 +23,7 @@ federal_reserve_provider = Provider(
         "CentralBankHoldings": FederalReserveCentralBankHoldingsFetcher,
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
-        "FEDFUNDS": FederalReserveFEDFetcher,
+        "FederalFundsRate": FederalReserveFederalFundsRateFetcher,
         "YieldCurve": FederalReserveYieldCurveFetcher,
     },
     repr_name="Federal Reserve (FED)",

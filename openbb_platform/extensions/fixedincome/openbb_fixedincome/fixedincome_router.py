@@ -2,6 +2,7 @@
 
 # pylint: disable=W0613:unused-argument
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -31,6 +32,12 @@ router.include_router(corporate_router)
         APIEx(parameters={"provider": "fred"}),
         APIEx(parameters={"period": "overnight", "provider": "fred"}),
     ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/rate/sofr` instead.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
 )
 async def sofr(
     cc: CommandContext,

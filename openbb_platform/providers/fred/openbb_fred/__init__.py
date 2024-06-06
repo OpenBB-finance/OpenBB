@@ -11,7 +11,7 @@ from openbb_fred.models.ecb_interest_rates import (
 )
 from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
-from openbb_fred.models.fed_rates import FREDFEDFetcher
+from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
 from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
@@ -48,7 +48,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "ESTR": FREDESTRFetcher,
         "SONIA": FREDSONIAFetcher,
         "AMERIBOR": FREDAMERIBORFetcher,
-        "FEDFUNDS": FREDFEDFetcher,
+        "FederalFundsRate": FredFederalFundsRateFetcher,
         "PROJECTIONS": FREDPROJECTIONFetcher,
         "IORB": FREDIORBFetcher,
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,

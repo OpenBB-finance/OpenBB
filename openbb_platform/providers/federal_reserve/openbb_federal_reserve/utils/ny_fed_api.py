@@ -378,6 +378,7 @@ def _get_endpoints(
     }
     return end_points if category is None else end_points[category]  # type: ignore
 
+
 async def fetch_data(url: str) -> Dict:
     """Fetches the JSON response from the API."""
     try:

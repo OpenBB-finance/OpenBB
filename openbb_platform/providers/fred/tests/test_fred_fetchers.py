@@ -14,7 +14,7 @@ from openbb_fred.models.ecb_interest_rates import (
 )
 from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
-from openbb_fred.models.fed_rates import FREDFEDFetcher
+from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
 from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
@@ -113,11 +113,11 @@ def test_fredameribor_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fredfed_fetcher(credentials=test_credentials):
-    """Test FREDFEDFetcher."""
+def test_fred_federal_funds_rate_fetcher(credentials=test_credentials):
+    """Test FRED Federal Funds Rate Fetcher."""
     params = {}
 
-    fetcher = FREDFEDFetcher()
+    fetcher = FredFederalFundsRateFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

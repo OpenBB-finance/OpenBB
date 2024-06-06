@@ -77,6 +77,29 @@ def test_fixedincome_sofr(params, obb):
         ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
+                "period": "overnight",
+                "provider": "fred",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_sofr(params, obb):
+    """Test the fixedincome rate sofr endpoint."""
+    result = obb.fixedincome.rate.sofr(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
                 "parameter": "volume_weighted_trimmed_mean_rate",
                 "provider": "fred",
                 "start_date": "2023-01-01",
@@ -145,7 +168,10 @@ def test_fixedincome_rate_ameribor(params, obb):
     [
         (
             {
-                "parameter": "weekly",
+                "frequency": "w",
+                "transform": None,
+                "aggregation_method": "avg",
+                "effr_only": False,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -153,9 +179,9 @@ def test_fixedincome_rate_ameribor(params, obb):
         ),
         (
             {
-                "provider": "federal_reserve",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "provider": "federal_reserve",
             }
         ),
     ],

@@ -20,6 +20,7 @@ class ROUTER_fixedincome_rate(Container):
     effr_forecast
     estr
     iorb
+    sofr
     sonia
     """
 
@@ -310,8 +311,7 @@ class ROUTER_fixedincome_rate(Container):
         """Fed Funds Rate.
 
         Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-        domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-        United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+        domestic banks to borrow money. The rates central banks charge are set to stabilize the economy.
 
 
         Parameters
@@ -322,13 +322,50 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
-        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
-            Period of FED rate. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+        effr_only : bool
+            Return data without quantiles, target ranges, and volume. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[FEDFUNDS]
+            results : List[FederalFundsRate]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fred']]
                 Provider name.
@@ -339,18 +376,40 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        FEDFUNDS
-        --------
+        FederalFundsRate
+        ----------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            FED rate.
+        rate : float
+            Effective federal funds rate.
+        target_range_upper : Optional[float]
+            Upper bound of the target range.
+        target_range_lower : Optional[float]
+            Lower bound of the target range.
+        percentile_1 : Optional[float]
+            1st percentile of the distribution.
+        percentile_25 : Optional[float]
+            25th percentile of the distribution.
+        percentile_75 : Optional[float]
+            75th percentile of the distribution.
+        percentile_99 : Optional[float]
+            99th percentile of the distribution.
+        volume : Optional[float]
+            The trading volume.The notional volume of transactions (Billions of $).
+        intraday_low : Optional[float]
+            Intraday low. This field is only present for data before 2016. (provider: federal_reserve)
+        intraday_high : Optional[float]
+            Intraday high. This field is only present for data before 2016. (provider: federal_reserve)
+        standard_deviation : Optional[float]
+            Standard deviation. This field is only present for data before 2016. (provider: federal_reserve)
+        revision_indicator : Optional[str]
+            Indicates a revision of the data for that date. (provider: federal_reserve)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.effr(provider='fred')
-        >>> obb.fixedincome.rate.effr(parameter='daily', provider='fred')
+        >>> obb.fixedincome.rate.effr(effr_only=True, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -608,6 +667,89 @@ class ROUTER_fixedincome_rate(Container):
                     "provider": self._get_provider(
                         provider,
                         "fixedincome.rate.iorb",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def sofr(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Secured Overnight Financing Rate.
+
+        The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+        borrowing cash overnight collateralizing by Treasury securities.
+
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
+            Period of SOFR rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[SOFR]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        SOFR
+        ----
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            SOFR rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.sofr(provider='fred')
+        >>> obb.fixedincome.rate.sofr(period='overnight', provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/rate/sofr",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "fixedincome.rate.sofr",
                         ("fred",),
                     )
                 },

@@ -61,6 +61,27 @@ async def sonia(
 
 
 @router.command(
+    model="SOFR",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(parameters={"period": "overnight", "provider": "fred"}),
+    ],
+)
+async def sofr(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Secured Overnight Financing Rate.
+
+    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+    borrowing cash overnight collateralizing by Treasury securities.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="IORB",
     examples=[APIEx(parameters={"provider": "fred"})],
 )
@@ -80,10 +101,10 @@ async def iorb(
 
 
 @router.command(
-    model="FEDFUNDS",
+    model="FederalFundsRate",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"parameter": "daily", "provider": "fred"}),
+        APIEx(parameters={"effr_only": True, "provider": "fred"}),
     ],
 )
 async def effr(
@@ -95,8 +116,7 @@ async def effr(
     """Fed Funds Rate.
 
     Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-    United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy.
     """
     return await OBBject.from_query(Query(**locals()))
 

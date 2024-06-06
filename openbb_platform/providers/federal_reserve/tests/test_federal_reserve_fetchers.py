@@ -7,7 +7,9 @@ from openbb_core.app.service.user_service import UserService
 from openbb_federal_reserve.models.central_bank_holdings import (
     FederalReserveCentralBankHoldingsFetcher,
 )
-from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
+from openbb_federal_reserve.models.federal_funds_rate import (
+    FederalReserveFederalFundsRateFetcher,
+)
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -51,11 +53,11 @@ def test_federal_reserve_money_measures_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_federal_reserve_fed_fetcher(credentials=test_credentials):
-    """Test the Federal Reserve FED fetcher."""
+def test_federal_reserve_federal_funds_rate_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve Federal Funds Rate fetcher."""
     params = {"start_date": date(2023, 1, 1), "end_date": date(2023, 6, 6)}
 
-    fetcher = FederalReserveFEDFetcher()
+    fetcher = FederalReserveFederalFundsRateFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
