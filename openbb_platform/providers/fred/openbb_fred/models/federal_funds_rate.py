@@ -133,10 +133,16 @@ class FredFederalFundsRateFetcher(
         transformed_params = params.copy()
         now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = datetime(2016, 1, 1).date()
+            transformed_params["start_date"] = (
+                datetime(2016, 1, 1).date()
+                if params.get("effr_only") is False
+                else None
+            )
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
         return FredFederalFundsRateQueryParams(**transformed_params)
+
+        return FredFederalFundsRateQueryParams(**params)
 
     @staticmethod
     async def aextract_data(

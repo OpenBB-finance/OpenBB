@@ -98,7 +98,7 @@ class FederalReserveFederalFundsRateFetcher(
         transformed_params = params.copy()
         now = datetime.now().date()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = datetime(2016, 1, 1).date()
+            transformed_params["start_date"] = datetime(2016, 3, 1).date()
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
