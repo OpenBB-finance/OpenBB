@@ -4,7 +4,6 @@
 import argparse
 import contextlib
 import difflib
-import logging
 import os
 import re
 import sys
@@ -58,8 +57,6 @@ DATA_PROCESSING_ROUTERS = ["technical", "quantitative", "econometrics"]
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
-
-logger = logging.getLogger(__name__)
 
 env_file = str(ENV_FILE_SETTINGS)
 session = Session()
@@ -497,11 +494,6 @@ class CLIController(BaseController):
 
 def handle_job_cmds(jobs_cmds: Optional[List[str]]) -> Optional[List[str]]:
     """Handle job commands."""
-    # If the path selected does not start from the user root,
-    # give relative location from root
-    if jobs_cmds is not None and jobs_cmds:
-        logger.info("INPUT: %s", "/".join(jobs_cmds))
-
     export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
         commands = jobs_cmds[0].split("/")
@@ -619,10 +611,6 @@ def run_cli(jobs_cmds: Optional[List[str]] = None, test_mode=False):
                 break
 
         except SystemExit:
-            logger.exception(
-                "The command '%s' doesn't exist on the / menu.",
-                an_input,
-            )
             session.console.print(
                 f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]\n",
             )
@@ -769,7 +757,6 @@ def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     str
         The new string
     """
-
     cleaned = match[0].replace("{", "").replace("}", "").replace("$", "")
     key, default = cleaned.split("=")
     dict_value = special_arguments.get(key, default)
@@ -939,7 +926,6 @@ def launch(
     debug: bool = False, dev: bool = False, queue: Optional[List[str]] = None
 ) -> None:
     """Launch CLI."""
-
     if queue:
         main(debug, dev, queue, module="")
     else:
