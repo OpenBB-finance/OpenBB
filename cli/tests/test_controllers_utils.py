@@ -14,7 +14,6 @@ from openbb_cli.controllers.utils import (
     print_goodbye,
     print_guest_block_msg,
     remove_file,
-    reset,
     welcome_message,
 )
 
@@ -62,15 +61,6 @@ def test_print_goodbye(mock_session):
     """Test printing the goodbye message."""
     print_goodbye()
     mock_session.return_value.console.print.assert_called()
-
-
-def test_reset(mock_session):
-    """Test resetting the CLI."""
-    with patch("openbb_cli.controllers.utils.remove_file"), patch(
-        "sys.modules", new_callable=dict
-    ):
-        reset()
-        mock_session.return_value.console.print.assert_called()
 
 
 def test_parse_and_split_input():
