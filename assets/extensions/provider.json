@@ -7,9 +7,9 @@
         "credentials": [
             "alpha_vantage_api_key"
         ],
-        "v3Credentials": [
-            "API_KEY_ALPHAVANTAGE"
-        ],
+        "deprecatedCredentials": {
+            "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key"
+        },
         "website": "https://www.alphavantage.co",
         "instructions": "Go to: https://www.alphavantage.co/support/#api-key\n\n![AlphaVantage](https://user-images.githubusercontent.com/46355364/207820936-46c2ba00-81ff-4cd3-98a4-4fa44412996f.png)\n\nFill out the form, pass Captcha, and click on, \"GET FREE API KEY\"."
     },
@@ -31,9 +31,9 @@
         "credentials": [
             "biztoc_api_key"
         ],
-        "v3Credentials": [
-            "API_BIZTOC_TOKEN"
-        ],
+        "deprecatedCredentials": {
+            "API_BIZTOC_TOKEN": "biztoc_api_key"
+        },
         "website": "https://api.biztoc.com",
         "instructions": "The BizToc API is hosted on RapidAPI. To set up, go to: https://rapidapi.com/thma/api/biztoc.\n\n![biztoc0](https://github.com/marban/OpenBBTerminal/assets/18151143/04cdd423-f65e-4ad8-ad5a-4a59b0f5ddda)\n\nIn the top right, select 'Sign Up'. After answering some questions, you will be prompted to select one of their plans.\n\n![biztoc1](https://github.com/marban/OpenBBTerminal/assets/18151143/9f3b72ea-ded7-48c5-aa33-bec5c0de8422)\n\nAfter signing up, navigate back to https://rapidapi.com/thma/api/biztoc. If you are logged in, you will see a header called X-RapidAPI-Key.\n\n![biztoc2](https://github.com/marban/OpenBBTerminal/assets/18151143/0f3b6c91-07e0-447a-90cd-a9e23522929f)"
     },
@@ -95,9 +95,9 @@
         "credentials": [
             "fmp_api_key"
         ],
-        "v3Credentials": [
-            "API_KEY_FINANCIALMODELINGPREP"
-        ],
+        "deprecatedCredentials": {
+            "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key"
+        },
         "website": "https://financialmodelingprep.com",
         "instructions": "Go to: https://site.financialmodelingprep.com/developer/docs\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207821920-64553d05-d461-4984-b0fe-be0368c71186.png)\n\nClick on, \"Get my API KEY here\", and sign up for a free account.\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207822184-a723092e-ef42-4f87-8c55-db150f09741b.png)\n\nWith an account created, sign in and navigate to the Dashboard, which shows the assigned token. by pressing the \"Dashboard\" button which will show the API key.\n\n![FinancialModelingPrep](https://user-images.githubusercontent.com/46355364/207823170-dd8191db-e125-44e5-b4f3-2df0e115c91d.png)"
     },
@@ -109,9 +109,9 @@
         "credentials": [
             "fred_api_key"
         ],
-        "v3Credentials": [
-            "API_FRED_KEY"
-        ],
+        "deprecatedCredentials": {
+            "API_FRED_KEY": "fred_api_key"
+        },
         "website": "https://fred.stlouisfed.org",
         "instructions": "Go to: https://fred.stlouisfed.org\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)\n\nClick on, \"My Account\", create a new account or sign in with Google:\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827011-65cdd501-27e3-436f-bd9d-b0d8381d46a7.png)\n\nAfter completing the sign-up, go to \"My Account\", and select \"API Keys\". Then, click on, \"Request API Key\".\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827577-c869f989-4ef4-4949-ab57-6f3931f2ae9d.png)\n\nFill in the box for information about the use-case for FRED, and by clicking, \"Request API key\", at the bottom of the page, the API key will be issued.\n\n![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)"
     },
@@ -131,9 +131,9 @@
         "credentials": [
             "intrinio_api_key"
         ],
-        "v3Credentials": [
-            "API_INTRINIO_KEY"
-        ],
+        "deprecatedCredentials": {
+            "API_INTRINIO_KEY": "intrinio_api_key"
+        },
         "website": "https://intrinio.com",
         "instructions": "Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard."
     },
@@ -145,9 +145,9 @@
         "credentials": [
             "nasdaq_api_key"
         ],
-        "v3Credentials": [
-            "API_KEY_QUANDL"
-        ],
+        "deprecatedCredentials": {
+            "API_KEY_QUANDL": "nasdaq_api_key"
+        },
         "website": "https://data.nasdaq.com",
         "instructions": "Go to: https://www.quandl.com\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207823899-208a3952-f557-4b73-aee6-64ac00faedb7.png)\n\nClick on, \"Sign Up\", and register a new account.\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207824214-4b6b2b74-e709-4ed4-adf2-14803e6f3568.png)\n\nFollow the sign-up instructions, and upon completion the API key will be assigned.\n\n![Quandl](https://user-images.githubusercontent.com/46355364/207824664-3c82befb-9c69-42df-8a82-510d85c19a97.png)"
     },
@@ -167,9 +167,9 @@
         "credentials": [
             "polygon_api_key"
         ],
-        "v3Credentials": [
-            "API_POLYGON_KEY"
-        ],
+        "deprecatedCredentials": {
+            "API_POLYGON_KEY": "polygon_api_key"
+        },
         "website": "https://polygon.io",
         "instructions": "Go to: https://polygon.io\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825623-fcd7f0a3-131a-4294-808c-754c13e38e2a.png)\n\nClick on, \"Get your Free API Key\".\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207825952-ca5540ec-6ed2-4cef-a0ed-bb50b813932c.png)\n\nAfter signing up, the API Key is found at the bottom of the account dashboard page.\n\n![Polygon](https://user-images.githubusercontent.com/46355364/207826258-b1f318fa-fd9c-41d9-bf5c-fe16722e6601.png)"
     },
@@ -224,9 +224,9 @@
             "tradier_api_key",
             "tradier_account_type"
         ],
-        "v3Credentials": [
-            "API_TRADIER_TOKEN"
-        ],
+        "deprecatedCredentials": {
+            "API_TRADIER_TOKEN": "tradier_api_key"
+        },
         "website": "https://tradier.com",
         "instructions": "Go to: https://documentation.tradier.com\n\n![Tradier](https://user-images.githubusercontent.com/46355364/207829178-a8bba770-f2ea-4480-b28e-efd81cf30980.png)\n\nClick on, \"Open Account\", to start the sign-up process. After the account has been setup, navigate to [Tradier Broker Dash](https://dash.tradier.com/login?redirect=settings.api) and create the application. Request a sandbox access token."
     },
