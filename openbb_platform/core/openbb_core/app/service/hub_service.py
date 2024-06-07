@@ -247,8 +247,8 @@ class HubService:
             self.V3TOV4.get(k, k): settings.features_keys.get(self.V3TOV4.get(k, k), v)
             for k, v in settings.features_keys.items()
         }
-        commands = settings.features_settings.get("defaults", {})
-        return Credentials(**hub_credentials), Defaults(**commands)
+        defaults = settings.features_settings.get("defaults", {})
+        return Credentials(**hub_credentials), Defaults(**defaults)
 
     def platform2hub(
         self, credentials: Credentials, defaults: Defaults
