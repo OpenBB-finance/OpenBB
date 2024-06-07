@@ -54,13 +54,13 @@ def test_remove_file_failure(mock_session):
         "os.remove", side_effect=Exception("Error")
     ):
         assert not remove_file(Path("/path/to/file"))
-        mock_session.return_value.console.print.assert_called()
+        mock_session.console.print.assert_called()
 
 
 def test_print_goodbye(mock_session):
     """Test printing the goodbye message."""
     print_goodbye()
-    mock_session.return_value.console.print.assert_called()
+    mock_session.console.print.assert_called()
 
 
 def test_parse_and_split_input():
@@ -87,13 +87,13 @@ def test_parse_and_split_input_special_cases(input_command, expected_output):
 def test_print_guest_block_msg(mock_session):
     """Test printing the guest block message."""
     print_guest_block_msg()
-    mock_session.return_value.console.print.assert_called()
+    mock_session.console.print.assert_called()
 
 
 def test_welcome_message(mock_session):
     """Test printing the welcome message."""
     welcome_message()
-    mock_session.return_value.console.print.assert_called_with(
+    mock_session.console.print.assert_called_with(
         "\nWelcome to OpenBB Platform CLI v1.0"
     )
 
