@@ -50,6 +50,7 @@ Next, install webkit.
 
 - Fedora: `sudo dnf install gtk3-devel webkit2gtk3-devel`
 
+
 ## PyPI
 
 Within your existing OpenBB environment, install `openbb-cli` with:
@@ -64,28 +65,6 @@ The installation script adds `openbb` to the PATH within your Python environment
 openbb
 
 Welcome to OpenBB Platform CLI v1.0.0
-```
-
-## Docker
-
-You can install the Platform CLI from [GitHub Container Registry](https://github.com/orgs/OpenBB-finance/packages/container/package/openbb-cli) with:
-
-```bash
-docker run -it --rm -v ~/.openbb_platform:/root/.openbb_platform ghcr.io/openbb-finance/openbb-cli:latest
-```
-
-Alternatively, we provide a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
-
-Run the following command from the repo root to build the image:
-
-```bash
-docker build -f build/docker/cli.dockerfile -t openbb-cli:latest .
-```
-
-To run it:
-
-```bash
-docker run -it -v ~/.openbb_platform:/root/.openbb_platform openbb-platform:latest
 ```
 
 ## Source
