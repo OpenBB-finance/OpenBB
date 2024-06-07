@@ -1,5 +1,6 @@
 """Fixed Income Corporate Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -22,6 +23,12 @@ router = Router(prefix="/corporate")
         APIEx(parameters={"provider": "fred"}),
         APIEx(parameters={"index_type": "yield_to_worst", "provider": "fred"}),
     ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
 )
 async def ice_bofa(
     cc: CommandContext,

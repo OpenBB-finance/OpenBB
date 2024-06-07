@@ -6,6 +6,7 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.bond_indices import FredBondIndicesFetcher
 from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
 from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
@@ -345,5 +346,20 @@ def test_fred_retail_prices_fetcher(credentials=test_credentials):
     params = {"item": "eggs", "start_date": datetime.date(2024, 1, 1)}
 
     fetcher = FredRetailPricesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_bond_indices_fetcher(credentials=test_credentials):
+    """Test FredBondIndicesFetcher."""
+    params = {
+        "category": "us",
+        "index": "corporate",
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 6, 4),
+    }
+
+    fetcher = FredBondIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
