@@ -6,8 +6,8 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
 from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
-from openbb_fred.models.cp import FREDCommercialPaperFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -204,8 +204,10 @@ def test_fred_moody_corporate_bond_index_fetcher(credentials=test_credentials):
 def test_fred_commercial_paper_fetcher(credentials=test_credentials):
     """Test FREDCommercialPaperFetcher."""
     params = {
-        "start_date": datetime.date(2023, 1, 1),
-        "end_date": datetime.date(2023, 6, 6),
+        "start_date": datetime.date(2024, 1, 1),
+        "end_date": datetime.date(2024, 2, 1),
+        "category": "asset_backed",
+        "maturity": "30d",
     }
 
     fetcher = FREDCommercialPaperFetcher()

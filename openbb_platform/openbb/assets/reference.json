@@ -32051,7 +32051,7 @@
                 "message": null
             },
             "description": "Commercial Paper.\n\nCommercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.\nMaturities range up to 270 days but average about 30 days.\nMany companies use CP to raise cash needed for current transactions,\nand many find it to be a lower-cost alternative to bank loans.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.commercial_paper(provider='fred')\nobb.fixedincome.corporate.commercial_paper(maturity='15d', provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.commercial_paper(provider='fred')\nobb.fixedincome.corporate.commercial_paper(category=all, maturity=15d, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -32071,30 +32071,6 @@
                         "choices": null
                     },
                     {
-                        "name": "maturity",
-                        "type": "Literal['overnight', '7d', '15d', '30d', '60d', '90d']",
-                        "description": "The maturity.",
-                        "default": "30d",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "category",
-                        "type": "Literal['asset_backed', 'financial', 'nonfinancial']",
-                        "description": "The category.",
-                        "default": "financial",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "grade",
-                        "type": "Literal['aa', 'a2_p2']",
-                        "description": "The grade.",
-                        "default": "aa",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "provider",
                         "type": "Literal['fred']",
                         "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
@@ -32102,7 +32078,89 @@
                         "optional": true
                     }
                 ],
-                "fred": []
+                "fred": [
+                    {
+                        "name": "maturity",
+                        "type": "Union[Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']], List[Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]]]",
+                        "description": "A target maturity. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "overnight",
+                            "7d",
+                            "15d",
+                            "30d",
+                            "60d",
+                            "90d"
+                        ]
+                    },
+                    {
+                        "name": "category",
+                        "type": "Union[Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']], List[Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]]]",
+                        "description": "The category of asset. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "asset_backed",
+                            "financial",
+                            "nonfinancial",
+                            "a2p2"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -32144,15 +32202,48 @@
                         "choices": null
                     },
                     {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "Maturity length of the item.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
                         "name": "rate",
                         "type": "float",
-                        "description": "Commercial Paper Rate.",
+                        "description": "Interest rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "asset_type",
+                        "type": "Literal['asset_backed', 'financial', 'nonfinancial', 'a2p2']",
+                        "description": "The category of asset.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     }
-                ],
-                "fred": []
+                ]
             },
             "model": "CommercialPaper"
         },

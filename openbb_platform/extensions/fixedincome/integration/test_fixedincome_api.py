@@ -357,9 +357,11 @@ def test_fixedincome_corporate_moody(params, headers):
             {
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "maturity": "30d",
+                "maturity": "overnight",
                 "category": "financial",
-                "grade": "aa",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
                 "provider": "fred",
             }
         )

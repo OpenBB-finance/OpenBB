@@ -113,7 +113,7 @@ async def spot_rates(
     model="CommercialPaper",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"maturity": "15d", "provider": "fred"}),
+        APIEx(parameters={"category": "all", "maturity": "15d", "provider": "fred"}),
     ],
 )
 async def commercial_paper(

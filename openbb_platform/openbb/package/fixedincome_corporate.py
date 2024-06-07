@@ -35,17 +35,6 @@ class ROUTER_fixedincome_corporate(Container):
             Union[datetime.date, None, str],
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
-        maturity: Annotated[
-            Literal["overnight", "7d", "15d", "30d", "60d", "90d"],
-            OpenBBField(description="The maturity."),
-        ] = "30d",
-        category: Annotated[
-            Literal["asset_backed", "financial", "nonfinancial"],
-            OpenBBField(description="The category."),
-        ] = "financial",
-        grade: Annotated[
-            Literal["aa", "a2_p2"], OpenBBField(description="The grade.")
-        ] = "aa",
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
@@ -68,14 +57,49 @@ class ROUTER_fixedincome_corporate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
-            The maturity.
-        category : Literal['asset_backed', 'financial', 'nonfinancial']
-            The category.
-        grade : Literal['aa', 'a2_p2']
-            The grade.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        maturity : Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]
+            A target maturity. Multiple comma separated items allowed. (provider: fred)
+        category : Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]
+            The category of asset. Multiple comma separated items allowed. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
@@ -95,14 +119,22 @@ class ROUTER_fixedincome_corporate(Container):
         ---------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            Commercial Paper Rate.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        maturity : str
+            Maturity length of the item.
+        rate : float
+            Interest rate.
+        title : Optional[str]
+            Title of the series.
+        asset_type : Optional[Literal['asset_backed', 'financial', 'nonfinancial', 'a2p2']]
+            The category of asset. (provider: fred)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.corporate.commercial_paper(provider='fred')
-        >>> obb.fixedincome.corporate.commercial_paper(maturity='15d', provider='fred')
+        >>> obb.fixedincome.corporate.commercial_paper(category='all', maturity='15d', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -118,11 +150,12 @@ class ROUTER_fixedincome_corporate(Container):
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
-                    "maturity": maturity,
-                    "category": category,
-                    "grade": grade,
                 },
                 extra_params=kwargs,
+                info={
+                    "maturity": {"fred": {"multiple_items_allowed": True}},
+                    "category": {"fred": {"multiple_items_allowed": True}},
+                },
             )
         )
 
