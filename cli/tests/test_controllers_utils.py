@@ -23,13 +23,13 @@ from openbb_cli.controllers.utils import (
 @pytest.fixture
 def mock_session():
     """Mock the session and its dependencies."""
-    with patch("openbb_cli.controllers.utils.Session", autospec=True) as mock:
-        mock.return_value.console.print = MagicMock()
-        mock.return_value.is_local = MagicMock(return_value=True)
-        mock.return_value.settings.VERSION = "1.0"
-        mock.return_value.user.profile.hub_session.username = "testuser"
-        mock.return_value.settings.FLAIR = "rocket"
-        yield mock
+    with patch("openbb_cli.controllers.utils.session") as mock_session:
+        mock_session.console.print = MagicMock()
+        mock_session.is_local = MagicMock(return_value=True)
+        mock_session.settings.VERSION = "1.0"
+        mock_session.user.profile.hub_session.username = "testuser"
+        mock_session.settings.FLAIR = "rocket"
+        yield mock_session
 
 
 def test_remove_file_existing_file():

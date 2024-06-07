@@ -7,6 +7,7 @@ from typing import List, Literal, Optional, get_origin
 
 from openbb_cli.config.menu_text import MenuText
 from openbb_cli.controllers.base_controller import BaseController
+from openbb_cli.models.settings import SettingGroups
 from openbb_cli.session import Session
 
 session = Session()
@@ -21,7 +22,7 @@ class SettingsController(BaseController):
             "group": (v.json_schema_extra or {}).get("group"),
             "description": v.description,
             "annotation": v.annotation,
-            "name": k,
+            "field_name": k,
         }
         for k, v in sorted(
             session.settings.model_fields.items(),
@@ -38,9 +39,9 @@ class SettingsController(BaseController):
         super().__init__(queue)
         for cmd, field in self._COMMANDS.items():
             group = field.get("group")
-            if group == "feature-flags":
+            if group == SettingGroups.feature_flags:
                 self._generate_command(cmd, field, "toggle")
-            elif group == "preferences":
+            elif group == SettingGroups.preferences:
                 self._generate_command(cmd, field, "set")
         self.update_completer(self.choices_default)
 
@@ -49,16 +50,16 @@ class SettingsController(BaseController):
         mt = MenuText("settings/")
         mt.add_info("Feature Flags")
         for k, f in self._COMMANDS.items():
-            if f.get("group") == "feature-flags":
+            if f.get("group") == SettingGroups.feature_flags:
                 mt.add_setting(
                     name=k,
-                    status=getattr(session.settings, f["name"]),
+                    status=getattr(session.settings, f["field_name"]),
                     description=f["description"],
                 )
         mt.add_raw("\n")
         mt.add_info("Preferences")
         for k, f in self._COMMANDS.items():
-            if f.get("group") == "preferences":
+            if f.get("group") == SettingGroups.preferences:
                 mt.add_cmd(
                     name=k,
                     description=f["description"],
@@ -66,13 +67,13 @@ class SettingsController(BaseController):
         session.console.print(text=mt.menu_text, menu="Settings")
 
     def _generate_command(
-        self, name: str, field: dict, action_type: Literal["toggle", "set"]
+        self, cmd_name: str, field: dict, action_type: Literal["toggle", "set"]
     ):
         """Generate command call."""
 
         def _toggle(self, other_args: List[str], field=field) -> None:
             """Toggle setting value."""
-            name = field["name"]
+            field_name = field["field_name"]
             parser = argparse.ArgumentParser(
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
                 prog=field["command"],
@@ -81,17 +82,21 @@ class SettingsController(BaseController):
             )
             ns_parser = self.parse_simple_args(parser, other_args)
             if ns_parser:
-                session.settings.set_item(name, not getattr(session.settings, name))
+                session.settings.set_item(
+                    field_name, not getattr(session.settings, field_name)
+                )
 
         def _set(self, other_args: List[str], field=field) -> None:
             """Set preference value."""
-            name = field["name"]
+            field_name = field["field_name"]
             annotation = field["annotation"]
             command = field["command"]
+            type_ = str if get_origin(annotation) is Literal else annotation
             choices = None
             if get_origin(annotation) is Literal:
                 choices = annotation.__args__
             elif command == "console_style":
+                # To have updated choices for console style
                 choices = session.style.available_styles
             parser = argparse.ArgumentParser(
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -105,18 +110,22 @@ class SettingsController(BaseController):
                 dest="value",
                 action="store",
                 required=False,
-                type=None if get_origin(annotation) is Literal else annotation,  # type: ignore[arg-type]
+                type=type_,  # type: ignore[arg-type]
                 choices=choices,
             )
             ns_parser = self.parse_simple_args(parser, other_args)
             if ns_parser:
                 if ns_parser.value:
+                    # Console style is applied immediately
                     if command == "console_style":
                         session.style.apply(ns_parser.value)
-                    session.settings.set_item(name, ns_parser.value)
+                    session.settings.set_item(field_name, ns_parser.value)
+                    session.console.print(
+                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
+                    )
                 elif not other_args:
                     session.console.print(
-                        f"Current value: {getattr(session.settings, name)}"
+                        f"[info]Current value:[/info] {getattr(session.settings, field_name)}"
                     )
 
         action = None
@@ -128,6 +137,6 @@ class SettingsController(BaseController):
             raise ValueError(f"Action type '{action_type}' not allowed.")
 
         bound_method = update_wrapper(
-            partial(MethodType(action, self), field=field), action
+            wrapper=partial(MethodType(action, self), field=field), wrapped=action
         )
-        setattr(self, f"call_{name}", bound_method)
+        setattr(self, f"call_{cmd_name}", bound_method)

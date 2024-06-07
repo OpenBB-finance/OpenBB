@@ -1,5 +1,6 @@
 """Settings model."""
 
+from enum import Enum
 from typing import Any, Literal
 
 from dotenv import dotenv_values, set_key
@@ -9,6 +10,13 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pytz import all_timezones
 
 VERSION = get_package_version("openbb-cli")
+
+
+class SettingGroups(Enum):
+    """Setting types."""
+
+    feature_flags = "feature_flag"
+    preferences = "preference"
 
 
 class Settings(BaseModel):
@@ -34,67 +42,67 @@ class Settings(BaseModel):
         default=False,
         description="whether to overwrite Excel files if they already exists",
         command="overwrite",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     SHOW_VERSION: bool = Field(
         default=True,
         description="whether to show the version in the bottom right corner",
         command="version",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     USE_INTERACTIVE_DF: bool = Field(
         default=True,
         description="display tables in interactive window",
         command="interactive",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     USE_CLEAR_AFTER_CMD: bool = Field(
         default=False,
         description="clear console after each command",
         command="cls",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     USE_DATETIME: bool = Field(
         default=True,
         description="whether to show the date and time before the flair",
         command="datetime",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     USE_PROMPT_TOOLKIT: bool = Field(
         default=True,
         description="enable prompt toolkit (autocomplete and history)",
         command="promptkit",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     ENABLE_EXIT_AUTO_HELP: bool = Field(
         default=True,
         description="automatically print help when quitting menu",
         command="exithelp",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     REMEMBER_CONTEXTS: bool = Field(
         default=True,
         description="remember contexts between menus",
         command="rcontext",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     ENABLE_RICH_PANEL: bool = Field(
         default=True,
         description="enable colorful rich CLI panel",
         command="richpanel",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     TOOLBAR_HINT: bool = Field(
         default=True,
         description="displays usage hints in the bottom toolbar",
         command="tbhint",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
     SHOW_MSG_OBBJECT_REGISTRY: bool = Field(
         default=False,
         description="show obbject registry message after a new result is added",
         command="obbject_msg",
-        group="feature-flags",
+        group=SettingGroups.feature_flags,
     )
 
     # PREFERENCES
@@ -102,43 +110,43 @@ class Settings(BaseModel):
         default="America/New_York",
         description="pick timezone",
         command="timezone",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     FLAIR: Literal[tuple(AVAILABLE_FLAIRS)] = Field(  # type: ignore[valid-type]
         default=":openbb",
         description="choose flair icon",
         command="flair",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     N_TO_KEEP_OBBJECT_REGISTRY: int = Field(
         default=10,
         description="define the maximum number of obbjects allowed in the registry",
         command="obbject_res",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     N_TO_DISPLAY_OBBJECT_REGISTRY: int = Field(
         default=5,
         description="define the maximum number of cached results to display on the help menu",
         command="obbject_display",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     RICH_STYLE: str = Field(
         default="dark",
         description="apply a custom rich style to the CLI",
         command="console_style",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     ALLOWED_NUMBER_OF_ROWS: int = Field(
         default=20,
-        description="Number of rows to show (when not using interactive tables).",
+        description="number of rows to show (when not using interactive tables).",
         command="n_rows",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
     ALLOWED_NUMBER_OF_COLUMNS: int = Field(
         default=5,
-        description="Number of columns to show (when not using interactive tables).",
+        description="number of columns to show (when not using interactive tables).",
         command="n_cols",
-        group="preferences",
+        group=SettingGroups.preferences,
     )
 
     model_config = ConfigDict(validate_assignment=True)
