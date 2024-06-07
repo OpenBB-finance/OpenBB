@@ -51,10 +51,12 @@ class Registry:
         def _handle_standard_params(obbject: OBBject) -> str:
             """Handle standard params for obbjects"""
             standard_params_json = ""
-            std_params = obbject._standard_params  # pylint: disable=protected-access
-            if hasattr(std_params, "__dict__"):
+            std_params = getattr(
+                obbject, "_standard_params", {}
+            )  # pylint: disable=protected-access
+            if std_params:
                 standard_params = {
-                    k: str(v)[:30] for k, v in std_params.__dict__.items() if v
+                    k: str(v)[:30] for k, v in std_params.items() if v and k != "data"
                 }
                 standard_params_json = json.dumps(standard_params)
 

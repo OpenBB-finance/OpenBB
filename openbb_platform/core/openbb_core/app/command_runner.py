@@ -237,23 +237,20 @@ class StaticCommandRunner:
                 raise OpenBBError(
                     "Charting is not installed. Please install `openbb-charting`."
                 )
+            # Here we will pop the chart_params kwargs and flatten them into the kwargs.
             chart_params = {}
-            extra_params = kwargs.get("extra_params", {})
+            extra_params = getattr(obbject, "_extra_params", {})
 
-            if hasattr(extra_params, "__dict__") and hasattr(
-                extra_params, "chart_params"
-            ):
-                chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
-            elif isinstance(extra_params, dict) and "chart_params" in extra_params:
-                chart_params = kwargs["extra_params"].get("chart_params", {})
+            if extra_params and "chart_params" in extra_params:
+                chart_params = extra_params.get("chart_params", {})
 
-            if "chart_params" in kwargs and kwargs["chart_params"] is not None:
+            if kwargs.get("chart_params"):
                 chart_params.update(kwargs.pop("chart_params", {}))
-
+            # Verify that kwargs is not nested as kwargs so we don't miss any chart params.
             if (
                 "kwargs" in kwargs
                 and "chart_params" in kwargs["kwargs"]
-                and kwargs["kwargs"].get("chart_params") is not None
+                and kwargs["kwargs"].get("chart_params")
             ):
                 chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
@@ -307,10 +304,25 @@ class StaticCommandRunner:
             } or None
 
             try:
-                obbject = await cls._command(func, kwargs)
-                # pylint: disable=protected-access
-                obbject._route = route
-                obbject._standard_params = kwargs.get("standard_params", None)
+                obbject = await cls._command(
+                    func, kwargs
+                )  # pylint: disable=protected-access
+                # This section prepares the obbject to pass to the charting service.
+                obbject._route = route  # pylint: disable=protected-access
+                std_params = kwargs.get("standard_params", {})
+                if std_params and hasattr(std_params, "__dict__"):
+                    std_params = std_params.__dict__
+                elif "data" in kwargs:
+                    std_params = kwargs
+
+                xtra_params = kwargs.get("extra_params", {})
+                if xtra_params and hasattr(xtra_params, "__dict__"):
+                    xtra_params = xtra_params.__dict__
+
+                obbject._standard_params = (
+                    std_params  # pylint: disable=protected-access
+                )
+                obbject._extra_params = xtra_params  # pylint: disable=protected-access
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
             finally:
