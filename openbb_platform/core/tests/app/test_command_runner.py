@@ -367,7 +367,12 @@ def test_static_command_runner_chart():
     """Test _chart method when charting is in obbject.accessors."""
 
     mock_obbject = OBBject(
-        results=[{"1990": 100}, {"1991": 200}, {"1992": 300}], accessors=["charting"]
+        results=[
+            {"date": "1990", "value": 100},
+            {"date": "1991", "value": 200},
+            {"date": "1992", "value": 300},
+        ],
+        accessors={"charting": Mock()},
     )
     mock_obbject.charting.show = Mock()
 
