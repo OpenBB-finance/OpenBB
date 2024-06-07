@@ -620,3 +620,30 @@ def test_fixedincome_government_yield_curve(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "provider": "fred",
+            "category": "high_yield",
+            "index": "us,europe,emerging",
+            "index_type": "total_return",
+            "start_date": "2023-05-31",
+            "end_date": "2024-06-01",
+            "transform": None,
+            "frequency": None,
+            "aggregation_method": "avg",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_bond_indices(params, obb):
+    """Test the bond indices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.bond_indices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
