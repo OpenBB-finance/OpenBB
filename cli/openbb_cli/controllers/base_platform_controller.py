@@ -6,7 +6,6 @@ from types import MethodType
 from typing import Dict, List, Optional
 
 import pandas as pd
-from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
@@ -16,6 +15,8 @@ from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
 from openbb_core.app.model.obbject import OBBject
+
+from openbb import obb
 
 session = Session()
 
