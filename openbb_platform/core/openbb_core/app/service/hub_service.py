@@ -262,8 +262,8 @@ class HubService:
             # If v3 key was in the hub already, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
             settings.features_keys[k] = v
-        defaults = defaults.model_dump(mode="json", exclude_none=True)
-        settings.features_settings.update(defaults)
+        defaults_ = defaults.model_dump(mode="json", exclude_none=True)
+        settings.features_settings.update({"defaults": defaults_})
         return settings
 
     @staticmethod
