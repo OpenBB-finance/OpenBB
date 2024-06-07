@@ -17,7 +17,7 @@ class Provider:
         credentials: Optional[List[str]] = None,
         fetcher_dict: Optional[Dict[str, Type[Fetcher]]] = None,
         repr_name: Optional[str] = None,
-        deprecated_credentials: Optional[dict] = None,
+        deprecated_credentials: Optional[Dict[str, Optional[str]]] = None,
         instructions: Optional[str] = None,
     ) -> None:
         """Initialize the provider.
@@ -36,7 +36,7 @@ class Provider:
             Dictionary of fetchers, by default None.
         repr_name: Optional[str]
             Full name of the provider, by default None.
-        deprecated_credentials: Optional[dict]
+        deprecated_credentials: Optional[Dict[str, Optional[str]]]
             Map of deprecated credentials to its current name, by default None.
         instructions: Optional[str]
             Instructions on how to setup the provider. For example, how to get an API key.
