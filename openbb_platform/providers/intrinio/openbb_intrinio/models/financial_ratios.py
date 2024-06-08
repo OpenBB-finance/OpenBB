@@ -153,13 +153,14 @@ class IntrinioFinancialRatiosFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "calculations"
         if query.period in ["quarter", "annual"]:
             period_type = "FY" if query.period == "annual" else "QTR"
-        if query.period in ["ttm", "ytd"]:
+        elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
+        else:
+            raise ValueError(f"Period '{query.period}' not supported.")
 
         fundamentals_data: Dict = {}
 

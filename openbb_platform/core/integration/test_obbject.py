@@ -41,7 +41,10 @@ def test_to_dataframe(obb):
     assert isinstance(stocks_df, pd.DataFrame)
 
 
-@pytest.mark.skipif("polars" not in sys.modules, reason="polars not installed")
+@pytest.mark.skipif(
+    "polars" not in sys.modules or "polars-lts-cpu" not in sys.modules,
+    reason="polars not installed",
+)
 @pytest.mark.integration
 def test_to_polars(obb):
     """Test obbject to polars."""

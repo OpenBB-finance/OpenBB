@@ -743,13 +743,15 @@ class BaseController(metaclass=ABCMeta):
 
             if export_allowed == "raw_data_only":
                 choices_export = ["csv", "json", "xlsx"]
-                help_export = "Export raw data into csv, json, xlsx"
+                help_export = "Export raw data into csv, json or xlsx."
             elif export_allowed == "figures_only":
-                choices_export = ["png", "jpg", "svg"]
-                help_export = "Export figure into png, jpg, svg "
+                choices_export = ["png", "jpg"]
+                help_export = "Export figure into png or jpg."
             else:
-                choices_export = ["csv", "json", "xlsx", "png", "jpg", "svg"]
-                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, svg "
+                choices_export = ["csv", "json", "xlsx", "png", "jpg"]
+                help_export = (
+                    "Export raw data into csv, json, xlsx and figure into png or jpg."
+                )
 
             parser.add_argument(
                 "--export",
@@ -805,7 +807,11 @@ class BaseController(metaclass=ABCMeta):
                     i + 1
                     for i, arg in enumerate(other_args)
                     if arg in ("-i", "--input")
-                    and "routine_args" in [action.dest for action in parser._actions]
+                    and "routine_args"
+                    in [
+                        action.dest
+                        for action in parser._actions  # pylint: disable=protected-access
+                    ]
                 ),
                 -1,
             )
@@ -816,6 +822,11 @@ class BaseController(metaclass=ABCMeta):
                 for part in (arg.split(",") if index != routine_args_index else [arg])
             ]
 
+            # Check if the action has optional choices, if yes, remove them
+            for action in parser._actions:  # pylint: disable=protected-access
+                if hasattr(action, "optional_choices") and action.optional_choices:
+                    action.choices = None
+
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
             if export_allowed in [
@@ -823,7 +834,7 @@ class BaseController(metaclass=ABCMeta):
                 "raw_data_and_figures",
             ]:
                 ns_parser.is_image = any(
-                    ext in ns_parser.export for ext in ["png", "svg", "jpg"]
+                    ext in ns_parser.export for ext in ["png", "jpg"]
                 )
 
         except SystemExit:

@@ -40,6 +40,10 @@ export default {
             from: "/terminal/menus/forecasting",
             to: "/terminal/menus/forecast",
           },
+          {
+            from: "/platform/development/contributing",
+            to: "/platform/developer_guide/contributing",
+          }
         ],
       },
     ],

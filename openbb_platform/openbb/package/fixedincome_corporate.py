@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.field import OpenBBField
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_fixedincome_corporate(Container):
@@ -49,7 +51,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -75,9 +77,7 @@ class ROUTER_fixedincome_corporate(Container):
         grade : Literal['aa', 'a2_p2']
             The grade.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -113,7 +113,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/commercial_paper",
+                        "fixedincome.corporate.commercial_paper",
                         ("fred",),
                     )
                 },
@@ -142,7 +142,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -162,9 +162,7 @@ class ROUTER_fixedincome_corporate(Container):
         yield_curve : Literal['spot', 'par']
             The yield curve type.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -206,7 +204,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/hqm",
+                        "fixedincome.corporate.hqm",
                         ("fred",),
                     )
                 },
@@ -220,6 +218,10 @@ class ROUTER_fixedincome_corporate(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def ice_bofa(
         self,
         start_date: Annotated[
@@ -237,7 +239,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -260,9 +262,7 @@ class ROUTER_fixedincome_corporate(Container):
         index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
             The type of series.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         category : Literal['all', 'duration', 'eur', 'usd']
             The type of category. (provider: fred)
         area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
@@ -300,13 +300,20 @@ class ROUTER_fixedincome_corporate(Container):
         >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')
         """  # noqa: E501
 
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/fixedincome/corporate/ice_bofa",
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/ice_bofa",
+                        "fixedincome.corporate.ice_bofa",
                         ("fred",),
                     )
                 },
@@ -337,7 +344,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -359,9 +366,7 @@ class ROUTER_fixedincome_corporate(Container):
         index_type : Literal['aaa', 'baa']
             The type of series.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
         spread : Optional[Literal['treasury', 'fed_funds']]
             The type of spread. (provider: fred)
 
@@ -399,7 +404,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/moody",
+                        "fixedincome.corporate.moody",
                         ("fred",),
                     )
                 },
@@ -440,7 +445,7 @@ class ROUTER_fixedincome_corporate(Container):
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
-                description="The provider to use for the query, by default None.\n    If None, the provider specified in defaults is selected or 'fred' if there is\n    no default."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
             ),
         ] = None,
         **kwargs
@@ -464,9 +469,7 @@ class ROUTER_fixedincome_corporate(Container):
         category : Union[str, List[str]]
             Rate category. Options: spot_rate, par_yield. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
 
         Returns
         -------
@@ -502,7 +505,7 @@ class ROUTER_fixedincome_corporate(Container):
                 provider_choices={
                     "provider": self._get_provider(
                         provider,
-                        "/fixedincome/corporate/spot_rates",
+                        "fixedincome.corporate.spot_rates",
                         ("fred",),
                     )
                 },

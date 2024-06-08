@@ -459,8 +459,9 @@ class Charting:
             )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
-        kwargs["extra_params"] = kwargs["extra"]["metadata"].arguments.get(
-            "extra_params"
+        metadata = kwargs["extra"].get("metadata")
+        kwargs["extra_params"] = (
+            metadata.arguments.get("extra_params") if metadata else None
         )
         if "kwargs" in kwargs:
             _kwargs = kwargs.pop("kwargs")
@@ -554,3 +555,16 @@ class Charting:
                 ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
             else:
                 warn("IPython.display is not available.")
+
+    def url(
+        self,
+        url: str,
+        title: str = "",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
+        """Return the URL of the chart."""
+        try:
+            self._backend.send_url(url=url, title=title, width=width, height=height)
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Failed to show figure with backend. {e}")

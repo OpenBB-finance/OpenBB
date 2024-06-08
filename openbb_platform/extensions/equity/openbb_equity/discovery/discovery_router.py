@@ -153,20 +153,6 @@ async def top_retail(
 
 
 @router.command(
-    model="UpcomingReleaseDays",
-    examples=[APIEx(parameters={"provider": "seeking_alpha"})],
-)
-async def upcoming_release_days(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject:
-    """Get upcoming earnings release dates."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(
     model="DiscoveryFilings",
     examples=[
         APIEx(parameters={"provider": "fmp"}),

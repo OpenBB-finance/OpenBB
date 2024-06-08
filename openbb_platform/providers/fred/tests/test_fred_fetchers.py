@@ -6,8 +6,9 @@ import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.bond_indices import FredBondIndicesFetcher
+from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -21,6 +22,7 @@ from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
@@ -328,5 +330,30 @@ def test_fred_yield_curve_fetcher(credentials=test_credentials):
     params = {"date": "2024-05-14,2023-05-14,2022-03-16,2021-05-14,2020-05-14"}
 
     fetcher = FREDYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_retail_prices_fetcher(credentials=test_credentials):
+    """Test FREDRetailPricesFetcher."""
+    params = {"item": "eggs", "start_date": datetime.date(2024, 1, 1)}
+
+    fetcher = FredRetailPricesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_bond_indices_fetcher(credentials=test_credentials):
+    """Test FredBondIndicesFetcher."""
+    params = {
+        "category": "us",
+        "index": "corporate",
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 6, 4),
+    }
+
+    fetcher = FredBondIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

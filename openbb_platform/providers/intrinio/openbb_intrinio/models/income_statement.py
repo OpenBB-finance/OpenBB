@@ -2,8 +2,8 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
@@ -18,8 +18,6 @@ from openbb_core.provider.utils.helpers import (
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
-_warn = warnings.warn
-
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     """Intrinio Income Statement Query.
@@ -28,7 +26,10 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
+    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
+        default="annual",
+        json_schema_extra={"choices": ["annual", "quarter", "ttm", "ytd"]},
+    )
     fiscal_year: Optional[int] = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
@@ -144,7 +145,9 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         default=None, description="Total gross profit"
     )
     gross_profit_margin: Optional[float] = Field(
-        default=None, description="Gross margin ratio."
+        default=None,
+        description="Gross margin ratio.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     provision_for_credit_losses: Optional[float] = Field(
         default=None,
@@ -290,6 +293,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     ebitda_margin: Optional[float] = Field(
         default=None,
         description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     total_pre_tax_income: Optional[float] = Field(
         default=None, description="Total pre-tax income"
@@ -298,7 +302,9 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         default=None, description="Earnings Before Interest and Taxes."
     )
     pre_tax_income_margin: Optional[float] = Field(
-        default=None, description="Pre-Tax Income Margin."
+        default=None,
+        description="Pre-Tax Income Margin.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     income_tax_expense: Optional[float] = Field(
         default=None, description="Income tax expense"
@@ -396,8 +402,11 @@ class IntrinioIncomeStatementFetcher(
         statement_code = "income_statement"
         if query.period in ["quarter", "annual"]:
             period_type = "FY" if query.period == "annual" else "QTR"
-        if query.period in ["ttm", "ytd"]:
+        elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
+        else:
+            raise ValueError(f"Period '{query.period}' not supported.")
+
         data_tags = [
             "ebit",
             "ebitda",
@@ -416,7 +425,7 @@ class IntrinioIncomeStatementFetcher(
         )
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
-                _warn("Financials data is only available from 2008 and later.")
+                warn("Financials data is only available from 2008 and later.")
                 query.fiscal_year = 2008
             fundamentals_url = fundamentals_url + f"&fiscal_year={query.fiscal_year}"
         fundamentals_url = fundamentals_url + f"&api_key={api_key}"
@@ -441,15 +450,15 @@ class IntrinioIncomeStatementFetcher(
 
             calculations_data = [
                 item
-                for item in calculations_data.get("standardized_financials", [])
+                for item in calculations_data.get("standardized_financials", [])  # type: ignore
                 if item["data_tag"]["tag"] in data_tags
             ]
 
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "financials": statement_data["standardized_financials"]
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "financials": statement_data["standardized_financials"]  # type: ignore
                 + calculations_data,
             }
 
