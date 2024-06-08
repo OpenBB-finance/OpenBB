@@ -24,7 +24,7 @@ from openbb_fred.models.search import (
     FredSearchFetcher,
 )
 from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+from openbb_fred.models.sofr import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher

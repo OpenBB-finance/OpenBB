@@ -27,7 +27,7 @@ from openbb_fred.models.search import (
     FredSearchFetcher,
 )
 from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+from openbb_fred.models.sofr import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
@@ -74,9 +74,12 @@ def test_fred_us_yield_curve_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fredsofr_fetcher(credentials=test_credentials):
+def test_fred_sofr_fetcher(credentials=test_credentials):
     """Test FREDSOFRFetcher."""
-    params = {}
+    params = {
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 6, 6),
+    }
 
     fetcher = FREDSOFRFetcher()
     result = fetcher.test(params, credentials)

@@ -691,9 +691,9 @@ class ROUTER_fixedincome_rate(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fred"]],
+            Optional[Literal["federal_reserve", "fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred."
             ),
         ] = None,
         **kwargs
@@ -710,17 +710,52 @@ class ROUTER_fixedincome_rate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
-            Period of SOFR rate. (provider: fred)
+        provider : Optional[Literal['federal_reserve', 'fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
         OBBject
             results : List[SOFR]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[Literal['federal_reserve', 'fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -733,14 +768,32 @@ class ROUTER_fixedincome_rate(Container):
         ----
         date : date
             The date of the data.
-        rate : Optional[float]
-            SOFR rate.
+        rate : float
+            Effective federal funds rate.
+        percentile_1 : Optional[float]
+            1st percentile of the distribution.
+        percentile_25 : Optional[float]
+            25th percentile of the distribution.
+        percentile_75 : Optional[float]
+            75th percentile of the distribution.
+        percentile_99 : Optional[float]
+            99th percentile of the distribution.
+        volume : Optional[float]
+            The trading volume.The notional volume of transactions (Billions of $).
+        average_30d : Optional[float]
+            30-Day Average SOFR (provider: fred)
+        average_90d : Optional[float]
+            90-Day Average SOFR (provider: fred)
+        average_180d : Optional[float]
+            180-Day Average SOFR (provider: fred)
+        index : Optional[float]
+            SOFR index as 2018-04-02 = 1 (provider: fred)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.sofr(provider='fred')
-        >>> obb.fixedincome.rate.sofr(period='overnight', provider='fred')
+        >>> obb.fixedincome.rate.sofr(period=overnight, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -750,7 +803,7 @@ class ROUTER_fixedincome_rate(Container):
                     "provider": self._get_provider(
                         provider,
                         "fixedincome.rate.sofr",
-                        ("fred",),
+                        ("federal_reserve", "fred"),
                     )
                 },
                 standard_params={

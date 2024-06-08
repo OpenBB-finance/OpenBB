@@ -30092,20 +30092,64 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
                         "default": null,
                         "optional": true
                     }
                 ],
+                "federal_reserve": [],
                 "fred": [
                     {
-                        "name": "period",
-                        "type": "Literal['overnight', '30_day', '90_day', '180_day', 'index']",
-                        "description": "Period of SOFR rate.",
-                        "default": "overnight",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -30118,7 +30162,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fred']]",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
                         "description": "Provider name."
                     },
                     {
@@ -30151,13 +30195,87 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "SOFR rate.",
+                        "description": "Effective federal funds rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
-                "fred": []
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "average_30d",
+                        "type": "float",
+                        "description": "30-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_90d",
+                        "type": "float",
+                        "description": "90-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_180d",
+                        "type": "float",
+                        "description": "180-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index",
+                        "type": "float",
+                        "description": "SOFR index as 2018-04-02 = 1",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "model": "SOFR"
         },
@@ -32274,20 +32392,64 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
                         "default": null,
                         "optional": true
                     }
                 ],
+                "federal_reserve": [],
                 "fred": [
                     {
-                        "name": "period",
-                        "type": "Literal['overnight', '30_day', '90_day', '180_day', 'index']",
-                        "description": "Period of SOFR rate.",
-                        "default": "overnight",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -32300,7 +32462,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fred']]",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
                         "description": "Provider name."
                     },
                     {
@@ -32333,13 +32495,87 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "SOFR rate.",
+                        "description": "Effective federal funds rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
-                "fred": []
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "average_30d",
+                        "type": "float",
+                        "description": "30-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_90d",
+                        "type": "float",
+                        "description": "90-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_180d",
+                        "type": "float",
+                        "description": "180-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index",
+                        "type": "float",
+                        "description": "SOFR index as 2018-04-02 = 1",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "model": "SOFR"
         },

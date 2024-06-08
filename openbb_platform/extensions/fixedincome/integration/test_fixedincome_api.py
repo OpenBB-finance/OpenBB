@@ -60,10 +60,18 @@ def test_fixedincome_government_us_yield_curve(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "period": "overnight",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -86,10 +94,18 @@ def test_fixedincome_sofr(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "period": "overnight",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

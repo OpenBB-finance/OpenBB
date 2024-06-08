@@ -13,6 +13,7 @@ from openbb_federal_reserve.models.federal_funds_rate import (
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
+from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
@@ -78,5 +79,15 @@ def test_federal_reserve_central_bank_holdings_fetcher(credentials=test_credenti
     params = {"date": date(2019, 1, 2), "holding_type": "agency_debts"}
 
     fetcher = FederalReserveCentralBankHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_sofr_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve SOFR Fetcher."""
+    params = {"start_date": date(2024, 6, 1), "end_date": date(2024, 6, 6)}
+
+    fetcher = FederalReserveSOFRFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
