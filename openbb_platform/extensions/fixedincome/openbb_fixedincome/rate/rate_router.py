@@ -64,7 +64,6 @@ async def sonia(
     model="SOFR",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"period": "overnight", "provider": "fred"}),
     ],
 )
 async def sofr(

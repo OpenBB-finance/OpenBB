@@ -314,7 +314,6 @@ class ROUTER_fixedincome(Container):
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.sofr(provider='fred')
-        >>> obb.fixedincome.sofr(period=overnight, provider='fred')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)

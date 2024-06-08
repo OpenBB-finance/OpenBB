@@ -793,7 +793,6 @@ class ROUTER_fixedincome_rate(Container):
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.sofr(provider='fred')
-        >>> obb.fixedincome.rate.sofr(period=overnight, provider='fred')
         """  # noqa: E501
 
         return self._run(

@@ -30071,7 +30071,7 @@
                 "message": null
             },
             "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.sofr(provider='fred')\nobb.fixedincome.rate.sofr(period=overnight, provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.sofr(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -32371,7 +32371,7 @@
                 "message": "This endpoint is deprecated; use `/fixedincome/rate/sofr` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.sofr(provider='fred')\nobb.fixedincome.sofr(period=overnight, provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.sofr(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {

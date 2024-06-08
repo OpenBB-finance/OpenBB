@@ -30,7 +30,6 @@ router.include_router(corporate_router)
     model="SOFR",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"period": "overnight", "provider": "fred"}),
     ],
     deprecated=True,
     deprecation=OpenBBDeprecationWarning(
