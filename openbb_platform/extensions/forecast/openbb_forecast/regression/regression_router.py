@@ -1,4 +1,5 @@
 """Regression Router."""
+
 # ruff: noqa: T201
 # pylint: disable=too-many-arguments
 import warnings
@@ -6,6 +7,7 @@ from typing import List, Optional, Union
 
 from darts.models import ExponentialSmoothing, LinearRegressionModel
 from darts.utils.utils import ModelMode, SeasonalityMode
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
@@ -19,7 +21,19 @@ from openbb_forecast.models import (
 router = Router(prefix="/regression")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Linear Regression Forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.regression.linear_regression(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def linear_regression(
     data: List[Data],
     target_column: str = "close",
@@ -136,7 +150,19 @@ def linear_regression(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Probabilistic Exponential Smoothing forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.regression.exponential_smoothing(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def exponential_smoothing(
     data: List[Data],
     target_column: str = "close",
@@ -149,7 +175,7 @@ def exponential_smoothing(
     forecast_horizon: int = 5,
     metric: str = "mape",
 ) -> OBBject[StatisticalForecastModel]:
-    """Performs Probabilistic Exponential Smoothing forecasting.
+    """Perform Probabilistic Exponential Smoothing forecasting.
 
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.

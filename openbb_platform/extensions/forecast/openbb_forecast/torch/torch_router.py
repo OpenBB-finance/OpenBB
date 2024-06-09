@@ -1,10 +1,12 @@
 """Torch Router."""
+
 # pylint: disable=too-many-arguments
 import warnings
 from typing import List, Optional
 
 from darts.models import BlockRNNModel
 from darts.utils.likelihood_models import GaussianLikelihood
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
@@ -15,7 +17,19 @@ from openbb_forecast.models import TorchForecastModel
 router = Router(prefix="/torch")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Block RNN forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output = obb.forecast.torch.brnn(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def brnn(
     data: List[Data],
     target_column: str = "close",
@@ -36,7 +50,7 @@ def brnn(
     save_checkpoints: bool = True,
     metric: str = "mape",
 ) -> OBBject[TorchForecastModel]:
-    """Performs Block RNN forecasting.
+    """Perform Block RNN forecasting.
 
     Parameters
     ----------

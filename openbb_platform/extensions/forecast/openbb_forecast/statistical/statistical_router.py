@@ -1,8 +1,10 @@
 """Statistical Router."""
+
 # ruff: noqa: T201
 from typing import List
 
 from darts.ad import KMeansScorer, QuantileDetector
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.provider.abstract.data import Data
@@ -19,7 +21,19 @@ from openbb_forecast.models import (
 router = Router(prefix="/statistical")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Quantile Anomaly Detection on Time Series Data.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "result =  obb.forecast.statistical.quantile_anamoly_detection(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def quantile_anamoly_detection(
     data: List[Data],
     target_column: str = "close",
@@ -76,7 +90,19 @@ def quantile_anamoly_detection(
     return OBBject(results=anom_results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Automatic ARIMA forecasting using the StatsForecast AutoARIMA model.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.statistical.autoarima(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def autoarima(
     data: List[Data],
     target_column: str = "close",
@@ -85,7 +111,7 @@ def autoarima(
     start_window: PositiveFloat = 0.85,
     forecast_horizon: PositiveInt = 5,
 ) -> OBBject[StatisticalForecastModel]:
-    """Performs Automatic ARIMA forecasting using the StatsForecast AutoARIMA model.
+    """Perform Automatic ARIMA forecasting using the StatsForecast AutoARIMA model.
 
     This function serves as a wrapper around StatsForecast's AutoARIMA model for time series forecasting.
     It takes historical data as input, initializes the AutoARIMA model, performs historical backtesting,
@@ -195,7 +221,19 @@ def autoarima(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Automatic Complex Exponential Smoothing forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.statistical.autoces(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def autoces(
     data: List[Data],
     target_column: str = "close",
@@ -204,7 +242,7 @@ def autoces(
     start_window: PositiveFloat = 0.85,
     forecast_horizon: PositiveInt = 5,
 ) -> OBBject[StatisticalForecastModel]:
-    """Performs Automatic Complex Exponential Smoothing forecasting.
+    """Perform Automatic Complex Exponential Smoothing forecasting.
 
     This is a wrapper around StatsForecast AutoCES.
 
@@ -315,7 +353,19 @@ def autoces(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform Automatic ETS forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.statistical.autoets(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def autoets(
     data: List[Data],
     target_column: str = "close",
@@ -324,7 +374,7 @@ def autoets(
     start_window: PositiveFloat = 0.85,
     forecast_horizon: PositiveInt = 5,
 ) -> OBBject[StatisticalForecastModel]:
-    """Performs Automatic ETS forecasting.
+    """Perform Automatic ETS forecasting.
 
     This is a wrapper around StatsForecast ETS.
 
@@ -435,7 +485,19 @@ def autoets(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            description="Perform MSTL forecasting.",
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
+                "output =  obb.forecast.statistical.mstl(data=stock_data.results)",
+            ],
+        ),
+        APIEx(parameters={"data": APIEx.mock_data("timeseries")}),
+    ],
+)
 def mstl(
     data: List[Data],
     target_column: str = "close",
@@ -444,7 +506,7 @@ def mstl(
     start_window: PositiveFloat = 0.85,
     forecast_horizon: PositiveInt = 5,
 ) -> OBBject[StatisticalForecastModel]:
-    """Performs MSTL forecasting.
+    """Perform MSTL forecasting.
 
     This is a wrapper around StatsForecast MSTL.
 

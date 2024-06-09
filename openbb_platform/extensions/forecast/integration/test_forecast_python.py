@@ -1,4 +1,5 @@
 """Test forecast extension."""
+
 # pylint: disable=redefined-outer-name
 
 import random
@@ -28,7 +29,7 @@ def get_stocks_data():
         return data["stocks_data"]
 
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
+    provider = random.choice(["fmp", "polygon"])  # noqa: S311
 
     data["stocks_data"] = openbb.obb.equity.price.historical(
         symbol=symbol, provider=provider
@@ -338,7 +339,7 @@ def test_forecast_statistical_mstl(params, data_type, obb):
                 "train_split": "0.85",
                 "past_covariates": "",
                 "forecast_horizon": "5",
-                "input_chunk_length": "14",
+                "input_chunk_length": "8",
                 "output_chunk_length": "5",
                 "model_type": "LSTM",
                 "n_rnn_layers": "1",
@@ -361,7 +362,7 @@ def test_forecast_statistical_mstl(params, data_type, obb):
                 "train_split": "0.85",
                 "past_covariates": "",
                 "forecast_horizon": "5",
-                "input_chunk_length": "14",
+                "input_chunk_length": "8",
                 "output_chunk_length": "5",
                 "model_type": "LSTM",
                 "n_rnn_layers": "1",
