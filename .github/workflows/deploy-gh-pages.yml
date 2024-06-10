@@ -50,6 +50,7 @@ jobs:
 
       - name: Generate Platform Markdown
         run: |
+          poetry install -C openbb_platform --no-interaction -E all
           source openbb_platform/.venv/bin/activate
           pip install -U poetry
           python openbb_platform/dev_install.py -e all
