@@ -50,10 +50,8 @@ jobs:
 
       - name: Generate Platform Markdown
         run: |
-          poetry install -C openbb_platform --no-interaction
           source openbb_platform/.venv/bin/activate
           pip install -U poetry
-          pip install toml
           python openbb_platform/dev_install.py -e all
           python -c "import openbb; openbb.build()"
           python website/generate_platform_v4_markdown.py
