@@ -146,8 +146,6 @@ class FredAmeriborData(AmeriborData):
 class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData]]):
     """FRED Ameribor Fetcher."""
 
-    data_type = FredAmeriborData
-
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FredAmeriborQueryParams:
         """Transform query."""
@@ -199,10 +197,10 @@ class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData
         metadata = data.get("metadata", {})
         maturity_dict = {
             "AMERIBOR": "overnight",
-            "AMBOR30": "month_1",
-            "AMBOR90": "month_3",
-            "AMBOR30T": "month_1",
-            "AMBOR90T": "month_3",
+            "AMBOR30": "day_30",
+            "AMBOR90": "day_90",
+            "AMBOR30T": "day_30",
+            "AMBOR90T": "day_90",
         }
 
         df = DataFrame(data.get("data", []))
@@ -216,7 +214,7 @@ class FredAmeriborFetcher(Fetcher[FredAmeriborQueryParams, List[FredAmeriborData
 
         df["maturity"] = df["symbol"].apply(lambda x: maturity_dict.get(x, x))
         df["title"] = df["symbol"].apply(lambda x: metadata.get(x, {}).get("title", x))
-        maturity_categories = ["overnight", "month_1", "month_3"]
+        maturity_categories = ["overnight", "day_30", "day_90"]
         df["maturity"] = Categorical(
             df["maturity"], categories=maturity_categories, ordered=True
         )
