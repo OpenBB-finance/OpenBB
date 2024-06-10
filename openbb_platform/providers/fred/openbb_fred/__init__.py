@@ -1,7 +1,7 @@
 """FRED provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
-from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
 from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
@@ -49,7 +49,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "SOFR": FREDSOFRFetcher,
         "ESTR": FREDESTRFetcher,
         "SONIA": FREDSONIAFetcher,
-        "AMERIBOR": FREDAMERIBORFetcher,
+        "Ameribor": FredAmeriborFetcher,
         "FederalFundsRate": FredFederalFundsRateFetcher,
         "PROJECTIONS": FREDPROJECTIONFetcher,
         "IORB": FREDIORBFetcher,

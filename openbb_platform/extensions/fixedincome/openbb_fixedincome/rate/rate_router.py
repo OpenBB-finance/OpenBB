@@ -17,10 +17,13 @@ router = Router(prefix="/rate")
 
 
 @router.command(
-    model="AMERIBOR",
+    model="Ameribor",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"parameter": "30_day_ma", "provider": "fred"}),
+        APIEx(
+            description="The change from one year ago is applied with the transform parameter.",
+            parameters={"maturity": "all", "transform": "pc1", "provider": "fred"},
+        ),
     ],
 )
 async def ameribor(
@@ -29,9 +32,9 @@ async def ameribor(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:  # type: ignore
-    """Ameribor.
+    """AMERIBOR.
 
-    Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
+    AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
     short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
     American Financial Exchange (AFX).
     """

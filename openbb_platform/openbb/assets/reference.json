@@ -29878,8 +29878,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Ameribor.\n\nAmeribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ameribor(provider='fred')\nobb.fixedincome.rate.ameribor(parameter=30_day_ma, provider='fred')\n```\n\n",
+            "description": "AMERIBOR.\n\nAMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ameribor(provider='fred')\n# The change from one year ago is applied with the transform parameter.\nobb.fixedincome.rate.ameribor(maturity=all, transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -29908,12 +29908,70 @@
                 ],
                 "fred": [
                     {
-                        "name": "parameter",
-                        "type": "Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']",
-                        "description": "Period of AMERIBOR rate.",
-                        "default": "overnight",
+                        "name": "maturity",
+                        "type": "Union[Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str], List[Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str]]]",
+                        "description": "Period of AMERIBOR rate. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "all",
+                            "overnight",
+                            "average_30d",
+                            "average_90d",
+                            "term_30d",
+                            "term_90d"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -29921,7 +29979,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[AMERIBOR]",
+                        "type": "List[Ameribor]",
                         "description": "Serializable results."
                     },
                     {
@@ -29957,17 +30015,41 @@
                         "choices": null
                     },
                     {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "AMERIBOR rate.",
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "Maturity length of the item.",
                         "default": "",
                         "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Interest rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ],
                 "fred": []
             },
-            "model": "AMERIBOR"
+            "model": "Ameribor"
         },
         "/fixedincome/rate/sonia": {
             "deprecated": {

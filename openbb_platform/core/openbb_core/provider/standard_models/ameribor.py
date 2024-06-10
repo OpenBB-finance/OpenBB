@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class AMERIBORQueryParams(QueryParams):
+class AmeriborQueryParams(QueryParams):
     """AMERIBOR Query."""
 
     start_date: Optional[dateType] = Field(
@@ -26,8 +26,19 @@ class AMERIBORQueryParams(QueryParams):
     )
 
 
-class AMERIBORData(Data):
+class AmeriborData(Data):
     """AMERIBOR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="AMERIBOR rate.")
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    maturity: str = Field(description="Maturity length of the item.")
+    rate: float = Field(
+        description="Interest rate.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the series.",
+    )

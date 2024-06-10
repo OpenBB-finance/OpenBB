@@ -180,13 +180,15 @@ def test_fixedincome_rate_sonia(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "overnight",
+                "maturity": "overnight",
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],

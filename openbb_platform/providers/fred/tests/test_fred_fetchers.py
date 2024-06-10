@@ -4,7 +4,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
-from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
 from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
@@ -107,11 +107,15 @@ def test_fredsonia_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fredameribor_fetcher(credentials=test_credentials):
-    """Test FREDAMERIBORFetcher."""
-    params = {}
+def test_fred_ameribor_fetcher(credentials=test_credentials):
+    """Test FredAmeriborFetcher."""
+    params = {
+        "start_date": datetime.date(2023, 1, 1),
+        "end_date": datetime.date(2023, 6, 6),
+        "maturity": "overnight",
+    }
 
-    fetcher = FREDAMERIBORFetcher()
+    fetcher = FredAmeriborFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

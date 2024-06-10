@@ -47,9 +47,9 @@ class ROUTER_fixedincome_rate(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Ameribor.
+        """AMERIBOR.
 
-        Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
+        AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
         short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
         American Financial Exchange (AFX).
 
@@ -62,13 +62,50 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
-            Period of AMERIBOR rate. (provider: fred)
+        maturity : Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str]
+            Period of AMERIBOR rate. Multiple comma separated items allowed. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[AMERIBOR]
+            results : List[Ameribor]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -79,18 +116,25 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        AMERIBOR
+        Ameribor
         --------
         date : date
             The date of the data.
-        rate : Optional[float]
-            AMERIBOR rate.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        maturity : str
+            Maturity length of the item.
+        rate : float
+            Interest rate.
+        title : Optional[str]
+            Title of the series.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.ameribor(provider='fred')
-        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma', provider='fred')
+        >>> # The change from one year ago is applied with the transform parameter.
+        >>> obb.fixedincome.rate.ameribor(maturity='all', transform='pc1', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -108,6 +152,7 @@ class ROUTER_fixedincome_rate(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"maturity": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
