@@ -221,3 +221,22 @@ async def dpcredit(
     also known as the discount rate.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="OvernightBankFundingRate",
+    examples=[APIEx(parameters={"provider": "fred"})],
+)
+async def overnight_bank_funding(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Overnight Bank Funding.
+
+    For the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of
+    overnight federal funds transactions and Eurodollar transactions reported in the
+    FR 2420 Report of Selected Money Market Rates.
+    """
+    return await OBBject.from_query(Query(**locals()))

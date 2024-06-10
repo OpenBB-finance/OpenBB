@@ -743,3 +743,30 @@ def test_fixedincome_bond_indices(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_overnight_bank_funding(params, headers):
+    """Test the Overnight Bank Funding Rate endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/overnight_bank_funding?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

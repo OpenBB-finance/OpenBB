@@ -693,3 +693,27 @@ def test_fixedincome_bond_indices(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_overnight_bank_funding(params, obb):
+    """Test the Overnight Bank Funding Rate endpoint."""
+    result = obb.fixedincome.rate.overnight_bank_funding(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
