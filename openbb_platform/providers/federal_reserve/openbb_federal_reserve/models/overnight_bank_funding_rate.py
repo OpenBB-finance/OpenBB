@@ -114,6 +114,7 @@ class FederalReserveOvernightBankFundingRateFetcher(
         for d in data.copy():
             _ = d.pop("type", None)
             _ = d.pop("revisionIndicator", None)
+            _ = d.pop("footnoteId", None)
             results.append(FederalReserveOvernightBankFundingRateData.model_validate(d))
 
         return results
