@@ -79,13 +79,13 @@ class FredHighQualityMarketCorporateBondFetcher(
 
         element_id = "219299" if query.yield_curve == "spot" else "219294"
         dates: List = [""]
-        if query.date and isinstance(query.date, dateType):
-            query.date = query.date.strftime("%Y-%m-%d")
-
-        dates = query.date.split(",")
-        dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
-        dates = list(set(dates))
-        dates = [f"&observation_date={date}" for date in dates if date] if dates else ""
+        if query.date:
+            if query.date and isinstance(query.date, dateType):
+                query.date = query.date.strftime("%Y-%m-%d")
+            dates = query.date.split(",")
+            dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
+            dates = list(set(dates))
+            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=402&element_id={element_id}"
             + f"{date}&include_observation_values=true&api_key={api_key}"
