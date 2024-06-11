@@ -14,7 +14,9 @@ from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
-from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
+from openbb_fred.models.high_quality_market import (
+    FredHighQualityMarketCorporateBondFetcher,
+)
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
@@ -67,7 +69,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "FredRegional": FredRegionalDataFetcher,
         "RetailPrices": FredRetailPricesFetcher,
         "SpotRate": FREDSpotRateFetcher,
-        "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
+        "HighQualityMarketCorporateBond": FredHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,

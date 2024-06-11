@@ -166,12 +166,11 @@ class ROUTER_fixedincome_corporate(Container):
     def hqm(
         self,
         date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBField(description="A specific date to get data for."),
+            Union[str, datetime.date, None, List[Union[str, datetime.date, None]]],
+            OpenBBField(
+                description="A specific date to get data for. Multiple comma separated items allowed for provider(s): fred."
+            ),
         ] = None,
-        yield_curve: Annotated[
-            Literal["spot", "par"], OpenBBField(description="The yield curve type.")
-        ] = "spot",
         provider: Annotated[
             Optional[Literal["fred"]],
             OpenBBField(
@@ -190,12 +189,12 @@ class ROUTER_fixedincome_corporate(Container):
 
         Parameters
         ----------
-        date : Union[datetime.date, None, str]
-            A specific date to get data for.
-        yield_curve : Literal['spot', 'par']
-            The yield curve type.
+        date : Union[str, datetime.date, None, List[Union[str, datetime.d...
+            A specific date to get data for. Multiple comma separated items allowed for provider(s): fred.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        yield_curve : Literal['spot', 'par']
+            The yield curve type. (provider: fred)
 
         Returns
         -------
@@ -215,14 +214,10 @@ class ROUTER_fixedincome_corporate(Container):
         ------------------------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            HighQualityMarketCorporateBond Rate.
+        rate : float
+            Interest rate.
         maturity : str
             Maturity.
-        yield_curve : Literal['spot', 'par']
-            The yield curve type.
-        series_id : Optional[str]
-            FRED series id. (provider: fred)
 
         Examples
         --------
@@ -243,9 +238,9 @@ class ROUTER_fixedincome_corporate(Container):
                 },
                 standard_params={
                     "date": date,
-                    "yield_curve": yield_curve,
                 },
                 extra_params=kwargs,
+                info={"date": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 

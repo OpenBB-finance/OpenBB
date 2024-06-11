@@ -32223,22 +32223,14 @@
                 "message": null
             },
             "description": "High Quality Market Corporate Bond.\n\nThe HQM yield curve represents the high quality corporate bond market, i.e.,\ncorporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.\nThese terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve\nthat is the market-weighted average (MWA) quality of high quality bonds.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.hqm(provider='fred')\nobb.fixedincome.corporate.hqm(yield_curve='par', provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.hqm(provider='fred')\nobb.fixedincome.corporate.hqm(yield_curve=par, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for.",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "yield_curve",
-                        "type": "Literal['spot', 'par']",
-                        "description": "The yield curve type.",
-                        "default": "spot",
                         "optional": true,
                         "choices": null
                     },
@@ -32250,7 +32242,19 @@
                         "optional": true
                     }
                 ],
-                "fred": []
+                "fred": [
+                    {
+                        "name": "yield_curve",
+                        "type": "Literal['spot', 'par']",
+                        "description": "The yield curve type.",
+                        "default": "spot",
+                        "optional": true,
+                        "choices": [
+                            "spot",
+                            "par"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -32294,7 +32298,7 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "HighQualityMarketCorporateBond Rate.",
+                        "description": "Interest rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -32306,26 +32310,9 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "yield_curve",
-                        "type": "Literal['spot', 'par']",
-                        "description": "The yield curve type.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
                     }
                 ],
-                "fred": [
-                    {
-                        "name": "series_id",
-                        "type": "str",
-                        "description": "FRED series id.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
+                "fred": []
             },
             "model": "HighQualityMarketCorporateBond"
         },
@@ -32936,6 +32923,7 @@
                             "non_financial",
                             "private_sector",
                             "public_sector",
+                            "seasoned_corporate",
                             "yield_curve"
                         ]
                     },

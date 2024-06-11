@@ -17,7 +17,9 @@ from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
-from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
+from openbb_fred.models.high_quality_market import (
+    FredHighQualityMarketCorporateBondFetcher,
+)
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
@@ -241,10 +243,10 @@ def test_fred_spot_rate_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fred_high_quality_market_corporate_bond_fetcher(credentials=test_credentials):
-    """Test FREDHighQualityMarketCorporateBondFetcher."""
-    params = {"date": datetime.date(2023, 1, 1)}
+    """Test FredHighQualityMarketCorporateBondFetcher."""
+    params = {"date": "2023-01-01"}
 
-    fetcher = FREDHighQualityMarketCorporateBondFetcher()
+    fetcher = FredHighQualityMarketCorporateBondFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
