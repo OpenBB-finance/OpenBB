@@ -31642,11 +31642,18 @@
                 "fred": [
                     {
                         "name": "yield_curve_type",
-                        "type": "Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']",
+                        "type": "Literal['nominal', 'real', 'breakeven', 'treasury_minus_fed_funds', 'corporate_spot', 'corporate_par']",
                         "description": "Yield curve type. Nominal and Real Rates are available daily, others are monthly. The closest date to the requested date will be returned.",
                         "default": "nominal",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "nominal",
+                            "real",
+                            "breakeven",
+                            "treasury_minus_fed_funds",
+                            "corporate_spot",
+                            "corporate_par"
+                        ]
                     }
                 ]
             },
