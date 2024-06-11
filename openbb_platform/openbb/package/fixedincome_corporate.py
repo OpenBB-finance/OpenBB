@@ -361,6 +361,10 @@ class ROUTER_fixedincome_corporate(Container):
 
     @exception_handler
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Set `category` to `us` and `index` to `seasoned_corporate`. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+        category=OpenBBDeprecationWarning,
+    )
     def moody(
         self,
         start_date: Annotated[
@@ -430,6 +434,13 @@ class ROUTER_fixedincome_corporate(Container):
         >>> obb.fixedincome.corporate.moody(provider='fred')
         >>> obb.fixedincome.corporate.moody(index_type='baa', provider='fred')
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Set `category` to `us` and `index` to `seasoned_corporate`. Deprecated in OpenBB Platform V4.2 to be removed in V4.5.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/fixedincome/corporate/moody",

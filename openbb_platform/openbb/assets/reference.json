@@ -5595,7 +5595,7 @@
                     {
                         "name": "face_value",
                         "type": "float",
-                        "description": "Current face value of the security (Thousands). Current face value of the securities, which is the remaining principal balance of the securities.",
+                        "description": "Current face value of the security (Thousands of $USD). Current face value of the securities, which is the remaining principal balance of the securities.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5603,7 +5603,7 @@
                     {
                         "name": "par_value",
                         "type": "float",
-                        "description": "Par value of the security (Thousands). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
+                        "description": "Par value of the security (Thousands of $USD). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5635,7 +5635,7 @@
                     {
                         "name": "bills",
                         "type": "float",
-                        "description": "Treasury bills amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury bills amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5643,7 +5643,7 @@
                     {
                         "name": "frn",
                         "type": "float",
-                        "description": "Floating rate Treasury notes amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Floating rate Treasury notes amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5651,7 +5651,7 @@
                     {
                         "name": "notes_and_bonds",
                         "type": "float",
-                        "description": "Treasuy Notes and bonds amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasuy Notes and bonds amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5659,7 +5659,7 @@
                     {
                         "name": "tips",
                         "type": "float",
-                        "description": "Treasury inflation-protected securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury inflation-protected securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5667,7 +5667,7 @@
                     {
                         "name": "mbs",
                         "type": "float",
-                        "description": "Mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5675,7 +5675,7 @@
                     {
                         "name": "cmbs",
                         "type": "float",
-                        "description": "Commercial mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Commercial mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5683,7 +5683,7 @@
                     {
                         "name": "agencies",
                         "type": "float",
-                        "description": "Agency securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Agency securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5691,7 +5691,7 @@
                     {
                         "name": "total",
                         "type": "float",
-                        "description": "Total SOMA holdings amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Total SOMA holdings amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5699,7 +5699,7 @@
                     {
                         "name": "tips_inflation_compensation",
                         "type": "float",
-                        "description": "Treasury inflation-protected securities inflation compensation amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury inflation-protected securities inflation compensation amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5707,7 +5707,7 @@
                     {
                         "name": "change_prior_week",
                         "type": "float",
-                        "description": "Change in SOMA holdings from the prior week (Thousands).",
+                        "description": "Change in SOMA holdings from the prior week (Thousands of $USD).",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -5715,7 +5715,7 @@
                     {
                         "name": "change_prior_year",
                         "type": "float",
-                        "description": "Change in SOMA holdings from the prior year (Thousands).",
+                        "description": "Change in SOMA holdings from the prior year (Thousands of $USD).",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -32115,8 +32115,8 @@
         },
         "/fixedincome/corporate/moody": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Set `category` to `us` and `index` to `seasoned_corporate`. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Moody Corporate Bond Index.\n\nMoody's Aaa and Baa are investment bonds that acts as an index of\nthe performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.\nThese corporate bonds often are used in macroeconomics as an alternative to the federal ten-year\nTreasury Bill as an indicator of the interest rate.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.moody(provider='fred')\nobb.fixedincome.corporate.moody(index_type='baa', provider='fred')\n```\n\n",

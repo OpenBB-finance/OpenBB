@@ -48,6 +48,13 @@ async def ice_bofa(
 
 
 @router.command(
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead."
+        + " Set `category` to `us` and `index` to `seasoned_corporate`.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
     model="MoodyCorporateBondIndex",
     examples=[
         APIEx(parameters={"provider": "fred"}),
