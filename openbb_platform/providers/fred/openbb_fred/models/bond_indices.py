@@ -265,6 +265,7 @@ BAML_CATEGORIES = {
 BamlCategories = Literal["high_yield", "us", "emerging_markets"]
 INDEX_CHOICES = [
     "corporate",
+    "seasoned_corporate",
     "liquid_corporate",
     "yield_curve",
     "crossover",
