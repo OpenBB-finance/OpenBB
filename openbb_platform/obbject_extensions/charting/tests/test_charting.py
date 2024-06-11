@@ -46,7 +46,7 @@ def obbject():
             self.results = "mock_results"
 
             self.provider = "mock_provider"
-            self.extra = "mock_extra"
+            self.extra = {}
             self.warnings = "mock_warnings"
             self.chart = MagicMock()
 

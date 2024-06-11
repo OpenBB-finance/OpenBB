@@ -807,7 +807,11 @@ class BaseController(metaclass=ABCMeta):
                     i + 1
                     for i, arg in enumerate(other_args)
                     if arg in ("-i", "--input")
-                    and "routine_args" in [action.dest for action in parser._actions]
+                    and "routine_args"
+                    in [
+                        action.dest
+                        for action in parser._actions  # pylint: disable=protected-access
+                    ]
                 ),
                 -1,
             )
@@ -817,6 +821,11 @@ class BaseController(metaclass=ABCMeta):
                 for index, arg in enumerate(other_args)
                 for part in (arg.split(",") if index != routine_args_index else [arg])
             ]
+
+            # Check if the action has optional choices, if yes, remove them
+            for action in parser._actions:  # pylint: disable=protected-access
+                if hasattr(action, "optional_choices") and action.optional_choices:
+                    action.choices = None
 
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 

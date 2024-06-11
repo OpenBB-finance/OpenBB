@@ -1,36 +1,36 @@
 {
-    "openbb": "4.2.1",
+    "openbb": "4.2.2",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
-        "core": "1.2.3",
+        "core": "1.2.4",
         "extensions": {
             "openbb_core_extension": [
-                "commodity@1.1.1",
-                "crypto@1.2.1",
-                "currency@1.2.1",
-                "derivatives@1.2.1",
-                "economy@1.2.1",
-                "equity@1.2.1",
-                "etf@1.2.1",
-                "fixedincome@1.2.1",
-                "index@1.2.1",
-                "news@1.2.1",
-                "regulators@1.2.1"
+                "commodity@1.1.2",
+                "crypto@1.2.2",
+                "currency@1.2.2",
+                "derivatives@1.2.2",
+                "economy@1.2.2",
+                "equity@1.2.2",
+                "etf@1.2.2",
+                "fixedincome@1.2.2",
+                "index@1.2.2",
+                "news@1.2.2",
+                "regulators@1.2.2"
             ],
             "openbb_provider_extension": [
-                "benzinga@1.2.1",
-                "econdb@1.1.1",
-                "federal_reserve@1.2.1",
-                "fmp@1.2.1",
-                "fred@1.2.1",
-                "intrinio@1.2.1",
-                "oecd@1.2.1",
-                "polygon@1.2.1",
-                "sec@1.2.1",
-                "tiingo@1.2.1",
-                "tradingeconomics@1.2.1",
-                "yfinance@1.2.1"
+                "benzinga@1.2.2",
+                "econdb@1.1.2",
+                "federal_reserve@1.2.2",
+                "fmp@1.2.2",
+                "fred@1.2.2",
+                "intrinio@1.2.2",
+                "oecd@1.2.2",
+                "polygon@1.2.2",
+                "sec@1.2.2",
+                "tiingo@1.2.2",
+                "tradingeconomics@1.2.2",
+                "yfinance@1.2.2"
             ],
             "openbb_obbject_extension": []
         }
@@ -4176,7 +4176,7 @@
                 "message": null
             },
             "description": "Get global unemployment data.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarterly', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarterly', age=25-54, provider='oecd')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.unemployment(provider='oecd')\nobb.economy.unemployment(country='all', frequency='quarter', provider='oecd')\n# Demographics for the statistics are selected with the `age` parameter.\nobb.economy.unemployment(country='all', frequency='quarter', age=25-54, provider='oecd')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -31361,8 +31361,8 @@
         },
         "/fixedincome/corporate/ice_bofa": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "ICE BofA US Corporate Bond Indices.\n\nThe ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt\npublicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an\naverage of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year\nremaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount\noutstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.ice_bofa(provider='fred')\nobb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst', provider='fred')\n```\n\n",
@@ -32015,6 +32015,225 @@
                 "fred": []
             },
             "model": "SOFR"
+        },
+        "/fixedincome/bond_indices": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Bond Indices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default state for FRED are series for constructing the US Corporate Bond Yield Curve.\nobb.fixedincome.bond_indices(provider='fred')\n# Multiple indices, from within the same 'category', can be requested.\nobb.fixedincome.bond_indices(category=high_yield, index=us,europe,emerging, index_type='total_return', provider='fred')\n# From FRED, there are three main categories, 'high_yield', 'us', and 'emerging_markets'. Emerging markets is a broad category.\nobb.fixedincome.bond_indices(category=emerging_markets, index=corporate,private_sector,public_sector, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index_type",
+                        "type": "Literal['yield', 'yield_to_worst', 'total_return', 'oas']",
+                        "description": "The type of series. OAS is the option-adjusted spread. Default is yield.",
+                        "default": "yield",
+                        "optional": true,
+                        "choices": [
+                            "yield",
+                            "yield_to_worst",
+                            "total_return",
+                            "oas"
+                        ]
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "category",
+                        "type": "Literal['high_yield', 'us', 'emerging_markets']",
+                        "description": "The type of index category. Used in conjunction with 'index', default is 'us'.",
+                        "default": "us",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index",
+                        "type": "Union[str, List[str]]",
+                        "description": "The specific index to query. Used in conjunction with 'category' and 'index_type', default is 'yield_curve'. Multiple items allowed for provider(s): fred.",
+                        "default": "yield_curve",
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "aa",
+                            "aaa",
+                            "asia",
+                            "b",
+                            "bb",
+                            "bbb",
+                            "ccc",
+                            "corporate",
+                            "crossover",
+                            "emea",
+                            "high_grade",
+                            "high_yield",
+                            "latam",
+                            "liquid_aaa",
+                            "liquid_asia",
+                            "liquid_bbb",
+                            "liquid_corporate",
+                            "liquid_emea",
+                            "liquid_latam",
+                            "non_financial",
+                            "private_sector",
+                            "public_sector",
+                            "yield_curve"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set, default is 'avg'.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": "avg",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[BondIndices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "value",
+                        "type": "float",
+                        "description": "Index values.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "The maturity range of the bond index. Only applicable when 'index' is 'yield_curve'.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "The title of the index.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "BondIndices"
         },
         "/index/price/historical": {
             "deprecated": {

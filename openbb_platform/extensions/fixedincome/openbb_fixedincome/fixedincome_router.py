@@ -44,3 +44,40 @@ async def sofr(
     borrowing cash overnight collateralizing by Treasury securities.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="BondIndices",
+    examples=[
+        APIEx(
+            description="The default state for FRED are series for constructing the US Corporate Bond Yield Curve.",
+            parameters={"provider": "fred"},
+        ),
+        APIEx(
+            description="Multiple indices, from within the same 'category', can be requested.",
+            parameters={
+                "category": "high_yield",
+                "index": "us,europe,emerging",
+                "index_type": "total_return",
+                "provider": "fred",
+            },
+        ),
+        APIEx(
+            description="From FRED, there are three main categories, 'high_yield', 'us', and 'emerging_markets'."
+            + " Emerging markets is a broad category.",
+            parameters={
+                "category": "emerging_markets",
+                "index": "corporate,private_sector,public_sector",
+                "provider": "fred",
+            },
+        ),
+    ],
+)
+async def bond_indices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Bond Indices."""
+    return await OBBject.from_query(Query(**locals()))

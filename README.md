@@ -61,7 +61,7 @@ There are three main ways of contributing to this project. (Hopefully you have s
 
 ### Become a Contributor
 
-* More information on our [Contributing Documentation](https://docs.openbb.co/platform/development/contributing).
+* More information on our [Contributing Documentation](https://docs.openbb.co/platform/developer_guide/contributing).
 
 ### Create a GitHub ticket
 

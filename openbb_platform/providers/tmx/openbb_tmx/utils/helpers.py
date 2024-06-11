@@ -571,7 +571,7 @@ async def download_eod_chains(
 
     if date is None:
         EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
-    if date is not None:
+    else:
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date) is False:  # type: ignore
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore

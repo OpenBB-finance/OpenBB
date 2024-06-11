@@ -1235,13 +1235,12 @@ def technical_relative_rotation(
         fig = relative_rotation.create_rrg_with_tails(
             ratios_df, momentum_df, study, benchmark_symbol, tail_periods, tail_interval  # type: ignore
         )
-
-    if show_tails is False:
+    else:
         fig = relative_rotation.create_rrg_without_tails(
             ratios_df, momentum_df, benchmark_symbol, study, date  # type: ignore
         )
 
-    figure = OpenBBFigure(fig)  # pylint: disable=E0606
+    figure = OpenBBFigure(fig)
     font_color = "black" if ChartStyle().plt_style == "light" else "white"
     figure.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
