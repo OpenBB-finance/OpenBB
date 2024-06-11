@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Opens Finviz map website in a browser. [Source: Finviz]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/finviz_model.py#L42)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/finviz_model.py#L42)]
 
 ```python
 openbb.economy.perfmap(period: str = "1d", map_filter: str = "sp500")

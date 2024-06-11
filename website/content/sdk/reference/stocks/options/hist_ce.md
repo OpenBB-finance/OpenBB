@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Historic prices for a specific option [chartexchange]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/chartexchange_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/chartexchange_model.py#L19)]
 
 ```python
 openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", call: bool = True, price: Union[str, int, float] = "90")
@@ -59,7 +59,7 @@ openbb.stocks.options.hist_ce(symbol: str = "GME", date: str = "2021-02-05", cal
 
 Return raw stock data[chartexchange]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/chartexchange_view.py#L59)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/chartexchange_view.py#L59)]
 
 ```python
 openbb.stocks.options.hist_ce_chart(symbol: str = "GME", expiry: str = "2021-02-05", call: bool = True, price: float = 90, limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L466)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_model.py#L466)]
 
 ```python
 openbb.forecast.delete(data: pd.DataFrame, column: str)

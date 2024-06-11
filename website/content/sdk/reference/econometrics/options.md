@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_model.py#L23)]
 
 ```python
 openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str = "")
@@ -57,7 +57,7 @@ openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str
 
 Plot custom data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_view.py#L27)]
 
 ```python
 openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_name: str = None, export: str = "")

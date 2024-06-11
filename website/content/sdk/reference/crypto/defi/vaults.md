@@ -66,7 +66,7 @@ import TabItem from '@theme/TabItem';
 
 Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/coindix_model.py#L107)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/coindix_model.py#L107)]
 
 ```python
 openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, ascend: bool = True, sortby: str = "apy")
@@ -97,7 +97,7 @@ openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] =
 
 Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/coindix_view.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/coindix_view.py#L19)]
 
 ```python
 openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, limit: int = 10, sortby: str = "apy", ascend: bool = True, link: bool = False, export: str = "")

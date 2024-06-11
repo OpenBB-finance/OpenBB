@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets days to expiration from yfinance option date
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L365)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L365)]
 
 ```python
 openbb.stocks.options.dte(date_value: str)

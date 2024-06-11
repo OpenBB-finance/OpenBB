@@ -32,7 +32,7 @@ Navigate into the menu from the Stocks menu by entering, `ba`. Or, by using the 
 /stocks/ba
 ```
 
-![Screenshot 2023-10-31 at 1 50 04 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/5946bc28-95a8-4402-a546-68be140aa025)
+![Screenshot 2023-10-31 at 1 50 04 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/5946bc28-95a8-4402-a546-68be140aa025)
 
 ### Trending
 
@@ -107,7 +107,7 @@ Bearish: 50.0%
 
 `redditsent` will crawl through posts related to the ticker and give it a score based on how polarizing the message is.
 
-![Screenshot 2023-10-31 at 2 28 52 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/71e6a3c9-ece8-45a4-afca-150211ae7c43)
+![Screenshot 2023-10-31 at 2 28 52 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/71e6a3c9-ece8-45a4-afca-150211ae7c43)
 
 ### Queries
 

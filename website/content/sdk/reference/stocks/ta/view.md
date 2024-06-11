@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 
 Get finviz image for given ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/finviz_model.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/finviz_model.py#L16)]
 
 ```python
 openbb.stocks.ta.view(symbol: str)
@@ -51,7 +51,7 @@ openbb.stocks.ta.view(symbol: str)
 
 View finviz image for ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/finviz_view.py#L22)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/finviz_view.py#L22)]
 
 ```python
 openbb.stocks.ta.view_chart(symbol: str, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

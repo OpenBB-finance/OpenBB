@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Returns addresses with non-zero balance of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L249)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L249)]
 
 ```python
 openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None)
@@ -58,7 +58,7 @@ openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: 
 
 Plots addresses with non-zero balance of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L96)]
 
 ```python
 openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

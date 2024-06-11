@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Compare regression results between Panel Data regressions.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L437)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L437)]
 
 ```python
 openbb.econometrics.comparison(regressions: Dict, export: str = "")

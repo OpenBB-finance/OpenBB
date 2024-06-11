@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get info about top token holders. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L305)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L305)]
 
 ```python
 openbb.crypto.onchain.holders(address: str, sortby: str = "balance", ascend: bool = True)
@@ -57,7 +57,7 @@ openbb.crypto.onchain.holders(address: str, sortby: str = "balance", ascend: boo
 
 Display info about top ERC20 token holders. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L114)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L114)]
 
 ```python
 openbb.crypto.onchain.holders_chart(address: str, limit: int = 10, sortby: str = "balance", ascend: bool = True, export: str = "")

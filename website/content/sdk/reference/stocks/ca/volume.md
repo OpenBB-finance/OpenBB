@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get stock volume. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L134)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L134)]
 
 ```python
 openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
@@ -59,7 +59,7 @@ openbb.stocks.ca.volume(similar: List[str], start_date: Optional[str] = None)
 
 Display stock volume. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L107)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L107)]
 
 ```python
 openbb.stocks.ca.volume_chart(similar: List[str], start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

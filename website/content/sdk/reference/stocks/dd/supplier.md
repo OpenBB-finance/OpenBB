@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get suppliers from ticker provided. [Source: CSIMarket]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/csimarket_model.py#L42)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/due_diligence/csimarket_model.py#L42)]
 
 ```python
 openbb.stocks.dd.supplier(symbol: str, limit: int = 50)

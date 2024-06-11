@@ -25,7 +25,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 AskOBB allows users to do a query using natural language and we convert it directly into a command. This makes it easier for newcomers to get started with the OpenBB Terminal.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1ba1e556-150f-470c-9745-2dd7b536e5ba)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/1ba1e556-150f-470c-9745-2dd7b536e5ba)
 
 
 ## Background
@@ -41,13 +41,13 @@ Another intricacy is that there are many different asset classes covered, which 
 
 This is where LlamaIndex comes into play. Each of our OpenBB Terminal commands has an associated usage string in the form of a typical CLI help argument. An example for the stocks load command:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/fcdcdc22-1c80-4f49-9171-8033c607d0b7)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/fcdcdc22-1c80-4f49-9171-8033c607d0b7)
 
 You can find this on our docs here: OpenBB Docs.
 
-If this help string is provided to an LLM, we can ask it for a command based on the context. So what we did was copy all of these command helps into txt files. In order to help out the model, we provided a few examples of each command. In our [stocks load file](https://github.com/OpenBB-finance/OpenBBTerminal/blob/d3126b414aac77fe4086661214535975ac55ba95/openbb_terminal/miscellaneous/gpt_index/data/stocks_load.txt), we add the following examples:
+If this help string is provided to an LLM, we can ask it for a command based on the context. So what we did was copy all of these command helps into txt files. In order to help out the model, we provided a few examples of each command. In our [stocks load file](https://github.com/OpenBB-finance/OpenBB/blob/d3126b414aac77fe4086661214535975ac55ba95/openbb_terminal/miscellaneous/gpt_index/data/stocks_load.txt), we add the following examples:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/10cae260-8fea-41d0-adb4-13a4b8f62ca8)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/10cae260-8fea-41d0-adb4-13a4b8f62ca8)
 
 This process is repeated for EVERY function in the OpenBB Terminal. Once we have these, we can pass them to a Vector Index in two lines of code:
 
@@ -60,7 +60,7 @@ What this Vector Index does is load in each file and create an embedding using t
 
 Now that we have the context of our documentation and examples saved, it is time to query the LLM. For AskOBB, we are using OpenAI’s gpt3.5-turbo model by default, but allow users to specify others (e.g. GPT-4). We provide a prompt string to the query, indicating to only return a command and to follow certain rules when querying. The prompt string we provide is:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c0df6589-e22f-46b0-a272-6fa7f6762ff3)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/c0df6589-e22f-46b0-a272-6fa7f6762ff3)
 
 To get the LLM response, it is just another 2 lines of code with LlamaIndex:
 

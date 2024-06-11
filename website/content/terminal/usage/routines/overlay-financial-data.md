@@ -64,17 +64,17 @@ hold off
 
 Which outputs:
 
-![hold on ex1](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/a3b1f09e-1a64-4af0-a5a2-070590d848e1)
+![hold on ex1](https://github.com/OpenBB-finance/OpenBB/assets/18151143/a3b1f09e-1a64-4af0-a5a2-070590d848e1)
 
 To demonstrate, the `--sameaxis` argument, we can run the previous commands, but starting with `hold on --sameaxis`. Because GDP is being measured by USD-per-capita (OECD), and CPI is a function of percent, we will only see CPI as a flat line.
 
-![hold on ex2](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/43219ca7-126b-4782-bd95-5fa8967e0c6c)
+![hold on ex2](https://github.com/OpenBB-finance/OpenBB/assets/18151143/43219ca7-126b-4782-bd95-5fa8967e0c6c)
 
 ## Customizing Charts
 
 A chart is only as good as its labelling. In the previous example, we can see that the legends reflected the command paths used, but not the arguments. If we added a second country, we would not be able to tell which line is which country. In order to avoid this confusion, when the hold state is on, every function comes with a `--legend` argument.
 
-Text following the, `--legend`, argument is passed into the legend when the chart is created.  If a command is run without the, `--legend`, argument, it will default to using the command location. In rare cases, a legend may not appear due to it not being defined in the functions `view` file.  In this case, please raise a [GitHub issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) so the team can address it.
+Text following the, `--legend`, argument is passed into the legend when the chart is created.  If a command is run without the, `--legend`, argument, it will default to using the command location. In rare cases, a legend may not appear due to it not being defined in the functions `view` file.  In this case, please raise a [GitHub issue](https://github.com/OpenBB-finance/OpenBB/issues/new/choose) so the team can address it.
 
 An additional customization is the chart title.  This can be specified by adding the `--title` argument to the hold off functionality.  To exemplify these capabilities, we can plot an income statement item from many companies.  We will examine FAANG companies and plot their revenues on the same axis, over the last forty quarters.
 
@@ -88,7 +88,7 @@ income -t NFLX -q -l 40 --plot revenue --legend netflix
 hold off --title FAANG Revenues 10 Year
 ```
 
-![hold on custom](https://github.com/OpenBB-finance/OpenBBTerminal/assets/18151143/793d8309-6e49-42ca-b9bd-ff0dad9da959)
+![hold on custom](https://github.com/OpenBB-finance/OpenBB/assets/18151143/793d8309-6e49-42ca-b9bd-ff0dad9da959)
 
 ### Example as a Pipeline of Commands
 

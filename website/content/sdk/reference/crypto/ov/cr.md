@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Returns crypto \{borrow,supply\} interest rates for cryptocurrencies across several platforms
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_model.py#L267)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_model.py#L267)]
 
 ```python
 openbb.crypto.ov.cr(rate_type: str = "borrow")
@@ -55,7 +55,7 @@ openbb.crypto.ov.cr(rate_type: str = "borrow")
 
 Displays crypto \{borrow, supply\} interest rates for cryptocurrencies across several platforms
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_view.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/loanscan_view.py#L24)]
 
 ```python
 openbb.crypto.ov.cr_chart(symbols: str, platforms: str, rate_type: str = "borrow", limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

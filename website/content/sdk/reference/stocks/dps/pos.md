@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get dark pool short positions. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L18)]
 
 ```python
 openbb.stocks.dps.pos(sortby: str = "dpp_dollar", ascend: bool = False)

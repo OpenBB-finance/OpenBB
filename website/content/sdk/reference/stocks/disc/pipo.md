@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Past IPOs dates. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/discovery/finnhub_model.py#L74)]
 
 ```python
 openbb.stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = None)

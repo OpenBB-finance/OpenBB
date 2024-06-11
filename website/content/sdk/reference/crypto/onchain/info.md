@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get info about ERC20 token. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L380)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L380)]
 
 ```python
 openbb.crypto.onchain.info(address: Any)
@@ -54,7 +54,7 @@ openbb.crypto.onchain.info(address: Any)
 
 Display info about ERC20 token. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L206)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L206)]
 
 ```python
 openbb.crypto.onchain.info_chart(address: str, social: bool = False, export: str = "")

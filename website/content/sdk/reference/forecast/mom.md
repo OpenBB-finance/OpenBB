@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 A momentum oscillator, which measures the percentage change between the current
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L308)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_model.py#L308)]
 
 ```python
 openbb.forecast.mom(dataset: pd.DataFrame, target_column: str = "close", period: int = 10)

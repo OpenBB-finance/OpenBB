@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Plot data from a dataset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L74)]
 
 ```python
 openbb.forecast.plot(data: pd.DataFrame, columns: List[str], export: str = "", external_axes: Optional[List[axes]] = None)
@@ -56,7 +56,7 @@ This function does not return anything
 
 Plot data from a dataset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L74)]
 
 ```python
 openbb.forecast.plot_chart(data: pd.DataFrame, columns: List[str], export: str = "", external_axes: Optional[List[axes]] = None)

@@ -102,9 +102,9 @@ Or follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started
 
 Use the instructions [here](https://visualstudio.microsoft.com/visual-cpp-build-tools/) to install or update Microsoft C++ Build Tools.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
 
 </details>
 
@@ -214,7 +214,7 @@ Proceed to next steps once the requirements above have been met.
 Clone the OpenBB Terminal source code from GitHub. This will download the source code to the current working directory.
 
 ```console
-git clone https://github.com/OpenBB-finance/OpenBBTerminal.git
+git clone https://github.com/OpenBB-finance/OpenBB.git
 ```
 
 Enter the directory:

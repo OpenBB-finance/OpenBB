@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get balance data. [Source: Marketwatch].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L107)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L107)]
 
 ```python
 openbb.stocks.ca.balance(similar: List[str], timeframe: str = "2021", quarter: bool = False)

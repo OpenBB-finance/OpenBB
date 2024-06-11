@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get interest by region from google api [Source: google].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/google_model.py#L44)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/google_model.py#L44)]
 
 ```python
 openbb.stocks.ba.regions(symbol: str)
@@ -57,7 +57,7 @@ openbb.stocks.ba.regions(symbol: str)
 
 Plots bars of regions based on stock's interest. [Source: Google].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/google_view.py#L156)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/google_view.py#L156)]
 
 ```python
 openbb.stocks.ba.regions_chart(symbol: str, limit: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

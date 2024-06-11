@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Analyzes quarterly contracts by ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L482)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L482)]
 
 ```python
 openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
@@ -58,7 +58,7 @@ openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
 
 Quarterly contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L446)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L446)]
 
 ```python
 openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

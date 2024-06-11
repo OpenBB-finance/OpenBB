@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Return all available quoted assets for given symbol. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L21)]
 
 ```python
 openbb.crypto.dd.show_available_pairs_for_given_symbol(symbol: str = "ETH")

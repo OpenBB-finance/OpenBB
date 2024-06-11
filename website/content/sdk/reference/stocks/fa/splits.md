@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get splits and reverse splits events. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L326)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L326)]
 
 ```python
 openbb.stocks.fa.splits(symbol: str)
@@ -53,7 +53,7 @@ openbb.stocks.fa.splits(symbol: str)
 
 Display splits and reverse splits events. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L261)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L261)]
 
 ```python
 openbb.stocks.fa.splits_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

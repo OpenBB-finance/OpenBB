@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
 
 ```python
 openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Symbol", ascend: bool = False)
@@ -61,7 +61,7 @@ openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Sy
 
 Prints table showing top coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L35)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L35)]
 
 ```python
 openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "Symbol", export: str = "", ascend: bool = False)

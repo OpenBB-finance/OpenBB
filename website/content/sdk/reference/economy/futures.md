@@ -24,7 +24,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get futures data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/sdk_helpers.py#L8)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/sdk_helpers.py#L8)]
 
 ```python
 openbb.economy.futures(source: Any = "WSJ", future_type: str = "Indices")

@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Load cases and find slope over period.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L173)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/covid/covid_model.py#L173)]
 
 ```python
 openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False)
@@ -56,7 +56,7 @@ openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 1
 
 Prints table showing countries with the highest case slopes.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L220)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/covid/covid_view.py#L220)]
 
 ```python
 openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: int = 10000, ascend: bool = False, export: str = "")

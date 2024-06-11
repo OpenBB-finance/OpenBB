@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin tokenomics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L283)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L283)]
 
 ```python
 openbb.crypto.dd.tk(symbol: str, coingecko_id: str)
@@ -55,7 +55,7 @@ openbb.crypto.dd.tk(symbol: str, coingecko_id: str)
 
 Plots coin tokenomics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L386)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L386)]
 
 ```python
 openbb.crypto.dd.tk_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

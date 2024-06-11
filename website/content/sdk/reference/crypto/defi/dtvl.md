@@ -32,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
 Returns information about historical tvl of a defi protocol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L124)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L124)]
 
 ```python
 openbb.crypto.defi.dtvl(protocol: str)
@@ -61,7 +61,7 @@ openbb.crypto.defi.dtvl(protocol: str)
 
 Plots historical TVL of different dApps
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L131)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L131)]
 
 ```python
 openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

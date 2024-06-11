@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 All markets for given coin and currency [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L176)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L176)]
 
 ```python
 openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pct_volume_share", ascend: bool = True)
@@ -57,7 +57,7 @@ openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pc
 
 Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L230)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L230)]
 
 ```python
 openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", limit: int = 20, sortby: str = "pct_volume_share", ascend: bool = True, links: bool = False, export: str = "")

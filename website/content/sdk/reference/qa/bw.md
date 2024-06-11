@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots box and whisker plots
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L270)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L270)]
 
 ```python
 openbb.qa.bw(data: pd.DataFrame, target: str, symbol: str = "", yearly: bool = True, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

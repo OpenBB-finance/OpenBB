@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 First differencing is an alternative to using fixed effects when there might be correlation.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L399)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L399)]
 
 ```python
 openbb.econometrics.fdols(Y: pd.DataFrame, X: pd.DataFrame)

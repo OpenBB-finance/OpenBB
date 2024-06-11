@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Performs Probabilistic Exponential Smoothing forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/expo_model.py#L34)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/expo_model.py#L34)]
 
 ```python
 openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5)
@@ -62,7 +62,7 @@ openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 
 Display Probabilistic Exponential Smoothing forecast
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/expo_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/expo_view.py#L20)]
 
 ```python
 openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", trend: str = "A", seasonal: str = "A", seasonal_periods: int = 7, dampen: str = "F", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)

@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get monthly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L267)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L267)]
 
 ```python
 openbb.portfolio.mret(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
@@ -65,7 +65,7 @@ output = openbb.portfolio.mret(p)
 
 Display monthly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L457)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L457)]
 
 ```python
 openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, show_vals: bool = False, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

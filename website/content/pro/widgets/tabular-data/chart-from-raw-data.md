@@ -29,8 +29,8 @@ With OpenBB Terminal Pro, you can create charts directly from your tabular data.
 
 Here are a few examples to get you started:
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1f521b0e-28c1-4126-bd13-658262745fc8" />
+<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/1f521b0e-28c1-4126-bd13-658262745fc8" />
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/4829a4a0-5186-40f9-bcee-86e1a373d3c8" />
+<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/4829a4a0-5186-40f9-bcee-86e1a373d3c8" />
 
-<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5f02d6e8-6344-4dc2-8950-b925b5eba04f" />
+<img className="pro-border-gradient" width="800" alt="example" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/5f02d6e8-6344-4dc2-8950-b925b5eba04f" />

@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for heteroscedasticity
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L550)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L550)]
 
 ```python
 openbb.econometrics.bpag(model: statsmodels.regression.linear_model.RegressionResultsWrapper)
@@ -56,7 +56,7 @@ openbb.econometrics.bpag(model: statsmodels.regression.linear_model.RegressionRe
 
 Show Breusch-Pagan heteroscedasticity test
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_view.py#L182)]
 
 ```python
 openbb.econometrics.bpag_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, export: str = "")

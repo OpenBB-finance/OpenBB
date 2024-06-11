@@ -42,7 +42,7 @@ Enter the menu by typing `disc`, while inside the `crypto` menu. Or, by the abso
 /crypto/disc
 ```
 
-![Screenshot 2023-10-31 at 10 00 49 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d5dc6656-92fd-4781-936a-00900f60d23e)
+![Screenshot 2023-10-31 at 10 00 49 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d5dc6656-92fd-4781-936a-00900f60d23e)
 
 Enter either, `..` or `q`, to return to the main Crypto menu.
 
@@ -51,12 +51,12 @@ Enter either, `..` or `q`, to return to the main Crypto menu.
 The `top` command provides parameters for filtering categories.  Browse them with the up/down arrow keys.
 
 
-![Screenshot 2023-10-31 at 10 04 40 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/6c0e42fa-42d8-4244-a244-d8289e06adda)
+![Screenshot 2023-10-31 at 10 04 40 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/6c0e42fa-42d8-4244-a244-d8289e06adda)
 
 
 ```console
 top -c asset-backed-tokens
 ```
 
-![Screenshot 2023-10-31 at 10 08 33 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7f50bae5-7b2f-48fa-9d92-3bdb0751790e)
+![Screenshot 2023-10-31 at 10 08 33 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/7f50bae5-7b2f-48fa-9d92-3bdb0751790e)
 

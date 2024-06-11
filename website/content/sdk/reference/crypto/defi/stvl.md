@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Returns historical values of the total sum of TVLs from all listed protocols.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L170)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L170)]
 
 ```python
 openbb.crypto.defi.stvl()
@@ -55,7 +55,7 @@ This function does not take any parameters.
 
 Plots historical values of the total sum of TVLs from all listed protocols.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L188)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L188)]
 
 ```python
 openbb.crypto.defi.stvl_chart(limit: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

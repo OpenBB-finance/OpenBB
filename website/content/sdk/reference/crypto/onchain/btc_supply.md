@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L43)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L43)]
 
 ```python
 openbb.crypto.onchain.btc_supply()
@@ -56,7 +56,7 @@ This function does not take any parameters.
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L28)]
 
 ```python
 openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

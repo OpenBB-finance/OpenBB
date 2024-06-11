@@ -29,7 +29,7 @@ Enter the menu from the `/stocks` menu.  If a ticker is not already loaded, ente
 /stocks/ca/ticker AMD
 ```
 
-![Screenshot 2023-10-31 at 9 32 13 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/75ae98f4-e928-4319-8675-a09d4fe0ca87)
+![Screenshot 2023-10-31 at 9 32 13 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/75ae98f4-e928-4319-8675-a09d4fe0ca87)
 
 ### Get
 
@@ -45,7 +45,7 @@ get --source Polygon
 
 Refreshing the screen, `?` or `h` with no command, will update the list of similar companies.
 
-![Screenshot 2023-10-31 at 9 38 17 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/418ca6fc-63d6-4ec6-99d5-ac1f1375b358)
+![Screenshot 2023-10-31 at 9 38 17 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/418ca6fc-63d6-4ec6-99d5-ac1f1375b358)
 
 ### RMV
 
@@ -79,7 +79,7 @@ With a list of similar companies populated, the `technical` command will compare
 technical
 ```
 
-![Screenshot 2023-11-01 at 8 16 39 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/9eb4ea36-97a2-44ec-ad8a-8d7ec6145097)
+![Screenshot 2023-11-01 at 8 16 39 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9eb4ea36-97a2-44ec-ad8a-8d7ec6145097)
 
 
 ### Cashflow

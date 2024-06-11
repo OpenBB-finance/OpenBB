@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get last government contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L377)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L377)]
 
 ```python
 openbb.stocks.gov.lastcontracts(past_transaction_days: int = 2)
@@ -55,7 +55,7 @@ openbb.stocks.gov.lastcontracts(past_transaction_days: int = 2)
 
 Last government contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L225)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L225)]
 
 ```python
 openbb.stocks.gov.lastcontracts_chart(past_transaction_days: int = 2, limit: int = 20, sum_contracts: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

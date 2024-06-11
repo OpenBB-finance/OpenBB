@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Checks option screener preset values
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L251)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L251)]
 
 ```python
 openbb.stocks.options.screen.check_presets(preset_dict: dict)

@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get payoff ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1590)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1590)]
 
 ```python
 openbb.portfolio.metric.payoff(portfolio_engine: portfolio_engine.PortfolioEngine)

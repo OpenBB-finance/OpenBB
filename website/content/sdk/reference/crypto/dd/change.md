@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Returns 30d change of the supply held in exchange wallets of a certain symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L555)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L555)]
 
 ```python
 openbb.crypto.dd.change(symbol: str, exchange: str = "binance", start_date: str = "2010-01-01", end_date: Optional[str] = None)
@@ -62,7 +62,7 @@ openbb.crypto.dd.change(symbol: str, exchange: str = "binance", start_date: str 
 
 Plots 30d change of the supply held in exchange wallets.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L157)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L157)]
 
 ```python
 openbb.crypto.dd.change_chart(symbol: str, exchange: str = "binance", start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

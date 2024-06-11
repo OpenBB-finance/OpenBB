@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load benchmark into portfolio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L93)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L93)]
 
 ```python
 openbb.portfolio.bench(portfolio_engine: portfolio_engine.PortfolioEngine, symbol: str, full_shares: bool = False)

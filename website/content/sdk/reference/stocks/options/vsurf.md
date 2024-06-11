@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Gets IV surface for calls and puts for ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L371)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L371)]
 
 ```python
 openbb.stocks.options.vsurf(symbol: str)
@@ -54,7 +54,7 @@ openbb.stocks.options.vsurf(symbol: str)
 
 Display vol surface
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_view.py#L1128)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/yfinance_view.py#L1128)]
 
 ```python
 openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", z: str = "IV", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

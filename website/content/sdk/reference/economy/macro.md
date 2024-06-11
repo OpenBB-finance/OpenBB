@@ -38,7 +38,7 @@ import TabItem from '@theme/TabItem';
 
 This functions groups the data queried from the EconDB database [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L655)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/econdb_model.py#L655)]
 
 ```python
 openbb.economy.macro(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "")
@@ -81,7 +81,7 @@ macro_df = openbb.economy.macro()
 
 Show the received macro data about a company [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/econdb_view.py#L25)]
 
 ```python
 openbb.economy.macro_chart(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "", raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")

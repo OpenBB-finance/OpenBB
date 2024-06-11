@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L441)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L441)]
 
 ```python
 openbb.portfolio.distr(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
@@ -66,7 +66,7 @@ output = openbb.portfolio.distr(p)
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L626)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L626)]
 
 ```python
 openbb.portfolio.distr_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

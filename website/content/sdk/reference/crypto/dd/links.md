@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns asset's links
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L197)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L197)]
 
 ```python
 openbb.crypto.dd.links(symbol: str)
@@ -54,7 +54,7 @@ openbb.crypto.dd.links(symbol: str)
 
 Prints table showing coin links
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L249)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L249)]
 
 ```python
 openbb.crypto.dd.links_chart(symbol: str, export: str = "")

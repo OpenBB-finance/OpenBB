@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Request data of significant events calendar.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L645)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L645)]
 
 ```python
 openbb.forex.oanda.calendar(days: int = 14, instrument: Optional[str] = None)
@@ -60,7 +60,7 @@ openbb.forex.oanda.calendar(days: int = 14, instrument: Optional[str] = None)
 
 View calendar of significant events.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L383)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L383)]
 
 ```python
 openbb.forex.oanda.calendar_chart(instrument: str, days: int = 7)

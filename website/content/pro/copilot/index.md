@@ -23,7 +23,7 @@ OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 
 ## Getting started
 
-<ReactPlayer width="50%" height="50%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/6466c3e3-111b-4246-ae9b-b6403712c862' />
+<ReactPlayer width="50%" height="50%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/6466c3e3-111b-4246-ae9b-b6403712c862' />
 
 To open OpenBB Copilot, click on the icon located at the bottom right of the
 Terminal Pro screen.
@@ -38,7 +38,7 @@ We'll be exploring each of these features in the following sections below.
 
 ## Understanding chat history
 
-<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/312510fb-fb17-474c-8698-a2960134e285' />
+<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/312510fb-fb17-474c-8698-a2960134e285' />
 
 OpenBB Copilot is a conversational agent. This means that OpenBB Copilot uses
 previous messages and answers in the current chat to help answer your query.
@@ -58,7 +58,7 @@ clicking on the trashcan icon in the OpenBB Copilot chatbox. It is usually a goo
 idea to clear the chat history when you have a new question that is unrelated to
 your current conversation.
 
-<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/dd67030e-bfd4-4e8c-b9f4-e67d3dbd2249' />
+<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/dd67030e-bfd4-4e8c-b9f4-e67d3dbd2249' />
 
 
 ## General question answering
@@ -75,7 +75,7 @@ explore this functionality with in-depth and varied questions.
 
 ## Querying the dashboard
 
-<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/0c502fa9-dae3-45f1-996d-2b9940161c24' />
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/0c502fa9-dae3-45f1-996d-2b9940161c24' />
 
 By default, OpenBB Copilot has access to the same data that is displayed on your
 currently-active dashboard. This means that OpenBB Copilot can answer queries
@@ -91,7 +91,7 @@ It's important to understand which data was used by OpenBB Copilot to formulate
 an answer. As a result, OpenBB Copilot will cite which data source it utilized
 in order to answer the user's query.
 
-<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/2156f1cb-f49e-4481-8131-41fcd6b91672' />
+<ReactPlayer width="50%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/2156f1cb-f49e-4481-8131-41fcd6b91672' />
 
 Since OpenBB Copilot can access data from any widget in the active dashboard, we
 encourage users to experiment with adding different kinds of widgets and
@@ -101,7 +101,7 @@ Transcripts" widget.
 
 ## Querying specific widgets only
 
-<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/1335e310-cd65-4917-bc34-1de8b3e5f7fc' />
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/1335e310-cd65-4917-bc34-1de8b3e5f7fc' />
 
 
 Sometimes you may wish to focus your analysis and utilize OpenBB Copilot to analyze only
@@ -119,7 +119,7 @@ Sometimes you may wish to focus your analysis and utilize OpenBB Copilot to anal
 
 ## Querying your own data
 
-<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/905eb674-5619-4797-8adf-9cf13a846792' />
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/905eb674-5619-4797-8adf-9cf13a846792' />
 
 OpenBB Copilot can also answer queries using files that you provide. Currently
 TXT, PDF, CSV and XLSX files are supported. Files can be added to the Copilot by

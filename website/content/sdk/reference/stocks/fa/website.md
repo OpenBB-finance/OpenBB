@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets website of company from yfinance
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L210)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L210)]
 
 ```python
 openbb.stocks.fa.website(symbol: str)

@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get market cap over time for ticker. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L287)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L287)]
 
 ```python
 openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
@@ -58,7 +58,7 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
 
 Display market cap over time. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L338)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L338)]
 
 ```python
 openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

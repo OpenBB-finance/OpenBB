@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get net short position. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L165)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L165)]
 
 ```python
 openbb.stocks.dps.spos(symbol: str)
@@ -57,7 +57,7 @@ openbb.stocks.dps.spos(symbol: str)
 
 Plot net short position. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_view.py#L247)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_view.py#L247)]
 
 ```python
 openbb.stocks.dps.spos_chart(symbol: str, limit: int = 84, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

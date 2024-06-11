@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get curve futures [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L118)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/futures/yfinance_model.py#L118)]
 
 ```python
 openbb.futures.curve(symbol: str = "")
@@ -54,7 +54,7 @@ openbb.futures.curve(symbol: str = "")
 
 Display curve futures [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_view.py#L232)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/futures/yfinance_view.py#L232)]
 
 ```python
 openbb.futures.curve_chart(symbol: str, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

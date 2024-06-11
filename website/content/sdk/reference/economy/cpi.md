@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get Consumer Price Index from Alpha Vantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_model.py#L182)]
 
 ```python
 openbb.economy.cpi(interval: str = "m", start_year: int = 2010)
@@ -58,7 +58,7 @@ openbb.economy.cpi(interval: str = "m", start_year: int = 2010)
 
 Display US consumer price index (CPI) from AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L257)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_view.py#L257)]
 
 ```python
 openbb.economy.cpi_chart(interval: str = "m", start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

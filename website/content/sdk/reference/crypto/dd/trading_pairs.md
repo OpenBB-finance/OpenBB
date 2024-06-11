@@ -22,7 +22,7 @@ import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L21)]
 
 ```python
 openbb.crypto.dd.trading_pairs()

@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get number of companies per industry in a specific sector (and specific market cap).
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L309)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L309)]
 
 ```python
 openbb.stocks.sia.cpis(sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True)
@@ -58,7 +58,7 @@ openbb.stocks.sia.cpis(sector: str = "Technology", mktcap: str = "Large", exclud
 
 Display number of companies per industry in a specific sector. [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L525)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L525)]
 
 ```python
 openbb.stocks.sia.cpis_chart(sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True, export: str = "", raw: bool = False, max_industries_to_display: int = 15, min_pct_to_display_industry: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

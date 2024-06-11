@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Request open trades data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L470)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L470)]
 
 ```python
 openbb.forex.oanda.opentrades(accountID: str = "REPLACE_ME")
@@ -52,7 +52,7 @@ openbb.forex.oanda.opentrades(accountID: str = "REPLACE_ME")
 
 View open trades.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L252)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L252)]
 
 ```python
 openbb.forex.oanda.opentrades_chart(accountID: str)

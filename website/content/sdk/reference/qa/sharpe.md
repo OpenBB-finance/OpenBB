@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Calculates the sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L537)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L537)]
 
 ```python
 openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
@@ -57,7 +57,7 @@ openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 
 Plots Calculated the sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1156)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1156)]
 
 ```python
 openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252)

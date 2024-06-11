@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load a Excel file with views for Black Litterman model.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/excel_model.py#L101)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/excel_model.py#L101)]
 
 ```python
 openbb.portfolio.po.load_bl_views(excel_file: str = "")

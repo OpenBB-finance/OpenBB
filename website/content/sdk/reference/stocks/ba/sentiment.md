@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get sentiments from symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/twitter_model.py#L125)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/twitter_model.py#L125)]
 
 ```python
 openbb.stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2)
@@ -60,7 +60,7 @@ openbb.stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2
 
 Plots sentiments from symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/twitter_view.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/twitter_view.py#L79)]
 
 ```python
 openbb.stocks.ba.sentiment_chart(symbol: str, n_tweets: int = 15, n_days_past: int = 2, compare: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

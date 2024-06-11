@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get the omega series
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L639)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L639)]
 
 ```python
 openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5)
@@ -60,7 +60,7 @@ openbb.qa.omega(data: pd.DataFrame, threshold_start: float = 0, threshold_end: f
 
 Plots the omega ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1214)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1214)]
 
 ```python
 openbb.qa.omega_chart(data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5)

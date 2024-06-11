@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets forward rates from fxempire
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/fxempire_model.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/fxempire_model.py#L14)]
 
 ```python
 openbb.forex.fwd(to_symbol: str = "USD", from_symbol: str = "EUR")

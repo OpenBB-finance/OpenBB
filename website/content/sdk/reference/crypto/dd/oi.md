@@ -39,7 +39,7 @@ import TabItem from '@theme/TabItem';
 
 Returns open interest by exchange for a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_model.py#L148)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_model.py#L148)]
 
 ```python
 openbb.crypto.dd.oi(symbol: str, interval: int = 0)
@@ -69,7 +69,7 @@ openbb.crypto.dd.oi(symbol: str, interval: int = 0)
 
 Plots open interest by exchange for a certain cryptocurrency
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_view.py#L55)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_view.py#L55)]
 
 ```python
 openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "")

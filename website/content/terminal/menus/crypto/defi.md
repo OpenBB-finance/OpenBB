@@ -39,7 +39,7 @@ The `ldapps` command will return a list of DeFi apps.  Use the `--limit` argumen
 /crypto/defi/ldapps --limit 1000
 ```
 
-![Screenshot 2023-10-31 at 9 12 46 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/20e20089-080d-4172-a305-2d9ce364e1e9)
+![Screenshot 2023-10-31 at 9 12 46 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/20e20089-080d-4172-a305-2d9ce364e1e9)
 
 
 ### stvl
@@ -50,4 +50,4 @@ The `ldapps` command will return a list of DeFi apps.  Use the `--limit` argumen
 /crypto/defi/stvl --limit 1000
 ```
 
-![Screenshot 2023-10-31 at 9 49 36 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/41e67090-1db5-4ea9-946d-71887672b85a)
+![Screenshot 2023-10-31 at 9 49 36 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/41e67090-1db5-4ea9-946d-71887672b85a)

@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get income data. [Source: Marketwatch].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L74)]
 
 ```python
 openbb.stocks.ca.income(similar: List[str], timeframe: str = "2021", quarter: bool = False)
@@ -62,7 +62,7 @@ openbb.stocks.ca.income(similar: List[str], timeframe: str = "2021", quarter: bo
 
 Display income data. [Source: Marketwatch].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_view.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_view.py#L23)]
 
 ```python
 openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2021", quarter: bool = False, export: str = "")

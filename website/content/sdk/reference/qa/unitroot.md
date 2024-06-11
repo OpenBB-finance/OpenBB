@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for unit roots
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L135)]
 
 ```python
 openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c")
@@ -54,7 +54,7 @@ openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c
 
 Prints table showing unit root test calculations
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L839)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L839)]
 
 ```python
 openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c", kpss_reg: str = "c", export: str = "")

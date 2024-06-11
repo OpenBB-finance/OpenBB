@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L266)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L266)]
 
 ```python
 openbb.crypto.onchain.lt(trade_amount_currency: str = "USD", limit: int = 90, sortby: str = "tradeAmount", ascend: bool = True)
@@ -61,7 +61,7 @@ openbb.crypto.onchain.lt(trade_amount_currency: str = "USD", limit: int = 90, so
 
 Prints table showing Trades on Decentralized Exchanges aggregated by DEX or Month
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L22)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L22)]
 
 ```python
 openbb.crypto.onchain.lt_chart(trade_amount_currency: str = "USD", kind: str = "dex", limit: int = 20, days: int = 90, sortby: str = "tradeAmount", ascend: bool = True, export: str = "")

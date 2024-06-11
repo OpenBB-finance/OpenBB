@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Twitter key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1132)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/keys_model.py#L1132)]
 
 ```python
 openbb.keys.twitter(key: str, secret: str, access_token: str, persist: bool = False, show_output: bool = False)

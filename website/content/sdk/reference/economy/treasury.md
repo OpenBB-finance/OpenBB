@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get U.S. Treasury rates [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L736)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/econdb_model.py#L736)]
 
 ```python
 openbb.economy.treasury(instruments: list = None, maturities: list = None, frequency: str = "monthly", start_date: str = "1900-01-01", end_date: Optional[str] = None)
@@ -70,7 +70,7 @@ openbb.economy.treasury()
 
 Display U.S. Treasury rates [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L145)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/econdb_view.py#L145)]
 
 ```python
 openbb.economy.treasury_chart(instruments: list = None, maturities: list = None, frequency: str = "monthly", start_date: str = "1900-01-01", end_date: Optional[str] = None, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")

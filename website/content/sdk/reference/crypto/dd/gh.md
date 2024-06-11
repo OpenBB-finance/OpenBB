@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Returns  a list of developer activity for a given coin and time interval.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/santiment_model.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/santiment_model.py#L29)]
 
 ```python
 openbb.crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = "1d", start_date: Optional[str] = None, end_date: Optional[str] = None)
@@ -60,7 +60,7 @@ openbb.crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = "1d
 
 Returns a list of github activity for a given coin and time interval.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/santiment_view.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/santiment_view.py#L25)]
 
 ```python
 openbb.crypto.dd.gh_chart(symbol: str, start_date: Optional[str] = None, dev_activity: bool = False, end_date: Optional[str] = None, interval: str = "1d", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

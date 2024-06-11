@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical price correlation. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L98)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L98)]
 
 ```python
 openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a")
@@ -54,7 +54,7 @@ openbb.stocks.ca.hcorr(similar: List[str], start_date: Optional[str] = None, can
 
 Correlation heatmap based on historical price comparison
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L159)]
 
 ```python
 openbb.stocks.ca.hcorr_chart(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a", display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = "")

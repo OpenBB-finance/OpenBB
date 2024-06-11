@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin governance
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L567)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L567)]
 
 ```python
 openbb.crypto.dd.gov(symbol: str)
@@ -55,7 +55,7 @@ openbb.crypto.dd.gov(symbol: str)
 
 Prints table showing coin governance
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L602)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L602)]
 
 ```python
 openbb.crypto.dd.gov_chart(symbol: str, export: str = "")

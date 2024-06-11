@@ -28,7 +28,7 @@ Enter the `dps` menu from the `/stocks` menu, or through the absolute path:
 /stocks/dps
 ```
 
-![Screenshot 2023-11-01 at 8 33 58 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/64775307-b79e-4ff6-95dd-ec676e1ab677)
+![Screenshot 2023-11-01 at 8 33 58 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/64775307-b79e-4ff6-95dd-ec676e1ab677)
 
 The commands which are not ticker-specific are grouped at the top of the menu, and they provide screener-like utility. 
 
@@ -40,7 +40,7 @@ A list of the most-shorted stocks, according to Yahoo Finance, is displayed with
 /stocks/dps/shorted
 ```
 
-![Screenshot 2023-11-01 at 8 38 12 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1361b8f-0795-439f-b9f6-ace9cbde068a)
+![Screenshot 2023-11-01 at 8 38 12 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d1361b8f-0795-439f-b9f6-ace9cbde068a)
 
 ### HSI
 
@@ -50,7 +50,7 @@ The `hsi` command includes the percent of short interest relative to the float s
 /stocks/dps/hsi
 ```
 
-![Screenshot 2023-11-01 at 8 40 39 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1287e58b-dbed-44a0-821a-769daebb3f29)
+![Screenshot 2023-11-01 at 8 40 39 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1287e58b-dbed-44a0-821a-769daebb3f29)
 
 ### PROM
 
@@ -65,7 +65,7 @@ Processing Tier T1 ...
 Processing regression on 50 promising tickers ...
 ```
 
-![Screenshot 2023-11-01 at 8 45 21 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/13b67056-9d94-45f0-b483-41c1da773f0e)
+![Screenshot 2023-11-01 at 8 45 21 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/13b67056-9d94-45f0-b483-41c1da773f0e)
 
 
 Tier 2 NMS Tickers:
@@ -79,7 +79,7 @@ Processing Tier T2 ...
 Processing regression on 50 promising tickers ...
 ```
 
-![Screenshot 2023-11-01 at 8 48 32 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/fab9bb45-fec9-4d51-8b77-0bb9697d8888)
+![Screenshot 2023-11-01 at 8 48 32 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/fab9bb45-fec9-4d51-8b77-0bb9697d8888)
 
 
 
@@ -89,7 +89,7 @@ Processing regression on 50 promising tickers ...
 /stocks/dps pos
 ```
 
-![Screenshot 2023-11-01 at 8 55 25 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8075ab29-cbac-448c-bfc4-a2ca250f6288)
+![Screenshot 2023-11-01 at 8 55 25 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/8075ab29-cbac-448c-bfc4-a2ca250f6288)
 
 The other end of the spectrum:
 
@@ -97,7 +97,7 @@ The other end of the spectrum:
 /stocks/dps/pos -a
 ```
 
-![Screenshot 2023-11-01 at 8 58 27 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/9bd6d148-ae36-4b7b-9faa-79db4dcb93ad)
+![Screenshot 2023-11-01 at 8 58 27 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9bd6d148-ae36-4b7b-9faa-79db4dcb93ad)
 
 
 ### CTB
@@ -124,4 +124,4 @@ The `ftd` command will lookup the SEC-reported fails-to-deliver data for a singl
 /stocks/dps/load cvna/ftd --start 2022-01-01
 ```
 
-![Screenshot 2023-11-01 at 9 28 34 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/43409271-e306-4f13-9153-8cc322dde851)
+![Screenshot 2023-11-01 at 9 28 34 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/43409271-e306-4f13-9153-8cc322dde851)

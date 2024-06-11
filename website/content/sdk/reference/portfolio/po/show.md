@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show portfolio optimization results
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2361)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L2361)]
 
 ```python
 openbb.portfolio.po.show(portfolio_engine: portfolio_optimization.po_engine.PoEngine, category: str = None)

@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB Terminal is the first and only open source investment research platform. The terminal connects to dozens of different data providers and allows users to access investment research from a single platform. More than that, due to its open source nature, users can add custom data sources or build their own analysis on top.
 
-<img width="806" alt="terminal" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/0140f6e6-4a16-4b9a-80af-8b6378a5f9e0" />
+<img width="806" alt="terminal" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/0140f6e6-4a16-4b9a-80af-8b6378a5f9e0" />
 
 ---
 
@@ -44,4 +44,4 @@ Since COVID-19, the way the world works has changed. And we believe that investm
 
 ---
 
-Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBB/blob/main/CONTRIBUTING.md).

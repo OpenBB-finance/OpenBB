@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin product info
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L353)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L353)]
 
 ```python
 openbb.crypto.dd.pi(symbol: str)
@@ -57,7 +57,7 @@ openbb.crypto.dd.pi(symbol: str)
 
 Prints table showing project info
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L470)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L470)]
 
 ```python
 openbb.crypto.dd.pi_chart(symbol: str, export: str = "")

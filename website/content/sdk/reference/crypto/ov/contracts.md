@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Gets all contract addresses for given platform [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L400)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L400)]
 
 ```python
 openbb.crypto.ov.contracts(platform_id: str = "eth-ethereum", sortby: str = "active", ascend: bool = True)
@@ -60,7 +60,7 @@ openbb.crypto.ov.contracts(platform_id: str = "eth-ethereum", sortby: str = "act
 
 Gets all contract addresses for given platform. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L349)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L349)]
 
 ```python
 openbb.crypto.ov.contracts_chart(symbol: str, sortby: str = "active", ascend: bool = True, limit: int = 15, export: str = "")

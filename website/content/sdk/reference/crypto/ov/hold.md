@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L102)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L102)]
 
 ```python
 openbb.crypto.ov.hold(endpoint: str = "bitcoin")
@@ -60,7 +60,7 @@ openbb.crypto.ov.hold(endpoint: str = "bitcoin")
 
 Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L135)]
 
 ```python
 openbb.crypto.ov.hold_chart(symbol: str, show_bar: bool = False, export: str = "", limit: int = 15)

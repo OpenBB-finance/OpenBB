@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Request position book data for plotting.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L182)]
 
 ```python
 openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str = "REPLACE_ME")
@@ -58,7 +58,7 @@ openbb.forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str
 
 Plot a position book for an instrument if Oanda provides one.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L116)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L116)]
 
 ```python
 openbb.forex.oanda.positionbook_chart(accountID: str, instrument: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

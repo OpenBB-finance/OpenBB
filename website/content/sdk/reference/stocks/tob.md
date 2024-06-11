@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get top of book bid and ask for ticker on exchange [CBOE.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/cboe_model.py#L12)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/cboe_model.py#L12)]
 
 ```python
 openbb.stocks.tob(symbol: str, exchange: str = "BZX")

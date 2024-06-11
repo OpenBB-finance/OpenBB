@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get price vs short interest volume. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L121)]
 
 ```python
 openbb.stocks.dps.psi_sg(symbol: str)
@@ -57,7 +57,7 @@ openbb.stocks.dps.psi_sg(symbol: str)
 
 Plot price vs short interest volume. [Source: Stockgrid]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_view.py#L123)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_view.py#L123)]
 
 ```python
 openbb.stocks.dps.psi_sg_chart(symbol: str, limit: int = 84, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

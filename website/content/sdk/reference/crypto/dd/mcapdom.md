@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Returns market dominance of a coin over time
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L81)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L81)]
 
 ```python
 openbb.crypto.dd.mcapdom(symbol: str, interval: str = "1d", start_date: Optional[str] = None, end_date: Optional[str] = None)
@@ -63,7 +63,7 @@ openbb.crypto.dd.mcapdom(symbol: str, interval: str = "1d", start_date: Optional
 
 Plots market dominance of a coin over time
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L181)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L181)]
 
 ```python
 openbb.crypto.dd.mcapdom_chart(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, interval: str = "1d", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

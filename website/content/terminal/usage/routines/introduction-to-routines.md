@@ -63,7 +63,7 @@ For more information and examples, use 'about exe' to access the related guide.
 
 ## Basic Script
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/eaeb3511-d544-4579-8d76-f7a4fd7bb1d3)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/eaeb3511-d544-4579-8d76-f7a4fd7bb1d3)
 
 The most basic script style contains 2 main elements:
 

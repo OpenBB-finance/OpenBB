@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L143)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L143)]
 
 ```python
 openbb.crypto.dd.candles(symbol: str, interval: str = "24h")
@@ -58,7 +58,7 @@ openbb.crypto.dd.candles(symbol: str, interval: str = "24h")
 
 Prints table showing candles for chosen trading pair and time interval. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L76)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L76)]
 
 ```python
 openbb.crypto.dd.candles_chart(symbol: str, interval: str = "24h", export: str = "")

@@ -27,7 +27,7 @@ Enter, `th`, from the [`/stocks/`](/terminal/menus/stocks) menu. Or, with the ab
 /stocks/th
 ```
 
-![Screenshot 2023-11-01 at 2 21 56 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/66fe02c2-22d1-4ce3-a410-7df6f7f4defa)
+![Screenshot 2023-11-01 at 2 21 56 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/66fe02c2-22d1-4ce3-a410-7df6f7f4defa)
 
 ### Exchange
 

@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Keltner Channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L88)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L88)]
 
 ```python
 openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: str = "ema", offset: int = 0)
@@ -58,7 +58,7 @@ openbb.ta.kc(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: st
 
 Plots Keltner Channels Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L194)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L194)]
 
 ```python
 openbb.ta.kc_chart(data: pd.DataFrame, window: int = 20, scalar: float = 2, mamode: str = "ema", offset: int = 0, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -36,7 +36,7 @@ The Forex menu is entered by typing `forex`, from the Main menu, or with the abs
 /forex
 ```
 
-![Screenshot 2023-11-03 at 12 26 41 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/83356fc6-9966-4da3-9bed-64ae7e42ecd0)
+![Screenshot 2023-11-03 at 12 26 41 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/83356fc6-9966-4da3-9bed-64ae7e42ecd0)
 
 ### Load
 

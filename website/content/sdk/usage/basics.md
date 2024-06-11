@@ -102,7 +102,7 @@ jupyter notebook
 
 This will launch the Jupyter server and open a browser window with the application.
 
-![Jupyter Lab](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4a289ef0-11af-4909-af7a-66fe97e9ffea)
+![Jupyter Lab](https://github.com/OpenBB-finance/OpenBB/assets/85772166/4a289ef0-11af-4909-af7a-66fe97e9ffea)
 
 There will be only one choice for the kernel, `Python3 (ipykernel)`.  Click on, `Select`.
 
@@ -114,7 +114,7 @@ from openbb_terminal.sdk import openbb
 
 Docstrings can be viewed in a pop-up with the key command, `shift+tab`.  The contents of each module (similar to the menus in the OpenBB Terminal) can be browsed by hitting the `tab` key.
 
-![Jupyter Lab Import](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7cc04e49-57fe-4bbf-bb5e-4cfbdab62eaf)
+![Jupyter Lab Import](https://github.com/OpenBB-finance/OpenBB/assets/85772166/7cc04e49-57fe-4bbf-bb5e-4cfbdab62eaf)
 
 The `Contextual Help` window displays more details, and also previews DataFrames after they are assigned.  These tools are an excellent way to understand the structure of the SDK along with the syntax for each command and argument.
 
@@ -137,13 +137,13 @@ Installing a few extensions in VS Code will improve the user experience and prov
 
 Icons on the sidebar for Jupyter and Python provide quick access to the virtual environments, and a new notebook or interactive window are created with a mouse click.
 
-![VS Code](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/bf04c707-a591-47c8-a5e9-c4c0e60e302a)
+![VS Code](https://github.com/OpenBB-finance/OpenBB/assets/85772166/bf04c707-a591-47c8-a5e9-c4c0e60e302a)
 
 When opening a Notebook file, or a new interactive window, ensure that the correct environment is being used.  If the selected environment is not the one created during installation, the OpenBB SDK will not import.
 
 Click on the item in the top-right of the window to select or change the environment.
 
-![VS Code environment](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0e4904cf-4ff7-4130-b965-30b3de140392)
+![VS Code environment](https://github.com/OpenBB-finance/OpenBB/assets/85772166/0e4904cf-4ff7-4130-b965-30b3de140392)
 
 The OpenBB SDK is imported with:
 
@@ -155,7 +155,7 @@ from openbb_terminal.sdk import openbb
 
 The layout of the OpenBB SDK is similar to the menus in the OpenBB Terminal, with each one represented as a module.  Instead of a `/` in the path, it is `.`.  For example, `openbb.stocks.gov` is the Government submodule of `stocks`.
 
-![Navigation](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ad3617fe-b84c-4bbd-9139-2563702849ba)
+![Navigation](https://github.com/OpenBB-finance/OpenBB/assets/85772166/ad3617fe-b84c-4bbd-9139-2563702849ba)
 
 The attributes for each module - and docstrings for a function - can also be printed directly to the screen, insert a question mark at the end of the string.
 
@@ -191,7 +191,7 @@ pd.DataFrame
 
 Docstrings are the SDK equivalent to the Terminal's `--help` argument.  They contain information on the functions, its input parameters, and the type of data being returned.  The Contextual Help window, in Jupyter, is a very convenient way to keep this information on hand.  Referencing the docstrings will greatly reduce the need to consult the online documentation pages.
 
-![Docstrings](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ffbfcdec-c16e-41e7-8828-b099325910a5)
+![Docstrings](https://github.com/OpenBB-finance/OpenBB/assets/85772166/ffbfcdec-c16e-41e7-8828-b099325910a5)
 
 ## API Keys
 
@@ -205,7 +205,7 @@ openbb.keys.fred(key= "REPLACE_WITH_YOUR_KEY", persist=True)
 
 API keys can be imported to the session by logging in to an [OpenBB Hub account](https://my.openbb.co/app/sdk/api-keys).  The session can persist, if desired, otherwise they will be valid only for the current session.  We recommend connecting to Hub by generating a Personal Access Token.  Follow the [link](https://my.openbb.co/app/sdk/api-keys), scroll to the bottom of the page, and click the "Generate" button.
 
-![OpenBB Personal Access Token](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/8c3988b4-cba9-4008-b8f3-04eef72878be)
+![OpenBB Personal Access Token](https://github.com/OpenBB-finance/OpenBB/assets/85772166/8c3988b4-cba9-4008-b8f3-04eef72878be)
 
 Copy the generated token and enter as the value for the `token` parameter, ignoring the email and password fields.  By default, the credentials will be forgotten when the SDK session is terminated.
 
@@ -291,11 +291,11 @@ Most data objects returned by functions are Pandas DataFrames, and the results w
 openbb.stocks.quote("SPY")
 ```
 
-![Data Response](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/cb932ee1-3a87-4744-81a5-840c452eac51)
+![Data Response](https://github.com/OpenBB-finance/OpenBB/assets/85772166/cb932ee1-3a87-4744-81a5-840c452eac51)
 
 The presentation of the responses will vary by platform, the sample above is from Jupyter Lab.  When the same function in the Terminal outputs a chart, the response is separated into the model and view components.  The SDK map will show two functions for the same command where the second has `_chart` added on.  Using this second command will display the chart while the former returns the raw Pandas DataFrame.
 
-![Model and View](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/08bccaae-13f3-4fcd-857c-13cd30250492)
+![Model and View](https://github.com/OpenBB-finance/OpenBB/assets/85772166/08bccaae-13f3-4fcd-857c-13cd30250492)
 
 ```python
 data = openbb.stocks.load("SPY", weekly = True)
@@ -304,7 +304,7 @@ openbb.ta.atr_chart(data, symbol = "SPY")
 
 If the SDK session is from the command line (`python` or `ipython`), a window will open to display the chart.  Within an IDE, or Jupyter Notebook, they will be displayed inline and will not have the same toolbars.
 
-![openbb.ta.atr_chart](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b668556b-27a5-49cc-989b-8d7de1e420e2)
+![openbb.ta.atr_chart](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b668556b-27a5-49cc-989b-8d7de1e420e2)
 
 ### Passing Data Through
 
@@ -354,7 +354,7 @@ data = openbb.stocks.candle("SPY", external_axes = True)
 data?
 ```
 
-![OpenBB Figure](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/71f272f4-49eb-42c7-bd93-bd06f364ce32)
+![OpenBB Figure](https://github.com/OpenBB-finance/OpenBB/assets/85772166/71f272f4-49eb-42c7-bd93-bd06f364ce32)
 
 Charts called from a command line session, will open a new window and appear the same as they are in the OpenBB Terminal application.
 
@@ -409,4 +409,4 @@ databento = openbb.stocks.load("SPY", source = "DataBento")
 
 ## Support, Bug Reports & Feedback
 
-Issues can be raised through the [support page](https://my.openbb.co/app/sdk/support) or on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose).  You can also chat with the community on [Discord](https://openbb.co/discord) to find help or inspiration.  Feedback is always welcome.
+Issues can be raised through the [support page](https://my.openbb.co/app/sdk/support) or on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues/new/choose).  You can also chat with the community on [Discord](https://openbb.co/discord) to find help or inspiration.  Feedback is always welcome.

@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Gets value at risk for specified stock dataframe.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L224)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L224)]
 
 ```python
 openbb.qa.var(data: pd.DataFrame, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: Union[int, float] = 99.9, portfolio: bool = False)
@@ -62,7 +62,7 @@ openbb.qa.var(data: pd.DataFrame, use_mean: bool = False, adjusted_var: bool = F
 
 Prints table showing VaR of dataframe.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1048)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1048)]
 
 ```python
 openbb.qa.var_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 99.9, data_range: int = 0, portfolio: bool = False)

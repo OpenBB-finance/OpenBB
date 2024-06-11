@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Get info for a given ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L329)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L329)]
 
 ```python
 openbb.stocks.options.info(symbol: str)
@@ -52,7 +52,7 @@ openbb.stocks.options.info(symbol: str)
 
 Scrapes Barchart.com for the options information
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/barchart_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/barchart_view.py#L15)]
 
 ```python
 openbb.stocks.options.info_chart(symbol: str, export: str = "")

@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 On Balance Volume
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L90)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L90)]
 
 ```python
 openbb.ta.obv(data: pd.DataFrame)
@@ -54,7 +54,7 @@ openbb.ta.obv(data: pd.DataFrame)
 
 Plots OBV technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L249)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L249)]
 
 ```python
 openbb.ta.obv_chart(data: pd.DataFrame, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

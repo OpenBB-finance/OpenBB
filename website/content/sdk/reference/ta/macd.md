@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Moving average convergence divergence
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L61)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L61)]
 
 ```python
 openbb.ta.macd(data: pd.Series, n_fast: int = 12, n_slow: int = 26, n_signal: int = 9)
@@ -59,7 +59,7 @@ openbb.ta.macd(data: pd.Series, n_fast: int = 12, n_slow: int = 26, n_signal: in
 
 Plots MACD signal
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L126)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L126)]
 
 ```python
 openbb.ta.macd_chart(data: pd.Series, n_fast: int = 12, n_slow: int = 26, n_signal: int = 9, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

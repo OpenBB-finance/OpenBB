@@ -24,7 +24,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Finds posts related to a specific search term in Reddit.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L864)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L864)]
 
 ```python
 openbb.stocks.ba.redditsent(symbol: str, limit: int = 100, sortby: str = "relevance", time_frame: str = "week", full_search: bool = True, subreddits: str = "all")

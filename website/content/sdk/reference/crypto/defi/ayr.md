@@ -32,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
 Displays the 30-day history of the Anchor Yield Reserve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_model.py#L63)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_model.py#L63)]
 
 ```python
 openbb.crypto.defi.ayr()
@@ -58,7 +58,7 @@ This function does not take any parameters.
 
 Plots the 30-day history of the Anchor Yield Reserve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L85)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L85)]
 
 ```python
 openbb.crypto.defi.ayr_chart(export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

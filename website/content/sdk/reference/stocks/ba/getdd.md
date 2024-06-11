@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets due diligence posts from list of subreddits [Source: reddit].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L711)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L711)]
 
 ```python
 openbb.stocks.ba.getdd(symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False)

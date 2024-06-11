@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Screener Overview
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/finviz_model.py#L76)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/screener/finviz_model.py#L76)]
 
 ```python
 openbb.stocks.screener.screener_data(preset_loaded: str = "top_gainers", data_type: str = "overview", limit: int = 10, ascend: bool = False)
@@ -60,7 +60,7 @@ openbb.stocks.screener.screener_data(preset_loaded: str = "top_gainers", data_ty
 
 Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/finviz_view.py#L127)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/screener/finviz_view.py#L127)]
 
 ```python
 openbb.stocks.screener.screener_data_chart(loaded_preset: str = "top_gainers", data_type: str = "overview", limit: int = 10, ascend: bool = False, sortby: str = "", export: str = "")

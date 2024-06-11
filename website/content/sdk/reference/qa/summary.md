@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Print summary statistics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L25)]
 
 ```python
 openbb.qa.summary(data: pd.DataFrame)
@@ -54,7 +54,7 @@ openbb.qa.summary(data: pd.DataFrame)
 
 Prints table showing summary statistics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L53)]
 
 ```python
 openbb.qa.summary_chart(data: pd.DataFrame, export: str = "")

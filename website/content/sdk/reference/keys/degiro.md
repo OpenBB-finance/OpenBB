@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Degiro key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1296)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/keys_model.py#L1296)]
 
 ```python
 openbb.keys.degiro(username: str, password: str, secret: str = "", persist: bool = False, show_output: bool = False)

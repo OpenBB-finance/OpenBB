@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Get analysts' price targets for a given stock. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/business_insider_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/due_diligence/business_insider_model.py#L20)]
 
 ```python
 openbb.stocks.dd.pt(symbol: str)
@@ -61,7 +61,7 @@ df = openbb.stocks.dd.pt(symbol="AAPL")
 
 Display analysts' price targets for a given stock. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/business_insider_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/due_diligence/business_insider_view.py#L32)]
 
 ```python
 openbb.stocks.dd.pt_chart(symbol: str, data: Optional[pd.DataFrame] = None, start_date: Optional[str] = None, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

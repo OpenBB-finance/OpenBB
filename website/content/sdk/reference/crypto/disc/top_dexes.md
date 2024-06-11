@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get top dexes by daily volume and users [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L124)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L124)]
 
 ```python
 openbb.crypto.disc.top_dexes(sortby: str = "", limit: int = 10)
@@ -54,7 +54,7 @@ openbb.crypto.disc.top_dexes(sortby: str = "", limit: int = 10)
 
 Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L97)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L97)]
 
 ```python
 openbb.crypto.disc.top_dexes_chart(limit: int = 10, export: str = "", sortby: str = "")

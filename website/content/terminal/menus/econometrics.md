@@ -32,12 +32,12 @@ Enter the Econometrics menu from the main menu by typing, `econometrics`, into t
 /econometrics
 ```
 
-![Screenshot 2023-11-02 at 9 03 24 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b1720a35-d5d0-44c8-9826-b0cfffe29ee0)
+![Screenshot 2023-11-02 at 9 03 24 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b1720a35-d5d0-44c8-9826-b0cfffe29ee0)
 
 
 ### Sample Datasets
 
-![Screenshot 2023-11-02 at 12 12 07 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/44cf93ce-96f9-4c6b-bed1-611f27738de9)
+![Screenshot 2023-11-02 at 12 12 07 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/44cf93ce-96f9-4c6b-bed1-611f27738de9)
 
 There are sample datasets included in the Scipy library, those are listed by adding `--examples` to the `load` command. For example, `longley`:
 
@@ -54,7 +54,7 @@ Due to the small size of the dataset, many of these tests are not statistically 
 
 The first step in using the Econometrics menu is to load in some data.  Place files in the paths displayed at the top of the menu, under "Looking for data in:".
 
-![Screenshot 2023-11-02 at 9 15 17 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/aabd6f32-2495-45f4-84b7-3d6686875e66)
+![Screenshot 2023-11-02 at 9 15 17 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/aabd6f32-2495-45f4-84b7-3d6686875e66)
 
 This file contains historical monthly levels of the S&P 500 price and P/E ratio.  It was populated from: [Nasdaq Data Link](https://data.nasdaq.com/data/MULTPL-sp-500-ratios).
 
@@ -156,7 +156,7 @@ Plot columns from a loaded dataset using the `plot` command.
 plot sp500_pe.pe
 ```
 
-![Screenshot 2023-11-02 at 9 40 47 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/316104d9-17a7-4c96-9516-57a4074fd221)
+![Screenshot 2023-11-02 at 9 40 47 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/316104d9-17a7-4c96-9516-57a4074fd221)
 
 ### OLS
 
@@ -166,7 +166,7 @@ Fit an OLS regression model to a loaded data set by defining the dependent and i
 ols sp500_pe.pe -i sp500_pe.price,sp500_pe.price_returns
 ```
 
-![Screenshot 2023-11-02 at 11 15 11 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/6ba43577-aa95-4c17-b1d4-77561629972f)
+![Screenshot 2023-11-02 at 11 15 11 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/6ba43577-aa95-4c17-b1d4-77561629972f)
 
 **`bgod` and `bpag` commands require running `OLS` first.**
 
@@ -190,7 +190,7 @@ A histogram of the distribution is displayed by adding a, `-p`, flag to the comm
 norm sp500_pe.price_returns -p
 ```
 
-![Screenshot 2023-11-02 at 12 25 22 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4aa0ff4a-b3c5-4a88-acd5-25c754724b9f)
+![Screenshot 2023-11-02 at 12 25 22 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/4aa0ff4a-b3c5-4a88-acd5-25c754724b9f)
 
 
 ### Working With Panel Data
@@ -251,7 +251,7 @@ For example, a **Random Effects** regression is performed.
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year -r re
 ```
 
-![Screenshot 2023-11-02 at 1 03 57 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1b576690-53b6-4ca2-9aa7-bc19cb3ac4f1)
+![Screenshot 2023-11-02 at 1 03 57 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1b576690-53b6-4ca2-9aa7-bc19cb3ac4f1)
 
 
 ### Scripts & Routines

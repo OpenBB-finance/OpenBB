@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets news. [Source: SeekingAlpha]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L199)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L199)]
 
 ```python
 openbb.stocks.disc.news(news_type: str = "Top-News", limit: int = 5)

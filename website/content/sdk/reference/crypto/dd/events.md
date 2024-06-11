@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get all events related to given coin like conferences, start date of futures trading etc.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L74)]
 
 ```python
 openbb.crypto.dd.events(symbol: str = "BTC", sortby: str = "date", ascend: bool = False)
@@ -59,7 +59,7 @@ openbb.crypto.dd.events(symbol: str = "BTC", sortby: str = "date", ascend: bool 
 
 Prints table showing all events for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L132)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L132)]
 
 ```python
 openbb.crypto.dd.events_chart(symbol: str = "BTC", limit: int = 10, sortby: str = "date", ascend: bool = False, links: bool = False, export: str = "")

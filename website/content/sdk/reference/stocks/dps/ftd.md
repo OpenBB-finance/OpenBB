@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 
 Display fails-to-deliver data for a given ticker. [Source: SEC]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/sec_model.py#L60)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/sec_model.py#L60)]
 
 ```python
 openbb.stocks.dps.ftd(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 0)
@@ -54,7 +54,7 @@ openbb.stocks.dps.ftd(symbol: str, start_date: Optional[str] = None, end_date: O
 
 Display fails-to-deliver data for a given ticker. [Source: SEC]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/sec_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/sec_view.py#L28)]
 
 ```python
 openbb.stocks.dps.ftd_chart(symbol: str, data: pd.DataFrame = None, start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 0, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

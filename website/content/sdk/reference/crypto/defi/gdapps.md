@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Display top dApps (in terms of TVL) grouped by chain.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L149)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L149)]
 
 ```python
 openbb.crypto.defi.gdapps(limit: int = 50)
@@ -57,7 +57,7 @@ openbb.crypto.defi.gdapps(limit: int = 50)
 
 Plots top dApps (in terms of TVL) grouped by chain.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L28)]
 
 ```python
 openbb.crypto.defi.gdapps_chart(limit: int = 50, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plot seasonality from a dataset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L120)]
 
 ```python
 openbb.forecast.season_chart(data: pd.DataFrame, column: str = "close", export: str = "", m: Optional[int] = None, max_lag: int = 24, alpha: float = 0.05, external_axes: Optional[List[axes]] = None)

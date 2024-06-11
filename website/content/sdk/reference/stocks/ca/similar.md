@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Find similar tickers to a given symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/sdk_helpers.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/sdk_helpers.py#L15)]
 
 ```python
 openbb.stocks.ca.similar(symbol: str, source: Any = "Finviz")

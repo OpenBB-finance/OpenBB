@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets hull moving average (HMA) for stock
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L91)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L91)]
 
 ```python
 openbb.ta.hma(data: pd.Series, length: int = 50, offset: int = 0)

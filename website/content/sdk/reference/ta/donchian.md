@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate Donchian Channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L53)]
 
 ```python
 openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int = 20)
@@ -57,7 +57,7 @@ openbb.ta.donchian(data: pd.DataFrame, upper_length: int = 20, lower_length: int
 
 Plots donchian channels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L112)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L112)]
 
 ```python
 openbb.ta.donchian_chart(data: pd.DataFrame, symbol: str = "", upper_length: int = 20, lower_length: int = 20, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

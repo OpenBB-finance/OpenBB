@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for autocorrelation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L525)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L525)]
 
 ```python
 openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
@@ -56,7 +56,7 @@ openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
 
 Show Breusch-Godfrey autocorrelation test
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L141)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_view.py#L141)]
 
 ```python
 openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3, export: str = "")

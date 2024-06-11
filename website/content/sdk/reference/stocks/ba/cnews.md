@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get news from a company. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L20)]
 
 ```python
 openbb.stocks.ba.cnews(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None)

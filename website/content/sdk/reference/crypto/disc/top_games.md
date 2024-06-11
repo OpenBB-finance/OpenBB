@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get top blockchain games by daily volume and users [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L165)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L165)]
 
 ```python
 openbb.crypto.disc.top_games(sortby: str = "", limit: int = 10)
@@ -56,7 +56,7 @@ openbb.crypto.disc.top_games(sortby: str = "", limit: int = 10)
 
 Prints table showing top blockchain games [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L61)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L61)]
 
 ```python
 openbb.crypto.disc.top_games_chart(limit: int = 10, export: str = "", sortby: str = "")

@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get number of companies per industry in a specific country (and specific market cap).
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L255)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L255)]
 
 ```python
 openbb.stocks.sia.cpic(country: str = "United States", mktcap: str = "Large", exclude_exchanges: bool = True)
@@ -61,7 +61,7 @@ openbb.stocks.sia.cpic(country: str = "United States", mktcap: str = "Large", ex
 
 Display number of companies per industry in a specific country. [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L376)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L376)]
 
 ```python
 openbb.stocks.sia.cpic_chart(country: str = "United States", mktcap: str = "Large", exclude_exchanges: bool = True, export: str = "", raw: bool = False, max_industries_to_display: int = 15, min_pct_to_display_industry: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

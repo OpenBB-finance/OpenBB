@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Request Oanda account summary.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L74)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L74)]
 
 ```python
 openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
@@ -58,7 +58,7 @@ openbb.forex.oanda.summary(accountID: str = "REPLACE_ME")
 
 Print Oanda account summary.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L62)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L62)]
 
 ```python
 openbb.forex.oanda.summary_chart(accountID: str)

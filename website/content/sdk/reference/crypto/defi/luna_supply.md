@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get supply history of the Terra ecosystem
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_model.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_model.py#L14)]
 
 ```python
 openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", days: int = 30)
@@ -57,7 +57,7 @@ openbb.crypto.defi.luna_supply(supply_type: str = "lunaSupplyChallengeStats", da
 
 Plots and prints table showing Luna circulating supply stats
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/smartstake_view.py#L29)]
 
 ```python
 openbb.crypto.defi.luna_supply_chart(days: int = 30, export: str = "", supply_type: str = "lunaSupplyChallengeStats", limit: int = 5, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

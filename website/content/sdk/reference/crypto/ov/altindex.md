@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get altcoin index overtime
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_model.py#L20)]
 
 ```python
 openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_date: Optional[str] = None)
@@ -57,7 +57,7 @@ openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_
 
 Displays altcoin index overtime
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_view.py#L27)]
 
 ```python
 openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

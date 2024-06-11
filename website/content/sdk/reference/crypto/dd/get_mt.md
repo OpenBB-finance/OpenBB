@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Returns available messari timeseries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L34)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L34)]
 
 ```python
 openbb.crypto.dd.get_mt(only_free: bool = True)
@@ -55,7 +55,7 @@ openbb.crypto.dd.get_mt(only_free: bool = True)
 
 Prints table showing messari timeseries list
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L49)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L49)]
 
 ```python
 openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool = True, export: str = "")

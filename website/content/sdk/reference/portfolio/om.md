@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get omega ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1839)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1839)]
 
 ```python
 openbb.portfolio.om(portfolio_engine: portfolio_engine.PortfolioEngine, threshold_start: float = 0, threshold_end: float = 1.5)
@@ -67,7 +67,7 @@ output = openbb.portfolio.om(p)
 
 Display omega ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1802)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1802)]
 
 ```python
 openbb.portfolio.om_chart(portfolio_engine: portfolio_engine.PortfolioEngine, threshold_start: float = 0, threshold_end: float = 1.5)

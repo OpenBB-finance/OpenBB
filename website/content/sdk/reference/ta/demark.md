@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get the integer value for demark sequential indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L257)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L257)]
 
 ```python
 openbb.ta.demark(values: pd.Series)
@@ -66,7 +66,7 @@ openbb.ta.demark(df["Close"])
 
 Plot demark sequential indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L644)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L644)]
 
 ```python
 openbb.ta.demark_chart(data: pd.DataFrame, symbol: str = "", min_to_show: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

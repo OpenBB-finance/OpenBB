@@ -33,7 +33,7 @@ import TabItem from '@theme/TabItem';
 
 Gets Sentiment analysis from several symbols provided by FinBrain's API.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_model.py#L47)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_model.py#L47)]
 
 ```python
 openbb.stocks.ca.sentiment(symbols: List[str])
@@ -62,7 +62,7 @@ openbb.stocks.ca.sentiment(symbols: List[str])
 
 Display sentiment for all ticker. [Source: FinBrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L32)]
 
 ```python
 openbb.stocks.ca.sentiment_chart(similar: List[str], raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

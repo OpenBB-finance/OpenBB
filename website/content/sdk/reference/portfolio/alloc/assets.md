@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Display portfolio asset allocation compared to the benchmark
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L770)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L770)]
 
 ```python
 openbb.portfolio.alloc.assets(portfolio_engine: portfolio_engine.PortfolioEngine, tables: bool = False, limit: int = 10, recalculate: bool = False)

@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Scrape all substack newsletters from url list.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_model.py#L54)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/substack_model.py#L54)]
 
 ```python
 openbb.crypto.defi.newsletters()
@@ -52,7 +52,7 @@ This function does not take any parameters.
 
 Prints table showing DeFi related substack newsletters.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_view.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/substack_view.py#L16)]
 
 ```python
 openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "")

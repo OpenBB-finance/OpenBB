@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get last insider activity for a given stock ticker. [Source: Finviz]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/finviz_model.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/finviz_model.py#L16)]
 
 ```python
 openbb.stocks.ins.lins(symbol: str)
@@ -53,7 +53,7 @@ openbb.stocks.ins.lins(symbol: str)
 
 Display insider activity for a given stock ticker. [Source: Finviz]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/finviz_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/finviz_view.py#L15)]
 
 ```python
 openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "")

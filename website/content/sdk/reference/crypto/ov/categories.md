@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Returns top crypto categories [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L157)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L157)]
 
 ```python
 openbb.crypto.ov.categories(sort_filter: str = "market_cap_desc")
@@ -56,7 +56,7 @@ openbb.crypto.ov.categories(sort_filter: str = "market_cap_desc")
 
 Shows top cryptocurrency categories by market capitalization
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L416)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L416)]
 
 ```python
 openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 15, export: str = "", pie: bool = False)

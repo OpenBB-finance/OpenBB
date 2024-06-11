@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Corporate lobbying details
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L358)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L358)]
 
 ```python
 openbb.stocks.gov.toplobbying()
@@ -57,7 +57,7 @@ This function does not take any parameters.
 
 Top lobbying tickers based on total spent
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L622)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L622)]
 
 ```python
 openbb.stocks.gov.toplobbying_chart(limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

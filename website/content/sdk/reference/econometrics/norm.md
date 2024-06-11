@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 The distribution of returns and generate statistics on the relation to the normal curve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L113)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_model.py#L113)]
 
 ```python
 openbb.econometrics.norm(data: pd.Series)
@@ -57,7 +57,7 @@ openbb.econometrics.norm(data: pd.Series)
 
 Determine the normality of a timeseries.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L129)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_view.py#L129)]
 
 ```python
 openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str = "", plot: bool = True, export: str = "", external_axes: Optional[List[axes]] = None)

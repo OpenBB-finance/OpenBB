@@ -32,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
 Get repos sorted by stars or forks. Can be filtered by categories.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/oss/github_model.py#L135)]
 
 ```python
 openbb.alt.oss.top(sortby: str, limit: int = 50, categories: str = "")
@@ -63,7 +63,7 @@ openbb.alt.oss.top(sortby: str, limit: int = 50, categories: str = "")
 
 Plots repo summary [Source: https://api.github.com].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L65)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/oss/github_view.py#L65)]
 
 ```python
 openbb.alt.oss.top_chart(sortby: str, categories: str = "", limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

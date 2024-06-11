@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Performs Theta forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/theta_model.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/theta_model.py#L29)]
 
 ```python
 openbb.forecast.theta(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", seasonal: str = "M", seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5)
@@ -60,7 +60,7 @@ openbb.forecast.theta(data: Union[pd.Series, pd.DataFrame], target_column: str =
 
 Display Theta forecast
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/theta_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/theta_view.py#L21)]
 
 ```python
 openbb.forecast.theta_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", seasonal: str = "M", seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)

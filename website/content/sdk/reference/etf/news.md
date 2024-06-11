@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get news for a given term. [Source: NewsAPI]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/newsapi_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/newsapi_model.py#L18)]
 
 ```python
 openbb.etf.news(query: str, limit: int = 10, start_date: Optional[str] = None, show_newest: bool = True, sources: str = "")
@@ -56,7 +56,7 @@ openbb.etf.news(query: str, limit: int = 10, start_date: Optional[str] = None, s
 
 Prints table showing news for a given term. [Source: NewsAPI]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/newsapi_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/newsapi_view.py#L20)]
 
 ```python
 openbb.etf.news_chart(query: str, limit: int = 3, start_date: Optional[str] = None, show_newest: bool = True, sources: str = "", export: str = "")

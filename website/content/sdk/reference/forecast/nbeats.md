@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Perform NBEATS Forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/nbeats_model.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/nbeats_model.py#L21)]
 
 ```python
 openbb.forecast.nbeats(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, num_stacks: int = 10, num_blocks: int = 3, num_layers: int = 4, layer_widths: int = 512, batch_size: int = 800, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = "nbeats_model", force_reset: bool = True, save_checkpoints: bool = True)
@@ -71,7 +71,7 @@ openbb.forecast.nbeats(data: Union[pd.Series, pd.DataFrame], target_column: str 
 
 Display NBEATS forecast
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/nbeats_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/nbeats_view.py#L20)]
 
 ```python
 openbb.forecast.nbeats_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, num_stacks: int = 10, num_blocks: int = 3, num_layers: int = 4, layer_widths: int = 512, n_epochs: int = 100, learning_rate: float = 0.001, batch_size: int = 800, model_save_name: str = "nbeats_model", force_reset: bool = True, save_checkpoints: bool = True, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)

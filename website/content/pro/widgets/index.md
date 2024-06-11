@@ -38,7 +38,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 ## Upper Tab
 
-<img className="pro-border-gradient" width="800" alt="Widget-rev" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/97943512-5488-4e94-8a06-b59ec6e51e4c" />
+<img className="pro-border-gradient" width="800" alt="Widget-rev" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/97943512-5488-4e94-8a06-b59ec6e51e4c" />
 
 The upper tab houses all the interactive elements and additional information related to the widget's content.
 
@@ -78,7 +78,7 @@ This feature allows you to group widgets together. When widgets are grouped, the
 
 #### Settings
 
-<img className="pro-border-gradient" width="800" alt="Widget settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/aaef053c-dacb-4f92-af02-583b4924a546" />
+<img className="pro-border-gradient" width="800" alt="Widget settings" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/aaef053c-dacb-4f92-af02-583b4924a546" />
 
 * Settings - View the data source and select or hide columns.
 * Share - Share this widget with your team.
@@ -99,12 +99,12 @@ OpenBB widgets support two main types of content:
 
 Displayed in a table format. This is powerful as it allows to leverage the charting from raw data capabilities of the application.
 
-<img className="pro-border-gradient" width="800" alt="dividend" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a71c683a-92df-4e5b-9ce3-1f8a91b9dcfc" />
+<img className="pro-border-gradient" width="800" alt="dividend" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/a71c683a-92df-4e5b-9ce3-1f8a91b9dcfc" />
 
 #### Charts
 
 Visual representations of data, including line charts, bar charts, pie charts, and other custom charts. Some examples below,
 
-<img className="pro-border-gradient" width="800" alt="newswidget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5ada7e7f-c619-46fb-850f-006c6e0d0cd2" />
+<img className="pro-border-gradient" width="800" alt="newswidget" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/5ada7e7f-c619-46fb-850f-006c6e0d0cd2" />
 
-<img className="pro-border-gradient" width="800" alt="widget-revbiz" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/bbc0b737-ce03-4241-acaa-ad6b71c2a5ba" />
+<img className="pro-border-gradient" width="800" alt="widget-revbiz" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/bbc0b737-ce03-4241-acaa-ad6b71c2a5ba" />

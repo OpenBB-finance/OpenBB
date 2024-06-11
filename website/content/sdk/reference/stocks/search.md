@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Search selected query for tickers.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L98)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/stocks_helper.py#L98)]
 
 ```python
 openbb.stocks.search(query: str = "", country: str = "", sector: str = "", industry: str = "", exchange_country: str = "", limit: int = 0)

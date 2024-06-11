@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Request information on pending orders.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L421)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L421)]
 
 ```python
 openbb.forex.oanda.pending(accountID: str = "REPLACE_ME")
@@ -55,7 +55,7 @@ openbb.forex.oanda.pending(accountID: str = "REPLACE_ME")
 
 Get information about pending orders.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L233)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L233)]
 
 ```python
 openbb.forex.oanda.pending_chart(accountID: str)

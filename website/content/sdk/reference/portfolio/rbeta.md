@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get rolling beta using portfolio and benchmark returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L659)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L659)]
 
 ```python
 openbb.portfolio.rbeta(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "1y")
@@ -70,7 +70,7 @@ output = openbb.portfolio.rbeta(p)
 
 Display rolling beta
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1050)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1050)]
 
 ```python
 openbb.portfolio.rbeta_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "1y", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

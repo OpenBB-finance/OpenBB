@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show candle plot for fx data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/forex_helper.py#L235)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/forex_helper.py#L235)]
 
 ```python
 openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = "", ma: Optional[Iterable[int]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, use_matplotlib: bool = True, add_trend: bool = False, yscale: str = "linear")

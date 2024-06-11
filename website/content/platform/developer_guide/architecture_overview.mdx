@@ -298,7 +298,7 @@ from openbb_core.app.router import Router
 
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
 
-![Diagram](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/ae9908be-00c0-40af-8acb-afeeb9629f2b)
+![Diagram](https://github.com/OpenBB-finance/OpenBB/assets/48914296/ae9908be-00c0-40af-8acb-afeeb9629f2b)
 
 As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
 
@@ -308,7 +308,7 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_query(params: Dict[str, Any])
     ```
 
-    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 
 2. **Extract** data
 
@@ -324,13 +324,13 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]
     ```
 
-    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) children.
+    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) children.
 
 ## Data Processing Commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
 
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
 **Why is this important?**
 

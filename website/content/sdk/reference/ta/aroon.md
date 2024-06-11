@@ -33,7 +33,7 @@ import TabItem from '@theme/TabItem';
 
 Aroon technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_model.py#L56)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_model.py#L56)]
 
 ```python
 openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
@@ -64,7 +64,7 @@ openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
 
 Plots Aroon indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L121)]
 
 ```python
 openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

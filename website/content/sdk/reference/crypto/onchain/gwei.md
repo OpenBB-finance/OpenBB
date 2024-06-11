@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns the most recent Ethereum gas fees in gwei
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_model.py#L13)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_model.py#L13)]
 
 ```python
 openbb.crypto.onchain.gwei()
@@ -51,7 +51,7 @@ This function does not take any parameters.
 
 Current gwei fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_view.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_view.py#L14)]
 
 ```python
 openbb.crypto.onchain.gwei_chart(export: str = "")

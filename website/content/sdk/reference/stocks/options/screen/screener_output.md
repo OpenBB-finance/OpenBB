@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Screen options based on preset filters
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L159)]
 
 ```python
 openbb.stocks.options.screen.screener_output(preset: str)
@@ -52,7 +52,7 @@ openbb.stocks.options.screen.screener_output(preset: str)
 
 Print the output of screener
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_view.py#L60)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/screen/syncretism_view.py#L60)]
 
 ```python
 openbb.stocks.options.screen.screener_output_chart(preset: str, limit: int = 20, export: str = "")

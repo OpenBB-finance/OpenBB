@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical dividend for ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L256)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L256)]
 
 ```python
 openbb.stocks.fa.divs(symbol: str)
@@ -69,7 +69,7 @@ openbb.fa.divs("AAPL")
 
 Display historical dividends
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L185)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L185)]
 
 ```python
 openbb.stocks.fa.divs_chart(symbol: str, limit: int = 12, plot: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

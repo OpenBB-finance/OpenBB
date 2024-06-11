@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Real GDP per Capita for United States
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_model.py#L96)]
 
 ```python
 openbb.economy.gdpc(start_year: int = 2010)
@@ -58,7 +58,7 @@ openbb.economy.gdpc(start_year: int = 2010)
 
 Display US GDP per Capita from AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L146)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_view.py#L146)]
 
 ```python
 openbb.economy.gdpc_chart(start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

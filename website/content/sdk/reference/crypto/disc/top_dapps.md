@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get top decentralized applications by daily volume and users [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L209)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L209)]
 
 ```python
 openbb.crypto.disc.top_dapps(sortby: str = "", limit: int = 10)
@@ -58,7 +58,7 @@ openbb.crypto.disc.top_dapps(sortby: str = "", limit: int = 10)
 
 Prints table showing top decentralized exchanges [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L133)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L133)]
 
 ```python
 openbb.crypto.disc.top_dapps_chart(limit: int = 10, export: str = "", sortby: str = "")

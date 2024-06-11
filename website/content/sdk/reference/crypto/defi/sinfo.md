@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L105)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L105)]
 
 ```python
 openbb.crypto.defi.sinfo(address: str = "")
@@ -58,7 +58,7 @@ openbb.crypto.defi.sinfo(address: str = "")
 
 Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L32)]
 
 ```python
 openbb.crypto.defi.sinfo_chart(address: str = "", limit: int = 10, export: str = "")

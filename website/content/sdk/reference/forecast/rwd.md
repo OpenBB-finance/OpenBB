@@ -35,7 +35,7 @@ import TabItem from '@theme/TabItem';
 
 Performs Random Walk with Drift forecasting
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/rwd_model.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/rwd_model.py#L27)]
 
 ```python
 openbb.forecast.rwd(data: Union[pd.Series, pd.DataFrame], target_column: str = "close", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5)
@@ -68,7 +68,7 @@ openbb.forecast.rwd(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 
 Display Random Walk with Drift Model
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/rwd_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/rwd_view.py#L20)]
 
 ```python
 openbb.forecast.rwd_chart(data: Union[pd.DataFrame, pd.Series], target_column: str = "close", dataset_name: str = "", n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = "", residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None)

@@ -34,7 +34,7 @@ Enter the Fixed Income menu by typing `fixedincome` into the Terminal from the M
 /fixedincome
 ```
 
-![Screenshot 2023-11-03 at 10 00 27 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f1f00a5e-e55b-48b5-9298-01886ecc3c3f)
+![Screenshot 2023-11-03 at 10 00 27 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f1f00a5e-e55b-48b5-9298-01886ecc3c3f)
 
 The menu has groups of commands related to the type of data:
 
@@ -46,7 +46,7 @@ The menu has groups of commands related to the type of data:
 
 Most commands are a time series, and they will have `--start` and `--end` arguments.  The specific series can be selected in functions where a `--parameter` argument is supplied.
 
-![Screenshot 2023-11-03 at 10 45 28 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/69a146fd-4849-499b-8c59-5f55b31ddae0)
+![Screenshot 2023-11-03 at 10 45 28 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/69a146fd-4849-499b-8c59-5f55b31ddae0)
 
 ### SOFR
 
@@ -56,7 +56,7 @@ Enter, `sofr`, to get the Secured Overnight Financing Rate as a chart.
 /fixedincome/sofr
 ```
 
-![Screenshot 2023-11-03 at 10 48 07 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/5c769dd2-226e-44d5-bebf-baca2cb1b5bf)
+![Screenshot 2023-11-03 at 10 48 07 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/5c769dd2-226e-44d5-bebf-baca2cb1b5bf)
 
 ### USRates
 
@@ -93,7 +93,7 @@ Make the selection with a syntax like:
 /fixedincome/usrates -p tbill -m 1_year --start 2009-01-01
 ```
 
-![Screenshot 2023-11-03 at 11 03 11 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b84d4713-c7da-4fe2-a8a6-3ae15834d8fc)
+![Screenshot 2023-11-03 at 11 03 11 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b84d4713-c7da-4fe2-a8a6-3ae15834d8fc)
 
 ### ICESpread
 
@@ -105,7 +105,7 @@ Adding, `--category duration`, will place all of the US indices on the same char
 icespread --category duration
 ```
 
-![Screenshot 2023-11-03 at 11 11 04 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/18c77008-4bf1-44e7-a3e6-0fbb37a5e3bd)
+![Screenshot 2023-11-03 at 11 11 04 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/18c77008-4bf1-44e7-a3e6-0fbb37a5e3bd)
 
 
 ### Treasury
@@ -116,7 +116,7 @@ The `treasury` command allows the comparison between multiple countries at the s
 treasury --forecast --short united_kingdom,united_states,germany --start 2014-01-01
 ```
 
-![Screenshot 2023-11-03 at 11 21 14 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/9122ae5b-4a58-4aaa-87c1-adedb5ddf4c0)
+![Screenshot 2023-11-03 at 11 21 14 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9122ae5b-4a58-4aaa-87c1-adedb5ddf4c0)
 
 ### YCRV
 
@@ -126,4 +126,4 @@ The `ycrv` command displays the yield curve on a specific date.  The default sta
 ycrv --date 2008-11-03
 ```
 
-![Screenshot 2023-11-03 at 11 25 18 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/14f9ff75-d2ed-4e29-af94-2598c7fae95e)
+![Screenshot 2023-11-03 at 11 25 18 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/14f9ff75-d2ed-4e29-af94-2598c7fae95e)

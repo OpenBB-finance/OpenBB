@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get stocks with highest cost to borrow [Source: Interactive Broker]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/ibkr_model.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/ibkr_model.py#L16)]
 
 ```python
 openbb.stocks.dps.ctb()

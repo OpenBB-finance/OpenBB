@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Scrapes exchange withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L182)]
 
 ```python
 openbb.crypto.ov.ewf()
@@ -54,7 +54,7 @@ This function does not take any parameters.
 
 Exchange withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L53)]
 
 ```python
 openbb.crypto.ov.ewf_chart(export: str = "")

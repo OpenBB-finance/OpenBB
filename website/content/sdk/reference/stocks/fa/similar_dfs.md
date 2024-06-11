@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get dataframes for similar companies
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L468)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L468)]
 
 ```python
 openbb.stocks.fa.similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool = False)

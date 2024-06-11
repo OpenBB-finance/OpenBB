@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get 24 hr stats for the product. Volume is in base currency units.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L202)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_model.py#L202)]
 
 ```python
 openbb.crypto.dd.stats(symbol: str)
@@ -56,7 +56,7 @@ openbb.crypto.dd.stats(symbol: str)
 
 Prints table showing 24 hr stats for the product. Volume is in base currency units.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L99)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinbase_view.py#L99)]
 
 ```python
 openbb.crypto.dd.stats_chart(symbol: str, export: str = "")

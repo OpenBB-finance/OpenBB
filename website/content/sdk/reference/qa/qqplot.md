@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots QQ plot for data against normal quantiles
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L462)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L462)]
 
 ```python
 openbb.qa.qqplot(data: pd.DataFrame, target: str, symbol: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns active addresses of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L311)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L311)]
 
 ```python
 openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2010-01-01", end_date: Optional[str] = None)
@@ -57,7 +57,7 @@ openbb.crypto.dd.active(symbol: str, interval: str = "24h", start_date: str = "2
 
 Plots active addresses of a certain symbol over time
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L32)]
 
 ```python
 openbb.crypto.dd.active_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, interval: str = "24h", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

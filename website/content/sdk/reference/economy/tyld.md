@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical yield for a given maturity
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L230)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_model.py#L230)]
 
 ```python
 openbb.economy.tyld(interval: str = "m", maturity: str = "10y", start_date: str = "2010-01-01")
@@ -57,7 +57,7 @@ openbb.economy.tyld(interval: str = "m", maturity: str = "10y", start_date: str 
 
 Display historical treasury yield for given maturity
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L315)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_view.py#L315)]
 
 ```python
 openbb.economy.tyld_chart(interval: str = "m", maturity: str = "10y", start_date: str = "2010-01-01", raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

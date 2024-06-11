@@ -569,16 +569,16 @@ Upon completion of the account setup, enter the credentials into the OpenBB Term
 
 Go to: https://openai.com/blog/openai-api
 
-![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/2b2b5f7c-745a-40d7-bd19-05ed3021f9da)
+![OpenAI](https://github.com/OpenBB-finance/OpenBB/assets/105685594/2b2b5f7c-745a-40d7-bd19-05ed3021f9da)
 
 Click sign up and create an account. Once done, you will be logged into the home page:
-![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/34976dce-bdf0-48cd-a9db-9e41eacdbc04)
+![OpenAI](https://github.com/OpenBB-finance/OpenBB/assets/105685594/34976dce-bdf0-48cd-a9db-9e41eacdbc04)
 
 Click the top right "Personal" button to find the following drop down:
-![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/95987173-3884-462e-a03b-dff040f0acb4)
+![OpenAI](https://github.com/OpenBB-finance/OpenBB/assets/105685594/95987173-3884-462e-a03b-dff040f0acb4)
 
 Click `View API Keys`. This will take you to the api Keys menu. Then click `Create new secret key`:
-![OpenAI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
+![OpenAI](https://github.com/OpenBB-finance/OpenBB/assets/105685594/210fa55b-8a33-4647-bdd4-28a478b02ba8)
 
 Then enter the Secret key credentials into the OpenBB Terminal using the syntax:
 

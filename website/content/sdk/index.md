@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The OpenBB SDK is the core engine of the entire OpenBB platform. It provides programmatic access to the OpenBB Terminal commands directly in a Python script or Jupyter Notebook. Through a nearly 1-to-1 relationship, the OpenBB SDK syntax is instantly recognizable by the same Terminal commands.
 
-<img width="769" alt="sdk" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/3ae6ad4d-d90b-4555-8712-c94a048285d5" />
+<img width="769" alt="sdk" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/3ae6ad4d-d90b-4555-8712-c94a048285d5" />
 
 ---
 
@@ -39,4 +39,4 @@ With our SDK, you can effortlessly access raw financial data programmatically, r
 
 ---
 
-Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBB/blob/main/CONTRIBUTING.md).

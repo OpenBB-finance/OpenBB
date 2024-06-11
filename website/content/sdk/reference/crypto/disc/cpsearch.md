@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Search CoinPaprika. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_model.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_model.py#L27)]
 
 ```python
 openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier: Optional[Any] = None, sortby: str = "id", ascend: bool = True)
@@ -60,7 +60,7 @@ openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier
 
 Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_view.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_view.py#L16)]
 
 ```python
 openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int = 10, sortby: str = "id", ascend: bool = True, export: str = "")

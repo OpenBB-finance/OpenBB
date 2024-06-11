@@ -75,7 +75,7 @@ The default preset upon entering the sub-menu is, `top_gainers`.  This preset, l
 
 These signals offer a good starting point, and results can be narrowed by creating a custom preset with defined parameters.  Place new presets (which are text files saved as an `.ini` type) in the OpenBBUserData folder: `~/OpenBBUserData/presets/stocks/screener`.  Files saved here will populate as a choice the next time the Terminal is launched.  Changes to an existing file (same filename) are reflected the next time that screener preset is run, a restart is not required once the preset has been recognized.
 
-:::note Refer to the template file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
+:::note Refer to the template file [here](https://github.com/OpenBB-finance/OpenBB/files/11153280/all_parameters.txt) for all of the available parameters and accepted values.
 
 :::
 
@@ -242,7 +242,7 @@ P/B = Under 1
 
 ```
 
-Open presets in any simple text editor, add the desired parameters, save the file, then run the command again.  At the time of publication, twelve results were narrowed down from sixty-eight.  All available parameters and settings are listed in the text file [here](https://github.com/OpenBB-finance/OpenBBTerminal/files/11153280/all_parameters.txt).
+Open presets in any simple text editor, add the desired parameters, save the file, then run the command again.  At the time of publication, twelve results were narrowed down from sixty-eight.  All available parameters and settings are listed in the text file [here](https://github.com/OpenBB-finance/OpenBB/files/11153280/all_parameters.txt).
 
 ![Financial Sector P/B Under 1](https://user-images.githubusercontent.com/85772166/229921644-ca14f08a-95f2-4ac3-8da3-49bbe4af3be4.png)
 

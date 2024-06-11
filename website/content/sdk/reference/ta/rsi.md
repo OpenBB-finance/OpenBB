@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 
 Relative strength index
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L93)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L93)]
 
 ```python
 openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1)
@@ -50,7 +50,7 @@ openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int
 
 Plots RSI Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L219)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L219)]
 
 ```python
 openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, drift: int = 1, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

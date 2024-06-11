@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get Option Chain For A Stock.  No greek data is returned
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L20)]
 
 ```python
 openbb.stocks.options.chains(symbol: str, source: str = "Nasdaq", expiration: Optional[str] = None)

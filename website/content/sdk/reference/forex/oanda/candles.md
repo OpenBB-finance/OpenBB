@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Request data for candle chart.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L581)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L581)]
 
 ```python
 openbb.forex.oanda.candles(instrument: Optional[str] = None, granularity: str = "D", candlecount: int = 180)
@@ -60,7 +60,7 @@ openbb.forex.oanda.candles(instrument: Optional[str] = None, granularity: str = 
 
 Show candle chart.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L294)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L294)]
 
 ```python
 openbb.forex.oanda.candles_chart(instrument: str = "", granularity: str = "D", candlecount: int = 180, additional_charts: Optional[Dict[str, bool]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate AD technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L17)]
 
 ```python
 openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
@@ -54,7 +54,7 @@ openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
 
 Plots AD technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L28)]
 
 ```python
 openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

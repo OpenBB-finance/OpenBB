@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set API keys in bundle.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L116)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/keys_model.py#L116)]
 
 ```python
 openbb.keys.set_keys(keys_dict: Dict[str, Dict[str, Union[str, bool]]], persist: bool = False, show_output: bool = False)

@@ -32,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical prices for all comparison stocks
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L31)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_model.py#L31)]
 
 ```python
 openbb.stocks.ca.hist(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a")
@@ -63,7 +63,7 @@ openbb.stocks.ca.hist(similar: List[str], start_date: Optional[str] = None, cand
 
 Display historical stock prices. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L43)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/yahoo_finance_view.py#L43)]
 
 ```python
 openbb.stocks.ca.hist_chart(similar: List[str], start_date: Optional[str] = None, candle_type: str = "a", normalize: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

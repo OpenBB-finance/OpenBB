@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get nft collections [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L24)]
 
 ```python
 openbb.crypto.nft.collections()
@@ -50,7 +50,7 @@ This function does not take any parameters.
 
 Display NFT collections. [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L27)]
 
 ```python
 openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = False, limit: int = 5, export: str = "")

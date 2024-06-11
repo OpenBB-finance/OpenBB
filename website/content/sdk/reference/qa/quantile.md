@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Overlay Median & Quantile
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L72)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L72)]
 
 ```python
 openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0.5)
@@ -56,7 +56,7 @@ openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0
 
 Plots rolling quantile
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L245)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L245)]
 
 ```python
 openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, quantile: float = 0.5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

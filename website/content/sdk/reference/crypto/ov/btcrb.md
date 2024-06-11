@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get bitcoin price data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/glassnode_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/glassnode_model.py#L19)]
 
 ```python
 openbb.crypto.ov.btcrb(start_date: str = "2010-01-01", end_date: Optional[str] = None)
@@ -57,7 +57,7 @@ openbb.crypto.ov.btcrb(start_date: str = "2010-01-01", end_date: Optional[str] =
 
 Displays bitcoin rainbow chart
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/glassnode_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/glassnode_view.py#L29)]
 
 ```python
 openbb.crypto.ov.btcrb_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Calculates Impermanent Loss in a custom liquidity pool
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_model.py#L57)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/tools/tools_model.py#L57)]
 
 ```python
 openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: float, initial_pool_value: float)
@@ -59,7 +59,7 @@ openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: f
 
 Displays Impermanent Loss in a custom liquidity pool
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L56)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/tools/tools_view.py#L56)]
 
 ```python
 openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion: int, initial_pool_value: int, narrative: bool = False, export: str = "")

@@ -41,13 +41,13 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 If you have a good understanding of the Terminal's architecture, you will recognize that commands and menus are organized in the form of a tree.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a5f10833-9693-4b39-9491-b431919db828)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/a5f10833-9693-4b39-9491-b431919db828)
 
 If the intention is to explore an equity, enter at base of the menu (`/stocks/`), then browse or navigate towards the point of interest - for example, Dark Pools (`/stocks/dps`).
 
 While all the information is in one place, having to type one command at a time is far from optimal.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/41737800-7c60-48ad-a43d-814016d81762)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/41737800-7c60-48ad-a43d-814016d81762)
 
 ## Pipeline of Commands
 
@@ -61,7 +61,7 @@ The example above can be recreated by running:
 
 Which looks like:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c21c5452-5a67-4384-851c-d2801b60f8cd)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/c21c5452-5a67-4384-851c-d2801b60f8cd)
 
 Another example is:
 
@@ -69,7 +69,7 @@ Another example is:
 /stocks/load GME/dps/psi/../fa/pt/income/../ins/stats
 ```
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/61db4010-bdc2-4851-9e47-79fb4425b816)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/61db4010-bdc2-4851-9e47-79fb4425b816)
 
 ### Step-by-Step Explanation
 

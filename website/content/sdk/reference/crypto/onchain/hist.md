@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get information about balance historical transactions. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L336)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L336)]
 
 ```python
 openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool = True)
@@ -61,7 +61,7 @@ openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool
 
 Display information about balance historical transactions. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L158)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L158)]
 
 ```python
 openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "timestamp", ascend: bool = True, export: str = "")

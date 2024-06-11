@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get top buy government trading [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L227)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L227)]
 
 ```python
 openbb.stocks.gov.topbuys(gov_type: str = "congress", past_transactions_months: int = 6)
@@ -59,7 +59,7 @@ openbb.stocks.gov.topbuys(gov_type: str = "congress", past_transactions_months: 
 
 Top buy government trading [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L79)]
 
 ```python
 openbb.stocks.gov.topbuys_chart(gov_type: str = "congress", past_transactions_months: int = 6, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

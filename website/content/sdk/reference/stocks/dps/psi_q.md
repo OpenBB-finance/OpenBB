@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Plots the short interest of a stock. This corresponds to the
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_model.py#L18)]
 
 ```python
 openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
@@ -58,7 +58,7 @@ openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
 
 Plot the short interest of a stock. This corresponds to the
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_view.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/quandl_view.py#L96)]
 
 ```python
 openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

@@ -27,7 +27,7 @@ Enter the menu by typing, `nft`, into the Terminal from the Crypto menu, or with
 /crypto/nft
 ```
 
-![Screenshot 2023-10-31 at 11 01 12 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/af546da0-933f-4c5d-9436-a599e2e51743)
+![Screenshot 2023-10-31 at 11 01 12 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/af546da0-933f-4c5d-9436-a599e2e51743)
 
 ### Collections
 
@@ -37,17 +37,17 @@ Enter the menu by typing, `nft`, into the Terminal from the Crypto menu, or with
 /crypto/nft/collections
 ```
 
-![Screenshot 2023-10-31 at 11 10 06 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1f566704-08d9-4d66-9089-fca29bda045a)
+![Screenshot 2023-10-31 at 11 10 06 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1f566704-08d9-4d66-9089-fca29bda045a)
 
 ### FP
 
 The `fp` command is a time series chart displaying sales and the floor price of a specific collection.
 
-![Screenshot 2023-10-31 at 11 11 23 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b91803e2-14af-45be-84a4-ea5ae94557dd)
+![Screenshot 2023-10-31 at 11 11 23 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b91803e2-14af-45be-84a4-ea5ae94557dd)
 
 ```console
 /crypto/nft/fp -s adidas-golden-ticket
 ```
 
-![Screenshot 2023-10-31 at 11 14 25 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/31056539-e0ac-4c1d-ad19-d6076d380f65)
+![Screenshot 2023-10-31 at 11 14 25 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/31056539-e0ac-4c1d-ad19-d6076d380f65)
 

@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get unusual option activity from fdscanner.com
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/fdscanner_model.py#L19)]
 
 ```python
 openbb.stocks.options.unu(limit: int = 100)
@@ -67,7 +67,7 @@ unu_df = openbb.stocks.options.unu()
 
 Displays the unusual options table
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/fdscanner_view.py#L15)]
 
 ```python
 openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend: bool = False, calls_only: bool = False, puts_only: bool = False, export: str = "")

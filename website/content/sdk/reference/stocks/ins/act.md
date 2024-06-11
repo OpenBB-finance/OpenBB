@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get insider activity. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/businessinsider_model.py#L17)]
 
 ```python
 openbb.stocks.ins.act(symbol: str)
@@ -53,7 +53,7 @@ openbb.stocks.ins.act(symbol: str)
 
 Display insider activity. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/businessinsider_view.py#L32)]
 
 ```python
 openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optional[str] = None, interval: str = "1440min", limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

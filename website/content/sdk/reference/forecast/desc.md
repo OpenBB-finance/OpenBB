@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Returns statistics for a given df
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L504)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_model.py#L504)]
 
 ```python
 openbb.forecast.desc(data: pd.DataFrame)
@@ -53,7 +53,7 @@ openbb.forecast.desc(data: pd.DataFrame)
 
 None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L257)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L257)]
 
 ```python
 openbb.forecast.desc_chart(data: pd.DataFrame, name: str = "", export: str = "")

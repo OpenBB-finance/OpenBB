@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/whale_alert_model.py#L86)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/whale_alert_model.py#L86)]
 
 ```python
 openbb.crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: str = "date", ascend: bool = False)
@@ -60,7 +60,7 @@ openbb.crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: 
 
 Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/whale_alert_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/whale_alert_view.py#L21)]
 
 ```python
 openbb.crypto.onchain.whales_chart(min_value: int = 800000, limit: int = 100, sortby: str = "date", ascend: bool = False, show_address: bool = False, export: str = "")

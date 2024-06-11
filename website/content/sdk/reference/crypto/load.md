@@ -26,7 +26,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load crypto currency to get data for
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L488)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L488)]
 
 ```python
 openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneType] = None, interval: Union[str, int] = "1440", exchange: str = "binance", vs_currency: str = "usdt", end_date: Union[datetime.datetime, str, NoneType] = None, source: str = "CCXT")

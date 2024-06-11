@@ -38,7 +38,7 @@ Enter by typing `etf` from the main menu of the Terminal, or with the absolute p
 /etf
 ```
 
-![Screenshot 2023-11-02 at 5 43 12 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f50269a8-8ebc-4ef9-bd37-4c9e15774005)
+![Screenshot 2023-11-02 at 5 43 12 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f50269a8-8ebc-4ef9-bd37-4c9e15774005)
 
 ### Search
 
@@ -48,7 +48,7 @@ Find ETFs by fuzzy query using the `search` command.
 /etf search --name SPDR S&P
 ```
 
-![Screenshot 2023-11-02 at 5 50 19 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/984e0cbb-bced-4610-8a55-3262fdf8ea2a)
+![Screenshot 2023-11-02 at 5 50 19 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/984e0cbb-bced-4610-8a55-3262fdf8ea2a)
 
 ### Load
 

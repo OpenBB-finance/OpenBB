@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Calculates the sortino ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L562)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L562)]
 
 ```python
 openbb.qa.sortino(data: pd.DataFrame, target_return: float = 0, window: float = 252, adjusted: bool = False)
@@ -57,7 +57,7 @@ openbb.qa.sortino(data: pd.DataFrame, target_return: float = 0, window: float = 
 
 Plots the sortino ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1181)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1181)]
 
 ```python
 openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float, adjusted: bool)

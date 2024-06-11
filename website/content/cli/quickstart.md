@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 - Open a Terminal and activate the environment where the `openbb-cli` package was installed.
 - On the command line, enter: `openbb`
 
-![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+![CLI Home](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
 ## Login
 
@@ -53,7 +53,7 @@ Enter a menu by typing it out and pressing return.
 economy
 ```
 
-![Economy Menu](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
+![Economy Menu](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b68491fc-d6c3-42a7-80db-bfe2aa848a5a)
 
 ### Go Back One Level
 
@@ -115,7 +115,7 @@ After the first parameter has been set, remaining parameters will be triggered b
 historical --symbol AAPL --start_date 2024-01-01 --
 ```
 
-![Auto Complete](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/78e68bbd-094e-4558-bce0-92b8d556fcaf)
+![Auto Complete](https://github.com/OpenBB-finance/OpenBB/assets/85772166/78e68bbd-094e-4558-bce0-92b8d556fcaf)
 
 ### Data Processing Commands
 
@@ -136,7 +136,7 @@ results
 /technical/rsi --data OBB0 --chart
 ```
 
-![SPY RSI](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
+![SPY RSI](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b480da04-92e6-48e2-bccf-cebc16fb083a)
 
 ## Help Dialogues
 

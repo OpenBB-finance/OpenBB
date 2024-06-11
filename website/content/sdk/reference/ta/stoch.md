@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Stochastic oscillator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L126)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L126)]
 
 ```python
 openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3)
@@ -59,7 +59,7 @@ openbb.ta.stoch(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3,
 
 Plots stochastic oscillator signal
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L307)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L307)]
 
 ```python
 openbb.ta.stoch_chart(data: pd.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

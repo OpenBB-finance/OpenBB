@@ -35,7 +35,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The Crypto menu has functions and sub-menus for the discovery and analysis of digtal assets.  Enter, from the main menu, by typing `crypto` into the Terminal.
 
-![crypto](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/63ebe2a5-27c2-4ca5-bdfe-2c1d51dde69d)
+![crypto](https://github.com/OpenBB-finance/OpenBB/assets/85772166/63ebe2a5-27c2-4ca5-bdfe-2c1d51dde69d)
 
 ## Usage
 
@@ -56,7 +56,7 @@ The `load` command is similar to the `/stocks/load` command, with some key diffe
 - When the `--source` is "CCXT", an `--exchange` parameter is required to select the specific data source.
   - Data availability and granularity varies.
 
-![Screenshot 2023-10-30 at 3 40 43 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f3bf898a-366a-4344-8b37-5621f411774f)
+![Screenshot 2023-10-30 at 3 40 43 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f3bf898a-366a-4344-8b37-5621f411774f)
 
 ```console
 /crypto/load --vs usd -c btc --source CCXT --exchange bitfinex
@@ -68,7 +68,7 @@ vs.
 /crypto/load --vs usd -c btc --source CCXT --exchange binance
 ```
 
-![Screenshot 2023-10-30 at 3 19 00 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/c87e14ff-08b1-4c54-81ec-a310ce7a5590)
+![Screenshot 2023-10-30 at 3 19 00 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/c87e14ff-08b1-4c54-81ec-a310ce7a5590)
 
 ### Price
 
@@ -78,7 +78,7 @@ The `price` command displays realtime prices from Pyth.  This command will stay 
 /crpyto/price SOL-USD
 ```
 
-![Screenshot 2023-10-30 at 3 36 22 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/fd3315f8-4500-4534-8fcc-24a330cc2ccf)
+![Screenshot 2023-10-30 at 3 36 22 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/fd3315f8-4500-4534-8fcc-24a330cc2ccf)
 
 
 ## Sub-Menus

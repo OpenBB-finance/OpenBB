@@ -67,7 +67,7 @@ Vulnerabilities not found
 
 A description of the project and technology is returned in a table:
 
-![project information](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/5ccc696d-4af6-41f8-9386-b621334f23a6)
+![project information](https://github.com/OpenBB-finance/OpenBB/assets/85772166/5ccc696d-4af6-41f8-9386-b621334f23a6)
 
 ### PS
 
@@ -111,13 +111,13 @@ Similar to `pi`, `ps` are key statitistics of the asset from Messari.
 
 The `trades` command requests data via CCXT, pick the venue to see the latest trades.
 
-![Screenshot 2023-10-30 at 8 11 05 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/2ae64595-d78d-48c4-b12f-75e929d0b6d2)
+![Screenshot 2023-10-30 at 8 11 05 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/2ae64595-d78d-48c4-b12f-75e929d0b6d2)
 
 ```console
 /crypto/dd/load xrp/trades kraken
 ```
 
-![Screenshot 2023-10-30 at 8 09 34 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1e66e39b-3208-4be3-8e11-89d233de3770)
+![Screenshot 2023-10-30 at 8 09 34 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1e66e39b-3208-4be3-8e11-89d233de3770)
 
 
 ### OB
@@ -128,7 +128,7 @@ The order book, `ob`, from the same venue:
 /crypto/dd/load xrp/ob kraken
 ```
 
-![Screenshot 2023-10-30 at 8 14 02 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/28846e0b-e3fa-4828-bc12-493a632c5917)
+![Screenshot 2023-10-30 at 8 14 02 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/28846e0b-e3fa-4828-bc12-493a632c5917)
 
 
 ### Inv
@@ -139,4 +139,4 @@ The investors function, `inv`, shows who is backing the project.
 /crypto/dd/load xrp/inv
 ```
 
-![Screenshot 2023-10-30 at 8 20 03 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f0eabb1c-334c-44a4-9ef1-72f2c6799be1)
+![Screenshot 2023-10-30 at 8 20 03 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f0eabb1c-334c-44a4-9ef1-72f2c6799be1)

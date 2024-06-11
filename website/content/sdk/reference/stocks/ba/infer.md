@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Load tweets from twitter API and analyzes using VADER.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/twitter_model.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/twitter_model.py#L23)]
 
 ```python
 openbb.stocks.ba.infer(symbol: str, limit: int = 100, start_date: Optional[str] = "", end_date: Optional[str] = "")
@@ -57,7 +57,7 @@ openbb.stocks.ba.infer(symbol: str, limit: int = 100, start_date: Optional[str] 
 
 Prints Inference sentiment from past n tweets.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/twitter_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/twitter_view.py#L29)]
 
 ```python
 openbb.stocks.ba.infer_chart(symbol: str, limit: int = 100, export: str = "")

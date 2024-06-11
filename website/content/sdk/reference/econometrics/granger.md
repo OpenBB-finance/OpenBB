@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate granger tests
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L210)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_model.py#L210)]
 
 ```python
 openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3)
@@ -54,7 +54,7 @@ openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.
 
 Show granger tests
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L247)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_view.py#L247)]
 
 ```python
 openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_series: pd.Series, lags: int = 3, confidence_level: float = 0.05, export: str = "")

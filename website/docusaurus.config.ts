@@ -62,11 +62,11 @@ export default {
   presets: [
     [
       "classic",
-      {
+      {https://github.com/OpenBB-finance/OpenBB
         docs: {
           sidebarPath: "./sidebars.js",
           editUrl:
-            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+            "https://github.com/OpenBB-finance/OpenBB/edit/main/website/",
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
           routeBasePath: "/",

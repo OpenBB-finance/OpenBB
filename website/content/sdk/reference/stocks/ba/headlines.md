@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_model.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_model.py#L15)]
 
 ```python
 openbb.stocks.ba.headlines(symbol: str)
@@ -56,7 +56,7 @@ openbb.stocks.ba.headlines(symbol: str)
 
 Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_view.py#L36)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_view.py#L36)]
 
 ```python
 openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

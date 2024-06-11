@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get holdings of assets (in percentage)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L167)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L167)]
 
 ```python
 openbb.portfolio.holdp(portfolio_engine: portfolio_engine.PortfolioEngine)
@@ -65,7 +65,7 @@ output = openbb.portfolio.holdp(p)
 
 Display holdings of assets (in percentage)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L792)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L792)]
 
 ```python
 openbb.portfolio.holdp_chart(portfolio_engine: portfolio_engine.PortfolioEngine, unstack: bool = False, raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

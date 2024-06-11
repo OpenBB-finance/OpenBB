@@ -27,7 +27,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 Welcome to the homepage of OpenBB Terminal Pro, your one-stop hub for all things related to the terminal.
 
-<img className="pro-border-gradient" width="800" alt="Homepage" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/ca38ae12-d721-4957-afe7-724c4c03fa23" />
+<img className="pro-border-gradient" width="800" alt="Homepage" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/ca38ae12-d721-4957-afe7-724c4c03fa23" />
 
 Here's what you can find:
 

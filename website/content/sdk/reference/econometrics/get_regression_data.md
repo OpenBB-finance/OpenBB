@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This function creates a DataFrame with the required regression data as
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L112)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L112)]
 
 ```python
 openbb.econometrics.get_regression_data(regression_variables: List[tuple], data: Dict[str, pd.DataFrame], regression_type: str = "")

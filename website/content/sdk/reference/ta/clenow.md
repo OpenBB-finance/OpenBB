@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Gets the Clenow Volatility Adjusted Momentum.  this is defined as the regression coefficient on log prices
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L207)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L207)]
 
 ```python
 openbb.ta.clenow(values: pd.Series, window: int = 90)
@@ -66,7 +66,7 @@ openbb.ta.clenow(df["Close"])
 
 Prints table and plots clenow momentum
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L570)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L570)]
 
 ```python
 openbb.ta.clenow_chart(data: pd.Series, symbol: str = "", window: int = 90, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

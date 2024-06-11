@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for unit roots
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L168)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_model.py#L168)]
 
 ```python
 openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c")
@@ -55,7 +55,7 @@ openbb.econometrics.root(data: pd.Series, fuller_reg: str = "c", kpss_reg: str =
 
 Determine the normality of a timeseries.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L197)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/econometrics_view.py#L197)]
 
 ```python
 openbb.econometrics.root_chart(data: pd.Series, dataset: str = "", column: str = "", fuller_reg: str = "c", kpss_reg: str = "c", export: str = "")

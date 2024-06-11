@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L375)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L375)]
 
 ```python
 openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
@@ -54,7 +54,7 @@ openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
 
 Shows  list of crypto derivatives. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L645)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L645)]
 
 ```python
 openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, limit: int = 15, export: str = "")

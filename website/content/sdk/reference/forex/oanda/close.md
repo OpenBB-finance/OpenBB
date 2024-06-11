@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Close a trade.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L526)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L526)]
 
 ```python
 openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str = "REPLACE_ME")
@@ -55,7 +55,7 @@ openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str 
 
 Close a trade.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L271)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L271)]
 
 ```python
 openbb.forex.oanda.close_chart(accountID: str, orderID: str = "", units: Optional[int] = None)

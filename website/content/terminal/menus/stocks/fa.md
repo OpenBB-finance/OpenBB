@@ -35,7 +35,7 @@ Enter the submenu from the `/stocks/` menu with `fa`, or from the absolute path:
 /stocks/fa
 ```
 
-![Screenshot 2023-11-01 at 10 03 40 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/21a947f2-b173-493f-a1e4-b889deef32c4)
+![Screenshot 2023-11-01 at 10 03 40 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/21a947f2-b173-493f-a1e4-b889deef32c4)
 
 :::note
 
@@ -137,7 +137,7 @@ An example of the difference between sources:
 
 The `analysis` command reads SEC filings with NLP and extracts the most important statements.  Source: [https://eclect.us/](https://eclect.us/)
 
-![Screenshot 2023-11-01 at 10 20 44 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/771f1f60-7879-4243-bbb5-2d2298ea4ecf)
+![Screenshot 2023-11-01 at 10 20 44 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/771f1f60-7879-4243-bbb5-2d2298ea4ecf)
 
 ### MKTCAP
 
@@ -147,7 +147,7 @@ The `mktcap` command will display the historical market cap of the company.  Whe
 /stocks/fa/mktcap -t aapl --source FinancialModelingPrep ---method enterprise_value --quarter
 ```
 
-![Screenshot 2023-11-01 at 10 29 30 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/41fb942b-dffc-4ab9-b6b8-62884b9faf8d)
+![Screenshot 2023-11-01 at 10 29 30 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/41fb942b-dffc-4ab9-b6b8-62884b9faf8d)
 
 ### Earnings
 
@@ -157,7 +157,7 @@ The `earnings` command compares reported EPS to estimated for each period.
 /stocks/fa/earnings -t aapl --quarter
 ```
 
-![Screenshot 2023-11-01 at 10 59 35 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/fa03681a-11ff-4a33-8832-fa47246ed44c)
+![Screenshot 2023-11-01 at 10 59 35 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/fa03681a-11ff-4a33-8832-fa47246ed44c)
 
 ### EPSFC
 
@@ -189,7 +189,7 @@ The `ratios` command returns calculated financial ratios, by year or quarter.  T
 /stocks/fa/ratios -t aapl
 ```
 
-![Screenshot 2023-11-01 at 10 54 48 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/2eb8dd17-1dd3-4d85-9f70-318037015285)
+![Screenshot 2023-11-01 at 10 54 48 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/2eb8dd17-1dd3-4d85-9f70-318037015285)
 
 
 ### DCF
@@ -217,4 +217,4 @@ The available parameters are:
   -h, --help            show this help message (default: False)
 ```
 
-![Screenshot 2023-11-01 at 11 15 06 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/6bc9861a-9dc1-4425-8f09-5f29d5619f9d)
+![Screenshot 2023-11-01 at 11 15 06 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/6bc9861a-9dc1-4425-8f09-5f29d5619f9d)

@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots histogram of data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L82)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L82)]
 
 ```python
 openbb.qa.hist(data: pd.DataFrame, target: str, symbol: str = "", bins: int = 15, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

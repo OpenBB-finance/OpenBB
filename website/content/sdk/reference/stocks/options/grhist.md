@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get histoical option greeks
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L37)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L37)]
 
 ```python
 openbb.stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float], chain_id: str = "", put: bool = False)
@@ -63,7 +63,7 @@ openbb.stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float]
 
 Plots historical greeks for a given option. [Source: Syncretism]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_view.py#L107)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/screen/syncretism_view.py#L107)]
 
 ```python
 openbb.stocks.options.grhist_chart(symbol: str, expiry: str, strike: Union[float, str], greek: str = "Delta", chain_id: str = "", put: bool = False, raw: bool = False, limit: Union[int, str] = 20, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

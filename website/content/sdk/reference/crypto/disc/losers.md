@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L288)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L288)]
 
 ```python
 openbb.crypto.disc.losers(interval: str = "1h", limit: int = 50, sortby: str = "market_cap_rank")
@@ -57,7 +57,7 @@ openbb.crypto.disc.losers(interval: str = "1h", limit: int = 50, sortby: str = "
 
 Prints table showing Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L146)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L146)]
 
 ```python
 openbb.crypto.disc.losers_chart(interval: str = "1h", limit: int = 20, export: str = "", sortby: str = "Market Cap Rank")

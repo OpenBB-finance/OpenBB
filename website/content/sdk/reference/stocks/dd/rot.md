@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get rating over time data. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/finnhub_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/due_diligence/finnhub_model.py#L17)]
 
 ```python
 openbb.stocks.dd.rot(symbol: str)
@@ -55,7 +55,7 @@ openbb.stocks.dd.rot(symbol: str)
 
 Rating over time (monthly). [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/due_diligence/finnhub_view.py#L75)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/due_diligence/finnhub_view.py#L75)]
 
 ```python
 openbb.stocks.dd.rot_chart(symbol: str, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

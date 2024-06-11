@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L263)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L263)]
 
 ```python
 openbb.crypto.defi.gacc(cumulative: bool = True)
@@ -55,7 +55,7 @@ openbb.crypto.defi.gacc(cumulative: bool = True)
 
 Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L139)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L139)]
 
 ```python
 openbb.crypto.defi.gacc_chart(kind: str = "total", cumulative: bool = False, limit: int = 90, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

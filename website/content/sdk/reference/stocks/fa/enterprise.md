@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Financial Modeling Prep ticker enterprise
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L131)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L131)]
 
 ```python
 openbb.stocks.fa.enterprise(symbol: str, limit: int = 5, quarterly: bool = False)

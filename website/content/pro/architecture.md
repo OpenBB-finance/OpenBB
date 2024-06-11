@@ -25,7 +25,7 @@ Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment resea
 
 Let's get you started by understanding the layout of the Terminal Pro.
 
-<img className="pro-border-gradient" width="800" alt="mainstruct" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/3846be6d-8110-424a-a87a-67bd96c561f7" />
+<img className="pro-border-gradient" width="800" alt="mainstruct" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/3846be6d-8110-424a-a87a-67bd96c561f7" />
 
 The interface is divided into two main areas:
 
@@ -45,7 +45,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 The main menu is your gateway to the powerful features of the OpenBB Terminal Pro. It comprises four key sections:
 
-<img className="pro-border-gradient" width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f" />
+<img className="pro-border-gradient" width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f" />
 
 * **Homepage**: This is your OpenBB homepage, where you'll find the latest updates and insights from the OpenBB team. This includes announcements, roadmap, events and others.
 

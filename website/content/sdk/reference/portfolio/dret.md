@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L373)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L373)]
 
 ```python
 openbb.portfolio.dret(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
@@ -66,7 +66,7 @@ output = openbb.portfolio.dret(p)
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L557)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L557)]
 
 ```python
 openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

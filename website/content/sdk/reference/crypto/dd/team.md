@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin team
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L419)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L419)]
 
 ```python
 openbb.crypto.dd.team(symbol: str)
@@ -56,7 +56,7 @@ openbb.crypto.dd.team(symbol: str)
 
 Prints table showing coin team
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L556)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L556)]
 
 ```python
 openbb.crypto.dd.team_chart(symbol: str, export: str = "")

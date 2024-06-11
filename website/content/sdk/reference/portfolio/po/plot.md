@@ -34,7 +34,7 @@ import TabItem from '@theme/TabItem';
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
 
 ```python
 openbb.portfolio.po.plot(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, chart_type: str = "pie", kwargs: Any)
@@ -131,7 +131,7 @@ openbb.portfolio.po.plot(portfolio_engine=p, category="ASSET_CLASS", chart_type=
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L237)]
 
 ```python
 openbb.portfolio.po.plot_chart(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, chart_type: str = "pie", kwargs: Any)

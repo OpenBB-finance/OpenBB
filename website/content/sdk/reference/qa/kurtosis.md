@@ -23,7 +23,7 @@ import TabItem from '@theme/TabItem';
 
 Kurtosis Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L123)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L123)]
 
 ```python
 openbb.qa.kurtosis(data: pd.DataFrame, window: int = 14)
@@ -53,7 +53,7 @@ openbb.qa.kurtosis(data: pd.DataFrame, window: int = 14)
 
 Plots rolling kurtosis
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L424)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L424)]
 
 ```python
 openbb.qa.kurtosis_chart(symbol: str, data: pd.DataFrame, target: str, window: int = 14, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

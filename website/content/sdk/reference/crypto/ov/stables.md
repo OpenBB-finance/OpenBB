@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Returns top stable coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L191)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L191)]
 
 ```python
 openbb.crypto.ov.stables(limit: int = 15, sortby: str = "Market_Cap_[$]", ascend: bool = False)
@@ -68,7 +68,7 @@ openbb.crypto.ov.stables(sortby="Volume_[$]", ascend=True, limit=10)
 
 Shows stablecoins data [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L331)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L331)]
 
 ```python
 openbb.crypto.ov.stables_chart(limit: int = 15, export: str = "", sortby: str = "Market_Cap_[$]", ascend: bool = False, pie: bool = True)

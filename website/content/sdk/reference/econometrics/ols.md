@@ -31,7 +31,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L176)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L176)]
 
 ```python
 openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)

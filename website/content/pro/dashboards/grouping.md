@@ -31,7 +31,7 @@ The grouping mechanism is extremely powerful as it allows widgets to be grouped 
 
 For instance, for the equity category, widgets can be connected through their ticker / symbol. Examples are: AAPL to simbolize Apple, TSLA for Tesla and so on.
 
-<img className="pro-border-gradient" width="800" alt="grouping" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f0cbeb52-c7cd-4e03-9eba-5ef35e1665b6" />
+<img className="pro-border-gradient" width="800" alt="grouping" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/f0cbeb52-c7cd-4e03-9eba-5ef35e1665b6" />
 
 This is an example of 3 widgets that belong to the same group, note the dark yellow 1 on the top right.
 
@@ -47,6 +47,6 @@ A trick that you can use to group up widgets together faster is using the SHIFT 
 
 The watchlist widget has a special property in relation to grouping. Since this widget doesn't have a single symbol but many, users can select the row of their ticker of interest, and widgets that are grouped with the watchlist will get updated accordingly.
 
-<img className="pro-border-gradient" width="800" alt="watchlist" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d36380df-743a-4676-bec4-6bd34567e661" />
+<img className="pro-border-gradient" width="800" alt="watchlist" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/d36380df-743a-4676-bec4-6bd34567e661" />
 
 If a user selects a new ticker in another widget that is grouped with the watchlist, that ticker will be added to the watchlist and will become the one selected by default.

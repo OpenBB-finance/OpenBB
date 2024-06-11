@@ -37,7 +37,7 @@ The example code is available [here](https://github.com/OpenBB-finance/copilot-f
 
 ## Adding a custom copilot to Terminal Pro
 
-<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/15d2d827-715e-42f3-be62-b3c7f8b26fda' />
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBB/assets/14093308/15d2d827-715e-42f3-be62-b3c7f8b26fda' />
 
 After deploying your custom Copilot, you can add it to Terminal Pro.  To do
 this, navigate to the "Add copilot" section and follow the prompts:

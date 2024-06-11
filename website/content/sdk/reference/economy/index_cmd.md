@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Get data on selected indices over time [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_model.py#L672)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/yfinance_model.py#L672)]
 
 ```python
 openbb.economy.index(indices: list, interval: str = "1d", start_date: int = None, end_date: int = None, column: str = "Adj Close", returns: bool = False)
@@ -73,7 +73,7 @@ openbb.economy.index(["^GSPC", "sp400"])
 
 Load (and show) the selected indices over time [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/yfinance_view.py#L30)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/yfinance_view.py#L30)]
 
 ```python
 openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int = None, end_date: int = None, column: str = "Adj Close", returns: bool = False, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")

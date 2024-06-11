@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get stats of a nft collection [Source: opensea.io]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/opensea_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/nft/opensea_model.py#L17)]
 
 ```python
 openbb.crypto.nft.stats(slug: str)
@@ -55,7 +55,7 @@ openbb.crypto.nft.stats(slug: str)
 
 Prints table showing collection stats. [Source: opensea.io]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/opensea_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/nft/opensea_view.py#L15)]
 
 ```python
 openbb.crypto.nft.stats_chart(slug: str, export: str)

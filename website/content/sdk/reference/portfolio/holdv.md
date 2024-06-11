@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get holdings of assets (absolute value)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L135)]
 
 ```python
 openbb.portfolio.holdv(portfolio_engine: portfolio_engine.PortfolioEngine)
@@ -67,7 +67,7 @@ output = openbb.portfolio.holdv(p)
 
 Display holdings of assets (absolute value)
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L713)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L713)]
 
 ```python
 openbb.portfolio.holdv_chart(portfolio_engine: portfolio_engine.PortfolioEngine, unstack: bool = False, raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

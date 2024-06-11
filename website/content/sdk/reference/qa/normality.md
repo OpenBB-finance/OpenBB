@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Look at the distribution of returns and generate statistics on the relation to the normal curve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L81)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L81)]
 
 ```python
 openbb.qa.normality(data: pd.DataFrame)
@@ -56,7 +56,7 @@ openbb.qa.normality(data: pd.DataFrame)
 
 Prints table showing normality statistics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L805)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L805)]
 
 ```python
 openbb.qa.normality_chart(data: pd.DataFrame, target: str, export: str = "")

@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get major crypto-related hacks
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L93)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L93)]
 
 ```python
 openbb.crypto.ov.crypto_hacks(sortby: str = "Platform", ascend: bool = False)
@@ -55,7 +55,7 @@ openbb.crypto.ov.crypto_hacks(sortby: str = "Platform", ascend: bool = False)
 
 Display list of major crypto-related hacks. If slug is passed
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/rekt_view.py#L18)]
 
 ```python
 openbb.crypto.ov.crypto_hacks_chart(limit: int = 15, sortby: str = "Platform", ascend: bool = False, slug: str = "polyntwork-rekt", export: str = "")

@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate beta for a ticker and a reference ticker.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_model.py#L11)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_model.py#L11)]
 
 ```python
 openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: pd.DataFrame = None, ref_data: pd.DataFrame = None, interval: int = 1440)
@@ -62,7 +62,7 @@ openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: pd.DataFrame = None, r
 
 Display the beta scatterplot + linear regression.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_view.py#L18)]
 
 ```python
 openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: pd.DataFrame = None, ref_data: pd.DataFrame = None, interval: int = 1440, export: str = "")

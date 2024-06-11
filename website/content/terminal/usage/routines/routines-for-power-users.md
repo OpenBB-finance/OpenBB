@@ -40,7 +40,7 @@ To address this limitation, we introduced the concept of arguments, inspired by 
 
 For instance, if a routine file called `script_with_input.openbb` had the following format:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5b0f558e-ace0-423d-a3db-b6369755cffb)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/5b0f558e-ace0-423d-a3db-b6369755cffb)
 
 And we run it in the terminal with `exe —file script_with_input.openbb —input MSFT`, what would be run would be `stocks/load MSFT --start 2015-01-01/ta/ema -l 20,50,100,200` and so you could use the same routine for multiple tickers - **making it a more powerful automated workflow**.
 
@@ -50,7 +50,7 @@ And we run it in the terminal with exe —file script_with_input.openbb —input
 
 For instance, the example below shows how you can run the same script for `MSFT` but also `TSLA` ticker.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/8a744571-59b9-4293-bdd7-5dd6e2c8eef3)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/8a744571-59b9-4293-bdd7-5dd6e2c8eef3)
 
 ### Example
 
@@ -95,11 +95,11 @@ Note: Make sure you saved this script in the `~/OpenBBUserData/routines/` folder
 
 In addition to enabling users to run scripts with external variables using the keyword `ARGV`, we also support the use of internal variables within the script. These variables are defined by starting with the `$` character.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c0cc6e1e-b87c-46f4-8c94-539408745433)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/c0cc6e1e-b87c-46f4-8c94-539408745433)
 
 Which has the following output:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/77060dfc-216e-490f-af72-3d4af5642e0f)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/77060dfc-216e-490f-af72-3d4af5642e0f)
 
 Note that the variable can have a single element or can be constituted by an array where elements are separated using a comma “,”.
 
@@ -150,11 +150,11 @@ The result will be a date with the conventional date associated with OpenBB, i.e
 
 By picking on the previous example, we can add to the load `--start` argument the keyword `$18MONTHSAGO`.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e0e9b4a2-3d8d-4f72-8029-55f009dc15ee)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/e0e9b4a2-3d8d-4f72-8029-55f009dc15ee)
 
 This will result in the following output:
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/78d6235e-15a1-47cb-a99c-19694b6af0d9)
+![image](https://github.com/OpenBB-finance/OpenBB/assets/25267873/78d6235e-15a1-47cb-a99c-19694b6af0d9)
 
 ## Foreach Loop
 

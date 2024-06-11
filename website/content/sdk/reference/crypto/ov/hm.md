@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
 
 ```python
 openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol", ascend: bool = False)
@@ -57,7 +57,7 @@ openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol"
 
 Shows cryptocurrencies heatmap [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L36)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L36)]
 
 ```python
 openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

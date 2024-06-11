@@ -17,7 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 The between estimator is an alternative, usually less efficient estimator, can can be used to
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L314)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/econometrics/regression_model.py#L314)]
 
 ```python
 openbb.econometrics.bols(Y: pd.DataFrame, X: pd.DataFrame)

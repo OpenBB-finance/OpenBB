@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L197)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L197)]
 
 ```python
 openbb.crypto.defi.gov_proposals(status: str = "", sortby: str = "id", ascend: bool = True, limit: int = 10)
@@ -58,7 +58,7 @@ openbb.crypto.defi.gov_proposals(status: str = "", sortby: str = "id", ascend: b
 
 Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L108)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L108)]
 
 ```python
 openbb.crypto.defi.gov_proposals_chart(limit: int = 10, status: str = "all", sortby: str = "id", ascend: bool = True, export: str = "")

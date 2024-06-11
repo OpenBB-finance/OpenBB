@@ -26,7 +26,7 @@ The OpenBB Platform CLI is a command line interface wrapping the OpenBB Platform
 
 The CLI is the next iteration of the [OpenBB Terminal](/terminal), and leverages the extendability of the OpenBB Platform architecture in an easy-to-consume and script format.
 
-![CLI Home](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
+![CLI Home](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d1617c3b-c83d-4491-a7bc-986321fd7230)
 
 ## Guides & Documentation
 

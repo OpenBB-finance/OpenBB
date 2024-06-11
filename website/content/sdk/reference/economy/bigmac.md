@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Display Big Mac Index for given countries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L183)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/nasdaq_model.py#L183)]
 
 ```python
 openbb.economy.bigmac(country_codes: List[str] = None)
@@ -58,7 +58,7 @@ openbb.economy.bigmac(country_codes: List[str] = None)
 
 Display Big Mac Index for given countries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_view.py#L59)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/nasdaq_view.py#L59)]
 
 ```python
 openbb.economy.bigmac_chart(country_codes: List[str] = None, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

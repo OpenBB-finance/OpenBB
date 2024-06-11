@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get all crypto hack slugs
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L182)]
 
 ```python
 openbb.crypto.ov.crypto_hack_slugs()

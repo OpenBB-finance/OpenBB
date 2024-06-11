@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Center of gravity
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L189)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L189)]
 
 ```python
 openbb.ta.cg(values: pd.Series, window: int)
@@ -56,7 +56,7 @@ openbb.ta.cg(values: pd.Series, window: int)
 
 Plots center of gravity Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L499)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L499)]
 
 ```python
 openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

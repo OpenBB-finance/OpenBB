@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L205)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L205)]
 
 ```python
 openbb.stocks.sia.cps(country: str = "United States", mktcap: str = "Large", exclude_exchanges: bool = True)
@@ -59,7 +59,7 @@ openbb.stocks.sia.cps(country: str = "United States", mktcap: str = "Large", exc
 
 Display number of companies per sector in a specific country (and market cap). [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L238)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L238)]
 
 ```python
 openbb.stocks.sia.cps_chart(country: str = "United States", mktcap: str = "Large", exclude_exchanges: bool = True, export: str = "", raw: bool = False, max_sectors_to_display: int = 15, min_pct_to_display_sector: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

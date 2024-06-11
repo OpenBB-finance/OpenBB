@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L260)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L260)]
 
 ```python
 openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = "market_cap_rank")
@@ -60,7 +60,7 @@ openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = 
 
 Prints table showing Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L100)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L100)]
 
 ```python
 openbb.crypto.disc.gainers_chart(interval: str = "1h", limit: int = 20, sortby: str = "market_cap_rank", export: str = "")

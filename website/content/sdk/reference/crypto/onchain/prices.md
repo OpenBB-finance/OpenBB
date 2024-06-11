@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L545)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L545)]
 
 ```python
 openbb.crypto.onchain.prices(address: str, sortby: str = "date", ascend: bool = False)
@@ -59,7 +59,7 @@ openbb.crypto.onchain.prices(address: str, sortby: str = "date", ascend: bool = 
 
 Display token historical prices with volume and market cap, and average price.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L334)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L334)]
 
 ```python
 openbb.crypto.onchain.prices_chart(address: str, limit: int = 30, sortby: str = "date", ascend: bool = False, export: str = "")

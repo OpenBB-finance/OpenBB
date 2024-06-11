@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/screener/screener_model.py#L43)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/etf/screener/screener_model.py#L43)]
 
 ```python
 openbb.etf.scr.screen(preset: str)
@@ -56,7 +56,7 @@ openbb.etf.scr.screen(preset: str)
 
 Display screener output
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/screener/screener_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/etf/screener/screener_view.py#L18)]
 
 ```python
 openbb.etf.scr.screen_chart(preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = "")

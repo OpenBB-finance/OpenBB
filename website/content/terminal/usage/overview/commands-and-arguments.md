@@ -158,4 +158,4 @@ The `exit` command allows the user to exit the terminal.
 
 The `reset` command (or `r`) allows a developer that is using the terminal through source code to quickly test it's code changes by re-starting the terminal with the code changes. This allows to improve speed of development.
 
-For more information on contributing to the OpenBB Terminal read our [contribution guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/CONTRIBUTING.md).
+For more information on contributing to the OpenBB Terminal read our [contribution guidelines](https://github.com/OpenBB-finance/OpenBB/blob/main/CONTRIBUTING.md).

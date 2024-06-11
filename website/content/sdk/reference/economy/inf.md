@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical Inflation for United States from AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L139)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_model.py#L139)]
 
 ```python
 openbb.economy.inf(start_year: int = 2010)
@@ -51,7 +51,7 @@ openbb.economy.inf(start_year: int = 2010)
 
 Display US Inflation from AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L202)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_view.py#L202)]
 
 ```python
 openbb.economy.inf_chart(start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

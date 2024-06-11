@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get all exchanges for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L137)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L137)]
 
 ```python
 openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_share", ascend: bool = True)
@@ -58,7 +58,7 @@ openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_shar
 
 Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L185)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L185)]
 
 ```python
 openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "adjusted_volume_24h_share", ascend: bool = True, export: str = "")

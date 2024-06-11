@@ -150,7 +150,7 @@ Compare the US Dollar Liquidity Index against a selection of indices published t
 /economy/usdli -o WILLSMLCAP
 ```
 
-![USD Liquidity Index](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1a2abf90-aa81-4d02-a77a-c913bfef14d7)
+![USD Liquidity Index](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1a2abf90-aa81-4d02-a77a-c913bfef14d7)
 
 The indices available to overlay are displayed in a table by adding, `--show`, to the command.
 
@@ -162,13 +162,13 @@ The indices available to overlay are displayed in a table by adding, `--show`, t
 
 Get valuations of industries and sectors for the US equity universe.  Select the focus by using the, `-g` (`--group`), parameter.
 
-![Valuation By Industry](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/0793bd01-95b9-46f3-90b5-5c4af851283f)
+![Valuation By Industry](https://github.com/OpenBB-finance/OpenBB/assets/85772166/0793bd01-95b9-46f3-90b5-5c4af851283f)
 
 ```console
 valuation --group consumer_cyclical
 ```
 
-![Consumer Cyclical Valuations](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/53e670fc-34cd-444f-9aa9-79fe5714e786)
+![Consumer Cyclical Valuations](https://github.com/OpenBB-finance/OpenBB/assets/85772166/53e670fc-34cd-444f-9aa9-79fe5714e786)
 
 ### index
 

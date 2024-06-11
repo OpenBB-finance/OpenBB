@@ -158,7 +158,7 @@ openbb.stocks.ins.lit().head(3)
 
 ### filter
 
-The `filter` function is a customizable screener that allows scanning in greater detail.  User-generated presets are saved in the OpenBBUserData folder, under:  `~/OpenBBUserData/presets/stocks/insider`.  Presets included with the code are located in the source code, [here](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/miscellaneous/stocks/insider).  Use, [template.ini](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/miscellaneous/stocks/insider/template.ini), as a starting point.  The following fields are allowed:
+The `filter` function is a customizable screener that allows scanning in greater detail.  User-generated presets are saved in the OpenBBUserData folder, under:  `~/OpenBBUserData/presets/stocks/insider`.  Presets included with the code are located in the source code, [here](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/miscellaneous/stocks/insider).  Use, [template.ini](https://github.com/OpenBB-finance/OpenBB/blob/main/openbb_terminal/miscellaneous/stocks/insider/template.ini), as a starting point.  The following fields are allowed:
 
 ```console
 [General]

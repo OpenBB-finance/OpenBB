@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Scrapes coin withdrawal fees per exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L207)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L207)]
 
 ```python
 openbb.crypto.ov.wfpe(symbol: str)
@@ -57,7 +57,7 @@ openbb.crypto.ov.wfpe(symbol: str)
 
 Coin withdrawal fees per exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L86)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L86)]
 
 ```python
 openbb.crypto.ov.wfpe_chart(symbol: str, export: str = "")

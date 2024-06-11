@@ -29,7 +29,7 @@ The Onchain sub-menu provides insights to the activities recorded on the blockch
 /crypto/onchain
 ```
 
-![Screenshot 2023-10-31 at 11 17 42 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/1d9f7deb-a725-46ca-adc3-033613b63fb9)
+![Screenshot 2023-10-31 at 11 17 42 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/1d9f7deb-a725-46ca-adc3-033613b63fb9)
 
 ## Usage
 
@@ -43,7 +43,7 @@ The `whales` command shows where large blocks are being traded.
 /crypto/onchain/whales
 ```
 
-![Screenshot 2023-10-31 at 11 30 17 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b9c888d8-3bc9-4f0f-ad2a-96adf4e456df)
+![Screenshot 2023-10-31 at 11 30 17 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b9c888d8-3bc9-4f0f-ad2a-96adf4e456df)
 
 ### Address
 
@@ -65,4 +65,4 @@ After an address is loaded, use `balance` to check out what it's holding.
 balance
 ```
 
-![Screenshot 2023-10-31 at 12 33 48 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/c8ef0b1f-d681-42d5-9082-3a358e6bc624)
+![Screenshot 2023-10-31 at 12 33 48 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/c8ef0b1f-d681-42d5-9082-3a358e6bc624)

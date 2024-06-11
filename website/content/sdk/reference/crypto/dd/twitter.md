@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L23)]
 
 ```python
 openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool = True)
@@ -58,7 +58,7 @@ openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool
 
 Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L86)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L86)]
 
 ```python
 openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str = "date", ascend: bool = True, export: str = "")

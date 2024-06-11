@@ -30,7 +30,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Looking for investment research data and sharing it with your community has never been easier than with the OpenBB Bot. Our bot delivers high-quality data directly to your fingertips, promoting engagement and learning among your peers. Share your investment ideas and strategies with your friends and colleagues seamlessly by accessing the data you need through a simple text message. The OpenBB Bot is the perfect tool for collaborative investment research that helps you make informed decisions and achieve success.
 
-<img width="819" alt="bot" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f65788ea-cab6-40a2-a1d9-282051a27083" />
+<img width="819" alt="bot" src="https://github.com/OpenBB-finance/OpenBB/assets/25267873/f65788ea-cab6-40a2-a1d9-282051a27083" />
 
 ---
 

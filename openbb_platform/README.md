@@ -1,7 +1,7 @@
 # OpenBB Platform
 
 [![Downloads](https://static.pepy.tech/badge/openbb)](https://pepy.tech/project/openbb)
-[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBBTerminal)
+[![LatestRelease](https://badge.fury.io/py/openbb.svg)](https://github.com/OpenBB-finance/OpenBB)
 
 | OpenBB is committed to build the future of investment research by focusing on an open source infrastructure accessible to everyone, everywhere. |
 | :---------------------------------------------------------------------------------------------------------------------------------------------: |

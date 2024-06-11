@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 A moving average provides an indication of the trend of the price movement
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L159)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_model.py#L159)]
 
 ```python
 openbb.forecast.ema(dataset: pd.DataFrame, target_column: str = "close", period: int = 10)

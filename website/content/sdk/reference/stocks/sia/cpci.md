@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get number of companies per country in a specific industry (and specific market cap).
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L411)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_model.py#L411)]
 
 ```python
 openbb.stocks.sia.cpci(industry: str = "Internet Content & Information", mktcap: str = "Large", exclude_exchanges: bool = True)
@@ -58,7 +58,7 @@ openbb.stocks.sia.cpci(industry: str = "Internet Content & Information", mktcap:
 
 Display number of companies per country in a specific industry. [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L818)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/sector_industry_analysis/financedatabase_view.py#L818)]
 
 ```python
 openbb.stocks.sia.cpci_chart(industry: str = "Internet Content & Information", mktcap: str = "Large", exclude_exchanges: bool = True, export: str = "", raw: bool = False, max_countries_to_display: int = 15, min_pct_to_display_country: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

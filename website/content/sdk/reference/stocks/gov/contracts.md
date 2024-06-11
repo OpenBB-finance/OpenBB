@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get government contracts for ticker [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L103)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L103)]
 
 ```python
 openbb.stocks.gov.contracts(symbol: str, past_transaction_days: int = 10)
@@ -55,7 +55,7 @@ openbb.stocks.gov.contracts(symbol: str, past_transaction_days: int = 10)
 
 Show government contracts for ticker [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L380)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L380)]
 
 ```python
 openbb.stocks.gov.contracts_chart(symbol: str, past_transaction_days: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

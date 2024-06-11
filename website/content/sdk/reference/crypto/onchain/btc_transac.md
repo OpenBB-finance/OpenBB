@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L62)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L62)]
 
 ```python
 openbb.crypto.onchain.btc_transac()
@@ -51,7 +51,7 @@ This function does not take any parameters.
 
 Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L88)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L88)]
 
 ```python
 openbb.crypto.onchain.btc_transac_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

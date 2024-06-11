@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Commodity channel index
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L20)]
 
 ```python
 openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
@@ -59,7 +59,7 @@ openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
 
 Plots CCI Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L34)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L34)]
 
 ```python
 openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

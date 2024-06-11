@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Basic coin information [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L379)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L379)]
 
 ```python
 openbb.crypto.dd.basic(symbol: str = "BTC")
@@ -58,7 +58,7 @@ openbb.crypto.dd.basic(symbol: str = "BTC")
 
 Prints table showing basic information for coin. Like:
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L325)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L325)]
 
 ```python
 openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "")

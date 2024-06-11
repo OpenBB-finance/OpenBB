@@ -38,7 +38,7 @@ The Quantitative Analysis menu is a common menu to three asset classes:
 - <a href = "/terminal/usage/intros/stocks/" target = "_blank"  rel="noreferrer noopener">Stocks</a>
 
 
-![Screenshot 2023-10-30 at 11 15 59 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/e191455f-e626-486b-ae22-4da8e9fd6811)
+![Screenshot 2023-10-30 at 11 15 59 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/e191455f-e626-486b-ae22-4da8e9fd6811)
 
 ## Usage
 
@@ -62,7 +62,7 @@ qa
 summary
 ```
 
-![summary](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/16fc2132-765e-4b1b-9461-8e365551b278)
+![summary](https://github.com/OpenBB-finance/OpenBB/assets/85772166/16fc2132-765e-4b1b-9461-8e365551b278)
 
 ### Line
 
@@ -74,7 +74,7 @@ To use the same data and target column, enter:
 line
 ```
 
-![line](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f0407a98-f88b-4880-a2f4-53c2b0b62418)
+![line](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f0407a98-f88b-4880-a2f4-53c2b0b62418)
 
 ### Beta
 
@@ -84,7 +84,7 @@ The `beta` command shows the beta of the loaded asset with respect to another.  
 beta -r xlk
 ```
 
-![Screenshot 2023-10-30 at 11 48 31 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/4df72127-c766-4099-ba89-1eed0e274f4c)
+![Screenshot 2023-10-30 at 11 48 31 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/4df72127-c766-4099-ba89-1eed0e274f4c)
 
 ### Pick
 
@@ -94,7 +94,7 @@ To select a different target, like log returns, use the `pick` command.
 pick -t logret
 ```
 
-![Screenshot 2023-10-30 at 11 38 58 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/93faab58-659b-45a0-aeaf-bed95cb511e3)
+![Screenshot 2023-10-30 at 11 38 58 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/93faab58-659b-45a0-aeaf-bed95cb511e3)
 
 The choice will be reflected on-screen after the menu is refreshed, `?`, `h`, `help` - with no command attached.
 
@@ -107,7 +107,7 @@ pick -t close
 rolling --windows 30
 ```
 
-![Screenshot 2023-10-30 at 12 04 15 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b0de1f0c-7e1d-4fad-9546-075b2024a8b3)
+![Screenshot 2023-10-30 at 12 04 15 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b0de1f0c-7e1d-4fad-9546-075b2024a8b3)
 
 ### CDF
 
@@ -119,7 +119,7 @@ pick -t returns
 cdf
 ```
 
-![Screenshot 2023-10-30 at 12 14 20 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/54e84236-e730-4083-9e27-c3a44e84e3ee)
+![Screenshot 2023-10-30 at 12 14 20 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/54e84236-e730-4083-9e27-c3a44e84e3ee)
 
 ### Skew
 
@@ -129,7 +129,7 @@ The `skew` command shows the asymmetric distribution over a specified window.  A
 skew
 ```
 
-![Screenshot 2023-10-30 at 12 23 19 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f1e7e0e5-79fe-4ac7-8a4f-dbbb32793c50)
+![Screenshot 2023-10-30 at 12 23 19 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f1e7e0e5-79fe-4ac7-8a4f-dbbb32793c50)
 
 
 ### CAPM

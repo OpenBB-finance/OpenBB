@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Get Series data. [Source: FRED]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L208)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/fred_model.py#L208)]
 
 ```python
 openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None)
@@ -62,7 +62,7 @@ openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end
 
 Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_view.py#L76)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/fred_view.py#L76)]
 
 ```python
 openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 10, get_data: bool = False, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

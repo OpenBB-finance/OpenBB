@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Returns the total amount of coins held on exchange addresses in units and percentage.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L453)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L453)]
 
 ```python
 openbb.crypto.dd.eb(symbol: str, exchange: str = "aggregated", start_date: Optional[str] = None, end_date: Optional[str] = None)
@@ -69,7 +69,7 @@ df = openbb.crypto.dd.eb(symbol="BTC")
 
 Plots total amount of coins held on exchange addresses in units and percentage.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L238)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L238)]
 
 ```python
 openbb.crypto.dd.eb_chart(symbol: str, exchange: str = "aggregated", start_date: Optional[str] = None, end_date: Optional[str] = None, percentage: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

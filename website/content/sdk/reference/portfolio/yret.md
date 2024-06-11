@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get yearly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L203)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L203)]
 
 ```python
 openbb.portfolio.yret(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
@@ -67,7 +67,7 @@ output = openbb.portfolio.yret(p)
 
 Display yearly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L376)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L376)]
 
 ```python
 openbb.portfolio.yret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)

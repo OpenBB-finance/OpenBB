@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get repository star history.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L88)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/oss/github_model.py#L88)]
 
 ```python
 openbb.alt.oss.history(repo: str)
@@ -55,7 +55,7 @@ openbb.alt.oss.history(repo: str)
 
 Plots repo summary [Source: https://api.github.com].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/oss/github_view.py#L28)]
 
 ```python
 openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

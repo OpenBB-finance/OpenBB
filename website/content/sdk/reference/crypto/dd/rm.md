@@ -32,7 +32,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin roadmap
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L236)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L236)]
 
 ```python
 openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
@@ -62,7 +62,7 @@ openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
 
 Plots coin roadmap
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L284)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L284)]
 
 ```python
 openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

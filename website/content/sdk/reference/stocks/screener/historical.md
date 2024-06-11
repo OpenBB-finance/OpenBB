@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 View historical price of stocks that meet preset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/yahoofinance_model.py#L53)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/screener/yahoofinance_model.py#L53)]
 
 ```python
 openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-29", type_candle: str = "a", normalize: bool = True)
@@ -60,7 +60,7 @@ openbb.stocks.screener.historical(preset_loaded: str = "top_gainers", limit: int
 
 View historical price of stocks that meet preset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/screener/yahoofinance_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/screener/yahoofinance_view.py#L28)]
 
 ```python
 openbb.stocks.screener.historical_chart(preset_loaded: str = "top_gainers", limit: int = 10, start_date: str = "2022-05-29", type_candle: str = "a", normalize: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

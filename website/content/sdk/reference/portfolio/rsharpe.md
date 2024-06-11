@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Get rolling sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L564)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L564)]
 
 ```python
 openbb.portfolio.rsharpe(portfolio_engine: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y")
@@ -66,7 +66,7 @@ output = openbb.portfolio.rsharpe(p)
 
 Display rolling sharpe
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L932)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L932)]
 
 ```python
 openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngine, risk_free_rate: float = 0, window: str = "1y", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

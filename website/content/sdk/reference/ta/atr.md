@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Average True Range
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L132)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L132)]
 
 ```python
 openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset: int = 0)
@@ -58,7 +58,7 @@ openbb.ta.atr(data: pd.DataFrame, window: int = 14, mamode: str = "ema", offset:
 
 Plots ATR
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L289)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L289)]
 
 ```python
 openbb.ta.atr_chart(data: pd.DataFrame, symbol: str = "", window: int = 14, mamode: str = "sma", offset: int = 0, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

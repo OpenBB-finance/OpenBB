@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Request order book data for plotting.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L137)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L137)]
 
 ```python
 openbb.forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = "REPLACE_ME")
@@ -57,7 +57,7 @@ openbb.forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = 
 
 Plot the orderbook for the instrument if Oanda provides one.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L79)]
 
 ```python
 openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

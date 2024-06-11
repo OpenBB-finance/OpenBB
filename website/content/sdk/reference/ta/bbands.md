@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate Bollinger Bands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L18)]
 
 ```python
 openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode: str = "ema")
@@ -57,7 +57,7 @@ openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode:
 
 Plots bollinger bands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L27)]
 
 ```python
 openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n_std: float = 2, mamode: str = "sma", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

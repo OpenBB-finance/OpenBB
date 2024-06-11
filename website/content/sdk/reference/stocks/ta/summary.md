@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get technical summary report provided by FinBrain's API
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/finbrain_model.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/finbrain_model.py#L15)]
 
 ```python
 openbb.stocks.ta.summary(symbol: str)
@@ -55,7 +55,7 @@ openbb.stocks.ta.summary(symbol: str)
 
 Print technical summary report provided by FinBrain's API
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/finbrain_view.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/finbrain_view.py#L14)]
 
 ```python
 openbb.stocks.ta.summary_chart(symbol: str)

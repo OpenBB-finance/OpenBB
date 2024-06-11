@@ -22,7 +22,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Bugs, Support, and Feedback - Faqs | OpenBB SDK Docs" />
 
-When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues). There may be a workaround solution for the specific problem until a patch is released.
+When an error is encountered, it is always a good idea to check the open issues on [GitHub](https://github.com/OpenBB-finance/OpenBB/issues). There may be a workaround solution for the specific problem until a patch is released.
 
 <details>
 <summary mdxType="summary">How often are patches for bugs released?</summary>
@@ -38,7 +38,7 @@ git checkout develop
 <details>
 <summary mdxType="summary">How do I report a bug?</summary>
 
-First, search the open issues for another report. If one already exists, attach any relevant information and screenshots as a comment. If one does not exist, start one with this [link](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new?assignees=&labels=type%3Abug&template=bug_report.md&title=%5BBug%5D)
+First, search the open issues for another report. If one already exists, attach any relevant information and screenshots as a comment. If one does not exist, start one with this [link](https://github.com/OpenBB-finance/OpenBB/issues/new?assignees=&labels=type%3Abug&template=bug_report.md&title=%5BBug%5D)
 
 </details>
 

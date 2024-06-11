@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Returns messari timeseries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L124)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L124)]
 
 ```python
 openbb.crypto.dd.mt(symbol: str, timeseries_id: str, interval: str = "1d", start_date: Optional[str] = None, end_date: Optional[str] = None)
@@ -64,7 +64,7 @@ openbb.crypto.dd.mt(symbol: str, timeseries_id: str, interval: str = "1d", start
 
 Plots messari timeseries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L103)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L103)]
 
 ```python
 openbb.crypto.dd.mt_chart(symbol: str, timeseries_id: str, start_date: Optional[str] = None, end_date: Optional[str] = None, interval: str = "1d", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

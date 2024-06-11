@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical unemployment for United States
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L284)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_model.py#L284)]
 
 ```python
 openbb.economy.unemp(start_year: int = 2010)
@@ -53,7 +53,7 @@ openbb.economy.unemp(start_year: int = 2010)
 
 Display US unemployment AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L377)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/economy/alphavantage_view.py#L377)]
 
 ```python
 openbb.economy.unemp_chart(start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

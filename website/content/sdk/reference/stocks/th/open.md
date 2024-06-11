@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get open exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L54)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L54)]
 
 ```python
 openbb.stocks.th.open()
@@ -50,7 +50,7 @@ This function does not take any parameters.
 
 Display open exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L44)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L44)]
 
 ```python
 openbb.stocks.th.open_chart()

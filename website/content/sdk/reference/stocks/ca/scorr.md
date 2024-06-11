@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Get correlation sentiments across similar companies. [Source: FinBrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_model.py#L125)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_model.py#L125)]
 
 ```python
 openbb.stocks.ca.scorr(similar: List[str])
@@ -60,7 +60,7 @@ openbb.stocks.ca.scorr(similar: List[str])
 
 Plot correlation sentiments heatmap across similar companies. [Source: FinBrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/comparison_analysis/finbrain_view.py#L121)]
 
 ```python
 openbb.stocks.ca.scorr_chart(similar: List[str], raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

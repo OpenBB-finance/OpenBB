@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_model.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_model.py#L15)]
 
 ```python
 openbb.crypto.dd.headlines(symbol: str)
@@ -57,7 +57,7 @@ openbb.crypto.dd.headlines(symbol: str)
 
 Sentiment analysis from FinBrain for Cryptocurrencies
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/finbrain_crypto_view.py#L39)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/finbrain_crypto_view.py#L39)]
 
 ```python
 openbb.crypto.dd.headlines_chart(symbol: str, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

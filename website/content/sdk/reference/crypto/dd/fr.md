@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Returns coin fundraising
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L637)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L637)]
 
 ```python
 openbb.crypto.dd.fr(symbol: str)
@@ -56,7 +56,7 @@ openbb.crypto.dd.fr(symbol: str)
 
 Display coin fundraising
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L639)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L639)]
 
 ```python
 openbb.crypto.dd.fr_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

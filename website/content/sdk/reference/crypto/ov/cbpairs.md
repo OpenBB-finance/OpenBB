@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get a list of available currency pairs for trading. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_model.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_model.py#L24)]
 
 ```python
 openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascend: bool = True)
@@ -58,7 +58,7 @@ openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascen
 
 Displays a list of available currency pairs for trading. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_view.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_view.py#L19)]
 
 ```python
 openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment", ascend: bool = True, export: str = "")

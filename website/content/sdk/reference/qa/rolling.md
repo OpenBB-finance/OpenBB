@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Return rolling mean and standard deviation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L16)]
 
 ```python
 openbb.qa.rolling(data: pd.DataFrame, window: int = 14)
@@ -56,7 +56,7 @@ openbb.qa.rolling(data: pd.DataFrame, window: int = 14)
 
 Plots mean std deviation
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L26)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L26)]
 
 ```python
 openbb.qa.rolling_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

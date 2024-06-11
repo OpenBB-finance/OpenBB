@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get top nft collections [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_model.py#L79)]
 
 ```python
 openbb.crypto.disc.top_nfts(sortby: str = "", limit: int = 10)
@@ -53,7 +53,7 @@ openbb.crypto.disc.top_nfts(sortby: str = "", limit: int = 10)
 
 Prints table showing top nft collections [Source: https://dappradar.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/dappradar_view.py#L20)]
 
 ```python
 openbb.crypto.disc.top_nfts_chart(limit: int = 10, sortby: str = "", export: str = "")

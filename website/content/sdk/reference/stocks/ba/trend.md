@@ -30,7 +30,7 @@ import TabItem from '@theme/TabItem';
 
 Get sentiment data on the most talked about tickers
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_model.py#L136)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_model.py#L136)]
 
 ```python
 openbb.stocks.ba.trend(start_date: Optional[str] = None, hour: int = 0, number: int = 10)
@@ -61,7 +61,7 @@ openbb.stocks.ba.trend(start_date: Optional[str] = None, hour: int = 0, number: 
 
 Display most talked about tickers within
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_view.py#L151)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_view.py#L151)]
 
 ```python
 openbb.stocks.ba.trend_chart(start_date: Optional[str] = None, hour: int = 0, number: int = 10, limit: int = 10, export: str = "")

@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Gets put call ratio over last time window [Source: AlphaQuery.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/alphaquery_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/alphaquery_model.py#L17)]
 
 ```python
 openbb.stocks.options.pcr(symbol: str, window: int = 30, start_date: Optional[str] = None)
@@ -66,7 +66,7 @@ pcr_df = openbb.stocks.options.pcr("B")
 
 Display put call ratio [Source: AlphaQuery.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/alphaquery_view.py#L26)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/options/alphaquery_view.py#L26)]
 
 ```python
 openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str = "2021-11-24", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

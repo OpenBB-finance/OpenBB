@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical cases and deaths by country.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L105)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/covid/covid_model.py#L105)]
 
 ```python
 openbb.alt.covid.ov(country: str, limit: int = 100)
@@ -57,7 +57,7 @@ openbb.alt.covid.ov(country: str, limit: int = 100)
 
 Prints table showing historical cases and deaths by country.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_view.py#L131)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/alternative/covid/covid_view.py#L131)]
 
 ```python
 openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, export: str = "", plot: bool = True)

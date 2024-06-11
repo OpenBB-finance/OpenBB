@@ -60,7 +60,7 @@ function Footer() {
         <div className="justify-end">
           <a
             className="flex h-[32px] w-[172px] rounded-md border border-grey-300 hover:bg-grey-100 dark:border-white bg-grey-100 dark:bg-white text-xs hover:no-underline"
-            href="https://github.com/OpenBB-finance/OpenBBTerminal"
+            href="https://github.com/OpenBB-finance/OpenBB"
             target="_blank"
             rel="noreferrer"
           >
@@ -101,7 +101,7 @@ function Footer() {
             className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"
             target="_blank"
             rel="noreferrer"
-            href="https://github.com/OpenBB-finance/OpenBBTerminal"
+            href="https://github.com/OpenBB-finance/OpenBB"
           >
             <GithubIcon className="h-4 w-4" />
           </a>

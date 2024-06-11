@@ -32,7 +32,7 @@ Enter the Discovery menu from the `/stocks` menu by typing `disc` into the Termi
 /stocks/disc
 ```
 
-![Screenshot 2023-11-01 at 9 34 25 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/94d61da1-a04e-4d03-87bc-1d95443dc851)
+![Screenshot 2023-11-01 at 9 34 25 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/94d61da1-a04e-4d03-87bc-1d95443dc851)
 
 
 ### DIVCAL
@@ -43,7 +43,7 @@ The dividend calendar will display single dates, and does not provide historical
 /stocks/disc/divcal
 ```
 
-![Screenshot 2023-11-01 at 9 43 46 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/d99e5973-6a49-441d-bb4d-5a60139f7334)
+![Screenshot 2023-11-01 at 9 43 46 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/d99e5973-6a49-441d-bb4d-5a60139f7334)
 
 ### Upcoming
 
@@ -54,7 +54,7 @@ Check the upcoming earnings schedule using, `upcoming`.  The `limit` parameter r
 /stocks/disc/upcoming --start 2023-11-02 --limit 5
 ```
 
-![Screenshot 2023-11-01 at 9 47 27 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/99fc4bec-7ffe-4b98-bf98-e791c81aab3a)
+![Screenshot 2023-11-01 at 9 47 27 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/99fc4bec-7ffe-4b98-bf98-e791c81aab3a)
 
 
 ### Filings

@@ -29,7 +29,7 @@ Enter the menu from `/stocks` with `gov`, or via the absolute path:
 
 The menu is divided into two sections. Features under the `Explore` do not depend on individual tickers, while the commands listed under `Ticker` do. 
 
-![Screenshot 2023-11-01 at 11 18 40 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/51be579a-7fa0-4ef8-b04c-f2f06c9ef099)
+![Screenshot 2023-11-01 at 11 18 40 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/51be579a-7fa0-4ef8-b04c-f2f06c9ef099)
 
 A symbol can be set by using `load`.
 
@@ -37,7 +37,7 @@ A symbol can be set by using `load`.
 
 The `lasttrades` command displays the most recent purchase and sale disclosures by representatives.
 
-![Screenshot 2023-11-01 at 11 23 48 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/7fe9823e-bdc0-4cb6-8a74-8634f407c145)
+![Screenshot 2023-11-01 at 11 23 48 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/7fe9823e-bdc0-4cb6-8a74-8634f407c145)
 
 
 ### Toplobbying
@@ -48,7 +48,7 @@ The `lasttrades` command displays the most recent purchase and sale disclosures 
 /stocks/gov/toplobbying --limit 1
 ```
 
-![Screenshot 2023-11-01 at 11 29 33 AM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/9b2564b2-f503-454a-adc4-f397d1b940f2)
+![Screenshot 2023-11-01 at 11 29 33 AM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/9b2564b2-f503-454a-adc4-f397d1b940f2)
 
 ### Lobbying
 
@@ -78,5 +78,5 @@ Defense Appropriations.
 /stocks/gov/lastcontracts --limit 
 ```
 
-![Screenshot 2023-11-01 at 12 27 34 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/b290c8db-a1b5-4f6c-bea2-65cf16eae3e7)
+![Screenshot 2023-11-01 at 12 27 34 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/b290c8db-a1b5-4f6c-bea2-65cf16eae3e7)
 

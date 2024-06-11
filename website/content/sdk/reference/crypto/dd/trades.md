@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Returns trades for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L70)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_model.py#L70)]
 
 ```python
 openbb.crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str)
@@ -59,7 +59,7 @@ openbb.crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str)
 
 Prints table showing trades for a coin in a given exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L63)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/due_diligence/ccxt_view.py#L63)]
 
 ```python
 openbb.crypto.dd.trades_chart(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = "")

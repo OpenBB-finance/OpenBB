@@ -34,7 +34,7 @@ Enter the Overview menu from the Crypto menu by typing, `ov`, into the Terminal.
 /crypto/ov
 ```
 
-![Screenshot 2023-10-31 at 12 51 06 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/c756cef5-4dfc-4098-a1a8-2fdf231c5f29)
+![Screenshot 2023-10-31 at 12 51 06 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/c756cef5-4dfc-4098-a1a8-2fdf231c5f29)
 
 ### Global
 
@@ -44,7 +44,7 @@ This command will display a pie chart of the market cap distribution across cate
 /crypto/ov/global --pie
 ```
 
-![Screenshot 2023-10-31 at 1 00 12 PM](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f5b174f9-dd4a-45db-b033-f892187a292d)
+![Screenshot 2023-10-31 at 1 00 12 PM](https://github.com/OpenBB-finance/OpenBB/assets/85772166/f5b174f9-dd4a-45db-b033-f892187a292d)
 
 Without the `--pie` argument, a table of statistics will be returned.
 

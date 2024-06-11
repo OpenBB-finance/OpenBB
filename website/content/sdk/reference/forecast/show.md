@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
 
 ```python
 openbb.forecast.show(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = "")
@@ -49,7 +49,7 @@ This function does not return anything
 
 None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
 
 ```python
 openbb.forecast.show_chart(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = "")

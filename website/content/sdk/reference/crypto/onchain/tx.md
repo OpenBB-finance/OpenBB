@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get info about transaction. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L444)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L444)]
 
 ```python
 openbb.crypto.onchain.tx(tx_hash: str)
@@ -56,7 +56,7 @@ openbb.crypto.onchain.tx(tx_hash: str)
 
 Display info about transaction. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L249)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L249)]
 
 ```python
 openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "")

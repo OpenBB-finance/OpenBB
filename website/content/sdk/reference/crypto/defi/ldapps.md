@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L35)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_model.py#L35)]
 
 ```python
 openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = False, description: bool = False, drop_chain: bool = True)
@@ -57,7 +57,7 @@ openbb.crypto.defi.ldapps(limit: int = 100, sortby: str = "", ascend: bool = Fal
 
 Prints table showing information about listed DeFi protocols, their current TVL and changes to it in
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L94)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/llama_view.py#L94)]
 
 ```python
 openbb.crypto.defi.ldapps_chart(sortby: str, limit: int = 20, ascend: bool = False, description: bool = False, export: str = "")

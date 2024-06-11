@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate Fibonacci levels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_model.py#L17)]
 
 ```python
 openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None)
@@ -58,7 +58,7 @@ openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_
 
 Plots Calculated fibonacci retracement levels
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/custom_indicators_view.py#L29)]
 
 ```python
 openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[str] = None, end_date: Optional[str] = None, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

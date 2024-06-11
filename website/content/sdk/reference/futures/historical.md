@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get historical futures [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/futures/yfinance_model.py#L79)]
 
 ```python
 openbb.futures.historical(symbols: List[str], expiry: str = "")
@@ -56,7 +56,7 @@ openbb.futures.historical(symbols: List[str], expiry: str = "")
 
 Display historical futures [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_view.py#L65)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/futures/yfinance_view.py#L65)]
 
 ```python
 openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date: Optional[str] = None, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

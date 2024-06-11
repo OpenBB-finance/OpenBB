@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Scrapes top coins withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L120)]
 
 ```python
 openbb.crypto.ov.wf(limit: int = 100)
@@ -58,7 +58,7 @@ openbb.crypto.ov.wf(limit: int = 100)
 
 Top coins withdrawal fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L18)]
 
 ```python
 openbb.crypto.ov.wf_chart(limit: int = 15, export: str = "")

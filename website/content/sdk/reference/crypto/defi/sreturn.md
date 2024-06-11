@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 
 Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L312)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L312)]
 
 ```python
 openbb.crypto.defi.sreturn(limit: int = 200)
@@ -49,7 +49,7 @@ openbb.crypto.defi.sreturn(limit: int = 200)
 
 Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L254)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L254)]
 
 ```python
 openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

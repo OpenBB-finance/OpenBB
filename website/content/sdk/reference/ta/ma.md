@@ -29,7 +29,7 @@ import TabItem from '@theme/TabItem';
 
 Plots MA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
 
 ```python
 openbb.ta.ma(data: pd.Series, window: List[int] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
@@ -79,7 +79,7 @@ openbb.ta.ma_chart(data = spuk_index["^SPUK"], symbol = "S&P UK Index", ma_type 
 
 Plots MA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L32)]
 
 ```python
 openbb.ta.ma_chart(data: pd.Series, window: List[int] = None, offset: int = 0, ma_type: str = "EMA", symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

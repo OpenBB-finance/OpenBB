@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L482)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L482)]
 
 ```python
 openbb.portfolio.maxdd(portfolio_engine: portfolio_engine.PortfolioEngine, is_returns: bool = False)
@@ -64,7 +64,7 @@ output = openbb.portfolio.maxdd(p)
 
 Display maximum drawdown curve
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1111)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1111)]
 
 ```python
 openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

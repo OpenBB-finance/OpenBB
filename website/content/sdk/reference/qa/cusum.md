@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Plots Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L523)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L523)]
 
 ```python
 openbb.qa.cusum(data: pd.DataFrame, target: str, threshold: float = 5, drift: float = 2.1, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

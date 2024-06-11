@@ -31,7 +31,7 @@ import TabItem from '@theme/TabItem';
 
 Returns anchor protocol earnings data of a certain terra address
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_model.py#L17)]
 
 ```python
 openbb.crypto.defi.anchor_data(address: str = "")
@@ -60,7 +60,7 @@ openbb.crypto.defi.anchor_data(address: str = "")
 
 Plots anchor protocol earnings data of a certain terra address
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_view.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/defi/cryptosaurio_view.py#L25)]
 
 ```python
 openbb.crypto.defi.anchor_data_chart(address: str = "", export: str = "", show_transactions: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

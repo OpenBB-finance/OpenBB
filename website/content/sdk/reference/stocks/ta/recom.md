@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get tradingview recommendation based on technical indicators
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_model.py#L56)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_model.py#L56)]
 
 ```python
 openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "", interval: str = "")
@@ -59,7 +59,7 @@ openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "
 
 Print tradingview recommendation based on technical indicators
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_view.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_view.py#L17)]
 
 ```python
 openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: str = "", interval: str = "", export: str = "")

@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get all FINRA data associated with a ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L293)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L293)]
 
 ```python
 openbb.stocks.dps.dpotc(symbol: str)
@@ -55,7 +55,7 @@ openbb.stocks.dps.dpotc(symbol: str)
 
 Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L27)]
 
 ```python
 openbb.stocks.dps.dpotc_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

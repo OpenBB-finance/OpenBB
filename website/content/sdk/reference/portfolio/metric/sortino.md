@@ -18,7 +18,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get sortino ratio for portfolio and benchmark selected
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1213)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1213)]
 
 ```python
 openbb.portfolio.metric.sortino(portfolio_engine: portfolio_engine.PortfolioEngine, risk_free_rate: float = 0)

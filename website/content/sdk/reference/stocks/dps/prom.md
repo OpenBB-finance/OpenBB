@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L214)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_model.py#L214)]
 
 ```python
 openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
@@ -57,7 +57,7 @@ openbb.stocks.dps.prom(limit: int = 1000, tier_ats: str = "T1")
 
 Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L188)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/dark_pool_shorts/finra_view.py#L188)]
 
 ```python
 openbb.stocks.dps.prom_chart(input_limit: int = 1000, limit: int = 10, tier: str = "T1", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

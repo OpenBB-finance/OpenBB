@@ -25,7 +25,7 @@ import TabItem from '@theme/TabItem';
 
 Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L223)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L223)]
 
 ```python
 openbb.crypto.ov.markets(symbols: str = "USD", sortby: str = "rank", ascend: bool = True)
@@ -56,7 +56,7 @@ openbb.crypto.ov.markets(symbols: str = "USD", sortby: str = "rank", ascend: boo
 
 Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L105)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L105)]
 
 ```python
 openbb.crypto.ov.markets_chart(symbol: str, sortby: str = "rank", ascend: bool = True, limit: int = 15, export: str = "")

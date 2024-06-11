@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Get hour-level sentiment data for the chosen symbol.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_model.py#L19)]
 
 ```python
 openbb.stocks.ba.hist(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, number: int = 100)
@@ -56,7 +56,7 @@ openbb.stocks.ba.hist(symbol: str, start_date: Optional[str] = None, end_date: O
 
 Display historical sentiment data of a ticker,
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_view.py#L30)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/behavioural_analysis/sentimentinvestor_view.py#L30)]
 
 ```python
 openbb.stocks.ba.hist_chart(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, number: int = 100, raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

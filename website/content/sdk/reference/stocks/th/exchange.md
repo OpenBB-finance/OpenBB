@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get current exchange open hours.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/tradinghours/bursa_model.py#L20)]
 
 ```python
 openbb.stocks.th.exchange(symbol: str)
@@ -56,7 +56,7 @@ openbb.stocks.th.exchange(symbol: str)
 
 Display current exchange trading hours.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/tradinghours/bursa_view.py#L15)]
 
 ```python
 openbb.stocks.th.exchange_chart(symbol: str)

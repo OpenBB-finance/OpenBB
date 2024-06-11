@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Returns trending coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L317)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L317)]
 
 ```python
 openbb.crypto.disc.trending()
@@ -50,7 +50,7 @@ This function does not take any parameters.
 
 Prints table showing trending coins [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L192)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L192)]
 
 ```python
 openbb.crypto.disc.trending_chart(export: str = "")

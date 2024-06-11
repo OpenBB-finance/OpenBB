@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Get headlines sentiment using VADER model over time. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L97)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L97)]
 
 ```python
 openbb.stocks.ba.snews(symbol: str)
@@ -59,7 +59,7 @@ This function does not return anything
 
 Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_view.py#L27)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_view.py#L27)]
 
 ```python
 openbb.stocks.ba.snews_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

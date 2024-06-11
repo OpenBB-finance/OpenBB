@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get portfolio and benchmark returns summary
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L692)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_model.py#L692)]
 
 ```python
 openbb.portfolio.summary(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", risk_free_rate: float = 0)

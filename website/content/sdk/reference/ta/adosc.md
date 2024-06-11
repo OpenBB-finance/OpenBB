@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Calculate AD oscillator technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L46)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L46)]
 
 ```python
 openbb.ta.adosc(data: pd.DataFrame, use_open: bool = False, fast: int = 3, slow: int = 10)
@@ -60,7 +60,7 @@ openbb.ta.adosc(data: pd.DataFrame, use_open: bool = False, fast: int = 3, slow:
 
 Plots AD Osc Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L141)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L141)]
 
 ```python
 openbb.ta.adosc_chart(data: pd.DataFrame, fast: int = 3, slow: int = 10, use_open: bool = False, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

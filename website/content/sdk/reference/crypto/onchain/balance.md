@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get info about tokens on you ethereum blockchain balance. Eth balance, balance of all tokens which
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L196)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L196)]
 
 ```python
 openbb.crypto.onchain.balance(address: str, sortby: str = "index", ascend: bool = False)
@@ -58,7 +58,7 @@ openbb.crypto.onchain.balance(address: str, sortby: str = "index", ascend: bool 
 
 Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L21)]
 
 ```python
 openbb.crypto.onchain.balance_chart(address: str, limit: int = 15, sortby: str = "index", ascend: bool = False, export: str = "")

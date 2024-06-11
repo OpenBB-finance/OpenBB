@@ -27,7 +27,7 @@ import TabItem from '@theme/TabItem';
 
 Get Efficient Frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1120)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1120)]
 
 ```python
 openbb.portfolio.po.ef(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)
@@ -87,7 +87,7 @@ frontier = openbb.portfolio.po.ef(portfolio_engine=p)
 
 Display efficient frontier
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L41)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_view.py#L41)]
 
 ```python
 openbb.portfolio.po.ef_chart(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)

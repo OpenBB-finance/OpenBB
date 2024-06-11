@@ -24,7 +24,7 @@ import TabItem from '@theme/TabItem';
 
 Fisher Transform
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L165)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L165)]
 
 ```python
 openbb.ta.fisher(data: pd.DataFrame, window: int = 14)
@@ -54,7 +54,7 @@ openbb.ta.fisher(data: pd.DataFrame, window: int = 14)
 
 Plots Fisher Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L406)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L406)]
 
 ```python
 openbb.ta.fisher_chart(data: pd.DataFrame, window: int = 14, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)

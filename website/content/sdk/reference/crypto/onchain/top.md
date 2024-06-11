@@ -26,7 +26,7 @@ import TabItem from '@theme/TabItem';
 
 Get top 50 tokens. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L268)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L268)]
 
 ```python
 openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
@@ -56,7 +56,7 @@ openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
 
 Display top ERC20 tokens [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L70)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L70)]
 
 ```python
 openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: bool = True, export: str = "")

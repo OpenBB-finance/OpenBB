@@ -28,7 +28,7 @@ import TabItem from '@theme/TabItem';
 
 Print insider data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_model.py#L1437)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/openinsider_model.py#L1437)]
 
 ```python
 openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
@@ -58,7 +58,7 @@ openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
 
 Print insider data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/openinsider_view.py#L108)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBB/tree/main/openbb_terminal/stocks/insider/openinsider_view.py#L108)]
 
 ```python
 openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int = 10, export: str = "")
