@@ -708,6 +708,13 @@ def test_fixedincome_bond_indices(params, obb):
                 "provider": "fred",
             }
         ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

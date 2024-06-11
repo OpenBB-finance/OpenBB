@@ -31128,12 +31128,13 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
                         "default": null,
                         "optional": true
                     }
                 ],
+                "federal_reserve": [],
                 "fred": [
                     {
                         "name": "frequency",
@@ -31197,7 +31198,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fred']]",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
                         "description": "Provider name."
                     },
                     {
@@ -31271,6 +31272,16 @@
                         "name": "volume",
                         "type": "float",
                         "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "revision_indicator",
+                        "type": "str",
+                        "description": "Indicates a revision of the data for that date.",
                         "default": null,
                         "optional": true,
                         "choices": null

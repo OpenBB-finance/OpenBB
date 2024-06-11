@@ -737,9 +737,9 @@ class ROUTER_fixedincome_rate(Container):
             OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
         ] = None,
         provider: Annotated[
-            Optional[Literal["fred"]],
+            Optional[Literal["federal_reserve", "fred"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred."
             ),
         ] = None,
         **kwargs
@@ -757,8 +757,8 @@ class ROUTER_fixedincome_rate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        provider : Optional[Literal['federal_reserve', 'fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
         frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                 Frequency aggregation to convert daily data to lower frequency.
@@ -802,7 +802,7 @@ class ROUTER_fixedincome_rate(Container):
         OBBject
             results : List[OvernightBankFundingRate]
                 Serializable results.
-            provider : Optional[Literal['fred']]
+            provider : Optional[Literal['federal_reserve', 'fred']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -827,6 +827,8 @@ class ROUTER_fixedincome_rate(Container):
             99th percentile of the distribution.
         volume : Optional[float]
             The trading volume.The notional volume of transactions (Billions of $).
+        revision_indicator : Optional[str]
+            Indicates a revision of the data for that date. (provider: federal_reserve)
 
         Examples
         --------
@@ -841,7 +843,7 @@ class ROUTER_fixedincome_rate(Container):
                     "provider": self._get_provider(
                         provider,
                         "fixedincome.rate.overnight_bank_funding",
-                        ("fred",),
+                        ("federal_reserve", "fred"),
                     )
                 },
                 standard_params={
