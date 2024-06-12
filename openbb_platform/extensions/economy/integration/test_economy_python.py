@@ -771,3 +771,53 @@ def test_economy_retail_prices(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "frequency": None,
+                "provider": "fred",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+                "transform": None,
+                "aggregation_method": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_university_of_michigan(params, obb):
+    """Test the economy survey university_of_michigan endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.university_of_michigan(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "category": "auto",
+                "provider": "fred",
+                "start_date": "2022-01-01",
+                "end_date": "2024-04-01",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_sloos(params, obb):
+    """Test the economy survey sloos endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.sloos(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
