@@ -20,7 +20,6 @@ def test_default_values():
     assert fields["USE_DATETIME"].default is True
     assert fields["USE_PROMPT_TOOLKIT"].default is True
     assert fields["ENABLE_EXIT_AUTO_HELP"].default is True
-    assert fields["REMEMBER_CONTEXTS"].default is True
     assert fields["ENABLE_RICH_PANEL"].default is True
     assert fields["TOOLBAR_HINT"].default is True
     assert fields["SHOW_MSG_OBBJECT_REGISTRY"].default is False
