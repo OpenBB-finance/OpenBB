@@ -149,7 +149,8 @@ class FredEuroShortTermRateFetcher(
         ids = [
             "ECBESTRVOLWGTTRMDMNRT",
             "ECBESTRNUMTRANS",
-            "ECBESTRNUMACTBANKS" "ECBESTRTOTVOL",
+            "ECBESTRNUMACTBANKS",
+            "ECBESTRTOTVOL",
             "ECBESTRSHRVOL5LRGACTBNK",
             "ECBESTRRT75THPCTVOL",
             "ECBESTRRT25THPCTVOL",
