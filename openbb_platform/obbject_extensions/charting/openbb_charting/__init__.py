@@ -325,12 +325,20 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = getattr(self._obbject, "results", [])
-            kwargs["charting_settings"] = getattr(self, "_charting_settings", {})
-            kwargs["standard_params"] = getattr(self._obbject, "_standard_params", {})
-            kwargs["extra_params"] = getattr(self._obbject, "extra_params", {})
-            kwargs["provider"] = getattr(self._obbject, "provider", "")
-            kwargs["extra"] = self._obbject.extra
+            kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
+            kwargs["charting_settings"] = (
+                self._charting_settings
+            )  # pylint: disable=protected-access
+            kwargs["standard_params"] = (
+                self._obbject._standard_params
+            )  # pylint: disable=protected-access
+            kwargs["extra_params"] = (
+                self._obbject._extra_params
+            )  # pylint: disable=protected-access
+            kwargs["provider"] = (
+                self._obbject.provider
+            )  # pylint: disable=protected-access
+            kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
@@ -437,12 +445,18 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = getattr(self._obbject, "results", [])
-        kwargs["charting_settings"] = getattr(self, "_charting_settings", {})
-        kwargs["standard_params"] = getattr(self._obbject, "_standard_params", {})
-        kwargs["extra_params"] = getattr(self._obbject, "extra_params", {})
-        kwargs["provider"] = getattr(self._obbject, "provider", "")
-        kwargs["extra"] = self._obbject.extra
+        kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
+        kwargs["charting_settings"] = (
+            self._charting_settings
+        )  # pylint: disable=protected-access
+        kwargs["standard_params"] = (
+            self._obbject._standard_params
+        )  # pylint: disable=protected-access
+        kwargs["extra_params"] = (
+            self._obbject._extra_params
+        )  # pylint: disable=protected-access
+        kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
+        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
         try:
             if has_data:
                 self.show(data=data_as_df, render=render, **kwargs)

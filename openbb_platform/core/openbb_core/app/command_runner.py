@@ -262,6 +262,14 @@ class StaticCommandRunner:
                 raise OpenBBError(e) from e
             warn(str(e), OpenBBWarning)
 
+    @classmethod
+    def _extract_params(cls, kwargs, key) -> Dict:
+        """Extract params models from kwargs and convert to a dictionary."""
+        params = kwargs.get(key, {})
+        if hasattr(params, "__dict__"):
+            return params.__dict__
+        return params
+
     # pylint: disable=R0913, R0914
     @classmethod
     async def _execute_func(
@@ -308,20 +316,14 @@ class StaticCommandRunner:
 
                 # This section prepares the obbject to pass to the charting service.
                 obbject._route = route  # pylint: disable=protected-access
-                std_params = kwargs.get("standard_params", {})
-                if std_params and hasattr(std_params, "__dict__"):
-                    std_params = std_params.__dict__
-                elif "data" in kwargs:
-                    std_params = kwargs
-
-                xtra_params = kwargs.get("extra_params", {})
-                if xtra_params and hasattr(xtra_params, "__dict__"):
-                    xtra_params = xtra_params.__dict__
-
+                std_params = cls._extract_params(kwargs, "standard_params") or (
+                    kwargs if "data" in kwargs else {}
+                )
+                extra_params = cls._extract_params(kwargs, "extra_params")
                 obbject._standard_params = (  # pylint: disable=protected-access
                     std_params
                 )
-                obbject._extra_params = xtra_params  # pylint: disable=protected-access
+                obbject._extra_params = extra_params  # pylint: disable=protected-access
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
             finally:
