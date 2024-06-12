@@ -304,9 +304,8 @@ class StaticCommandRunner:
             } or None
 
             try:
-                obbject = await cls._command(
-                    func, kwargs
-                )  # pylint: disable=protected-access
+                obbject = await cls._command(func, kwargs)
+
                 # This section prepares the obbject to pass to the charting service.
                 obbject._route = route  # pylint: disable=protected-access
                 std_params = kwargs.get("standard_params", {})
@@ -319,8 +318,8 @@ class StaticCommandRunner:
                 if xtra_params and hasattr(xtra_params, "__dict__"):
                     xtra_params = xtra_params.__dict__
 
-                obbject._standard_params = (
-                    std_params  # pylint: disable=protected-access
+                obbject._standard_params = (  # pylint: disable=protected-access
+                    std_params
                 )
                 obbject._extra_params = xtra_params  # pylint: disable=protected-access
                 if chart and obbject.results:

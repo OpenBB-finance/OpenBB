@@ -325,22 +325,12 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = getattr(
-                self._obbject, "results", []
-            )  # pylint: disable=protected-access
-            kwargs["charting_settings"] = getattr(
-                self, "_charting_settings", {}
-            )  # pylint: disable=protected-access
-            kwargs["standard_params"] = getattr(
-                self._obbject, "_standard_params", {}
-            )  # pylint: disable=protected-access
-            kwargs["extra_params"] = getattr(
-                self._obbject, "extra_params", {}
-            )  # pylint: disable=protected-access
-            kwargs["provider"] = getattr(
-                self._obbject, "provider", ""
-            )  # pylint: disable=protected-access
-            kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+            kwargs["obbject_item"] = getattr(self._obbject, "results", [])
+            kwargs["charting_settings"] = getattr(self, "_charting_settings", {})
+            kwargs["standard_params"] = getattr(self._obbject, "_standard_params", {})
+            kwargs["extra_params"] = getattr(self._obbject, "extra_params", {})
+            kwargs["provider"] = getattr(self._obbject, "provider", "")
+            kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
@@ -447,22 +437,12 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = getattr(
-            self._obbject, "results", []
-        )  # pylint: disable=protected-access
-        kwargs["charting_settings"] = getattr(
-            self, "_charting_settings", {}
-        )  # pylint: disable=protected-access
-        kwargs["standard_params"] = getattr(
-            self._obbject, "_standard_params", {}
-        )  # pylint: disable=protected-access
-        kwargs["extra_params"] = getattr(
-            self._obbject, "extra_params", {}
-        )  # pylint: disable=protected-access
-        kwargs["provider"] = getattr(
-            self._obbject, "provider", ""
-        )  # pylint: disable=protected-access
-        kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+        kwargs["obbject_item"] = getattr(self._obbject, "results", [])
+        kwargs["charting_settings"] = getattr(self, "_charting_settings", {})
+        kwargs["standard_params"] = getattr(self._obbject, "_standard_params", {})
+        kwargs["extra_params"] = getattr(self._obbject, "extra_params", {})
+        kwargs["provider"] = getattr(self._obbject, "provider", "")
+        kwargs["extra"] = self._obbject.extra
         try:
             if has_data:
                 self.show(data=data_as_df, render=render, **kwargs)
@@ -485,7 +465,7 @@ class Charting:
 
     def _set_chart_style(self, figure: Figure):
         """Set the user preference for light or dark mode."""
-        style = self._charting_settings.chart_style  # pylint: disable=protected-access
+        style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
         paper_bgcolor = "white" if style == "light" else "black"
         figure = figure.update_layout(
@@ -495,7 +475,7 @@ class Charting:
         )
         return figure
 
-    def toggle_chart_style(self):  # pylint: disable=protected-access
+    def toggle_chart_style(self):
         """Toggle the chart style between light and dark mode."""
         if not hasattr(self._obbject.chart, "fig"):
             raise ValueError(
