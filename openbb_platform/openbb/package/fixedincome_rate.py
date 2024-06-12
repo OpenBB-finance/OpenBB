@@ -583,7 +583,7 @@ class ROUTER_fixedincome_rate(Container):
         The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
         the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
         the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
-        executed at arm’s length and thus reflect market rates in an unbiased way.
+        executed at arm's length and thus reflect market rates in an unbiased way.
 
 
         Parameters
@@ -594,13 +594,48 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
-            Period of ESTR rate. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[ESTR]
+            results : List[EuroShortTermRate]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -611,18 +646,30 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        ESTR
-        ----
+        EuroShortTermRate
+        -----------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            ESTR rate.
+        rate : float
+            Volume-weighted trimmed mean rate.
+        percentile_25 : Optional[float]
+            Rate at 25th percentile of volume.
+        percentile_75 : Optional[float]
+            Rate at 75th percentile of volume.
+        volume : Optional[float]
+            Volume (Millions of €EUR).
+        transactions : Optional[int]
+            Number of transactions.
+        number_of_banks : Optional[int]
+            Number of active banks.
+        large_bank_share_of_volume : Optional[float]
+            The percent of volume attributable to the 5 largest active banks.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.estr(provider='fred')
-        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks', provider='fred')
+        >>> obb.fixedincome.rate.estr(transform='ch1', provider='fred')
         """  # noqa: E501
 
         return self._run(

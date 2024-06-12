@@ -10,7 +10,7 @@ from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFe
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
 )
-from openbb_fred.models.estr_rates import FREDESTRFetcher
+from openbb_fred.models.euro_short_term_rate import FredEuroShortTermRateFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
@@ -52,7 +52,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
-        "ESTR": FREDESTRFetcher,
+        "EuroShortTermRate": FredEuroShortTermRateFetcher,
         "SONIA": FREDSONIAFetcher,
         "Ameribor": FredAmeriborFetcher,
         "FederalFundsRate": FredFederalFundsRateFetcher,

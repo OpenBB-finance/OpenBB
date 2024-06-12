@@ -128,13 +128,14 @@ def test_fixedincome_rate_sofr(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "volume_weighted_trimmed_mean_rate",
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],

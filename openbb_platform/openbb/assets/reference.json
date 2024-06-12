@@ -30819,8 +30819,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm\u2019s length and thus reflect market rates in an unbiased way.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.estr(provider='fred')\nobb.fixedincome.rate.estr(parameter=number_of_active_banks, provider='fred')\n```\n\n",
+            "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm's length and thus reflect market rates in an unbiased way.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.estr(provider='fred')\nobb.fixedincome.rate.estr(transform=ch1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -30849,12 +30849,55 @@
                 ],
                 "fred": [
                     {
-                        "name": "parameter",
-                        "type": "Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']",
-                        "description": "Period of ESTR rate.",
-                        "default": "volume_weighted_trimmed_mean_rate",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -30862,7 +30905,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[ESTR]",
+                        "type": "List[EuroShortTermRate]",
                         "description": "Serializable results."
                     },
                     {
@@ -30900,15 +30943,63 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "ESTR rate.",
+                        "description": "Volume-weighted trimmed mean rate.",
                         "default": "",
                         "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "Rate at 25th percentile of volume.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "Rate at 75th percentile of volume.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "Volume (Millions of \u20acEUR).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transactions",
+                        "type": "int",
+                        "description": "Number of transactions.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "number_of_banks",
+                        "type": "int",
+                        "description": "Number of active banks.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "large_bank_share_of_volume",
+                        "type": "float",
+                        "description": "The percent of volume attributable to the 5 largest active banks.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ],
                 "fred": []
             },
-            "model": "ESTR"
+            "model": "EuroShortTermRate"
         },
         "/fixedincome/rate/ecb": {
             "deprecated": {
