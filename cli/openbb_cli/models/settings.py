@@ -80,12 +80,6 @@ class Settings(BaseModel):
         command="exithelp",
         group=SettingGroups.feature_flags,
     )
-    REMEMBER_CONTEXTS: bool = Field(
-        default=True,
-        description="remember contexts between menus",
-        command="rcontext",
-        group=SettingGroups.feature_flags,
-    )
     ENABLE_RICH_PANEL: bool = Field(
         default=True,
         description="enable colorful rich CLI panel",
