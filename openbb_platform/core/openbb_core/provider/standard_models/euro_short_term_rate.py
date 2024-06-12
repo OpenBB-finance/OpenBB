@@ -46,7 +46,7 @@ class EuroShortTermRateData(Data):
     )
     volume: Optional[float] = Field(
         default=None,
-        description="Volume (Millions of €EUR).",
+        description=DATA_DESCRIPTIONS.get("volume", "")+ " (Millions of €EUR).",
         json_schema_extra={
             "x-unit_measurement": "currency",
             "x-frontend_multiply": 1e6,
