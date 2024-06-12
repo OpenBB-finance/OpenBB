@@ -34,7 +34,7 @@
 
     COPY ./openbb_platform ./openbb_platform
 
-    # Install the SDK
+    # Install the Platform
     RUN pip install /openbb/openbb_platform[all]
     RUN pip install openbb-devtools
 
@@ -43,5 +43,5 @@
 
     COPY --from=builder /usr/local /usr/local
 
-    # Specify the command to run
+    # Launch the API
     CMD ["uvicorn", "openbb_core.api.rest_api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

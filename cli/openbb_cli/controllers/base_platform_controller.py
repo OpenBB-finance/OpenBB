@@ -6,6 +6,7 @@ from types import MethodType
 from typing import Dict, List, Optional
 
 import pandas as pd
+from openbb import obb
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_cli.argparse_translator.argparse_class_processor import (
     ArgparseClassProcessor,
@@ -15,8 +16,6 @@ from openbb_cli.controllers.base_controller import BaseController
 from openbb_cli.controllers.utils import export_data, print_rich_table
 from openbb_cli.session import Session
 from openbb_core.app.model.obbject import OBBject
-
-from openbb import obb
 
 session = Session()
 
@@ -186,30 +185,33 @@ class PlatformController(BaseController):
                                 )
 
                             # making the dataframe available
-                            # either for printing or exporting (or both)
+                            # either for printing or exporting
                             df = obbject.to_dataframe()
 
+                            export = hasattr(ns_parser, "export") and ns_parser.export
+
                             if hasattr(ns_parser, "chart") and ns_parser.chart:
-                                obbject.show()
                                 fig = obbject.chart.fig if obbject.chart else None
+                                if not export:
+                                    obbject.show()
                             else:
                                 if isinstance(df.columns, pd.RangeIndex):
                                     df.columns = [str(i) for i in df.columns]
 
-                                print_rich_table(df=df, show_index=True, title=title)
+                                print_rich_table(
+                                    df=df, show_index=True, title=title, export=export
+                                )
 
                         elif isinstance(obbject, dict):
                             df = pd.DataFrame.from_dict(obbject, orient="columns")
-                            print_rich_table(df=df, show_index=True, title=title)
+                            print_rich_table(
+                                df=df, show_index=True, title=title, export=export
+                            )
 
                         elif not isinstance(obbject, OBBject):
                             session.console.print(obbject)
 
-                    if (
-                        hasattr(ns_parser, "export")
-                        and ns_parser.export
-                        and not df.empty
-                    ):
+                    if export and not df.empty:
                         sheet_name = getattr(ns_parser, "sheet_name", None)
                         if sheet_name and isinstance(sheet_name, list):
                             sheet_name = sheet_name[0]
@@ -222,7 +224,7 @@ class PlatformController(BaseController):
                             sheet_name=sheet_name,
                             figure=fig,
                         )
-                    elif hasattr(ns_parser, "export") and ns_parser.export and df.empty:
+                    elif export and df.empty:
                         session.console.print("[yellow]No data to export.[/yellow]")
 
                 except Exception as e:
