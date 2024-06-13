@@ -2681,7 +2681,7 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Get The Survey Of Economic Conditions In The Chicago Region.",
+            "description": "Get The Survey Of Economic Conditions For The Chicago Region.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.economic_conditions_chicago(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
@@ -2867,6 +2867,189 @@
                 "fred": []
             },
             "model": "SurveyOfEconomicConditionsChicago"
+        },
+        "/economy/survey/manufacturing_outlook_texas": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get The Manufacturing Outlook Survey For The Texas Region.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.manufacturing_outlook_texas(provider='fred')\nobb.economy.survey.manufacturing_outlook_texas(topic=business_outlook,new_orders, transform=pc1, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "topic",
+                        "type": "Union[Union[Literal['business_activity', 'business_outlook', 'capex', 'prices_paid', 'production', 'inventory', 'new_orders', 'new_orders_growth', 'unfilled_orders', 'shipments', 'delivery_time', 'employment', 'wages', 'hours_worked'], str], List[Union[Literal['business_activity', 'business_outlook', 'capex', 'prices_paid', 'production', 'inventory', 'new_orders', 'new_orders_growth', 'unfilled_orders', 'shipments', 'delivery_time', 'employment', 'wages', 'hours_worked'], str]]]",
+                        "description": "The topic for the survey response. Multiple items allowed for provider(s): fred.",
+                        "default": "new_orders_growth",
+                        "optional": true,
+                        "choices": [
+                            "business_activity",
+                            "business_outlook",
+                            "capex",
+                            "prices_paid",
+                            "production",
+                            "inventory",
+                            "new_orders",
+                            "new_orders_growth",
+                            "unfilled_orders",
+                            "shipments",
+                            "delivery_time",
+                            "employment",
+                            "wages",
+                            "hours_worked"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[ManufacturingOutlookTexas]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "topic",
+                        "type": "str",
+                        "description": "Topic of the survey response.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "diffusion_index",
+                        "type": "float",
+                        "description": "Diffusion Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_increase",
+                        "type": "float",
+                        "description": "Percent of respondents reporting an increase over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_decrease",
+                        "type": "float",
+                        "description": "Percent of respondents reporting a decrease over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percent_reporting_no_change",
+                        "type": "float",
+                        "description": "Percent of respondents reporting no change over the last month.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "ManufacturingOutlookTexas"
         },
         "/economy/calendar": {
             "deprecated": {

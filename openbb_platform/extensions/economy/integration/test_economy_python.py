@@ -847,3 +847,30 @@ def test_economy_survey_economic_conditions_chicago(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "topic": "business_outlook,new_orders",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_manufacturing_outlook_texas(params, obb):
+    """Test the economy survey manufacturing outlook texas endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.survey.manufacturing_outlook_texas(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

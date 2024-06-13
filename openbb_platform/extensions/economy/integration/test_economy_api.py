@@ -896,3 +896,31 @@ def test_economy_survey_economic_conditions_chicago(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "topic": "business_outlook,new_orders",
+                "start_date": "2024-01-01",
+                "end_date": "2024-04-01",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_survey_manufacturing_outlook_texas(params, headers):
+    """Test the economy survey manufacturing outlook texas endpoint"""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/survey/manufacturing_outlook_texas?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

@@ -61,5 +61,28 @@ async def economic_conditions_chicago(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get The Survey Of Economic Conditions In The Chicago Region."""
+    """Get The Survey Of Economic Conditions For The Chicago Region."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="ManufacturingOutlookTexas",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+        APIEx(
+            parameters={
+                "topic": "business_outlook,new_orders",
+                "transform": "pc1",
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+async def manufacturing_outlook_texas(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get The Manufacturing Outlook Survey For The Texas Region."""
     return await OBBject.from_query(Query(**locals()))

@@ -20,6 +20,9 @@ from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
 from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.manufacturing_outlook_texas import (
+    FredManufacturingOutlookTexasFetcher,
+)
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
@@ -404,5 +407,20 @@ def test_fred_survey_of_economic_conditions_chicago_fetcher(
     }
 
     fetcher = FredSurveyOfEconomicConditionsChicagoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_manufacturing_outlook_texas_fetcher(
+    credentials=test_credentials,
+):
+    """Test FredManufacturingOutlookTexasFetcher."""
+    params = {
+        "start_date": datetime.date(2024, 3, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredManufacturingOutlookTexasFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
