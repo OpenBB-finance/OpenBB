@@ -23,7 +23,8 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
     def time_validate(cls, v: int):  # pylint: disable=E0213
         """Return the year as an integer."""
         current_year = datetime.now().year
-        return current_year if v > current_year or v < 1950 else v
+        # Current year + 1 to accouont for potential fiscal year.
+        return current_year if v > (current_year + 1) or v < 1950 else v
 
 
 class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
@@ -57,7 +58,6 @@ class FMPEarningsCallTranscriptFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
         url = create_url(
             4,
             f"batch_earning_call_transcript/{query.symbol}",
