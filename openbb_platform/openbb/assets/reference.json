@@ -2676,6 +2676,198 @@
             },
             "model": "UniversityOfMichigan"
         },
+        "/economy/survey/economic_conditions_chicago": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get The Survey Of Economic Conditions In The Chicago Region.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.economy.survey.economic_conditions_chicago(provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "frequency",
+                        "type": "Literal['annual', 'quarter']",
+                        "description": "Frequency aggregation to convert monthly data to lower frequency. None is monthly.",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "annual",
+                            "quarter"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SurveyOfEconomicConditionsChicago]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "activity_index",
+                        "type": "float",
+                        "description": "Activity Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "one_year_outlook",
+                        "type": "float",
+                        "description": "One Year Outlook Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "manufacturing_activity",
+                        "type": "float",
+                        "description": "Manufacturing Activity Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "non_manufacturing_activity",
+                        "type": "float",
+                        "description": "Non-Manufacturing Activity Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "capital_expenditures_expectations",
+                        "type": "float",
+                        "description": "Capital Expenditures Expectations Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "hiring_expectations",
+                        "type": "float",
+                        "description": "Hiring Expectations Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "current_hiring",
+                        "type": "float",
+                        "description": "Current Hiring Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "labor_costs",
+                        "type": "float",
+                        "description": "Labor Costs Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "non_labor_costs",
+                        "type": "float",
+                        "description": "Non-Labor Costs Index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "SurveyOfEconomicConditionsChicago"
+        },
         "/economy/calendar": {
             "deprecated": {
                 "flag": null,
