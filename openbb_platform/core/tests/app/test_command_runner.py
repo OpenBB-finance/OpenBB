@@ -16,6 +16,7 @@ from openbb_core.app.command_runner import (
 )
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.provider_interface import ExtraParams
@@ -364,8 +365,15 @@ async def test_static_command_runner_execute_func(
 
 def test_static_command_runner_chart():
     """Test _chart method when charting is in obbject.accessors."""
-    mock_obbject = Mock()
-    mock_obbject.accessors = ["charting"]
+
+    mock_obbject = OBBject(
+        results=[
+            {"date": "1990", "value": 100},
+            {"date": "1991", "value": 200},
+            {"date": "1992", "value": 300},
+        ],
+        accessors={"charting": Mock()},
+    )
     mock_obbject.charting.show = Mock()
 
     StaticCommandRunner._chart(mock_obbject)  # pylint: disable=protected-access

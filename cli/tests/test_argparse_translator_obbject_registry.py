@@ -35,7 +35,7 @@ def mock_obbject():
     obb.extra = {"command": "test_command"}
     obb._route = "/test/route"
     obb._standard_params = Mock()
-    obb._standard_params.__dict__ = {}
+    obb._standard_params = {}
     obb.results = [MockModel(1), MockModel(2)]
     return obb
 
