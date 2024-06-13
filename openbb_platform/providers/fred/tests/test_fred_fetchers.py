@@ -33,6 +33,9 @@ from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
+from openbb_fred.models.survey_of_economic_conditions_chicago import (
+    FredSurveyOfEconomicConditionsChicagoFetcher,
+)
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
@@ -386,5 +389,20 @@ def test_fred_senior_loan_officer_survey_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredSeniorLoanOfficerSurveyFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_survey_of_economic_conditions_chicago_fetcher(
+    credentials=test_credentials,
+):
+    """Test FredSurveyOfEconomicConditionsChicagoFetcher."""
+    params = {
+        "start_date": datetime.date(2024, 3, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredSurveyOfEconomicConditionsChicagoFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

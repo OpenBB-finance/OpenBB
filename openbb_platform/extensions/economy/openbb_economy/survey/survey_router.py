@@ -47,3 +47,19 @@ async def university_of_michigan(
 ) -> OBBject:
     """Get University of Michigan Consumer Sentiment and Inflation Expectations Surveys."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="SurveyOfEconomicConditionsChicago",
+    examples=[
+        APIEx(parameters={"provider": "fred"}),
+    ],
+)
+async def economic_conditions_chicago(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get The Survey Of Economic Conditions In The Chicago Region."""
+    return await OBBject.from_query(Query(**locals()))

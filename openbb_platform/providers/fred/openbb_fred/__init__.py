@@ -30,6 +30,9 @@ from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
+from openbb_fred.models.survey_of_economic_conditions_chicago import (
+    FredSurveyOfEconomicConditionsChicagoFetcher,
+)
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
@@ -72,6 +75,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
+        "SurveyOfEconomicConditionsChicago": FredSurveyOfEconomicConditionsChicagoFetcher,
         "UniversityOfMichigan": FredUofMichiganFetcher,
         "YieldCurve": FREDYieldCurveFetcher,
     },
