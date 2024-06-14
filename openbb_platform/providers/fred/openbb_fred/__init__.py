@@ -18,6 +18,7 @@ from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -57,6 +58,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
         "ICEBofA": FREDICEBofAFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
+        "MortgageIndices": FredMortgageIndicesFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,

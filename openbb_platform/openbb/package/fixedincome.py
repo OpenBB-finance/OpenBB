@@ -16,6 +16,7 @@ class ROUTER_fixedincome(Container):
     bond_indices
     /corporate
     /government
+    mortgage_indices
     /rate
     sofr
     /spreads
@@ -182,6 +183,132 @@ class ROUTER_fixedincome(Container):
 
         return fixedincome_government.ROUTER_fixedincome_government(
             command_runner=self._command_runner
+        )
+
+    @exception_handler
+    @validate
+    def mortgage_indices(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Mortgage Indices.
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
+        index : Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str]
+            The specific index, or index group, to query. Default is the 'primary' group. Multiple comma separated items allowed. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    None = No change
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    d = Daily
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Literal['avg', 'sum', 'eop']
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                This parameter has no affect if the frequency parameter is not set, default is 'avg'.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[MortgageIndices]
+                Serializable results.
+            provider : Optional[Literal['fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        MortgageIndices
+        ---------------
+        date : date
+            The date of the data.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the index.
+        rate : float
+            Mortgage rate.
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # The default state for FRED are the primary mortgage indices from Optimal Blue.
+        >>> obb.fixedincome.mortgage_indices(provider='fred')
+        >>> # Multiple indices can be requested.
+        >>> obb.fixedincome.mortgage_indices(index='jumbo_30y,conforming_30y,conforming_15y', provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/mortgage_indices",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "fixedincome.mortgage_indices",
+                        ("fred",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+                info={"index": {"fred": {"multiple_items_allowed": True}}},
+            )
         )
 
     @property
