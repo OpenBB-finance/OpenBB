@@ -1,5 +1,7 @@
 """FMP Earnings Call Transcript Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -8,7 +10,7 @@ from openbb_core.provider.standard_models.earnings_call_transcript import (
     EarningsCallTranscriptData,
     EarningsCallTranscriptQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.helpers import amake_requests
 from pydantic import field_validator
 
 
@@ -18,12 +20,10 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """
 
-    @field_validator("year", mode="before", check_fields=False)
-    @classmethod
-    def time_validate(cls, v: int):  # pylint: disable=E0213
-        """Return the year as an integer."""
-        current_year = datetime.now().year
-        return current_year if v > current_year or v < 1950 else v
+    __json_schema_extra__ = {
+        "symbol": {"multiple_items_allowed": True},
+        "year": {"multiple_items_allowed": True},
+    }
 
 
 class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
@@ -31,7 +31,7 @@ class FMPEarningsCallTranscriptData(EarningsCallTranscriptData):
 
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v: str):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
 
@@ -42,7 +42,7 @@ class FMPEarningsCallTranscriptFetcher(
         List[FMPEarningsCallTranscriptData],
     ]
 ):
-    """Transform the query, extract and transform the data from the FMP endpoints."""
+    """FMP Earnings Call Transcript Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPEarningsCallTranscriptQueryParams:
@@ -57,16 +57,23 @@ class FMPEarningsCallTranscriptFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        symbols = query.symbol.split(",")
+        years = query.year.split(",") if isinstance(query.year, str) else [query.year]
 
-        url = create_url(
-            4,
-            f"batch_earning_call_transcript/{query.symbol}",
-            api_key,
-            query,
-            ["symbol"],
-        )
+        def generate_url(symbol, year):
+            """Generate the URL."""
+            url = (
+                f"https://financialmodelingprep.com/api/v4/batch_earning_call_transcript/{symbol}?"
+                + f"year={year}&apikey={api_key}"
+            )
+            return url
 
-        return await get_data_many(url, **kwargs)
+        urls: List = []
+        for symbol in symbols:
+            for year in years:
+                urls.append(generate_url(symbol, year))
+
+        return await amake_requests(urls, **kwargs)  # type: ignore
 
     @staticmethod
     def transform_data(
