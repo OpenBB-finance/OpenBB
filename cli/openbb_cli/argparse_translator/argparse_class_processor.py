@@ -1,19 +1,19 @@
+"""Module for the ArgparseClassProcessor class."""
+
 import inspect
 from typing import Any, Dict, Optional, Type
 
 # TODO: this needs to be done differently
 from openbb_core.app.static.container import Container
 
-from openbb_cli.argparse_translator.argparse_translator import (
-    ArgparseTranslator,
-    ReferenceToCustomArgumentsProcessor,
+from openbb_cli.argparse_translator.argparse_translator import ArgparseTranslator
+from openbb_cli.argparse_translator.reference_processor import (
+    ReferenceToArgumentsProcessor,
 )
 
 
 class ArgparseClassProcessor:
-    """
-    Process a target class to create ArgparseTranslators for its methods.
-    """
+    """Process a target class to create ArgparseTranslators for its methods."""
 
     # reference variable used to create custom groups for the ArgpaseTranslators
     _reference: Dict[str, Any] = {}
@@ -77,7 +77,7 @@ class ArgparseClassProcessor:
         reference = {route: cls._reference[route]} if route in cls._reference else {}
         if not reference:
             return {}
-        rp = ReferenceToCustomArgumentsProcessor(reference)
+        rp = ReferenceToArgumentsProcessor(reference)
         return rp.custom_groups.get(route, {})  # type: ignore
 
     @classmethod

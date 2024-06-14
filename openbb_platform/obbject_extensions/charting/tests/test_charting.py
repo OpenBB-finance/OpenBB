@@ -24,7 +24,7 @@ mock_dataframe = MockDataframe()
 
 @pytest.fixture()
 def obbject():
-    """Mock OOBject."""
+    """Mock OBBject."""
 
     class MockStdParams(BaseModel):
         """Mock Standard Parameters."""
@@ -32,21 +32,22 @@ def obbject():
         param1: str
         param2: str
 
-    class MockOOBject:
-        """Mock OOBject."""
+    class MockOBBject:
+        """Mock OBBject."""
 
         def __init__(self):
-            """Mock OOBject."""
+            """Mock OBBject."""
             self._user_settings = UserSettings()
             self._system_settings = SystemSettings()
             self._route = "mock/route"
             self._standard_params = MockStdParams(
                 param1="mock_param1", param2="mock_param2"
             )
+            self._extra_params = {}
             self.results = "mock_results"
 
             self.provider = "mock_provider"
-            self.extra = "mock_extra"
+            self.extra = {}
             self.warnings = "mock_warnings"
             self.chart = MagicMock()
 
@@ -54,7 +55,7 @@ def obbject():
             """Mock to_dataframe."""
             return mock_dataframe
 
-    return MockOOBject()
+    return MockOBBject()
 
 
 def test_charting_settings(obbject):

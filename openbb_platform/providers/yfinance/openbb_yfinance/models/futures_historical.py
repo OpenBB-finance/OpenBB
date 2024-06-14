@@ -85,11 +85,9 @@ class YFinanceFuturesHistoricalFetcher(
                     exchange = futures_data[futures_data["Ticker"] == symbol][
                         "Exchange"
                     ].values[0]
-                new_symbol = (
-                    f"{symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
-                    if "." not in symbol
-                    else symbol
-                )
+                    new_symbol = f"{symbol}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
+                else:
+                    new_symbol = symbol
                 new_symbols.append(new_symbol)
             else:
                 new_symbols.append(symbol)

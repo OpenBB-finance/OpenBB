@@ -187,7 +187,7 @@ class Decorator:
     kwargs: Optional[dict] = None
 
 
-def get_decorator_details(function) -> Decorator:
+def get_decorator_details(function) -> Optional[Decorator]:
     """Extract decorators and their arguments from a function."""
     source = inspect.getsource(function)
     parsed_source = parse(source)
@@ -207,8 +207,8 @@ def get_decorator_details(function) -> Decorator:
                 name = (
                     decorator.id if isinstance(decorator, Name) else unparse(decorator)
                 )
-
-    return Decorator(name, args, kwargs)
+        return Decorator(name, args, kwargs)
+    return None
 
 
 def find_missing_router_function_models(

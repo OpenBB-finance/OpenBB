@@ -138,27 +138,10 @@ class BaseController(metaclass=ABCMeta):
 
     def load_class(self, class_ins, *args, **kwargs):
         """Check for an existing instance of the controller before creating a new one."""
-        settings = session.settings
         self.save_class()
         arguments = len(args) + len(kwargs)
-        # Due to the 'arguments == 1' condition, we actually NEVER load a class
-        # that has arguments (The 1 argument corresponds to self.queue)
-        # Advantage: If the user changes something on one controller and then goes to the
-        # controller below, it will create such class from scratch bringing all new variables
-        # in and considering latest changes.
-        # Disadvantage: If the user goes on a controller below and we have been there before
-        # it will not load that previous class, but create a new one from scratch.
-        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
-        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
-        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
-        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
-        # the previous class will be loaded and even if the user changes the ticker on
-        # the stocks context it will not impact the one of TA menu - unless changes are done.
-        if (
-            class_ins.PATH in controllers
-            and arguments == 1
-            and settings.REMEMBER_CONTEXTS
-        ):
+
+        if class_ins.PATH in controllers and arguments == 1:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -166,8 +149,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
-        if session.settings.REMEMBER_CONTEXTS:
-            controllers[self.PATH] = self
+        controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
         """Implement custom reset.
@@ -743,13 +725,15 @@ class BaseController(metaclass=ABCMeta):
 
             if export_allowed == "raw_data_only":
                 choices_export = ["csv", "json", "xlsx"]
-                help_export = "Export raw data into csv, json, xlsx"
+                help_export = "Export raw data into csv, json or xlsx."
             elif export_allowed == "figures_only":
-                choices_export = ["png", "jpg", "svg"]
-                help_export = "Export figure into png, jpg, svg "
+                choices_export = ["png", "jpg"]
+                help_export = "Export figure into png or jpg."
             else:
-                choices_export = ["csv", "json", "xlsx", "png", "jpg", "svg"]
-                help_export = "Export raw data into csv, json, xlsx and figure into png, jpg, svg "
+                choices_export = ["csv", "json", "xlsx", "png", "jpg"]
+                help_export = (
+                    "Export raw data into csv, json, xlsx and figure into png or jpg."
+                )
 
             parser.add_argument(
                 "--export",
@@ -805,7 +789,11 @@ class BaseController(metaclass=ABCMeta):
                     i + 1
                     for i, arg in enumerate(other_args)
                     if arg in ("-i", "--input")
-                    and "routine_args" in [action.dest for action in parser._actions]
+                    and "routine_args"
+                    in [
+                        action.dest
+                        for action in parser._actions  # pylint: disable=protected-access
+                    ]
                 ),
                 -1,
             )
@@ -816,6 +804,11 @@ class BaseController(metaclass=ABCMeta):
                 for part in (arg.split(",") if index != routine_args_index else [arg])
             ]
 
+            # Check if the action has optional choices, if yes, remove them
+            for action in parser._actions:  # pylint: disable=protected-access
+                if hasattr(action, "optional_choices") and action.optional_choices:
+                    action.choices = None
+
             (ns_parser, l_unknown_args) = parser.parse_known_args(other_args)
 
             if export_allowed in [
@@ -823,7 +816,7 @@ class BaseController(metaclass=ABCMeta):
                 "raw_data_and_figures",
             ]:
                 ns_parser.is_image = any(
-                    ext in ns_parser.export for ext in ["png", "svg", "jpg"]
+                    ext in ns_parser.export for ext in ["png", "jpg"]
                 )
 
         except SystemExit:

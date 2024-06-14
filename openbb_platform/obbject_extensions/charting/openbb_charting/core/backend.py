@@ -201,21 +201,18 @@ class Backend(PyWry):
             if self.charting_settings.chart_style == "dark"
             else "rgba(255,255,255,0)"
         )
-
         title = "Interactive Chart"
-
         fig.layout.title.text = re.sub(
             r"<[^>]*>", "", fig.layout.title.text if fig.layout.title.text else title
         )
-
         fig.layout.height += 69
 
-        if export_image and isinstance(export_image, str):
-            export_image = Path(export_image).resolve()
+        export_image = Path(export_image).resolve() if export_image else None
 
         json_data = json.loads(fig.to_json())
         json_data.update(self.get_json_update(command_location))
         json_data["layout"]["paper_bgcolor"] = paper_bg
+
         outgoing = dict(
             html=self.get_plotly_html(),
             json_data=json_data,
@@ -224,7 +221,7 @@ class Backend(PyWry):
         )
         self.send_outgoing(outgoing)
 
-        if export_image and isinstance(export_image, Path):
+        if export_image:
             if self.loop.is_closed():  # type: ignore[has-type]
                 # Create a new event loop
                 self.loop = asyncio.new_event_loop()
@@ -403,75 +400,6 @@ class Backend(PyWry):
             self.max_retries = 50  # pylint: disable=W0201
 
         super().close()
-
-    async def get_results(self, description: str) -> dict:
-        """Wait for completion of interactive task and return the data.
-
-        Parameters
-        ----------
-        description : str
-            Description of the task to console print while waiting.
-
-        Returns
-        -------
-        dict
-            The data returned from pywry backend.
-        """
-        warnings.warn(
-            f"[green]{description}[/]\n\n"
-            "[yellow]If the window is closed you can continue by pressing Ctrl+C.[/]"
-        )
-        while True:
-            try:
-                data: dict = self.recv.get(block=False) or {}
-                if data.get("result", False):
-                    return json.loads(data["result"])
-            except Exception:  # pylint: disable=W0703
-                await asyncio.sleep(0.1)
-
-            await asyncio.sleep(1)
-
-    def call_hub(self, login: bool = True) -> Optional[dict]:
-        """Call the hub to login or logout.
-
-        Parameters
-        ----------
-        login : bool, optional
-            Whether to login or logout, by default True
-
-        Returns
-        -------
-        Optional[dict]
-            The user data if login was successful, None otherwise.
-        """
-        self.check_backend()
-        endpoint = {True: "login", False: "logout"}[login]
-
-        outgoing = dict(
-            json_data=dict(url=f"https://my.openbb.co/{endpoint}?pywry=true"),
-            **self.get_kwargs(endpoint.title()),
-            width=900,
-            height=800,
-        )
-        self.send_outgoing(outgoing)
-
-        messages_dict = dict(
-            login=dict(
-                message="Welcome to OpenBB Terminal! Please login to continue.",
-                interrupt="Window closed without authentication. Please proceed below.",
-            ),
-            logout=dict(
-                message="Sending logout request", interrupt="Please login to continue."
-            ),
-        )
-
-        try:
-            return self.loop.run_until_complete(
-                self.get_results(messages_dict[endpoint]["message"])
-            )
-        except KeyboardInterrupt:
-            warnings.warn(f"\n[red]{messages_dict[endpoint]['interrupt']}[/red]")
-            return None
 
 
 async def download_plotly_js():

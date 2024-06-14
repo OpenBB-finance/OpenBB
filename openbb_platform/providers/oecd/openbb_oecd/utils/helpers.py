@@ -4,7 +4,7 @@ import ssl
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Literal, Optional, Union
 
 import requests
 import urllib3
@@ -207,7 +207,7 @@ def get_possibly_cached_data(
     url: str,
     function: Optional[str] = None,
     query_dict: Optional[dict] = None,
-    cache_method: str = "csv",
+    cache_method: Literal["csv", "parquet"] = "csv",
     skip_cache: bool = False,
 ) -> DataFrame:
     """Retrieve data from a given URL or from the cache if available and valid.
@@ -231,15 +231,11 @@ def get_possibly_cached_data(
     base_cache = (
         f"{cache}/{function}_{query_dict_to_path(query_dict if query_dict else {})}"
     )
-    if cache_method == "parquet":
-        cache_path = base_cache + ".parquet"
-    elif cache_method == "csv":
-        cache_path = base_cache + ".csv"
-
     use_cache = check_cache_exists_and_valid(
         cache_str=base_cache, cache_method=cache_method
     )
     if use_cache and not skip_cache:
+        cache_path = f"{base_cache}.{cache_method}"
         if cache_method == "csv":
             data = read_csv(cache_path)
         elif cache_method == "parquet":
@@ -252,12 +248,12 @@ def get_possibly_cached_data(
 
 
 def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
-    """Use Darrens good idea to make the dates filterable."""
+    """Date formatter helper."""
     input_date = str(input_date)
     if "Q" in input_date:
-        return to_datetime(input_date).to_period("Q").to_timestamp("Q").date()
+        return to_datetime(input_date).to_period("Q").start_time.date()
     if len(input_date) == 4:
-        return date(int(input_date), 12, 31)
+        return date(int(input_date), 1, 1)
     if len(input_date) == 7:
-        return to_datetime(input_date).to_period("M").to_timestamp("M").date()
+        return to_datetime(input_date).to_period("M").start_time.date()
     raise ValueError("Date not in expected format")

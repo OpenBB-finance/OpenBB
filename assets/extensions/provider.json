@@ -67,7 +67,7 @@
         "packageName": "openbb-federal-reserve",
         "optional": false,
         "reprName": "Federal Reserve (FED)",
-        "description": "Access data provided by the Federal Reserve System,\nthe Central Bank of the United States.",
+        "description": "Access data provided by the Federal Reserve System, the Central Bank of the United States.",
         "credentials": [],
         "website": "https://www.federalreserve.gov/data.htm"
     },
@@ -155,9 +155,9 @@
         "packageName": "openbb-oecd",
         "optional": false,
         "reprName": "Organization for Economic Co-operation and Development (OECD)",
-        "description": "OECD.Stat includes data and metadata for OECD countries and selected\nnon-member economies.",
+        "description": "OECD Data Explorer includes data and metadata for OECD countries and selected\nnon-member economies.",
         "credentials": [],
-        "website": "https://stats.oecd.org"
+        "website": "https://data-explorer.oecd.org/"
     },
     {
         "packageName": "openbb-polygon",

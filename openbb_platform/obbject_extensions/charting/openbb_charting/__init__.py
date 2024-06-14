@@ -325,23 +325,20 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = self._obbject.results
-            kwargs["charting_settings"] = self._charting_settings
-            if (
-                hasattr(self._obbject, "_standard_params")
-                and self._obbject._standard_params  # pylint: disable=protected-access
-            ):
-                kwargs["standard_params"] = (
-                    self._obbject._standard_params.__dict__  # pylint: disable=protected-access
-                )
+            kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
+            kwargs["charting_settings"] = (
+                self._charting_settings
+            )  # pylint: disable=protected-access
+            kwargs["standard_params"] = (
+                self._obbject._standard_params
+            )  # pylint: disable=protected-access
+            kwargs["extra_params"] = (
+                self._obbject._extra_params
+            )  # pylint: disable=protected-access
             kwargs["provider"] = (
                 self._obbject.provider
             )  # pylint: disable=protected-access
             kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
-
-            if "kwargs" in kwargs:
-                _kwargs = kwargs.pop("kwargs")
-                kwargs.update(_kwargs.get("chart_params", {}))
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
@@ -448,23 +445,18 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = self._obbject.results
-        kwargs["charting_settings"] = self._charting_settings
-        if (
-            hasattr(self._obbject, "_standard_params")
-            and self._obbject._standard_params  # pylint: disable=protected-access
-        ):
-            kwargs["standard_params"] = (
-                self._obbject._standard_params.__dict__  # pylint: disable=protected-access
-            )
+        kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
+        kwargs["charting_settings"] = (
+            self._charting_settings
+        )  # pylint: disable=protected-access
+        kwargs["standard_params"] = (
+            self._obbject._standard_params
+        )  # pylint: disable=protected-access
+        kwargs["extra_params"] = (
+            self._obbject._extra_params
+        )  # pylint: disable=protected-access
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
-        kwargs["extra_params"] = kwargs["extra"]["metadata"].arguments.get(
-            "extra_params"
-        )
-        if "kwargs" in kwargs:
-            _kwargs = kwargs.pop("kwargs")
-            kwargs.update(_kwargs.get("chart_params", {}))
         try:
             if has_data:
                 self.show(data=data_as_df, render=render, **kwargs)
@@ -487,7 +479,7 @@ class Charting:
 
     def _set_chart_style(self, figure: Figure):
         """Set the user preference for light or dark mode."""
-        style = self._charting_settings.chart_style  # pylint: disable=protected-access
+        style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
         paper_bgcolor = "white" if style == "light" else "black"
         figure = figure.update_layout(
@@ -497,7 +489,7 @@ class Charting:
         )
         return figure
 
-    def toggle_chart_style(self):  # pylint: disable=protected-access
+    def toggle_chart_style(self):
         """Toggle the chart style between light and dark mode."""
         if not hasattr(self._obbject.chart, "fig"):
             raise ValueError(
@@ -554,3 +546,16 @@ class Charting:
                 ipython_display.display(ipython_display.HTML(data_as_df.to_html()))
             else:
                 warn("IPython.display is not available.")
+
+    def url(
+        self,
+        url: str,
+        title: str = "",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+    ):
+        """Return the URL of the chart."""
+        try:
+            self._backend.send_url(url=url, title=title, width=width, height=height)
+        except Exception as e:  # pylint: disable=W0718
+            warn(f"Failed to show figure with backend. {e}")

@@ -24,20 +24,21 @@
     > For a single package release, the following steps are optional since the package can be bumped manually.
 
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
-    2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
+    2. For the extension packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
-         1. Bump the dependency package versions
+        3.1. Bump the dependency package versions
 
         > [!WARNING]
         > Create a new environment before proceeding.
         > Make sure that only required extensions are installed
 
-         2. Re-build the static assets that are bundled with the package: `python -c "import openbb; openbb.build()"`
-            - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
-            - Run any command to smoke test if the static assets are being built correctly.
-         3. Run unit tests to validate the existence of deprecated endpoints
-         4. Run `poetry publish --build` from `openbb_platform`
-         5. Run `poetry lock` from `openbb_platform`
+        3.2. Run `pip install -e .` from `openbb_platform`
+        3.3. Re-build the static assets that are bundled with the package: `python -c "import openbb; openbb.build()"`
+        - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
+        - Run any command to smoke test if the static assets are being built correctly.
+        3.4. Run unit tests to validate the existence of deprecated endpoints
+        3.5. Run `poetry publish --build` from `openbb_platform`
+        3.6. Run `poetry lock` from `openbb_platform`
 
     > [!TIP]
     > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies:

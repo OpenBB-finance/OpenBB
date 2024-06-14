@@ -3,8 +3,9 @@
 from openbb_core.provider.abstract.provider import Provider
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
+from openbb_fred.models.bond_indices import FredBondIndicesFetcher
+from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher
-from openbb_fred.models.cpi import FREDConsumerPriceIndexFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
@@ -18,6 +19,7 @@ from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.regional import FredRegionalDataFetcher
+from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
@@ -41,6 +43,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
     credentials=["api_key"],
     fetcher_dict={
         "BalanceOfPayments": FredBalanceOfPaymentsFetcher,
+        "BondIndices": FredBondIndicesFetcher,
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
@@ -58,6 +61,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
         "FredRegional": FredRegionalDataFetcher,
+        "RetailPrices": FredRetailPricesFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
