@@ -53255,13 +53255,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPBalanceSheetData"
-                    },
-                    {
                       "$ref": "#/components/schemas/PolygonBalanceSheetData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioBalanceSheetData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FMPBalanceSheetData"
                     }
                   ]
                 },
@@ -53748,13 +53748,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioCashFlowStatementData"
+                      "$ref": "#/components/schemas/FMPCashFlowStatementData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonCashFlowStatementData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPCashFlowStatementData"
+                      "$ref": "#/components/schemas/IntrinioCashFlowStatementData"
                     }
                   ]
                 },
@@ -54033,10 +54033,10 @@
                       "$ref": "#/components/schemas/IntrinioCompanyFilingsData"
                     },
                     {
-                      "$ref": "#/components/schemas/SecCompanyFilingsData"
+                      "$ref": "#/components/schemas/FMPCompanyFilingsData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPCompanyFilingsData"
+                      "$ref": "#/components/schemas/SecCompanyFilingsData"
                     }
                   ]
                 },
@@ -54112,10 +54112,10 @@
                       "$ref": "#/components/schemas/FMPCompanyNewsData"
                     },
                     {
-                      "$ref": "#/components/schemas/BenzingaCompanyNewsData"
+                      "$ref": "#/components/schemas/PolygonCompanyNewsData"
                     },
                     {
-                      "$ref": "#/components/schemas/PolygonCompanyNewsData"
+                      "$ref": "#/components/schemas/BenzingaCompanyNewsData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioCompanyNewsData"
@@ -54463,10 +54463,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonCryptoHistoricalData"
+                      "$ref": "#/components/schemas/FMPCryptoHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPCryptoHistoricalData"
+                      "$ref": "#/components/schemas/PolygonCryptoHistoricalData"
                     }
                   ]
                 },
@@ -54608,10 +54608,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonCurrencyHistoricalData"
+                      "$ref": "#/components/schemas/FMPCurrencyHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPCurrencyHistoricalData"
+                      "$ref": "#/components/schemas/PolygonCurrencyHistoricalData"
                     }
                   ]
                 },
@@ -54687,10 +54687,10 @@
                       "$ref": "#/components/schemas/PolygonCurrencyPairsData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPCurrencyPairsData"
+                      "$ref": "#/components/schemas/IntrinioCurrencyPairsData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioCurrencyPairsData"
+                      "$ref": "#/components/schemas/FMPCurrencyPairsData"
                     }
                   ]
                 },
@@ -54828,10 +54828,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPCurrencySnapshotsData"
+                      "$ref": "#/components/schemas/PolygonCurrencySnapshotsData"
                     },
                     {
-                      "$ref": "#/components/schemas/PolygonCurrencySnapshotsData"
+                      "$ref": "#/components/schemas/FMPCurrencySnapshotsData"
                     }
                   ]
                 },
@@ -55249,10 +55249,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/TEEconomicCalendarData"
+                      "$ref": "#/components/schemas/FMPEconomicCalendarData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEconomicCalendarData"
+                      "$ref": "#/components/schemas/TEEconomicCalendarData"
                     }
                   ]
                 },
@@ -55463,13 +55463,13 @@
                 "items": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
+                    },
+                    {
                       "$ref": "#/components/schemas/FMPEquityHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonEquityHistoricalData"
-                    },
-                    {
-                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
                     }
                   ]
                 },
@@ -55542,10 +55542,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPEquityProfileData"
+                      "$ref": "#/components/schemas/IntrinioEquityInfoData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioEquityInfoData"
+                      "$ref": "#/components/schemas/FMPEquityProfileData"
                     }
                   ]
                 },
@@ -55821,10 +55821,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioEquityQuoteData"
+                      "$ref": "#/components/schemas/FMPEquityQuoteData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEquityQuoteData"
+                      "$ref": "#/components/schemas/IntrinioEquityQuoteData"
                     }
                   ]
                 },
@@ -55966,10 +55966,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioEquitySearchData"
+                      "$ref": "#/components/schemas/SecEquitySearchData"
                     },
                     {
-                      "$ref": "#/components/schemas/SecEquitySearchData"
+                      "$ref": "#/components/schemas/IntrinioEquitySearchData"
                     }
                   ]
                 },
@@ -56249,13 +56249,13 @@
                 "items": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
+                    },
+                    {
                       "$ref": "#/components/schemas/FMPEquityHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonEquityHistoricalData"
-                    },
-                    {
-                      "$ref": "#/components/schemas/IntrinioEquityHistoricalData"
                     }
                   ]
                 },
@@ -56328,13 +56328,13 @@
                 "items": {
                   "oneOf": [
                     {
+                      "$ref": "#/components/schemas/SecEtfHoldingsData"
+                    },
+                    {
                       "$ref": "#/components/schemas/FMPEtfHoldingsData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioEtfHoldingsData"
-                    },
-                    {
-                      "$ref": "#/components/schemas/SecEtfHoldingsData"
                     }
                   ]
                 },
@@ -56628,10 +56628,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioEtfSearchData"
+                      "$ref": "#/components/schemas/FMPEtfSearchData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPEtfSearchData"
+                      "$ref": "#/components/schemas/IntrinioEtfSearchData"
                     }
                   ]
                 },
@@ -57132,10 +57132,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioForwardEbitdaEstimatesData"
+                      "$ref": "#/components/schemas/FMPForwardEbitdaEstimatesData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPForwardEbitdaEstimatesData"
+                      "$ref": "#/components/schemas/IntrinioForwardEbitdaEstimatesData"
                     }
                   ]
                 },
@@ -57560,10 +57560,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioFredSeriesData"
+                      "$ref": "#/components/schemas/FredSeriesData"
                     },
                     {
-                      "$ref": "#/components/schemas/FredSeriesData"
+                      "$ref": "#/components/schemas/IntrinioFredSeriesData"
                     }
                   ]
                 },
@@ -58532,10 +58532,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonIncomeStatementData"
+                      "$ref": "#/components/schemas/FMPIncomeStatementData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPIncomeStatementData"
+                      "$ref": "#/components/schemas/PolygonIncomeStatementData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIncomeStatementData"
@@ -58749,10 +58749,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonIndexHistoricalData"
+                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
+                      "$ref": "#/components/schemas/PolygonIndexHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIndexHistoricalData"
@@ -58828,10 +58828,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPInsiderTradingData"
+                      "$ref": "#/components/schemas/IntrinioInsiderTradingData"
                     },
                     {
-                      "$ref": "#/components/schemas/IntrinioInsiderTradingData"
+                      "$ref": "#/components/schemas/FMPInsiderTradingData"
                     }
                   ]
                 },
@@ -59325,10 +59325,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/PolygonIndexHistoricalData"
+                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPIndexHistoricalData"
+                      "$ref": "#/components/schemas/PolygonIndexHistoricalData"
                     },
                     {
                       "$ref": "#/components/schemas/IntrinioIndexHistoricalData"
@@ -59404,13 +59404,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioMarketSnapshotsData"
+                      "$ref": "#/components/schemas/FMPMarketSnapshotsData"
                     },
                     {
                       "$ref": "#/components/schemas/PolygonMarketSnapshotsData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPMarketSnapshotsData"
+                      "$ref": "#/components/schemas/IntrinioMarketSnapshotsData"
                     }
                   ]
                 },
@@ -59973,10 +59973,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/IntrinioPriceTargetConsensusData"
+                      "$ref": "#/components/schemas/FMPPriceTargetConsensusData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPPriceTargetConsensusData"
+                      "$ref": "#/components/schemas/IntrinioPriceTargetConsensusData"
                     }
                   ]
                 },
@@ -61290,10 +61290,10 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FederalReserveTreasuryRatesData"
+                      "$ref": "#/components/schemas/FMPTreasuryRatesData"
                     },
                     {
-                      "$ref": "#/components/schemas/FMPTreasuryRatesData"
+                      "$ref": "#/components/schemas/FederalReserveTreasuryRatesData"
                     }
                   ]
                 },
@@ -61573,13 +61573,13 @@
                 "items": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/FMPWorldNewsData"
-                    },
-                    {
                       "$ref": "#/components/schemas/IntrinioWorldNewsData"
                     },
                     {
                       "$ref": "#/components/schemas/BenzingaWorldNewsData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/FMPWorldNewsData"
                     }
                   ]
                 },
@@ -61658,13 +61658,13 @@
                       "$ref": "#/components/schemas/openbb_fred__models__yield_curve__FREDYieldCurveData"
                     },
                     {
-                      "$ref": "#/components/schemas/ECBYieldCurveData"
-                    },
-                    {
                       "$ref": "#/components/schemas/EconDbYieldCurveData"
                     },
                     {
                       "$ref": "#/components/schemas/FederalReserveYieldCurveData"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ECBYieldCurveData"
                     }
                   ]
                 },

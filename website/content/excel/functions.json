@@ -166,10 +166,16 @@
           "type": "string"
         },
         {
-          "description": "Grouping of events. Options: interest rate, inflation, bonds, consumer, gdp, government, housing, labour, markets, money, prices, trade, business.",
+          "description": "Grouping of events. Options: interest_rate, inflation, bonds, consumer, gdp, government, housing, labour, markets, money, prices, trade, business.",
           "name": "group",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Get events by TradingEconomics Calendar ID. Multiple comma separated items allowed.",
+          "name": "calendar_id",
+          "optional": true,
+          "type": "any"
         }
       ],
       "result": {
