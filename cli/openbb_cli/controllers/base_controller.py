@@ -24,6 +24,7 @@ from openbb_cli.controllers.utils import (
     print_rich_table,
     remove_file,
     system_clear,
+    validate_register_key,
 )
 from openbb_cli.session import Session
 from prompt_toolkit.formatted_text import HTML
@@ -776,12 +777,18 @@ class BaseController(metaclass=ABCMeta):
             )
 
         parser.add_argument(
-            "-s",
-            "--store_obbject",
-            dest="store_obbject",
+            "--register_obbject",
+            dest="register_obbject",
             action="store_false",
             default=True,
             help="Flag to store data in the OBBject registry, True by default.",
+        )
+        parser.add_argument(
+            "--register_key",
+            dest="register_key",
+            default="",
+            help="Key to reference data in the OBBject registry.",
+            type=validate_register_key,
         )
 
         if session.settings.USE_CLEAR_AFTER_CMD:

@@ -75,18 +75,28 @@ class PlatformController(BaseController):
         for _, trl in self.translators.items():
             for action in trl._parser._actions:  # pylint: disable=protected-access
                 if action.dest == "data":
+                    # Generate choices by combining indexed and key-based choices
                     action.choices = [
                         "OBB" + str(i)
                         for i in range(len(session.obbject_registry.obbjects))
+                    ] + [
+                        obbject.extra["register_key"]
+                        for obbject in session.obbject_registry.obbjects
+                        if "register_key" in obbject.extra
                     ]
+
                     action.type = str
                     action.nargs = None
 
     def _intersect_data_processing_commands(self, ns_parser):
         """Intersect data processing commands and change the obbject id into an actual obbject."""
         if hasattr(ns_parser, "data"):
-            ns_parser.data = int(ns_parser.data.replace("OBB", ""))
-            if ns_parser.data in range(len(session.obbject_registry.obbjects)):
+            if "OBB" in ns_parser.data:
+                ns_parser.data = int(ns_parser.data.replace("OBB", ""))
+
+            if (ns_parser.data in range(len(session.obbject_registry.obbjects))) or (
+                ns_parser.data in session.obbject_registry.obbject_keys
+            ):
                 obbject = session.obbject_registry.get(ns_parser.data)
                 setattr(ns_parser, "data", obbject.results)
 
@@ -153,7 +163,8 @@ class PlatformController(BaseController):
                     ns_parser = self._intersect_data_processing_commands(ns_parser)
 
                     store_obbject = (
-                        hasattr(ns_parser, "store_obbject") and ns_parser.store_obbject
+                        hasattr(ns_parser, "register_obbject")
+                        and ns_parser.register_obbject
                     )
 
                     obbject = translator.execute_func(parsed_args=ns_parser)
@@ -175,6 +186,23 @@ class PlatformController(BaseController):
 
                             # use the obbject to store the command so we can display it later on results
                             obbject.extra["command"] = f"{title} {' '.join(other_args)}"
+                            # if there is a registry key in the parser, store to the obbject
+                            if (
+                                hasattr(ns_parser, "register_key")
+                                and ns_parser.register_key
+                            ):
+                                if (
+                                    ns_parser.register_key
+                                    not in session.obbject_registry.obbject_keys
+                                ):
+                                    obbject.extra["register_key"] = str(
+                                        ns_parser.register_key
+                                    )
+                                else:
+                                    session.console.print(
+                                        f"[yellow]Key `{ns_parser.register_key}` already exists in the registry."
+                                        "The `OBBject` was kept without the key.[/yellow]"
+                                    )
 
                             if store_obbject:
                                 # store the obbject in the registry
