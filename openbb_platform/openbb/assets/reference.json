@@ -21196,21 +21196,21 @@
                 "message": null
             },
             "description": "Get earnings call transcripts for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.transcript(symbol='AAPL', year=2020, provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.transcript(symbol='AAPL', year='2020', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
                         "name": "year",
-                        "type": "int",
-                        "description": "Year of the earnings call transcript.",
+                        "type": "Union[Union[int, str], List[Union[int, str]]]",
+                        "description": "Year of the earnings call transcript. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false,
                         "choices": null
