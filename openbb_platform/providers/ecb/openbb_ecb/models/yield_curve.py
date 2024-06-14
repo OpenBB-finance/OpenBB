@@ -101,7 +101,7 @@ class ECBYieldCurveFetcher(
             else:
                 response = await amake_request(url=url)
             if not response:
-                raise OpenBBError("Error: No data was returned.")
+                raise OpenBBError("No data was returned.")
             if isinstance(response, List):
                 for item in response:
                     d = {
