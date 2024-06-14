@@ -9,6 +9,7 @@ from warnings import warn
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
@@ -180,7 +181,7 @@ FACTS = [
     "LongTermDebt",
     "LongTermDebtCurrent",
     "LongTermDebtMaturitiesRepaymentsOfPrincipalAfterYearFive",
-    "LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths",
+    "LongTermDebtMaturitiesRepaymentsOfPrincipalInNextTwelveMonths",  # pragma: allowlist secret
     "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFive",
     "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearFour",
     "LongTermDebtMaturitiesRepaymentsOfPrincipalInYearThree",
@@ -736,7 +737,7 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
             try:
                 response = await fetch_data(url, use_cache, persist)
             except Exception:
-                raise ValueError(message) from e
+                raise OpenBBError(message) from e
         elif "Q" in url and not url.endswith("I.json"):
             warn(
                 "No frame was found for the requested quarter, trying instantaneous data."
@@ -745,9 +746,9 @@ async def get_frame(  # pylint: disable =too-many-arguments,too-many-locals, too
             try:
                 response = await fetch_data(url, use_cache, persist)
             except Exception:
-                raise ValueError(message) from e
+                raise OpenBBError(message) from e
         else:
-            raise ValueError(message) from e
+            raise OpenBBError(message) from e
 
     data = sorted(response.get("data", {}), key=lambda x: x["val"], reverse=True)  # type: ignore
     metadata = {
@@ -779,9 +780,9 @@ async def get_concept(
     taxonomy: Optional[TAXONOMIES] = "us-gaap",
     use_cache: bool = True,
 ) -> Dict:
-    """Return all the XBRL disclosures from a single company (CIK)
-    and concept (a taxonomy and tag) into a single JSON file, with a separate array of facts
-    for each units on measure that the company has chosen to disclose
+    """Return all the XBRL disclosures from a single company (CIK) Concept (a taxonomy and tag) into a single JSON file.
+
+    Each entry contains a separate array of facts ach units on measure that the company has chosen to disclose
     (e.g. net profits reported in U.S. dollars and in Canadian dollars).
 
     Parameters

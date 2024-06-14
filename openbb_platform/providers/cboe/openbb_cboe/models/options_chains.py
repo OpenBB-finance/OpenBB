@@ -10,6 +10,7 @@ from openbb_cboe.utils.helpers import (
     get_company_directory,
     get_index_directory,
 )
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
@@ -71,7 +72,7 @@ class CboeOptionsChainsFetcher(
         INDEXES = INDEXES.set_index("index_symbol")
 
         if symbol not in SYMBOLS.index:
-            raise RuntimeError(f"{symbol} was not found in the Cboe options directory.")
+            raise OpenBBError(f"{symbol} was not found in the Cboe options directory.")
 
         quotes_url = (
             f"https://cdn.cboe.com/api/global/delayed_quotes/options/_{symbol}.json"

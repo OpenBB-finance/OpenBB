@@ -5,6 +5,7 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
@@ -44,7 +45,7 @@ class EconDbYieldCurveQueryParams(YieldCurveQueryParams):
         if v is None:
             return "united_states"
         if v not in COUNTRIES_DICT:
-            raise ValueError(f"Country must be one of {COUNTRIES_DICT}")
+            raise OpenBBError(f"Country must be one of {COUNTRIES_DICT}")
         return v
 
 
@@ -107,7 +108,7 @@ class EconDbYieldCurveFetcher(
                 url, timeout=20, **kwargs
             )
         if not response:
-            raise RuntimeError("Error: No data was returned.")
+            raise OpenBBError("No data was returned.")
         data = response.get("results")  # type: ignore
         if not data:
             raise EmptyDataError("The response was returned empty.")

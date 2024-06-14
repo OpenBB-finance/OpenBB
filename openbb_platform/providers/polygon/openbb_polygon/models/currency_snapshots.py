@@ -1,10 +1,11 @@
-"""Polygon Currency Snapshots"""
+"""Polygon Currency Snapshots."""
 
 # pylint: disable=unused-argument
 
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_snapshots import (
     CurrencySnapshotsData,
@@ -18,7 +19,6 @@ from pydantic import Field
 
 class PolygonCurrencySnapshotsQueryParams(CurrencySnapshotsQueryParams):
     """Polygon Currency Snapshots Query Parameters.
-
 
     Source: https://polygon.io/docs/forex/get_v2_snapshot_locale_global_markets_forex_tickers
     """
@@ -116,7 +116,7 @@ class PolygonCurrencySnapshotsFetcher(
         url = f"https://api.polygon.io/v2/snapshot/locale/global/markets/forex/tickers?apiKey={api_key}"
         results = await amake_request(url, **kwargs)
         if results.get("status") != "OK":  # type: ignore[union-attr]
-            raise RuntimeError(f"Error: {results.get('status')}")  # type: ignore[union-attr]
+            raise OpenBBError(f"Error: {results.get('status')}")  # type: ignore[union-attr]
         return results.get("tickers", [])  # type: ignore[union-attr]
 
     @staticmethod

@@ -6,6 +6,7 @@ import asyncio
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.country_profile import (
     CountryProfileData,
@@ -66,7 +67,7 @@ class EconDbCountryProfileQueryParams(CountryProfileQueryParams):
             elif len(c) > 2 and c.lower() in COUNTRY_GROUPS:
                 country[country.index(c)] = ",".join(COUNTRY_GROUPS[c.lower()])
         if len(country) == 0:
-            raise ValueError("No valid countries were supplied.")
+            raise OpenBBError("No valid countries were supplied.")
         return ",".join(country)
 
 

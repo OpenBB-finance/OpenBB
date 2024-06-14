@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import yfinance as yf
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
@@ -70,7 +71,7 @@ class YFinanceOptionsChainsFetcher(
         ticker = yf.Ticker(symbol)
         expirations = list(ticker.options)
         if not expirations or len(expirations) == 0:
-            raise ValueError(f"No options found for {symbol}")
+            raise OpenBBError(f"No options found for {symbol}")
         chains_output: List = []
         underlying = ticker.option_chain(expirations[0])[2]
         underlying_output: Dict = {

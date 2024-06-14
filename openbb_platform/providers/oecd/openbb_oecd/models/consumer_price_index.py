@@ -5,6 +5,7 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
@@ -168,8 +169,8 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         def country_string(input_str: str):
             if input_str == "all":
                 return ""
-            countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_CPI[country] for country in countries])
+            _countries = input_str.split(",")
+            return "+".join([COUNTRY_TO_CODE_CPI[country] for country in _countries])
 
         country = country_string(query.country)
         # For caching, include this in the key
@@ -187,15 +188,15 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
             data = helpers.get_possibly_cached_data(
                 url, function="economy_cpi", query_dict=query_dict
             )
-        except HTTPError:
-            raise ValueError("No data found for the given query.")
+        except HTTPError as exc:
+            raise OpenBBError("No data found for the given query.") from exc
         url_query = f"METHODOLOGY=='{methodology}' & UNIT_MEASURE=='{units}' & FREQ=='{frequency}'"
 
         if country != "all":
             if "+" in country:
-                countries = country.split("+")
+                _countries = country.split("+")
                 country_conditions = " or ".join(
-                    [f"REF_AREA=='{c}'" for c in countries]
+                    [f"REF_AREA=='{c}'" for c in _countries]
                 )
                 url_query += f" & ({country_conditions})"
             else:

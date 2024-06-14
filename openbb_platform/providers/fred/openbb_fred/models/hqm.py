@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.hqm import (
     HighQualityMarketCorporateBondData,
@@ -68,7 +69,7 @@ class FREDHighQualityMarketCorporateBondFetcher(
 
         today = datetime.today().date()
         if query.date and query.date >= today:
-            raise ValueError("Date must be in the past.")
+            raise OpenBBError("Date must be in the past.")
 
         start_date = (
             query.date - timedelta(days=50)
@@ -81,7 +82,7 @@ class FREDHighQualityMarketCorporateBondFetcher(
         elif query.yield_curve == "par":
             fred_series = YIELD_CURVE_SERIES_CORPORATE_PAR
         else:
-            raise ValueError("Invalid yield curve type.")
+            raise OpenBBError("Invalid yield curve type.")
 
         for maturity, id_ in fred_series.items():
             d = fred.get_series(

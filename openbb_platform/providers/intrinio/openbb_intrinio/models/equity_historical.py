@@ -6,6 +6,7 @@ from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -212,7 +213,7 @@ class IntrinioEquityHistoricalFetcher(
             """Return the response."""
             init_response = await response.json()
             if "error" in init_response:
-                raise RuntimeError(
+                raise OpenBBError(
                     f"Intrinio Error Message -> {init_response['error']}: {init_response.get('message')}"  # type: ignore
                 )
 
