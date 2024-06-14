@@ -93,6 +93,15 @@ def __mock_parse_known_args_and_warn(
             type=check_positive,
         )
 
+    parser.add_argument(
+        "-s",
+        "--store_obbject",
+        dest="store_obbject",
+        action="store_false",
+        default=True,
+        help="Flag to store data in the OBBject registry, True by default.",
+    )
+
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
     """Add arguments.

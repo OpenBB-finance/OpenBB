@@ -774,6 +774,16 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
+
+        parser.add_argument(
+            "-s",
+            "--store_obbject",
+            dest="store_obbject",
+            action="store_false",
+            default=True,
+            help="Flag to store data in the OBBject registry, True by default.",
+        )
+
         if session.settings.USE_CLEAR_AFTER_CMD:
             system_clear()
 
