@@ -782,7 +782,7 @@ async def get_concept(
 ) -> Dict:
     """Return all the XBRL disclosures from a single company (CIK) Concept (a taxonomy and tag) into a single JSON file.
 
-    Each entry contains a separate array of facts ach units on measure that the company has chosen to disclose
+    Each entry contains a separate array of facts for each units of measure that the company has chosen to disclose
     (e.g. net profits reported in U.S. dollars and in Canadian dollars).
 
     Parameters
