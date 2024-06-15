@@ -42,6 +42,28 @@ class ROUTER_derivatives_options(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
+        option_type : Literal[None, Union[ForwardRef('call'), ForwardRef('put')]]
+            The option type, call or put, 'None' is both (default). (provider: intrinio)
+        moneyness : Literal['otm', 'itm', 'all']
+            Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. (provider: intrinio)
+        strike_gt : Optional[int]
+            Return options with a strike price greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        strike_lt : Optional[int]
+            Return options with a strike price less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        volume_gt : Optional[int]
+            Return options with a volume greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        volume_lt : Optional[int]
+            Return options with a volume less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        oi_gt : Optional[int]
+            Return options with an open interest greater than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        oi_lt : Optional[int]
+            Return options with an open interest less than the given value. Parameter is ignored when a date is supplied. (provider: intrinio)
+        model : Literal['black_scholes', 'bjerk']
+            The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied. (provider: intrinio)
+        show_extended_price : bool
+            Whether to include OHLC type fields, default is True. Parameter is ignored when a date is supplied. (provider: intrinio)
+        include_related_symbols : bool
+            Include related symbols that end in a 1 or 2 because of a corporate action, default is False. (provider: intrinio)
 
         Returns
         -------
@@ -59,14 +81,18 @@ class ROUTER_derivatives_options(Container):
 
         OptionsChains
         -------------
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data. Here, it is the underlying symbol for the option.
+        underlying_symbol : Optional[str]
+            Underlying symbol for the option.
+        underlying_price : Optional[float]
+            Price of the underlying stock.
         contract_symbol : str
             Contract symbol for the option.
         eod_date : Optional[date]
             Date for which the options chains are returned.
         expiration : date
             Expiration date of the contract.
+        dte : Optional[int]
+            Days to expiration of the contract.
         strike : float
             Strike price of the contract.
         option_type : str
@@ -79,16 +105,28 @@ class ROUTER_derivatives_options(Container):
             Theoretical value of the option.
         last_trade_price : Optional[float]
             Last trade price of the option.
+        last_trade_size : Optional[int]
+            Last trade size of the option.
+        last_trade_time : Optional[datetime]
+            The timestamp of the last trade.
         tick : Optional[str]
             Whether the last tick was up or down in price.
         bid : Optional[float]
             Current bid price for the option.
         bid_size : Optional[int]
             Bid size for the option.
+        bid_time : Optional[datetime]
+            The timestamp of the bid price.
+        bid_exchange : Optional[str]
+            The exchange of the bid price.
         ask : Optional[float]
             Current ask price for the option.
         ask_size : Optional[int]
             Ask size for the option.
+        ask_time : Optional[datetime]
+            The timestamp of the ask price.
+        ask_exchange : Optional[str]
+            The exchange of the ask price.
         mark : Optional[float]
             The mid-price between the latest bid and ask.
         open : Optional[float]
@@ -132,7 +170,7 @@ class ROUTER_derivatives_options(Container):
         change : Optional[float]
             The change in the price of the option.
         change_percent : Optional[float]
-            Change, in normalizezd percentage points, of the option.
+            Change, in normalized percentage points, of the option.
         implied_volatility : Optional[float]
             Implied volatility of the option.
         delta : Optional[float]
@@ -145,14 +183,10 @@ class ROUTER_derivatives_options(Container):
             Vega of the option.
         rho : Optional[float]
             Rho of the option.
-        exercise_style : Optional[str]
-            The exercise style of the option, American or European. (provider: intrinio)
-        dte : Optional[int]
-            Days to expiration. (provider: yfinance)
         in_the_money : Optional[bool]
             Whether the option is in the money. (provider: yfinance)
-        last_trade_timestamp : Optional[datetime]
-            Timestamp for when the option was last traded. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the option. (provider: yfinance)
 
         Examples
         --------
