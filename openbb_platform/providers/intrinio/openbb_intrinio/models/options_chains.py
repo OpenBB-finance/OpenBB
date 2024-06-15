@@ -51,11 +51,13 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     option_type: Literal[None, Union["call", "put"]] = Field(
         default=None,
         description="The option type, call or put, 'None' is both (default).",
+        json_schema_extra={"choices": ["call", "put"]},
     )
     moneyness: Literal["otm", "itm", "all"] = Field(
         default="all",
         description="Return only contracts that are in or out of the money, default is 'all'."
         + " Parameter is ignored when a date is supplied.",
+        json_schema_extra={"choices": ["otm", "itm", "all"]},
     )
     strike_gt: Optional[int] = Field(
         default=None,
@@ -70,22 +72,22 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     volume_gt: Optional[int] = Field(
         default=None,
         description="Return options with a volume greater than the given value."
-        + " Parameter is ignored when a date is supplied."
+        + " Parameter is ignored when a date is supplied.",
     )
     volume_lt: Optional[int] = Field(
         default=None,
         description="Return options with a volume less than the given value."
-        + " Parameter is ignored when a date is supplied."
+        + " Parameter is ignored when a date is supplied.",
     )
     oi_gt: Optional[int] = Field(
         default=None,
         description="Return options with an open interest greater than the given value."
-        + " Parameter is ignored when a date is supplied."
+        + " Parameter is ignored when a date is supplied.",
     )
     oi_lt: Optional[int] = Field(
         default=None,
         description="Return options with an open interest less than the given value."
-        + " Parameter is ignored when a date is supplied."
+        + " Parameter is ignored when a date is supplied.",
     )
     model: Literal["black_scholes", "bjerk"] = Field(
         default="black_scholes",
@@ -95,12 +97,12 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     show_extended_price: bool = Field(
         default=True,
         description="Whether to include OHLC type fields, default is True."
-        + " Parameter is ignored when a date is supplied."
+        + " Parameter is ignored when a date is supplied.",
     )
     include_related_symbols: bool = Field(
         default=False,
         description="Include related symbols that end in a 1 or 2 because of a corporate action,"
-        + " default is False."
+        + " default is False.",
     )
 
 
@@ -137,7 +139,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
     def date_validate(cls, v):
         """Return the datetime object from the date string."""
         if isinstance(v, str):
-            dt =  parser.parse(v)
+            dt = parser.parse(v)
             dt = dt.replace(tzinfo=timezone("UTC"))
             dt = dt.astimezone(timezone("America/New_York"))
             return dt.replace(microsecond=0)
@@ -176,7 +178,9 @@ class IntrinioOptionsChainsFetcher(
 
         async def get_urls(date: str) -> List[str]:
             """Return the urls for the given date."""
-            date = (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
+            date = (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1)).strftime(
+                "%Y-%m-%d"
+            )
             url = (
                 f"{base_url}/expirations/{query.symbol}/eod?"
                 f"after={date}&api_key={api_key}"
@@ -197,21 +201,17 @@ class IntrinioOptionsChainsFetcher(
                             "moneyness",
                             "open_interest_greater_than",
                             "open_interest_less_than",
-                            "strike_greater_than",
-                            "strike_less_than",
                             "show_extended_price",
-                            "include_related_symbols",
-                        ]
+                        ],
                     )
-                    url = url+f"eod?date={date}&{query_string}"
+                    url = url + f"eod?date={date}&{query_string}"
                 else:
                     query_string = get_querystring(
                         query.model_dump(exclude_none=True), ["symbol", "date"]
                     )
-                    query_string = (
-                        query_string.replace("otm", "out_of_the_money")
-                        .replace("itm", "in_the_money")
-                    )
+                    query_string = query_string.replace(
+                        "otm", "out_of_the_money"
+                    ).replace("itm", "in_the_money")
                     url = url + f"realtime?{query_string}"
 
                 return url + f"&api_key={api_key}"
@@ -244,14 +244,16 @@ class IntrinioOptionsChainsFetcher(
             temp = None
             try:
                 temp = await IntrinioEquityHistoricalFetcher.fetch_data(
-                    {"symbol": query.symbol, "start_date": date, "end_date": date}, credentials
+                    {"symbol": query.symbol, "start_date": date, "end_date": date},
+                    credentials,
                 )
                 temp = temp[0]
             # If the symbol is SPX, or similar, try to get the underlying price from the index.
             except Exception as e:
                 try:
                     temp = await IntrinioIndexHistoricalFetcher.fetch_data(
-                        {"symbol": query.symbol, "start_date": date, "end_date": date}, credentials
+                        {"symbol": query.symbol, "start_date": date, "end_date": date},
+                        credentials,
                     )
                     temp = temp[0]
                 except Exception:
@@ -275,6 +277,7 @@ class IntrinioOptionsChainsFetcher(
         results: List[IntrinioOptionsChainsData] = []
         chains = data.get("data", [])
         underlying = data.get("underlying", {})
+        last_price = underlying.get("price")
         if query.date is not None:
             for item in chains:
                 new_item = {**item["option"], **item["prices"]}
@@ -282,19 +285,29 @@ class IntrinioOptionsChainsFetcher(
                     datetime.strptime(new_item["expiration"], "%Y-%m-%d").date()
                     - datetime.strptime(new_item["date"], "%Y-%m-%d").date()
                 ).days
-                _ = new_item.pop("ticker", None)
+                if last_price:
+                    new_item["underlying_price"] = last_price
                 _ = new_item.pop("exercise_style", None)
+                new_item["underlying_symbol"] = new_item.pop("ticker")
                 results.append(IntrinioOptionsChainsData.model_validate(new_item))
         else:
             for item in chains:
-                new_item = {**item["option"], **item["price"], **item["stats"], **item["extended_price"]}
+                new_item = {
+                    **item["option"],
+                    **item["price"],
+                    **item["stats"],
+                    **item["extended_price"],
+                }
                 dte = (
-                    datetime.strptime(new_item["expiration"], "%Y-%m-%d").date() - datetime.now().date()
+                    datetime.strptime(new_item["expiration"], "%Y-%m-%d").date()
+                    - datetime.now().date()
                 ).days
                 new_item["dte"] = dte
-                underlying["underlying_symbol"] = new_item.pop("underlying_price_ticker", None)
+                new_item["underlying_symbol"] = new_item.pop(
+                    "underlying_price_ticker", None
+                )
                 underlying["date"] = datetime.now().date()
-                underlying["underlying_price"] = new_item.pop("underlying_price", None)
+                new_item["underlying_price"] = new_item.pop("underlying_price", None)
                 _ = new_item.pop("ticker", None)
                 _ = new_item.pop("trade_exchange", None)
                 _ = new_item.pop("exercise_style", None)
@@ -306,5 +319,5 @@ class IntrinioOptionsChainsFetcher(
                 key=lambda x: (x.expiration, x.strike, x.option_type),
                 reverse=False,
             ),
-            metadata=underlying
+            metadata=underlying,
         )

@@ -31,6 +31,14 @@ class OptionsChainsQueryParams(QueryParams):
 class OptionsChainsData(Data):
     """Options Chains Data."""
 
+    underlying_symbol: Optional[str] = Field(
+        default=None,
+        description="Underlying symbol for the option.",
+    )
+    underlying_price: Optional[float] = Field(
+        default=None,
+        description="Price of the underlying stock.",
+    )
     contract_symbol: str = Field(description="Contract symbol for the option.")
     eod_date: Optional[dateType] = Field(
         default=None, description="Date for which the options chains are returned."
@@ -73,6 +81,9 @@ class OptionsChainsData(Data):
         default=None,
         description="The timestamp of the bid price.",
     )
+    bid_exchange: Optional[str] = Field(
+        default=None, description="The exchange of the bid price."
+    )
     ask: Optional[float] = Field(
         default=None, description="Current ask price for the option."
     )
@@ -82,6 +93,9 @@ class OptionsChainsData(Data):
     ask_time: Optional[datetime] = Field(
         default=None,
         description="The timestamp of the ask price.",
+    )
+    ask_exchange: Optional[str] = Field(
+        default=None, description="The exchange of the ask price."
     )
     mark: Optional[float] = Field(
         default=None, description="The mid-price between the latest bid and ask."
