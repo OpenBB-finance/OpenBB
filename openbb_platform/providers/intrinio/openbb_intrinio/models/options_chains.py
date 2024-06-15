@@ -10,7 +10,6 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
 from dateutil import parser
-from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
@@ -204,15 +203,20 @@ class IntrinioOptionsChainsFetcher(
                             "show_extended_price",
                         ],
                     )
-                    url = url + f"eod?date={date}&{query_string}"
+                    url = url + f"eod?date={query.date}&{query_string}"
                 else:
+                    if query.moneyness:
+                        moneyness = (
+                            "out_of_the_money"
+                            if query.moneyness == "otm"
+                            else "in_the_money" if query.moneyness == "itm" else "all"
+                        )
+
                     query_string = get_querystring(
-                        query.model_dump(exclude_none=True), ["symbol", "date"]
+                        query.model_dump(exclude_none=True),
+                        ["symbol", "date", "moneyness"],
                     )
-                    query_string = query_string.replace(
-                        "otm", "out_of_the_money"
-                    ).replace("itm", "in_the_money")
-                    url = url + f"realtime?{query_string}"
+                    url = url + f"realtime?{query_string}&moneyness={moneyness}"
 
                 return url + f"&api_key={api_key}"
 
@@ -239,7 +243,7 @@ class IntrinioOptionsChainsFetcher(
         underlying_price: Dict = {}
         # If the EOD chains are requested, get the underlying price on the given date.
         if query.date is not None:
-            if query.symbol.endswith("W"):
+            if query.symbol.endswith("W") and query.symbol.startswith("SPX"):
                 query.symbol = query.symbol[:-1]
             temp = None
             try:
@@ -272,7 +276,7 @@ class IntrinioOptionsChainsFetcher(
         query: IntrinioOptionsChainsQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[List[IntrinioOptionsChainsData]]:
+    ) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         results: List[IntrinioOptionsChainsData] = []
         chains = data.get("data", [])
@@ -313,11 +317,8 @@ class IntrinioOptionsChainsFetcher(
                 _ = new_item.pop("exercise_style", None)
                 results.append(IntrinioOptionsChainsData.model_validate(new_item))
 
-        return AnnotatedResult(
-            result=sorted(
-                results,
-                key=lambda x: (x.expiration, x.strike, x.option_type),
-                reverse=False,
-            ),
-            metadata=underlying,
+        return sorted(
+            results,
+            key=lambda x: (x.expiration, x.strike, x.option_type),
+            reverse=False,
         )
