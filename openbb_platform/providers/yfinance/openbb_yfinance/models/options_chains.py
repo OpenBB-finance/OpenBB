@@ -28,24 +28,21 @@ class YFinanceOptionsChainsData(OptionsChainsData):
 
     __alias_dict__ = {
         "contract_symbol": "contractSymbol",
-        "last_trade_timestamp": "lastTradeDate",
+        "last_trade_time": "lastTradeDate",
         "last_trade_price": "lastPrice",
         "change_percent": "percentChange",
         "open_interest": "openInterest",
         "implied_volatility": "impliedVolatility",
         "in_the_money": "inTheMoney",
     }
-    dte: Optional[int] = Field(
-        default=None,
-        description="Days to expiration.",
-    )
+
     in_the_money: Optional[bool] = Field(
         default=None,
         description="Whether the option is in the money.",
     )
-    last_trade_timestamp: Optional[datetime] = Field(
+    currency: Optional[str] = Field(
         default=None,
-        description="Timestamp for when the option was last traded.",
+        description="Currency of the option.",
     )
 
 
@@ -67,6 +64,7 @@ class YFinanceOptionsChainsFetcher(
     ) -> Dict:
         """Extract the raw data from YFinance."""
         symbol = query.symbol.upper()
+        symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
         ticker = yf.Ticker(symbol)
         expirations = list(ticker.options)
         if not expirations or len(expirations) == 0:
@@ -107,7 +105,9 @@ class YFinanceOptionsChainsFetcher(
         }
         tz = timezone(underlying_output.get("exchange_tz", "UTC"))
 
-        async def get_chain(ticker, expiration, tz):
+        underlying_price = underlying_output.get("last_price")
+
+        async def get_chain(ticker, expiration, tz, underlying_price):
             """Get the data for one expiration."""
             exp = datetime.strptime(expiration, "%Y-%m-%d").date()
             now = datetime.now().date()
@@ -124,18 +124,23 @@ class YFinanceOptionsChainsFetcher(
                 .sort_index()
                 .reset_index()
             )
+            chain = chain.drop(columns=["contractSize"])
             chain["dte"] = dte
+            if underlying_price is not None:
+                chain["underlying_price"] = underlying_price
+                chain["underlying_symbol"] = symbol
             chain["percentChange"] = chain["percentChange"] / 100
-            for col in ["currency", "contractSize"]:
-                if col in chain.columns:
-                    chain = chain.drop(col, axis=1)
+
             if len(chain) > 0:
                 chains_output.extend(
                     chain.fillna("N/A").replace("N/A", None).to_dict("records")
                 )
 
         await asyncio.gather(
-            *[get_chain(ticker, expiration, tz) for expiration in expirations]
+            *[
+                get_chain(ticker, expiration, tz, underlying_price)
+                for expiration in expirations
+            ]
         )
 
         if not chains_output:

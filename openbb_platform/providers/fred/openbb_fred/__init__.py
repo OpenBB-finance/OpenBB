@@ -21,6 +21,7 @@ from openbb_fred.models.manufacturing_outlook_texas import (
     FredManufacturingOutlookTexasFetcher,
 )
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -68,6 +69,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "ICEBofA": FREDICEBofAFetcher,
         "ManufacturingOutlookTexas": FredManufacturingOutlookTexasFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
+        "MortgageIndices": FredMortgageIndicesFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
