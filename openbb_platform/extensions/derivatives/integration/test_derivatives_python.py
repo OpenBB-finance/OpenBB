@@ -126,3 +126,18 @@ def test_derivatives_futures_curve(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "intrinio", "date": None, "only_traded": True}),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_options_snapshots(params, obb):
+    """Test the options snapshots endpoint."""
+    result = obb.derivatives.options.snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

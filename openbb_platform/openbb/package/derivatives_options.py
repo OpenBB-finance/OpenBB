@@ -13,6 +13,7 @@ from typing_extensions import Annotated
 class ROUTER_derivatives_options(Container):
     """/derivatives/options
     chains
+    snapshots
     unusual
     """
 
@@ -209,6 +210,121 @@ class ROUTER_derivatives_options(Container):
                 standard_params={
                     "symbol": symbol,
                 },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def snapshots(
+        self,
+        provider: Annotated[
+            Optional[Literal["intrinio"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get a snapshot of the options market universe.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['intrinio']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio.
+        date : Optional[Union[datetime.date, datetime.datetime, str]]
+            The date of the data. Can be a datetime or an ISO datetime string. Data appears to go back to around 2022-06-01 Example: '2024-03-08T12:15:00+0400' (provider: intrinio)
+        only_traded : bool
+            Only include options that have been traded during the session, default is True. Setting to false will dramatically increase the size of the response - use with caution. (provider: intrinio)
+
+        Returns
+        -------
+        OBBject
+            results : List[OptionsSnapshots]
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        OptionsSnapshots
+        ----------------
+        underlying_symbol : str
+            Ticker symbol of the underlying asset.
+        contract_symbol : str
+            Symbol of the options contract.
+        expiration : date
+            Expiration date of the options contract.
+        dte : Optional[int]
+            Number of days to expiration of the options contract.
+        strike : float
+            Strike price of the options contract.
+        option_type : str
+            The type of option.
+        volume : Optional[int]
+            Total trade volume from the beginning of the session.
+        open_interest : Optional[int]
+            Open interest at the time.
+        last_price : Optional[float]
+            Last trade price at the time.
+        last_size : Optional[int]
+            Lot size of the last trade.
+        last_timestamp : Optional[datetime]
+            Timestamp of the last price.
+        open : Optional[float]
+            The open price.
+        high : Optional[float]
+            The high price.
+        low : Optional[float]
+            The low price.
+        close : Optional[float]
+            The close price.
+        bid : Optional[float]
+            The last bid price at the time. (provider: intrinio)
+        bid_size : Optional[int]
+            The size of the last bid price. (provider: intrinio)
+        bid_timestamp : Optional[datetime]
+            The timestamp of the last bid price. (provider: intrinio)
+        ask : Optional[float]
+            The last ask price at the time. (provider: intrinio)
+        ask_size : Optional[int]
+            The size of the last ask price. (provider: intrinio)
+        ask_timestamp : Optional[datetime]
+            The timestamp of the last ask price. (provider: intrinio)
+        total_bid_volume : Optional[int]
+            Total volume of bids. (provider: intrinio)
+        bid_high : Optional[float]
+            The highest bid price. (provider: intrinio)
+        bid_low : Optional[float]
+            The lowest bid price. (provider: intrinio)
+        total_ask_volume : Optional[int]
+            Total volume of asks. (provider: intrinio)
+        ask_high : Optional[float]
+            The highest ask price. (provider: intrinio)
+        ask_low : Optional[float]
+            The lowest ask price. (provider: intrinio)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.derivatives.options.snapshots(provider='intrinio')
+        """  # noqa: E501
+
+        return self._run(
+            "/derivatives/options/snapshots",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "derivatives.options.snapshots",
+                        ("intrinio",),
+                    )
+                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
