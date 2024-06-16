@@ -32666,6 +32666,191 @@
             },
             "model": "BondIndices"
         },
+        "/fixedincome/mortgage_indices": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Mortgage Indices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default state for FRED are the primary mortgage indices from Optimal Blue.\nobb.fixedincome.mortgage_indices(provider='fred')\n# Multiple indices can be requested.\nobb.fixedincome.mortgage_indices(index=jumbo_30y,conforming_30y,conforming_15y, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "index",
+                        "type": "Union[Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str], List[Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str]]]",
+                        "description": "The specific index, or index group, to query. Default is the 'primary' group. Multiple items allowed for provider(s): fred.",
+                        "default": "primary",
+                        "optional": true,
+                        "choices": [
+                            "primary",
+                            "ltv_lte_80",
+                            "ltv_gt_80",
+                            "conforming_30y",
+                            "conforming_30y_na",
+                            "jumbo_30y",
+                            "fha_30y",
+                            "va_30y",
+                            "usda_30y",
+                            "conforming_15y",
+                            "ltv_lte80_fico_ge740",
+                            "ltv_lte80_fico_a720b739",
+                            "ltv_lte80_fico_a700b719",
+                            "ltv_lte80_fico_a680b699",
+                            "ltv_lte80_fico_lt680",
+                            "ltv_gt80_fico_ge740",
+                            "ltv_gt80_fico_a720b739",
+                            "ltv_gt80_fico_a700b719",
+                            "ltv_gt80_fico_a680b699",
+                            "ltv_gt80_fico_lt680"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set, default is 'avg'.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": "avg",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[MortgageIndices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Mortgage rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "MortgageIndices"
+        },
         "/index/price/historical": {
             "deprecated": {
                 "flag": null,
