@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -34,7 +34,7 @@ class OptionsSnapshotsData(Data):
     option_type: str = Field(description="The type of option.")
     volume: Optional[int] = Field(
         default=None,
-        description="Total trade volume from the beginning of the session.",
+        description=DATA_DESCRIPTIONS.get("volume", ""),
     )
     open_interest: Optional[int] = Field(
         default=None,
