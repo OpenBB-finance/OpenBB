@@ -7,6 +7,7 @@ from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
     TreasuryPricesData,
@@ -87,12 +88,10 @@ class GovernmentUSTreasuryPricesFetcher(
             r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
 
             if r.status_code != 200:
-                raise RuntimeError("Error with the request: " + str(r.status_code))
+                raise OpenBBError("Error with the request: " + str(r.status_code))
 
             if r.encoding != "ISO-8859-1":
-                raise RuntimeError(
-                    f"Expected ISO-8859-1 encoding but got: {r.encoding}"
-                )
+                raise OpenBBError(f"Expected ISO-8859-1 encoding but got: {r.encoding}")
             return r.content.decode("utf-8")
 
         loop = asyncio.get_running_loop()

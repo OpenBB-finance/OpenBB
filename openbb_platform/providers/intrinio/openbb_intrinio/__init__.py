@@ -48,6 +48,7 @@ from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
+from openbb_intrinio.models.options_snapshots import IntrinioOptionsSnapshotsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.price_target_consensus import (
     IntrinioPriceTargetConsensusFetcher,
@@ -98,6 +99,7 @@ historical financial market data to businesses and developers through an API."""
         "MarketIndices": IntrinioIndexHistoricalFetcher,
         "MarketSnapshots": IntrinioMarketSnapshotsFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
+        "OptionsSnapshots": IntrinioOptionsSnapshotsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "PriceTargetConsensus": IntrinioPriceTargetConsensusFetcher,
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,

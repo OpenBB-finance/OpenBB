@@ -237,23 +237,20 @@ class StaticCommandRunner:
                 raise OpenBBError(
                     "Charting is not installed. Please install `openbb-charting`."
                 )
+            # Here we will pop the chart_params kwargs and flatten them into the kwargs.
             chart_params = {}
-            extra_params = kwargs.get("extra_params", {})
+            extra_params = getattr(obbject, "_extra_params", {})
 
-            if hasattr(extra_params, "__dict__") and hasattr(
-                extra_params, "chart_params"
-            ):
-                chart_params = kwargs["extra_params"].__dict__.get("chart_params", {})
-            elif isinstance(extra_params, dict) and "chart_params" in extra_params:
-                chart_params = kwargs["extra_params"].get("chart_params", {})
+            if extra_params and "chart_params" in extra_params:
+                chart_params = extra_params.get("chart_params", {})
 
-            if "chart_params" in kwargs and kwargs["chart_params"] is not None:
+            if kwargs.get("chart_params"):
                 chart_params.update(kwargs.pop("chart_params", {}))
-
+            # Verify that kwargs is not nested as kwargs so we don't miss any chart params.
             if (
                 "kwargs" in kwargs
                 and "chart_params" in kwargs["kwargs"]
-                and kwargs["kwargs"].get("chart_params") is not None
+                and kwargs["kwargs"].get("chart_params")
             ):
                 chart_params.update(kwargs.pop("kwargs", {}).get("chart_params", {}))
 
@@ -264,6 +261,14 @@ class StaticCommandRunner:
             if Env().DEBUG_MODE:
                 raise OpenBBError(e) from e
             warn(str(e), OpenBBWarning)
+
+    @classmethod
+    def _extract_params(cls, kwargs, key) -> Dict:
+        """Extract params models from kwargs and convert to a dictionary."""
+        params = kwargs.get(key, {})
+        if hasattr(params, "__dict__"):
+            return params.__dict__
+        return params
 
     # pylint: disable=R0913, R0914
     @classmethod
@@ -308,9 +313,17 @@ class StaticCommandRunner:
 
             try:
                 obbject = await cls._command(func, kwargs)
-                # pylint: disable=protected-access
-                obbject._route = route
-                obbject._standard_params = kwargs.get("standard_params", None)
+
+                # This section prepares the obbject to pass to the charting service.
+                obbject._route = route  # pylint: disable=protected-access
+                std_params = cls._extract_params(kwargs, "standard_params") or (
+                    kwargs if "data" in kwargs else {}
+                )
+                extra_params = cls._extract_params(kwargs, "extra_params")
+                obbject._standard_params = (  # pylint: disable=protected-access
+                    std_params
+                )
+                obbject._extra_params = extra_params  # pylint: disable=protected-access
                 if chart and obbject.results:
                     cls._chart(obbject, **kwargs)
             finally:

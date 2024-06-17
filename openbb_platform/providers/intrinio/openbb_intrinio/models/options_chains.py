@@ -6,7 +6,8 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional, Union
+from warnings import warn
 
 from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,12 +15,17 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
+from openbb_core.provider.utils.errors import OpenBBError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
+    get_querystring,
 )
+from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
+from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
+from pytz import timezone
 
 
 class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -28,8 +34,74 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
+    __alias_dict__ = {
+        "strike_gt": "strike_greater_than",
+        "strike_lt": "strike_less_than",
+        "volume_gt": "volume_greater_than",
+        "volume_lt": "volume_less_than",
+        "oi_gt": "open_interest_greater_than",
+        "oi_lt": "open_interest_less_than",
+        "option_type": "type",
+    }
+
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
+    )
+    option_type: Literal[None, Union["call", "put"]] = Field(
+        default=None,
+        description="The option type, call or put, 'None' is both (default).",
+        json_schema_extra={"choices": ["call", "put"]},
+    )
+    moneyness: Literal["otm", "itm", "all"] = Field(
+        default="all",
+        description="Return only contracts that are in or out of the money, default is 'all'."
+        + " Parameter is ignored when a date is supplied.",
+        json_schema_extra={"choices": ["otm", "itm", "all"]},
+    )
+    strike_gt: Optional[int] = Field(
+        default=None,
+        description="Return options with a strike price greater than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    strike_lt: Optional[int] = Field(
+        default=None,
+        description="Return options with a strike price less than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    volume_gt: Optional[int] = Field(
+        default=None,
+        description="Return options with a volume greater than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    volume_lt: Optional[int] = Field(
+        default=None,
+        description="Return options with a volume less than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    oi_gt: Optional[int] = Field(
+        default=None,
+        description="Return options with an open interest greater than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    oi_lt: Optional[int] = Field(
+        default=None,
+        description="Return options with an open interest less than the given value."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    model: Literal["black_scholes", "bjerk"] = Field(
+        default="black_scholes",
+        description="The pricing model to use for options chains data, default is 'black_scholes'."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    show_extended_price: bool = Field(
+        default=True,
+        description="Whether to include OHLC type fields, default is True."
+        + " Parameter is ignored when a date is supplied.",
+    )
+    include_related_symbols: bool = Field(
+        default=False,
+        description="Include related symbols that end in a 1 or 2 because of a corporate action,"
+        + " default is False.",
     )
 
 
@@ -41,28 +113,42 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         "symbol": "ticker",
         "eod_date": "date",
         "option_type": "type",
+        "last_trade_time": "last_timestamp",
+        "last_trade_price": "last",
+        "last_trade_size": "last_size",
+        "ask_time": "ask_timestamp",
+        "bid_time": "bid_timestamp",
+        "open": "trade_open",
+        "high": "trade_high",
+        "low": "trade_low",
+        "close": "trade_close",
     }
 
-    exercise_style: Optional[str] = Field(
-        default=None,
-        description="The exercise style of the option, American or European.",
-    )
-
     @field_validator(
-        "date",
         "close_time",
         "close_ask_time",
         "close_bid_time",
+        "ask_time",
+        "bid_time",
+        "last_trade_time",
         mode="before",
         check_fields=False,
     )
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the datetime object from the date string."""
-        # only pass it to the parser if it is not a datetime object
         if isinstance(v, str):
-            return parser.parse(v)
-        return v
+            dt = parser.parse(v)
+            dt = dt.replace(tzinfo=timezone("UTC"))
+            dt = dt.astimezone(timezone("America/New_York"))
+            return dt.replace(microsecond=0)
+        return v if v else None
+
+    @field_validator("volume", "open_interest", mode="before", check_fields=False)
+    @classmethod
+    def volume_oi_validate(cls, v):
+        """Return the volume as an integer."""
+        return 0 if v is None else v
 
 
 class IntrinioOptionsChainsFetcher(
@@ -73,28 +159,27 @@ class IntrinioOptionsChainsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
         """Transform the query."""
-        transform_params = params.copy()
-        if params.get("date") is not None:
-            if isinstance(params["date"], dateType):
-                transform_params["date"] = params["date"].strftime("%Y-%m-%d")
-            else:
-                transform_params["date"] = parser.parse(params["date"]).date()
-
-        return IntrinioOptionsChainsQueryParams(**transform_params)
+        return IntrinioOptionsChainsQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
         query: IntrinioOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/options"
 
+        date = query.date if query.date is not None else datetime.now().date()
+        date = get_weekday(date)
+
         async def get_urls(date: str) -> List[str]:
             """Return the urls for the given date."""
+            date = (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=1)).strftime(
+                "%Y-%m-%d"
+            )
             url = (
                 f"{base_url}/expirations/{query.symbol}/eod?"
                 f"after={date}&api_key={api_key}"
@@ -102,9 +187,37 @@ class IntrinioOptionsChainsFetcher(
             expirations = await get_data_many(url, "expirations", **kwargs)
 
             def generate_url(expiration) -> str:
-                url = f"{base_url}/chain/{query.symbol}/{expiration}/eod?date="
+                url = f"{base_url}/chain/{query.symbol}/{expiration}/"
                 if query.date is not None:
-                    url += date
+                    query_string = get_querystring(
+                        query.model_dump(exclude_none=True),
+                        [
+                            "symbol",
+                            "date",
+                            "model",
+                            "volume_greater_than",
+                            "volume_less_than",
+                            "moneyness",
+                            "open_interest_greater_than",
+                            "open_interest_less_than",
+                            "show_extended_price",
+                        ],
+                    )
+                    url = url + f"eod?date={query.date}&{query_string}"
+                else:
+                    if query.moneyness:
+                        moneyness = (
+                            "out_of_the_money"
+                            if query.moneyness == "otm"
+                            else "in_the_money" if query.moneyness == "itm" else "all"
+                        )
+
+                    query_string = get_querystring(
+                        query.model_dump(exclude_none=True),
+                        ["symbol", "date", "moneyness"],
+                    )
+                    url = url + f"realtime?{query_string}&moneyness={moneyness}"
+
                 return url + f"&api_key={api_key}"
 
             return [generate_url(expiration) for expiration in expirations]
@@ -114,28 +227,98 @@ class IntrinioOptionsChainsFetcher(
             response_data = await response.json()
             return response_data.get("chain", [])
 
-        date = datetime.now().date() if query.date is None else query.date
-        date = get_weekday(date)
-
         results = await amake_requests(
             await get_urls(date.strftime("%Y-%m-%d")), callback, **kwargs
         )
-
-        if not results:
-            urls = await get_urls(
-                get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
-            )
+        # If the EOD chains are not available for the given date, try the previous day
+        if not results and query.date is not None:
+            date = get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
+            urls = await get_urls(date)
             results = await amake_requests(urls, response_callback=callback, **kwargs)
 
-        return results
+        if not results:
+            raise OpenBBError(f"No data found for the given symbol: {query.symbol}")
+
+        output: Dict = {}
+        underlying_price: Dict = {}
+        # If the EOD chains are requested, get the underlying price on the given date.
+        if query.date is not None:
+            if query.symbol.endswith("W") and query.symbol.startswith("SPX"):
+                query.symbol = query.symbol[:-1]
+            temp = None
+            try:
+                temp = await IntrinioEquityHistoricalFetcher.fetch_data(
+                    {"symbol": query.symbol, "start_date": date, "end_date": date},
+                    credentials,
+                )
+                temp = temp[0]
+            # If the symbol is SPX, or similar, try to get the underlying price from the index.
+            except Exception as e:
+                try:
+                    temp = await IntrinioIndexHistoricalFetcher.fetch_data(
+                        {"symbol": query.symbol, "start_date": date, "end_date": date},
+                        credentials,
+                    )
+                    temp = temp[0]
+                except Exception:
+                    warn(f"Failed to get underlying price for {query.symbol}: {e}")
+            if temp:
+                underlying_price["symbol"] = query.symbol
+                underlying_price["price"] = temp.close
+                underlying_price["date"] = temp.date.strftime("%Y-%m-%d")
+
+        output = {"underlying": underlying_price, "data": results}
+
+        return output
 
     @staticmethod
     def transform_data(
-        query: IntrinioOptionsChainsQueryParams, data: List[Dict], **kwargs: Any
+        query: IntrinioOptionsChainsQueryParams,
+        data: Dict,
+        **kwargs: Any,
     ) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
-        data = [{**item["option"], **item["prices"]} for item in data]
-        data = sorted(
-            data, key=lambda x: (x["expiration"], x["strike"], x["type"]), reverse=False
+        results: List[IntrinioOptionsChainsData] = []
+        chains = data.get("data", [])
+        underlying = data.get("underlying", {})
+        last_price = underlying.get("price")
+        if query.date is not None:
+            for item in chains:
+                new_item = {**item["option"], **item["prices"]}
+                new_item["dte"] = (
+                    datetime.strptime(new_item["expiration"], "%Y-%m-%d").date()
+                    - datetime.strptime(new_item["date"], "%Y-%m-%d").date()
+                ).days
+                if last_price:
+                    new_item["underlying_price"] = last_price
+                _ = new_item.pop("exercise_style", None)
+                new_item["underlying_symbol"] = new_item.pop("ticker")
+                results.append(IntrinioOptionsChainsData.model_validate(new_item))
+        else:
+            for item in chains:
+                new_item = {
+                    **item["option"],
+                    **item["price"],
+                    **item["stats"],
+                    **item["extended_price"],
+                }
+                dte = (
+                    datetime.strptime(new_item["expiration"], "%Y-%m-%d").date()
+                    - datetime.now().date()
+                ).days
+                new_item["dte"] = dte
+                new_item["underlying_symbol"] = new_item.pop(
+                    "underlying_price_ticker", None
+                )
+                underlying["date"] = datetime.now().date()
+                new_item["underlying_price"] = new_item.pop("underlying_price", None)
+                _ = new_item.pop("ticker", None)
+                _ = new_item.pop("trade_exchange", None)
+                _ = new_item.pop("exercise_style", None)
+                results.append(IntrinioOptionsChainsData.model_validate(new_item))
+
+        return sorted(
+            results,
+            key=lambda x: (x.expiration, x.strike, x.option_type),
+            reverse=False,
         )
-        return [IntrinioOptionsChainsData.model_validate(d) for d in data]

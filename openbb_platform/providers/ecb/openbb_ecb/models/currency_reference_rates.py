@@ -4,11 +4,14 @@ from typing import Any, Dict, Optional
 
 import requests
 import xmltodict
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_reference_rates import (
     CurrencyReferenceRatesData,
     CurrencyReferenceRatesQueryParams,
 )
+
+# pylint: disable=unused-argument
 
 
 class ECBCurrencyReferenceRatesQueryParams(CurrencyReferenceRatesQueryParams):
@@ -44,7 +47,7 @@ class ECBCurrencyReferenceRatesFetcher(
         url = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
         response = requests.get(url, timeout=5)
         if response.status_code != 200:
-            raise RuntimeError(
+            raise OpenBBError(
                 "Failed to fetch data from ECB."
                 + f" -> Status Code: {response.status_code}"
             )

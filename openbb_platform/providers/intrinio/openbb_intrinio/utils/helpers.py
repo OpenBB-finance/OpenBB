@@ -9,6 +9,7 @@ from datetime import (
 from io import StringIO
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
@@ -64,10 +65,10 @@ async def response_callback(
 
     if isinstance(data, dict) and response.status != 200:
         if message := data.get("error", None) or data.get("message", None):
-            raise RuntimeError(f"Error in Intrinio request -> {message}")
+            raise OpenBBError(f"Error in Intrinio request -> {message}")
 
         if error := data.get("Error Message", None):
-            raise RuntimeError(f"Intrinio Error Message -> {error}")
+            raise OpenBBError(f"Intrinio Error Message -> {error}")
 
     if isinstance(data, (str, float)):
         data = {"value": data}

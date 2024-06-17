@@ -4,6 +4,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_cboe.utils.helpers import get_settlement_prices
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
@@ -52,7 +53,7 @@ class CboeFuturesCurveFetcher(
             raise EmptyDataError()
 
         if symbol not in FUTURES["product"].unique().tolist():
-            raise RuntimeError(
+            raise OpenBBError(
                 "The symbol, "
                 f"{symbol}"
                 ", is not valid.  Chose from: "

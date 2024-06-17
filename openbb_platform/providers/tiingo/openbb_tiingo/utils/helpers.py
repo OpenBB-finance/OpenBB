@@ -5,6 +5,7 @@ from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import BaseModel
@@ -56,12 +57,12 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     except SSLError:
         r = request(url)
     if r.status_code == 404:
-        raise RuntimeError("Tiingo endpoint doesn't exist")
+        raise OpenBBError("Tiingo endpoint doesn't exist.")
 
     data = r.json()
     if r.status_code != 200:
         error = data.get("detail")
-        raise RuntimeError(f"Error in Tiingo request -> {error}")
+        raise OpenBBError(f"Error in Tiingo request -> {error}")
 
     if len(data) == 0:
         raise EmptyDataError()

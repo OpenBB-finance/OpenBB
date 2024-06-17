@@ -4,6 +4,7 @@
 
 from typing import Dict, List, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from pandas import DataFrame, DatetimeIndex, to_datetime
@@ -111,8 +112,10 @@ def _get_endpoints(
     treasury_status: Optional[str] = "results",
     treasury_security_type: Optional[str] = "",
 ) -> Dict:
-    """Generating URLs to the all, or a category of, endpoints.
-    This function is not intended to be used directly."""
+    """Generate URLs to the all, or a category of, endpoints.
+
+    This function is not intended to be used directly.
+    """
     is_latest: str = "latest"
     if ambs_security:
         ambs_security = AMBS_SECURITIES[ambs_security]
@@ -378,8 +381,9 @@ def _get_endpoints(
     }
     return end_points if category is None else end_points[category]  # type: ignore
 
+
 async def fetch_data(url: str) -> Dict:
-    """Fetches the JSON response from the API."""
+    """Fetch the JSON response from the API."""
     try:
         response = await amake_request(url)
     except Exception as e:  # pylint: disable=broad-except
@@ -431,6 +435,7 @@ class SomaHoldings:
         """Initialize the SomaHoldings class."""
 
     def __repr__(self) -> str:
+        """Replace original repr with docstring."""
         return str(self.__doc__)
 
     async def get_as_of_dates(self) -> List:
@@ -439,14 +444,14 @@ class SomaHoldings:
         dates_response = await fetch_data(dates_url)
         dates = dates_response.get("soma", {}).get("asOfDates", [])
         if not dates:
-            raise RuntimeError("Error requesting dates. Please try again later.")
+            raise OpenBBError("Error requesting dates. Please try again later.")
         return dates
 
     async def get_release_log(
         self,
         treasury: bool = False,
     ) -> List[Dict]:
-        """Returns the last three months Agency Release and as-of dates.
+        """Return the last three months Agency Release and as-of dates.
 
         Parameters
         ----------
@@ -469,12 +474,12 @@ class SomaHoldings:
         response = await fetch_data(url)
         release_log = response.get("soma", {}).get("dates", [])
         if not release_log:
-            raise ValueError("No data found. Try again later.")
+            raise OpenBBError("No data found. Try again later.")
 
         return release_log
 
     async def get_summary(self) -> List[Dict]:
-        """Returns historical weekly summary by holding type.
+        """Return historical weekly summary by holding type.
 
         Returns
         -------
@@ -501,7 +506,7 @@ class SomaHoldings:
         holding_type: Optional[str] = None,
         wam: bool = False,
     ) -> List[Dict]:
-        """Gets the latest agency holdings, or as of a single date. Data is updated weekly.
+        """Get the latest agency holdings, or as of a single date. Data is updated weekly.
 
         Parameters
         ----------
@@ -545,7 +550,7 @@ class SomaHoldings:
         url = _get_endpoints(date=as_of)["soma_holdings"]["get_as_of"]
         if holding_type is not None:
             if holding_type not in AGENCY_HOLDING_TYPES:
-                raise ValueError(
+                raise OpenBBError(
                     "Invalid choice. Choose from: ['all', 'agency debts', 'mbs', 'cmbs']"
                 )
             url = _get_endpoints(
@@ -568,7 +573,7 @@ class SomaHoldings:
         wam: Optional[bool] = False,
         monthly: Optional[bool] = False,
     ) -> List[Dict]:
-        """Gets the latest Treasury holdings, or as of a single date.
+        """Get the latest Treasury holdings, or as of a single date.
 
         Parameters
         ----------
@@ -617,8 +622,8 @@ class SomaHoldings:
 
         if holding_type is not None:
             if holding_type not in TREASURY_HOLDING_TYPES:
-                raise ValueError(
-                    "Invalid choice. Choose from: ", TREASURY_HOLDING_TYPES
+                raise OpenBBError(
+                    f"Invalid choice. Choose from: {', '.join(TREASURY_HOLDING_TYPES)}"
                 )
             url = _get_endpoints(treasury_holding_type=holding_type, date=as_of)[
                 "soma_holdings"
