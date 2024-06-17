@@ -29,7 +29,7 @@ class Registry:
             return True
         return False
 
-    def get(self, arg: Union[int, str]) -> OBBject:
+    def get(self, arg: Union[int, str]) -> Optional[OBBject]:
         """Return the obbject with index or key."""
         if isinstance(arg, int):
             return self._get_by_index(arg)
@@ -45,11 +45,16 @@ class Registry:
                 return obbject
         return None
 
-    def _get_by_index(self, idx: int) -> OBBject:
+    def _get_by_index(self, idx: int) -> Optional[OBBject]:
         """Return the obbject at index idx."""
         # the list should work as a stack
         # i.e., the last element needs to be accessed by idx=0 and so on
         reversed_list = list(reversed(self._obbjects))
+
+        # check if the index is out of bounds
+        if idx >= len(reversed_list):
+            return None
+
         return reversed_list[idx]
 
     def remove(self, idx: int = -1):
