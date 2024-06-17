@@ -98,7 +98,8 @@ class PlatformController(BaseController):
                 ns_parser.data in session.obbject_registry.obbject_keys
             ):
                 obbject = session.obbject_registry.get(ns_parser.data)
-                setattr(ns_parser, "data", obbject.results)
+                if obbject and isinstance(obbject, OBBject):
+                    setattr(ns_parser, "data", obbject.results)
 
         return ns_parser
 

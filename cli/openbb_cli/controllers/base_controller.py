@@ -629,19 +629,77 @@ class BaseController(metaclass=ABCMeta):
             "'OBBjects' where all execution results are stored. "
             "It is organized as a stack, with the most recent result at index 0.",
         )
+        parser.add_argument("--index", dest="index", help="Index of the result.")
+        parser.add_argument("--key", dest="key", help="Key of the result.")
+        parser.add_argument(
+            "--chart", action="store_true", dest="chart", help="Display chart."
+        )
+        parser.add_argument(
+            "--export", dest="export", help="Export data.", nargs="+", default=None
+        )
+
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            results = session.obbject_registry.all
-            if results:
-                df = pd.DataFrame.from_dict(results, orient="index")
-                print_rich_table(
-                    df,
-                    show_index=True,
-                    index_name="stack index",
-                    title="OBBject Results",
-                )
-            else:
-                session.console.print("[info]No results found.[/info]")
+            if not ns_parser.index and not ns_parser.key:
+                results = session.obbject_registry.all
+                if results:
+                    df = pd.DataFrame.from_dict(results, orient="index")
+                    print_rich_table(
+                        df,
+                        show_index=True,
+                        index_name="stack index",
+                        title="OBBject Results",
+                    )
+                else:
+                    session.console.print("[info]No results found.[/info]")
+            elif ns_parser.index:
+                try:
+                    index = int(ns_parser.index)
+                    obbject = session.obbject_registry.get(index)
+                    if obbject:
+                        if ns_parser.chart and obbject.chart:
+                            obbject.show()
+                        else:
+                            title = obbject.extra.get("command", "")
+                            df = obbject.to_dataframe()
+                            print_rich_table(
+                                df=df,
+                                show_index=True,
+                                title=title,
+                                export=ns_parser.export,
+                            )
+                            if ns_parser.chart and not obbject.chart:
+                                session.console.print(
+                                    "[info]No chart available.[/info]"
+                                )
+                    else:
+                        session.console.print(
+                            f"[info]No result found at index {index}.[/info]"
+                        )
+                except ValueError:
+                    session.console.print(
+                        f"[red]Index must be an integer, not '{ns_parser.index}'.[/red]"
+                    )
+            elif ns_parser.key:
+                obbject = session.obbject_registry.get(ns_parser.key)
+                if obbject:
+                    if ns_parser.chart and obbject.chart:
+                        obbject.show()
+                    else:
+                        title = obbject.extra.get("command", "")
+                        df = obbject.to_dataframe()
+                        print_rich_table(
+                            df=df,
+                            show_index=True,
+                            title=title,
+                            export=ns_parser.export,
+                        )
+                        if ns_parser.chart and not obbject.chart:
+                            session.console.print("[info]No chart available.[/info]")
+                else:
+                    session.console.print(
+                        f"[info]No result found with key '{ns_parser.key}'.[/info]"
+                    )
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
