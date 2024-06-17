@@ -5,16 +5,16 @@ from typing import Any, Dict, Tuple
 import pandas as pd
 from openbb_core.app.utils import basemodel_to_df
 
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
-from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_charting.utils.helpers import (
+from openbb_charting.charts.helpers import (
     calculate_returns,
     heikin_ashi,
     should_share_axis,
     z_score_standardization,
 )
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+from openbb_charting.styles.colors import LARGE_CYCLER
 
 # pylint: disable=too-many-branches
 

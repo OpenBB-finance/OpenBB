@@ -6,8 +6,8 @@ import pandas as pd
 from openbb_core.app.utils import basemodel_to_df
 from plotly.graph_objs import Figure
 
+from openbb_charting.charts.generic_charts import bar_chart
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.utils.generic_charts import bar_chart
 
 
 def price_performance(

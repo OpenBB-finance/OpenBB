@@ -2,8 +2,8 @@
 
 from typing import Any, Dict, Tuple
 
+from openbb_charting.charts.price_historical import price_historical
 from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.utils.price_historical import price_historical
 
 
 class IndexViews:

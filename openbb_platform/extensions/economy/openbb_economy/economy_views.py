@@ -4,12 +4,12 @@ from typing import Any, Dict, Optional, Tuple
 from warnings import warn
 
 import pandas as pd
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_charting.utils.generic_charts import bar_chart
-from openbb_charting.utils.helpers import (
+from openbb_charting.charts.generic_charts import bar_chart
+from openbb_charting.charts.helpers import (
     z_score_standardization,
 )
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_core.app.utils import basemodel_to_df
 
 

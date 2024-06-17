@@ -3,12 +3,12 @@
 from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
+from openbb_charting.charts.helpers import (
+    duration_sorter,
+)
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_charting.utils.helpers import (
-    duration_sorter,
-)
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 
