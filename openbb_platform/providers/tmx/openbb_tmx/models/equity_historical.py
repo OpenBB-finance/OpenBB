@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
 import pytz
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -78,7 +79,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
             return "week"
         if v.isnumeric():
             return int(v)
-        raise ValueError(f"Invalid interval: {v}")
+        raise OpenBBError(f"Invalid interval: {v}")
 
 
 class TmxEquityHistoricalData(EquityHistoricalData):

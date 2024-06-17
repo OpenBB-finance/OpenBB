@@ -7,6 +7,7 @@ from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import BaseModel
@@ -94,7 +95,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     except SSLError:
         r = request(url)
     if r.status_code == 404:
-        raise RuntimeError("Nasdaq endpoint doesn't exist")
+        raise OpenBBError("Nasdaq endpoint doesn't exist")
 
     data = r.json()
     if len(data) == 0:
@@ -102,7 +103,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
 
     if data["data"] is None:
         message = data["status"]["bCodeMessage"]["errorMessage"]
-        raise RuntimeError(f"Error in Nasdaq request -> {message}")
+        raise OpenBBError(f"Error in Nasdaq request -> {message}")
 
     return data
 

@@ -5,6 +5,7 @@ import asyncio
 import warnings
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
@@ -26,7 +27,7 @@ class YFinancePriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     def check_symbol(cls, value):
         """Check the symbol."""
         if not value:
-            raise RuntimeError("Error: Symbol is a required field for yFinance.")
+            raise OpenBBError("Error: Symbol is a required field for yFinance.")
         return value
 
 

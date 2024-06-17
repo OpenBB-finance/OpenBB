@@ -1213,6 +1213,101 @@
                         "default": null,
                         "optional": true,
                         "choices": null
+                    },
+                    {
+                        "name": "option_type",
+                        "type": "Literal[None, Union[ForwardRef('call'), ForwardRef('put')]]",
+                        "description": "The option type, call or put, 'None' is both (default).",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "call",
+                            "put"
+                        ]
+                    },
+                    {
+                        "name": "moneyness",
+                        "type": "Literal['otm', 'itm', 'all']",
+                        "description": "Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "otm",
+                            "itm",
+                            "all"
+                        ]
+                    },
+                    {
+                        "name": "strike_gt",
+                        "type": "int",
+                        "description": "Return options with a strike price greater than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "strike_lt",
+                        "type": "int",
+                        "description": "Return options with a strike price less than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume_gt",
+                        "type": "int",
+                        "description": "Return options with a volume greater than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume_lt",
+                        "type": "int",
+                        "description": "Return options with a volume less than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "oi_gt",
+                        "type": "int",
+                        "description": "Return options with an open interest greater than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "oi_lt",
+                        "type": "int",
+                        "description": "Return options with an open interest less than the given value. Parameter is ignored when a date is supplied.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "model",
+                        "type": "Literal['black_scholes', 'bjerk']",
+                        "description": "The pricing model to use for options chains data, default is 'black_scholes'. Parameter is ignored when a date is supplied.",
+                        "default": "black_scholes",
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "show_extended_price",
+                        "type": "bool",
+                        "description": "Whether to include OHLC type fields, default is True. Parameter is ignored when a date is supplied.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "include_related_symbols",
+                        "type": "bool",
+                        "description": "Include related symbols that end in a 1 or 2 because of a corporate action, default is False.",
+                        "default": false,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
                 "yfinance": []
@@ -1249,9 +1344,17 @@
             "data": {
                 "standard": [
                     {
-                        "name": "symbol",
+                        "name": "underlying_symbol",
                         "type": "str",
-                        "description": "Symbol representing the entity requested in the data. Here, it is the underlying symbol for the option.",
+                        "description": "Underlying symbol for the option.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "underlying_price",
+                        "type": "float",
+                        "description": "Price of the underlying stock.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1281,6 +1384,14 @@
                         "choices": null
                     },
                     {
+                        "name": "dte",
+                        "type": "int",
+                        "description": "Days to expiration of the contract.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "strike",
                         "type": "float",
                         "description": "Strike price of the contract.",
@@ -1300,7 +1411,7 @@
                         "name": "open_interest",
                         "type": "int",
                         "description": "Open interest on the contract.",
-                        "default": null,
+                        "default": 0,
                         "optional": true,
                         "choices": null
                     },
@@ -1308,7 +1419,7 @@
                         "name": "volume",
                         "type": "int",
                         "description": "The trading volume.",
-                        "default": null,
+                        "default": 0,
                         "optional": true,
                         "choices": null
                     },
@@ -1324,6 +1435,22 @@
                         "name": "last_trade_price",
                         "type": "float",
                         "description": "Last trade price of the option.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_trade_size",
+                        "type": "int",
+                        "description": "Last trade size of the option.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_trade_time",
+                        "type": "datetime",
+                        "description": "The timestamp of the last trade.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1353,6 +1480,22 @@
                         "choices": null
                     },
                     {
+                        "name": "bid_time",
+                        "type": "datetime",
+                        "description": "The timestamp of the bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bid_exchange",
+                        "type": "str",
+                        "description": "The exchange of the bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
                         "name": "ask",
                         "type": "float",
                         "description": "Current ask price for the option.",
@@ -1364,6 +1507,22 @@
                         "name": "ask_size",
                         "type": "int",
                         "description": "Ask size for the option.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_time",
+                        "type": "datetime",
+                        "description": "The timestamp of the ask price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_exchange",
+                        "type": "str",
+                        "description": "The exchange of the ask price.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1539,7 +1698,7 @@
                     {
                         "name": "change_percent",
                         "type": "float",
-                        "description": "Change, in normalizezd percentage points, of the option.",
+                        "description": "Change, in normalized percentage points, of the option.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1593,25 +1752,8 @@
                         "choices": null
                     }
                 ],
-                "intrinio": [
-                    {
-                        "name": "exercise_style",
-                        "type": "str",
-                        "description": "The exercise style of the option, American or European.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    }
-                ],
+                "intrinio": [],
                 "yfinance": [
-                    {
-                        "name": "dte",
-                        "type": "int",
-                        "description": "Days to expiration.",
-                        "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
                     {
                         "name": "in_the_money",
                         "type": "bool",
@@ -1621,9 +1763,9 @@
                         "choices": null
                     },
                     {
-                        "name": "last_trade_timestamp",
-                        "type": "datetime",
-                        "description": "Timestamp for when the option was last traded.",
+                        "name": "currency",
+                        "type": "str",
+                        "description": "Currency of the option.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -1848,6 +1990,295 @@
                 ]
             },
             "model": "OptionsUnusual"
+        },
+        "/derivatives/options/snapshots": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Get a snapshot of the options market universe.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.derivatives.options.snapshots(provider='intrinio')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "provider",
+                        "type": "Literal['intrinio']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: i, n, t, r, i, n, i, o.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "date",
+                        "type": "Union[Union[date, datetime, str], str]",
+                        "description": "The date of the data. Can be a datetime or an ISO datetime string. Data appears to go back to around 2022-06-01 Example: '2024-03-08T12:15:00+0400'",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "only_traded",
+                        "type": "bool",
+                        "description": "Only include options that have been traded during the session, default is True. Setting to false will dramatically increase the size of the response - use with caution.",
+                        "default": true,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[OptionsSnapshots]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['intrinio']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "underlying_symbol",
+                        "type": "str",
+                        "description": "Ticker symbol of the underlying asset.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "contract_symbol",
+                        "type": "str",
+                        "description": "Symbol of the options contract.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "expiration",
+                        "type": "date",
+                        "description": "Expiration date of the options contract.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "dte",
+                        "type": "int",
+                        "description": "Number of days to expiration of the options contract.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "strike",
+                        "type": "float",
+                        "description": "Strike price of the options contract.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "option_type",
+                        "type": "str",
+                        "description": "The type of option.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "int",
+                        "description": "Total trade volume from the beginning of the session.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "open_interest",
+                        "type": "int",
+                        "description": "Open interest at the time.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_price",
+                        "type": "float",
+                        "description": "Last trade price at the time.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_size",
+                        "type": "int",
+                        "description": "Lot size of the last trade.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "last_timestamp",
+                        "type": "datetime",
+                        "description": "Timestamp of the last price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "open",
+                        "type": "float",
+                        "description": "The open price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "high",
+                        "type": "float",
+                        "description": "The high price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "low",
+                        "type": "float",
+                        "description": "The low price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "close",
+                        "type": "float",
+                        "description": "The close price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "intrinio": [
+                    {
+                        "name": "bid",
+                        "type": "float",
+                        "description": "The last bid price at the time.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bid_size",
+                        "type": "int",
+                        "description": "The size of the last bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bid_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp of the last bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask",
+                        "type": "float",
+                        "description": "The last ask price at the time.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_size",
+                        "type": "int",
+                        "description": "The size of the last ask price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_timestamp",
+                        "type": "datetime",
+                        "description": "The timestamp of the last ask price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "total_bid_volume",
+                        "type": "int",
+                        "description": "Total volume of bids.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bid_high",
+                        "type": "float",
+                        "description": "The highest bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "bid_low",
+                        "type": "float",
+                        "description": "The lowest bid price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "total_ask_volume",
+                        "type": "int",
+                        "description": "Total volume of asks.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_high",
+                        "type": "float",
+                        "description": "The highest ask price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "ask_low",
+                        "type": "float",
+                        "description": "The lowest ask price.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "OptionsSnapshots"
         },
         "/derivatives/futures/historical": {
             "deprecated": {
@@ -21196,21 +21627,21 @@
                 "message": null
             },
             "description": "Get earnings call transcripts for a given company.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.transcript(symbol='AAPL', year=2020, provider='fmp')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.equity.fundamental.transcript(symbol='AAPL', year='2020', provider='fmp')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "symbol",
-                        "type": "str",
-                        "description": "Symbol to get data for.",
+                        "type": "Union[str, List[str]]",
+                        "description": "Symbol to get data for. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     },
                     {
                         "name": "year",
-                        "type": "int",
-                        "description": "Year of the earnings call transcript.",
+                        "type": "Union[Union[int, str], List[Union[int, str]]]",
+                        "description": "Year of the earnings call transcript. Multiple items allowed for provider(s): fmp.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -32234,6 +32665,191 @@
                 ]
             },
             "model": "BondIndices"
+        },
+        "/fixedincome/mortgage_indices": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Mortgage Indices.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\n# The default state for FRED are the primary mortgage indices from Optimal Blue.\nobb.fixedincome.mortgage_indices(provider='fred')\n# Multiple indices can be requested.\nobb.fixedincome.mortgage_indices(index=jumbo_30y,conforming_30y,conforming_15y, provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "index",
+                        "type": "Union[Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str], List[Union[Literal['primary', 'ltv_lte_80', 'ltv_gt_80', 'conforming_30y', 'conforming_30y_na', 'jumbo_30y', 'fha_30y', 'va_30y', 'usda_30y', 'conforming_15y', 'ltv_lte80_fico_ge740', 'ltv_lte80_fico_a720b739', 'ltv_lte80_fico_a700b719', 'ltv_lte80_fico_a680b699', 'ltv_lte80_fico_lt680', 'ltv_gt80_fico_ge740', 'ltv_gt80_fico_a720b739', 'ltv_gt80_fico_a700b719', 'ltv_gt80_fico_a680b699', 'ltv_gt80_fico_lt680'], str]]]",
+                        "description": "The specific index, or index group, to query. Default is the 'primary' group. Multiple items allowed for provider(s): fred.",
+                        "default": "primary",
+                        "optional": true,
+                        "choices": [
+                            "primary",
+                            "ltv_lte_80",
+                            "ltv_gt_80",
+                            "conforming_30y",
+                            "conforming_30y_na",
+                            "jumbo_30y",
+                            "fha_30y",
+                            "va_30y",
+                            "usda_30y",
+                            "conforming_15y",
+                            "ltv_lte80_fico_ge740",
+                            "ltv_lte80_fico_a720b739",
+                            "ltv_lte80_fico_a700b719",
+                            "ltv_lte80_fico_a680b699",
+                            "ltv_lte80_fico_lt680",
+                            "ltv_gt80_fico_ge740",
+                            "ltv_gt80_fico_a720b739",
+                            "ltv_gt80_fico_a700b719",
+                            "ltv_gt80_fico_a680b699",
+                            "ltv_gt80_fico_lt680"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set, default is 'avg'.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": "avg",
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[MortgageIndices]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "name",
+                        "type": "str",
+                        "description": "Name of the index.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Mortgage rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "MortgageIndices"
         },
         "/index/price/historical": {
             "deprecated": {

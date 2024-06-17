@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
@@ -114,7 +115,7 @@ class SACalendarEarningsFetcher(
         await asyncio.gather(*[get_date(date, currency) for date in dates])
 
         if not results:
-            raise RuntimeError(f"Error with the Seeking Alpha request -> {messages}")
+            raise OpenBBError(f"Error with the Seeking Alpha request -> {messages}")
 
         return results
 

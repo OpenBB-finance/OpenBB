@@ -4,6 +4,7 @@ import json
 from io import StringIO
 from typing import Any, Dict, List, Optional, Tuple, TypeVar, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
@@ -60,7 +61,7 @@ async def response_callback(
 
     if response.status != 200:
         message = data.get("error") or data.get("message")
-        raise RuntimeError(f"Error in Polygon request -> {message}")
+        raise OpenBBError(f"Error in Polygon request -> {message}")
 
     keys_in_data = "results" in data or "tickers" in data
 
