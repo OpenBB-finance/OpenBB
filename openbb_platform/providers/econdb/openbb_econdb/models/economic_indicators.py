@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_indicators import (
@@ -87,7 +88,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                         helpers.COUNTRY_GROUPS[c.lower()]
                     )
             if len(country) == 0:
-                raise ValueError("No valid countries were supplied.")
+                raise OpenBBError("No valid countries were supplied.")
             return ",".join(country)
         return None
 
@@ -105,7 +106,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
                 continue
             if symbol.upper() == "MAIN":
                 if len(symbols) > 1:
-                    raise ValueError(
+                    raise OpenBBError(
                         "The 'main' indicator cannot be combined with other indicators."
                     )
                 return symbol
@@ -121,7 +122,7 @@ class EconDbEconomicIndicatorsQueryParams(EconomicIndicatorsQueryParams):
             else:
                 new_symbols.append(symbol)
         if not new_symbols:
-            raise ValueError(
+            raise OpenBBError(
                 "No valid indicators provided. Please choose from: "
                 + ",".join(INDICATORS)
             )
@@ -155,7 +156,7 @@ class EconDbEconomicIndicatorsFetcher(
             and len(countries.split(",")) > 1
             and new_params.get("symbol", "").upper() == "MAIN"
         ):
-            raise ValueError(
+            raise OpenBBError(
                 "The 'main' indicator cannot be combined with multiple countries."
             )
         return EconDbEconomicIndicatorsQueryParams(**new_params)
@@ -209,14 +210,14 @@ class EconDbEconomicIndicatorsFetcher(
                     if len(symbols) > 1:
                         warn(message)
                         continue
-                    raise RuntimeError(message)
+                    raise OpenBBError(message)
                 if _transform and _transform not in helpers.QUERY_TRANSFORMS:
                     message = f"Invalid transformation, '{_transform}', for symbol: '{_symbol}'."
                     if len(symbols) > 1:
                         warn(message)
                         new_symbols.append(_symbol)
                     else:
-                        raise RuntimeError(message)
+                        raise OpenBBError(message)
                 elif not _transform:
                     new_symbols.append(symbol.replace("~", ""))
                 else:
@@ -271,7 +272,7 @@ class EconDbEconomicIndicatorsFetcher(
                 + " Please add the two-letter country code or use the country parameter."
                 + "\nIf already included, add '~' to the end of the symbol."
             )
-            raise ValueError(error_message)
+            raise OpenBBError(error_message)
         url = base_url + f"%5B{','.join(new_symbols)}%5D&format=json&token={token}"
         if query.start_date:
             url += f"&from={query.start_date}"
@@ -281,7 +282,7 @@ class EconDbEconomicIndicatorsFetcher(
         # Instead of chunking we request the user reduce the number of indicators and countries.
         # This might be able to nudge higher, but it is a safe limit for all operating systems.
         if len(url) > 2000:
-            raise ValueError(
+            raise OpenBBError(
                 "The request has generated a url that is too long."
                 + " Please reduce the number of symbols or countries and try again."
             )

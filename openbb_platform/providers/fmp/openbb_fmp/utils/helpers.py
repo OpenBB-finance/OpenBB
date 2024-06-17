@@ -3,6 +3,7 @@
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
@@ -20,10 +21,10 @@ async def response_callback(
     """Use callback for make_request."""
     data = await response.json()
     if isinstance(data, dict) and "Error Message" in data:
-        raise RuntimeError(f"FMP Error Message -> {data['Error Message']}")
+        raise OpenBBError(f"FMP Error Message -> {data['Error Message']}")
 
     if isinstance(data, dict) and "error" in data:
-        raise RuntimeError(
+        raise OpenBBError(
             f"FMP Error Message -> {data['error']}. Status code: {response.status}"
         )
 

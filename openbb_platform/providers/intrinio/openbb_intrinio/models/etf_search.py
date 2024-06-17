@@ -4,6 +4,7 @@
 import re
 from typing import Any, Dict, List, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_search import (
     EtfSearchData,
@@ -85,7 +86,6 @@ class IntrinioEtfSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         BASE = "https://api-v2.intrinio.com/etfs"
         if query.exchange is not None:
@@ -103,7 +103,7 @@ class IntrinioEtfSearchFetcher(
 
             if results.get("messages"):  # type: ignore
                 messages = results.get("messages")  # type: ignore
-                raise RuntimeError(str(messages))
+                raise OpenBBError(str(messages))
 
             if results.get("etfs") and len(results.get("etfs")) > 0:  # type: ignore
                 data.extend(results.get("etfs"))  # type: ignore
@@ -127,7 +127,6 @@ class IntrinioEtfSearchFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEtfSearchData]:
         """Transform data."""
-
         if not data:
             raise EmptyDataError("No data found.")
 

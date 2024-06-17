@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import pytz
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
@@ -31,7 +32,7 @@ class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
     def symbols_validate(cls, v):
         """Validate the symbols."""
         if v is None:
-            raise ValueError("Symbol is a required field for TMX.")
+            raise OpenBBError("Symbol is a required field for TMX.")
         return v
 
 

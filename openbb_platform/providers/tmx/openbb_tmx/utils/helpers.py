@@ -20,6 +20,7 @@ import pytz
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from dateutil import rrule
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 from openbb_tmx.utils import gql
@@ -361,7 +362,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
     )
 
     if not response or response is None:
-        raise RuntimeError("There was a problem with the request. Could not get ETFs.")
+        raise OpenBBError("There was a problem with the request. Could not get ETFs.")
 
     response = replace_values_in_list_of_dicts(response)
 
@@ -430,7 +431,7 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
 
     if r is None or r == []:
-        raise RuntimeError("Error with the request")  # mypy: ignore
+        raise OpenBBError("Error with the request")  # mypy: ignore
 
     options_listings = pd.read_html(StringIO(r))
     listings = pd.concat(options_listings)
@@ -461,7 +462,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
         symbol = SYMBOLS[SYMBOLS["underlying_symbol"] == symbol].index.values[0]
     # Check if the symbol has options trading.
     if symbol not in SYMBOLS.index and not SYMBOLS.empty:
-        raise ValueError(
+        raise OpenBBError(
             f"The symbol, {symbol}, is not a valid listing or does not trade options."
         )
 
@@ -561,7 +562,7 @@ async def download_eod_chains(
         symbol = SYMBOLS[SYMBOLS["underlying_symbol"] == symbol].index.values[0]
     # Check if the symbol has options trading.
     if symbol not in SYMBOLS.index and not SYMBOLS.empty:
-        raise ValueError(
+        raise OpenBBError(
             f"The symbol, {symbol}, is not a valid listing or does not trade options."
         )
 
@@ -586,11 +587,11 @@ async def download_eod_chains(
     r = await get_data_from_url(EOD_URL, use_cache=use_cache)  # type: ignore
 
     if r is None:
-        raise RuntimeError("Error with the request, no data was returned.")
+        raise OpenBBError("Error with the request, no data was returned.")
 
     data = pd.read_csv(StringIO(r))
     if data.empty:
-        raise ValueError(
+        raise OpenBBError(
             f"No data found for, {symbol}, on, {date}."
             "The symbol may not have been listed, or traded options, before that date."
         )
@@ -698,7 +699,7 @@ async def get_company_filings(
             },
         )
     except Exception as _e:
-        raise RuntimeError(_e) from _e
+        raise OpenBBError(_e) from _e
     if r["data"]["filings"] is None:
         results = []
     results = r.get("data").get("filings")

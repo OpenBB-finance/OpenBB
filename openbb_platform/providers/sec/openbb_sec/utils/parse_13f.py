@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 
 import xmltodict
 from bs4 import BeautifulSoup
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.utils.definitions import HEADERS
@@ -28,14 +29,14 @@ async def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = 
     if symbol is not None:
         params["symbol"] = symbol
     if cik is None and symbol is None:
-        raise ValueError("Either symbol or cik must be provided.")
+        raise OpenBBError("Either symbol or cik must be provided.")
 
     params["use_cache"] = False
     params["form_type"] = "13F-HR"
     filings = await fetcher.fetch_data(params, {})
     filings = [d.model_dump() for d in filings]
     if len(filings) == 0:
-        raise ValueError(f"No 13F-HR filings found for {symbol if symbol else cik}.")
+        raise OpenBBError(f"No 13F-HR filings found for {symbol if symbol else cik}.")
 
     # Filings before June 30, 2013 are non-structured and are not supported by downstream parsers.
     up_to = to_datetime("2013-06-30").date()  # pylint: disable=unused-variable # noqa
@@ -52,7 +53,7 @@ async def complete_submission_callback(response, _):
     """Use callback function for processing the response object."""
     if response.status == 200:
         return await response.text()
-    raise RuntimeError(f"Request failed with status code {response.status}")
+    raise OpenBBError(f"Request failed with status code {response.status}")
 
 
 async def get_complete_submission(url: str):
@@ -75,7 +76,7 @@ def parse_header(filing_str: str) -> Dict:
         header_dict = xmltodict.parse(str(header_xml)).get("type")
     if header_dict:
         return header_dict  # type: ignore
-    raise ValueError(
+    raise OpenBBError(
         "Failed to parse the form header."
         + " Check the `filing_str` to for the tag, 'headerData'."
     )
@@ -91,7 +92,7 @@ def get_submission_type(filing_str: str):
         except KeyError:
             form_type = header["#text"]
             return form_type
-    raise ValueError(
+    raise OpenBBError(
         "Failed to get the submission type from the form header."
         + " Check the response from `parse_header`."
     )
@@ -102,7 +103,7 @@ def get_period_ending(filing_str: str):
     header = parse_header(filing_str)
     if header.get("filerInfo"):
         return header["filerInfo"].get("periodOfReport")
-    raise ValueError(
+    raise OpenBBError(
         "Failed to get the period of report from the form header."
         + " Check the response from `parse_header`."
     )
@@ -118,12 +119,12 @@ async def parse_13f_hr(filing: str):
 
     # Validate the submission so we know that we can parse it.
     if get_submission_type(filing) not in ("13F-HR", "13F-HR/A"):
-        raise ValueError("Submission type is not 13F-HR.")
+        raise OpenBBError("Submission type is not 13F-HR.")
 
     soup = BeautifulSoup(filing, "lxml-xml")
 
     info_table = soup.find_all("informationTable")
-    if info_table == []:
+    if not info_table:
         info_table = soup.find_all("table")[-1]
 
     parsed_xml = xmltodict.parse(
@@ -131,7 +132,7 @@ async def parse_13f_hr(filing: str):
     )["informationTable"]["infoTable"]
 
     if parsed_xml is None:
-        raise ValueError(
+        raise OpenBBError(
             "Failed to parse the 13F-HR information table."
             + " Check the `filing_str` to make sure it is valid and contains the tag 'informationTable'."
             + " Documents filed before Q2 2013 are not supported."

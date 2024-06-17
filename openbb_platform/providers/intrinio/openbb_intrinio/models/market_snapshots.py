@@ -12,6 +12,7 @@ from datetime import (
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
@@ -124,7 +125,7 @@ class IntrinioMarketSnapshotsFetcher(
                 try:
                     dt = datetime.fromisoformat(str(transformed_params["date"]))  # type: ignore
                 except ValueError as exc:
-                    raise ValueError(
+                    raise OpenBBError(
                         "Invalid date format. Please use '2024-03-08T12:15-0400'."
                     ) from exc
 
@@ -154,7 +155,7 @@ class IntrinioMarketSnapshotsFetcher(
         response = await amake_request(url, **kwargs)
 
         if isinstance(response, dict) and "error" in response:
-            raise RuntimeError(
+            raise OpenBBError(
                 f"Error: {response.get('error')}. Message: {response.get('message')}"
             )
         urls = []
@@ -166,7 +167,7 @@ class IntrinioMarketSnapshotsFetcher(
                         if f.get("url"):
                             urls.append(f.get("url"))
         if not urls:
-            raise RuntimeError("No snapshots found.")
+            raise OpenBBError("No snapshots found.")
 
         results = []
 
@@ -184,7 +185,7 @@ class IntrinioMarketSnapshotsFetcher(
                 file = gzip.decompress(response)
                 df = read_csv(BytesIO(file))
             if df.empty:
-                raise RuntimeError("Empty CSV file")
+                raise OpenBBError("Empty CSV file.")
             df.columns = df.columns.str.lower().str.replace(" ", "_")
 
             df = (

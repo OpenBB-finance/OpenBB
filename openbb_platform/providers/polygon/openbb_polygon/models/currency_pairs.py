@@ -8,6 +8,7 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_pairs import (
     CurrencyPairsData,
@@ -93,7 +94,7 @@ class PolygonCurrencyPairsFetcher(
             if isinstance(data, list):
                 raise ValueError("Expected a dict, got a list")
             if len(data["results"]) == 0:
-                raise RuntimeError(
+                raise OpenBBError(
                     "No results found. Please change your query parameters."
                 )
             if data["status"] == "OK":

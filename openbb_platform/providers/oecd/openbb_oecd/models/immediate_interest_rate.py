@@ -7,6 +7,7 @@ from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.immediate_interest_rate import (
     ImmediateInterestRateData,
@@ -62,13 +63,12 @@ class OECDImmediateInterestRateQueryParams(ImmediateInterestRateQueryParams):
             except Exception as e:
                 if len(values) == 1:
                     raise e from e
-                else:
-                    warn(f"Invalid country: {v}. Skipping...")
-                    continue
+                warn(f"Invalid country: {v}. Skipping...")
+                continue
             result.append(v.lower())
         if result:
             return ",".join(result)
-        raise ValueError(f"No valid country found. -> {values}")
+        raise OpenBBError(f"No valid country found. -> {values}")
 
 
 class OECDImmediateInterestRateData(ImmediateInterestRateData):
@@ -109,8 +109,8 @@ class OECDImmediateInterestRateFetcher(
         def country_string(input_str: str):
             if input_str == "all":
                 return ""
-            countries = input_str.split(",")
-            return "+".join([COUNTRY_TO_CODE_IR[country] for country in countries])
+            _countries = input_str.split(",")
+            return "+".join([COUNTRY_TO_CODE_IR[country] for country in _countries])
 
         country = country_string(query.country) if query.country else ""
         start_date = query.start_date.strftime("%Y-%m") if query.start_date else ""
