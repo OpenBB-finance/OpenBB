@@ -15,6 +15,7 @@ from openbb_core.provider.standard_models.options_chains import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
+from openbb_tradier.models.equity_quote import TradierEquityQuoteFetcher
 from openbb_tradier.utils.constants import OPTIONS_EXCHANGES, STOCK_EXCHANGES
 from pydantic import Field, field_validator, model_validator
 from pytz import timezone
@@ -35,6 +36,7 @@ class TradierOptionsChainsData(OptionsChainsData):
 
     __alias_dict__ = {
         "expiration": "expiration_date",
+        "underlying_symbol": "underlying",
         "contract_symbol": "symbol",
         "last_trade_price": "last",
         "bid_size": "bidsize",
@@ -42,16 +44,16 @@ class TradierOptionsChainsData(OptionsChainsData):
         "change_percent": "change_percentage",
         "orats_final_iv": "smv_vol",
         "implied_volatility": "mid_iv",
-        "greeks_timestamp": "updated_at",
+        "greeks_time": "updated_at",
         "prev_close": "prevclose",
         "year_high": "week_52_high",
         "year_low": "week_52_low",
-        "last_trade_timestamp": "trade_date",
-        "last_trade_volume": "last_volume",
+        "last_trade_time": "trade_date",
+        "last_trade_size": "last_volume",
         "ask_exchange": "askexch",
-        "ask_timestamp": "ask_date",
+        "ask_time": "ask_date",
         "bid_exchange": "bidexch",
-        "bid_timestamp": "bid_date",
+        "bid_time": "bid_date",
     }
 
     phi: Optional[float] = Field(
@@ -78,48 +80,21 @@ class TradierOptionsChainsData(OptionsChainsData):
         default=None,
         description="52-week low price of the option.",
     )
-    last_trade_volume: Optional[int] = Field(
-        default=None,
-        description="Volume of the last trade.",
-    )
-    dte: Optional[int] = Field(
-        default=None,
-        description="Days to expiration.",
-    )
     contract_size: Optional[int] = Field(
         default=None,
         description="Size of the contract.",
     )
-    bid_exchange: Optional[str] = Field(
-        default=None,
-        description="Exchange of the bid price.",
-    )
-    bid_timestamp: Optional[datetime] = Field(
-        default=None,
-        description="Timestamp of the bid price.",
-    )
-    ask_exchange: Optional[str] = Field(
-        default=None,
-        description="Exchange of the ask price.",
-    )
-    ask_timestamp: Optional[datetime] = Field(
-        default=None,
-        description="Timestamp of the ask price.",
-    )
-    greeks_timestamp: Optional[datetime] = Field(
+    greeks_time: Optional[datetime] = Field(
         default=None,
         description="Timestamp of the last greeks update."
         + " Greeks/IV data is updated once per hour.",
     )
-    last_trade_timestamp: Optional[datetime] = Field(
-        default=None, description="Timestamp of the last trade."
-    )
 
     @field_validator(
-        "last_trade_timestamp",
-        "greeks_timestamp",
-        "ask_timestamp",
-        "bid_timestamp",
+        "last_trade_time",
+        "greeks_time",
+        "ask_time",
+        "bid_time",
         mode="before",
         check_fields=False,
     )
@@ -163,7 +138,12 @@ class TradierOptionsChainsData(OptionsChainsData):
         """Check for zero values and replace with None."""
         return (
             {
-                k: None if (v == 0 or str(v) == "0") and k != "dte" else v
+                k: (
+                    None
+                    if (v == 0 or str(v) == "0")
+                    and k not in ["dte", "open_interest", "volume"]
+                    else v
+                )
                 for k, v in values.items()
             }
             if isinstance(values, dict)
@@ -232,14 +212,19 @@ class TradierOptionsChainsFetcher(
 
         results = []
 
-        async def get_one(url):
+        underlying_quote = await TradierEquityQuoteFetcher.fetch_data(
+            {"symbol": query.symbol}, credentials
+        )
+        underlying_price = underlying_quote[0].last_price
+
+        async def get_one(url, underlying_price):
             """Get the chain for a single expiration."""
             chain = await amake_request(url, headers=HEADERS)
             if chain.get("options") and isinstance(chain["options"].get("option", []), list):  # type: ignore
                 data = chain["options"]["option"]  # type: ignore
                 for d in data.copy():
                     # Remove any strikes returned without data.
-                    keys = ["volume", "open_interest", "last", "bid", "ask"]
+                    keys = ["last", "bid", "ask"]
                     if all(d.get(key) in [0, "0", None] for key in keys):
                         data.remove(d)
                         continue
@@ -253,7 +238,6 @@ class TradierOptionsChainsFetcher(
                         "exch",
                         "type",
                         "expiration_type",
-                        "underlying",
                         "description",
                         "average_volume",
                     ]
@@ -263,6 +247,8 @@ class TradierOptionsChainsFetcher(
                         datetime.strptime(d["expiration_date"], "%Y-%m-%d").date()
                         - datetime.now().date()
                     ).days
+                    if underlying_price is not None:
+                        d["underlying_price"] = underlying_price
 
                 results.extend(data)
 
@@ -271,7 +257,7 @@ class TradierOptionsChainsFetcher(
             for expiration in expirations  # type: ignore
         ]
 
-        tasks = [get_one(url) for url in urls]
+        tasks = [get_one(url, underlying_price) for url in urls]
 
         await asyncio.gather(*tasks)
 

@@ -54,3 +54,21 @@ async def unusual(
 ) -> OBBject:
     """Get the complete options chain for a ticker."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="OptionsSnapshots",
+    examples=[
+        APIEx(
+            parameters={"provider": "intrinio"},
+        ),
+    ],
+)
+async def snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Get a snapshot of the options market universe."""
+    return await OBBject.from_query(Query(**locals()))

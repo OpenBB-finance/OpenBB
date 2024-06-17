@@ -636,7 +636,7 @@ async def download_eod_chains(
     ]
 
     data.columns = cols
-
+    data["underlying_symbol"] = symbol + ":CA"
     data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
     data["eod_date"] = pd.to_datetime(data["eod_date"], format="%Y-%m-%d")
     data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
