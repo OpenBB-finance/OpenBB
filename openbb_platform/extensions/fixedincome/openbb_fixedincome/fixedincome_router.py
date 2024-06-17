@@ -87,3 +87,29 @@ async def bond_indices(
 ) -> OBBject:  # type: ignore
     """Bond Indices."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="MortgageIndices",
+    examples=[
+        APIEx(
+            description="The default state for FRED are the primary mortgage indices from Optimal Blue.",
+            parameters={"provider": "fred"},
+        ),
+        APIEx(
+            description="Multiple indices can be requested.",
+            parameters={
+                "index": "jumbo_30y,conforming_30y,conforming_15y",
+                "provider": "fred",
+            },
+        ),
+    ],
+)
+async def mortgage_indices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:  # type: ignore
+    """Mortgage Indices."""
+    return await OBBject.from_query(Query(**locals()))

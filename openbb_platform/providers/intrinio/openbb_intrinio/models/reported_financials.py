@@ -3,6 +3,7 @@
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.reported_financials import (
     ReportedFinancialsData,
@@ -99,7 +100,7 @@ class IntrinioReportedFinancialsFetcher(
             ids = filings.iloc[: query.limit]["id"].to_list()
 
         if ids == []:
-            raise RuntimeError("No reports found.")
+            raise OpenBBError("No reports found.")
 
         async def callback(response: ClientResponse, _: Any) -> Dict:
             """Return the response."""

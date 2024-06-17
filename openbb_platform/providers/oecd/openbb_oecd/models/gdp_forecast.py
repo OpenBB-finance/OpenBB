@@ -4,6 +4,7 @@ import re
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.gdp_forecast import (
     GdpForecastData,
@@ -39,10 +40,10 @@ class OECDGdpForecastData(GdpForecastData):
         if isinstance(in_date, str):
             if re.match(r"\d{4}-Q[1-4]$", in_date):
                 year, quarter = in_date.split("-")
-                quarter = int(quarter[1])
-                month = quarter * 3
+                quarter_int = int(quarter[1])
+                month = quarter_int * 3
                 return date(int(year), month, 1)
-            raise ValueError("Date string does not match the format YYYY-QN")
+            raise OpenBBError("Date string does not match the format YYYY-QN")
         if isinstance(in_date, int):
             return date(in_date, 12, 31)
         return date

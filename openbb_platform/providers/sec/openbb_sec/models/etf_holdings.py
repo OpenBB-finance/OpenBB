@@ -11,6 +11,7 @@ import pandas as pd
 import xmltodict
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -348,7 +349,7 @@ class SecEtfHoldingsFetcher(
                 raise e
         filing_candidates = pd.DataFrame.from_records(filings)
         if filing_candidates.empty:
-            raise ValueError(f"No N-Port records found for {query.symbol}.")
+            raise OpenBBError(f"No N-Port records found for {query.symbol}.")
         dates = filing_candidates.period_ending.to_list()
         new_date: str = ""
         if query.date is not None:
@@ -397,7 +398,6 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[SecEtfHoldingsData]]:
         """Transform the data."""
-
         if not data:
             raise EmptyDataError(f"No data was returned for the symbol, {query.symbol}")
         results = []

@@ -23,6 +23,7 @@ from openbb_fred.models.high_quality_market import (
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
@@ -376,6 +377,20 @@ def test_fred_bond_indices_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredBondIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_bond_mortgage_fetcher(credentials=test_credentials):
+    """Test FredMortgageIndicesFetcher."""
+    params = {
+        "index": "jumbo_30y",
+        "start_date": datetime.date(2024, 6, 1),
+        "end_date": datetime.date(2024, 6, 4),
+    }
+
+    fetcher = FredMortgageIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

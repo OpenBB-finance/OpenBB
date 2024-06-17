@@ -1,9 +1,10 @@
-"""Tradier Equity Search Model"""
+"""Tradier Equity Search Model."""
 
 # pylint: disable = unused-argument
 
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
     EquitySearchData,
@@ -67,12 +68,11 @@ class TradierEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
-
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
 
         if api_key and credentials.get("tradier_account_type") not in ["sandbox", "live"]:  # type: ignore
-            raise ValueError(
+            raise OpenBBError(
                 "Invalid account type for Tradier. Must be either 'sandbox' or 'live'."
             )
 
@@ -115,7 +115,6 @@ class TradierEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[TradierEquitySearchData]:
         """Transform and validate the data."""
-
         results: List[TradierEquitySearchData] = []
 
         for d in data:

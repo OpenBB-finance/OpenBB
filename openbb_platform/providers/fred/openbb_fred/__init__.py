@@ -20,6 +20,7 @@ from openbb_fred.models.high_quality_market import (
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
     FredOvernightBankFundingRateFetcher,
 )
@@ -62,6 +63,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
         "ICEBofA": FREDICEBofAFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
+        "MortgageIndices": FredMortgageIndicesFetcher,
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
