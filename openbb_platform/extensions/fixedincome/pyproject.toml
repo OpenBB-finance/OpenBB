@@ -19,4 +19,4 @@ build-backend = "poetry.core.masonry.api"
 fixedincome = "openbb_fixedincome.fixedincome_router:router"
 
 [tool.poetry.plugins."openbb_charting_extension"]
-fixedincome = "openbb_currency.fixedincome_views:FixedIncomeViews"
+fixedincome = "openbb_fixedincome.fixedincome_views:FixedIncomeViews"

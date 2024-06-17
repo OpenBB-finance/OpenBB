@@ -19,4 +19,4 @@ build-backend = "poetry.core.masonry.api"
 equity = "openbb_equity.equity_router:router"
 
 [tool.poetry.plugins."openbb_charting_extension"]
-equity = "openbb_currency.equity_views:EquityViews"
+equity = "openbb_equity.equity_views:EquityViews"
