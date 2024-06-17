@@ -8,16 +8,16 @@ from pandas_ta import candles
 
 
 def get_charting_functions(
-    accessor: Type, with_objects: bool = False
+    view: Type, with_objects: bool = False
 ) -> Union[List[str], Dict[str, Callable]]:
     """Discover charting functions."""
     implemented_functions: Union[List[str], Dict[str, Callable]] = (
         [] if not with_objects else {}
     )
 
-    for name, obj in getmembers(accessor, isfunction):
+    for name, obj in getmembers(view, isfunction):
         if (
-            obj.__module__ == accessor.__module__
+            obj.__module__ == view.__module__
             and not name.startswith("_")
             and "NotImplementedError" not in getsource(obj)
         ):

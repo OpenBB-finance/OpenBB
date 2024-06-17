@@ -20,6 +20,7 @@ from warnings import warn
 
 import numpy as np
 import pandas as pd
+from importlib_metadata import entry_points
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.extension import Extension
 from openbb_core.app.model.obbject import OBBject
@@ -66,7 +67,10 @@ class Charting:
         Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
-    accessors: ClassVar[Set[str]] = set()
+    _extension_views: ClassVar[List[Type]] = [
+        entry_point.load()
+        for entry_point in entry_points(group="openbb_charting_extension")
+    ]
 
     def __init__(self, obbject):
         """Initialize Charting extension."""
@@ -92,25 +96,17 @@ class Charting:
     @classmethod
     def functions(cls) -> List[str]:
         """Return a list of the available functions."""
-        acc_cls: List[Type] = []
-        for acc in cls.accessors:
-            acc_cls.append(getattr(cls, acc))
-
         functions: List[str] = []
-        for acc in acc_cls:
-            functions.extend(get_charting_functions(acc))
+        for view in cls._extension_views:
+            functions.extend(get_charting_functions(view))
 
         return functions
 
     def _get_functions(self) -> Dict[str, Callable]:
         """Return a dict with the available functions."""
-        acc_cls: List[Type] = []
-        for acc in self.accessors:
-            acc_cls.append(getattr(self, acc))
-
         functions: Dict[str, Callable] = {}
-        for acc in acc_cls:
-            functions.update(get_charting_functions(acc, with_objects=True))
+        for view in self._extension_views:
+            functions.update(get_charting_functions(view, with_objects=True))
 
         return functions
 
@@ -353,20 +349,16 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
-            kwargs["charting_settings"] = (
-                self._charting_settings
-            )  # pylint: disable=protected-access
+            kwargs["obbject_item"] = self._obbject
+            kwargs["charting_settings"] = self._charting_settings  #
             kwargs["standard_params"] = (
-                self._obbject._standard_params
-            )  # pylint: disable=protected-access
+                self._obbject._standard_params  # pylint: disable=protected-access
+            )
             kwargs["extra_params"] = (
-                self._obbject._extra_params
-            )  # pylint: disable=protected-access
-            kwargs["provider"] = (
-                self._obbject.provider
-            )  # pylint: disable=protected-access
-            kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
+                self._obbject._extra_params  # pylint: disable=protected-access
+            )
+            kwargs["provider"] = self._obbject.provider
+            kwargs["extra"] = self._obbject.extra
             fig, content = charting_function(**kwargs)
             fig = self._set_chart_style(fig)
             content = fig.show(external=True, **kwargs).to_plotly_json()
@@ -469,16 +461,14 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = self._obbject  # pylint: disable=protected-access
-        kwargs["charting_settings"] = (
-            self._charting_settings
-        )  # pylint: disable=protected-access
+        kwargs["obbject_item"] = self._obbject
+        kwargs["charting_settings"] = self._charting_settings
         kwargs["standard_params"] = (
-            self._obbject._standard_params
-        )  # pylint: disable=protected-access
+            self._obbject._standard_params  # pylint: disable=protected-access
+        )
         kwargs["extra_params"] = (
-            self._obbject._extra_params
-        )  # pylint: disable=protected-access
+            self._obbject._extra_params  # pylint: disable=protected-access
+        )
         kwargs["provider"] = self._obbject.provider  # pylint: disable=protected-access
         kwargs["extra"] = self._obbject.extra  # pylint: disable=protected-access
         try:
