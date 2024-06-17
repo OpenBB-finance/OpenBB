@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_constituents import (
     IndexConstituentsData,
@@ -83,12 +84,12 @@ class TmxIndexConstituentsFetcher(
         if data == {}:
             raise EmptyDataError
         if query.symbol not in data.get("indices"):  # type: ignore
-            raise ValueError(f"Index {query.symbol} was not found.  Check the symbol.")
+            raise OpenBBError(f"Index {query.symbol} was not found. Check the symbol.")
         index_data = data["indices"][query.symbol]
         if (
             index_data.get("nb_constituents") == 0
             or index_data.get("constituents") is None
         ):
-            raise ValueError(f"No constituents found for index, {query.symbol}")
+            raise OpenBBError(f"No constituents found for index, {query.symbol}")
         results = index_data["constituents"]
         return [TmxIndexConstituentsData.model_validate(d) for d in results]

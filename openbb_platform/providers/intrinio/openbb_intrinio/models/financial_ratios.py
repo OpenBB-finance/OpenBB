@@ -3,6 +3,7 @@
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosData,
@@ -160,7 +161,7 @@ class IntrinioFinancialRatiosFetcher(
         elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
         else:
-            raise ValueError(f"Period '{query.period}' not supported.")
+            raise OpenBBError(f"Period '{query.period}' not supported.")
 
         fundamentals_data: Dict = {}
 

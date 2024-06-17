@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_eps_estimates import (
     ForwardEpsEstimatesData,
@@ -46,7 +47,7 @@ class FMPForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
     def check_symbol(cls, value):
         """Check the symbol."""
         if not value:
-            raise RuntimeError("Error: Symbol is a required field for FMP.")
+            raise OpenBBError("Symbol is a required field for FMP.")
         return value
 
 
@@ -112,7 +113,6 @@ class FMPForwardEpsEstimatesFetcher(
         query: FMPForwardEpsEstimatesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPForwardEpsEstimatesData]:
         """Return the transformed data."""
-
         symbols = query.symbol.split(",") if query.symbol else []
         cols = [
             "symbol",

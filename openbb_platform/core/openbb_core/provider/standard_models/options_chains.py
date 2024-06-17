@@ -31,29 +31,42 @@ class OptionsChainsQueryParams(QueryParams):
 class OptionsChainsData(Data):
     """Options Chains Data."""
 
-    symbol: Optional[str] = Field(
-        description=DATA_DESCRIPTIONS.get("symbol", "")
-        + " Here, it is the underlying symbol for the option.",
+    underlying_symbol: Optional[str] = Field(
         default=None,
+        description="Underlying symbol for the option.",
+    )
+    underlying_price: Optional[float] = Field(
+        default=None,
+        description="Price of the underlying stock.",
     )
     contract_symbol: str = Field(description="Contract symbol for the option.")
     eod_date: Optional[dateType] = Field(
         default=None, description="Date for which the options chains are returned."
     )
     expiration: dateType = Field(description="Expiration date of the contract.")
+    dte: Optional[int] = Field(
+        default=None, description="Days to expiration of the contract."
+    )
     strike: float = Field(description="Strike price of the contract.")
     option_type: str = Field(description="Call or Put.")
     open_interest: Optional[int] = Field(
-        default=None, description="Open interest on the contract."
+        default=0, description="Open interest on the contract."
     )
     volume: Optional[int] = Field(
-        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
+        default=0, description=DATA_DESCRIPTIONS.get("volume", "")
     )
     theoretical_price: Optional[float] = Field(
         default=None, description="Theoretical value of the option."
     )
     last_trade_price: Optional[float] = Field(
         default=None, description="Last trade price of the option."
+    )
+    last_trade_size: Optional[int] = Field(
+        default=None, description="Last trade size of the option."
+    )
+    last_trade_time: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the last trade.",
     )
     tick: Optional[str] = Field(
         default=None, description="Whether the last tick was up or down in price."
@@ -64,11 +77,25 @@ class OptionsChainsData(Data):
     bid_size: Optional[int] = Field(
         default=None, description="Bid size for the option."
     )
+    bid_time: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the bid price.",
+    )
+    bid_exchange: Optional[str] = Field(
+        default=None, description="The exchange of the bid price."
+    )
     ask: Optional[float] = Field(
         default=None, description="Current ask price for the option."
     )
     ask_size: Optional[int] = Field(
         default=None, description="Ask size for the option."
+    )
+    ask_time: Optional[datetime] = Field(
+        default=None,
+        description="The timestamp of the ask price.",
+    )
+    ask_exchange: Optional[str] = Field(
+        default=None, description="The exchange of the ask price."
     )
     mark: Optional[float] = Field(
         default=None, description="The mid-price between the latest bid and ask."
@@ -138,7 +165,8 @@ class OptionsChainsData(Data):
     )
     change_percent: Optional[float] = Field(
         default=None,
-        description="Change, in normalizezd percentage points, of the option.",
+        description="Change, in normalized percentage points, of the option.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     implied_volatility: Optional[float] = Field(
         default=None, description="Implied volatility of the option."
@@ -151,7 +179,7 @@ class OptionsChainsData(Data):
 
     @field_validator("expiration", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the datetime object from the date string."""
         if isinstance(v, datetime):
             return datetime.strftime(v, "%Y-%m-%d")

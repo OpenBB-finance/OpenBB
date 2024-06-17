@@ -10,6 +10,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
@@ -158,9 +159,9 @@ class SecCompanyFilingsFetcher(
                 query.symbol.lower(), use_cache=query.use_cache
             )
             if not query.cik:
-                raise ValueError(f"CIK not found for symbol {query.symbol}")
+                raise OpenBBError(f"CIK not found for symbol {query.symbol}")
         if query.cik is None:
-            raise ValueError("Error: CIK or symbol must be provided.")
+            raise OpenBBError("CIK or symbol must be provided.")
 
         # The leading 0s need to be inserted but are typically removed from the data to store as an integer.
         if len(query.cik) != 10:  # type: ignore

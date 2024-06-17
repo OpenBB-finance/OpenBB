@@ -9,6 +9,7 @@ from typing import Any, Dict, Literal, Optional, Union
 import requests
 import urllib3
 from defusedxml.ElementTree import fromstring
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider import helpers
 from pandas import DataFrame, read_csv, read_parquet, to_datetime
@@ -256,4 +257,4 @@ def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
         return date(int(input_date), 1, 1)
     if len(input_date) == 7:
         return to_datetime(input_date).to_period("M").start_time.date()
-    raise ValueError("Date not in expected format")
+    raise OpenBBError("Date not in expected format")

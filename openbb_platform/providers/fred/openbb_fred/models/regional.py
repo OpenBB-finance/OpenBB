@@ -6,6 +6,7 @@ import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
@@ -152,7 +153,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
             required = ["frequency", "region_type", "units"]
             for key in required:
                 if values.get(key) is None:
-                    raise ValueError(
+                    raise OpenBBError(
                         f"{key} is a required field missing for series_group."
                     )
 

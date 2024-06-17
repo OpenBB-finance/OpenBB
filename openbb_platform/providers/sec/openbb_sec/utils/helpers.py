@@ -9,6 +9,7 @@ from zipfile import ZipFile
 import pandas as pd
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, make_request
 from openbb_sec.utils.definitions import HEADERS, SEC_HEADERS
@@ -280,7 +281,7 @@ async def get_series_id(
 
     results = pd.DataFrame()
     if not symbol and not cik:
-        raise ValueError("Either symbol or cik must be provided.")
+        raise OpenBBError("Either symbol or cik must be provided.")
 
     target = symbol if symbol else cik
     choice = "cik" if not symbol else "symbol"
@@ -310,9 +311,9 @@ async def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict
             else _series_id["seriesId"].iloc[0]
         )
     except IndexError as e:
-        raise ValueError("Fund not found for, the symbol: " + symbol) from e
+        raise OpenBBError("Fund not found for, the symbol: " + symbol) from e
     if series_id == "" or series_id is None:
-        raise ValueError("Fund not found for, the symbol: " + symbol)
+        raise OpenBBError("Fund not found for, the symbol: " + symbol)
 
     url = f"https://efts.sec.gov/LATEST/search-index?q={series_id}&dateRange=all&forms=NPORT-P"
     response: Union[dict, List[dict]] = {}

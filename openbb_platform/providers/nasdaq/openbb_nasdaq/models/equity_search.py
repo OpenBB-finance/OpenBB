@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 
 import requests
 import requests_cache
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -124,7 +125,7 @@ class NasdaqEquitySearchFetcher(
                 else requests.get(url, timeout=5)
             )
             if r.status_code != 200:
-                raise RuntimeError(f"Error with the request: {r.status_code}")
+                raise OpenBBError(f"Error with the request: {r.status_code}")
             return r.text
 
         loop = asyncio.get_running_loop()
