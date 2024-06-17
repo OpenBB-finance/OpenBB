@@ -19,4 +19,4 @@ build-backend = "poetry.core.masonry.api"
 index = "openbb_index.index_router:router"
 
 [tool.poetry.plugins."openbb_charting_extension"]
-index = "openbb_currency.currency_views:IndexViews"
+index = "openbb_currency.index_views:IndexViews"
