@@ -4,31 +4,17 @@ from typing import Any, Dict, Optional, Tuple
 from warnings import warn
 
 import pandas as pd
-from openbb_charting import Charting
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.helpers import (
     z_score_standardization,
 )
-from openbb_core.app.model.extension import Extension
 from openbb_core.app.utils import basemodel_to_df
 
-ext = Extension(
-    name="economy_views",
-    description="Create custom charts from OBBject data for the economy extension.",
-)
 
-# pylint: disable=too-many-branches
-
-
-@ext.charting_accessor
 class EconomyViews:
     """economy Views."""
-
-    def __init__(self, charting: Charting) -> None:
-        """Initialize the economy Views."""
-        self._charting = charting
 
     @staticmethod
     def economy_fred_series(  # noqa: PLR0912

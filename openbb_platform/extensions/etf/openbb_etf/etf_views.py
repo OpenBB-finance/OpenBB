@@ -3,28 +3,16 @@
 from typing import Any, Dict, Tuple, Union
 
 import pandas as pd
-from openbb_charting import Charting
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.utils.generic_charts import bar_chart
 from openbb_charting.utils.price_historical import price_historical
 from openbb_charting.utils.price_performance import price_performance
-from openbb_core.app.model.extension import Extension
 from openbb_core.app.utils import basemodel_to_df
 from plotly.graph_objs import Figure
 
-ext = Extension(
-    name="etf_views",
-    description="Create custom charts from OBBject data for the ETF extension.",
-)
 
-
-@ext.charting_accessor
 class EtfViews:
     """Etf Views."""
-
-    def __init__(self, charting: Charting) -> None:
-        """Initialize the Etf Views."""
-        self._charting = charting
 
     @staticmethod
     def etf_historical(  # noqa: PLR0912

@@ -3,30 +3,18 @@
 from typing import Any, Dict, Optional, Tuple
 
 import pandas as pd
-from openbb_charting import Charting
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
 from openbb_charting.utils.helpers import (
     duration_sorter,
 )
-from openbb_core.app.model.extension import Extension
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 
-ext = Extension(
-    name="fixedincome_views",
-    description="Create custom charts from OBBject data for the fixed income extension.",
-)
 
-
-@ext.charting_accessor
 class FixedIncomeViews:
     """FixedIncome Views."""
-
-    def __init__(self, charting: Charting) -> None:
-        """Initialize the index Views."""
-        self._charting = charting
 
     @staticmethod
     def fixedincome_government_yield_curve(  # noqa: PLR0912

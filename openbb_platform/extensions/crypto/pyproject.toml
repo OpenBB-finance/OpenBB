@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 crypto = "openbb_crypto.crypto_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+crypto = "openbb_currency.currency_views:CryptoViews"

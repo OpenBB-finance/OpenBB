@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 economy = "openbb_economy.economy_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+economy = "openbb_currency.currency_views:EconomyViews"
