@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.spot import (
     SpotRateData,
@@ -67,7 +68,7 @@ class FREDSpotRateFetcher(
             else [query.maturity]
         )
         if any(1 > m > 100 for m in maturity):
-            raise ValueError("Maturity must be between 1 and 100")
+            raise OpenBBError("Maturity must be between 1 and 100")
 
         series = get_spot_series_id(
             maturity=maturity,

@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Literal, Optional, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.yield_curve import (
@@ -100,7 +101,7 @@ class ECBYieldCurveFetcher(
             else:
                 response = await amake_request(url=url)
             if not response:
-                raise RuntimeError("Error: No data was returned.")
+                raise OpenBBError("No data was returned.")
             if isinstance(response, List):
                 for item in response:
                     d = {

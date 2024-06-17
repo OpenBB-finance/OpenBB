@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
@@ -258,7 +259,7 @@ class IntrinioCashFlowStatementFetcher(
         elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
         else:
-            raise ValueError(f"Period '{query.period}' not supported.")
+            raise OpenBBError(f"Period '{query.period}' not supported.")
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url = (

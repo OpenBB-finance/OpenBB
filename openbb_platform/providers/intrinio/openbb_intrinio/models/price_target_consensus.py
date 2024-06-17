@@ -7,6 +7,7 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target_consensus import (
     PriceTargetConsensusData,
@@ -132,7 +133,7 @@ class IntrinioPriceTargetConsensusFetcher(
             data = await response.json()
             messages = data.get("messages")
             if messages:
-                raise RuntimeError(str(messages))
+                raise OpenBBError(str(messages))
             _data = data.get("target_price_consensuses")
             if _data and len(_data) > 0:
                 results.extend(_data)  # type: ignore

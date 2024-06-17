@@ -5,6 +5,7 @@ from typing import Dict, List, Literal
 
 import requests
 import requests_cache
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 
 # pylint: disable=C0325
@@ -115,10 +116,10 @@ def get_news(
         "tag": f"tag/{tag}",
     }
     if filter_ == "source" and source.lower() not in sources:
-        raise ValueError(f"{source} not a valid source. Valid sources: {sources}")
+        raise OpenBBError(f"{source} not a valid source. Valid sources: {sources}")
 
     if filter_ == "tag" and tag.lower().replace(" ", "") not in tags:
-        raise ValueError(f"{tag} not a valid tag. Valid tags: {tags}")
+        raise OpenBBError(f"{tag} not a valid tag. Valid tags: {tags}")
 
     url = (
         f"https://biztoc.p.rapidapi.com/search?q={term}"
@@ -127,7 +128,7 @@ def get_news(
     )
     r = requests.get(url, headers=headers, timeout=5)
     if r.status_code != 200:
-        raise RuntimeError(f"HTTP error - > {r.text}")
+        raise OpenBBError(f"HTTP error - > {r.text}")
 
     try:
         results = r.json()

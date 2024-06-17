@@ -24,7 +24,24 @@ def headers():
 @parametrize(
     "params",
     [
-        ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "date": "2023-01-25",
+                "option_type": None,
+                "moneyness": "all",
+                "strike_gt": None,
+                "strike_lt": None,
+                "volume_gt": None,
+                "volume_lt": None,
+                "oi_gt": None,
+                "oi_lt": None,
+                "model": "black_scholes",
+                "show_extended_price": False,
+                "include_related_symbols": False,
+            }
+        ),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
         ({"provider": "tradier", "symbol": "AAPL"}),
         ({"provider": "yfinance", "symbol": "AAPL"}),
@@ -122,6 +139,24 @@ def test_derivatives_futures_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=60)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"provider": "intrinio", "date": None, "only_traded": True}),
+    ],
+)
+@pytest.mark.integration
+def test_derivatives_options_snapshots(params, headers):
+    """Test the options snapshots endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/derivatives/options/snapshots?{query_str}"
     result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

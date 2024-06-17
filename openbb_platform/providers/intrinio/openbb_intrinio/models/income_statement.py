@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
@@ -405,7 +406,7 @@ class IntrinioIncomeStatementFetcher(
         elif query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
         else:
-            raise ValueError(f"Period '{query.period}' not supported.")
+            raise OpenBBError(f"Period '{query.period}' not supported.")
 
         data_tags = [
             "ebit",

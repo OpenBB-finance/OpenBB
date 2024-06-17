@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_eps_estimates import (
     ForwardEpsEstimatesData,
@@ -34,7 +35,7 @@ class SAForwardEpsEstimatesQueryParams(ForwardEpsEstimatesQueryParams):
     def check_symbol(cls, value):
         """Check the symbol."""
         if not value:
-            raise RuntimeError("Error: Symbol is a required field for Seeking Alpha.")
+            raise OpenBBError("Symbol is a required field for Seeking Alpha.")
         return value
 
 
@@ -106,7 +107,7 @@ class SAForwardEpsEstimatesFetcher(
         )
         estimates: Dict = response.get("estimates", {})  # type: ignore
         if not estimates:
-            raise RuntimeError(f"No estimates data was returned for: {query.symbol}")
+            raise OpenBBError(f"No estimates data was returned for: {query.symbol}")
 
         output: Dict = {"ids": ids, "estimates": estimates}
 
@@ -120,19 +121,21 @@ class SAForwardEpsEstimatesFetcher(
     ) -> List[SAForwardEpsEstimatesData]:
         """Transform the data to the standard format."""
         tickers = query.symbol.split(",")
-        ids = data.get("ids")
-        estimates = data.get("estimates")
+        ids = data.get("ids", {})
+        estimates = data.get("estimates", {})
         results: List[SAForwardEpsEstimatesData] = []
         for ticker in tickers:
             sa_id = str(ids.get(ticker, ""))
             if sa_id == "" or sa_id not in estimates:
                 warn(f"Symbol Error: No data found for, {ticker}")
-            seek_object = estimates.get(sa_id)
+            seek_object = estimates.get(sa_id, {})
             items = len(seek_object["eps_normalized_num_of_estimates"])
             for i in range(0, items - 4):
                 eps_estimates: Dict = {}
                 eps_estimates["symbol"] = ticker
-                num_estimates = seek_object["eps_normalized_num_of_estimates"].get(str(i))
+                num_estimates = seek_object["eps_normalized_num_of_estimates"].get(
+                    str(i)
+                )
                 if not num_estimates:
                     continue
                 period = num_estimates[0].get("period", {})

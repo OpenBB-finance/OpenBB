@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_sales_estimates import (
     ForwardSalesEstimatesData,
@@ -185,7 +186,7 @@ class IntrinioForwardSalesEstimatesFetcher(
             data = await response.json()
             messages = data.get("messages")
             if messages:
-                raise RuntimeError(str(messages))
+                raise OpenBBError(str(messages))
             if data.get("estimates") and len(data.get("estimates")) > 0:  # type: ignore
                 results.extend(data.get("estimates"))  # type: ignore
                 while data.get("next_page"):  # type: ignore

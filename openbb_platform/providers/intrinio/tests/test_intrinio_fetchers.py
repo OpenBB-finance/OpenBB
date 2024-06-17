@@ -53,6 +53,7 @@ from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFet
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
+from openbb_intrinio.models.options_snapshots import IntrinioOptionsSnapshotsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.price_target_consensus import (
     IntrinioPriceTargetConsensusFetcher,
@@ -529,5 +530,15 @@ def test_intrinio_forward_ebitda_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,MSFT"}
 
     fetcher = IntrinioForwardEbitdaEstimatesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.skip(reason="HTTP request is too large and unreasonable to store.")
+def test_intrinio_options_snapshots(credentials=test_credentials):
+    """Test options snapshots fetcher."""
+    params = {"date": "2024-06-11"}
+
+    fetcher = IntrinioOptionsSnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
