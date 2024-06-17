@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
@@ -145,7 +146,7 @@ class IntrinioCompanyNewsData(CompanyNewsData):
     @field_validator("topics", mode="before", check_fields=False)
     @classmethod
     def topics_validate(cls, v):
-        """ "Parse the topics as a string."""
+        """Parse the topics as a string."""
         if v:
             topics = [t.get("name") for t in v if t and t not in ["", " "]]
             return ", ".join(topics)
@@ -154,7 +155,7 @@ class IntrinioCompanyNewsData(CompanyNewsData):
     @field_validator("copyright", mode="before", check_fields=False)
     @classmethod
     def copyright_validate(cls, v):
-        """Clean empty strings"""
+        """Clean empty strings."""
         return None if v in ["", " "] else v
 
 
@@ -205,7 +206,7 @@ class IntrinioCompanyNewsFetcher(
             """Response callback."""
             result = await response.json()
             if "error" in result:
-                raise RuntimeError(f"Intrinio Error Message -> {result['error']}")
+                raise OpenBBError(f"Intrinio Error Message -> {result['error']}")
             symbol = response.url.parts[-2]
             _data = result.get("news", [])
             data = []

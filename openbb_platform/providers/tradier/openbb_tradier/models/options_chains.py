@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.parser import parse
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
@@ -171,7 +172,7 @@ class TradierOptionsChainsFetcher(
         sandbox = True
 
         if api_key and credentials.get("tradier_account_type") not in ["sandbox", "live"]:  # type: ignore
-            raise ValueError(
+            raise OpenBBError(
                 "Invalid account type for Tradier. Must be either 'sandbox' or 'live'."
             )
 
@@ -207,7 +208,7 @@ class TradierOptionsChainsFetcher(
 
         expirations = await get_expirations(query.symbol)
         if expirations == []:
-            raise ValueError(f"No expiration dates found for {query.symbol}")
+            raise OpenBBError(f"No expiration dates found for {query.symbol}")
 
         results = []
 

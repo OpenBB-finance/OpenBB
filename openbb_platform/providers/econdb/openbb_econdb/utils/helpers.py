@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, amake_requests
 from pandas import DataFrame, concat, read_csv
@@ -342,7 +343,7 @@ def parse_symbols(
             symbol += "~" + transform
         symbols.append(symbol)
     elif countries and HAS_COUNTRIES.get(symbol, False) is False:
-        raise RuntimeError(f"Indicator {symbol} does not have countries.")
+        raise OpenBBError(f"Indicator {symbol} does not have countries.")
     elif countries and HAS_COUNTRIES.get(symbol, False) is True:
         countries = countries if isinstance(countries, list) else countries.split(",")
         for country in countries:
@@ -393,7 +394,7 @@ async def create_token(use_cache: bool = True) -> str:
         try:
             return await _response.json()
         except Exception as e:
-            raise RuntimeError(
+            raise OpenBBError(
                 "The temporary EconDB token could not be retrieved."
                 + " Please try again later or provide your own token."
                 + " Sign-up at: https://www.econdb.com/"
@@ -515,11 +516,9 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
     metadata = {}
     results = DataFrame()
     if response is None:
-        raise RuntimeError("No data was in the response")
+        raise OpenBBError("No data was in the response")
     if not isinstance(response, List):
-        raise RuntimeError(
-            "Expecting a list of dictionaries and received a dictionary."
-        )
+        raise OpenBBError("Expecting a list of dictionaries and received a dictionary.")
     for item in response:
         symbol = item.get("id", "")
         _symbol = symbol.split("~")[0].replace("19", "")
