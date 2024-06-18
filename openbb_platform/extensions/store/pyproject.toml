@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-store"
+version = "1.0.0"
+description = "An OBBject extension for object storage and data interchange."
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_store" }]
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.12"
+openbb-core = "^1.2.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_obbject_extension"]
+store = "openbb_store:ext"

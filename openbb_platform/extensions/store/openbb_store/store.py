@@ -1,0 +1,393 @@
+"""Store Model for OpenBB Obbject Callbacks."""
+
+# pylint: disable=too-many-branches,too-many-return-statements,inconsistent-return-type
+
+import hashlib
+import lzma
+import pickle
+from functools import lru_cache
+from typing import Any, Dict, List, Literal, Optional, Union
+
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.provider.abstract.data import Data
+from pandas import DataFrame
+from pydantic import Field
+
+
+@lru_cache(maxsize=128)
+class Store(Data):
+    """The Store class is a data model for storing, organizing, and retrieving OBBjects or other Python objects.
+
+    It is a shared resource across the Python session,
+    initialized globally within the OpenBB Platform as an OBBject extension.
+
+    The class provides methods to add, retrieve, and save groups of data objects
+    to memory or file as a transportable, compressed, SHA1 signed pickle.
+
+    **Note**: The OpenBB user preference, 'output_type', must be set to 'OBBject' for this extension to work.
+
+    Properties
+    ----------
+    user_data_directory : str
+        The read/write directory. The parent path is resolved by the OpenBB User Preference, 'data_directory'.
+        This is overridden by entering the complete path to the file for IO operations.
+    verbose : bool
+        Set as False to silence IO operation confirmation messages.
+    list_stores : List
+        List of stored data object keys.
+    directory : Dict
+        Directory of stored data objects. Each entry contains a name, description, and a preview of the schema.
+
+    Methods
+    -------
+    add_store(
+        name: str,
+        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        description: Optional[str] = None
+    ):
+
+        Add a stored data object with a unique name, data, and optional description.
+
+    get_store(
+        name: str = "",
+        element: Literal["OBBject", "dataframe", "dict", "llm", "chart"] = "dataframe",
+        pd_query: Optional[str] = None,
+        dict_orient: str = "list",
+        chart_params: Optional[Dict[str, Any]] = None
+    ):
+
+        Get a stored data object by name. When only one object is stored, the name parameter is optional.
+        The element parameter specifies the return type, and is only valid for OBBjects.
+
+        A DataFrame is returned when element is set to 'dataframe', and a Pandas query string can be applied.
+
+    get_schema(name: str):
+
+        Get the schema for a stored data object by name.
+
+    update_store(
+        name: str,
+        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        description: Optional[str] = None
+    ):
+
+        Overwrite an existing stored data object with a new data object.
+
+    remove_store(name: str):
+
+        Remove a stored data object by name.
+
+    clear_stores():
+
+        Clear all stored data objects from memory.
+
+    save_store_to_file(filename: str, names: Optional[List[str]] = None):
+
+        Save the Store object, or a list of store names, to a compressed shelf file.
+
+    load_store_from_file(filename: str, names: Optional[List[str]] = None):
+
+        Load an exported Store from file.
+    """
+
+    user_data_directory: Optional[str] = Field(
+        description="The read/write directory."
+        + " When initialized by OBBject, the parent path is resolved by the OpenBB User Preference, 'data_directory'."
+        + " This is overridden by entering the complete path to the file for IO operations.",
+        default="",
+    )
+    verbose: bool = Field(
+        default=True,
+        description="Set as False to silence IO operation confirmation messages.",
+    )
+    directory: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Directory of stored data objects."
+        + " Each entry contains a name, description, and a preview of the schema.",
+    )
+    archives: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Compressed stored data objects.",
+    )
+    schemas: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Compressed schema for each stored data object. This field is not meant to be accessed directly."
+        + " Use 'directory' to describle all entries,"
+        + " or the 'get_schema' method to retrieve the schema for a stored data object.",
+    )
+
+    def list_stores(self) -> list:
+        """List all keys to stored data objects."""
+        return list(self.directory.keys())
+
+    def add_store(
+        self,
+        name: str,
+        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        description: Optional[str] = None
+    ):
+        """Add a stored data object."""
+        if name in self.directory:
+            raise ValueError(
+                f"Data store '{name}' already exists."
+                + " Use 'update_store' to overwrite the existing data."
+            )
+
+        data_class = data.__class__.__name__
+        schema = None
+        schema_repr = ""
+
+        if data_class == "OBBject":
+            schema = {
+                "length": len(data.results),
+                "fields_set": data.to_df().columns.to_list(),
+                "data_model": data.results[0].model_copy() or data.results.model_copy(),
+                "created_at": str(data.extra["metadata"].timestamp),
+                "uid": data.id,
+            }
+            schema_repr = str(schema)[:80]
+        elif (
+            data_class == "Data"
+            or (
+                data_class == "list"
+                and len(data) == 1
+                and data[0].__class__.__name__ == "Data"
+            )
+        ):
+            schema = data.model_copy()
+            schema_repr = schema.__repr__()[:80]
+        elif data_class == "dict":
+            schema = {
+                "length": len(data),
+                "keys": list(data.keys()),
+                "types": list(set([d.__class__.__name__ for d in data.values()])),
+                "types_map": {k: v.__class__.__name__ for k, v in data.items()},
+            }
+            schema_repr = str(schema)[:80]
+        elif data_class == "list":
+            schema = {
+                "length": len(data),
+                "types": list(set([d.__class__.__name__ for d in data])),
+                "first_value": data[0],
+            }
+            schema_repr = str(schema)[:80]
+        elif data_class == "DataFrame":
+            schema = {
+                "length": len(data.index),
+                "width": len(data.columns),
+                "columns": data.columns,
+                "index": data.index,
+                "types_map": data.dtypes
+            }
+            schema_repr = str(schema)[:80]
+            data = data.to_dict()
+        elif data_class == "str":
+            schema = {
+                "length": len(data),
+                "first_80_chars": data[:80],
+            }
+            schema_repr = str(schema)
+        else:
+            raise ValueError(f"Data type, {data_class}, not supported.")
+
+        schema_repr = schema_repr + "..." if len(schema_repr) >= 80 else schema_repr
+        compressed_schema = self._compress_store(schema)
+        self.schemas.update({name: compressed_schema})
+        directory_entry = {
+            name: {
+                "description": description,
+                "data_class": data_class,
+                "schema_preview": schema_repr,
+            },
+        }
+        compressed_store = self._compress_store(data)
+        self.archives.update({name: compressed_store})
+        self.directory.update(directory_entry)
+        if self.verbose:
+            return f"Data store '{name}' added successfully."
+
+    def get_store(
+        self,
+        name: str = "",
+        element: Literal["OBBject", "dataframe", "dict", "llm", "chart"] = "dataframe",
+        pd_query: Optional[str] = None,
+        dict_orient: str = "list",
+        chart_params: Optional[Dict[str, Any]] = None,
+    ):
+        """Get a stored data object."""
+        if not name:
+            name = self.list_stores()[0]
+        if name not in self.directory:
+            raise ValueError(f"Data store '{name}' does not exist.")
+        decompressed_data = self._decompress_store(self.archives[name])
+        data_class = self.directory[name]["data_class"]
+        if data_class == "OBBject":
+            obbject = OBBject.model_validate(decompressed_data)
+            if element == "OBBject":
+                return obbject
+            if element == "llm":
+                obbject.to_llm()
+            if element == "chart":
+                if not hasattr(obbject, "charting"):
+                    raise ValueError(
+                        "Charting extension is not installed. Install with `pip install openbb-charting`."
+                    )
+                if hasattr(obbject.chart, "content") and not chart_params:
+                    return obbject.chart.content
+                chart_params = chart_params or {}
+                chart_params["render"] = False
+                _ = obbject.charting.to_chart(data = obbject.to_df(), **chart_params)
+                return obbject.chart.fig
+            df = obbject.to_df()
+            if pd_query:
+                df = df.query(pd_query)
+            if element == "dataframe":
+                return df.convert_dtypes()
+            if element == "dict":
+                return df.to_dict(orient=dict_orient)
+            raise ValueError(
+                "Invalid element type. Use: 'OBBject', 'dataframe', 'dict', 'llm', or 'chart'."
+            )
+        if data_class == "DataFrame":
+            df = DataFrame(decompressed_data)
+            schema = self.get_schema(name)
+            df.columns = schema["columns"]
+            df.index = schema["index"]
+            df = df.astype(schema["types_map"], errors="ignore")
+            return (
+                df.query(pd_query).convert_dtypes()
+                if pd_query
+                else df.convert_dtypes()
+            )
+        return decompressed_data
+
+    def get_schema(self, name: str):
+        """Get the schema for a stored data object."""
+        if name not in self.directory:
+            raise ValueError(f"Data store '{name}' does not exist.")
+        compressed_schema = self.schemas[name]
+        decompressed_schema = self._decompress_store(compressed_schema)
+
+        if "data_model" in decompressed_schema:
+            decompressed_schema["data_model"] = decompressed_schema["data_model"].schema(by_alias=False)
+
+        return decompressed_schema
+
+    def save_store_to_file(self, filename, names: Optional[List[str]] = None):
+        """Save the Store object, or a list of store names, to a compressed shelf file."""
+        names = names or self.list_stores()
+        temp = {
+            "archives": {name: self.archives[name] for name in names},
+            "schemas" : {name: self.schemas[name] for name in names},
+            "directory" : {name: self.directory[name] for name in names}
+        }
+        # Pickle the data and generate a signature
+        pickled_data = pickle.dumps(temp, protocol=pickle.HIGHEST_PROTOCOL)
+        signature = hashlib.sha1(pickled_data).hexdigest()  # noqa
+        # Store the data and the signature.
+        filename = (
+            filename + ".xz"
+            if filename.startswith("/")
+            else self.user_data_directory + filename + ".xz"
+        )
+        with lzma.open(filename, "wb") as f:
+            f.write(pickle.dumps({"signature": signature, "data": pickled_data}))
+
+        if self.verbose:
+            return f"{filename} saved successfully."
+
+    def load_store_from_file(self, filename, names: Optional[List[str]] = None):
+        """Load the Store object from a file."""
+        filename = (
+            filename + ".xz"
+            if filename.startswith("/")
+            else self.user_data_directory + filename + ".xz"
+        )
+        with lzma.open(filename, "rb") as f:
+            data = pickle.load(f)  # noqa
+
+        # Verify the signature
+        signature = data["signature"]
+        pickled_data = data["data"]
+        if hashlib.sha1(pickled_data).hexdigest() != signature:  # noqa
+            raise ValueError("Data integrity check failed")
+
+        # Load the data
+        temp = pickle.loads(pickled_data)  # noqa
+        if names:
+            temp = {
+                k: v for k, v in temp.items() if k in names
+            }
+
+        self.archives.update(temp["archives"])
+        self.schemas.update(temp["schemas"])
+        self.directory.update(temp["directory"])
+
+        if self.verbose:
+            return f"{filename} loaded successfully."
+
+    def update_store(
+        self,
+        name: str,
+        data: Union[OBBject, Data, DataFrame, Dict, List, str],
+        description: Optional[str] = None
+    ):
+        """Overwrite an existing stored data object."""
+        if name not in self.directory:
+            raise ValueError(f"Data store '{name}' does not exist.")
+        self.remove_store(name, verbose=False)
+        self.add_store(
+            name=name,
+            data=data,
+            description=description,
+            verbose=False,
+        )
+        if self.verbose:
+            return f"Data store '{name}' updated successfully."
+
+    def remove_store(self, name: str):
+        """Remove a stored data object by name."""
+        if name not in self.directory:
+            raise ValueError(f"Data store '{name}' does not exist.")
+        self.directory.pop(name)
+        self.archives.pop(name)
+        self.schemas.pop(name)
+        if self.verbose:
+            return f"Data store '{name}' removed successfully."
+
+    def clear_stores(self):
+        """Clear all stored data objects from memory."""
+        self.directory = {}
+        self.archives = {}
+        self.schemas = {}
+        if self.verbose:
+            return f"All data stores cleared.\n\n{str(self.directory)}"
+
+    def _compress_store(self, data):
+        """Compress a stored data object."""
+        pickled_data = pickle.dumps(data)
+        signature = hashlib.sha1(pickled_data).hexdigest()  # noqa
+        return {"archive": lzma.compress(pickled_data), "signature": signature}
+
+    def _decompress_store(self, data):
+        """Decompress a stored data object."""
+        decompressed_data = lzma.decompress(data["archive"])
+        signature = data["signature"]
+        if hashlib.sha1(decompressed_data).hexdigest() != signature:  # noqa
+            raise ValueError("Data signature does not match!")
+        return pickle.loads(decompressed_data)  # noqa
+
+    def __repr__(self):
+        """Return a string representation of the object."""
+        names = self.list_stores()
+        if names == [""]:
+            return f"{self.__class__.__name__}\n\nNo archives added."
+        stores: List = []
+        for name in names:
+            string = (
+                f"\n\n    {name}:\n        Data Class: {self.directory[name]['data_class']}"
+                + f"\n        Description: {self.directory[name].get('description')}"
+                + f"\n        Schema Preview: {self.directory[name].get('schema_preview')}"
+            )
+            stores.append(string)
+        return f"\n{self.__class__.__name__} Archive {''.join(stores) if stores else 'No stores added.'}"
