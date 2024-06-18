@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from jwt import encode
+from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.service.hub_service import (
     Credentials,
     HubService,
@@ -242,8 +243,9 @@ def test_hub2platform_v4_only():
         "polygon_api_key": "def",
         "fred_api_key": "ghi",
     }
+    mock_user_settings.features_settings = {}
 
-    credentials = HubService().hub2platform(mock_user_settings)
+    credentials, _ = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "abc"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -258,8 +260,9 @@ def test_hub2platform_v3_only():
         "API_POLYGON_KEY": "def",
         "API_FRED_KEY": "ghi",
     }
+    mock_user_settings.features_settings = {}
 
-    credentials = HubService().hub2platform(mock_user_settings)
+    credentials, _ = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "abc"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -275,8 +278,9 @@ def test_hub2platform_v3v4():
         "API_POLYGON_KEY": "def",
         "API_FRED_KEY": "ghi",
     }
+    mock_user_settings.features_settings = {}
 
-    credentials = HubService().hub2platform(mock_user_settings)
+    credentials, _ = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "other_key"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -291,6 +295,7 @@ def test_platform2hub():
         "fmp_api_key": "other_key",
         "API_FRED_KEY": "ghi",
     }
+    mock_user_settings.features_settings = {}
     mock_hub_service = HubService()
     mock_hub_service._hub_user_settings = mock_user_settings
     mock_credentials = Credentials(  # Current credentials
@@ -300,7 +305,8 @@ def test_platform2hub():
         benzinga_api_key=SecretStr("benzinga"),
         some_api_key=SecretStr("some"),
     )
-    user_settings = mock_hub_service.platform2hub(mock_credentials)
+    mock_defaults = Defaults()
+    user_settings = mock_hub_service.platform2hub(mock_credentials, mock_defaults)
 
     assert isinstance(user_settings, HubUserSettings)
     assert user_settings.features_keys["API_KEY_FINANCIALMODELINGPREP"] == "fmp"
@@ -309,6 +315,7 @@ def test_platform2hub():
     assert user_settings.features_keys["API_FRED_KEY"] == "fred"
     assert user_settings.features_keys["benzinga_api_key"] == "benzinga"
     assert "some_api_key" not in user_settings.features_keys
+    assert "defaults" in user_settings.features_settings
 
 
 @pytest.mark.parametrize(

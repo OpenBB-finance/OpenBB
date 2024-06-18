@@ -69,14 +69,14 @@ class Container:
                 result = self._check_credentials(p)
                 if result:
                     return p
-                elif result is False:
+                if result is False:
                     tries.append((p, "missing credentials"))
                 else:
                     tries.append((p, "not found"))
 
             msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
             raise OpenBBError(
-                f"Provider fallback failed, please specify the provider or update credentials.\n"
+                f"Provider fallback failed, please specify one of the available providers or update credentials.\n"
                 f"[Providers]\n  {msg}"
             )
         return choice
