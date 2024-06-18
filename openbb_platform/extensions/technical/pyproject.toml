@@ -21,3 +21,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 technical = "openbb_technical.technical_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+technical = "openbb_technical.technical_views:TechnicalViews"

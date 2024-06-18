@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 index = "openbb_index.index_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+index = "openbb_index.index_views:IndexViews"

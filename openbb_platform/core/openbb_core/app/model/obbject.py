@@ -72,7 +72,7 @@ class OBBject(Tagged, Generic[T]):
     _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
         default_factory=dict,
     )
-    _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
+    _extra_params: Optional[Dict[str, Any]] = PrivateAttr(
         default_factory=dict,
     )
 
