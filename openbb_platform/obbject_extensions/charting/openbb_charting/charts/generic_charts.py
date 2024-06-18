@@ -10,14 +10,14 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_charting.utils.helpers import (
+from openbb_charting.charts.helpers import (
     calculate_returns,
     should_share_axis,
     z_score_standardization,
 )
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.styles.colors import LARGE_CYCLER
 
 
 def line_chart(  # noqa: PLR0912
@@ -48,7 +48,6 @@ def line_chart(  # noqa: PLR0912
     **kwargs,
 ) -> Union[OpenBBFigure, Figure]:
     """Create a line chart."""
-
     if data is None:
         raise ValueError("Error: Data is a required field.")
 
@@ -381,7 +380,6 @@ def bar_chart(  # noqa: PLR0912
     OpenBBFigure
         The OpenBBFigure object.
     """
-
     try:
         figure = OpenBBFigure()
     except Exception as _:
@@ -523,7 +521,6 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     OpenBBFigure
         The OpenBBFigure object.
     """
-
     try:
         figure = OpenBBFigure()
     except Exception as _:
