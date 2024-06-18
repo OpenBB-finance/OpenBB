@@ -155,12 +155,19 @@ class OBBject(Tagged, Generic[T]):
                         dict_of_df[k] = pd.DataFrame(v)
 
                 df = pd.concat(dict_of_df, axis=1)
-
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                df = basemodel_to_df(dt, index)
-                sort_columns = False
+                r = res[0] if isinstance(res, list) and len(res) == 1 else res
+                if all(
+                    prop.get("type") == "array"
+                    for prop in r.schema()["properties"].values()
+                ):
+                    sort_columns = False
+                    df = pd.DataFrame(r.model_dump(exclude_unset=True))
+                else:
+                    df = basemodel_to_df(dt, index)
+                    sort_columns = False
             # str
             elif isinstance(res, str):
                 df = pd.DataFrame([res])
