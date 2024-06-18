@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://markets.newyorkfed.org/api/rates/unsecured/obfr/search.json?startDate=2024-06-01&endDate=2024-06-06
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWUCpKTQtKLEktVrJSiFaoVlBKTUtLTS7JLEt1SSxJVbJSUDIyMDLRNTDTNTBT
+        0lFQKqksAIv6O7kFKSnoKBWkFiWn5pWAjFCyUjDVMzZCCAZA5DJzUg3Bckam2OSMTMGSxobYJM2h
+        ksbYJC0tITotFXSUyvJzSnNTPfOcMnNyMvPzQN4xsgDZV5RallmcmZ/nmZeSmZxYkl8E8pOSQq0O
+        fs+aDlbPWuDwrDlIgkzPmgw1z1oYKOgokelZ46HmWXN8yRgwhViFWgD5Rz99xgMAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Content-Disposition
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Disposition
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '220'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Jun 2024 02:34:03 GMT
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - cookiesession1=678A3E0EE607407E823ED4EA4F0C28B9;Expires=Wed, 11 Jun 2025 02:34:03
+        GMT;Path=/;Secure;HttpOnly
+      Vary:
+      - Accept-Encoding
+      strict-transport-security:
+      - max-age=31536000; includeSubDomains
+      x-amz-apigw-id:
+      - ZLmgUG4BCYcFe8Q=
+      x-amzn-requestid:
+      - b77d47db-cd3e-492d-a63f-1ab9a17c16f8
+      x-amzn-trace-id:
+      - Root=1-6667b79b-358f5ab1a50c2313c1e18089;Parent=15119c60494acd17;Sampled=0;lineage=e7c0e2ee:0
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
