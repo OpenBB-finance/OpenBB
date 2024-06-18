@@ -142,8 +142,6 @@ class FredFederalFundsRateFetcher(
             transformed_params["end_date"] = now
         return FredFederalFundsRateQueryParams(**transformed_params)
 
-        return FredFederalFundsRateQueryParams(**params)
-
     @staticmethod
     async def aextract_data(
         query: FredFederalFundsRateQueryParams,
