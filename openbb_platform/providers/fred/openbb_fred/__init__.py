@@ -19,6 +19,9 @@ from openbb_fred.models.high_quality_market import (
 )
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.manufacturing_outlook_texas import (
+    FredManufacturingOutlookTexasFetcher,
+)
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
@@ -29,12 +32,19 @@ from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
+from openbb_fred.models.senior_loan_officer_survey import (
+    FredSeniorLoanOfficerSurveyFetcher,
+)
 from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.models.sofr import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
+from openbb_fred.models.survey_of_economic_conditions_chicago import (
+    FredSurveyOfEconomicConditionsChicagoFetcher,
+)
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
+from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.us_yield_curve import (
     FREDYieldCurveFetcher as FREDUSYieldCurveFetcher,
 )
@@ -62,6 +72,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
         "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
         "ICEBofA": FREDICEBofAFetcher,
+        "ManufacturingOutlookTexas": FredManufacturingOutlookTexasFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "MortgageIndices": FredMortgageIndicesFetcher,
         "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
@@ -70,14 +81,17 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "FredSeries": FredSeriesFetcher,
         "FredRegional": FredRegionalDataFetcher,
         "RetailPrices": FredRetailPricesFetcher,
+        "SeniorLoanOfficerSurvey": FredSeniorLoanOfficerSurveyFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FredHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
+        "SurveyOfEconomicConditionsChicago": FredSurveyOfEconomicConditionsChicagoFetcher,
+        "UniversityOfMichigan": FredUofMichiganFetcher,
         "YieldCurve": FREDYieldCurveFetcher,
     },
     repr_name="Federal Reserve Economic Data | St. Louis FED (FRED)",
-    v3_credentials=["API_FRED_KEY"],
+    deprecated_credentials={"API_FRED_KEY": "fred_api_key"},
     instructions='Go to: https://fred.stlouisfed.org\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)\n\nClick on, "My Account", create a new account or sign in with Google:\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827011-65cdd501-27e3-436f-bd9d-b0d8381d46a7.png)\n\nAfter completing the sign-up, go to "My Account", and select "API Keys". Then, click on, "Request API Key".\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827577-c869f989-4ef4-4949-ab57-6f3931f2ae9d.png)\n\nFill in the box for information about the use-case for FRED, and by clicking, "Request API key", at the bottom of the page, the API key will be issued.\n\n![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)',  # noqa: E501  pylint: disable=line-too-long
 )

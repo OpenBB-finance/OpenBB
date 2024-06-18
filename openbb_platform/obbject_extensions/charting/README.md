@@ -9,7 +9,7 @@ The library includes:
 - prebuilt charts for a set of commands that are built-in OpenBB extensions
 
 >[!NOTE]
-> The charting library is an [`OBBject` extension](https://docs.openbb.co/platform/development/developer-guidelines/obbject_extensions) which means you'll have the functionality it exposes on every command result.
+> The charting library is an `OBBject` extension which means you'll have the functionality it exposes on every command result.
 
 ## Installation
 
@@ -120,15 +120,44 @@ Example usage:
 
 ## Add a visualization to an existing Platform command
 
-One should first ensure that the already implemented endpoint is available in the [charting router](/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py).
+To add a visualization to an existing command, you'll need to add a `poetry` plugin to your `pyproject.toml` file. The syntax should be the following:
 
-To do so, you can run:
- `python openbb_platform/obbject_extensions/charting/openbb_charting/builder.py` - which will read all the available endpoints and add them to the charting router.
+```toml
+[tool.poetry.plugins."openbb_charting_extension"]
+my_extension = "openbb_my_extension.my_extension_views:MyExtensionViews"
+```
 
-Afterwards, you'll need to add the visualization to the [charting router]. The convention to match the endpoint with the respective charting function is the following:
+Where the `openbb_charting_extension` is **mandatory**, otherwise the charting extension won't be able to find the visualization.
+
+And the suggested structure for the `my_extension_views` module is the following:
+
+```python
+"""Views for MyExtension."""
+
+from typing import Any, Dict, Tuple
+
+from openbb_charting.charts.price_historical import price_historical
+from openbb_charting.core.openbb_figure import OpenBBFigure
+
+
+class MyExtensionViews:
+    """MyExtension Views."""
+
+    @staticmethod
+    def my_extension_price_historical(
+        **kwargs,
+    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+        """MyExtension Price Historical Chart."""
+        return price_historical(**kwargs)
+```
+
+> Note that `my_extension_views` lives under the `openbb_my_extension` package.
+
+Afterwards, you'll need to add the visualization to your new `MyExtensionViews` class. The convention to match the endpoint with the respective charting function is the following:
 
 - `/equity/price/historical` -> `equity_price_historical`
 - `/technical/ema` -> `technical_ema`
+- `/my_extension/price_historical` -> `my_extension_price_historical`
 
 When you spot the charting function on the charting router file, you can add the visualization to it.
 

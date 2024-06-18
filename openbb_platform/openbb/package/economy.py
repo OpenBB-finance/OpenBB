@@ -33,6 +33,7 @@ class ROUTER_economy(Container):
     risk_premium
     share_price_index
     short_term_interest_rate
+    /survey
     unemployment
     """
 
@@ -2129,6 +2130,13 @@ class ROUTER_economy(Container):
                 extra_params=kwargs,
             )
         )
+
+    @property
+    def survey(self):
+        # pylint: disable=import-outside-toplevel
+        from . import economy_survey
+
+        return economy_survey.ROUTER_economy_survey(command_runner=self._command_runner)
 
     @exception_handler
     @validate

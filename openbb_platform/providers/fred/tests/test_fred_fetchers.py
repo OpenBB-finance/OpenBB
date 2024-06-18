@@ -22,6 +22,9 @@ from openbb_fred.models.high_quality_market import (
 )
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
+from openbb_fred.models.manufacturing_outlook_texas import (
+    FredManufacturingOutlookTexasFetcher,
+)
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
 from openbb_fred.models.overnight_bank_funding_rate import (
@@ -32,12 +35,19 @@ from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
+from openbb_fred.models.senior_loan_officer_survey import (
+    FredSeniorLoanOfficerSurveyFetcher,
+)
 from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.models.sofr import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
+from openbb_fred.models.survey_of_economic_conditions_chicago import (
+    FredSurveyOfEconomicConditionsChicagoFetcher,
+)
 from openbb_fred.models.tbffr import FREDSelectedTreasuryBillFetcher
 from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
+from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.us_yield_curve import (
     FREDYieldCurveFetcher as FREDUSYieldCurveFetcher,
 )
@@ -382,7 +392,7 @@ def test_fred_bond_indices_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fred_bond_mortgage_fetcher(credentials=test_credentials):
+def test_fred_mortgage_indices_fetcher(credentials=test_credentials):
     """Test FredMortgageIndicesFetcher."""
     params = {
         "index": "jumbo_30y",
@@ -391,6 +401,63 @@ def test_fred_bond_mortgage_fetcher(credentials=test_credentials):
     }
 
     fetcher = FredMortgageIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_university_of_michigan_fetcher(credentials=test_credentials):
+    """Test FredUofMichiganFetcher."""
+    params = {
+        "start_date": datetime.date(2022, 6, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredUofMichiganFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_senior_loan_officer_survey_fetcher(credentials=test_credentials):
+    """Test FredSeniorLoanOfficerSurveyFetcher."""
+    params = {
+        "category": "auto",
+        "start_date": datetime.date(2022, 6, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredSeniorLoanOfficerSurveyFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_survey_of_economic_conditions_chicago_fetcher(
+    credentials=test_credentials,
+):
+    """Test FredSurveyOfEconomicConditionsChicagoFetcher."""
+    params = {
+        "start_date": datetime.date(2024, 3, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredSurveyOfEconomicConditionsChicagoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_manufacturing_outlook_texas_fetcher(
+    credentials=test_credentials,
+):
+    """Test FredManufacturingOutlookTexasFetcher."""
+    params = {
+        "start_date": datetime.date(2024, 3, 1),
+        "end_date": datetime.date(2024, 5, 31),
+    }
+
+    fetcher = FredManufacturingOutlookTexasFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
