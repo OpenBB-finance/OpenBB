@@ -22,7 +22,7 @@ class Container:
         """Fetch providers maintained in OpenBB repository and cache them."""
         try:
             response = get(
-                url=f"{REPOSITORY_URL}/main/assets/extensions/provider.json", timeout=2
+                url=f"{REPOSITORY_URL}/main/assets/extensions/provider.json", timeout=5
             )
             if response.status_code == 200:
                 result = response.json()
