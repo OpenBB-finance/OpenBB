@@ -58,7 +58,7 @@ A confirmation will display unless the "verbose" property is set to `False`.
 "Data store 'nvda2023' added successfully."
 ```
 
-Additonal data can be added to the collection, and then exported as a single package.
+Additional data can be added to the collection, and then exported as a single package.
 
 ```python
 data = obb.equity.fundamental.metrics("NVDA", provider="yfinance")
@@ -175,7 +175,7 @@ data.store.get_schema("nvda2023")
 
 ### Restore Data
 
-Restore data from the Store extension by using the `get_store` method. The archive is validated against a signature before opening.
+Restore data from the Store extension by using the `get_store` method. Each archive and pickled object are validated against a signature before opening.
 
 ```python
 data.store.get_store("nvdaMetrics")
