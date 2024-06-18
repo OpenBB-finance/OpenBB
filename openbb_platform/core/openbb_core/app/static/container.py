@@ -1,10 +1,39 @@
 """Container class."""
 
+import json
 from typing import Any, Optional, Tuple
 
+from aiohttp import ClientSession
+
 from openbb_core.app.command_runner import CommandRunner
+from openbb_core.app.constants import REPOSITORY_URL
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.provider.utils.helpers import run_async
+
+
+async def get_openbb_providers():
+    """Get providers maintained in OpenBB repository."""
+    async with ClientSession() as session:
+        try:
+            async with session.get(
+                url=f"{REPOSITORY_URL}/main/assets/extensions/provider.json",
+                timeout=2,
+            ) as response:
+                if response.status == 200:
+                    text = await response.text()
+                    result = json.loads(text)
+                    return {
+                        r["packageName"][7:].replace("-", "_"): r["packageName"]
+                        for r in result
+                    }
+                return []
+        except Exception:
+            return []
+
+
+# Map provider to package name, e.g. alpha_vantage: openbb-alpha-vantage
+OPENBB_PROVIDERS = run_async(get_openbb_providers)
 
 
 class Container:
@@ -69,14 +98,13 @@ class Container:
                 result = self._check_credentials(p)
                 if result:
                     return p
-                elif result is False:
+                if result is False:
                     tries.append((p, "missing credentials"))
+                elif pkg_name := OPENBB_PROVIDERS.get(p):
+                    tries.append((p, f"not installed, please install {pkg_name}"))
                 else:
                     tries.append((p, "not found"))
 
             msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
-            raise OpenBBError(
-                f"Provider fallback failed, please specify the provider or update credentials.\n"
-                f"[Providers]\n  {msg}"
-            )
+            raise OpenBBError(f"Provider fallback failed.\n" f"[Providers]\n  {msg}")
         return choice
