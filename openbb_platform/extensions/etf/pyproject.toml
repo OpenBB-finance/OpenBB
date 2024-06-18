@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 etf = "openbb_etf.etf_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+etf = "openbb_etf.etf_views:EtfViews"
