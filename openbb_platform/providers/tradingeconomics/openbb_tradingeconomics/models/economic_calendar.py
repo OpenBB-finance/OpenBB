@@ -9,6 +9,7 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
@@ -229,7 +230,7 @@ class TEEconomicCalendarFetcher(
             query.group = query.group.replace("_", " ")  # type: ignore
         url = url_generator.generate_url(query)
         if not url:
-            raise RuntimeError(
+            raise OpenBBError(
                 "No url generated. Check combination of input parameters."
             )
         url = f"{url}{api_key}"
@@ -237,7 +238,7 @@ class TEEconomicCalendarFetcher(
         async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
             """Return the response."""
             if response.status != 200:
-                raise RuntimeError(
+                raise OpenBBError(
                     f"Error in TE request: \n{await response.text()}"
                     f"\nInfo -> TE API tend to fail if the number of countries is above {TE_COUNTRY_LIMIT}."
                 )

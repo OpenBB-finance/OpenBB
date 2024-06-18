@@ -10,6 +10,7 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from dateutil.parser import parse
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_unusual import (
     OptionsUnusualData,
@@ -88,7 +89,6 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
     @classmethod
     def validate_params(cls, params):
         """Validate the query parameters."""
-
         if params.get("start_date") is None:
             # If the symbol is provided, there will be considerably less results.
             # Broad market data needs to be confined to a single date.
@@ -120,7 +120,7 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
             params.get("symbol") is None
             and (params.get("end_date") - params.get("start_date")).days >= 1
         ):
-            raise RuntimeError(
+            raise OpenBBError(
                 "When no symbol is supplied, queries are not allowed if"
                 + " the date range covers more than one trading day."
                 + " Supply only the start_date for queries with no symbol."
