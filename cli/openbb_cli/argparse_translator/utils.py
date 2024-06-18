@@ -65,7 +65,7 @@ def get_argument_optional_choices(parser: ArgumentParser, argument_name: str) ->
             and hasattr(action, "optional_choices")
         ):
             return (
-                action.optional_choices  # pylint: disable=no-member # this is a custom attribute
+                action.optional_choices  # type: ignore[attr-defined] # this is a custom attribute
             )
     return False
 

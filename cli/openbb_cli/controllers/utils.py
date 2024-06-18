@@ -539,6 +539,15 @@ def check_positive(value) -> int:
     return new_value
 
 
+def validate_register_key(value: str) -> str:
+    """Validate the register key to ensure it does not contain the reserved word 'OBB'."""
+    if "OBB" in value:
+        raise argparse.ArgumentTypeError(
+            "The register key cannot contain the reserved word 'OBB'."
+        )
+    return str(value)
+
+
 def get_user_agent() -> str:
     """Get a not very random user agent."""
     user_agent_strings = [
