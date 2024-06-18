@@ -1,20 +1,22 @@
 """FRED provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
-from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
+from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
+from openbb_fred.models.commercial_paper import FREDCommercialPaperFetcher
 from openbb_fred.models.consumer_price_index import FREDConsumerPriceIndexFetcher
-from openbb_fred.models.cp import FREDCommercialPaperFetcher
 from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFetcher
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
 )
-from openbb_fred.models.estr_rates import FREDESTRFetcher
+from openbb_fred.models.euro_short_term_rate import FredEuroShortTermRateFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
-from openbb_fred.models.fed_rates import FREDFEDFetcher
+from openbb_fred.models.federal_funds_rate import FredFederalFundsRateFetcher
 from openbb_fred.models.ffrmc import FREDSelectedTreasuryConstantMaturityFetcher
-from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
+from openbb_fred.models.high_quality_market import (
+    FredHighQualityMarketCorporateBondFetcher,
+)
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.manufacturing_outlook_texas import (
@@ -22,6 +24,9 @@ from openbb_fred.models.manufacturing_outlook_texas import (
 )
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
 from openbb_fred.models.mortgage_indices import FredMortgageIndicesFetcher
+from openbb_fred.models.overnight_bank_funding_rate import (
+    FredOvernightBankFundingRateFetcher,
+)
 from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.retail_prices import FredRetailPricesFetcher
 from openbb_fred.models.search import (
@@ -31,7 +36,7 @@ from openbb_fred.models.senior_loan_officer_survey import (
     FredSeniorLoanOfficerSurveyFetcher,
 )
 from openbb_fred.models.series import FredSeriesFetcher
-from openbb_fred.models.sofr_rates import FREDSOFRFetcher
+from openbb_fred.models.sofr import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
 from openbb_fred.models.survey_of_economic_conditions_chicago import (
@@ -58,10 +63,10 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
         "USYieldCurve": FREDUSYieldCurveFetcher,
         "SOFR": FREDSOFRFetcher,
-        "ESTR": FREDESTRFetcher,
+        "EuroShortTermRate": FredEuroShortTermRateFetcher,
         "SONIA": FREDSONIAFetcher,
-        "AMERIBOR": FREDAMERIBORFetcher,
-        "FEDFUNDS": FREDFEDFetcher,
+        "Ameribor": FredAmeriborFetcher,
+        "FederalFundsRate": FredFederalFundsRateFetcher,
         "PROJECTIONS": FREDPROJECTIONFetcher,
         "IORB": FREDIORBFetcher,
         "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
@@ -70,6 +75,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "ManufacturingOutlookTexas": FredManufacturingOutlookTexasFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "MortgageIndices": FredMortgageIndicesFetcher,
+        "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
@@ -77,7 +83,7 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
         "RetailPrices": FredRetailPricesFetcher,
         "SeniorLoanOfficerSurvey": FredSeniorLoanOfficerSurveyFetcher,
         "SpotRate": FREDSpotRateFetcher,
-        "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
+        "HighQualityMarketCorporateBond": FredHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
         "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
         "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
