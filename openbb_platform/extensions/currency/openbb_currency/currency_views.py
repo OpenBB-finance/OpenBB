@@ -1,4 +1,4 @@
-"""Views for the currency Extension."""
+"""Views for the Currency Extension."""
 
 from typing import Any, Dict, Tuple
 
