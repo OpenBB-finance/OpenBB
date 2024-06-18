@@ -15,6 +15,7 @@ from typing_extensions import Annotated, deprecated
 
 class ROUTER_fixedincome_corporate(Container):
     """/fixedincome/corporate
+    bond_prices
     commercial_paper
     hqm
     ice_bofa
@@ -24,6 +25,179 @@ class ROUTER_fixedincome_corporate(Container):
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @exception_handler
+    @validate
+    def bond_prices(
+        self,
+        country: Annotated[
+            Optional[str],
+            OpenBBField(description="The country to get data. Matches partial name."),
+        ] = None,
+        issuer_name: Annotated[
+            Optional[str],
+            OpenBBField(
+                description="Name of the issuer.  Returns partial matches and is case insensitive."
+            ),
+        ] = None,
+        isin: Annotated[
+            Union[List, str, None],
+            OpenBBField(
+                description="International Securities Identification Number(s) of the bond(s)."
+            ),
+        ] = None,
+        lei: Annotated[
+            Optional[str],
+            OpenBBField(description="Legal Entity Identifier of the issuing entity."),
+        ] = None,
+        currency: Annotated[
+            Union[List, str, None],
+            OpenBBField(
+                description="Currency of the bond. Formatted as the 3-letter ISO 4217 code (e.g. GBP, EUR, USD)."
+            ),
+        ] = None,
+        coupon_min: Annotated[
+            Optional[float], OpenBBField(description="Minimum coupon rate of the bond.")
+        ] = None,
+        coupon_max: Annotated[
+            Optional[float], OpenBBField(description="Maximum coupon rate of the bond.")
+        ] = None,
+        issued_amount_min: Annotated[
+            Optional[int], OpenBBField(description="Minimum issued amount of the bond.")
+        ] = None,
+        issued_amount_max: Annotated[
+            Optional[str], OpenBBField(description="Maximum issued amount of the bond.")
+        ] = None,
+        maturity_date_min: Annotated[
+            Optional[datetime.date],
+            OpenBBField(description="Minimum maturity date of the bond."),
+        ] = None,
+        maturity_date_max: Annotated[
+            Optional[datetime.date],
+            OpenBBField(description="Maximum maturity date of the bond."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["tmx"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tmx."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Corporate Bond Prices.
+
+        Parameters
+        ----------
+        country : Optional[str]
+            The country to get data. Matches partial name.
+        issuer_name : Optional[str]
+            Name of the issuer.  Returns partial matches and is case insensitive.
+        isin : Union[List, str, None]
+            International Securities Identification Number(s) of the bond(s).
+        lei : Optional[str]
+            Legal Entity Identifier of the issuing entity.
+        currency : Union[List, str, None]
+            Currency of the bond. Formatted as the 3-letter ISO 4217 code (e.g. GBP, EUR, USD).
+        coupon_min : Optional[float]
+            Minimum coupon rate of the bond.
+        coupon_max : Optional[float]
+            Maximum coupon rate of the bond.
+        issued_amount_min : Optional[int]
+            Minimum issued amount of the bond.
+        issued_amount_max : Optional[str]
+            Maximum issued amount of the bond.
+        maturity_date_min : Optional[datetime.date]
+            Minimum maturity date of the bond.
+        maturity_date_max : Optional[datetime.date]
+            Maximum maturity date of the bond.
+        provider : Optional[Literal['tmx']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: tmx.
+        issue_date_min : Optional[datetime.date]
+            Filter by the minimum original issue date. (provider: tmx)
+        issue_date_max : Optional[datetime.date]
+            Filter by the maximum original issue date. (provider: tmx)
+        last_traded_min : Optional[datetime.date]
+            Filter by the minimum last trade date. (provider: tmx)
+        use_cache : bool
+            All bond data is sourced from a single JSON file that is updated daily. The file is cached for one day to eliminate downloading more than once. Caching will significantly speed up subsequent queries. To bypass, set to False. (provider: tmx)
+
+        Returns
+        -------
+        OBBject
+            results : List[BondPrices]
+                Serializable results.
+            provider : Optional[Literal['tmx']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        BondPrices
+        ----------
+        isin : Optional[str]
+            International Securities Identification Number of the bond.
+        lei : Optional[str]
+            Legal Entity Identifier of the issuing entity.
+        figi : Optional[str]
+            FIGI of the bond.
+        cusip : Optional[str]
+            CUSIP of the bond.
+        coupon_rate : Optional[float]
+            Coupon rate of the bond.
+        ytm : Optional[float]
+            Yield to maturity (YTM) is the rate of return anticipated on a bond if it is held until the maturity date. It takes into account the current market price, par value, coupon rate and time to maturity. It is assumed that all coupons are reinvested at the same rate. Values are returned as a normalized percent. (provider: tmx)
+        price : Optional[float]
+            The last price for the bond. (provider: tmx)
+        highest_price : Optional[float]
+            The highest price for the bond on the last traded date. (provider: tmx)
+        lowest_price : Optional[float]
+            The lowest price for the bond on the last traded date. (provider: tmx)
+        total_trades : Optional[int]
+            Total number of trades on the last traded date. (provider: tmx)
+        last_traded_date : Optional[date]
+            Last traded date of the bond. (provider: tmx)
+        maturity_date : Optional[date]
+            Maturity date of the bond. (provider: tmx)
+        issue_date : Optional[date]
+            Issue date of the bond. This is the date when the bond first accrues interest. (provider: tmx)
+        issuer_name : Optional[str]
+            Name of the issuing entity. (provider: tmx)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.bond_prices(provider='tmx')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/corporate/bond_prices",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "fixedincome.corporate.bond_prices",
+                        ("tmx",),
+                    )
+                },
+                standard_params={
+                    "country": country,
+                    "issuer_name": issuer_name,
+                    "isin": isin,
+                    "lei": lei,
+                    "currency": currency,
+                    "coupon_min": coupon_min,
+                    "coupon_max": coupon_max,
+                    "issued_amount_min": issued_amount_min,
+                    "issued_amount_max": issued_amount_max,
+                    "maturity_date_min": maturity_date_min,
+                    "maturity_date_max": maturity_date_max,
+                },
+                extra_params=kwargs,
+            )
+        )
 
     @exception_handler
     @validate

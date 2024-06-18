@@ -8,46 +8,73 @@ class Extensions(Container):
     # fmt: off
     """
 Routers:
+    /commodity
     /crypto
     /currency
     /derivatives
+    /econometrics
     /economy
     /equity
     /etf
     /fixedincome
     /index
     /news
+    /quantitative
     /regulators
+    /technical
 
 Extensions:
     - commodity@1.1.2
     - crypto@1.2.2
     - currency@1.2.2
     - derivatives@1.2.2
+    - econometrics@1.2.2
     - economy@1.2.2
     - equity@1.2.2
     - etf@1.2.2
     - fixedincome@1.2.2
     - index@1.2.2
     - news@1.2.2
+    - quantitative@1.2.2
     - regulators@1.2.2
+    - technical@1.2.2
 
+    - alpha_vantage@1.2.2
     - benzinga@1.2.2
+    - biztoc@1.2.2
+    - cboe@1.2.2
+    - ecb@1.2.2
     - econdb@1.1.2
     - federal_reserve@1.2.2
+    - finra@1.2.2
+    - finviz@1.1.2
     - fmp@1.2.2
     - fred@1.2.2
+    - government_us@1.2.2
     - intrinio@1.2.2
+    - nasdaq@1.2.2
     - oecd@1.2.2
     - polygon@1.2.2
     - sec@1.2.2
+    - seeking_alpha@1.2.2
+    - stockgrid@1.2.2
     - tiingo@1.2.2
+    - tmx@1.1.2
+    - tradier@1.1.2
     - tradingeconomics@1.2.2
+    - wsj@1.2.2
     - yfinance@1.2.2    """
     # fmt: on
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @property
+    def commodity(self):
+        # pylint: disable=import-outside-toplevel
+        from . import commodity
+
+        return commodity.ROUTER_commodity(command_runner=self._command_runner)
 
     @property
     def crypto(self):
@@ -69,6 +96,13 @@ Extensions:
         from . import derivatives
 
         return derivatives.ROUTER_derivatives(command_runner=self._command_runner)
+
+    @property
+    def econometrics(self):
+        # pylint: disable=import-outside-toplevel
+        from . import econometrics
+
+        return econometrics.ROUTER_econometrics(command_runner=self._command_runner)
 
     @property
     def economy(self):
@@ -113,8 +147,22 @@ Extensions:
         return news.ROUTER_news(command_runner=self._command_runner)
 
     @property
+    def quantitative(self):
+        # pylint: disable=import-outside-toplevel
+        from . import quantitative
+
+        return quantitative.ROUTER_quantitative(command_runner=self._command_runner)
+
+    @property
     def regulators(self):
         # pylint: disable=import-outside-toplevel
         from . import regulators
 
         return regulators.ROUTER_regulators(command_runner=self._command_runner)
+
+    @property
+    def technical(self):
+        # pylint: disable=import-outside-toplevel
+        from . import technical
+
+        return technical.ROUTER_technical(command_runner=self._command_runner)

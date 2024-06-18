@@ -155,9 +155,9 @@ class ROUTER_equity_ownership(Container):
             int, OpenBBField(description="The number of data entries to return.")
         ] = 500,
         provider: Annotated[
-            Optional[Literal["fmp", "intrinio"]],
+            Optional[Literal["fmp", "intrinio", "tmx"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, tmx."
             ),
         ] = None,
         **kwargs
@@ -170,8 +170,8 @@ class ROUTER_equity_ownership(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio.
+        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, tmx.
         transaction_type : Optional[Literal['award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']]
             Type of the transaction. (provider: fmp)
         start_date : Optional[datetime.date]
@@ -182,13 +182,15 @@ class ROUTER_equity_ownership(Container):
             Type of ownership. (provider: intrinio)
         sort_by : Optional[Literal['filing_date', 'updated_on']]
             Field to sort by. (provider: intrinio)
+        summary : bool
+            Return a summary of the insider activity instead of the individuals. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[InsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -257,6 +259,20 @@ class ROUTER_equity_ownership(Container):
             Whether the owner is having a derivative transaction. (provider: intrinio)
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
+        period : Optional[str]
+            The period of the activity. Bucketed by three, six, and twelve months. (provider: tmx)
+        acquisition_or_deposition : Optional[str]
+            Whether the insider bought or sold the shares. (provider: tmx)
+        number_of_trades : Optional[int]
+            The number of shares traded over the period. (provider: tmx)
+        trade_value : Optional[float]
+            The value of the shares traded by the insider. (provider: tmx)
+        securities_bought : Optional[int]
+            The total number of shares bought by all insiders over the period. (provider: tmx)
+        securities_sold : Optional[int]
+            The total number of shares sold by all insiders over the period. (provider: tmx)
+        net_activity : Optional[int]
+            The total net activity by all insiders over the period. (provider: tmx)
 
         Examples
         --------
@@ -272,7 +288,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.ownership.insider_trading",
-                        ("fmp", "intrinio"),
+                        ("fmp", "intrinio", "tmx"),
                     )
                 },
                 standard_params={
