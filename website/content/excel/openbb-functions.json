@@ -1,0 +1,173 @@
+{
+  "CURRENCY.PRICE.HISTORICAL": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "CURRENCY.SNAPSHOTS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "ECONOMY.CALENDAR": {
+    "providers": [
+      "tradingeconomics"
+    ]
+  },
+  "EQUITY.COMPARE.PEERS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.ESTIMATES.CONSENSUS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.ESTIMATES.HISTORICAL": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.ESTIMATES.PRICE_TARGET": {
+    "providers": [
+      "benzinga",
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.BALANCE": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.CASH": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.DIVIDENDS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.FILINGS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.HISTORICAL_EPS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.INCOME": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.MANAGEMENT": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.METRICS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.OVERVIEW": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.RATIOS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.FUNDAMENTAL.TRANSCRIPT": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.OWNERSHIP.INSIDER_TRADING": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.OWNERSHIP.INSTITUTIONAL": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.OWNERSHIP.MAJOR_HOLDERS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.OWNERSHIP.SHARE_STATISTICS": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.PRICE.HISTORICAL": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.PRICE.PERFORMANCE": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.PRICE.QUOTE": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "EQUITY.PROFILE": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "ETF.HOLDINGS": {
+    "providers": [
+      "intrinio"
+    ]
+  },
+  "ETF.INFO": {
+    "providers": [
+      "intrinio"
+    ]
+  },
+  "INDEX.MARKET": {
+    "providers": [
+      "fmp"
+    ]
+  },
+  "NEWS.COMPANY": {
+    "providers": [
+      "benzinga"
+    ]
+  },
+  "NEWS.WORLD": {
+    "providers": [
+      "benzinga"
+    ]
+  }
+}
