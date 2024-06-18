@@ -79,6 +79,13 @@ YIELD_CURVES = {
         "T20YIEM": "year_20",
         "T30YIEM": "year_30",
     },
+    "treasury_minus_fed_funds": {
+        "T3MFF": "month_3",
+        "T6MFF": "month_6",
+        "T1YFF": "year_1",
+        "T5YFF": "year_5",
+        "T10YFF": "year_10",
+    },
     "corporate_spot": {
         "HQMCB6MT": "month_6",
         "HQMCB1YR": "year_1",

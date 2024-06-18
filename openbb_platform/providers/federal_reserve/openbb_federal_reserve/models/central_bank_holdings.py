@@ -111,15 +111,21 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
     )
     face_value: Optional[float] = Field(
         default=None,
-        description="Current face value of the security (Thousands)."
+        description="Current face value of the security (Thousands of $USD)."
         + " Current face value of the securities, which is the remaining principal balance of the securities.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     par_value: Optional[float] = Field(
         default=None,
-        description="Par value of the security (Thousands)."
+        description="Par value of the security (Thousands of $USD)."
         + " Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     coupon: Optional[float] = Field(
         default=None,
@@ -138,68 +144,101 @@ class FederalReserveCentralBankHoldingsData(CentralBankHoldingsData):
     )
     bills: Optional[float] = Field(
         default=None,
-        description="Treasury bills amount (Thousands)."
+        description="Treasury bills amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     frn: Optional[float] = Field(
         default=None,
-        description="Floating rate Treasury notes amount (Thousands)."
+        description="Floating rate Treasury notes amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     notes_and_bonds: Optional[float] = Field(
         default=None,
-        description="Treasuy Notes and bonds amount (Thousands)."
+        description="Treasuy Notes and bonds amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     tips: Optional[float] = Field(
         default=None,
-        description="Treasury inflation-protected securities amount (Thousands)."
+        description="Treasury inflation-protected securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     mbs: Optional[float] = Field(
         default=None,
-        description="Mortgage-backed securities amount (Thousands)."
+        description="Mortgage-backed securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     cmbs: Optional[float] = Field(
         default=None,
-        description="Commercial mortgage-backed securities amount (Thousands)."
+        description="Commercial mortgage-backed securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     agencies: Optional[float] = Field(
         default=None,
-        description="Agency securities amount (Thousands)."
+        description="Agency securities amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     total: Optional[float] = Field(
         default=None,
-        description="Total SOMA holdings amount (Thousands)."
+        description="Total SOMA holdings amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     tips_inflation_compensation: Optional[float] = Field(
         default=None,
-        description="Treasury inflation-protected securities inflation compensation amount (Thousands)."
+        description="Treasury inflation-protected securities inflation compensation amount (Thousands of $USD)."
         + " Only returned when 'summary' is True.",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
         alias="inflationCompensation",
     )
     change_prior_week: Optional[float] = Field(
         default=None,
-        description="Change in SOMA holdings from the prior week (Thousands).",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        description="Change in SOMA holdings from the prior week (Thousands of $USD).",
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
     change_prior_year: Optional[float] = Field(
         default=None,
-        description="Change in SOMA holdings from the prior year (Thousands).",
-        json_schema_extra={"x-unit_measurement": "usd", "x-frontend_multiply": 1000},
+        description="Change in SOMA holdings from the prior year (Thousands of $USD).",
+        json_schema_extra={
+            "x-unit_measurement": "currency",
+            "x-frontend_multiply": 1000,
+        },
     )
 
     @field_validator("security_type", mode="before", check_fields=False)

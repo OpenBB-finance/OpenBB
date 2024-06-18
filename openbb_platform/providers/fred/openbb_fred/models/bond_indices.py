@@ -45,6 +45,12 @@ BAML_CATEGORIES = {
             "oas": "BAMLC0A0CM",
             "yield_to_worst": "BAMLC0A0CMSYTW",
         },
+        "seasoned_corporate": {
+            "total_return": "",
+            "yield": "DAAA,AAA10Y,AAAFF,DBAA,BAA10Y,BAAFF",
+            "oas": "",
+            "yield_to_worst": "",
+        },
         "high_yield": {
             "total_return": "BAMLHYH0A0HYM2TRIV",
             "yield": "BAMLH0A0HYM2EY",
@@ -259,6 +265,7 @@ BAML_CATEGORIES = {
 BamlCategories = Literal["high_yield", "us", "emerging_markets"]
 INDEX_CHOICES = [
     "corporate",
+    "seasoned_corporate",
     "liquid_corporate",
     "yield_curve",
     "crossover",
@@ -447,6 +454,15 @@ class FredBondIndicesFetcher(
                         message = (
                             "Invalid index for category: 'us'."
                             + f" Must be one of {','.join(BAML_CATEGORIES.get('us'))}."
+                        )
+                        messages.append(message)
+                    elif (
+                        index == "seasoned_corporate"
+                        and values["index_type"] != "yield"
+                    ):
+                        message = (
+                            "Invalid index_type for index: 'seasoned_corporate'."
+                            + " Must be 'yield'."
                         )
                         messages.append(message)
                     else:
