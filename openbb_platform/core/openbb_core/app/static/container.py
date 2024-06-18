@@ -1,43 +1,42 @@
 """Container class."""
 
-import json
-from typing import Any, Optional, Tuple
+from concurrent.futures import ThreadPoolExecutor
+from typing import Any, Dict, Optional, Tuple
 
-from aiohttp import ClientSession
+from requests import get
 
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.constants import REPOSITORY_URL
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.obbject import OBBject
-from openbb_core.provider.utils.helpers import run_async
-
-
-async def get_openbb_providers():
-    """Get providers maintained in OpenBB repository."""
-    async with ClientSession() as session:
-        try:
-            async with session.get(
-                url=f"{REPOSITORY_URL}/main/assets/extensions/provider.json",
-                timeout=2,
-            ) as response:
-                if response.status == 200:
-                    text = await response.text()
-                    result = json.loads(text)
-                    return {
-                        r["packageName"][7:].replace("-", "_"): r["packageName"]
-                        for r in result
-                    }
-                return []
-        except Exception:
-            return []
-
-
-# Map provider to package name, e.g. alpha_vantage: openbb-alpha-vantage
-OPENBB_PROVIDERS = run_async(get_openbb_providers)
 
 
 class Container:
     """Container class for the command runner session."""
+
+    _openbb_providers: Dict[str, str] = {}
+    _executor = ThreadPoolExecutor()
+
+    @classmethod
+    def _initialize_providers(cls):
+        """Fetch providers maintained in OpenBB repository and cache them."""
+        try:
+            response = get(
+                url=f"{REPOSITORY_URL}/main/assets/extensions/provider.json", timeout=2
+            )
+            if response.status_code == 200:
+                result = response.json()
+                cls._openbb_providers = {
+                    r["packageName"][7:].replace("-", "_"): r["packageName"]
+                    for r in result
+                }
+        except Exception:  # noqa: S110
+            pass
+
+    @classmethod
+    def initialize_providers(cls):
+        """Initialize providers in a background thread."""
+        cls._executor.submit(cls._initialize_providers)
 
     def __init__(self, command_runner: CommandRunner) -> None:
         """Initialize the container."""
@@ -100,7 +99,7 @@ class Container:
                     return p
                 if result is False:
                     tries.append((p, "missing credentials"))
-                elif pkg_name := OPENBB_PROVIDERS.get(p):
+                elif pkg_name := self._openbb_providers.get(p):
                     tries.append((p, f"not installed, please install {pkg_name}"))
                 else:
                     tries.append((p, "not found"))
@@ -108,3 +107,6 @@ class Container:
             msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
             raise OpenBBError(f"Provider fallback failed.\n" f"[Providers]\n  {msg}")
         return choice
+
+
+Container.initialize_providers()
