@@ -451,7 +451,7 @@ class Charting:
         kwargs["symbol"] = symbol
         kwargs["target"] = target
         kwargs["index"] = index
-        kwargs["obbject_item"] = self._obbject
+        kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
         kwargs["standard_params"] = (
             self._obbject._standard_params  # pylint: disable=protected-access
