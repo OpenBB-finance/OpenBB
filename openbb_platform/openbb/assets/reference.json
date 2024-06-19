@@ -8888,7 +8888,7 @@
                     {
                         "name": "face_value",
                         "type": "float",
-                        "description": "Current face value of the security (Thousands). Current face value of the securities, which is the remaining principal balance of the securities.",
+                        "description": "Current face value of the security (Thousands of $USD). Current face value of the securities, which is the remaining principal balance of the securities.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8896,7 +8896,7 @@
                     {
                         "name": "par_value",
                         "type": "float",
-                        "description": "Par value of the security (Thousands). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
+                        "description": "Par value of the security (Thousands of $USD). Changes in par may reflect primary and secondary market transactions and/or custodial account activity.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8928,7 +8928,7 @@
                     {
                         "name": "bills",
                         "type": "float",
-                        "description": "Treasury bills amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury bills amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8936,7 +8936,7 @@
                     {
                         "name": "frn",
                         "type": "float",
-                        "description": "Floating rate Treasury notes amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Floating rate Treasury notes amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8944,7 +8944,7 @@
                     {
                         "name": "notes_and_bonds",
                         "type": "float",
-                        "description": "Treasuy Notes and bonds amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasuy Notes and bonds amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8952,7 +8952,7 @@
                     {
                         "name": "tips",
                         "type": "float",
-                        "description": "Treasury inflation-protected securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury inflation-protected securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8960,7 +8960,7 @@
                     {
                         "name": "mbs",
                         "type": "float",
-                        "description": "Mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8968,7 +8968,7 @@
                     {
                         "name": "cmbs",
                         "type": "float",
-                        "description": "Commercial mortgage-backed securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Commercial mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8976,7 +8976,7 @@
                     {
                         "name": "agencies",
                         "type": "float",
-                        "description": "Agency securities amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Agency securities amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8984,7 +8984,7 @@
                     {
                         "name": "total",
                         "type": "float",
-                        "description": "Total SOMA holdings amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Total SOMA holdings amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -8992,7 +8992,7 @@
                     {
                         "name": "tips_inflation_compensation",
                         "type": "float",
-                        "description": "Treasury inflation-protected securities inflation compensation amount (Thousands). Only returned when 'summary' is True.",
+                        "description": "Treasury inflation-protected securities inflation compensation amount (Thousands of $USD). Only returned when 'summary' is True.",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -9000,7 +9000,7 @@
                     {
                         "name": "change_prior_week",
                         "type": "float",
-                        "description": "Change in SOMA holdings from the prior week (Thousands).",
+                        "description": "Change in SOMA holdings from the prior week (Thousands of $USD).",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -9008,7 +9008,7 @@
                     {
                         "name": "change_prior_year",
                         "type": "float",
-                        "description": "Change in SOMA holdings from the prior year (Thousands).",
+                        "description": "Change in SOMA holdings from the prior year (Thousands of $USD).",
                         "default": null,
                         "optional": true,
                         "choices": null
@@ -37473,8 +37473,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Ameribor.\n\nAmeribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ameribor(provider='fred')\nobb.fixedincome.rate.ameribor(parameter=30_day_ma, provider='fred')\n```\n\n",
+            "description": "AMERIBOR.\n\nAMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.ameribor(provider='fred')\n# The change from one year ago is applied with the transform parameter.\nobb.fixedincome.rate.ameribor(maturity=all, transform=pc1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37503,12 +37503,70 @@
                 ],
                 "fred": [
                     {
-                        "name": "parameter",
-                        "type": "Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']",
-                        "description": "Period of AMERIBOR rate.",
-                        "default": "overnight",
+                        "name": "maturity",
+                        "type": "Union[Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str], List[Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str]]]",
+                        "description": "Period of AMERIBOR rate. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "all",
+                            "overnight",
+                            "average_30d",
+                            "average_90d",
+                            "term_30d",
+                            "term_90d"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -37516,7 +37574,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[AMERIBOR]",
+                        "type": "List[Ameribor]",
                         "description": "Serializable results."
                     },
                     {
@@ -37552,17 +37610,41 @@
                         "choices": null
                     },
                     {
-                        "name": "rate",
-                        "type": "float",
-                        "description": "AMERIBOR rate.",
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "Maturity length of the item.",
                         "default": "",
                         "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Interest rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ],
                 "fred": []
             },
-            "model": "AMERIBOR"
+            "model": "Ameribor"
         },
         "/fixedincome/rate/sonia": {
             "deprecated": {
@@ -37660,6 +37742,220 @@
             },
             "model": "SONIA"
         },
+        "/fixedincome/rate/sofr": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.sofr(provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[SOFR]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Effective federal funds rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "average_30d",
+                        "type": "float",
+                        "description": "30-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_90d",
+                        "type": "float",
+                        "description": "90-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_180d",
+                        "type": "float",
+                        "description": "180-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index",
+                        "type": "float",
+                        "description": "SOFR index as 2018-04-02 = 1",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
+            },
+            "model": "SOFR"
+        },
         "/fixedincome/rate/iorb": {
             "deprecated": {
                 "flag": null,
@@ -37752,8 +38048,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Fed Funds Rate.\n\nGet Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.effr(provider='fred')\nobb.fixedincome.rate.effr(parameter=daily, provider='fred')\n```\n\n",
+            "description": "Fed Funds Rate.\n\nGet Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.effr(provider='fred')\nobb.fixedincome.rate.effr(effr_only=True, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -37783,10 +38079,61 @@
                 "federal_reserve": [],
                 "fred": [
                     {
-                        "name": "parameter",
-                        "type": "Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']",
-                        "description": "Period of FED rate.",
-                        "default": "weekly",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    },
+                    {
+                        "name": "effr_only",
+                        "type": "bool",
+                        "description": "Return data without quantiles, target ranges, and volume.",
+                        "default": false,
                         "optional": true,
                         "choices": null
                     }
@@ -37796,7 +38143,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[FEDFUNDS]",
+                        "type": "List[FederalFundsRate]",
                         "description": "Serializable results."
                     },
                     {
@@ -37834,16 +38181,105 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "FED rate.",
+                        "description": "Effective federal funds rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
+                    },
+                    {
+                        "name": "target_range_upper",
+                        "type": "float",
+                        "description": "Upper bound of the target range.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "target_range_lower",
+                        "type": "float",
+                        "description": "Lower bound of the target range.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
-                "federal_reserve": [],
+                "federal_reserve": [
+                    {
+                        "name": "intraday_low",
+                        "type": "float",
+                        "description": "Intraday low. This field is only present for data before 2016.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "intraday_high",
+                        "type": "float",
+                        "description": "Intraday high. This field is only present for data before 2016.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "standard_deviation",
+                        "type": "float",
+                        "description": "Standard deviation. This field is only present for data before 2016.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "revision_indicator",
+                        "type": "str",
+                        "description": "Indicates a revision of the data for that date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
                 "fred": []
             },
-            "model": "FEDFUNDS"
+            "model": "FederalFundsRate"
         },
         "/fixedincome/rate/effr_forecast": {
             "deprecated": {
@@ -37978,8 +38414,8 @@
                 "flag": null,
                 "message": null
             },
-            "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm\u2019s length and thus reflect market rates in an unbiased way.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.estr(provider='fred')\nobb.fixedincome.rate.estr(parameter=number_of_active_banks, provider='fred')\n```\n\n",
+            "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm's length and thus reflect market rates in an unbiased way.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.estr(provider='fred')\nobb.fixedincome.rate.estr(transform=ch1, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -38008,12 +38444,55 @@
                 ],
                 "fred": [
                     {
-                        "name": "parameter",
-                        "type": "Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']",
-                        "description": "Period of ESTR rate.",
-                        "default": "volume_weighted_trimmed_mean_rate",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -38021,7 +38500,7 @@
                 "OBBject": [
                     {
                         "name": "results",
-                        "type": "List[ESTR]",
+                        "type": "List[EuroShortTermRate]",
                         "description": "Serializable results."
                     },
                     {
@@ -38059,15 +38538,63 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "ESTR rate.",
+                        "description": "Volume-weighted trimmed mean rate.",
                         "default": "",
                         "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "Rate at 25th percentile of volume.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "Rate at 75th percentile of volume.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "Volume (Millions of \u20acEUR).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "transactions",
+                        "type": "int",
+                        "description": "Number of transactions.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "number_of_banks",
+                        "type": "int",
+                        "description": "Number of active banks.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "large_bank_share_of_volume",
+                        "type": "float",
+                        "description": "The percent of volume attributable to the 5 largest active banks.",
+                        "default": null,
+                        "optional": true,
                         "choices": null
                     }
                 ],
                 "fred": []
             },
-            "model": "ESTR"
+            "model": "EuroShortTermRate"
         },
         "/fixedincome/rate/ecb": {
             "deprecated": {
@@ -38259,6 +38786,196 @@
                 "fred": []
             },
             "model": "DiscountWindowPrimaryCreditRate"
+        },
+        "/fixedincome/rate/overnight_bank_funding": {
+            "deprecated": {
+                "flag": null,
+                "message": null
+            },
+            "description": "Overnight Bank Funding.\n\nFor the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of\novernight federal funds transactions and Eurodollar transactions reported in the\nFR 2420 Report of Selected Money Market Rates.",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.rate.overnight_bank_funding(provider='fred')\n```\n\n",
+            "parameters": {
+                "standard": [
+                    {
+                        "name": "start_date",
+                        "type": "Union[date, str]",
+                        "description": "Start date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "end_date",
+                        "type": "Union[date, str]",
+                        "description": "End date of the data, in YYYY-MM-DD format.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
+                        "default": null,
+                        "optional": true
+                    }
+                ],
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
+            },
+            "returns": {
+                "OBBject": [
+                    {
+                        "name": "results",
+                        "type": "List[OvernightBankFundingRate]",
+                        "description": "Serializable results."
+                    },
+                    {
+                        "name": "provider",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
+                        "description": "Provider name."
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings."
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object."
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info."
+                    }
+                ]
+            },
+            "data": {
+                "standard": [
+                    {
+                        "name": "date",
+                        "type": "date",
+                        "description": "The date of the data.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "rate",
+                        "type": "float",
+                        "description": "Overnight Bank Funding Rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "federal_reserve": [
+                    {
+                        "name": "revision_indicator",
+                        "type": "str",
+                        "description": "Indicates a revision of the data for that date.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": []
+            },
+            "model": "OvernightBankFundingRate"
         },
         "/fixedincome/spreads/tcm": {
             "deprecated": {
@@ -38637,11 +39354,18 @@
                 "fred": [
                     {
                         "name": "yield_curve_type",
-                        "type": "Literal['nominal', 'real', 'breakeven', 'corporate_spot', 'corporate_par']",
+                        "type": "Literal['nominal', 'real', 'breakeven', 'treasury_minus_fed_funds', 'corporate_spot', 'corporate_par']",
                         "description": "Yield curve type. Nominal and Real Rates are available daily, others are monthly. The closest date to the requested date will be returned.",
                         "default": "nominal",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "nominal",
+                            "real",
+                            "breakeven",
+                            "treasury_minus_fed_funds",
+                            "corporate_spot",
+                            "corporate_par"
+                        ]
                     }
                 ]
             },
@@ -40545,8 +41269,8 @@
         },
         "/fixedincome/corporate/moody": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; use `/fixedincome/bond_indices` instead. Set `category` to `us` and `index` to `seasoned_corporate`. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Moody Corporate Bond Index.\n\nMoody's Aaa and Baa are investment bonds that acts as an index of\nthe performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.\nThese corporate bonds often are used in macroeconomics as an alternative to the federal ten-year\nTreasury Bill as an indicator of the interest rate.",
             "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.moody(provider='fred')\nobb.fixedincome.corporate.moody(index_type='baa', provider='fred')\n```\n\n",
@@ -40653,22 +41377,14 @@
                 "message": null
             },
             "description": "High Quality Market Corporate Bond.\n\nThe HQM yield curve represents the high quality corporate bond market, i.e.,\ncorporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.\nThese terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve\nthat is the market-weighted average (MWA) quality of high quality bonds.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.hqm(provider='fred')\nobb.fixedincome.corporate.hqm(yield_curve='par', provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.hqm(provider='fred')\nobb.fixedincome.corporate.hqm(yield_curve=par, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
                         "name": "date",
-                        "type": "Union[date, str]",
-                        "description": "A specific date to get data for.",
+                        "type": "Union[Union[Union[str, date], str], List[Union[Union[str, date], str]]]",
+                        "description": "A specific date to get data for. Multiple items allowed for provider(s): fred.",
                         "default": null,
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "yield_curve",
-                        "type": "Literal['spot', 'par']",
-                        "description": "The yield curve type.",
-                        "default": "spot",
                         "optional": true,
                         "choices": null
                     },
@@ -40680,7 +41396,19 @@
                         "optional": true
                     }
                 ],
-                "fred": []
+                "fred": [
+                    {
+                        "name": "yield_curve",
+                        "type": "Literal['spot', 'par']",
+                        "description": "The yield curve type.",
+                        "default": "spot",
+                        "optional": true,
+                        "choices": [
+                            "spot",
+                            "par"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -40724,7 +41452,7 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "HighQualityMarketCorporateBond Rate.",
+                        "description": "Interest rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
@@ -40736,26 +41464,9 @@
                         "default": "",
                         "optional": false,
                         "choices": null
-                    },
-                    {
-                        "name": "yield_curve",
-                        "type": "Literal['spot', 'par']",
-                        "description": "The yield curve type.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
                     }
                 ],
-                "fred": [
-                    {
-                        "name": "series_id",
-                        "type": "str",
-                        "description": "FRED series id.",
-                        "default": "",
-                        "optional": false,
-                        "choices": null
-                    }
-                ]
+                "fred": []
             },
             "model": "HighQualityMarketCorporateBond"
         },
@@ -40871,7 +41582,7 @@
                 "message": null
             },
             "description": "Commercial Paper.\n\nCommercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.\nMaturities range up to 270 days but average about 30 days.\nMany companies use CP to raise cash needed for current transactions,\nand many find it to be a lower-cost alternative to bank loans.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.commercial_paper(provider='fred')\nobb.fixedincome.corporate.commercial_paper(maturity='15d', provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.corporate.commercial_paper(provider='fred')\nobb.fixedincome.corporate.commercial_paper(category=all, maturity=15d, provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -40891,30 +41602,6 @@
                         "choices": null
                     },
                     {
-                        "name": "maturity",
-                        "type": "Literal['overnight', '7d', '15d', '30d', '60d', '90d']",
-                        "description": "The maturity.",
-                        "default": "30d",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "category",
-                        "type": "Literal['asset_backed', 'financial', 'nonfinancial']",
-                        "description": "The category.",
-                        "default": "financial",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
-                        "name": "grade",
-                        "type": "Literal['aa', 'a2_p2']",
-                        "description": "The grade.",
-                        "default": "aa",
-                        "optional": true,
-                        "choices": null
-                    },
-                    {
                         "name": "provider",
                         "type": "Literal['fred']",
                         "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
@@ -40922,7 +41609,89 @@
                         "optional": true
                     }
                 ],
-                "fred": []
+                "fred": [
+                    {
+                        "name": "maturity",
+                        "type": "Union[Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']], List[Union[str, Literal['all', 'overnight', '7d', '15d', '30d', '60d', '90d']]]]",
+                        "description": "A target maturity. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "overnight",
+                            "7d",
+                            "15d",
+                            "30d",
+                            "60d",
+                            "90d"
+                        ]
+                    },
+                    {
+                        "name": "category",
+                        "type": "Union[Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']], List[Union[str, Literal['all', 'asset_backed', 'financial', 'nonfinancial', 'a2p2']]]]",
+                        "description": "The category of asset. Multiple items allowed for provider(s): fred.",
+                        "default": "all",
+                        "optional": true,
+                        "choices": [
+                            "all",
+                            "asset_backed",
+                            "financial",
+                            "nonfinancial",
+                            "a2p2"
+                        ]
+                    },
+                    {
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
+                    }
+                ]
             },
             "returns": {
                 "OBBject": [
@@ -40964,15 +41733,48 @@
                         "choices": null
                     },
                     {
+                        "name": "symbol",
+                        "type": "str",
+                        "description": "Symbol representing the entity requested in the data.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "maturity",
+                        "type": "str",
+                        "description": "Maturity length of the item.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
                         "name": "rate",
                         "type": "float",
-                        "description": "Commercial Paper Rate.",
+                        "description": "Interest rate.",
+                        "default": "",
+                        "optional": false,
+                        "choices": null
+                    },
+                    {
+                        "name": "title",
+                        "type": "str",
+                        "description": "Title of the series.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ],
+                "fred": [
+                    {
+                        "name": "asset_type",
+                        "type": "Literal['asset_backed', 'financial', 'nonfinancial', 'a2p2']",
+                        "description": "The category of asset.",
                         "default": "",
                         "optional": false,
                         "choices": null
                     }
-                ],
-                "fred": []
+                ]
             },
             "model": "CommercialPaper"
         },
@@ -41267,11 +42069,11 @@
         },
         "/fixedincome/sofr": {
             "deprecated": {
-                "flag": null,
-                "message": null
+                "flag": true,
+                "message": "This endpoint is deprecated; use `/fixedincome/rate/sofr` instead. Deprecated in OpenBB Platform V4.2 to be removed in V4.5."
             },
             "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.sofr(provider='fred')\nobb.fixedincome.sofr(period=overnight, provider='fred')\n```\n\n",
+            "examples": "\nExamples\n--------\n\n```python\nfrom openbb import obb\nobb.fixedincome.sofr(provider='fred')\n```\n\n",
             "parameters": {
                 "standard": [
                     {
@@ -41292,20 +42094,64 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Literal['fred']",
-                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, r, e, d.",
+                        "type": "Literal['federal_reserve', 'fred']",
+                        "description": "The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: f, e, d, e, r, a, l, _, r, e, s, e, r, v, e.",
                         "default": null,
                         "optional": true
                     }
                 ],
+                "federal_reserve": [],
                 "fred": [
                     {
-                        "name": "period",
-                        "type": "Literal['overnight', '30_day', '90_day', '180_day', 'index']",
-                        "description": "Period of SOFR rate.",
-                        "default": "overnight",
+                        "name": "frequency",
+                        "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
+                    },
+                    {
+                        "name": "aggregation_method",
+                        "type": "Literal['avg', 'sum', 'eop']",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
+                    },
+                    {
+                        "name": "transform",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
+                        "optional": true,
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -41318,7 +42164,7 @@
                     },
                     {
                         "name": "provider",
-                        "type": "Optional[Literal['fred']]",
+                        "type": "Optional[Literal['federal_reserve', 'fred']]",
                         "description": "Provider name."
                     },
                     {
@@ -41351,13 +42197,87 @@
                     {
                         "name": "rate",
                         "type": "float",
-                        "description": "SOFR rate.",
+                        "description": "Effective federal funds rate.",
                         "default": "",
                         "optional": false,
                         "choices": null
+                    },
+                    {
+                        "name": "percentile_1",
+                        "type": "float",
+                        "description": "1st percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_25",
+                        "type": "float",
+                        "description": "25th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_75",
+                        "type": "float",
+                        "description": "75th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "percentile_99",
+                        "type": "float",
+                        "description": "99th percentile of the distribution.",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "volume",
+                        "type": "float",
+                        "description": "The trading volume.The notional volume of transactions (Billions of $).",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
                     }
                 ],
-                "fred": []
+                "federal_reserve": [],
+                "fred": [
+                    {
+                        "name": "average_30d",
+                        "type": "float",
+                        "description": "30-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_90d",
+                        "type": "float",
+                        "description": "90-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "average_180d",
+                        "type": "float",
+                        "description": "180-Day Average SOFR",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    },
+                    {
+                        "name": "index",
+                        "type": "float",
+                        "description": "SOFR index as 2018-04-02 = 1",
+                        "default": null,
+                        "optional": true,
+                        "choices": null
+                    }
+                ]
             },
             "model": "SOFR"
         },
@@ -41446,6 +42366,7 @@
                             "non_financial",
                             "private_sector",
                             "public_sector",
+                            "seasoned_corporate",
                             "yield_curve"
                         ]
                     },

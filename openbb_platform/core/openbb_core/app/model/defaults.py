@@ -44,3 +44,8 @@ class Defaults(BaseModel):
                 v["provider"] = [provider]
             new_values["commands"][clean_k] = v
         return new_values
+
+    def update(self, incoming: "Defaults"):
+        """Update current defaults."""
+        incoming_commands = incoming.model_dump(exclude_none=True).get("commands", {})
+        self.__dict__["commands"].update(incoming_commands)

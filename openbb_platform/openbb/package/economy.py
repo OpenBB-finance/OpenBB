@@ -630,9 +630,9 @@ class ROUTER_economy(Container):
         term : Optional[str]
             Term of the security. Only returned for Agency securities. (provider: federal_reserve)
         face_value : Optional[float]
-            Current face value of the security (Thousands). Current face value of the securities, which is the remaining principal balance of the securities. (provider: federal_reserve)
+            Current face value of the security (Thousands of $USD). Current face value of the securities, which is the remaining principal balance of the securities. (provider: federal_reserve)
         par_value : Optional[float]
-            Par value of the security (Thousands). Changes in par may reflect primary and secondary market transactions and/or custodial account activity. (provider: federal_reserve)
+            Par value of the security (Thousands of $USD). Changes in par may reflect primary and secondary market transactions and/or custodial account activity. (provider: federal_reserve)
         coupon : Optional[float]
             Coupon rate of the security. (provider: federal_reserve)
         spread : Optional[float]
@@ -640,27 +640,27 @@ class ROUTER_economy(Container):
         percent_outstanding : Optional[float]
             Total percent of the outstanding CUSIP issuance. (provider: federal_reserve)
         bills : Optional[float]
-            Treasury bills amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Treasury bills amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         frn : Optional[float]
-            Floating rate Treasury notes amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Floating rate Treasury notes amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         notes_and_bonds : Optional[float]
-            Treasuy Notes and bonds amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Treasuy Notes and bonds amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         tips : Optional[float]
-            Treasury inflation-protected securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Treasury inflation-protected securities amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         mbs : Optional[float]
-            Mortgage-backed securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         cmbs : Optional[float]
-            Commercial mortgage-backed securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Commercial mortgage-backed securities amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         agencies : Optional[float]
-            Agency securities amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Agency securities amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         total : Optional[float]
-            Total SOMA holdings amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Total SOMA holdings amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         tips_inflation_compensation : Optional[float]
-            Treasury inflation-protected securities inflation compensation amount (Thousands). Only returned when 'summary' is True. (provider: federal_reserve)
+            Treasury inflation-protected securities inflation compensation amount (Thousands of $USD). Only returned when 'summary' is True. (provider: federal_reserve)
         change_prior_week : Optional[float]
-            Change in SOMA holdings from the prior week (Thousands). (provider: federal_reserve)
+            Change in SOMA holdings from the prior week (Thousands of $USD). (provider: federal_reserve)
         change_prior_year : Optional[float]
-            Change in SOMA holdings from the prior year (Thousands). (provider: federal_reserve)
+            Change in SOMA holdings from the prior year (Thousands of $USD). (provider: federal_reserve)
 
         Examples
         --------

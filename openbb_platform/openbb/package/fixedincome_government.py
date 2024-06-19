@@ -832,6 +832,10 @@ class ROUTER_fixedincome_government(Container):
             If true, cache the request for four hours. (provider: ecb, econdb)
         country : Literal['australia', 'canada', 'china', 'hong_kong', 'india', 'japan', 'mexico', 'new_zealand', 'russia', 'saudi_arabia', 'singapore', 'south_africa', 'south_korea', 'taiwan', 'thailand', 'united_kingdom', 'united_states']
             The country to get data. New Zealand, Mexico, Singapore, and Thailand have only monthly data. The nearest date to the requested one will be used. (provider: econdb)
+        use_cache : bool
+            If true, cache the request for four hours. (provider: econdb)
+        yield_curve_type : Literal['nominal', 'real', 'breakeven', 'treasury_minus_fed_funds', 'corporate_spot', 'corporate_par']
+            Yield curve type. Nominal and Real Rates are available daily, others are monthly. The closest date to the requested date will be returned. (provider: fred)
 
         Returns
         -------
