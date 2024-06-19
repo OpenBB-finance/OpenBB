@@ -6,7 +6,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
 from dateutil import parser
@@ -47,7 +47,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
     )
-    option_type: Literal[None, Union["call", "put"]] = Field(
+    option_type: Literal[None, "call", "put"] = Field(
         default=None,
         description="The option type, call or put, 'None' is both (default).",
         json_schema_extra={"choices": ["call", "put"]},
@@ -233,7 +233,7 @@ class IntrinioOptionsChainsFetcher(
         # If the EOD chains are not available for the given date, try the previous day
         if not results and query.date is not None:
             date = get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
-            urls = await get_urls(date)
+            urls = await get_urls(date.strftime("%Y-%m-%d"))
             results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         if not results:
