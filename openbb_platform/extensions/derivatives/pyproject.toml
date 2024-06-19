@@ -17,3 +17,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
 derivatives = "openbb_derivatives.derivatives_router:router"
+
+[tool.poetry.plugins."openbb_charting_extension"]
+derivatives = "openbb_derivatives.derivatives_views:DerivativesViews"
