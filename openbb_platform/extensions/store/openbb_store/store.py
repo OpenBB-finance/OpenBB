@@ -185,7 +185,6 @@ class Store(Data):
                 "types_map": data.dtypes,
             }
             schema_repr = str(schema)[:80]
-            data = data.to_dict()
         elif data_class == "str":
             schema = {
                 "length": len(data),
