@@ -968,13 +968,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.2.4"
+version = "1.2.5"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "openbb_core-1.2.4-py3-none-any.whl", hash = "sha256:5ffa00c660075069e0867d0c957fd92dcdf6bd47943b189197116f6f59ee3bff"},
-    {file = "openbb_core-1.2.4.tar.gz", hash = "sha256:b6bb61a46c89f889e3ebba833d18ae2f4bcfc191cdc7cccd5135f03888599361"},
+    {file = "openbb_core-1.2.5-py3-none-any.whl", hash = "sha256:316112ce29d054a7cfdc9a3933e1f543f55606507b3ea725b8e1d1fe9ea23c38"},
+    {file = "openbb_core-1.2.5.tar.gz", hash = "sha256:b0904a0feed1a94efeb516ae7997339456cd35d896b5b869924d0786b64d47db"},
 ]
 
 [package.dependencies]
@@ -2045,4 +2045,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "274e589378ad2d0fc342cee431da06989920690aeb3badfa2ebadeb96aa30c13"
+content-hash = "6da4ede56ad522e5c59ee257a815447768d7c6382ba70641fab099ee457f47db"

@@ -12,11 +12,13 @@ import requests
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
+XL_OPENBB_FUNCS_PATH = CONTENT_PATH / "excel" / "openbb-functions.json"
 XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
 # URLs: the platform url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
+XL_OPENBB_FUNCS_URL = "https://excel.openbb.co/assets/openbb-functions.json"
 XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
 
 
@@ -46,6 +48,7 @@ class CommandLib:
 
     def __init__(self):
         self.xl_funcs = self.read_xl_funcs()
+        self.xl_openbb_funcs = self.read_xl_openbb_funcs()
         self.openapi = self.read_openapi()
         self.seo_metadata = self.read_seo_metadata()
 
@@ -54,6 +57,13 @@ class CommandLib:
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
+            json.dump(r.json(), f, indent=2)
+
+    @staticmethod
+    def fetch_xl_openbb_funcs():
+        """Fetch the openbb version of excel functions."""
+        r = requests.get(XL_OPENBB_FUNCS_URL, timeout=10)
+        with open(XL_OPENBB_FUNCS_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
     @staticmethod
@@ -88,6 +98,12 @@ class CommandLib:
             "/" + func["name"].replace(".", "/").lower(): func
             for func in funcs["functions"]
         }
+
+    def read_xl_openbb_funcs(self) -> Dict[str, Any]:
+        """Read the Excel openbb functions file."""
+        with open(XL_OPENBB_FUNCS_PATH) as f:
+            funcs = json.load(f)
+        return funcs
 
     def read_openapi(self) -> dict:
         """Get the openapi.json."""
@@ -148,17 +164,39 @@ class CommandLib:
             )
         ):
             models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
-            if models.get("type") == "array":
-                models = models["items"]
+            models = (
+                models["items"].get("oneOf", [models["items"]])
+                if models.get("type") == "array"
+                else [models]
+            )
 
-            d = {}
-            for k, v in self._traverse(["discriminator", "mapping"], models).items():
-                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
-                d[k] = {
-                    name: {"description": info.get("description", "").replace("\n", "")}
-                    for name, info in model_schema["properties"].items()
-                }
-            return d
+            # Get the available providers from the provider parameter enum
+            parameters = self._traverse(
+                [
+                    "paths",
+                    self.API_PREFIX + cmd,
+                    "get",
+                    "parameters",
+                ],
+                self.openapi,
+            )
+            providers = []
+            for p in parameters:
+                if p.get("name") == "provider":
+                    providers = p.get("schema", {}).get("enum", [])
+            if providers:
+                d = {}
+                for i, model in enumerate(models):
+                    ref = model.get("$ref", "")
+                    model_schema = self._traverse(ref.split("/"), self.openapi, ["#"])
+                    provider = providers[i]
+                    d[provider] = {
+                        name: {
+                            "description": info.get("description", "").replace("\n", "")
+                        }
+                        for name, info in model_schema["properties"].items()
+                    }
+                return d
         return {}
 
     def _get_examples(
@@ -210,6 +248,7 @@ class CommandLib:
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
         examples = self._get_examples(cmd, parameters)
+        providers = self.xl_openbb_funcs.get(function, {}).get("providers", [])
         return {
             "name": name,
             "description": description,
@@ -219,6 +258,7 @@ class CommandLib:
             "data": data,
             "return": return_,
             "examples": examples,
+            "providers": providers,
         }
 
 
@@ -311,20 +351,25 @@ class Editor:
 
         def get_data() -> str:
             if data_schema := cmd_info["data"]:
-                data = "import Tabs from '@theme/Tabs';\n"
-                data += "import TabItem from '@theme/TabItem';\n\n"
-                data += "## Data\n\n"
-                data += "<Tabs>\n"
-                for provider, fields in data_schema.items():
-                    data += f"<TabItem value='{provider}'>\n\n"
-                    data += "| Name | Description |\n"
-                    data += "| ---- | ----------- |\n"
-                    for name, info in fields.items():
-                        description = info["description"]
-                        data += f"| {name} | {description} |\n"
-                    data += "</TabItem>\n"
-                data += "</Tabs>\n"
-                return data
+                providers = cmd_info["providers"]
+                filtered_data_schema = {
+                    k: v for k, v in data_schema.items() if k in providers
+                }
+                if filtered_data_schema:
+                    data = "import Tabs from '@theme/Tabs';\n"
+                    data += "import TabItem from '@theme/TabItem';\n\n"
+                    data += "## Data\n\n"
+                    data += "<Tabs>\n"
+                    for provider, fields in filtered_data_schema.items():
+                        data += f"<TabItem value='{provider}'>\n\n"
+                        data += "| Name | Description |\n"
+                        data += "| ---- | ----------- |\n"
+                        for name, info in fields.items():
+                            description = info["description"]
+                            data += f"| {name} | {description} |\n"
+                        data += "</TabItem>\n"
+                    data += "</Tabs>\n"
+                    return data
             return ""
 
         def get_examples() -> str:
@@ -512,6 +557,7 @@ if __name__ == "__main__":
         pass
     else:
         CommandLib.fetch_xl_funcs()
+        CommandLib.fetch_xl_openbb_funcs()
         CommandLib.fetch_openapi()
 
     Editor(
