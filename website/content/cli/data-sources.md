@@ -26,7 +26,7 @@ Many commands have multiple data sources associated with it. This page describes
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all data providers [here](/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+Find all data providers [here](/platform/user_guides/extensions/), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
 :::
 
 ## Data Source In-Command

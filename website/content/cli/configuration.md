@@ -18,12 +18,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Configuration & Settings - | OpenBB Platform CLI Docs" />
 
-In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/usage/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
+In addition to the OpenBB Platform's `user_settings.json` file, described [here](/platform/user_guides/settings_and_environment_variables), there are settings and environment variables affecting the CLI only.
 
 :::important
 API credentials are defined in the `user_settings.json` file.
 
-Find all data providers [here](/platform/extensions/data_extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
+Find all data providers [here](/platform/user_guides/extensions), and manage all your credentials directly on the [OpenBB Hub](https://my.openbb.co/app/platform/credentials).
 
 Define default data sources by following the pattern outlined [here](data-sources)
 :::
