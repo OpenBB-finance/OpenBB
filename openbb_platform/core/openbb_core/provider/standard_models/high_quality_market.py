@@ -3,9 +3,9 @@
 from datetime import (
     date as dateType,
 )
-from typing import Literal, Optional
+from typing import Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -18,26 +18,18 @@ from openbb_core.provider.utils.descriptions import (
 class HighQualityMarketCorporateBondQueryParams(QueryParams):
     """High Quality Market Corporate Bond Query."""
 
-    date: Optional[dateType] = Field(
+    date: Optional[Union[dateType, str]] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", ""),
     )
-    yield_curve: Literal["spot", "par"] = Field(
-        default="spot",
-        description="The yield curve type.",
-    )
-
-    @field_validator("yield_curve", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class HighQualityMarketCorporateBondData(Data):
     """High Quality Market Corporate Bond Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="HighQualityMarketCorporateBond Rate.")
+    rate: float = Field(
+        description="Interest rate.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
     maturity: str = Field(description="Maturity.")
-    yield_curve: Literal["spot", "par"] = Field(description="The yield curve type.")

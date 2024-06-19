@@ -3,9 +3,9 @@
 from datetime import (
     date as dateType,
 )
-from typing import Literal, Optional
+from typing import Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -26,28 +26,21 @@ class CommercialPaperParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    maturity: Literal["overnight", "7d", "15d", "30d", "60d", "90d"] = Field(
-        default="30d",
-        description="The maturity.",
-    )
-    category: Literal["asset_backed", "financial", "nonfinancial"] = Field(
-        default="financial",
-        description="The category.",
-    )
-    grade: Literal["aa", "a2_p2"] = Field(
-        default="aa",
-        description="The grade.",
-    )
-
-    @field_validator("maturity", "category", "grade", mode="before", check_fields=False)
-    @classmethod
-    def to_lower(cls, v: Optional[str]) -> Optional[str]:
-        """Convert field to lowercase."""
-        return v.lower() if v else v
 
 
 class CommercialPaperData(Data):
     """Commercial Paper Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="Commercial Paper Rate.")
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    maturity: str = Field(description="Maturity length of the item.")
+    rate: float = Field(
+        description="Interest rate.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+    )
+    title: Optional[str] = Field(
+        default=None,
+        description="Title of the series.",
+    )
