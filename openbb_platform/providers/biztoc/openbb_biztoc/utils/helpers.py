@@ -46,6 +46,9 @@ def get_pages(api_key: str) -> List[str]:
     pages = biztoc_session_sources.get(
         "https://biztoc.p.rapidapi.com/pages", headers=headers, timeout=10
     )
+    if pages.status_code != 200:
+        msg = pages.json().get("message") or pages.text
+        raise OpenBBError(f"HTTP error - > {msg}")
 
     return pages.json()
 
@@ -61,6 +64,9 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
     tags = biztoc_session_tags.get(
         f"https://biztoc.p.rapidapi.com/tags/{page_id}", headers=headers, timeout=10
     )
+    if tags.status_code != 200:
+        msg = tags.json().get("message") or tags.text
+        raise OpenBBError(f"HTTP error - > {msg}")
 
     return tags.json()
 

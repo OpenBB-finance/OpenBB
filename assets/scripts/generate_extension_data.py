@@ -28,6 +28,10 @@ def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
     packages: Dict[str, Any] = {}
     for f in folders:
         pyproject = PyProjectTOML(Path(f, "pyproject.toml"))
+
+        if not pyproject.data:
+            continue
+
         poetry = pyproject.data["tool"]["poetry"]
         name = poetry["name"]
         plugin = poetry.get("plugins", {}).get(plugin_key)
