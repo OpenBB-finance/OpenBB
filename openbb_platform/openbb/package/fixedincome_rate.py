@@ -657,7 +657,7 @@ class ROUTER_fixedincome_rate(Container):
         percentile_75 : Optional[float]
             Rate at 75th percentile of volume.
         volume : Optional[float]
-            Volume (Millions of €EUR).
+            The trading volume. (Millions of €EUR).
         transactions : Optional[int]
             Number of transactions.
         number_of_banks : Optional[int]

@@ -158,7 +158,7 @@ class OECDUnemploymentFetcher(
         headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
         response = make_request(url, headers=headers, timeout=20)
         if response.status_code != 200:
-            raise Exception(f"Error: {response.status_code}")
+            raise OpenBBError(f"Error: {response.status_code} -> {response.text}")
         df = read_csv(StringIO(response.text)).get(
             ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )
@@ -177,6 +177,9 @@ class OECDUnemploymentFetcher(
             .reset_index()
         )
         df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
+
+        # in column "country" if NaN replace with "all"
+        df["country"] = df["country"].fillna("all")
 
         return df.to_dict(orient="records")
 

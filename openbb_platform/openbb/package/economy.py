@@ -2221,7 +2221,7 @@ class ROUTER_economy(Container):
         >>> obb.economy.unemployment(provider='oecd')
         >>> obb.economy.unemployment(country='all', frequency='quarter', provider='oecd')
         >>> # Demographics for the statistics are selected with the `age` parameter.
-        >>> obb.economy.unemployment(country='all', frequency='quarter', age='25-54', provider='oecd')
+        >>> obb.economy.unemployment(country='all', frequency='quarter', age='total', provider='oecd')
         """  # noqa: E501
 
         return self._run(
