@@ -158,7 +158,7 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                r = res[0] if isinstance(res, list) and len(res) == 1 else res
+                r = dt[0] if isinstance(dt, list) else dt
                 if all(
                     prop.get("type") == "array"
                     for prop in r.schema()["properties"].values()
