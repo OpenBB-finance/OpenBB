@@ -42,11 +42,15 @@
         > Make sure that only required extensions are installed
 
         3.2. Run `pip install -e .` from `openbb_platform`
+
         3.3. Re-build the static assets that are bundled with the package: `python -c "import openbb; openbb.build()"`
         - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
         - Run any command to smoke test if the static assets are being built correctly.
+
         3.4. Run unit tests to validate the existence of deprecated endpoints
+
         3.5. Run `poetry publish --build` from `openbb_platform`
+
         3.6. Run `poetry lock` from `openbb_platform`
 
     > [!TIP]
