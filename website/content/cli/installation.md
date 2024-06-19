@@ -25,8 +25,23 @@ The OpenBB Platform CLI is a wrapper around the [Platform](/platform), and shoul
 Please refer to the [OpenBB Platform install documentation](/platform/installation) for instructions and more information.
 
 :::info
-If the OpenBB Platform is not already installed, the `openbb-cli` package  will install the default components.
+If the OpenBB Platform is not already installed, the `openbb-cli` package  will install all available components.
 :::
+
+### Windows
+
+The machine may need to have an installation of Visual C++ Build Tools available. Download the elements highlighted in the images below.
+
+<details>
+<summary mdxType="summary">"Microsoft Visual C++ 14.0 or greater is required"</summary>
+
+Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then continue.
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/ceb57be0-6dae-42f2-aca6-bf62ce7d6135)
+
+![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/f8aef8fc-a080-4164-bd36-460714ec44f3)
+
+</details>
 
 ### Linux Requirements
 
@@ -71,26 +86,20 @@ Welcome to OpenBB Platform CLI v1.0.0
 
 Follow the instructions [here](/platform/installation#source) to clone the GitHub repo and install the OpenBB Platform from the source code.
 
-Next, navigate into the folder: `~/OpenBBTerminal/cli`
+Next, navigate into the folder: `~/OpenBBTerminal/openbb_platform`
 
 :::tip
-The Python environment should have `toml` and `poetry` installed.
+The Python environment should have `poetry` installed.
 
 ```bash
-pip install toml poetry
+pip install poetry
 ```
 :::
 
 Finally, enter:
 
 ```console
-poetry install
-```
-
-Alternatively, install locally with `pip`:
-
-```bash
-pip install -e .
+python dev_install.py -e --cli
 ```
 
 ## Installing New Modules
