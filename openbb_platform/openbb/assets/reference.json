@@ -1,5 +1,5 @@
 {
-    "openbb": "4.2.2",
+    "openbb": "4.2.3",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
@@ -9,7 +9,7 @@
                 "commodity@1.1.3",
                 "crypto@1.2.3",
                 "currency@1.2.3",
-                "derivatives@1.2.3",
+                "derivatives@1.2.4",
                 "economy@1.2.3",
                 "equity@1.2.3",
                 "etf@1.2.3",
@@ -24,7 +24,7 @@
                 "federal_reserve@1.2.3",
                 "fmp@1.2.3",
                 "fred@1.2.3",
-                "intrinio@1.2.3",
+                "intrinio@1.2.4",
                 "oecd@1.2.3",
                 "polygon@1.2.3",
                 "sec@1.2.3",
@@ -2108,9 +2108,9 @@
                     },
                     {
                         "name": "volume",
-                        "type": "int",
+                        "type": "List[int]",
                         "description": "The trading volume.",
-                        "default": null,
+                        "default": "",
                         "optional": true,
                         "choices": null
                     },
