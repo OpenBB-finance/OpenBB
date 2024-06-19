@@ -265,9 +265,9 @@ class ROUTER_derivatives_options(Container):
             Strike price of the options contract.
         option_type : List[str]
             The type of option.
-        volume : List[Optional[int]]
+        volume : Optional[int]
             The trading volume.
-        open_interest : List[Optional[int]]
+        open_interest : Optional[int]
             Open interest at the time.
         last_price : List[Optional[float]]
             Last trade price at the time.

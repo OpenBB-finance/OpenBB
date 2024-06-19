@@ -187,7 +187,7 @@ async def money_measures(
             parameters={
                 "country": "all",
                 "frequency": "quarter",
-                "age": "25-54",
+                "age": "total",
                 "provider": "oecd",
             },
         ),
