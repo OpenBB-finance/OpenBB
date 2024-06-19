@@ -36,10 +36,10 @@
     2. For the extension packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
 
-        3.1. Bump the extension versions on `openbb_platform/pyproject.toml` to the latest version.
+        3.1. Bump the `openbb` package version and the extension versions on `openbb_platform/pyproject.toml` to the latest version.
 
         > [!TIP]
-        > Consider using Poetry Plugin: up:
+        > Consider using the poetry plugin `up` for updating the extensions to the latest version:
         > 1. `poetry self add poetry-plugin-up`
         > 2. `poetry up --latest`
 
