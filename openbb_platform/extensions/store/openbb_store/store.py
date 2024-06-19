@@ -124,7 +124,7 @@ class Store(Data):
         self,
         name: str,
         data: Union[OBBject, Data, DataFrame, Dict, List, str],
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ):
         """Add a stored data object."""
         if name in self.directory:
@@ -138,21 +138,26 @@ class Store(Data):
         schema_repr = ""
 
         if data_class == "OBBject":
+            fields_set = data.to_df().columns.to_list()
+            length = len(data.results) if isinstance(data.results, list) else 1
+            if fields_set[0] == 0:
+                fields_set = data.to_df().iloc[:, 0].to_list()
             schema = {
-                "length": len(data.results),
-                "fields_set": data.to_df().columns.to_list(),
-                "data_model": data.results[0].model_copy() or data.results.model_copy(),
+                "length": length,
+                "fields_set": fields_set,
+                "data_model": (
+                    data.results.model_copy()
+                    if length == 1
+                    else data.results[0].model_copy()
+                ),
                 "created_at": str(data.extra["metadata"].timestamp),
                 "uid": data.id,
             }
             schema_repr = str(schema)[:80]
-        elif (
-            data_class == "Data"
-            or (
-                data_class == "list"
-                and len(data) == 1
-                and data[0].__class__.__name__ == "Data"
-            )
+        elif data_class == "Data" or (
+            data_class == "list"
+            and len(data) == 1
+            and data[0].__class__.__name__ == "Data"
         ):
             schema = data.model_copy()
             schema_repr = schema.__repr__()[:80]
@@ -177,7 +182,7 @@ class Store(Data):
                 "width": len(data.columns),
                 "columns": data.columns,
                 "index": data.index,
-                "types_map": data.dtypes
+                "types_map": data.dtypes,
             }
             schema_repr = str(schema)[:80]
             data = data.to_dict()
@@ -236,7 +241,7 @@ class Store(Data):
                     return obbject.chart.content
                 chart_params = chart_params or {}
                 chart_params["render"] = False
-                _ = obbject.charting.to_chart(data = obbject.to_df(), **chart_params)
+                _ = obbject.charting.to_chart(data=obbject.results, **chart_params)
                 return obbject.chart.fig
             df = obbject.to_df()
             if pd_query:
@@ -255,9 +260,7 @@ class Store(Data):
             df.index = schema["index"]
             df = df.astype(schema["types_map"], errors="ignore")
             return (
-                df.query(pd_query).convert_dtypes()
-                if pd_query
-                else df.convert_dtypes()
+                df.query(pd_query).convert_dtypes() if pd_query else df.convert_dtypes()
             )
         return decompressed_data
 
@@ -269,7 +272,9 @@ class Store(Data):
         decompressed_schema = self._decompress_store(compressed_schema)
 
         if "data_model" in decompressed_schema:
-            decompressed_schema["data_model"] = decompressed_schema["data_model"].schema(by_alias=False)
+            decompressed_schema["data_model"] = decompressed_schema[
+                "data_model"
+            ].schema(by_alias=False)
 
         return decompressed_schema
 
@@ -278,8 +283,8 @@ class Store(Data):
         names = names or self.list_stores()
         temp = {
             "archives": {name: self.archives[name] for name in names},
-            "schemas" : {name: self.schemas[name] for name in names},
-            "directory" : {name: self.directory[name] for name in names}
+            "schemas": {name: self.schemas[name] for name in names},
+            "directory": {name: self.directory[name] for name in names},
         }
         # Pickle the data and generate a signature
         pickled_data = pickle.dumps(temp, protocol=pickle.HIGHEST_PROTOCOL)
@@ -303,21 +308,27 @@ class Store(Data):
             if filename.startswith("/")
             else self.user_data_directory + filename + ".xz"
         )
+        pickled_data = None
+        signature = None
         with lzma.open(filename, "rb") as f:
-            data = pickle.load(f)  # noqa
+            file = pickle.load(f)  # noqa
+            if (
+                not isinstance(file, dict)
+                or "signature" not in file
+                or "data" not in file
+            ):
+                raise ValueError("Data integrity check failed")
+            pickled_data = file["data"]
+            signature = file["signature"]
 
         # Verify the signature
-        signature = data["signature"]
-        pickled_data = data["data"]
         if hashlib.sha1(pickled_data).hexdigest() != signature:  # noqa
             raise ValueError("Data integrity check failed")
 
         # Load the data
         temp = pickle.loads(pickled_data)  # noqa
         if names:
-            temp = {
-                k: v for k, v in temp.items() if k in names
-            }
+            temp = {k: v for k, v in temp.items() if k in names}
 
         self.archives.update(temp["archives"])
         self.schemas.update(temp["schemas"])
@@ -330,7 +341,7 @@ class Store(Data):
         self,
         name: str,
         data: Union[OBBject, Data, DataFrame, Dict, List, str],
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ):
         """Overwrite an existing stored data object."""
         if name not in self.directory:

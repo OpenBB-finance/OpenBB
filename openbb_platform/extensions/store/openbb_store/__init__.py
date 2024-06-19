@@ -12,6 +12,7 @@ ext = Extension(name="store")
 
 store_module = importlib.import_module("openbb_store.store")
 
+
 @ext.obbject_accessor
 class Store:
     """OBBject Store Extension."""
@@ -22,8 +23,7 @@ class Store:
     def __init__(self, obbject):
         """Initialize the Store extension."""
         self._store.user_data_directory = (
-            obbject._user_settings.preferences.data_directory
-            + "/stores/"
+            obbject._user_settings.preferences.data_directory + "/stores/"
         )
         self.__doc__ = self._store.__doc__
 
@@ -62,7 +62,7 @@ class Store:
         cls,
         name: str,
         data: Union[OBBject, Data, DataFrame, Dict, List, str],
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ):
         """Add a stored data object."""
         return cls._store.add_store(name, data, description)
@@ -72,7 +72,7 @@ class Store:
         cls,
         name: str,
         data: Union[OBBject, Data, DataFrame, Dict, List, str],
-        description: Optional[str] = None
+        description: Optional[str] = None,
     ):
         """Update a stored data object."""
         return cls._store.update_store(name, data, description)
