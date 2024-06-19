@@ -106,3 +106,23 @@ def test_federal_reserve_overnight_bank_funding_rate_fetcher(
     fetcher = FederalReserveOvernightBankFundingRateFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_yield_curve_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve yield curve fetcher."""
+    params = {"date": "2024-05-13,2020-05-09"}
+
+    fetcher = FederalReserveYieldCurveFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_federal_reserve_central_bank_holdings_fetcher(credentials=test_credentials):
+    """Test the Federal Reserve Central Bank Holdings Fetcher."""
+    params = {"date": date(2019, 1, 2), "holding_type": "agency_debts"}
+
+    fetcher = FederalReserveCentralBankHoldingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
