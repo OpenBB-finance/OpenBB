@@ -67,3 +67,9 @@
 4. Open a new PR with the `release/<package>-<version>` branch pointing to the `develop` branch.
 5. Merge the `release/<package>-<version>` branch to the `develop` branch.
 6. If any bugs are encountered, create a new branch - `hotfix` for `main` and `bugfix` for `develop` and merge them accordingly.
+
+### Generate the changelog
+
+1. Run the changelog automation by using the "release_drafter" GA and passing the number of the previous Release.
+2. Edit and make the changelog live on the repository.
+3. Paste it in the platform-release-changelog Slack channel.
