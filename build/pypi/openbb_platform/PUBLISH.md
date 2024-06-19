@@ -35,7 +35,13 @@
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
     2. For the extension packages run: `python build/pypi/openbb_platform/publish.py --extensions`
     3. For the `openbb` package - **which requires manual publishing** - do the following
-        3.1. Bump the dependency package versions
+
+        3.1. Bump the extension versions on `openbb_platform/pyproject.toml` to the latest version.
+
+        > [!TIP]
+        > Consider using Poetry Plugin: up:
+        > 1. `poetry self add poetry-plugin-up`
+        > 2. `poetry up --latest`
 
         > [!WARNING]
         > Create a new environment before proceeding.
@@ -47,7 +53,7 @@
         - Run `python -c "import openbb"` after building the static to check that no additional static is being built.
         - Run any command to smoke test if the static assets are being built correctly.
 
-        3.4. Run unit tests to validate the existence of deprecated endpoints
+        3.4. Run unit tests to validate the existence of deprecated endpoints (or watch this through GitHub Actions)
 
         3.5. Run `poetry publish --build` from `openbb_platform`
 
@@ -77,3 +83,8 @@
 1. Run the changelog automation by using the "release_drafter" GA and passing the number of the previous Release.
 2. Edit and make the changelog live on the repository.
 3. Paste it in the platform-release-changelog Slack channel.
+
+### Publish the CLI
+
+1. Bump `openbb` dependency on `cli/pyproject.toml` to the latest version.
+2. Run `poetry publish --build` from `cli`
