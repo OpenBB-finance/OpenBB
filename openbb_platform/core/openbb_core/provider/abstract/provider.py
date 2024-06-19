@@ -17,7 +17,7 @@ class Provider:
         credentials: Optional[List[str]] = None,
         fetcher_dict: Optional[Dict[str, Type[Fetcher]]] = None,
         repr_name: Optional[str] = None,
-        v3_credentials: Optional[List[str]] = None,
+        deprecated_credentials: Optional[Dict[str, Optional[str]]] = None,
         instructions: Optional[str] = None,
     ) -> None:
         """Initialize the provider.
@@ -36,8 +36,8 @@ class Provider:
             Dictionary of fetchers, by default None.
         repr_name: Optional[str]
             Full name of the provider, by default None.
-        v3_credentials: Optional[List[str]]
-            List of corresponding v3 credentials, by default None.
+        deprecated_credentials: Optional[Dict[str, Optional[str]]]
+            Map of deprecated credentials to its current name, by default None.
         instructions: Optional[str]
             Instructions on how to setup the provider. For example, how to get an API key.
         """
@@ -52,5 +52,5 @@ class Provider:
             for c in credentials:
                 self.credentials.append(f"{self.name.lower()}_{c}")
         self.repr_name = repr_name
-        self.v3_credentials = v3_credentials
+        self.deprecated_credentials = deprecated_credentials
         self.instructions = instructions
