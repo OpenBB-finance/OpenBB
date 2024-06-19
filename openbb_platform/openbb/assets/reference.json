@@ -1,5 +1,5 @@
 {
-    "openbb": "4.2.2",
+    "openbb": "4.2.3",
     "info": {
         "title": "OpenBB Platform (Python)",
         "description": "Investment research for everyone, anywhere.",
@@ -1216,7 +1216,7 @@
                     },
                     {
                         "name": "option_type",
-                        "type": "Literal[None, 'call', 'put']",
+                        "type": "Literal['call', 'put']",
                         "description": "The option type, call or put, 'None' is both (default).",
                         "default": null,
                         "optional": true,

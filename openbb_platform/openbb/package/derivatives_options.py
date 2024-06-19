@@ -43,7 +43,7 @@ class ROUTER_derivatives_options(Container):
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
         date : Optional[datetime.date]
             The end-of-day date for options chains data. (provider: intrinio)
-        option_type : Literal[None, 'call', 'put']
+        option_type : Optional[Literal['call', 'put']]
             The option type, call or put, 'None' is both (default). (provider: intrinio)
         moneyness : Literal['otm', 'itm', 'all']
             Return only contracts that are in or out of the money, default is 'all'. Parameter is ignored when a date is supplied. (provider: intrinio)

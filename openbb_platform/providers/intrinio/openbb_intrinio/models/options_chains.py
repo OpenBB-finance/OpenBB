@@ -47,7 +47,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
     )
-    option_type: Literal[None, "call", "put"] = Field(
+    option_type: Optional[Literal["call", "put"]] = Field(
         default=None,
         description="The option type, call or put, 'None' is both (default).",
         json_schema_extra={"choices": ["call", "put"]},
