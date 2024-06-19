@@ -7,6 +7,15 @@
 
 > A `release` branch for a particular package should only cater to the changes for that package directory. For e.g. the `release/openbb-core-2.0.0` branch should only contain changes for the `openbb-core` package i.e. in the `openbb_platform/core` directory.
 
+### Flow to display only files changes during release cycle in the `release/...` -> `main` PR
+
+1. Merge main into develop before release branch exists, solve any conflict
+2. In the branch `release/…` (before or after publishing)
+3. `git merge main -X ours` (ignore the changes, we brought them in 1.)
+4. `git commit -m "Merge branch 'main' into release/4.2.2"` (empty commit)
+
+### Pre-release checklist
+
 1. Open a PR with the changes to be published in the format `release/<version>` (for e.g. `release/4.0.0` ). For a particular package use the format `release/<package>-<version>` (for e.g. `release/openbb-core-1.0.1`).
 2. Ensure all the CI workflows pass.
 3. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
