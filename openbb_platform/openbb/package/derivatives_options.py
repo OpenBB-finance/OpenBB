@@ -26,9 +26,9 @@ class ROUTER_derivatives_options(Container):
         self,
         symbol: Annotated[str, OpenBBField(description="Symbol to get data for.")],
         provider: Annotated[
-            Optional[Literal["cboe", "intrinio", "tmx", "tradier", "yfinance"]],
+            Optional[Literal["intrinio", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, tmx, tradier, yfinance."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance."
             ),
         ] = None,
         **kwargs
@@ -39,14 +39,10 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier', 'yfinance'...
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, tmx, tradier, yfinance.
-        use_cache : bool
-            When True, the company directories will be cached for24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe);
-            Caching is used to validate the supplied ticker symbol, or if a historical EOD chain is requested. To bypass, set to False. (provider: tmx)
+        provider : Optional[Literal['intrinio', 'yfinance']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, yfinance.
         date : Optional[datetime.date]
-            The end-of-day date for options chains data. (provider: intrinio);
-            A specific date to get data for. (provider: tmx)
+            The end-of-day date for options chains data. (provider: intrinio)
         option_type : Optional[Literal['call', 'put']]
             The option type, call or put, 'None' is both (default). (provider: intrinio)
         moneyness : Literal['otm', 'itm', 'all']
@@ -75,7 +71,7 @@ class ROUTER_derivatives_options(Container):
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'tmx', 'tradier', 'yfinance']]
+            provider : Optional[Literal['intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -188,28 +184,6 @@ class ROUTER_derivatives_options(Container):
             Vega of the option.
         rho : Optional[float]
             Rho of the option.
-        transactions : Optional[int]
-            Number of transactions for the contract. (provider: tmx)
-        total_value : Optional[float]
-            Total value of the transactions. (provider: tmx)
-        settlement_price : Optional[float]
-            Settlement price on that date. (provider: tmx)
-        phi : Optional[float]
-            Phi of the option. The sensitivity of the option relative to dividend yield. (provider: tradier)
-        bid_iv : Optional[float]
-            Implied volatility of the bid price. (provider: tradier)
-        ask_iv : Optional[float]
-            Implied volatility of the ask price. (provider: tradier)
-        orats_final_iv : Optional[float]
-            ORATS final implied volatility of the option, updated once per hour. (provider: tradier)
-        year_high : Optional[float]
-            52-week high price of the option. (provider: tradier)
-        year_low : Optional[float]
-            52-week low price of the option. (provider: tradier)
-        contract_size : Optional[int]
-            Size of the contract. (provider: tradier)
-        greeks_time : Optional[datetime]
-            Timestamp of the last greeks update. Greeks/IV data is updated once per hour. (provider: tradier)
         in_the_money : Optional[bool]
             Whether the option is in the money. (provider: yfinance)
         currency : Optional[str]
@@ -230,7 +204,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": self._get_provider(
                         provider,
                         "derivatives.options.chains",
-                        ("cboe", "intrinio", "tmx", "tradier", "yfinance"),
+                        ("intrinio", "yfinance"),
                     )
                 },
                 standard_params={
