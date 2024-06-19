@@ -86,7 +86,9 @@ class SystemService(metaclass=SingletonMeta):
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         system_settings_json = system_settings.model_dump_json(
-            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET, indent=4
+            indent=4,
+            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET,
+            exclude_defaults=True,
         )
         with path.open(mode="w") as file:
             file.write(system_settings_json)

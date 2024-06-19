@@ -156,9 +156,7 @@ class Account:  # noqa: D205, D400
             User settings: profile, credentials, preferences
         """
         if not self._hub_service:
-            UserService.write_default_user_settings(
-                self._base_app._command_runner.user_settings
-            )
+            UserService.write_to_file(self._base_app._command_runner.user_settings)
         else:
             self._hub_service.push(self._base_app._command_runner.user_settings)
 
@@ -181,9 +179,7 @@ class Account:  # noqa: D205, D400
             User settings: profile, credentials, preferences
         """
         if not self._hub_service:
-            self._base_app._command_runner.user_settings = (
-                UserService.read_default_user_settings()
-            )
+            self._base_app._command_runner.user_settings = UserService.read_from_file()
         else:
             incoming = self._hub_service.pull()
             self._base_app.user.profile = incoming.profile
@@ -216,9 +212,7 @@ class Account:  # noqa: D205, D400
         if session_file.exists():
             session_file.unlink()
 
-        self._base_app._command_runner.user_settings = (
-            UserService.read_default_user_settings()
-        )
+        self._base_app._command_runner.user_settings = UserService.read_from_file()
 
         if return_settings:
             return self._base_app._command_runner.user_settings

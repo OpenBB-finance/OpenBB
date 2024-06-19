@@ -218,7 +218,7 @@ class HubService:
         response = put(
             url=self._base_url + "/user",
             headers={"Authorization": authorization},
-            json=settings.model_dump(),
+            json=settings.model_dump(exclude_defaults=True),
             timeout=self.TIMEOUT,
         )
 
@@ -255,14 +255,18 @@ class HubService:
     ) -> HubUserSettings:
         """Convert Platform models to Hub user settings."""
         # Dump mode json ensures SecretStr values are serialized as strings
-        credentials = credentials.model_dump(mode="json", exclude_none=True)
+        credentials = credentials.model_dump(
+            mode="json", exclude_none=True, exclude_defaults=True
+        )
         settings = self._hub_user_settings or HubUserSettings()
         for v4_k, v in sorted(credentials.items()):
             v3_k = self.V4TOV3.get(v4_k, None)
             # If v3 key was in the hub already, we keep it
             k = v3_k if v3_k in settings.features_keys else v4_k
             settings.features_keys[k] = v
-        defaults_ = defaults.model_dump(mode="json", exclude_none=True)
+        defaults_ = defaults.model_dump(
+            mode="json", exclude_none=True, exclude_defaults=True
+        )
         settings.features_settings.update({"defaults": defaults_})
         return settings
 
