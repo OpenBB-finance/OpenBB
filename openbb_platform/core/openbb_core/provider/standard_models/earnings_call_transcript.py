@@ -17,7 +17,7 @@ class EarningsCallTranscriptQueryParams(QueryParams):
     """Earnings Call Transcript rating Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    year: int = Field(description="Year of the earnings call transcript.")
+    year: Union[int, str] = Field(description="Year of the earnings call transcript.")
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_executives import (
     KeyExecutivesData,
@@ -57,9 +58,9 @@ class YFinanceKeyExecutivesFetcher(
         try:
             ticker = Ticker(query.symbol).get_info()
         except Exception as e:
-            raise RuntimeError(f"Error getting data for {query.symbol}: {e}") from e
+            raise OpenBBError(f"Error getting data for {query.symbol}: {e}") from e
         if ticker.get("companyOfficers") is None:
-            raise ValueError(f"No executive data found for {query.symbol}")
+            raise OpenBBError(f"No executive data found for {query.symbol}")
         officers_data = ticker.get("companyOfficers", [])
         [d.pop("maxAge") for d in officers_data]  # pylint: disable=W0106
         return officers_data

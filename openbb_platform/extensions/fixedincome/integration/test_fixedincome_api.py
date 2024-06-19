@@ -60,10 +60,18 @@ def test_fixedincome_government_us_yield_curve(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "period": "overnight",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -86,13 +94,48 @@ def test_fixedincome_sofr(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "volume_weighted_trimmed_mean_rate",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_sofr(params, headers):
+    """Test the SOFR endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/sofr?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],
@@ -138,13 +181,15 @@ def test_fixedincome_rate_sonia(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "overnight",
+                "maturity": "overnight",
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],
@@ -166,7 +211,10 @@ def test_fixedincome_rate_ameribor(params, headers):
     [
         (
             {
-                "parameter": "weekly",
+                "frequency": "w",
+                "transform": None,
+                "aggregation_method": "avg",
+                "effr_only": False,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -328,9 +376,11 @@ def test_fixedincome_corporate_moody(params, headers):
             {
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "maturity": "30d",
+                "maturity": "overnight",
                 "category": "financial",
-                "grade": "aa",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
                 "provider": "fred",
             }
         )
@@ -663,6 +713,94 @@ def test_fixedincome_government_yield_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/fixedincome/government/yield_curve?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "provider": "fred",
+            "category": "high_yield",
+            "index": "us,europe,emerging",
+            "index_type": "total_return",
+            "start_date": "2023-05-31",
+            "end_date": "2024-06-01",
+            "transform": None,
+            "frequency": None,
+            "aggregation_method": "avg",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_bond_indices(params, headers):
+    """Test the bond indices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/bond_indices?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "provider": "fred",
+            "index": "usda_30y,fha_30y",
+            "start_date": "2023-05-31",
+            "end_date": "2024-06-01",
+            "transform": None,
+            "frequency": None,
+            "aggregation_method": "avg",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_mortgage_indices(params, headers):
+    """Test the mortgage indices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/mortgage_indices?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_overnight_bank_funding(params, headers):
+    """Test the Overnight Bank Funding Rate endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/rate/overnight_bank_funding?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

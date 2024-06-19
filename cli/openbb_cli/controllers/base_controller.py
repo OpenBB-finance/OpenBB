@@ -24,6 +24,7 @@ from openbb_cli.controllers.utils import (
     print_rich_table,
     remove_file,
     system_clear,
+    validate_register_key,
 )
 from openbb_cli.session import Session
 from prompt_toolkit.formatted_text import HTML
@@ -138,27 +139,10 @@ class BaseController(metaclass=ABCMeta):
 
     def load_class(self, class_ins, *args, **kwargs):
         """Check for an existing instance of the controller before creating a new one."""
-        settings = session.settings
         self.save_class()
         arguments = len(args) + len(kwargs)
-        # Due to the 'arguments == 1' condition, we actually NEVER load a class
-        # that has arguments (The 1 argument corresponds to self.queue)
-        # Advantage: If the user changes something on one controller and then goes to the
-        # controller below, it will create such class from scratch bringing all new variables
-        # in and considering latest changes.
-        # Disadvantage: If the user goes on a controller below and we have been there before
-        # it will not load that previous class, but create a new one from scratch.
-        # SCENARIO: If the user is in stocks and does load AAPL/ta the TA menu will get AAPL,
-        # and if then the user goes back to the stocks menu using .. that menu will have AAPL
-        # Now, if "arguments == 1" condition exists, if the user does "load TSLA" and then
-        # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
-        # the previous class will be loaded and even if the user changes the ticker on
-        # the stocks context it will not impact the one of TA menu - unless changes are done.
-        if (
-            class_ins.PATH in controllers
-            and arguments == 1
-            and settings.REMEMBER_CONTEXTS
-        ):
+
+        if class_ins.PATH in controllers and arguments == 1:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
             return old_class.menu()
@@ -166,8 +150,7 @@ class BaseController(metaclass=ABCMeta):
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""
-        if session.settings.REMEMBER_CONTEXTS:
-            controllers[self.PATH] = self
+        controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
         """Implement custom reset.
@@ -646,19 +629,77 @@ class BaseController(metaclass=ABCMeta):
             "'OBBjects' where all execution results are stored. "
             "It is organized as a stack, with the most recent result at index 0.",
         )
+        parser.add_argument("--index", dest="index", help="Index of the result.")
+        parser.add_argument("--key", dest="key", help="Key of the result.")
+        parser.add_argument(
+            "--chart", action="store_true", dest="chart", help="Display chart."
+        )
+        parser.add_argument(
+            "--export", dest="export", help="Export data.", nargs="+", default=None
+        )
+
         ns_parser = self.parse_simple_args(parser, other_args)
         if ns_parser:
-            results = session.obbject_registry.all
-            if results:
-                df = pd.DataFrame.from_dict(results, orient="index")
-                print_rich_table(
-                    df,
-                    show_index=True,
-                    index_name="stack index",
-                    title="OBBject Results",
-                )
-            else:
-                session.console.print("[info]No results found.[/info]")
+            if not ns_parser.index and not ns_parser.key:
+                results = session.obbject_registry.all
+                if results:
+                    df = pd.DataFrame.from_dict(results, orient="index")
+                    print_rich_table(
+                        df,
+                        show_index=True,
+                        index_name="stack index",
+                        title="OBBject Results",
+                    )
+                else:
+                    session.console.print("[info]No results found.[/info]")
+            elif ns_parser.index:
+                try:
+                    index = int(ns_parser.index)
+                    obbject = session.obbject_registry.get(index)
+                    if obbject:
+                        if ns_parser.chart and obbject.chart:
+                            obbject.show()
+                        else:
+                            title = obbject.extra.get("command", "")
+                            df = obbject.to_dataframe()
+                            print_rich_table(
+                                df=df,
+                                show_index=True,
+                                title=title,
+                                export=ns_parser.export,
+                            )
+                            if ns_parser.chart and not obbject.chart:
+                                session.console.print(
+                                    "[info]No chart available.[/info]"
+                                )
+                    else:
+                        session.console.print(
+                            f"[info]No result found at index {index}.[/info]"
+                        )
+                except ValueError:
+                    session.console.print(
+                        f"[red]Index must be an integer, not '{ns_parser.index}'.[/red]"
+                    )
+            elif ns_parser.key:
+                obbject = session.obbject_registry.get(ns_parser.key)
+                if obbject:
+                    if ns_parser.chart and obbject.chart:
+                        obbject.show()
+                    else:
+                        title = obbject.extra.get("command", "")
+                        df = obbject.to_dataframe()
+                        print_rich_table(
+                            df=df,
+                            show_index=True,
+                            title=title,
+                            export=ns_parser.export,
+                        )
+                        if ns_parser.chart and not obbject.chart:
+                            session.console.print("[info]No chart available.[/info]")
+                else:
+                    session.console.print(
+                        f"[info]No result found with key '{ns_parser.key}'.[/info]"
+                    )
 
     @staticmethod
     def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
@@ -792,6 +833,22 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
+
+        parser.add_argument(
+            "--register_obbject",
+            dest="register_obbject",
+            action="store_false",
+            default=True,
+            help="Flag to store data in the OBBject registry, True by default.",
+        )
+        parser.add_argument(
+            "--register_key",
+            dest="register_key",
+            default="",
+            help="Key to reference data in the OBBject registry.",
+            type=validate_register_key,
+        )
+
         if session.settings.USE_CLEAR_AFTER_CMD:
             system_clear()
 

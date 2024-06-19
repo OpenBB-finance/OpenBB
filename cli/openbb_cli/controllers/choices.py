@@ -10,6 +10,7 @@ from unittest.mock import patch
 from openbb_cli.controllers.utils import (
     check_file_type_saved,
     check_positive,
+    validate_register_key,
 )
 from openbb_cli.session import Session
 
@@ -92,6 +93,21 @@ def __mock_parse_known_args_and_warn(
             help="Number of entries to show in data.",
             type=check_positive,
         )
+
+    parser.add_argument(
+        "--register_obbject",
+        dest="register_obbject",
+        action="store_false",
+        default=True,
+        help="Flag to store data in the OBBject registry, True by default.",
+    )
+    parser.add_argument(
+        "--register_key",
+        dest="register_key",
+        default="",
+        help="Key to reference data in the OBBject registry.",
+        type=validate_register_key,
+    )
 
 
 def __mock_parse_simple_args(parser: ArgumentParser, other_args: List[str]) -> None:
@@ -274,6 +290,7 @@ def _get_argument_parser(
                 " - parse_known_args_and_warn\n"
             )
 
+    # pylint: disable=possibly-used-before-assignment
     return argument_parser
 
 

@@ -22,12 +22,27 @@ class FREDYieldCurveQueryParams(YieldCurveQueryParams):
     __json_schema_extra__ = {"date": {"multiple_items_allowed": True}}
 
     yield_curve_type: Literal[
-        "nominal", "real", "breakeven", "corporate_spot", "corporate_par"
+        "nominal",
+        "real",
+        "breakeven",
+        "treasury_minus_fed_funds",
+        "corporate_spot",
+        "corporate_par",
     ] = Field(
         default="nominal",
         description="Yield curve type."
         + " Nominal and Real Rates are available daily, others are monthly."
         + " The closest date to the requested date will be returned.",
+        json_schema_extra={
+            "choices": [
+                "nominal",
+                "real",
+                "breakeven",
+                "treasury_minus_fed_funds",
+                "corporate_spot",
+                "corporate_par",
+            ]
+        },
     )
 
 

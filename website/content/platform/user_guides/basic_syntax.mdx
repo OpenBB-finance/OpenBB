@@ -3,25 +3,25 @@ title: Basic Syntax
 sidebar_position: 1
 description: This page provides comprehensive information about standardized command syntax for an open-source platform. Topics discussed include the structure of command syntax, use of standardized parameters, usage of provider and symbol parameters, handling of date and limit parameters, and more. Also explored, are the methods for selecting data sources, handling different list and ticker symbol formats, and dealing with command responses and warnings.
 keywords:
-- tutorial
-- command syntax
-- standardized parameters
-- date format
-- provider parameter
-- data source selection
-- symbol parameter
-- list formats
-- ticker symbols
-- date parameter
-- time series
-- limit parameter
-- keyword arguments
-- endpoint parameters
-- command response
-- data models
+  - tutorial
+  - command syntax
+  - standardized parameters
+  - date format
+  - provider parameter
+  - data source selection
+  - symbol parameter
+  - list formats
+  - ticker symbols
+  - date parameter
+  - time series
+  - limit parameter
+  - keyword arguments
+  - endpoint parameters
+  - command response
+  - data models
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+import HeadTitle from "@site/src/components/General/HeadTitle.tsx";
 
 <HeadTitle title="Basic Syntax - Usage | OpenBB Platform Docs" />
 
@@ -101,9 +101,7 @@ With providers supporting market data from multiple jurisdictions, the most comm
 ### One Symbol
 
 <details>
-```python
-quote = obb.equity.price.quote(symbol="td", provider="fmp")
-```
+  ```python quote = obb.equity.price.quote(symbol="td", provider="fmp") ```
 </details>
 
 ### Multiple Symbols
@@ -190,7 +188,7 @@ Where, optional, `limit` parameters are supplied, they are likely to have sensib
 income = obb.equity.fa.income("AAPL", period="quarter", provider="fmp", limit=4)
 ```
 
-## **kwargs
+## \*\*kwargs
 
 All endpoints accept additional keyword arguments, but non-existent parameters will be ignored. Invalid parameters are communicated via the `warnings` field in the command response. Parameters can be stored as a dictionary and fed to the command as `**kwargs`. If a provider, or function, has an undocumented parameter it can still be accessed by supplying the additional kwargs.
 
@@ -210,6 +208,6 @@ data.warnings
 
 ## References
 
-All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference).  The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
+All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference). The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
 
 These pages are a quick way to cross-reference differences between providers. The same information is provided in a function's signature and docstring.

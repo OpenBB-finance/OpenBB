@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, amake_requests
 from pandas import DataFrame, concat, read_csv
@@ -257,18 +258,24 @@ COUNTRY_GROUPS = {
     "southeast_asia": ["KH", "ID", "LA", "MY", "PH", "SG", "TH", "VN"],
 }
 
-INDICATORS_DESCRIPTIONS = json.load(
-    (files("openbb_econdb.utils") / "indicators_descriptions.json").open()
-)
-MULTIPLIERS = json.load((files("openbb_econdb.utils") / "multipliers.json").open())
-SCALES = json.load((files("openbb_econdb.utils") / "scales.json").open())
-UNITS = json.load((files("openbb_econdb.utils") / "units.json").open())
-INDICATOR_COUNTRIES = json.load(
-    (files("openbb_econdb.utils") / "indicator_countries.json").open()
-)
-SYMBOL_TO_INDICATOR = json.load(
-    (files("openbb_econdb.utils") / "symbol_to_indicator.json").open()
-)
+with (files("openbb_econdb.utils") / "indicators_descriptions.json").open() as f:
+    INDICATORS_DESCRIPTIONS = json.load(f)
+
+with (files("openbb_econdb.utils") / "multipliers.json").open() as f:
+    MULTIPLIERS = json.load(f)
+
+with (files("openbb_econdb.utils") / "scales.json").open() as f:
+    SCALES = json.load(f)
+
+with (files("openbb_econdb.utils") / "units.json").open() as f:
+    UNITS = json.load(f)
+
+with (files("openbb_econdb.utils") / "symbol_to_indicator.json").open() as f:
+    SYMBOL_TO_INDICATOR = json.load(f)
+
+with (files("openbb_econdb.utils") / "indicator_countries.json").open() as f:
+    INDICATOR_COUNTRIES = json.load(f)
+
 HAS_COUNTRIES = {
     d: INDICATOR_COUNTRIES.get(d) != ["W00"] for d in INDICATORS_DESCRIPTIONS
 }
@@ -342,7 +349,7 @@ def parse_symbols(
             symbol += "~" + transform
         symbols.append(symbol)
     elif countries and HAS_COUNTRIES.get(symbol, False) is False:
-        raise RuntimeError(f"Indicator {symbol} does not have countries.")
+        raise OpenBBError(f"Indicator {symbol} does not have countries.")
     elif countries and HAS_COUNTRIES.get(symbol, False) is True:
         countries = countries if isinstance(countries, list) else countries.split(",")
         for country in countries:
@@ -393,7 +400,7 @@ async def create_token(use_cache: bool = True) -> str:
         try:
             return await _response.json()
         except Exception as e:
-            raise RuntimeError(
+            raise OpenBBError(
                 "The temporary EconDB token could not be retrieved."
                 + " Please try again later or provide your own token."
                 + " Sign-up at: https://www.econdb.com/"
@@ -515,11 +522,9 @@ def parse_context(  # pylint: disable=R0912, R0914, R0915
     metadata = {}
     results = DataFrame()
     if response is None:
-        raise RuntimeError("No data was in the response")
+        raise OpenBBError("No data was in the response")
     if not isinstance(response, List):
-        raise RuntimeError(
-            "Expecting a list of dictionaries and received a dictionary."
-        )
+        raise OpenBBError("Expecting a list of dictionaries and received a dictionary.")
     for item in response:
         symbol = item.get("id", "")
         _symbol = symbol.split("~")[0].replace("19", "")
@@ -623,28 +628,44 @@ def update_json_files() -> None:
             "w",  # type: ignore
             encoding="utf-8",
         ) as f:
-            indicators.set_index("short_ticker").sort_index()["symbol_root"].to_json(f)
+            json_data = json.dumps(
+                indicators.set_index("short_ticker")
+                .sort_index()["symbol_root"]
+                .to_dict()
+            )
+            f.write(json_data)
 
     def update_multipliers() -> None:
         """Update the unit multipliers."""
         with open(  # type: ignore
             files("openbb_econdb.utils") / "multipliers.json", "w", encoding="utf-8"
         ) as f:
-            indicators.set_index("short_ticker").sort_index()["multiplier"].to_json(f)
+            json_data = json.dumps(
+                indicators.set_index("short_ticker")
+                .sort_index()["multiplier"]
+                .to_dict()
+            )
+            f.write(json_data)
 
     def update_scales() -> None:
         """Update the scales."""
         with open(  # type: ignore
             files("openbb_econdb.utils") / "scales.json", "w", encoding="utf-8"
         ) as f:
-            indicators.set_index("short_ticker").sort_index()["scale"].to_json(f)
+            json_data = json.dumps(
+                indicators.set_index("short_ticker").sort_index()["scale"].to_dict()
+            )
+            f.write(json_data)
 
     def update_units() -> None:
         """Update the units."""
         with open(  # type: ignore
             files("openbb_econdb.utils") / "units.json", "w", encoding="utf-8"
         ) as f:
-            indicators.set_index("short_ticker").sort_index()["currency"].to_json(f)
+            json_data = json.dumps(
+                indicators.set_index("short_ticker").sort_index()["currency"].to_dict()
+            )
+            f.write(json_data)
 
     def update_descriptions() -> None:
         """Update the indicator descriptions."""
@@ -657,7 +678,8 @@ def update_json_files() -> None:
             "w",
             encoding="utf-8",
         ) as f:
-            json.dump(descriptions_dict, f)
+            json_data = json.dumps(descriptions_dict)
+            f.write(json_data)
 
     def update_indicator_countries() -> None:
         """Update the indicator countries."""
@@ -666,9 +688,13 @@ def update_json_files() -> None:
             "w",
             encoding="utf-8",
         ) as f:
-            indicators[indicators["symbol_root"] != "[W00]"].groupby("symbol_root")[
-                "iso"
-            ].apply(lambda x: x.sort_values().unique().tolist()).to_json(f)
+            json_data = json.dumps(
+                indicators[indicators["symbol_root"] != "[W00]"]
+                .groupby("symbol_root")["iso"]
+                .apply(lambda x: x.sort_values().unique().tolist())
+                .to_dict()
+            )
+            f.write(json_data)
 
     update_symbol_to_indicator()
     update_multipliers()

@@ -1,9 +1,11 @@
-""" FRED helpers. """
+"""FRED helpers."""
 
 import csv
 import os
 from pathlib import Path
 from typing import Dict, List, Literal
+
+from openbb_core.app.model.abstract.error import OpenBBError
 
 YIELD_CURVE_NOMINAL_RATES = [round(1 / 12, 3), 0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30]
 YIELD_CURVE_SPOT_RATES = [0.5, 1, 2, 3, 5, 7, 10, 20, 30, 50, 75, 100]
@@ -76,6 +78,13 @@ YIELD_CURVES = {
         "T10YIEM": "year_10",
         "T20YIEM": "year_20",
         "T30YIEM": "year_30",
+    },
+    "treasury_minus_fed_funds": {
+        "T3MFF": "month_3",
+        "T6MFF": "month_6",
+        "T1YFF": "year_1",
+        "T5YFF": "year_5",
+        "T10YFF": "year_10",
     },
     "corporate_spot": {
         "HQMCB6MT": "month_6",
@@ -157,7 +166,7 @@ def comma_to_float_list(v: str) -> List[float]:
     try:
         return [float(m) for m in v.split(",")]
     except ValueError as e:
-        raise ValueError(
+        raise OpenBBError(
             "maturity must be a float or a comma-separated string of floats"
         ) from e
 
@@ -230,7 +239,6 @@ def get_ice_bofa_series_id(
     ],
 ) -> List[dict]:
     """Get ICE BofA series id."""
-
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "ice_bofa_indices.csv"
 
@@ -264,7 +272,6 @@ def get_ice_bofa_series_id(
 
 def get_cp_series_id(maturity, category, grade) -> List[dict]:
     """Get CP series id."""
-
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "commercial_paper.csv"
 
@@ -297,7 +304,6 @@ def get_cp_series_id(maturity, category, grade) -> List[dict]:
 
 def get_spot_series_id(maturity: List[float], category: List[str]) -> List[dict]:
     """Get Spot series id."""
-
     current_dir = os.path.dirname(os.path.realpath(__file__))
     file = "corporate_spot_rates.csv"
 

@@ -6,6 +6,7 @@ import asyncio
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_ebitda_estimates import (
     ForwardEbitdaEstimatesData,
@@ -136,7 +137,7 @@ class IntrinioForwardEbitdaEstimatesFetcher(
             data = await response.json()
             messages = data.get("messages")
             if messages:
-                raise RuntimeError(str(messages))
+                raise OpenBBError(str(messages))
             estimates = data.get("ebitda_consensus", [])  # type: ignore
             if estimates and len(estimates) > 0:
                 results.extend(estimates)

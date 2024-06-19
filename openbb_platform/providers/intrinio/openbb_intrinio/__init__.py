@@ -48,6 +48,7 @@ from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_snapshots import IntrinioMarketSnapshotsFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
+from openbb_intrinio.models.options_snapshots import IntrinioOptionsSnapshotsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.price_target_consensus import (
     IntrinioPriceTargetConsensusFetcher,
@@ -98,6 +99,7 @@ historical financial market data to businesses and developers through an API."""
         "MarketIndices": IntrinioIndexHistoricalFetcher,
         "MarketSnapshots": IntrinioMarketSnapshotsFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
+        "OptionsSnapshots": IntrinioOptionsSnapshotsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "PriceTargetConsensus": IntrinioPriceTargetConsensusFetcher,
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,
@@ -106,6 +108,6 @@ historical financial market data to businesses and developers through an API."""
         "WorldNews": IntrinioWorldNewsFetcher,
     },
     repr_name="Intrinio",
-    v3_credentials=["API_INTRINIO_KEY"],
+    deprecated_credentials={"API_INTRINIO_KEY": "intrinio_api_key"},
     instructions="Go to: https://intrinio.com/starter-plan\n\n![Intrinio](https://user-images.githubusercontent.com/85772166/219207556-fcfee614-59f1-46ae-bff4-c63dd2f6991d.png)\n\nAn API key will be issued with a subscription. Find the token value within the account dashboard.",  # noqa: E501  pylint: disable=line-too-long
 )

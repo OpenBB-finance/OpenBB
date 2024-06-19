@@ -28,6 +28,10 @@ def get_packages(path: Path, plugin_key: str) -> Dict[str, Any]:
     packages: Dict[str, Any] = {}
     for f in folders:
         pyproject = PyProjectTOML(Path(f, "pyproject.toml"))
+
+        if not pyproject.data:
+            continue
+
         poetry = pyproject.data["tool"]["poetry"]
         name = poetry["name"]
         plugin = poetry.get("plugins", {}).get(plugin_key)
@@ -47,7 +51,7 @@ def to_camel(string: str):
     return components[0] + "".join(x.title() for x in components[1:])
 
 
-def createItem(package_name: str, obj: object, obj_attrs: List[str]) -> Dict[str, Any]:
+def create_item(package_name: str, obj: object, obj_attrs: List[str]) -> Dict[str, Any]:
     """Create dictionary item from object attributes."""
     pkg_spec = OPENBB_PLATFORM_TOML.data["tool"]["poetry"]["dependencies"].get(
         package_name
@@ -68,7 +72,7 @@ def generate_provider_extensions() -> None:
         "repr_name",
         "description",
         "credentials",
-        "v3_credentials",
+        "deprecated_credentials",
         "website",
         "instructions",
     ]
@@ -80,7 +84,7 @@ def generate_provider_extensions() -> None:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             provider_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, provider_obj, obj_attrs))
+            data.append(create_item(pkg_name, provider_obj, obj_attrs))
     write("provider", data)
 
 
@@ -96,7 +100,7 @@ def generate_router_extensions() -> None:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             router_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, router_obj, obj_attrs))
+            data.append(create_item(pkg_name, router_obj, obj_attrs))
     write("router", data)
 
 
@@ -112,7 +116,7 @@ def generate_obbject_extensions() -> None:
             file, obj = file_obj[0], file_obj[1]
             module = import_module(file)
             ext_obj = getattr(module, obj)
-            data.append(createItem(pkg_name, ext_obj, obj_attrs))
+            data.append(create_item(pkg_name, ext_obj, obj_attrs))
     write("obbject", data)
 
 

@@ -2,6 +2,8 @@
 
 import sys
 
+from openbb_cli.utils.utils import change_logging_sub_app, reset_logging_sub_app
+
 
 def main():
     """Use the main entry point for the OpenBB Platform CLI."""
@@ -20,4 +22,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    initial_logging_sub_app = change_logging_sub_app()
+    try:
+        main()
+    except Exception:
+        pass
+    finally:
+        reset_logging_sub_app(initial_logging_sub_app)

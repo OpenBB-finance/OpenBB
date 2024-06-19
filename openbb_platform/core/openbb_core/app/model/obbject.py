@@ -72,6 +72,9 @@ class OBBject(Tagged, Generic[T]):
     _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
         default_factory=dict,
     )
+    _extra_params: Optional[Dict[str, Any]] = PrivateAttr(
+        default_factory=dict,
+    )
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""

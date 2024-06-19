@@ -125,6 +125,7 @@ class Account:  # noqa: D205, D400
         incoming = self._hub_service.pull()
         self._base_app.user.profile = incoming.profile
         self._base_app.user.credentials.update(incoming.credentials)
+        self._base_app.user.defaults.update(incoming.defaults)
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
             session_file = Path(self._openbb_directory, self.SESSION_FILE)
@@ -187,6 +188,7 @@ class Account:  # noqa: D205, D400
             incoming = self._hub_service.pull()
             self._base_app.user.profile = incoming.profile
             self._base_app.user.credentials.update(incoming.credentials)
+            self._base_app.user.defaults.update(incoming.defaults)
         if return_settings:
             return self._base_app._command_runner.user_settings
         return None

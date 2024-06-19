@@ -6,6 +6,7 @@ import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
@@ -152,7 +153,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
             required = ["frequency", "region_type", "units"]
             for key in required:
                 if values.get(key) is None:
-                    raise ValueError(
+                    raise OpenBBError(
                         f"{key} is a required field missing for series_group."
                     )
 
@@ -210,7 +211,7 @@ class FredRegionalDataFetcher(
     ) -> Dict:
         """Extract the raw data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
-        if query.is_series_group is True:
+        if query.is_series_group:
             base_url = "https://api.stlouisfed.org/geofred/regional/data?"
             url = (
                 base_url
@@ -219,7 +220,7 @@ class FredRegionalDataFetcher(
                 )
                 + f"&file_type=json&api_key={api_key}"
             )
-        if query.is_series_group is False:
+        else:
             base_url = "https://api.stlouisfed.org/geofred/series/data?"
             url = (
                 base_url
@@ -246,7 +247,6 @@ class FredRegionalDataFetcher(
         **kwargs,
     ) -> List[FredRegionalData]:
         """Flatten the response object and validate the model."""
-
         results: List[FredRegionalData] = []
         if data.get("meta") is None:
             raise EmptyDataError()

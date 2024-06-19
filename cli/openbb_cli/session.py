@@ -82,9 +82,6 @@ class Session(metaclass=SingletonMeta):
         """Check if user is local."""
         return not bool(self.user.profile.hub_session)
 
-    def reset(self) -> None:
-        pass
-
     def max_obbjects_exceeded(self) -> bool:
         """Check if max obbjects exceeded."""
         return (

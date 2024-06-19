@@ -51,10 +51,18 @@ def test_fixedincome_government_us_yield_curve(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "period": "overnight",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -74,13 +82,45 @@ def test_fixedincome_sofr(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "volume_weighted_trimmed_mean_rate",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+        (
+            {
+                "frequency": None,
+                "transform": None,
+                "aggregation_method": None,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_sofr(params, obb):
+    """Test the fixedincome rate sofr endpoint."""
+    result = obb.fixedincome.rate.sofr(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fred",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],
@@ -120,13 +160,15 @@ def test_fixedincome_rate_sonia(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
-                "parameter": "overnight",
+                "maturity": "overnight",
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
             }
         ),
     ],
@@ -145,7 +187,10 @@ def test_fixedincome_rate_ameribor(params, obb):
     [
         (
             {
-                "parameter": "weekly",
+                "frequency": "w",
+                "transform": None,
+                "aggregation_method": "avg",
+                "effr_only": False,
                 "provider": "fred",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -153,9 +198,9 @@ def test_fixedincome_rate_ameribor(params, obb):
         ),
         (
             {
-                "provider": "federal_reserve",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "provider": "federal_reserve",
             }
         ),
     ],
@@ -299,9 +344,11 @@ def test_fixedincome_corporate_moody(params, obb):
             {
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "maturity": "30d",
+                "maturity": "overnight",
                 "category": "financial",
-                "grade": "aa",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
                 "provider": "fred",
             }
         )
@@ -617,6 +664,89 @@ def test_fixedincome_government_yield_curve(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.yield_curve(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "provider": "fred",
+            "category": "high_yield",
+            "index": "us,europe,emerging",
+            "index_type": "total_return",
+            "start_date": "2023-05-31",
+            "end_date": "2024-06-01",
+            "transform": None,
+            "frequency": None,
+            "aggregation_method": "avg",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_bond_indices(params, obb):
+    """Test the bond indices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.bond_indices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        {
+            "provider": "fred",
+            "index": "usda_30y,fha_30y",
+            "start_date": "2023-05-31",
+            "end_date": "2024-06-01",
+            "transform": None,
+            "frequency": None,
+            "aggregation_method": "avg",
+        },
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_mortgage_indices(params, obb):
+    """Test the mortgage indices endpoint."""
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.mortgage_indices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "transform": None,
+                "aggregation_method": None,
+                "frequency": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "federal_reserve",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_rate_overnight_bank_funding(params, obb):
+    """Test the Overnight Bank Funding Rate endpoint."""
+    result = obb.fixedincome.rate.overnight_bank_funding(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

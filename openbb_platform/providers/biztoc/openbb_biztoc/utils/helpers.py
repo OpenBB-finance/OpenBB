@@ -5,6 +5,7 @@ from typing import Dict, List, Literal
 
 import requests
 import requests_cache
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 
 # pylint: disable=C0325
@@ -45,6 +46,9 @@ def get_pages(api_key: str) -> List[str]:
     pages = biztoc_session_sources.get(
         "https://biztoc.p.rapidapi.com/pages", headers=headers, timeout=10
     )
+    if pages.status_code != 200:
+        msg = pages.json().get("message") or pages.text
+        raise OpenBBError(f"HTTP error - > {msg}")
 
     return pages.json()
 
@@ -60,6 +64,9 @@ def get_tags_by_page(page_id: str, api_key: str) -> List[str]:
     tags = biztoc_session_tags.get(
         f"https://biztoc.p.rapidapi.com/tags/{page_id}", headers=headers, timeout=10
     )
+    if tags.status_code != 200:
+        msg = tags.json().get("message") or tags.text
+        raise OpenBBError(f"HTTP error - > {msg}")
 
     return tags.json()
 
@@ -115,10 +122,10 @@ def get_news(
         "tag": f"tag/{tag}",
     }
     if filter_ == "source" and source.lower() not in sources:
-        raise ValueError(f"{source} not a valid source. Valid sources: {sources}")
+        raise OpenBBError(f"{source} not a valid source. Valid sources: {sources}")
 
     if filter_ == "tag" and tag.lower().replace(" ", "") not in tags:
-        raise ValueError(f"{tag} not a valid tag. Valid tags: {tags}")
+        raise OpenBBError(f"{tag} not a valid tag. Valid tags: {tags}")
 
     url = (
         f"https://biztoc.p.rapidapi.com/search?q={term}"
@@ -127,7 +134,7 @@ def get_news(
     )
     r = requests.get(url, headers=headers, timeout=5)
     if r.status_code != 200:
-        raise RuntimeError(f"HTTP error - > {r.text}")
+        raise OpenBBError(f"HTTP error - > {r.text}")
 
     try:
         results = r.json()

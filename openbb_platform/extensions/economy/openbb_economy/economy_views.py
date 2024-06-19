@@ -1,0 +1,307 @@
+"""Views for the Economy Extension."""
+
+from typing import Any, Dict, Optional, Tuple
+from warnings import warn
+
+import pandas as pd
+from openbb_charting.charts.generic_charts import bar_chart
+from openbb_charting.charts.helpers import (
+    z_score_standardization,
+)
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.styles.colors import LARGE_CYCLER
+from openbb_core.app.utils import basemodel_to_df
+
+
+class EconomyViews:
+    """economy Views."""
+
+    @staticmethod
+    def economy_fred_series(  # noqa: PLR0912
+        **kwargs,
+    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+        """FRED Series Chart."""
+        ytitle_dict = {
+            "chg": "Change",
+            "ch1": "Change From Year Ago",
+            "pch": "Percent Change",
+            "pc1": "Percent Change From Year Ago",
+            "pca": "Compounded Annual Rate Of Change",
+            "cch": "Continuously Compounded Rate Of Change",
+            "cca": "Continuously Compounded Annual Rate Of Change",
+            "log": "Natural Log",
+        }
+
+        provider = kwargs.get("provider")
+
+        if provider != "fred":
+            raise RuntimeError(
+                f"This charting method does not support {provider}. Supported providers: fred."
+            )
+
+        columns = basemodel_to_df(kwargs["obbject_item"], index=None).columns.to_list()  # type: ignore
+
+        allow_unsafe = kwargs.get("allow_unsafe", False)
+        dropnan = kwargs.get("dropna", True)
+        normalize = kwargs.get("normalize", False)
+
+        data_cols = []
+        data = kwargs.get("data")
+
+        if isinstance(data, pd.DataFrame) and not data.empty:
+            data_cols = data.columns.to_list()
+            df_ta = data
+
+        else:
+            df_ta = basemodel_to_df(kwargs["obbject_item"], index="date")  # type: ignore
+
+        # Check for unsupported external data injection.
+        if allow_unsafe is False and data_cols:
+            for data_col in data_cols:
+                if data_col not in columns:
+                    raise RuntimeError(
+                        f"Column '{data_col}' was not found in the original data."
+                        + " External data injection is not supported unless `allow_unsafe = True`."
+                    )
+
+        # Align the data so each column has the same index and length.
+        if dropnan:
+            df_ta = df_ta.dropna(how="any")
+
+        if df_ta.empty or len(df_ta) < 2:
+            raise ValueError(
+                "No data is left after dropping NaN values. Try setting `dropnan = False`,"
+                + " or use the `frequency` parameter on request."
+            )
+
+        columns = df_ta.columns.to_list()
+
+        metadata = kwargs["extra"].get("results_metadata", {})  # type: ignore
+
+        # Check if the request was transformed by the FRED API.
+        params = kwargs["extra_params"] if kwargs.get("extra_params") else {}
+        has_params = hasattr(params, "transform") and params.transform is not None  # type: ignore
+
+        # Get a unique list of all units of measurement in the DataFrame.
+        y_units = list({metadata.get(col).get("units") for col in columns if col in metadata})  # type: ignore
+        if has_params is True and not y_units:
+            y_units = [ytitle_dict.get(params.transform)]  # type: ignore
+
+        if normalize or (
+            kwargs.get("bar") is True
+            and len(y_units) > 1
+            and (
+                has_params is False
+                or not any(
+                    i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]  # type: ignore
+                )
+            )
+        ):
+            normalize = True
+            df_ta = df_ta.apply(z_score_standardization)
+
+        if len(y_units) > 2 and has_params is False and allow_unsafe is False:
+            raise RuntimeError(
+                "This method supports up to 2 y-axis units."
+                + " Please use the 'transform' parameter, in the data request,"
+                + " to compare all series on the same scale, or set `normalize = True`."
+                + " Override this error by setting `allow_unsafe = True`."
+            )
+
+        y1_units = y_units[0] if y_units else None
+        y1title = y1_units
+        y2title = y_units[1] if len(y_units) > 1 else None
+        xtitle = str(kwargs.get("xtitle", ""))
+
+        # If the request was transformed, the y-axis will be shared under these conditions.
+        if has_params and any(
+            i in params.transform for i in ["pc1", "pch", "pca", "cch", "cca", "log"]  # type: ignore
+        ):
+            y1title = "Log" if params.transform == "Log" else "Percent"  # type: ignore
+            y2title = None
+
+        # Set the title for the chart.
+        title: str = ""
+        if isinstance(kwargs, dict) and title in kwargs:
+            title = kwargs["title"]  # type: ignore
+        else:
+            if metadata.get(columns[0]):  # type: ignore
+                title = metadata.get(columns[0]).get("title") if len(columns) == 1 else "FRED Series"  # type: ignore
+            else:
+                title = "FRED Series"
+            transform_title = ytitle_dict.get(params.transform) if has_params is True else ""  # type: ignore
+            title = f"{title} - {transform_title}" if transform_title else title
+
+        # Define this to use as a check.
+        y3title: Optional[str] = ""
+
+        if kwargs.get("plot_bar") is True or len(df_ta.index) < 100:
+            margin = dict(l=10, r=5, b=75 if xtitle else 30)
+            try:
+                if normalize:
+                    y1title = None
+                    title = f"{title} - Normalized" if title else "Normalized"
+                bar_mode = kwargs.get("barmode", "group")
+                fig = bar_chart(
+                    df_ta.reset_index(),
+                    "date",
+                    df_ta.columns.to_list(),
+                    title=title,
+                    xtitle=xtitle,
+                    ytitle=y1title,
+                    barmode=bar_mode,  # type: ignore
+                    layout_kwargs=dict(margin=margin),  # type: ignore
+                )
+                if kwargs.get("layout_kwargs"):
+                    fig.update_layout(kwargs.get("layout_kwargs"))
+
+                if kwargs.get("title"):
+                    fig.set_title(str(kwargs.get("title")))  # type: ignore
+
+                content = fig.to_plotly_json()
+
+                return fig, content  # type: ignore
+            except Exception as _:
+                warn("Bar chart failed. Attempting line chart.")
+
+        # Create the figure object with subplots.
+        fig = OpenBBFigure().create_subplots(
+            rows=1, cols=1, shared_xaxes=True, shared_yaxes=False
+        )
+
+        # For each series in the DataFrame, add a scatter plot.
+        for i, col in enumerate(df_ta.columns):
+
+            # Check if the y-axis should be shared for this series.
+            on_y1 = (
+                (
+                    metadata.get(col).get("units") == y1_units  # type: ignore
+                    or y2title is None  # type: ignore
+                    or kwargs.get("same_axis") is True
+                )
+                if metadata.get(col)  # type: ignore
+                else False
+            )
+            if normalize:
+                on_y1 = True
+
+            yaxes = "y2" if not on_y1 else "y1"
+            on_y3 = not metadata.get(col) and normalize is False  # type: ignore
+            if on_y3:
+                yaxes = "y3"
+                y3title = df_ta[col].name  # type: ignore
+            fig.add_scatter(
+                x=df_ta.index,
+                y=df_ta[col],
+                name=df_ta[col].name,
+                mode="lines",
+                hovertemplate=f"{df_ta[col].name}: %{{y}}<extra></extra>",
+                line=dict(width=2, color=LARGE_CYCLER[i % len(LARGE_CYCLER)]),
+                yaxis="y1" if kwargs.get("same_axis") is True else yaxes,
+            )
+
+        # Set the y-axis titles, if supplied.
+        if kwargs.get("y1title"):
+            y1title = kwargs.get("y1title")
+        if kwargs.get("y2title") and y2title is not None:
+            y2title = kwargs.get("y2title")
+        # Set the x-axis title, if suppiled.
+        if isinstance(kwargs, dict) and "xtitle" in kwargs:
+            xtitle = kwargs["xtitle"]
+        # If the data was normalized, set the title to reflect this.
+        if normalize:
+            y1title = None
+            y2title = None
+            y3title = None
+            title = f"{title} - Normalized" if title else "Normalized"
+
+        # Now update the layout of the complete figure.
+        fig.update_layout(
+            title=dict(text=title, x=0.5, font=dict(size=16)),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                xanchor="right",
+                y=1.02,
+                x=0.95,
+                bgcolor="rgba(0,0,0,0)",
+                font=dict(size=12),
+            ),
+            yaxis=(
+                dict(
+                    ticklen=0,
+                    side="right",
+                    showline=True,
+                    mirror=True,
+                    title=dict(text=y1title, standoff=30, font=dict(size=16)),
+                    tickfont=dict(size=14),
+                    anchor="x",
+                    gridcolor="rgba(128,128,128,0.3)",
+                )
+                if y1title
+                else None
+            ),
+            yaxis2=(
+                dict(
+                    overlaying="y",
+                    side="left",
+                    ticklen=0,
+                    showgrid=False,
+                    title=dict(
+                        text=y2title if y2title else None,
+                        standoff=10,
+                        font=dict(size=16),
+                    ),
+                    tickfont=dict(size=14),
+                    anchor="x",
+                )
+                if y2title
+                else None
+            ),
+            yaxis3=(
+                dict(
+                    overlaying="y",
+                    side="left",
+                    ticklen=0,
+                    position=0,
+                    showgrid=False,
+                    showticklabels=True,
+                    title=(
+                        dict(text=y3title, standoff=10, font=dict(size=16))
+                        if y3title
+                        else None
+                    ),
+                    tickfont=dict(size=12, color="rgba(128,128,128,0.9)"),
+                    anchor="free",
+                )
+                if y3title
+                else None
+            ),
+            xaxis=dict(
+                ticklen=0,
+                showgrid=True,
+                showline=True,
+                mirror=True,
+                title=(
+                    dict(text=xtitle, standoff=30, font=dict(size=16))
+                    if xtitle
+                    else None
+                ),
+                gridcolor="rgba(128,128,128,0.3)",
+                domain=[0.095, 0.95] if y3title else None,
+            ),
+            margin=(
+                dict(r=25, l=25, b=75 if xtitle else 30) if normalize is False else None
+            ),
+            autosize=True,
+            dragmode="pan",
+        )
+        if kwargs.get("layout_kwargs"):
+            fig.update_layout(kwargs.get("layout_kwargs"))
+        if kwargs.get("title"):
+            fig.set_title(str(kwargs.get("title")))
+        content = fig.to_plotly_json()
+
+        return fig, content

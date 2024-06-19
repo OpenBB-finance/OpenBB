@@ -1,5 +1,6 @@
 """Fixed Income Corporate Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -22,6 +23,12 @@ router = Router(prefix="/corporate")
         APIEx(parameters={"provider": "fred"}),
         APIEx(parameters={"index_type": "yield_to_worst", "provider": "fred"}),
     ],
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -41,6 +48,13 @@ async def ice_bofa(
 
 
 @router.command(
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/fixedincome/bond_indices` instead."
+        + " Set `category` to `us` and `index` to `seasoned_corporate`.",
+        since=(4, 2),
+        expected_removal=(4, 5),
+    ),
     model="MoodyCorporateBondIndex",
     examples=[
         APIEx(parameters={"provider": "fred"}),
@@ -113,7 +127,7 @@ async def spot_rates(
     model="CommercialPaper",
     examples=[
         APIEx(parameters={"provider": "fred"}),
-        APIEx(parameters={"maturity": "15d", "provider": "fred"}),
+        APIEx(parameters={"category": "all", "maturity": "15d", "provider": "fred"}),
     ],
 )
 async def commercial_paper(

@@ -20,6 +20,8 @@ class ROUTER_fixedincome_rate(Container):
     effr_forecast
     estr
     iorb
+    overnight_bank_funding
+    sofr
     sonia
     """
 
@@ -46,9 +48,9 @@ class ROUTER_fixedincome_rate(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Ameribor.
+        """AMERIBOR.
 
-        Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
+        AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
         short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
         American Financial Exchange (AFX).
 
@@ -61,13 +63,50 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
-            Period of AMERIBOR rate. (provider: fred)
+        maturity : Union[Literal['all', 'overnight', 'average_30d', 'average_90d', 'term_30d', 'term_90d'], str]
+            Period of AMERIBOR rate. Multiple comma separated items allowed. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[AMERIBOR]
+            results : List[Ameribor]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -78,18 +117,25 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        AMERIBOR
+        Ameribor
         --------
         date : date
             The date of the data.
-        rate : Optional[float]
-            AMERIBOR rate.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data.
+        maturity : str
+            Maturity length of the item.
+        rate : float
+            Interest rate.
+        title : Optional[str]
+            Title of the series.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.ameribor(provider='fred')
-        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma', provider='fred')
+        >>> # The change from one year ago is applied with the transform parameter.
+        >>> obb.fixedincome.rate.ameribor(maturity='all', transform='pc1', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -107,6 +153,7 @@ class ROUTER_fixedincome_rate(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                info={"maturity": {"fred": {"multiple_items_allowed": True}}},
             )
         )
 
@@ -310,8 +357,7 @@ class ROUTER_fixedincome_rate(Container):
         """Fed Funds Rate.
 
         Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-        domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-        United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+        domestic banks to borrow money. The rates central banks charge are set to stabilize the economy.
 
 
         Parameters
@@ -322,13 +368,50 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['federal_reserve', 'fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
-        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
-            Period of FED rate. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+        effr_only : bool
+            Return data without quantiles, target ranges, and volume. (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[FEDFUNDS]
+            results : List[FederalFundsRate]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fred']]
                 Provider name.
@@ -339,18 +422,40 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        FEDFUNDS
-        --------
+        FederalFundsRate
+        ----------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            FED rate.
+        rate : float
+            Effective federal funds rate.
+        target_range_upper : Optional[float]
+            Upper bound of the target range.
+        target_range_lower : Optional[float]
+            Lower bound of the target range.
+        percentile_1 : Optional[float]
+            1st percentile of the distribution.
+        percentile_25 : Optional[float]
+            25th percentile of the distribution.
+        percentile_75 : Optional[float]
+            75th percentile of the distribution.
+        percentile_99 : Optional[float]
+            99th percentile of the distribution.
+        volume : Optional[float]
+            The trading volume.The notional volume of transactions (Billions of $).
+        intraday_low : Optional[float]
+            Intraday low. This field is only present for data before 2016. (provider: federal_reserve)
+        intraday_high : Optional[float]
+            Intraday high. This field is only present for data before 2016. (provider: federal_reserve)
+        standard_deviation : Optional[float]
+            Standard deviation. This field is only present for data before 2016. (provider: federal_reserve)
+        revision_indicator : Optional[str]
+            Indicates a revision of the data for that date. (provider: federal_reserve)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.effr(provider='fred')
-        >>> obb.fixedincome.rate.effr(parameter='daily', provider='fred')
+        >>> obb.fixedincome.rate.effr(effr_only=True, provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -478,7 +583,7 @@ class ROUTER_fixedincome_rate(Container):
         The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
         the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
         the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
-        executed at arm’s length and thus reflect market rates in an unbiased way.
+        executed at arm's length and thus reflect market rates in an unbiased way.
 
 
         Parameters
@@ -489,13 +594,48 @@ class ROUTER_fixedincome_rate(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fred.
-        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
-            Period of ESTR rate. (provider: fred)
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
         OBBject
-            results : List[ESTR]
+            results : List[EuroShortTermRate]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -506,18 +646,30 @@ class ROUTER_fixedincome_rate(Container):
             extra : Dict[str, Any]
                 Extra info.
 
-        ESTR
-        ----
+        EuroShortTermRate
+        -----------------
         date : date
             The date of the data.
-        rate : Optional[float]
-            ESTR rate.
+        rate : float
+            Volume-weighted trimmed mean rate.
+        percentile_25 : Optional[float]
+            Rate at 25th percentile of volume.
+        percentile_75 : Optional[float]
+            Rate at 75th percentile of volume.
+        volume : Optional[float]
+            The trading volume. (Millions of €EUR).
+        transactions : Optional[int]
+            Number of transactions.
+        number_of_banks : Optional[int]
+            Number of active banks.
+        large_bank_share_of_volume : Optional[float]
+            The percent of volume attributable to the 5 largest active banks.
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.fixedincome.rate.estr(provider='fred')
-        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks', provider='fred')
+        >>> obb.fixedincome.rate.estr(transform='ch1', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -609,6 +761,271 @@ class ROUTER_fixedincome_rate(Container):
                         provider,
                         "fixedincome.rate.iorb",
                         ("fred",),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def overnight_bank_funding(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Overnight Bank Funding.
+
+        For the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of
+        overnight federal funds transactions and Eurodollar transactions reported in the
+        FR 2420 Report of Selected Money Market Rates.
+
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve', 'fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[OvernightBankFundingRate]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve', 'fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        OvernightBankFundingRate
+        ------------------------
+        date : date
+            The date of the data.
+        rate : float
+            Overnight Bank Funding Rate.
+        percentile_1 : Optional[float]
+            1st percentile of the distribution.
+        percentile_25 : Optional[float]
+            25th percentile of the distribution.
+        percentile_75 : Optional[float]
+            75th percentile of the distribution.
+        percentile_99 : Optional[float]
+            99th percentile of the distribution.
+        volume : Optional[float]
+            The trading volume.The notional volume of transactions (Billions of $).
+        revision_indicator : Optional[str]
+            Indicates a revision of the data for that date. (provider: federal_reserve)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.overnight_bank_funding(provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/rate/overnight_bank_funding",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "fixedincome.rate.overnight_bank_funding",
+                        ("federal_reserve", "fred"),
+                    )
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @exception_handler
+    @validate
+    def sofr(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="Start date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBField(description="End date of the data, in YYYY-MM-DD format."),
+        ] = None,
+        provider: Annotated[
+            Optional[Literal["federal_reserve", "fred"]],
+            OpenBBField(
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred."
+            ),
+        ] = None,
+        **kwargs
+    ) -> OBBject:
+        """Secured Overnight Financing Rate.
+
+        The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+        borrowing cash overnight collateralizing by Treasury securities.
+
+
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve', 'fred']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: federal_reserve, fred.
+        frequency : Optional[Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert daily data to lower frequency.
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Optional[Literal['avg', 'sum', 'eop']]
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Optional[Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']]
+
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[SOFR]
+                Serializable results.
+            provider : Optional[Literal['federal_reserve', 'fred']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
+
+        SOFR
+        ----
+        date : date
+            The date of the data.
+        rate : float
+            Effective federal funds rate.
+        percentile_1 : Optional[float]
+            1st percentile of the distribution.
+        percentile_25 : Optional[float]
+            25th percentile of the distribution.
+        percentile_75 : Optional[float]
+            75th percentile of the distribution.
+        percentile_99 : Optional[float]
+            99th percentile of the distribution.
+        volume : Optional[float]
+            The trading volume.The notional volume of transactions (Billions of $).
+        average_30d : Optional[float]
+            30-Day Average SOFR (provider: fred)
+        average_90d : Optional[float]
+            90-Day Average SOFR (provider: fred)
+        average_180d : Optional[float]
+            180-Day Average SOFR (provider: fred)
+        index : Optional[float]
+            SOFR index as 2018-04-02 = 1 (provider: fred)
+
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.sofr(provider='fred')
+        """  # noqa: E501
+
+        return self._run(
+            "/fixedincome/rate/sofr",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "fixedincome.rate.sofr",
+                        ("federal_reserve", "fred"),
                     )
                 },
                 standard_params={

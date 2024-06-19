@@ -7,6 +7,7 @@ from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.unemployment import (
     UnemploymentData,
@@ -86,13 +87,12 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
             except Exception as e:
                 if len(values) == 1:
                     raise e from e
-                else:
-                    warn(f"Invalid country: {v}. Skipping...")
-                    continue
+                warn(f"Invalid country: {v}. Skipping...")
+                continue
             result.append(v.lower())
         if result:
             return ",".join(result)
-        raise ValueError(f"No valid country found. -> {values}")
+        raise OpenBBError(f"No valid country found. -> {values}")
 
 
 class OECDUnemploymentData(UnemploymentData):
@@ -141,9 +141,9 @@ class OECDUnemploymentFetcher(
         def country_string(input_str: str):
             if input_str == "all":
                 return ""
-            countries = input_str.split(",")
+            _countries = input_str.split(",")
             return "+".join(
-                [COUNTRY_TO_CODE_UNEMPLOYMENT[country] for country in countries]
+                [COUNTRY_TO_CODE_UNEMPLOYMENT[country] for country in _countries]
             )
 
         country = country_string(query.country)
@@ -158,7 +158,7 @@ class OECDUnemploymentFetcher(
         headers = {"Accept": "application/vnd.sdmx.data+csv; charset=utf-8"}
         response = make_request(url, headers=headers, timeout=20)
         if response.status_code != 200:
-            raise Exception(f"Error: {response.status_code}")
+            raise OpenBBError(f"Error: {response.status_code} -> {response.text}")
         df = read_csv(StringIO(response.text)).get(
             ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )
@@ -177,6 +177,9 @@ class OECDUnemploymentFetcher(
             .reset_index()
         )
         df = df[(df["date"] <= query.end_date) & (df["date"] >= query.start_date)]
+
+        # in column "country" if NaN replace with "all"
+        df["country"] = df["country"].fillna("all")
 
         return df.to_dict(orient="records")
 

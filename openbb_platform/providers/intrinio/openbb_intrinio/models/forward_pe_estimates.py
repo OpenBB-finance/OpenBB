@@ -7,6 +7,7 @@ from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_pe_estimates import (
     ForwardPeEstimatesData,
@@ -108,7 +109,7 @@ class IntrinioForwardPeEstimatesFetcher(
             error = data.get("error", None)
             if error:
                 message = data.get("message", None)
-                raise RuntimeError(f"Error: {error} -> {message}")
+                raise OpenBBError(f"Error: {error} -> {message}")
             forward_pe = data.get("forward_pe")
             if forward_pe and len(forward_pe) > 0:  # type: ignore
                 results.extend(forward_pe)  # type: ignore

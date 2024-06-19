@@ -15,6 +15,7 @@ from openbb_core.provider.standard_models.options_chains import (
 from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
+from openbb_tmx.models.equity_quote import TmxEquityQuoteFetcher
 from openbb_tmx.utils.helpers import download_eod_chains, get_current_options
 from pydantic import Field, field_validator
 
@@ -47,12 +48,6 @@ class TmxOptionsChainsData(OptionsChainsData):
     )
     settlement_price: Optional[float] = Field(
         description="Settlement price on that date.", default=None
-    )
-    underlying_price: Optional[float] = Field(
-        description="Price of the underlying stock on that date.", default=None
-    )
-    dte: Optional[int] = Field(
-        description="Days to expiration for the option.", default=None
     )
 
     @field_validator("expiration", mode="before", check_fields=False)
@@ -89,6 +84,13 @@ class TmxOptionsChainsFetcher(
             )
         else:
             chains = await get_current_options(query.symbol, use_cache=query.use_cache)
+            underlying_quote = await TmxEquityQuoteFetcher.fetch_data(
+                {"symbol": query.symbol}, credentials
+            )
+            underlying_price = underlying_quote[0].last_price
+            if underlying_price and not chains.empty:
+                chains["underlying_price"] = underlying_price
+                chains["underlying_symbol"] = query.symbol + ":CA"
 
         if not chains.empty:
             results = chains.to_dict(orient="records")

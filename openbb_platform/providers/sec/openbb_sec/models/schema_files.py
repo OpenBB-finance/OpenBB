@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
@@ -43,7 +44,7 @@ class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesDat
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
         if query.url and ".xsd" in query.url or query.url and ".xml" in query.url:
-            raise ValueError("Invalid URL. This endpoint does not parse the files.")
+            raise OpenBBError("Invalid URL. This endpoint does not parse the files.")
         results = get_schema_filelist(query.query, query.url)
 
         return {"files": results}

@@ -1,4 +1,4 @@
-"""Main Indicators"""
+"""Main Indicators."""
 
 from datetime import datetime, timedelta
 from typing import Dict, List, Literal, Union
@@ -6,6 +6,7 @@ from typing import Dict, List, Literal, Union
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from numpy import arange
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_econdb.utils.helpers import COUNTRY_MAP, THREE_LETTER_ISO_MAP
@@ -102,15 +103,15 @@ async def get_main_indicators(  # pylint: disable=R0913,R0914,R0915
     if len(country) == 3:
         country = THREE_LETTER_ISO_MAP.get(country.upper())
         if not country:
-            raise ValueError(f"Error: Invalid country code -> {country}")
+            raise OpenBBError(f"Error: Invalid country code -> {country}")
     if country in COUNTRY_MAP:
         country = COUNTRY_MAP.get(country)
     if len(country) != 2:
-        raise ValueError(
+        raise OpenBBError(
             f"Error: Please supply a 2-Letter ISO Country Code -> {country}"
         )
     if country not in COUNTRY_MAP.values():
-        raise ValueError(f"Error: Invalid country code -> {country}")
+        raise OpenBBError(f"Error: Invalid country code -> {country}")
     parents_url = (
         "https://www.econdb.com/trends/country_forecast/"
         + f"?country={country}&freq={freq}&transform={transform}"

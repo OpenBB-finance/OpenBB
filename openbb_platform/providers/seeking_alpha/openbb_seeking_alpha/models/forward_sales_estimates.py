@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.forward_sales_estimates import (
     ForwardSalesEstimatesData,
@@ -34,7 +35,7 @@ class SAForwardSalesEstimatesQueryParams(ForwardSalesEstimatesQueryParams):
     def check_symbol(cls, value):
         """Check the symbol."""
         if not value:
-            raise RuntimeError("Error: Symbol is a required field for Seeking Alpha.")
+            raise OpenBBError("Symbol is a required field for Seeking Alpha.")
         return value
 
 
@@ -89,7 +90,7 @@ class SAForwardSalesEstimatesFetcher(
         )
         estimates = response.get("estimates", {})  # type: ignore
         if not estimates:
-            raise RuntimeError(f"No estimates data was returned for: {query.symbol}")
+            raise OpenBBError(f"No estimates data was returned for: {query.symbol}")
         output: Dict = {"ids": ids, "estimates": estimates}
 
         return output
@@ -102,14 +103,14 @@ class SAForwardSalesEstimatesFetcher(
     ) -> List[SAForwardSalesEstimatesData]:
         """Transform the data to the standard format."""
         tickers = query.symbol.split(",")
-        ids = data.get("ids")
-        estimates = data.get("estimates")
+        ids = data.get("ids", {})
+        estimates = data.get("estimates", {})
         results: List[SAForwardSalesEstimatesData] = []
         for ticker in tickers:
             sa_id = str(ids.get(ticker, ""))
             if sa_id == "" or sa_id not in estimates:
                 warn(f"Symbol Error: No data found for, {ticker}")
-            seek_object = estimates.get(sa_id)
+            seek_object = estimates.get(sa_id, {})
             items = len(seek_object["revenue_num_of_estimates"])
             for i in range(0, items - 4):
                 rev_estimates: Dict = {}
