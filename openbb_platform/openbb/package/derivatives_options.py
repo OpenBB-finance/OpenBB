@@ -266,7 +266,7 @@ class ROUTER_derivatives_options(Container):
         option_type : str
             The type of option.
         volume : Optional[int]
-            Total trade volume from the beginning of the session.
+            The trading volume.
         open_interest : Optional[int]
             Open interest at the time.
         last_price : Optional[float]
