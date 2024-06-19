@@ -436,9 +436,7 @@ class NasdaqEquityScreenerFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data from the Nasdaq Equity Screener."""
-        base_url = (
-            "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit=10000"
-        )
+        base_url = f"https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit={query.limit if query.limit else 10000}&"
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")
