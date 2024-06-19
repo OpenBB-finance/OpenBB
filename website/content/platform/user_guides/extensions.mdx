@@ -1,0 +1,311 @@
+---
+title: Extensions
+sidebar_position: 3
+description: This page describes the toolkit extensions available for the OpenBB Platform.
+keywords:
+- OpenBB Platform
+- Python client
+- Fast API
+- getting started
+- extensions
+- data providers
+- data extensions
+- toolkit extensions
+- toolkits
+- endpoints
+- community
+- technical analysis
+- quantitative analysis
+- charting libraries
+- Plotly
+- OpenBBFigure
+- PyWry
+---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+The extension framework allows individual pieces to be installed and removed seamlessly within the environment, using only the desired data and toolkit extensions.
+
+There are two primary types of extensions for the OpenBB Platform:
+
+- Data
+- Toolkits
+
+The OpenBB Core installation does not include any toolkit extensions. Install the OpenBB Platform with all data and toolkit extensions from PyPI with:
+
+```python
+pip install openbb[all]
+```
+
+When installing from source, navigate into the `openbb_platform` folder from the root of the project and enter:
+
+```console
+python dev_install.py -e
+```
+
+This installs all extensions in editable mode, and the Python interface is compiled in, `/openbb_platform/openbb/package`, instead of the environment's `site-packages` folder. The tables in the next pages lists extensions as either, Core or Community. The Core extensions are installed by default.
+
+A couple of notable differences between data and toolkit extension are:
+
+- In the OpenBB GitHub repo, extensions are all located under:
+
+    ```console
+    ~/OpenBBTerminal/openbb_platform/extensions
+    ```
+
+- An additional folder housing integration tests, with the `tests` folder staying empty.
+- There is a `router` file, and there can be sub-folders with additional routers.
+- Utility functions don't need their own sub-folder.
+- `__init__.py` files are all empty.
+
+## Data Extensions
+
+<details>
+
+
+Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform. Each source (provider) is its own independent extension, even if there is only one endpoint accessible. This allows every data source to be inserted or removed, at any time, without disturbing the operation of the Core components.
+
+Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed. Additional Python libraries will be installed, where required, by the extension.
+
+## Provider Coverage
+
+The total installed coverage can be determined through the Python interface, as a dictionary.
+
+```python
+from openbb import obb
+obb.coverage.providers
+```
+
+## Installation
+
+All data extensions are installed with similar syntax. Published data extensions will have names beginning with `openbb`. For example, yFinance.
+
+```console
+pip install openbb-yfinance
+```
+
+Additions and removals update the router automatically to reflect the changes when the Python interpreter is refreshed. Below is a list of data provider extensions.
+
+Uninstall any extension with `pip uninstall`.
+
+```console
+pip uninstall openbb-yfinance
+```
+
+## Available Data Extensions
+
+### Core `openbb` Providers
+
+These packages are what will be installed when `pip install openbb` is run
+
+| Extension Name | Description | Installation Command | Minimum Subscription Type Required |
+|----------------|-------------|----------------------|------------------------------------|
+| openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid |
+| openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free |
+| openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free |
+| openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid |
+| openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free |
+| openbb-polygon | [Polygon](https://polygon.io/) data connector | pip install openbb-polygon | Free |
+| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | None |
+| openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
+| openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
+| openbb-yfinance | [Yahoo Finance](https://finance.yahoo.com/) data connector | pip install openbb-yfinance | None |
+
+### Community Providers
+
+These packages are not installed when `pip install openbb` is run.  They are available for installation separately or by running `pip install openbb[all]`
+
+| Extension Name | Description | Installation Command | Minimum Subscription Type Required |
+|----------------|-------------|----------------------|------------------------------------|
+| openbb-alpha-vantage | [Alpha Vantage](https://www.alphavantage.co/) data connector | pip install openbb-alpha-vantage | Free |
+| openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
+| openbb-cboe | [Cboe](https://www.cboe.com/delayed_quotes/) data connector | pip install openbb-cboe | None |
+| openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None |
+| openbb-federal-reserve | [Federal Reserve](https://www.federalreserve.gov/) data connector | pip install openbb-federal-reserve | None |
+| openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free |
+| openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finviz | None |
+| openbb-government-us | [US Government](https://data.gov) data connector | pip install openbb-us-government | None |
+| openbb-nasdaq | [Nasdaq Data Link](https://data.nasdaq.com/) connector | pip install openbb-nasdaq | None / Free |
+| openbb-seeking-alpha | [Seeking Alpha](https://seekingalpha.com/) data connector | pip install openbb-seeking-alpha | None |
+| openbb-stockgrid | [Stockgrid](https://stockgrid.io) data connector | pip install openbb-stockgrid | None |
+| openbb-tmx | [TMX](https://money.tmx.com) data connector | pip install openbb-tmx | None |
+| openbb-tradier | [Tradier](https://tradier.com) data connector | pip install openbb-tradier | None |
+| openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector | pip install openbb-wsj | None |
+
+Have you published a data provider extension and want it featured on this list? Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion. Code contributions, for new and existing, data providers are always welcome.
+
+Search [PyPI](https://pypi.org/search/?q=openbb-) to find more extensions.
+
+
+</details>
+
+## Toolkit Extensions
+<details>
+
+OpenBB Toolkit Extensions expand the Platform with functions for manipulating data and preparing it for display. The Core Platform installation does not install any toolkit extensions. The table below is the current list of toolkit extensions.
+
+| Extension Name | Description | Installation Command | Core/Community | Router Path |
+|:-----------------|:-----------:|:-------------------:|:------------------:|-------------:|
+| openbb-charting | Rest API charting service and Plotly library. | pip install openbb-charting | Community | N/A |
+| openbb-devtools | Aggregates dependencies that facilitate a nice development experience for OpenBB. | pip install openbb-devtools | N/A |
+| openbb-econometrics | Econometrics models for the Python interface only. | pip install openbb-econometrics | Community | obb.econometrics |
+| openbb-quantitative | Functions for performing quantitative analysis. | pip install openbb-quantitative | Community | obb.quantitative |
+| openbb-technical | Functions for performing technical analysis. | pip install openbb-technical | Community | obb.technical |
+
+The sections below outline any specific installation considerations for the extension.
+
+## Charting
+
+The OpenBB Charting Extension supplies charting infrastructure and services to the OpenBB Platform. Figure objects are served via REST API or Python Client.  It utilizes [PyWry](https://github.com/OpenBB-finance/pywry) for handling the display of interactive charts and tables in a separate window, with a Plotly library.
+
+Functions with dedicated views return figures to the `chart` attribute of the `OBBject` response object. They are displayed with the class method, `show()`.
+
+:::tip
+The `openbb-charting` is an [`OBBject` extension](platform/getting_started/add_obbject_extension), which means the general functionality is exposed in every command result.
+:::
+
+The following packages are dependencies of the `openbb-charting` extension:
+
+- scipy
+- plotly
+- statsmodels
+- reportlab
+- pywry
+- svglib
+- nbformat
+- pandas-ta
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-charting
+```
+
+For more information check the documentation of the openbb-charting extension.
+
+## Devtools
+
+Please refer to the following PyPI distributed [package](https://pypi.org/project/openbb-devtools/).
+
+This Python package, `openbb-devtools`, is designed for OpenBB Platform Developers and contains a range of dependencies essential for robust and efficient software development.
+
+These dependencies cater to various aspects like code formatting, security analysis, type checking, testing, and kernel management.
+
+The inclusion of these packages ensures that the development process is streamlined, the code quality is maintained, and the software is secure and reliable.
+
+Included dependencies:
+
+- `ruff`: A fast Python linter focused on performance and simplicity.
+- `pylint`: A tool that checks for errors in Python code, enforces a coding standard, and looks for code smells.
+- `mypy`: A static type checker for Python, helping catch type errors during development.
+- `pydocstyle`: A linter for Python docstrings to ensure they meet certain style requirements.
+- `black`: An uncompromising Python code formatter, ensuring consistent code style.
+- `bandit`: A tool designed to find common security issues in Python code.
+- `pre-commit`: Manages and maintains pre-commit hooks that run checks before each commit, ensuring code quality.
+- `nox`: A generic virtualenv management and test command line tool for running tests in isolated environments.
+- `pytest`: A mature full-featured Python testing tool that helps in writing better programs.
+- `pytest-cov`: A plugin for pytest that measures code coverage during testing.
+- `ipykernel`: A package that provides the IPython kernel for Jupyter.
+- `types-python-dateutil`: Type stubs for python-dateutil, aiding in static type checking.
+- `types-toml`: Type stubs for TOML, useful for static type checking in TOML parsing.
+- `poetry`: A tool for dependency management and packaging in Python.
+
+Each dependency plays a critical role in ensuring the code is clean, efficient, and functional, ultimately leading to the development of high-quality software.
+
+While developing code for the OpenBB Platform, one should always install the DevTools packages so that the above development tooling is available out-of-the-box.
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-devtools
+```
+
+:::info
+When setting up the environment using the `openbb_platform/dev_install.py` script, the DevTools will also be installed.
+:::
+
+## Econometrics
+
+The `openbb-econometrics` extension installs a new router path (`obb.econometrics`) and additional Python libraries:
+
+- scipy
+- statsmodels
+- arch
+- linearmodels
+
+:::note
+
+Statsmodels requires a C compiler be present on the system. Follow the instructions [here](https://cython.readthedocs.io/en/latest/src/quickstart/install.html) for system-specific methods.
+
+This extension is not accessible via REST API because `statsmodels` is not serializable.
+:::
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-econometrics
+```
+
+To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/econometrics`, and enter:
+
+```console
+pip install -e .
+```
+
+After installation, the Python interface will automatically rebuild on initialization.
+
+## Quantitative
+
+The `openbb-quantitative` extension installs a new router path (`obb.quantitative`) and a few additional Python libraries:
+
+- pandas-ta
+- scipy
+- statsmodels
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-quantitative
+```
+
+To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/quantitative`, and enter:
+
+```console
+pip install -e .
+```
+
+After installation, the Python interface will automatically rebuild on initialization.
+
+## Technical
+
+The `openbb-technical` extension is for performing technical analysis on time series data. It installs a new router path (`obb.technical`) and some additional Python libraries:
+
+- pandas-ta
+- scikit-learn
+- scipy
+- statsmodels
+
+### Installation
+
+Install from PyPI with:
+
+```console
+pip install openbb-technical
+```
+
+To install from source in editable mode, navigate into the folder, `~/openbb_platform/extensions/technical`, and enter:
+
+```console
+pip install -e .
+```
+
+After installation, the Python interface will automatically rebuild on initialization.
+</details>
