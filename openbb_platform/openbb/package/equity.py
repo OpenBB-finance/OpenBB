@@ -14,6 +14,7 @@ class ROUTER_equity(Container):
     """/equity
     /calendar
     /compare
+    /darkpool
     /discovery
     /estimates
     /fundamental
@@ -44,6 +45,15 @@ class ROUTER_equity(Container):
         from . import equity_compare
 
         return equity_compare.ROUTER_equity_compare(command_runner=self._command_runner)
+
+    @property
+    def darkpool(self):
+        # pylint: disable=import-outside-toplevel
+        from . import equity_darkpool
+
+        return equity_darkpool.ROUTER_equity_darkpool(
+            command_runner=self._command_runner
+        )
 
     @property
     def discovery(self):
@@ -252,13 +262,13 @@ class ROUTER_equity(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBField(
-                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance."
+                description="Symbol to get data for. Multiple comma separated items allowed for provider(s): finviz, fmp, intrinio, tmx, yfinance."
             ),
         ],
         provider: Annotated[
-            Optional[Literal["fmp", "intrinio", "yfinance"]],
+            Optional[Literal["finviz", "fmp", "intrinio", "tmx", "yfinance"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: finviz, fmp, intrinio, tmx, yfinance."
             ),
         ] = None,
         **kwargs
@@ -268,16 +278,16 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple comma separated items allowed for provider(s): fmp, intrinio, yfinance.
-        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, intrinio, yfinance.
+            Symbol to get data for. Multiple comma separated items allowed for provider(s): finviz, fmp, intrinio, tmx, yfinance.
+        provider : Optional[Literal['finviz', 'fmp', 'intrinio', 'tmx', 'yfinance']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: finviz, fmp, intrinio, tmx, yfinance.
 
         Returns
         -------
         OBBject
             results : List[EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
+            provider : Optional[Literal['finviz', 'fmp', 'intrinio', 'tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -364,6 +374,33 @@ class ROUTER_equity(Container):
             Date of the company's first stock price.
         last_stock_price_date : Optional[date]
             Date of the company's last stock price.
+        index : Optional[str]
+            Included in indices - i.e., Dow, Nasdaq, or S&P. (provider: finviz)
+        optionable : Optional[str]
+            Whether options trade against the ticker. (provider: finviz)
+        shortable : Optional[str]
+            If the asset is shortable. (provider: finviz)
+        shares_outstanding : Optional[Union[str, int]]
+            The number of shares outstanding, as an abbreviated string. (provider: finviz);
+            The number of listed shares outstanding. (provider: tmx);
+            The number of listed shares outstanding. (provider: yfinance)
+        shares_float : Optional[Union[str, int]]
+            The number of shares in the public float, as an abbreviated string. (provider: finviz);
+            The number of shares in the public float. (provider: yfinance)
+        short_interest : Optional[str]
+            The last reported number of shares sold short, as an abbreviated string. (provider: finviz)
+        institutional_ownership : Optional[float]
+            The institutional ownership of the stock, as a normalized percent. (provider: finviz)
+        market_cap : Optional[int]
+            The market capitalization of the stock, as an abbreviated string. (provider: finviz);
+            Market capitalization of the company. (provider: fmp);
+            The market capitalization of the asset. (provider: yfinance)
+        dividend_yield : Optional[float]
+            The dividend yield of the stock, as a normalized percent. (provider: finviz, yfinance)
+        earnings_date : Optional[str]
+            The last, or next confirmed, earnings date and announcement time, as a string. The format is Nov 02 AMC - for after market close. (provider: finviz)
+        beta : Optional[float]
+            The beta of the stock relative to the broad market. (provider: finviz, fmp, yfinance)
         is_etf : Optional[bool]
             If the symbol is an ETF. (provider: fmp)
         is_actively_trading : Optional[bool]
@@ -376,9 +413,6 @@ class ROUTER_equity(Container):
             Image of the company. (provider: fmp)
         currency : Optional[str]
             Currency in which the stock is traded. (provider: fmp, yfinance)
-        market_cap : Optional[int]
-            Market capitalization of the company. (provider: fmp);
-            The market capitalization of the asset. (provider: yfinance)
         last_price : Optional[float]
             The last traded price. (provider: fmp)
         year_high : Optional[float]
@@ -389,26 +423,26 @@ class ROUTER_equity(Container):
             Average daily trading volume. (provider: fmp)
         annualized_dividend_amount : Optional[float]
             The annualized dividend payment based on the most recent regular dividend payment. (provider: fmp)
-        beta : Optional[float]
-            Beta of the stock relative to the market. (provider: fmp, yfinance)
         id : Optional[str]
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
+        email : Optional[str]
+            The email of the company. (provider: tmx)
+        issue_type : Optional[str]
+            The issuance type of the asset. (provider: tmx, yfinance)
+        shares_escrow : Optional[int]
+            The number of shares held in escrow. (provider: tmx)
+        shares_total : Optional[int]
+            The total number of shares outstanding from all classes. (provider: tmx)
+        dividend_frequency : Optional[str]
+            The dividend frequency. (provider: tmx)
         exchange_timezone : Optional[str]
             The timezone of the exchange. (provider: yfinance)
-        issue_type : Optional[str]
-            The issuance type of the asset. (provider: yfinance)
-        shares_outstanding : Optional[int]
-            The number of listed shares outstanding. (provider: yfinance)
-        shares_float : Optional[int]
-            The number of shares in the public float. (provider: yfinance)
         shares_implied_outstanding : Optional[int]
             Implied shares outstanding of common equityassuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
         shares_short : Optional[int]
             The reported number of shares short. (provider: yfinance)
-        dividend_yield : Optional[float]
-            The dividend yield of the asset, as a normalized percent. (provider: yfinance)
 
         Examples
         --------
@@ -423,7 +457,7 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.profile",
-                        ("fmp", "intrinio", "yfinance"),
+                        ("finviz", "fmp", "intrinio", "tmx", "yfinance"),
                     )
                 },
                 standard_params={
@@ -432,8 +466,10 @@ class ROUTER_equity(Container):
                 extra_params=kwargs,
                 info={
                     "symbol": {
+                        "finviz": {"multiple_items_allowed": True},
                         "fmp": {"multiple_items_allowed": True},
                         "intrinio": {"multiple_items_allowed": True},
+                        "tmx": {"multiple_items_allowed": True},
                         "yfinance": {"multiple_items_allowed": True},
                     }
                 },
@@ -445,9 +481,9 @@ class ROUTER_equity(Container):
     def screener(
         self,
         provider: Annotated[
-            Optional[Literal["fmp"]],
+            Optional[Literal["fmp", "nasdaq"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, nasdaq."
             ),
         ] = None,
         **kwargs
@@ -459,8 +495,8 @@ class ROUTER_equity(Container):
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp.
+        provider : Optional[Literal['fmp', 'nasdaq']]
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: fmp, nasdaq.
         mktcap_min : Optional[int]
             Filter by market cap greater than this value. (provider: fmp)
         mktcap_max : Optional[int]
@@ -485,23 +521,43 @@ class ROUTER_equity(Container):
             If true, returns only ETFs. (provider: fmp)
         is_active : Optional[bool]
             If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates']]
-            Filter by sector. (provider: fmp)
+        sector : Optional[Union[Literal['consumer_cyclical', 'energy', 'technology', 'industrials', 'financial_services', 'basic_materials', 'communication_services', 'consumer_defensive', 'healthcare', 'real_estate', 'utilities', 'industrial_goods', 'financial', 'services', 'conglomerates'], Literal['all', 'energy', 'basic_materials', 'industrials', 'consumer_staples', 'consumer_discretionary', 'health_care', 'finance', 'technology', 'telecommunications', 'utilities', 'real_estate'], str]]
+            Filter by sector. (provider: fmp);
+            Filter by sector. Multiple comma separated items allowed. (provider: nasdaq)
         industry : Optional[str]
             Filter by industry. (provider: fmp)
-        country : Optional[str]
-            Filter by country, as a two-letter country code. (provider: fmp)
-        exchange : Optional[Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']]
-            Filter by exchange. (provider: fmp)
+        country : Optional[Union[str, Literal['all', 'argentina', 'armenia', 'australia', 'austria', 'belgium', 'bermuda', 'brazil', 'canada', 'cayman_islands', 'chile', 'colombia', 'costa_rica', 'curacao', 'cyprus', 'denmark', 'finland', 'france', 'germany', 'greece', 'guernsey', 'hong_kong', 'india', 'indonesia', 'ireland', 'isle_of_man', 'israel', 'italy', 'japan', 'jersey', 'luxembourg', 'macau', 'mexico', 'monaco', 'netherlands', 'norway', 'panama', 'peru', 'philippines', 'puerto_rico', 'russia', 'singapore', 'south_africa', 'south_korea', 'spain', 'sweden', 'switzerland', 'taiwan', 'turkey', 'united_kingdom', 'united_states', 'usa']]]
+            Filter by country, as a two-letter country code. (provider: fmp);
+            Filter by country. Multiple comma separated items allowed. (provider: nasdaq)
+        exchange : Optional[Union[Literal['amex', 'ams', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'mutual_fund', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra'], Literal['all', 'nasdaq', 'nyse', 'amex'], str]]
+            Filter by exchange. (provider: fmp);
+            Filter by exchange. Multiple comma separated items allowed. (provider: nasdaq)
         limit : Optional[int]
             Limit the number of results to return. (provider: fmp)
+        exsubcategory : Union[Literal['all', 'ngs', 'ngm', 'ncm', 'adr'], str]
+            Filter by exchange subcategory.
+            NGS - Nasdaq Global Select Market
+            NGM - Nasdaq Global Market
+            NCM - Nasdaq Capital Market
+            ADR - American Depository Receipt Multiple comma separated items allowed. (provider: nasdaq)
+        mktcap : Union[Literal['all', 'mega', 'large', 'mid', 'small', 'micro'], str]
+            Filter by market cap.
+            Mega - > 200B
+            Large - 10B - 200B
+            Mid - 2B - 10B
+            Small - 300M - 2B
+            Micro - 50M - 300M Multiple comma separated items allowed. (provider: nasdaq)
+        recommendation : Union[Literal['all', 'strong_buy', 'buy', 'hold', 'sell', 'strong_sell'], str]
+            Filter by consensus analyst action. Multiple comma separated items allowed. (provider: nasdaq)
+        region : Union[Literal['all', 'africa', 'asia', 'australia_and_south_pacific', 'caribbean', 'europe', 'middle_east', 'north_america', 'south_america'], str]
+            Filter by region. Multiple comma separated items allowed. (provider: nasdaq)
 
         Returns
         -------
         OBBject
             results : List[EquityScreener]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'nasdaq']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -517,7 +573,8 @@ class ROUTER_equity(Container):
         name : str
             Name of the company.
         market_cap : Optional[int]
-            The market cap of ticker. (provider: fmp)
+            The market cap of ticker. (provider: fmp);
+            Market cap. (provider: nasdaq)
         sector : Optional[str]
             The sector the ticker belongs to. (provider: fmp)
         industry : Optional[str]
@@ -540,6 +597,12 @@ class ROUTER_equity(Container):
             Whether the ticker is an ETF. (provider: fmp)
         actively_trading : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
+        last_price : Optional[float]
+            Last sale price. (provider: nasdaq)
+        change : Optional[float]
+            1-day change in price. (provider: nasdaq)
+        change_percent : Optional[float]
+            1-day percent change in price. (provider: nasdaq)
 
         Examples
         --------
@@ -554,11 +617,20 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.screener",
-                        ("fmp",),
+                        ("fmp", "nasdaq"),
                     )
                 },
                 standard_params={},
                 extra_params=kwargs,
+                info={
+                    "sector": {"nasdaq": {"multiple_items_allowed": True}},
+                    "country": {"nasdaq": {"multiple_items_allowed": True}},
+                    "exchange": {"nasdaq": {"multiple_items_allowed": True}},
+                    "exsubcategory": {"nasdaq": {"multiple_items_allowed": True}},
+                    "mktcap": {"nasdaq": {"multiple_items_allowed": True}},
+                    "recommendation": {"nasdaq": {"multiple_items_allowed": True}},
+                    "region": {"nasdaq": {"multiple_items_allowed": True}},
+                },
             )
         )
 
@@ -574,9 +646,9 @@ class ROUTER_equity(Container):
             Optional[bool], OpenBBField(description="Whether to use the cache or not.")
         ] = True,
         provider: Annotated[
-            Optional[Literal["intrinio", "sec"]],
+            Optional[Literal["cboe", "intrinio", "nasdaq", "sec", "tmx", "tradier"]],
             OpenBBField(
-                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec."
+                description="The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, nasdaq, sec, tmx, tradier."
             ),
         ] = None,
         **kwargs
@@ -591,12 +663,14 @@ class ROUTER_equity(Container):
             Whether to search by ticker symbol.
         use_cache : Optional[bool]
             Whether to use the cache or not.
-        provider : Optional[Literal['intrinio', 'sec']]
-            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: intrinio, sec.
+        provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx', 'tra...
+            The provider to use, by default None. If None, the priority list configured in the settings is used. Default priority: cboe, intrinio, nasdaq, sec, tmx, tradier.
         active : Optional[bool]
             When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
+        is_etf : Optional[bool]
+            If True, returns ETFs. (provider: nasdaq)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
 
@@ -605,7 +679,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquitySearch]
                 Serializable results.
-            provider : Optional[Literal['intrinio', 'sec']]
+            provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx', 'tradier']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -620,6 +694,10 @@ class ROUTER_equity(Container):
             Symbol representing the entity requested in the data.
         name : Optional[str]
             Name of the company.
+        dpm_name : Optional[str]
+            Name of the primary market maker. (provider: cboe)
+        post_station : Optional[str]
+            Post and station location on the CBOE trading floor. (provider: cboe)
         cik : Optional[str]
             ;
             Central Index Key (provider: sec)
@@ -627,11 +705,35 @@ class ROUTER_equity(Container):
             The Legal Entity Identifier (LEI) of the company. (provider: intrinio)
         intrinio_id : Optional[str]
             The Intrinio ID of the company. (provider: intrinio)
+        nasdaq_traded : Optional[str]
+            Is Nasdaq traded? (provider: nasdaq)
+        exchange : Optional[str]
+            Primary Exchange (provider: nasdaq);
+            Exchange where the security is listed. (provider: tradier)
+        market_category : Optional[str]
+            Market Category (provider: nasdaq)
+        etf : Optional[str]
+            Is ETF? (provider: nasdaq)
+        round_lot_size : Optional[float]
+            Round Lot Size (provider: nasdaq)
+        test_issue : Optional[str]
+            Is test Issue? (provider: nasdaq)
+        financial_status : Optional[str]
+            Financial Status (provider: nasdaq)
+        cqs_symbol : Optional[str]
+            CQS Symbol (provider: nasdaq)
+        nasdaq_symbol : Optional[str]
+            NASDAQ Symbol (provider: nasdaq)
+        next_shares : Optional[str]
+            Is NextShares? (provider: nasdaq)
+        security_type : Optional[Literal['stock', 'option', 'etf', 'index', 'mutual_fund']]
+            Type of security. (provider: tradier)
 
         Examples
         --------
         >>> from openbb import obb
         >>> obb.equity.search(provider='intrinio')
+        >>> obb.equity.search(query='AAPL', is_symbol=False, use_cache=True, provider='nasdaq')
         """  # noqa: E501
 
         return self._run(
@@ -641,7 +743,7 @@ class ROUTER_equity(Container):
                     "provider": self._get_provider(
                         provider,
                         "equity.search",
-                        ("intrinio", "sec"),
+                        ("cboe", "intrinio", "nasdaq", "sec", "tmx", "tradier"),
                     )
                 },
                 standard_params={
