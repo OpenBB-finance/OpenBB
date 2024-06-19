@@ -339,7 +339,7 @@ class Charting:
             charting_function = self._get_chart_function(
                 self._obbject._route  # pylint: disable=protected-access
             )
-            kwargs["obbject_item"] = self._obbject
+            kwargs["obbject_item"] = self._obbject.results
             kwargs["charting_settings"] = self._charting_settings  #
             kwargs["standard_params"] = (
                 self._obbject._standard_params  # pylint: disable=protected-access
