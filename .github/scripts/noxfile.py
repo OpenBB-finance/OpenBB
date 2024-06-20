@@ -35,8 +35,6 @@ def unit_test_platform(session):
         "-m",
         "not integration",
         "-s",
-        "-k",
-        "test_api_interface_integration_test_params",
     )
     # session.run(
     #     "pytest",
