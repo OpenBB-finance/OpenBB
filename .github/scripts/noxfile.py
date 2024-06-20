@@ -29,7 +29,7 @@ def unit_test_platform(session):
     session.run(
         "pytest",
         Path(
-            ROOT_DIR, "openbb_platform/extensions/tests/test_integration_tests_api.py"
+            ROOT_DIR, "openbb_platform/tests"
         ),
         "-m",
         "not integration",
