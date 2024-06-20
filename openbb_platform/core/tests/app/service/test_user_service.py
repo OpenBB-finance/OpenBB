@@ -10,15 +10,15 @@ from openbb_core.app.service.user_service import (
 )
 
 
-def test_read_default_user_settings_file_exists():
+def test_read_from_file_file_exists():
     """Test read default user settings."""
-    result = UserService.read_default_user_settings(path=Path("some_path"))
+    result = UserService.read_from_file(path=Path("some_path"))
 
     assert result
     assert isinstance(result, UserSettings)
 
 
-def test_write_default_user_settings():
+def test_write_to_file():
     """Test write default user settings."""
     # Create a temporary file for this test
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
@@ -31,7 +31,7 @@ def test_write_default_user_settings():
     user_settings.defaults = {"language": "en"}  # type: ignore[assignment]
 
     # Write the user settings to the temporary file
-    UserService.write_default_user_settings(user_settings, temp_path)
+    UserService.write_to_file(user_settings, temp_path)
 
     # Read the file and verify its contents
     with open(temp_path, encoding="utf-8") as file:
