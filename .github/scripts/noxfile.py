@@ -27,7 +27,12 @@ def unit_test_platform(session):
     session.install("pytest")
     session.install("pytest-cov")
     session.run(
-        "pytest", *PLATFORM_TESTS, f"--cov={PLATFORM_DIR}", "-m", "not integration"
+        "pytest",
+        *PLATFORM_TESTS,
+        f"--cov={PLATFORM_DIR}",
+        "-m",
+        "not integration",
+        "-s",
     )
 
 
