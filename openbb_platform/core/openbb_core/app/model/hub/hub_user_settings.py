@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class HubUserSettings(BaseModel):
@@ -14,3 +14,9 @@ class HubUserSettings(BaseModel):
     # features_terminal_style: Dict[str, Union[str, Dict[str, str]]]
 
     model_config = ConfigDict(validate_assignment=True)
+
+    @field_validator("features_keys", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, d: dict) -> dict:
+        """Convert dict keys to lowercase."""
+        return {k.lower(): v for k, v in d.items()}
