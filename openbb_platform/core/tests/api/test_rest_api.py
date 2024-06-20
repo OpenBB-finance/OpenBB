@@ -1,7 +1,6 @@
 """Test rest_api.py."""
 
 import pytest
-from openbb_core.api.rest_api import app
 
 
 @pytest.mark.skip(
@@ -9,4 +8,7 @@ from openbb_core.api.rest_api import app
 )
 def test_openapi():
     """Test openapi schema generation."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.api.rest_api import app
+
     assert app.openapi()
