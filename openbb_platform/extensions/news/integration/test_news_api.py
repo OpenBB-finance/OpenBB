@@ -73,10 +73,8 @@ def headers():
         (
             {
                 "provider": "biztoc",
-                "filter": "tag",
-                "tag": "federalreserve",
-                "source": "bloomberg",
-                "term": "MSFT",
+                "source": None,
+                "term": "microsoft",
                 "start_date": None,
                 "end_date": None,
             }

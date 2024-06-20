@@ -1,10 +1,10 @@
-name: Draft release
+name: 📝 Draft release changelog
 
 on:
   workflow_dispatch:
     inputs:
       release_pr_number:
-        description: "Release PR Number"
+        description: "Previous Release PR Number"
         required: true
         default: ""
       tag:
