@@ -1399,6 +1399,10 @@ def test_equity_search(params, obb):
         (
             {
                 "sector": "consumer_staples,consumer_discretionary",
+                "exchange": "all",
+                "exsubcategory": "all",
+                "region": "all",
+                "country": "all",
                 "mktcap": "large",
                 "limit": None,
                 "provider": "nasdaq",
