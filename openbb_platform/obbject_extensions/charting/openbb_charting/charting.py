@@ -26,7 +26,7 @@ from openbb_core.provider.abstract.data import Data
 from plotly.graph_objs import Figure
 
 from openbb_charting.charts.generic_charts import bar_chart, line_chart
-from openbb_charting.charts.helpers import get_charting_functions
+from openbb_charting.charts.helpers import get_charting_functions, get_charting_functions_list
 from openbb_charting.core.backend import Backend, create_backend, get_backend
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.query_params import ChartParams, IndicatorsParams
@@ -88,7 +88,7 @@ class Charting:
         """Return a list of the available functions."""
         functions: List[str] = []
         for view in cls._extension_views:
-            functions.extend(get_charting_functions(view))
+            functions.extend(get_charting_functions_list(view))
 
         return functions
 
@@ -96,7 +96,7 @@ class Charting:
         """Return a dict with the available functions."""
         functions: Dict[str, Callable] = {}
         for view in self._extension_views:
-            functions.update(get_charting_functions(view, with_objects=True))
+            functions.update(get_charting_functions(view))
 
         return functions
 
