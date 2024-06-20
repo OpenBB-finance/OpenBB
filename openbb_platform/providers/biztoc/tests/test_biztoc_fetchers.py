@@ -21,7 +21,7 @@ def vcr_config():
 @pytest.mark.record_http
 def test_biztoc_world_news_fetcher(credentials=test_credentials):
     """Test the Biztoc World News fetcher."""
-    params = {"term": "earnings"}
+    params = {"source": "bloomberg"}
 
     fetcher = BiztocWorldNewsFetcher()
     result = fetcher.test(params, credentials)

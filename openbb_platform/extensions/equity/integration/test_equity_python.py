@@ -1404,6 +1404,7 @@ def test_equity_search(params, obb):
                 "region": "all",
                 "country": "all",
                 "mktcap": "large",
+                "recommendation": "all",
                 "limit": None,
                 "provider": "nasdaq",
             }
