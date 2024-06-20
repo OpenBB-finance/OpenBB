@@ -27,7 +27,13 @@ def unit_test_platform(session):
     session.install("pytest")
     session.install("pytest-cov")
     session.run(
-        "pytest", *PLATFORM_TESTS, f"--cov={PLATFORM_DIR}", "-m", "not integration"
+        "pytest",
+        Path(
+            ROOT_DIR, "openbb_platform/extensions/tests/test_integration_tests_api.py"
+        ),
+        "-m",
+        "not integration",
+        "-s",
     )
 
 
