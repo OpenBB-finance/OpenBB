@@ -22,14 +22,14 @@ class HubService:
     TIMEOUT = 10
     # Mapping of V3 keys to V4 keys for backward compatibility
     V3TOV4 = {
-        "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
-        "API_BIZTOC_TOKEN": "biztoc_api_key",
-        "API_FRED_KEY": "fred_api_key",
-        "API_KEY_FINANCIALMODELINGPREP": "fmp_api_key",
-        "API_INTRINIO_KEY": "intrinio_api_key",
-        "API_POLYGON_KEY": "polygon_api_key",
-        "API_KEY_QUANDL": "nasdaq_api_key",
-        "API_TRADIER_TOKEN": "tradier_api_key",
+        "api_key_alphavantage": "alpha_vantage_api_key",
+        "api_biztoc_token": "biztoc_api_key",
+        "api_fred_key": "fred_api_key",
+        "api_key_financialmodelingprep": "fmp_api_key",
+        "api_intrinio_key": "intrinio_api_key",
+        "api_polygon_key": "polygon_api_key",
+        "api_key_quandl": "nasdaq_api_key",
+        "api_tradier_token": "tradier_api_key",
     }
     V4TOV3 = {v: k for k, v in V3TOV4.items()}
 
@@ -230,13 +230,13 @@ class HubService:
 
     def hub2platform(self, settings: HubUserSettings) -> Tuple[Credentials, Defaults]:
         """Convert Hub user settings to Platform models."""
-        if any(k in settings.features_keys for k in self.V3TOV4):
-            deprecated = {
-                k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
-            }
+        deprecated = {
+            k: v for k, v in self.V3TOV4.items() if k in settings.features_keys
+        }
+        if deprecated:
             msg = ""
             for k, v in deprecated.items():
-                msg += f"\n'{k}' -> '{v.upper()}', "
+                msg += f"\n'{k.upper()}' -> '{v.upper()}', "
             msg = msg.strip(", ")
             warn(
                 message=f"\nDeprecated v3 credentials found.\n{msg}"
