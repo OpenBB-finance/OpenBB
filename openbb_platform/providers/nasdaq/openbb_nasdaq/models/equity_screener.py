@@ -27,7 +27,7 @@ SECTOR_CHOICES = [
     "consumer_staples",
     "consumer_discretionary",
     "health_care",
-    "finance",
+    "financial_services",
     "technology",
     "communication_services",
     "utilities",
@@ -158,9 +158,9 @@ class NasdaqEquityScreenerQueryParams(EquityScreenerQueryParams):
             "consumer_staples",
             "consumer_discretionary",
             "health_care",
-            "finance",
+            "financial_services",
             "technology",
-            "telecommunications",
+            "communication_services",
             "utilities",
             "real_estate",
         ],
@@ -441,9 +441,11 @@ class NasdaqEquityScreenerFetcher(
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")
         recommendation = query.recommendation.split(",")
-        sector = query.sector.replace(
-            "communications_services", "telecommunications"
-        ).split(",")
+        sector = (
+            query.sector.replace("communications_services", "telecommunications")
+            .replace("financial_services", "finance")
+            .split(",")
+        )
         region = query.region.split(",")
         country = query.country.split(",")
         params = dict(
