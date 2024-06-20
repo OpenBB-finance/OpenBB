@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-derivatives"
-version = "1.2.3"
+version = "1.2.4"
 description = "Derivatives extension for OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 license = "AGPL-3.0-only"
