@@ -1462,6 +1462,19 @@ def test_equity_search(params, headers):
                 "provider": "fmp",
             }
         ),
+        (
+            {
+                "sector": "consumer_staples,consumer_discretionary",
+                "exchange": "all",
+                "exsubcategory": "all",
+                "region": "all",
+                "country": "all",
+                "mktcap": "large",
+                "recommendation": "all",
+                "limit": None,
+                "provider": "nasdaq",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
