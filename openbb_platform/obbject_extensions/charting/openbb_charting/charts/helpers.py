@@ -1,19 +1,15 @@
 """Helper functions for charting."""
 
 from inspect import getmembers, getsource, isfunction
-from typing import Callable, Dict, List, Type, Union
+from typing import Callable, Dict, List, Type
 
 import pandas as pd
 from pandas_ta import candles
 
 
-def get_charting_functions(
-    view: Type, with_objects: bool = False
-) -> Union[List[str], Dict[str, Callable]]:
+def get_charting_functions(view: Type) -> Dict[str, Callable]:
     """Discover charting functions."""
-    implemented_functions: Union[List[str], Dict[str, Callable]] = (
-        [] if not with_objects else {}
-    )
+    implemented_functions: Dict[str, Callable] = {}
 
     for name, obj in getmembers(view, isfunction):
         if (
@@ -21,12 +17,14 @@ def get_charting_functions(
             and not name.startswith("_")
             and "NotImplementedError" not in getsource(obj)
         ):
-            if with_objects:
-                implemented_functions[name] = obj
-            else:
-                implemented_functions.append(name)
+            implemented_functions[name] = obj
 
     return implemented_functions
+
+
+def get_charting_functions_list(view: Type) -> List[str]:
+    """Get a list of all the charting functions."""
+    return list(get_charting_functions(view).keys())
 
 
 def z_score_standardization(data: pd.Series) -> pd.Series:
