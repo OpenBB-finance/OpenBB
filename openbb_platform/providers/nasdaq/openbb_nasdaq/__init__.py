@@ -8,6 +8,7 @@ from openbb_nasdaq.models.cot import NasdaqCotFetcher
 from openbb_nasdaq.models.cot_search import NasdaqCotSearchFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
 from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
+from openbb_nasdaq.models.equity_screener import NasdaqEquityScreenerFetcher
 from openbb_nasdaq.models.historical_dividends import NasdaqHistoricalDividendsFetcher
 from openbb_nasdaq.models.lbma_fixing import NasdaqLbmaFixingFetcher
 from openbb_nasdaq.models.sp500_multiples import NasdaqSP500MultiplesFetcher
@@ -28,6 +29,7 @@ unmatched technology, insights and markets expertise.""",
         "COTSearch": NasdaqCotSearchFetcher,
         "EconomicCalendar": NasdaqEconomicCalendarFetcher,
         "EquitySearch": NasdaqEquitySearchFetcher,
+        "EquityScreener": NasdaqEquityScreenerFetcher,
         "HistoricalDividends": NasdaqHistoricalDividendsFetcher,
         "LbmaFixing": NasdaqLbmaFixingFetcher,
         "SP500Multiples": NasdaqSP500MultiplesFetcher,
