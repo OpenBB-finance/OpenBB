@@ -15,7 +15,7 @@ CLI_LOCK = CLI_PATH / "poetry.lock"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
-python = ">=3.9,<3.12"
+python = ">=3.10,<3.12"
 openbb-devtools = { path = "./extensions/devtools", develop = true }
 openbb-core = { path = "./core", develop = true }
 
