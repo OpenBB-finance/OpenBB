@@ -66,9 +66,9 @@ class SystemSettings(Tagged):
         )
 
     @staticmethod
-    def create_empty_json(path: Path) -> None:
+    def create_json(path: Path, template: Optional[dict] = None) -> None:
         """Create an empty JSON file."""
-        path.write_text(json.dumps({}), encoding="utf-8")
+        path.write_text(json.dumps(obj=template or {}, indent=4), encoding="utf-8")
 
     # TODO: Figure out why this works only opposite to what the docs say
     # https://docs.pydantic.dev/latest/concepts/validators/#model-validators
@@ -82,9 +82,14 @@ class SystemSettings(Tagged):
         system_settings = Path(values.system_settings_path).resolve()
         obb_dir.mkdir(parents=True, exist_ok=True)
 
-        for path in [user_settings, system_settings]:
-            if not path.exists():
-                cls.create_empty_json(path)
+        if not user_settings.exists():
+            cls.create_json(
+                user_settings,
+                {"credentials": {}, "preferences": {}, "defaults": {"commands": {}}},
+            )
+
+        if not system_settings.exists():
+            cls.create_json(system_settings, {})
 
         return values
 

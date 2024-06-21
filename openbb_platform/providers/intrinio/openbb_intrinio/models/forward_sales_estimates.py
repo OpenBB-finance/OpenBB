@@ -35,7 +35,7 @@ class IntrinioForwardSalesEstimatesQueryParams(ForwardSalesEstimatesQueryParams)
         description="The future fiscal year to retrieve estimates for."
         + " When no symbol and year is supplied the current calendar year is used.",
     )
-    fiscal_period: Union[Literal["fy", "q1", "q2", "q3", "q4"], None] = Field(
+    fiscal_period: Optional[Literal["fy", "q1", "q2", "q3", "q4"]] = Field(
         default=None,
         description="The future fiscal period to retrieve estimates for.",
     )
@@ -44,7 +44,7 @@ class IntrinioForwardSalesEstimatesQueryParams(ForwardSalesEstimatesQueryParams)
         description="The future calendar year to retrieve estimates for."
         + " When no symbol and year is supplied the current calendar year is used.",
     )
-    calendar_period: Union[Literal["q1", "q2", "q3", "q4"], None] = Field(
+    calendar_period: Optional[Literal["q1", "q2", "q3", "q4"]] = Field(
         default=None,
         description="The future calendar period to retrieve estimates for.",
     )

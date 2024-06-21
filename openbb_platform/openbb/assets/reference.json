@@ -1216,7 +1216,7 @@
                     },
                     {
                         "name": "option_type",
-                        "type": "Literal[None, Union[ForwardRef('call'), ForwardRef('put')]]",
+                        "type": "Literal['call', 'put']",
                         "description": "The option type, call or put, 'None' is both (default).",
                         "default": null,
                         "optional": true,
