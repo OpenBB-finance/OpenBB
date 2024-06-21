@@ -17,17 +17,19 @@ def test_system_service_init(system_service):
     assert system_service
 
 
-def test_read_default_system_settings(system_service):
+def test_read_from_file(system_service):
     """Test read default system settings."""
-    system_settings = system_service._read_default_system_settings()
+    # pylint: disable=protected-access
+    system_settings = system_service._read_from_file()
 
     assert system_settings
 
 
-def test_write_default_system_settings(system_service):
+def test_write_to_file(system_service):
     """Test write default system settings."""
-    system_settings = system_service._read_default_system_settings()
-    system_service.write_default_system_settings(system_settings=system_settings)
+    # pylint: disable=protected-access
+    system_settings = system_service._read_from_file()
+    system_service.write_to_file(system_settings=system_settings)
 
     assert system_service
 
