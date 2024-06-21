@@ -31,7 +31,7 @@ class SystemService(metaclass=SingletonMeta):
         **kwargs,
     ):
         """Initialize system service."""
-        self._system_settings = self._read_default_system_settings(
+        self._system_settings = self._read_from_file(
             path=self.SYSTEM_SETTINGS_PATH, **kwargs
         )
 
@@ -46,9 +46,7 @@ class SystemService(metaclass=SingletonMeta):
         return hashed_input == existing_hash
 
     @classmethod
-    def _read_default_system_settings(
-        cls, path: Optional[Path] = None, **kwargs
-    ) -> SystemSettings:
+    def _read_from_file(cls, path: Optional[Path] = None, **kwargs) -> SystemSettings:
         """Read default system settings."""
         path = path or cls.SYSTEM_SETTINGS_PATH
 
@@ -77,7 +75,7 @@ class SystemService(metaclass=SingletonMeta):
         return system_settings
 
     @classmethod
-    def write_default_system_settings(
+    def write_to_file(
         cls,
         system_settings: SystemSettings,
         path: Optional[Path] = None,
@@ -86,7 +84,9 @@ class SystemService(metaclass=SingletonMeta):
         path = path or cls.SYSTEM_SETTINGS_PATH
 
         system_settings_json = system_settings.model_dump_json(
-            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET, indent=4
+            indent=4,
+            include=cls.SYSTEM_SETTINGS_ALLOWED_FIELD_SET,
+            exclude_defaults=True,
         )
         with path.open(mode="w") as file:
             file.write(system_settings_json)
@@ -103,6 +103,6 @@ class SystemService(metaclass=SingletonMeta):
 
     def refresh_system_settings(self) -> SystemSettings:
         """Refresh system settings."""
-        self._system_settings = self._read_default_system_settings()
+        self._system_settings = self._read_from_file()
 
         return self._system_settings
