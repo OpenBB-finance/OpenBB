@@ -72,11 +72,8 @@ class Container:
                 if result is False:
                     tries.append((p, "missing credentials"))
                 else:
-                    tries.append((p, "not found"))
+                    tries.append((p, f"not installed, please install openbb-{p}"))
 
             msg = "\n  ".join([f"* '{pair[0]}' -> {pair[1]}" for pair in tries])
-            raise OpenBBError(
-                f"Provider fallback failed, please specify one of the available providers or update credentials.\n"
-                f"[Providers]\n  {msg}"
-            )
+            raise OpenBBError(f"Provider fallback failed.\n" f"[Providers]\n  {msg}")
         return choice
