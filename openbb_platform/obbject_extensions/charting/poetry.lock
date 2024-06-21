@@ -1082,13 +1082,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.2.6"
+version = "1.2.7"
 description = "OpenBB package with core functionality."
 optional = false
 python-versions = "<4.0,>=3.8"
 files = [
-    {file = "openbb_core-1.2.6-py3-none-any.whl", hash = "sha256:9793d3959fda296697b71efa00f51f8e2d28a33dab98fd6a9bf0b15f270acb90"},
-    {file = "openbb_core-1.2.6.tar.gz", hash = "sha256:52808be4372e99243c485f989223f72b4de1ebd275a9254d991cda4cf759c214"},
+    {file = "openbb_core-1.2.7-py3-none-any.whl", hash = "sha256:e34ac8df9d3c803d24e497552830af08c3a2afbcb99e32e8c3f38d2f6e118c23"},
+    {file = "openbb_core-1.2.7.tar.gz", hash = "sha256:9a711fdf3e4f8d739f6ec6e35b0550302fdcf749ac6d9d1b3bbd42a74620419d"},
 ]
 
 [package.dependencies]

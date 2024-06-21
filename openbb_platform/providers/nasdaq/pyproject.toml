@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{ include = "openbb_nasdaq" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 openbb-core = "^1.2.5"
 random-user-agent = "^1.0.1"
 nasdaq-data-link = "^1.0.4"
