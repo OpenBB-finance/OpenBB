@@ -18,13 +18,22 @@ from pydantic import Field
 class Store(Data):
     """The Store class is a data model for storing, organizing, and retrieving OBBjects or other Python objects.
 
-    It is a shared resource across the Python session,
-    initialized globally within the OpenBB Platform as an OBBject extension.
-
     The class provides methods to add, retrieve, and save groups of data objects
     to memory or file as a transportable, compressed, SHA1 signed pickle.
 
+    It is a shared resource across the Python session,
+    when initialized globally within the OpenBB Platform as an OBBject extension.
+
     **Note**: The OpenBB user preference, 'output_type', must be set to 'OBBject' for this extension to work.
+
+    Parameters
+    ----------
+    filename : Optional[str]
+        Initialize the class with a previously exported file.
+        Use the full path to the file without the '.xz' extension.
+    names : Optional[str]
+        A comma-separated list of names to load from the file.
+        If None, all stored data objects are loaded.
 
     Properties
     ----------
@@ -85,7 +94,7 @@ class Store(Data):
 
         Save the Store object, or a list of store names, to a compressed shelf file.
 
-    load_store_from_file(filename: str, names: Optional[List[str]] = None):
+    load_store_from_file(filename: str, names: Optional[str] = None):
 
         Load an exported Store from file.
     """
@@ -116,9 +125,20 @@ class Store(Data):
         + " or the 'get_schema' method to retrieve the schema for a stored data object.",
     )
 
+    def __init__(
+        self,
+        filename: Optional[str] = None,
+        names: Optional[List[str]] = None,
+        **data
+    ):
+        super().__init__(**data)
+        if filename:
+            self.load_store_from_file(filename, names)
+
+    @property
     def list_stores(self) -> list:
         """List all keys to stored data objects."""
-        return list(self.directory.keys())
+        return list(self.directory)
 
     def add_store(
         self,
@@ -326,8 +346,14 @@ class Store(Data):
 
         # Load the data
         temp = pickle.loads(pickled_data)  # noqa
+
         if names:
-            temp = {k: v for k, v in temp.items() if k in names}
+            names = names.split(",")
+            for name in temp["directory"].copy():
+                if name not in names:
+                    temp["directory"].pop(name)
+                    temp["archives"].pop(name)
+                    temp["schemas"].pop(name)
 
         self.archives.update(temp["archives"])
         self.schemas.update(temp["schemas"])
@@ -371,7 +397,7 @@ class Store(Data):
         self.archives = {}
         self.schemas = {}
         if self.verbose:
-            return f"All data stores cleared.\n\n{str(self.directory)}"
+            return "All data stores cleared."
 
     def _compress_store(self, data):
         """Compress a stored data object."""
