@@ -24,6 +24,7 @@
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-tooltip": "^1.0.7",
     "axios": "^1.6.8",
+    "braces": "^3.0.3",
     "clsx": "^2.1.1",
     "fuse.js": "^6.6.2",
     "hast-util-is-element": "^3.0.0",
@@ -35,7 +36,8 @@
     "rehype-katex": "^7.0.0",
     "remark-math": "^6.0.0",
     "tailwindcss-radix": "^3.0.3",
-    "typescript-toggle": "^1.1.0"
+    "typescript-toggle": "^1.1.0",
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.3.2",
