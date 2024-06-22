@@ -1,5 +1,6 @@
 """Test the obbject registry."""
 
+import pytest
 from openbb_cli.argparse_translator.obbject_registry import Registry
 from openbb_core.app.model.obbject import OBBject
 
@@ -7,6 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 # ruff: noqa: disable=F841
 
 
+@pytest.mark.integration
 def test_registry_operations():
     """Test the registry operations."""
     registry = Registry()
