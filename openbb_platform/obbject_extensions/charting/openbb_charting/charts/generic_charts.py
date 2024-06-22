@@ -4,10 +4,10 @@
 
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import numpy as np
-import pandas as pd
+from numpy import ndarray
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
+from pandas import DataFrame, Series
 from plotly.graph_objs import Figure
 
 from openbb_charting.charts.helpers import (
@@ -24,11 +24,11 @@ def line_chart(  # noqa: PLR0912
     data: Union[
         list,
         dict,
-        pd.DataFrame,
-        List[pd.DataFrame],
-        pd.Series,
-        List[pd.Series],
-        np.ndarray,
+        DataFrame,
+        List[DataFrame],
+        Series,
+        List[Series],
+        ndarray,
         Data,
     ],
     index: Optional[str] = None,
@@ -48,29 +48,32 @@ def line_chart(  # noqa: PLR0912
     **kwargs,
 ) -> Union[OpenBBFigure, Figure]:
     """Create a line chart."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import to_datetime
+
     if data is None:
         raise ValueError("Error: Data is a required field.")
 
     auto_layout = False
     index = (
         data.index.name
-        if isinstance(data, (pd.DataFrame, pd.Series))
+        if isinstance(data, (DataFrame, Series))
         else index if index is not None else x if x is not None else "date"
     )
-    df: pd.DataFrame = (
+    df: DataFrame = (
         basemodel_to_df(convert_to_basemodel(data), index=index)
     ).dropna(how="all", axis=1)
 
     if df.index.name is None:
         if "date" in df.columns:
-            df.date = df.date.apply(pd.to_datetime)
+            df.date = df.date.apply(to_datetime)
             df.set_index("date", inplace=True)
         else:
             found_index = False
             for col in df.columns:
                 if df[col].dtype == "object":
                     try:
-                        df[col] = df[col].apply(pd.to_datetime)
+                        df[col] = df[col].apply(to_datetime)
                         index = df[col].name  # type: ignore
                         df.set_index(col, inplace=True)
                         df.index.name = "date"
@@ -326,11 +329,11 @@ def bar_chart(  # noqa: PLR0912
     data: Union[
         list,
         dict,
-        pd.DataFrame,
-        List[pd.DataFrame],
-        pd.Series,
-        List[pd.Series],
-        np.ndarray,
+        DataFrame,
+        List[DataFrame],
+        Series,
+        List[Series],
+        ndarray,
         Data,
     ],
     x: str,
@@ -351,7 +354,7 @@ def bar_chart(  # noqa: PLR0912
     Parameters
     ----------
     data : Union[
-        list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], np.ndarray, Data
+        list, dict, DataFrame, List[DataFrame], Series, List[Series], ndarray, Data
     ]
         Data to plot.
     x : str
@@ -538,7 +541,7 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     # figure.update_layout(ChartStyle().plotly_template.get("layout", {}))
 
     try:
-        data = pd.Series(data=values, index=keys)
+        data = Series(data=values, index=keys)
         increasing_data = data[data > 0]  # type: ignore
         decreasing_data = data[data < 0]  # type: ignore
     except Exception as e:

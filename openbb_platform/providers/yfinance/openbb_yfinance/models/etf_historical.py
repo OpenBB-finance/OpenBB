@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_historical import (
     EtfHistoricalData,
@@ -12,8 +11,6 @@ from openbb_core.provider.standard_models.etf_historical import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pandas import Timestamp
 from pydantic import Field, field_validator
-
-from ..utils.helpers import yf_download
 
 
 class YFinanceEtfHistoricalQueryParams(EtfHistoricalQueryParams):
@@ -54,6 +51,8 @@ class YFinanceEtfHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEtfHistoricalQueryParams:
         """Transform the query."""
+        from dateutil.relativedelta import relativedelta  # pylint: disable=import-outside-toplevel
+
         transformed_params = params
         now = datetime.now().date()
 
@@ -73,6 +72,8 @@ class YFinanceEtfHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,

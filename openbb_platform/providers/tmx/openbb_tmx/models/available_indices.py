@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.available_indices import (
     AvailableIndicesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_tmx.utils.helpers import get_data_from_url, tmx_indices_backend
 from pydantic import Field
 
 
@@ -51,6 +50,8 @@ class TmxAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_data_from_url, tmx_indices_backend
 
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
 

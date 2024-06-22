@@ -1,8 +1,7 @@
 """TMX Helpers Module."""
 
-# pylint: disable=too-many-lines
-# pylint: disable=unused-argument
-# pylint: disable=simplifiable-if-expression
+# pylint: disable=too-many-lines,unused-argument,simplifiable-if-expression
+
 import asyncio
 import json
 from datetime import (
@@ -11,11 +10,8 @@ from datetime import (
     time,
     timedelta,
 )
-from io import StringIO
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import exchange_calendars as xcals
-import pandas as pd
 import pytz
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -24,7 +20,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 from openbb_tmx.utils import gql
-from pandas.tseries.holiday import next_workday
+from pandas import DataFrame
 from random_user_agent.user_agent import UserAgent
 
 cache_dir = get_user_cache_directory()
@@ -342,8 +338,12 @@ def check_weekday(date) -> str:
     str
         Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
     """
-    if pd.to_datetime(date).weekday() > 4:
-        return next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
+    # pylint: disable=import-outside-toplevel
+    from pandas import to_datetime
+    from pandas.tseries.holiday import next_workday
+
+    if to_datetime(date).weekday() > 4:
+        return next_workday(to_datetime(date)).strftime("%Y-%m-%d")
     return date
 
 
@@ -366,7 +366,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 
     response = replace_values_in_list_of_dicts(response)
 
-    etfs = pd.DataFrame(response).rename(columns=COLUMNS_DICT)
+    etfs = DataFrame(response).rename(columns=COLUMNS_DICT)
 
     etfs = etfs.drop(
         columns=[
@@ -406,7 +406,7 @@ async def get_tmx_tickers(
         url, use_cache=use_cache, backend=tmx_companies_backend
     )
     data = (
-        pd.DataFrame.from_records(response["results"])[["symbol", "name"]]
+        DataFrame.from_records(response["results"])[["symbol", "name"]]
         .set_index("symbol")
         .sort_index()
     )
@@ -424,8 +424,12 @@ async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
     return all_tmx
 
 
-async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_options_tickers(use_cache: bool = True) -> DataFrame:
     """Return a DataFrame with all valid ticker symbols."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    from pandas import concat, read_html  # noqa
+
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
     r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
@@ -433,8 +437,8 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
 
-    options_listings = pd.read_html(StringIO(r))
-    listings = pd.concat(options_listings)
+    options_listings = read_html(StringIO(r))
+    listings = concat(options_listings)
     listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
     symbols = listings[:-1]
     symbols = symbols.fillna(value="")
@@ -449,10 +453,14 @@ async def get_all_options_tickers(use_cache: bool = True) -> pd.DataFrame:
     return symbols.set_index("option_symbol")
 
 
-async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFrame:
+async def get_current_options(symbol: str, use_cache: bool = True) -> DataFrame:
     """Get the current quotes for the complete options chain."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    from pandas import DatetimeIndex, concat, read_html  # noqa
+
     SYMBOLS = await get_all_options_tickers(use_cache=use_cache)
-    data = pd.DataFrame()
+    data = DataFrame()
     symbol = symbol.upper()
 
     # Remove exchange  identifiers from the symbol.
@@ -481,7 +489,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     ]
 
     r = await get_data_from_url(QUOTES_URL, use_cache=False)
-    data = pd.read_html(StringIO(r))[0]
+    data = read_html(StringIO(r))[0]
     data = data.iloc[:-1]
 
     expirations = (
@@ -497,19 +505,19 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
         .rename(columns={"Strike": "strike"})
     )
 
-    calls = pd.concat([expirations, strikes, data["Calls"]], axis=1)
-    calls["expiration"] = pd.DatetimeIndex(calls["expiration"]).astype(str)
+    calls = concat([expirations, strikes, data["Calls"]], axis=1)
+    calls["expiration"] = DatetimeIndex(calls["expiration"]).astype(str)
     calls["optionType"] = "call"
     calls.columns = cols
     calls = calls.set_index(["expiration", "strike", "optionType"])
 
-    puts = pd.concat([expirations, strikes, data["Puts"]], axis=1)
-    puts["expiration"] = pd.DatetimeIndex(puts["expiration"]).astype(str)
+    puts = concat([expirations, strikes, data["Puts"]], axis=1)
+    puts["expiration"] = DatetimeIndex(puts["expiration"]).astype(str)
     puts["optionType"] = "put"
     puts.columns = cols
     puts = puts.set_index(["expiration", "strike", "optionType"])
 
-    chains = pd.concat([calls, puts])
+    chains = concat([calls, puts])
     chains["openInterest"] = chains["openInterest"].astype("int64")
     chains["volume"] = chains["volume"].astype("int64")
     chains["change"] = chains["change"].astype(float)
@@ -519,7 +527,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     chains = chains.sort_index()
     chains = chains.reset_index()
     now = datetime.now()
-    temp = pd.DatetimeIndex(chains.expiration)
+    temp = DatetimeIndex(chains.expiration)
     temp_ = (temp - now).days + 1  # type: ignore
     chains["dte"] = temp_
 
@@ -537,7 +545,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     chains["contract_symbol"] = (
         symbol
         + " " * (6 - len(symbol))
-        + pd.to_datetime(chains["expiration"]).dt.strftime("%y%m%d")
+        + to_datetime(chains["expiration"]).dt.strftime("%y%m%d")
         + (chains["optionType"].replace("call", "C").replace("put", "P"))
         + chains["strikes"]
     )
@@ -550,8 +558,13 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
 
 async def download_eod_chains(
     symbol: str, date: Optional[dateType] = None, use_cache: bool = False
-) -> pd.DataFrame:
+) -> DataFrame:
     """Download EOD chains data for a given symbol and date."""
+    # pylint: disable=import-outside-toplevel
+    from io import StringIO  # noqa
+    import exchange_calendars as xcals  # noqa
+    from pandas import DatetimeIndex, Timedelta, concat, read_csv, to_datetime  # noqa
+
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
     # Remove echange  identifiers from the symbol.
@@ -575,10 +588,10 @@ async def download_eod_chains(
     else:
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date) is False:  # type: ignore
-            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
+            date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
         if cal.is_session(date=date) is False:  # type: ignore
-            date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
+            date = (to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = (
             BASE_URL + f"{symbol}" "&from=" f"{date}" "&to=" f"{date}" "&dnld=1#quotes"
@@ -589,7 +602,7 @@ async def download_eod_chains(
     if r is None:
         raise OpenBBError("Error with the request, no data was returned.")
 
-    data = pd.read_csv(StringIO(r))
+    data = read_csv(StringIO(r))
     if data.empty:
         raise OpenBBError(
             f"No data found for, {symbol}, on, {date}."
@@ -637,21 +650,21 @@ async def download_eod_chains(
 
     data.columns = cols
     data["underlying_symbol"] = symbol + ":CA"
-    data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
-    data["eod_date"] = pd.to_datetime(data["eod_date"], format="%Y-%m-%d")
+    data["expiration"] = to_datetime(data["expiration"], format="%Y-%m-%d")
+    data["eod_date"] = to_datetime(data["eod_date"], format="%Y-%m-%d")
     data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
 
     date_ = data["eod_date"]
-    temp = pd.DatetimeIndex(data.expiration)
+    temp = DatetimeIndex(data.expiration)
     temp_ = temp - date_  # type: ignore
-    data["dte"] = [pd.Timedelta(_temp_).days for _temp_ in temp_]
+    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
     data = data.set_index(["expiration", "strike", "optionType"]).sort_index()
     data["eod_date"] = data["eod_date"].astype(str)
     underlying_price = data.iloc[-1]["lastTradePrice"]
     data["underlyingPrice"] = underlying_price
     data = data.reset_index()
     data = data[data["strike"] != 0]
-    data["expiration"] = pd.to_datetime(data["expiration"]).dt.strftime("%Y-%m-%d")
+    data["expiration"] = to_datetime(data["expiration"]).dt.strftime("%Y-%m-%d")
 
     data.columns = [to_snake_case(c) for c in data.columns.to_list()]
 
@@ -667,6 +680,7 @@ async def get_company_filings(
     limit: int = 50,
 ) -> List[Dict]:
     """Get company filings."""
+
     user_agent = get_random_agent()
     results: List[Dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
@@ -1040,7 +1054,7 @@ async def get_intraday_price_history(
     return results
 
 
-async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_bonds(use_cache: bool = True) -> DataFrame:
     """Get all bonds reference data published by CIRO.
 
     The complete list is approximately 70-100K securities.
@@ -1053,7 +1067,7 @@ async def get_all_bonds(use_cache: bool = True) -> pd.DataFrame:
     # Convert the response to a DataFrame and set the types for proper filtering in-fetcher.
     # This is done here because multiple functions might share this response object.
     bonds_data = (
-        pd.DataFrame.from_records(response)
+        DataFrame.from_records(response)
         .replace("N/A", None)
         .sort_values(by=["lastTradedDate", "totalTrades"], ascending=False)
     )

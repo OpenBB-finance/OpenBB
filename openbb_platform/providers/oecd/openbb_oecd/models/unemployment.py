@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 from datetime import date
-from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
@@ -15,13 +14,11 @@ from openbb_core.provider.standard_models.unemployment import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import check_item, make_request
-from openbb_oecd.utils import helpers
+from openbb_core.provider.utils.helpers import check_item
 from openbb_oecd.utils.constants import (
     CODE_TO_COUNTRY_UNEMPLOYMENT,
     COUNTRY_TO_CODE_UNEMPLOYMENT,
 )
-from pandas import read_csv
 from pydantic import Field, field_validator
 
 countries = tuple(CODE_TO_COUNTRY_UNEMPLOYMENT.values()) + ("all",)
@@ -126,6 +123,12 @@ class OECDUnemploymentFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from io import StringIO  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from openbb_oecd.utils import helpers  # noqa
+        from pandas import read_csv  # noqa
+
         sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
         frequency = query.frequency[0].upper()
         age = {

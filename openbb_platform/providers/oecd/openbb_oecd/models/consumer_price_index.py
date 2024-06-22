@@ -12,13 +12,11 @@ from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexQueryParams,
 )
 from openbb_core.provider.utils.helpers import check_item
-from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import (
     CODE_TO_COUNTRY_CPI,
     COUNTRY_TO_CODE_CPI,
 )
 from pydantic import Field, field_validator
-from requests.exceptions import HTTPError
 
 countries = tuple(CODE_TO_COUNTRY_CPI.values()) + ("all",)
 CountriesList = list(countries)  # type: ignore
@@ -149,6 +147,10 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from requests.exceptions import HTTPError  # noqa
+        from openbb_oecd.utils import helpers  # noqa
+
         methodology = "HICP" if query.harmonized is True else "N"
         query.units = "mom" if query.transform == "period" else query.transform
         query.frequency = (

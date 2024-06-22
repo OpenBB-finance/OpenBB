@@ -1,13 +1,10 @@
 """Yahoo Finance Crypto Historical Price Model."""
 
 # pylint: disable=unused-argument
-# ruff: noqa: SIM105
-
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
@@ -15,7 +12,6 @@ from openbb_core.provider.standard_models.crypto_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT
 from pydantic import Field
 
@@ -63,6 +59,8 @@ class YFinanceCryptoHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCryptoHistoricalQueryParams:
         """Transform the query."""
+        from dateutil.relativedelta import relativedelta  # pylint: disable=import-outside-toplevel
+
         transformed_params = params
         now = datetime.now().date()
 
@@ -81,6 +79,8 @@ class YFinanceCryptoHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         tickers = query.symbol.split(",")
         new_tickers = []
         for ticker in tickers:

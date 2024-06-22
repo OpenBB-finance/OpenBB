@@ -7,12 +7,16 @@ from copy import deepcopy
 from enum import Enum
 from typing import Any, Dict
 
-import posthog
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.env import Env
+from posthog import (
+    alias,
+    capture,
+    identify as posthog_identify,
+)
 
 
 class PosthogHandler(logging.Handler):
@@ -28,11 +32,13 @@ class PosthogHandler(logging.Handler):
 
     def __init__(self, settings: LoggingSettings):
         """Initialize Posthog Handler."""
+        # pylint: disable=import-outside-toplevel
+        from posthog import api_key, host
         super().__init__()
         self._settings = settings
         self.logged_in = False
-        posthog.api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret
-        posthog.host = "https://app.posthog.com"
+        api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret  # noqa
+        host = "https://app.posthog.com"  # noqa
 
     @property
     def settings(self) -> LoggingSettings:
@@ -62,7 +68,7 @@ class PosthogHandler(logging.Handler):
         if self.logged_in or not self._settings.user_id:
             return
 
-        posthog.identify(
+        posthog_identify(
             self._settings.user_id,
             {
                 "email": self._settings.user_email,
@@ -74,7 +80,7 @@ class PosthogHandler(logging.Handler):
             return
 
         self.logged_in = True
-        posthog.alias(self._settings.user_id, self._settings.app_id)
+        alias(self._settings.user_id, self._settings.app_id)
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict."""
@@ -109,7 +115,7 @@ class PosthogHandler(logging.Handler):
             return
 
         self.identify()
-        posthog.capture(self.distinct_id(), event_name, properties=log_extra)
+        capture(self.distinct_id(), event_name, properties=log_extra)
 
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record."""

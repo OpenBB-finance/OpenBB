@@ -1,14 +1,15 @@
 """Helper functions for charting."""
 
-from inspect import getmembers, getsource, isfunction
-from typing import Callable, Dict, List, Type
+from typing import TYPE_CHECKING, Callable, Dict, List, Type
 
-import pandas as pd
-from pandas_ta import candles
-
+if TYPE_CHECKING:
+    from pandas import DataFrame, Series
 
 def get_charting_functions(view: Type) -> Dict[str, Callable]:
     """Discover charting functions."""
+    # pylint: disable=import-outside-toplevel
+    from inspect import getmembers, getsource, isfunction
+
     implemented_functions: Dict[str, Callable] = {}
 
     for name, obj in getmembers(view, isfunction):
@@ -27,22 +28,25 @@ def get_charting_functions_list(view: Type) -> List[str]:
     return list(get_charting_functions(view).keys())
 
 
-def z_score_standardization(data: pd.Series) -> pd.Series:
+def z_score_standardization(data: "Series") -> "Series":
     """Z-Score Standardization Method."""
     return (data - data.mean()) / data.std()
 
 
-def calculate_returns(data: pd.Series) -> pd.Series:
+def calculate_returns(data: "Series") -> "Series":
     """Calculate the returns of a column."""
     return ((1 + data.pct_change().dropna()).cumprod() - 1) * 100
 
 
 def should_share_axis(
-    df: pd.DataFrame, col1: str, col2: str, threshold: float = 0.15
+    df: "DataFrame", col1: str, col2: str, threshold: float = 0.15
 ) -> bool:
     """Determine whether two columns should share an axis."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import Series
+
     try:
-        if isinstance(df, pd.Series):
+        if isinstance(df, Series):
             df = df.to_frame()
         range1 = df[col1].max() - df[col1].min()
         range2 = df[col2].max() - df[col2].min()
@@ -56,19 +60,22 @@ def should_share_axis(
         return False
 
 
-def heikin_ashi(data: pd.DataFrame) -> pd.DataFrame:
+def heikin_ashi(data: "DataFrame") -> "DataFrame":
     """Return OHLC data as Heikin Ashi Candles.
 
     Parameters
     ----------
-    data: pd.DataFrame
+    data: DataFrame
         DataFrame containing OHLC data.
 
     Returns
     -------
-    pd.DataFrame
+    DataFrame
         DataFrame copy with Heikin Ashi candle calculations.
     """
+    # pylint: disable=import-outside-toplevel
+    from pandas_ta import candles
+
     df = data.copy()
 
     check_columns = ["open", "high", "low", "close"]

@@ -1,15 +1,13 @@
 """OECD CLI Data."""
 
-import re
-from datetime import date, timedelta
-from typing import Any, Dict, List, Literal, Optional, Union
+from datetime import date
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.composite_leading_indicator import (
     CLIData,
     CLIQueryParams,
 )
-from openbb_oecd.utils import helpers
 from openbb_oecd.utils.constants import CODE_TO_COUNTRY_CLI, COUNTRY_TO_CODE_CLI
 from pydantic import Field, field_validator
 
@@ -30,8 +28,12 @@ class OECDCLIData(CLIData):
 
     @field_validator("date", mode="before")
     @classmethod
-    def date_validate(cls, in_date: Union[date, str]):  # pylint: disable=E0213
+    def date_validate(cls, in_date):
         """Validate value."""
+        # pylint: disable=import-outside-toplevel
+        import re
+        from datetime import timedelta
+
         if isinstance(in_date, str):
             # i.e 2022-Q1
             if re.match(r"\d{4}-Q[1-4]$", in_date):
@@ -84,6 +86,9 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils import helpers
+
         country = "" if query.country == "all" else COUNTRY_TO_CODE_CLI[query.country]
 
         # Note this is only available monthly from OECD

@@ -2,10 +2,9 @@
 
 # pylint: disable=unused-argument
 
-import warnings
 from typing import Any, Dict, List, Optional
+from warnings import warn
 
-from finvizfinance.quote import finvizfinance
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
     PriceTargetData,
@@ -13,8 +12,6 @@ from openbb_core.provider.standard_models.price_target import (
 )
 from pandas import DataFrame
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FinvizPriceTargetQueryParams(PriceTargetQueryParams):
@@ -66,18 +63,19 @@ class FinvizPriceTargetFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Finviz endpoint."""
+        from finvizfinance.quote import finvizfinance  # pylint: disable=import-outside-toplevel
 
-        results: List[dict] = []
+        results: List[Dict] = []
 
         def get_one(symbol) -> List[Dict]:
             """Get the data for one symbol."""
             price_targets = DataFrame()
-            result: List[dict] = []
+            result: List[Dict] = []
             try:
                 data = finvizfinance(symbol)
                 price_targets = data.ticker_outer_ratings()
                 if price_targets is None or len(price_targets) == 0:
-                    _warn(f"Failed to get data for {symbol}")
+                    warn(f"Failed to get data for {symbol}")
                     return result
                 price_targets["symbol"] = symbol
                 prices = (
@@ -95,7 +93,7 @@ class FinvizPriceTargetFetcher(
                 ] = None
                 price_targets = price_targets.replace("", None).drop(columns="Price")
             except Exception as e:  # pylint: disable=W0718
-                _warn(f"Failed to get data for {symbol} -> {e}")
+                warn(f"Failed to get data for {symbol} -> {e}")
                 return result
             result = price_targets.to_dict(orient="records")
             return result

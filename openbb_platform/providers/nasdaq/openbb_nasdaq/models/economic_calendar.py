@@ -1,18 +1,14 @@
 """Nasdaq Economic Calendar Model."""
 
-import html
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta
-from itertools import repeat
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range, remove_html_tags
 from pydantic import Field, field_validator
 
 
@@ -56,6 +52,9 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     @classmethod
     def clean_html(cls, v: str):
         """Format HTML entities to normal."""
+        import html  # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import remove_html_tags
+
         if v:
             v = (
                 html.unescape(v)
@@ -80,6 +79,9 @@ class NasdaqEconomicCalendarFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqEconomicCalendarQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import datetime, timedelta
+
         now = datetime.today().date()
         transformed_params = params
 
@@ -91,14 +93,20 @@ class NasdaqEconomicCalendarFetcher(
 
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: NasdaqEconomicCalendarQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from concurrent.futures import ThreadPoolExecutor
+        from itertools import repeat
+        from openbb_core.provider.utils.helpers import make_request
+        from openbb_nasdaq.utils.helpers import get_headers, date_range
+
+        IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
@@ -107,7 +115,7 @@ class NasdaqEconomicCalendarFetcher(
 
         def get_calendar_data(date: str, data: List[Dict]) -> None:
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r = requests.get(url, headers=IPO_HEADERS, timeout=5)
+            r = make_request(url=url, headers=IPO_HEADERS)
             r_json = r.json()
             if "data" in r_json and "rows" in r_json["data"]:
                 response = r_json["data"]["rows"]
@@ -143,7 +151,6 @@ class NasdaqEconomicCalendarFetcher(
 
         return data
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqEconomicCalendarQueryParams,

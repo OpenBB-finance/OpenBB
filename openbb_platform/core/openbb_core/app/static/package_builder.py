@@ -29,9 +29,9 @@ from typing import (
     get_type_hints,
 )
 
-import numpy as np
-import pandas as pd
 from importlib_metadata import entry_points
+from numpy import ndarray
+from pandas import DataFrame, Series
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
@@ -61,11 +61,11 @@ DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
     list,
     dict,
-    pd.DataFrame,
-    List[pd.DataFrame],
-    pd.Series,
-    List[pd.Series],
-    np.ndarray,
+    DataFrame,
+    List[DataFrame],
+    Series,
+    List[Series],
+    ndarray,
     Data,
 )
 

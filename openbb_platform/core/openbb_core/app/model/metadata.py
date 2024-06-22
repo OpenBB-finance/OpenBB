@@ -4,8 +4,8 @@ from datetime import datetime
 from inspect import isclass
 from typing import Any, Dict, Optional, Sequence, Union
 
-import numpy as np
-import pandas as pd
+from numpy import ndarray
+from pandas import DataFrame, Series
 from pydantic import BaseModel, Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
@@ -72,7 +72,7 @@ class Metadata(BaseModel):
                     }
 
                 # DataFrame
-                elif isinstance(arg_val, pd.DataFrame):
+                elif isinstance(arg_val, DataFrame):
                     df_columns = (
                         list(arg_val.index.names) + arg_val.columns.tolist()
                         if any(index is not None for index in list(arg_val.index.names))
@@ -85,7 +85,7 @@ class Metadata(BaseModel):
 
                 # List[DataFrame]
                 elif isinstance(arg_val, list) and issubclass(
-                    type(arg_val[0]), pd.DataFrame
+                    type(arg_val[0]), DataFrame
                 ):
                     ldf_columns = [
                         (
@@ -101,14 +101,14 @@ class Metadata(BaseModel):
                     }
 
                 # Series
-                elif isinstance(arg_val, pd.Series):
+                elif isinstance(arg_val, Series):
                     new_arg_val = {
                         "type": f"{type(arg_val).__name__}",
                         "columns": list(arg_val.index.names) + [arg_val.name],
                     }
 
                 # List[Series]
-                elif isinstance(arg_val, list) and isinstance(arg_val[0], pd.Series):
+                elif isinstance(arg_val, list) and isinstance(arg_val[0], Series):
                     ls_columns = [
                         (
                             list(series.index.names) + [series.name]
@@ -125,7 +125,7 @@ class Metadata(BaseModel):
                     }
 
                 # ndarray
-                elif isinstance(arg_val, np.ndarray):
+                elif isinstance(arg_val, ndarray):
                     new_arg_val = {
                         "type": f"{type(arg_val).__name__}",
                         "columns": list(arg_val.dtype.names or []),

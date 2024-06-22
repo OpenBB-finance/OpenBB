@@ -2,20 +2,17 @@
 
 # pylint: disable=unused-argument
 
-import re
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from openbb_yfinance.utils.helpers import df_transform_numbers
-from pandas import DataFrame
 from pydantic import Field
 
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 class YFUndervaluedLargeCapsQueryParams(EquityPerformanceQueryParams):
     """Yahoo Finance Asset Undervalued Large Caps Query.
@@ -68,24 +65,31 @@ class YFUndervaluedLargeCapsFetcher(
         query: YFUndervaluedLargeCapsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Get data from YF."""
+        # pylint: disable=import-outside-toplevel
+        import re  # noqa
+        from pandas import read_html  # noqa
+        from openbb_core.provider.utils.helpers import make_request
+
         headers = {"user_agent": "Mozilla/5.0"}
         html = make_request(
             "https://finance.yahoo.com/screener/predefined/undervalued_large_caps",
             headers=headers,
         ).text
         html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = pd.read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
+        df = read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
         return df
 
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[YFUndervaluedLargeCapsData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import df_transform_numbers
 
         columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 

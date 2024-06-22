@@ -2,11 +2,9 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import yfinance as yf
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -15,7 +13,6 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pandas import concat
 from pydantic import Field
 from pytz import timezone
 
@@ -64,9 +61,14 @@ class YFinanceOptionsChainsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract the raw data from YFinance."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from pandas import concat  # noqa
+        from yfinance import Ticker  # noqa
+
         symbol = query.symbol.upper()
         symbol = "^" + symbol if symbol in ["VIX", "RUT", "SPX", "NDX"] else symbol
-        ticker = yf.Ticker(symbol)
+        ticker = Ticker(symbol)
         expirations = list(ticker.options)
         if not expirations or len(expirations) == 0:
             raise OpenBBError(f"No options found for {symbol}")

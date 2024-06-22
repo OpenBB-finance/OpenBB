@@ -1,18 +1,16 @@
 """Finviz Key Metrics Model."""
 
 # pylint: disable=unused-argument
-import warnings
-from typing import Any, Dict, List, Optional
 
-from finvizfinance.quote import finvizfinance
+from typing import Any, Dict, List, Optional
+from warnings import warn
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class FinvizKeyMetricsQueryParams(KeyMetricsQueryParams):
@@ -117,7 +115,7 @@ class FinvizKeyMetricsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
-
+        from finvizfinance.quote import finvizfinance  # pylint: disable=import-outside-toplevel
         results: List = []
 
         def get_one(symbol) -> Dict:
@@ -139,7 +137,7 @@ class FinvizKeyMetricsFetcher(
                         .replace("K", "e+3")
                     )
             except Exception as e:  # pylint: disable=W0718
-                _warn(f"Failed to get data for {symbol} -> {e}")
+                warn(f"Failed to get data for {symbol} -> {e}")
                 return result
             result.update(
                 {

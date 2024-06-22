@@ -1,20 +1,21 @@
 """Price performance charting implementation."""
 
-from typing import Any, Dict, Tuple, Union
+from typing import TYPE_CHECKING, Any, Dict, Tuple, Union
 
-import pandas as pd
-from openbb_core.app.utils import basemodel_to_df
-from plotly.graph_objs import Figure
-
-from openbb_charting.charts.generic_charts import bar_chart
-from openbb_charting.core.openbb_figure import OpenBBFigure
-
+if TYPE_CHECKING:
+    from plotly.graph_objs import Figure  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
 def price_performance(
     **kwargs,
-) -> Tuple[Union[OpenBBFigure, Figure], Dict[str, Any]]:  # noqa: PLR0912
+) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Performance Chart."""
-    if "data" in kwargs and isinstance(kwargs["data"], pd.DataFrame):
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame  # noqa
+    from openbb_core.app.utils import basemodel_to_df  # noqa
+    from openbb_charting.charts.generic_charts import bar_chart  # noqa
+
+    if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
         data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "symbol"))  # type: ignore
@@ -37,8 +38,8 @@ def price_performance(
         "five_year",
     ]
 
-    df = pd.DataFrame()
-    chart_df = pd.DataFrame()
+    df = DataFrame()
+    chart_df = DataFrame()
 
     if "symbol" in data.columns:
         data = data.set_index("symbol")

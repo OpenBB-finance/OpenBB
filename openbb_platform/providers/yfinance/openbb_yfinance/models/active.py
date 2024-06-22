@@ -2,18 +2,17 @@
 
 # pylint: disable=unused-argument
 
-import re
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from openbb_yfinance.utils.helpers import df_transform_numbers
-from pandas import DataFrame, read_html
 from pydantic import Field
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class YFActiveQueryParams(EquityPerformanceQueryParams):
@@ -63,8 +62,13 @@ class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
         query: YFActiveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Get data from YF."""
+        # pylint: disable=import-outside-toplevel
+        import re  # noqa
+        from pandas import read_html  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+
         headers = {"user_agent": "Mozilla/5.0"}
         html = make_request(
             "https://finance.yahoo.com/screener/predefined/most_actives",
@@ -77,15 +81,16 @@ class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
     @staticmethod
     def transform_data(
         query: EquityPerformanceQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[YFActiveData]:
         """Transform data."""
-        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import df_transform_numbers
 
+        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
         data = df_transform_numbers(data, columns)
         data = data.fillna("N/A").replace("N/A", None)
-
         # parse "Volume" column to float do avoid sorting issues
         data["Volume"] = data["Volume"].astype(float)
 

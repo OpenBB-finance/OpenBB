@@ -2,17 +2,15 @@
 
 # pylint: disable =unused-argument
 
-from io import BytesIO
 from typing import Dict, List, Optional, Union
-from zipfile import ZipFile
 
-import pandas as pd
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.helpers import amake_request, make_request
 from openbb_sec.utils.definitions import HEADERS, SEC_HEADERS
+from pandas import DataFrame
 
 
 async def sec_callback(response, session):
@@ -25,14 +23,14 @@ async def sec_callback(response, session):
     return await response.text()
 
 
-async def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_companies(use_cache: bool = True) -> DataFrame:
     """Get all company names, tickers, and CIK numbers registered with the SEC.
 
     Companies are sorted by market cap.
 
     Returns
     -------
-    pd.DataFrame: Pandas DataFrame with columns for Symbol, Company Name, and CIK Number.
+    DataFrame: Pandas DataFrame with columns for Symbol, Company Name, and CIK Number.
 
     Example
     -------
@@ -52,13 +50,13 @@ async def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     else:
         response = await amake_request(url, headers=SEC_HEADERS)  # type: ignore
 
-    df = pd.DataFrame(response).transpose()
+    df = DataFrame(response).transpose()
     cols = ["cik", "symbol", "name"]
     df.columns = cols
     return df.astype(str)
 
 
-async def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
+async def get_all_ciks(use_cache: bool = True) -> DataFrame:
     """Get a list of entity names and their CIK number."""
     url = "https://www.sec.gov/Archives/edgar/cik-lookup-data.txt"
 
@@ -85,7 +83,7 @@ async def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
     for line in lines:
         row = line.split(delimiter)
         data_list.append(row)
-    df = pd.DataFrame(data_list)
+    df = DataFrame(data_list)
     df = df.iloc[:, 0:2]
     cols = ["Institution", "CIK Number"]
     df.columns = cols
@@ -94,9 +92,9 @@ async def get_all_ciks(use_cache: bool = True) -> pd.DataFrame:
     return df.astype(str)
 
 
-async def get_mf_and_etf_map(use_cache: bool = True) -> pd.DataFrame:
+async def get_mf_and_etf_map(use_cache: bool = True) -> DataFrame:
     """Return the CIK number of a ticker symbol for querying the SEC API."""
-    symbols = pd.DataFrame()
+    symbols = DataFrame()
 
     url = "https://www.sec.gov/files/company_tickers_mf.json"
     response: Union[dict, List[dict]] = {}
@@ -112,12 +110,12 @@ async def get_mf_and_etf_map(use_cache: bool = True) -> pd.DataFrame:
     else:
         response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
 
-    symbols = pd.DataFrame(data=response["data"], columns=response["fields"])  # type: ignore
+    symbols = DataFrame(data=response["data"], columns=response["fields"])  # type: ignore
 
     return symbols.astype(str)
 
 
-async def search_institutions(keyword: str, use_cache: bool = True) -> pd.DataFrame:
+async def search_institutions(keyword: str, use_cache: bool = True) -> DataFrame:
     """Search for an institution by name.  It is case-insensitive."""
     institutions = await get_all_ciks(use_cache=use_cache)
     hp = institutions["Institution"].str.contains(keyword, case=False)
@@ -169,12 +167,13 @@ async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
 
 def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> List:
     """Get a list of schema files from the SEC website."""
+    from pandas import read_html  # pylint: disable=import-outside-toplevel
     results: List = []
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
     _url = url + "/" if query else _url
     response = make_request(_url)
-    data = pd.read_html(response.content)[0]["Name"].dropna()
+    data = read_html(response.content)[0]["Name"].dropna()
     if len(data) > 0:
         data.iloc[0] = url if not query else url + "/"
         results = data.to_list()
@@ -186,7 +185,13 @@ async def download_zip_file(
     url, symbol: Optional[str] = None, use_cache: bool = True
 ) -> List[Dict]:
     """Download a list of files from URLs."""
-    results = pd.DataFrame()
+    # pylint: disable=import-outside-toplevel
+    from io import BytesIO
+    from zipfile import ZipFile
+
+    from pandas import concat, read_csv, to_datetime
+
+    results = DataFrame()
 
     async def callback(response, session):
         """Response callback for ZIP file downloads."""
@@ -204,21 +209,21 @@ async def download_zip_file(
         response = await amake_request(url, response_callback=callback)  # type: ignore
 
     try:
-        data = pd.read_csv(BytesIO(response), compression="zip", sep="|")  # type: ignore
+        data = read_csv(BytesIO(response), compression="zip", sep="|")  # type: ignore
         results = data.iloc[:-2]
     except ValueError:
         zip_file = ZipFile(BytesIO(response))  # type: ignore
         file_list = [d.filename for d in zip_file.infolist()]
         for item in file_list:
             with zip_file.open(item) as _item:
-                _file = pd.read_csv(
+                _file = read_csv(
                     _item,
                     encoding="ISO-8859-1",
                     sep="|",
                     low_memory=False,
                     on_bad_lines="skip",
                 )
-                results = pd.concat([results, _file.iloc[:-2]])
+                results = concat([results, _file.iloc[:-2]])
 
     if "SETTLEMENT DATE" in results.columns:
         results = results.rename(
@@ -233,7 +238,7 @@ async def download_zip_file(
         )
         if symbol:
             results = results[results["symbol"] == symbol]
-        results["date"] = pd.to_datetime(results["date"], format="%Y%m%d").dt.date
+        results["date"] = to_datetime(results["date"], format="%Y%m%d").dt.date
         # Replace invalid decimal values with None
         results["price"] = results["price"].mask(
             ~results["price"].str.contains(r"^\d+(?:\.\d+)?$", regex=True), None
@@ -245,6 +250,7 @@ async def download_zip_file(
 
 async def get_ftd_urls() -> Dict:
     """Get Fails-to-Deliver Data URLs."""
+    from pandas import Series  # pylint: disable=import-outside-toplevel
     results = {}
     position = None
     key = "title"
@@ -262,7 +268,7 @@ async def get_ftd_urls() -> Dict:
         key = "downloadURL"
         urls = list(map(lambda d: d[key], filter(lambda d: key in d, fails)))
         dates = [d[-11:-4] for d in urls]
-        ftd_urls = pd.Series(index=dates, data=urls)
+        ftd_urls = Series(index=dates, data=urls)
         ftd_urls.index = ftd_urls.index.str.replace("_", "")
         results = ftd_urls.to_dict()
 
@@ -279,7 +285,7 @@ async def get_series_id(
     symbol = symbol if symbol else ""
     cik = cik if cik else ""
 
-    results = pd.DataFrame()
+    results = DataFrame()
     if not symbol and not cik:
         raise OpenBBError("Either symbol or cik must be provided.")
 

@@ -1,26 +1,28 @@
 """Yahoo Finance helpers module."""
 
 # pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
     datetime,
 )
-from pathlib import Path
 from typing import Any, Literal, Optional, Union
 
-import pandas as pd
-import yfinance as yf
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
+from pandas import DataFrame
 
 
-def get_futures_data() -> pd.DataFrame:
+def get_futures_data() -> DataFrame:
     """Return the dataframe of the futures csv file."""
-    return pd.read_csv(Path(__file__).resolve().parent / "futures.csv")
+    # pylint: disable=import-outside-toplevel
+    from pathlib import Path  # noqa
+    from pandas import read_csv  # noqa
+
+    return read_csv(Path(__file__).resolve().parent / "futures.csv")
 
 
-def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
+def get_futures_curve(symbol: str, date: Optional[dateType]) -> DataFrame:
     """Get the futures curve for a given symbol.
 
     Parameters
@@ -32,14 +34,18 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
 
     Returns
     -------
-    pd.DataFrame
+    DataFrame
         DataFrame with futures curve
     """
+    # pylint: disable=import-outside-toplevel
+    import yfinance as yf
+    from dateutil.relativedelta import relativedelta
+
     futures_data = get_futures_data()
     try:
         exchange = futures_data[futures_data["Ticker"] == symbol]["Exchange"].values[0]
     except IndexError:
-        return pd.DataFrame({"Last Price": [], "expiration": []})
+        return DataFrame({"Last Price": [], "expiration": []})
 
     today = datetime.today()
     futures_index = []
@@ -70,13 +76,13 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
         i += 1
 
     if not futures_index:
-        return pd.DataFrame({"date": [], "Last Price": []})
+        return DataFrame({"date": [], "Last Price": []})
 
     if historical_curve:
-        return pd.DataFrame(
+        return DataFrame(
             {"Last Price": historical_curve, "expiration": futures_index}
         )
-    return pd.DataFrame({"Last Price": futures_curve, "expiration": futures_index})
+    return DataFrame({"Last Price": futures_curve, "expiration": futures_index})
 
 
 # pylint: disable=too-many-arguments,unused-argument
@@ -96,8 +102,13 @@ def yf_download(
     group_by: Literal["ticker", "column"] = "ticker",
     adjusted: bool = False,
     **kwargs: Any,
-) -> pd.DataFrame:
+) -> DataFrame:
     """Get yFinance OHLC data for any ticker and interval available."""
+    # pylint: disable=import-outside-toplevel
+    import yfinance as yf
+    from dateutil.relativedelta import relativedelta
+    from pandas import concat, to_datetime
+
     symbol = symbol.upper()
     _start_date = start_date
     intraday = False
@@ -143,7 +154,7 @@ def yf_download(
 
     tickers = symbol.split(",")
     if len(tickers) > 1:
-        _data = pd.DataFrame()
+        _data = DataFrame()
         for ticker in tickers:
             temp = data[ticker].copy().dropna(how="all")
             if len(temp) > 0:
@@ -151,7 +162,7 @@ def yf_download(
                 temp = temp.reset_index().rename(
                     columns={"Date": "date", "Datetime": "date", "index": "date"}
                 )
-                _data = pd.concat([_data, temp])
+                _data = concat([_data, temp])
         if not _data.empty:
             index_keys = ["date", "symbol"] if "symbol" in _data.columns else "date"
             _data = _data.set_index(index_keys).sort_index()
@@ -159,19 +170,19 @@ def yf_download(
     if not data.empty:
         data = data.reset_index()
         data = data.rename(columns={"Date": "date", "Datetime": "date"})
-        data["date"] = data["date"].apply(pd.to_datetime)
+        data["date"] = data["date"].apply(to_datetime)
         data = data[data["Open"] > 0]
         if start_date is not None:
-            data = data[data["date"] >= pd.to_datetime(start_date)]
+            data = data[data["date"] >= to_datetime(start_date)]
         if (
             end_date is not None
             and start_date is not None
-            and pd.to_datetime(end_date) > pd.to_datetime(start_date)
+            and to_datetime(end_date) > to_datetime(start_date)
         ):
             data = data[
                 data["date"]
                 <= (
-                    pd.to_datetime(end_date)
+                    to_datetime(end_date)
                     + relativedelta(minutes=719 if intraday is True else 0)
                 )
             ]
@@ -185,7 +196,7 @@ def yf_download(
     return data
 
 
-def df_transform_numbers(data: pd.DataFrame, columns: list) -> pd.DataFrame:
+def df_transform_numbers(data: DataFrame, columns: list) -> DataFrame:
     """Replace abbreviations of numbers with actual numbers."""
     multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
 

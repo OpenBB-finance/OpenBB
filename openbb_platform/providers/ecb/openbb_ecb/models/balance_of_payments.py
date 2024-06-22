@@ -1,9 +1,8 @@
 """ECB Balance of Payments Model."""
 
-import concurrent.futures
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_of_payments import (
     BalanceOfPaymentsQueryParams,
@@ -22,7 +21,6 @@ from openbb_ecb.utils.bps_series import (
     BPS_REPORT_TYPES,
     generate_bps_series_ids,
 )
-from openbb_ecb.utils.ecb_helpers import get_series_data
 from pydantic import Field
 
 
@@ -67,12 +65,17 @@ class ECBBalanceOfPaymentsFetcher(
         return ECBBalanceOfPaymentsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: ECBBalanceOfPaymentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from openbb_ecb.utils.ecb_helpers import get_series_data  # noqa
+        from pandas import DataFrame  # noqa
+
         results: List[Dict] = []
 
         _series_ids = generate_bps_series_ids(
@@ -80,26 +83,27 @@ class ECBBalanceOfPaymentsFetcher(
         )
         names = list(_series_ids)
         series_ids = list(_series_ids.values())
-        data = {}
+        data: Dict = {}
 
-        def get_one(series_id, name):
+        async def get_one(series_id, name):
             result = {}
-            temp = get_series_data(series_id)
+            temp = await get_series_data(series_id)
             result.update({name: {d["PERIOD"]: d["OBS_VALUE_AS_IS"] for d in temp}})
             data.update(result)
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            executor.map(get_one, series_ids, names)
-        if data != {}:
+        await asyncio.gather(*[get_one(series_id, name) for series_id, name in zip(series_ids, names)])
+
+        try:
             results = (
-                pd.DataFrame(data)
+                DataFrame(data)
                 .sort_index()
                 .reset_index()
                 .rename(columns={"index": "period"})
                 .to_dict("records")
             )
-
-        return results
+            return results
+        except Exception as error:
+            raise OpenBBError() from error
 
     @staticmethod
     def transform_data(

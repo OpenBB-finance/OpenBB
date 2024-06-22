@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import get_querystring, make_request
-from openbb_nasdaq.utils.helpers import HEADERS
 from pydantic import Field, field_validator
 
 EXCHANGE_CHOICES = ["all", "nasdaq", "nyse", "amex"]
@@ -436,7 +434,15 @@ class NasdaqEquityScreenerFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data from the Nasdaq Equity Screener."""
-        base_url = f"https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit={query.limit if query.limit else 10000}&"
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring, make_request
+        from openbb_nasdaq.utils.helpers import get_headers
+
+        HEADERS = get_headers(type="text")
+        base_url = (
+            "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
+            + f"{query.limit if query.limit else 10000}&"
+        )
         exchange = query.exchange.split(",")
         exsubcategory = query.exsubcategory.split(",")
         marketcap = query.mktcap.split(",")

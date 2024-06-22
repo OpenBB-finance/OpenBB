@@ -1,6 +1,5 @@
 """OECD Forecast GDP Model."""
 
-import re
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -10,7 +9,7 @@ from openbb_core.provider.standard_models.gdp_forecast import (
     GdpForecastData,
     GdpForecastQueryParams,
 )
-from openbb_oecd.utils import constants, helpers
+from openbb_oecd.utils import constants
 from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
@@ -36,6 +35,9 @@ class OECDGdpForecastData(GdpForecastData):
         cls, in_date: Union[date, Union[str, int]]
     ):  # pylint: disable=E0213
         """Validate date."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         # OECD Returns dates like 2022-Q2, so we map that to the end of the quarter.
         if isinstance(in_date, str):
             if re.match(r"\d{4}-Q[1-4]$", in_date):
@@ -72,6 +74,9 @@ class OECDGdpForecastFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_oecd.utils import helpers
+
         units = query.period[0].upper()
         _type = "REAL" if query.type == "real" else "NOM"
 

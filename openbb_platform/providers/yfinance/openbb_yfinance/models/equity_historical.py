@@ -1,13 +1,11 @@
 """Yahoo Finance Equity Historical Price Model."""
 
 # pylint: disable=unused-argument
-# ruff: noqa: SIM105
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -15,7 +13,6 @@ from openbb_core.provider.standard_models.equity_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
 from pandas import DataFrame, Timestamp
 from pydantic import Field, PrivateAttr, field_validator, model_validator
@@ -136,6 +133,8 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
         """Transform the query."""
+        from dateutil.relativedelta import relativedelta  # pylint: disable=import-outside-toplevel
+
         transformed_params = params
         now = datetime.now().date()
 
@@ -154,6 +153,8 @@ class YFinanceEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> DataFrame:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         adjusted = query.adjustment == "splits_and_dividends"
         kwargs = {"auto_adjust": True, "back_adjust": True} if adjusted is True else {}
         # pylint: disable=protected-access

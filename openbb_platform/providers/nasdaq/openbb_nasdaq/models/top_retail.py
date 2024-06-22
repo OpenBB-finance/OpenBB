@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.top_retail import (
@@ -46,10 +45,12 @@ class NasdaqTopRetailFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Get data from Nasdaq."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         api_key = credentials.get("nasdaq_api_key") if credentials else None
-        response = requests.get(
+        response = make_request(
             f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={api_key}",
-            timeout=5,
         )
         if response.status_code != 200:
             reason = getattr(response, "reason", "Unknown")
@@ -64,7 +65,7 @@ class NasdaqTopRetailFetcher(
         **kwargs: Any,
     ) -> List[NasdaqTopRetailData]:
         """Transform the data."""
-        transformed_data: List[Dict[str, Any]] = []
+        transformed_data: List[NasdaqTopRetailData] = []
         for row in data:
             transformed_data.append(
                 {
@@ -75,4 +76,4 @@ class NasdaqTopRetailFetcher(
                 }
             )
 
-        return [NasdaqTopRetailData(**row) for row in transformed_data]
+        return transformed_data

@@ -4,9 +4,6 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from finvizfinance.group.overview import Overview
-from finvizfinance.group.performance import Performance
-from finvizfinance.group.valuation import Valuation
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.compare_groups import (
@@ -224,19 +221,22 @@ class FinvizCompareGroupsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
-        results = []
+        results: List = []
         data = DataFrame()
         if query.metric == "performance":
+            from finvizfinance.group.performance import Performance  # pylint: disable=import-outside-toplevel
             data = Performance().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Performance (Week)",
             )
         if query.metric == "valuation":
+            from finvizfinance.group.valuation import Valuation  # pylint: disable=import-outside-toplevel
             data = Valuation().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Forward Price/Earnings",
             )
         if query.metric == "overview":
+            from finvizfinance.group.overview import Overview  # pylint: disable=import-outside-toplevel
             data = Overview().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Change",

@@ -1,12 +1,10 @@
 """Yahoo Finance Currency Price Model."""
 
-# ruff: noqa: SIM105
 # pylint: disable=unused-argument
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
@@ -14,7 +12,6 @@ from openbb_core.provider.standard_models.currency_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT
 from pydantic import Field
 
@@ -64,6 +61,7 @@ class YFinanceCurrencyHistoricalFetcher(
         params: Dict[str, Any]
     ) -> YFinanceCurrencyHistoricalQueryParams:
         """Transform the query."""
+        from dateutil.relativedelta import relativedelta  # pylint: disable=import-outside-toplevel
 
         transformed_params = params
         symbols = params["symbol"].split(",")
@@ -89,6 +87,8 @@ class YFinanceCurrencyHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         data = yf_download(
             query.symbol,
             start_date=query.start_date,

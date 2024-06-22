@@ -1,14 +1,11 @@
 """Yahoo Finance Index Historical Model."""
 
-# ruff: noqa: SIM105
 # pylint: disable=unused-argument
 
-import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
-import pandas as pd
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
@@ -16,11 +13,8 @@ from openbb_core.provider.standard_models.index_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import yf_download
 from openbb_yfinance.utils.references import INDICES, INTERVALS_DICT
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class YFinanceIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -66,6 +60,10 @@ class YFinanceIndexHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceIndexHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+        from pandas import DataFrame
+
         transformed_params = params
         now = datetime.now().date()
 
@@ -80,7 +78,7 @@ class YFinanceIndexHistoricalFetcher(
         new_tickers = []
         for ticker in tickers:
             _ticker = ""
-            indices = pd.DataFrame(INDICES).transpose().reset_index()
+            indices = DataFrame(INDICES).transpose().reset_index()
             indices.columns = ["code", "name", "symbol"]
 
             if ticker in indices["code"].values:
@@ -98,7 +96,7 @@ class YFinanceIndexHistoricalFetcher(
             if _ticker != "":
                 new_tickers.append(_ticker)
             else:
-                _warn(f"Symbol Error: {ticker} is not a supported index.")
+                warn(f"Symbol Error: {ticker} is not a supported index.")
 
         transformed_params["symbol"] = ",".join(new_tickers)
 
@@ -111,6 +109,8 @@ class YFinanceIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,

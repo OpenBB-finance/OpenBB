@@ -3,7 +3,6 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_performance import (
     ETFPerformanceData,
@@ -80,14 +79,16 @@ class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
         **kwargs: Any,
     ) -> List[Dict]:
         """Get data from WSJ."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+
         url = (
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
             "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22leaders%22%2C%22count%22%3A25%7D&type="
             "mdc_etfmovers"
         )
-        data = requests.get(
-            url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10
-        ).json()
+        data = make_request(url).json()
+
         return data["data"]["instruments"]
 
     @staticmethod

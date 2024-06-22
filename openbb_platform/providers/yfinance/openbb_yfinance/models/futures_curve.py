@@ -1,6 +1,6 @@
 """Yahoo Finance Futures Curve Model."""
 
-# ruff: noqa: SIM105
+# pylint: disable=unused-argument
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import get_futures_curve
 
 
 class YFinanceFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -48,11 +47,13 @@ class YFinanceFuturesCurveFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceFuturesCurveQueryParams,  # pylint: disable=unused-argument
+        query: YFinanceFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import get_futures_curve  # pylint: disable=import-outside-toplevel
+
         data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 
         if not data:
@@ -62,8 +63,8 @@ class YFinanceFuturesCurveFetcher(
 
     @staticmethod
     def transform_data(
-        query: YFinanceFuturesCurveQueryParams,  # pylint: disable=unused-argument
-        data: dict,
+        query: YFinanceFuturesCurveQueryParams,
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[YFinanceFuturesCurveData]:
         """Transform the data to the standard format."""

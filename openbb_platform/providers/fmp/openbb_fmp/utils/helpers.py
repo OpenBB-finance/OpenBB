@@ -1,28 +1,18 @@
 """FMP Helpers Module."""
 
-from datetime import date as dateType
-from typing import Any, Dict, List, Optional, Union
+from datetime import date
+from typing import Any, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_request,
-    amake_requests,
-    get_querystring,
-)
-from pydantic import BaseModel
+from openbb_core.provider.utils.helpers import get_querystring
 
 
-async def response_callback(
-    response: ClientResponse, _: ClientSession
-) -> Union[Dict, List[Dict]]:
+async def response_callback(response, _):
     """Use callback for make_request."""
     data = await response.json()
     if isinstance(data, dict) and "Error Message" in data:
         raise OpenBBError(f"FMP Error Message -> {data['Error Message']}")
-
     if isinstance(data, dict) and "error" in data:
         raise OpenBBError(
             f"FMP Error Message -> {data['error']}. Status code: {response.status}"
@@ -33,11 +23,17 @@ async def response_callback(
 
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
 async def get_data_urls(urls: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP for several urls."""
+        # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_requests
+
     return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
 
@@ -45,7 +41,7 @@ def create_url(
     version: int,
     endpoint: str,
     api_key: Optional[str],
-    query: Optional[Union[BaseModel, Dict]] = None,
+    query: Optional[Any] = None,
     exclude: Optional[List[str]] = None,
 ) -> str:
     """Return a URL for the FMP API.
@@ -68,6 +64,9 @@ def create_url(
     str
         The querystring.
     """
+    # pylint: disable=import-outside-toplevel
+    from pydantic import BaseModel
+
     the_dict = {}
     if query:
         the_dict = query.model_dump() if isinstance(query, BaseModel) else query
@@ -120,20 +119,22 @@ async def get_data_one(url: str, **kwargs: Any) -> dict:
     return data
 
 
-def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
+def most_recent_quarter(base: Optional[date] = None) -> date:
     """Get the most recent quarter date."""
-    base = min(base, dateType.today())  # This prevents dates from being in the future
+    if base is None:
+        base = date.today()
+    base = min(base, date.today())  # This prevents dates from being in the future
     exacts = [(3, 31), (6, 30), (9, 30), (12, 31)]
     for exact in exacts:
         if base.month == exact[0] and base.day == exact[1]:
             return base
     if base.month < 4:
-        return dateType(base.year - 1, 12, 31)
+        return date(base.year - 1, 12, 31)
     if base.month < 7:
-        return dateType(base.year, 3, 31)
+        return date(base.year, 3, 31)
     if base.month < 10:
-        return dateType(base.year, 6, 30)
-    return dateType(base.year, 9, 30)
+        return date(base.year, 6, 30)
+    return date(base.year, 9, 30)
 
 
 def get_interval(value: str) -> str:

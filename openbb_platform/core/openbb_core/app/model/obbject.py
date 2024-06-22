@@ -16,8 +16,8 @@ from typing import (
     Union,
 )
 
-import pandas as pd
 from numpy import ndarray
+from pandas import DataFrame, concat
 from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -86,13 +86,13 @@ class OBBject(Tagged, Generic[T]):
 
     def to_df(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
+    ) -> DataFrame:
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> pd.DataFrame:
+    ) -> DataFrame:
         """Convert results field to pandas dataframe.
 
         Supports converting creating pandas DataFrames from the following
@@ -120,7 +120,7 @@ class OBBject(Tagged, Generic[T]):
 
         Returns
         -------
-        pd.DataFrame
+        DataFrame
             Pandas dataframe.
         """
 
@@ -132,7 +132,7 @@ class OBBject(Tagged, Generic[T]):
         if self.results is None or not self.results:
             raise OpenBBError("Results not found.")
 
-        if isinstance(self.results, pd.DataFrame):
+        if isinstance(self.results, DataFrame):
             return self.results
 
         try:
@@ -152,9 +152,9 @@ class OBBject(Tagged, Generic[T]):
                         sort_columns = False
                     # Dict[str, Any]
                     else:
-                        dict_of_df[k] = pd.DataFrame(v)
+                        dict_of_df[k] = DataFrame(v)
 
-                df = pd.concat(dict_of_df, axis=1)
+                df = concat(dict_of_df, axis=1)
 
             # List[BaseModel]
             elif is_list_of_basemodel(res):
@@ -163,18 +163,18 @@ class OBBject(Tagged, Generic[T]):
                 sort_columns = False
             # str
             elif isinstance(res, str):
-                df = pd.DataFrame([res])
+                df = DataFrame([res])
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
-                    df = pd.DataFrame(res)  # type: ignore[call-overload]
+                    df = DataFrame(res)  # type: ignore[call-overload]
                     # Set index, if any
                     if df is not None and index is not None and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
                     if isinstance(res, dict):
-                        df = pd.DataFrame([res])
+                        df = DataFrame([res])
 
             if df is None:
                 raise OpenBBError("Unsupported data format.")

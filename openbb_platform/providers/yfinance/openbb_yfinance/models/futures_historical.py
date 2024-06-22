@@ -1,12 +1,10 @@
 """Yahoo Finance Futures Historical Price Model."""
 
 # pylint: disable=unused-argument
-# ruff: noqa: SIM105
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_historical import (
     FuturesHistoricalData,
@@ -14,7 +12,6 @@ from openbb_core.provider.standard_models.futures_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_yfinance.utils.helpers import get_futures_data, yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT, MONTHS
 from pandas import Timestamp
 from pydantic import Field, field_validator
@@ -70,7 +67,11 @@ class YFinanceFuturesHistoricalFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceFuturesHistoricalQueryParams:
-        """Transform the query. Setting the start and end dates for a 1 year period."""
+        """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+        from openbb_yfinance.utils.helpers import get_futures_data
+
         transformed_params = params.copy()
 
         symbols = params["symbol"].split(",")
@@ -120,6 +121,8 @@ class YFinanceFuturesHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
+        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+
         data = yf_download(
             query.symbol,
             start=query.start_date,
