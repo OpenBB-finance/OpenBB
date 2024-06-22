@@ -29,7 +29,7 @@ jobs:
         if: always()
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Checkout specific ref
         if: github.event_name == 'pull_request'

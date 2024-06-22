@@ -22,7 +22,7 @@ jobs:
             ["3.9", "3.10", "3.11"]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Install Python ${{ matrix.python_version }}
@@ -33,7 +33,7 @@ jobs:
             cache: "pip"
 
       - name: Cache pip packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('openbb_platform/poetry.lock') }}

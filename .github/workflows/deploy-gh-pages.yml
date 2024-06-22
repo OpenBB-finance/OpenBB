@@ -26,12 +26,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3 # actions/checkout v3.0.2
+        uses: actions/checkout@v4 # actions/checkout v3.0.2
 
-      - name: Setup Python 3.9
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           architecture: x64
 
       - name: Install Poetry

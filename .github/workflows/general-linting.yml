@@ -35,10 +35,10 @@ jobs:
       - name: Fetch base branch
         run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
 
-      - name: Setup Python 3.9
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
+          python-version: "3.10"
           architecture: x64
 
       - name: Get changed files in openbb_platform for PR
@@ -75,7 +75,7 @@ jobs:
     name: Markdown Linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Check out the code
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
@@ -86,7 +86,7 @@ jobs:
     name: JSON Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: json-yaml-validate
         id: json-yaml-validate
