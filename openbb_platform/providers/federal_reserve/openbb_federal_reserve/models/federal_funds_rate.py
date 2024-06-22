@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.federal_funds_rate import (
     FederalFundsRateQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
 from pydantic import Field, field_validator
 
 
@@ -111,6 +110,9 @@ class FederalReserveFederalFundsRateFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.requests import amake_request
+
         url = (
             "https://markets.newyorkfed.org/api/rates/unsecured/effr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"

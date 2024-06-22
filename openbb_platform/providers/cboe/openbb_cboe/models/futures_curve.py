@@ -1,9 +1,9 @@
 """CBOE Futures Curve Model."""
 
-# IMPORT STANDARD
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-from openbb_cboe.utils.helpers import get_settlement_prices
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.futures_curve import (
@@ -47,6 +47,9 @@ class CboeFuturesCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import get_settlement_prices
+
         symbol = query.symbol.upper().split(",")[0]
         FUTURES = await get_settlement_prices(**kwargs)
         if len(FUTURES) == 0:

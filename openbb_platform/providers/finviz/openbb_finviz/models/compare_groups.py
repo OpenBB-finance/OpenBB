@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.compare_groups import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_finviz.utils.definitions import GROUPS, GROUPS_DICT, METRICS
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -221,31 +220,23 @@ class FinvizCompareGroupsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
+        # pylint: disable=import-outside-toplevel
+        from finvizfinance.group.performance import Overview, Performance, Valuation
+        from pandas import DataFrame
+
         results: List = []
         data = DataFrame()
         if query.metric == "performance":
-            from finvizfinance.group.performance import (
-                Performance,
-            )  # pylint: disable=import-outside-toplevel
-
             data = Performance().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Performance (Week)",
             )
         if query.metric == "valuation":
-            from finvizfinance.group.valuation import (
-                Valuation,
-            )  # pylint: disable=import-outside-toplevel
-
             data = Valuation().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Forward Price/Earnings",
             )
         if query.metric == "overview":
-            from finvizfinance.group.overview import (
-                Overview,
-            )  # pylint: disable=import-outside-toplevel
-
             data = Overview().screener_view(
                 group=GROUPS_DICT[query.group],  # type: ignore
                 order="Change",

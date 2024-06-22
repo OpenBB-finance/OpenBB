@@ -1,13 +1,11 @@
 """Cboe Market Indices Model."""
 
-import warnings
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, Literal, Optional
+# pylint: disable=unused-argument
 
-from openbb_cboe.utils.helpers import (
-    TICKER_EXCEPTIONS,
-    get_index_directory,
-)
+from datetime import datetime
+from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
@@ -15,11 +13,7 @@ from openbb_core.provider.standard_models.index_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_requests
-from pandas import DataFrame, Series, concat, to_datetime
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class CboeIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -77,6 +71,9 @@ class CboeIndexHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> CboeIndexHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params.copy()
         now = datetime.now()
         if (
@@ -111,6 +108,13 @@ class CboeIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_cboe.utils.helpers import (
+            TICKER_EXCEPTIONS,
+            get_index_directory,
+        )
+        from openbb_core.provider.utils.helpers import amake_requests
+
         symbols = query.symbol.split(",")
         INDEXES = await get_index_directory(use_cache=query.use_cache)
         INDEXES = INDEXES.set_index("index_symbol")
@@ -126,7 +130,7 @@ class CboeIndexHistoricalFetcher(
             """Generate the URL for the data."""
             if symbol.replace("^", "") in TICKER_EXCEPTIONS:
                 interval_type = "intraday" if len(symbols) == 1 else "historical"
-                _warn(
+                warn(
                     "Only the most recent trading day is available for this ticker, "
                     + symbol
                 )
@@ -158,12 +162,15 @@ class CboeIndexHistoricalFetcher(
 
         return await amake_requests(urls, **kwargs)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: CboeIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeIndexHistoricalData]:
         """Transform the data to the standard format."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta  # noqa
+        from pandas import DataFrame, Series, concat, to_datetime  # noqa
+
         if not data:
             raise EmptyDataError()
         results = DataFrame()

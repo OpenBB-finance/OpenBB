@@ -2,10 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from datetime import (
-    datetime,
-    timezone,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,8 +11,6 @@ from openbb_core.provider.standard_models.currency_snapshots import (
     CurrencySnapshotsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
-from pandas import DataFrame, concat
 from pydantic import Field, field_validator
 
 
@@ -88,6 +83,8 @@ class FMPCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the FMP endpoint."""
+        from openbb_core.provider.utils.helpers import amake_request
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = f"https://financialmodelingprep.com/api/v3/quotes/forex?apikey={api_key}"
@@ -101,6 +98,11 @@ class FMPCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[FMPCurrencySnapshotsData]:
         """Filter by the query parameters and validate the model."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timezone  # noqa
+        from pandas import DataFrame, concat  # noqa
+        from openbb_core.provider.utils.helpers import safe_fromtimestamp  # noqa
+
         if not data:
             raise EmptyDataError("No data was returned from the FMP endpoint.")
 

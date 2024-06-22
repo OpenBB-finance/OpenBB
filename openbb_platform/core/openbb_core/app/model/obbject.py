@@ -16,8 +16,6 @@ from typing import (
     Union,
 )
 
-from numpy import ndarray
-from pandas import DataFrame, concat
 from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -29,6 +27,9 @@ from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
+    from numpy import ndarray
+    from pandas import DataFrame
+
     from openbb_core.app.query import Query
 
     try:
@@ -86,13 +87,13 @@ class OBBject(Tagged, Generic[T]):
 
     def to_df(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
         self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Convert results field to pandas dataframe.
 
         Supports converting creating pandas DataFrames from the following
@@ -123,6 +124,8 @@ class OBBject(Tagged, Generic[T]):
         DataFrame
             Pandas dataframe.
         """
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, concat
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
             return isinstance(items, list) and all(
@@ -214,7 +217,7 @@ class OBBject(Tagged, Generic[T]):
 
         return from_pandas(self.to_dataframe(index=None))
 
-    def to_numpy(self) -> ndarray:
+    def to_numpy(self) -> "ndarray":
         """Convert results field to numpy array."""
         return self.to_dataframe(index=None).to_numpy()
 

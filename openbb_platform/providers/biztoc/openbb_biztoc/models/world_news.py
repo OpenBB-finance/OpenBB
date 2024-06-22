@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -76,11 +74,15 @@ class BiztocWorldNewsFetcher(
 
     @staticmethod
     def extract_data(
-        query: BiztocWorldNewsQueryParams,  # pylint: disable=unused-argument
+        query: BiztocWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the Biztoc endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import make_request
+        from pandas import to_datetime
+
         api_key = credentials.get("biztoc_api_key") if credentials else ""
         headers = {
             "X-RapidAPI-Key": f"{api_key}",

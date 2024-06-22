@@ -2,18 +2,10 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
 from datetime import datetime
-from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
-from openbb_alpha_vantage.utils.helpers import (
-    INTERVALS_DICT,
-    calculate_adjusted_prices,
-    get_interval,
-)
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -23,12 +15,6 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from openbb_core.provider.utils.helpers import (
-    amake_request,
-    amake_requests,
-    get_querystring,
-)
-from pandas import date_range, read_csv, to_datetime
 from pydantic import (
     Field,
     NonNegativeFloat,
@@ -111,6 +97,9 @@ class AVEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> AVEquityHistoricalQueryParams:
         """Transform the query."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         transformed_params = params
 
         now = datetime.now().date()
@@ -129,6 +118,21 @@ class AVEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Alpha Vantage endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from io import BytesIO  # noqa
+        from openbb_alpha_vantage.utils.helpers import (  # noqa
+            INTERVALS_DICT,
+            calculate_adjusted_prices,
+            get_interval,
+        )
+        from openbb_core.provider.utils.helpers import (  # noqa
+            amake_request,
+            amake_requests,
+            get_querystring,
+        )
+        from pandas import date_range, read_csv, to_datetime  # noqa
+
         api_key = credentials.get("alpha_vantage_api_key") if credentials else ""
         intraday = False
         interval = get_interval(query.interval)

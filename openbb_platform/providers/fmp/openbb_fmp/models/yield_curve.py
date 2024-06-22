@@ -2,7 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -11,8 +11,6 @@ from openbb_core.provider.standard_models.yield_curve import (
     YieldCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_requests
-from pandas import Categorical, DataFrame, DatetimeIndex
 
 maturity_dict = {
     "month1": "month_1",
@@ -66,6 +64,10 @@ class FMPYieldCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta  # noqa
+        from openbb_core.provider.utils.helpers import amake_requests  # noqa
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         def generate_url(date):
@@ -89,6 +91,9 @@ class FMPYieldCurveFetcher(
         query: FMPYieldCurveQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPYieldCurveData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame, DatetimeIndex, Categorical
+
         if not data:
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data).set_index("date").sort_index()

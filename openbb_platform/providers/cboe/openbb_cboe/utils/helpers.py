@@ -4,7 +4,7 @@
 
 from datetime import date as dateType
 from io import BytesIO, StringIO
-from typing import Any, List, Literal, Optional
+from typing import Any, List, Optional
 
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -14,67 +14,6 @@ from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 from pandas import DataFrame, read_csv
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
-
-CONSTITUENTS_EU = Literal[  # pylint: disable=invalid-name
-    "BAT20P",
-    "BBE20P",
-    "BCH20P",
-    "BCHM30P",
-    "BDE40P",
-    "BDEM50P",
-    "BDES50P",
-    "BDK25P",
-    "BEP50P",
-    "BEPACP",
-    "BEPBUS",
-    "BEPCNC",
-    "BEPCONC",
-    "BEPCONS",
-    "BEPENGY",
-    "BEPFIN",
-    "BEPHLTH",
-    "BEPIND",
-    "BEPNEM",
-    "BEPTEC",
-    "BEPTEL",
-    "BEPUTL",
-    "BEPXUKP",
-    "BES35P",
-    "BEZ50P",
-    "BEZACP",
-    "BFI25P",
-    "BFR40P",
-    "BFRM20P",
-    "BIE20P",
-    "BIT40P",
-    "BNL25P",
-    "BNLM25P",
-    "BNO25G",
-    "BNORD40P",
-    "BPT20P",
-    "BSE30P",
-    "BUK100P",
-    "BUK250P",
-    "BUK350P",
-    "BUKAC",
-    "BUKBISP",
-    "BUKBUS",
-    "BUKCNC",
-    "BUKCONC",
-    "BUKCONS",
-    "BUKENGY",
-    "BUKFIN",
-    "BUKHI50P",
-    "BUKHLTH",
-    "BUKIND",
-    "BUKLO50P",
-    "BUKMINP",
-    "BUKNEM",
-    "BUKSC",
-    "BUKTEC",
-    "BUKTEL",
-    "BUKUTL",
-]
 
 cache_dir = get_user_cache_directory()
 backend = SQLiteBackend(f"{cache_dir}/http/cboe_directories", expire_after=3600 * 24)

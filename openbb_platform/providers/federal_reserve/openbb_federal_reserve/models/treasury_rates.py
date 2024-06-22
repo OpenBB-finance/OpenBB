@@ -2,19 +2,18 @@
 
 # pylint: disable=unused-argument
 
-from datetime import datetime, timedelta
-from io import BytesIO
-from typing import Any, Dict, List, Optional
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
-from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesData,
     TreasuryRatesQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
-from pandas import DataFrame, read_csv, to_datetime
 from pydantic import field_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
 
 maturities = [
     "month_1",
@@ -58,6 +57,9 @@ class FederalReserveTreasuryRatesFetcher(
         params: Dict[str, Any]
     ) -> FederalReserveTreasuryRatesQueryParams:
         """Transform the query params. Start and end dates are set to a 90 day interval."""
+        # pylint: disable=import-outside-toplevel
+        from datetime import timedelta
+
         transformed_params = params
 
         now = datetime.now().date()
@@ -74,8 +76,13 @@ class FederalReserveTreasuryRatesFetcher(
         query: FederalReserveTreasuryRatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the FederalReserve endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from io import BytesIO  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
+        from numpy import nan  # noqa
+        from pandas import DataFrame, read_csv  # noqa
 
         url = (
             "https://www.federalreserve.gov/datadownload/Output.aspx?"
@@ -93,9 +100,11 @@ class FederalReserveTreasuryRatesFetcher(
 
     @staticmethod
     def transform_data(
-        query: FederalReserveTreasuryRatesQueryParams, data: DataFrame, **kwargs: Any
+        query: FederalReserveTreasuryRatesQueryParams, data: "DataFrame", **kwargs: Any
     ) -> List[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
 
         df = data.copy()
         df = df[

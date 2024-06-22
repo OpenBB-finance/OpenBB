@@ -1,5 +1,7 @@
 """Cboe Available Indices Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import time
 from typing import Any, Dict, List, Optional
 

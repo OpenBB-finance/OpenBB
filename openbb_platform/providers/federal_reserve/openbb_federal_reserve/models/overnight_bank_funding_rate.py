@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.overnight_bank_funding_rate import (
     OvernightBankFundingRateQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
 from pydantic import Field, field_validator
 
 
@@ -91,6 +90,9 @@ class FederalReserveOvernightBankFundingRateFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import amake_request
+
         url = (
             "https://markets.newyorkfed.org/api/rates/unsecured/obfr/search.json?"
             + f"startDate={query.start_date}&endDate={query.end_date}"

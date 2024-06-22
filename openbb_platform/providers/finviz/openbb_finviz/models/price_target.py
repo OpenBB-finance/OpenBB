@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.price_target import (
     PriceTargetData,
     PriceTargetQueryParams,
 )
-from pandas import DataFrame
+
 from pydantic import Field
 
 
@@ -63,9 +63,9 @@ class FinvizPriceTargetFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Finviz endpoint."""
-        from finvizfinance.quote import (
-            finvizfinance,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from finvizfinance.quote import finvizfinance
+        from pandas import DataFrame
 
         results: List[Dict] = []
 

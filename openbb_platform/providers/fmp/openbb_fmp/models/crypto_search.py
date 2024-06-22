@@ -1,14 +1,14 @@
 """FMP Crypto Search Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_search import (
     CryptoSearchData,
     CryptoSearchQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, field_validator
 
 
@@ -64,6 +64,9 @@ class FMPCryptoSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.fetch import create_url, get_data_many
+
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(
@@ -76,12 +79,15 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
+        query: FMPCryptoSearchQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[FMPCryptoSearchData]:
         """Return the transformed data."""
-        cryptos = pd.DataFrame(data)
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
+        cryptos = DataFrame(data)
         if query.query:
             cryptos = cryptos[
                 cryptos["symbol"].str.contains(query.query, case=False)

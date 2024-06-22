@@ -2,21 +2,15 @@
 
 import json
 import logging
-import re
-from copy import deepcopy
 from enum import Enum
 from typing import Any, Dict
 
+import posthog
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_core.app.logs.models.logging_settings import LoggingSettings
 from openbb_core.env import Env
-from posthog import (
-    alias,
-    capture,
-    identify as posthog_identify,
-)
 
 
 class PosthogHandler(logging.Handler):
@@ -32,18 +26,19 @@ class PosthogHandler(logging.Handler):
 
     def __init__(self, settings: LoggingSettings):
         """Initialize Posthog Handler."""
-        # pylint: disable=import-outside-toplevel
-        from posthog import api_key, host
 
         super().__init__()
         self._settings = settings
         self.logged_in = False
-        api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret  # noqa
-        host = "https://app.posthog.com"  # noqa
+        posthog.api_key = "phc_6FXLqu4uW9yxfyN8DpPdgzCdlYXOmIWdMGh6GnBgJLX"  # pragma: allowlist secret  # noqa
+        posthog.host = "https://app.posthog.com"  # noqa
 
     @property
     def settings(self) -> LoggingSettings:
         """Get logging settings."""
+        # pylint: disable=import-outside-toplevel
+        from copy import deepcopy
+
         return deepcopy(self._settings)
 
     @settings.setter
@@ -69,7 +64,7 @@ class PosthogHandler(logging.Handler):
         if self.logged_in or not self._settings.user_id:
             return
 
-        posthog_identify(
+        posthog.identify(
             self._settings.user_id,
             {
                 "email": self._settings.user_email,
@@ -81,10 +76,13 @@ class PosthogHandler(logging.Handler):
             return
 
         self.logged_in = True
-        alias(self._settings.user_id, self._settings.app_id)
+        posthog.alias(self._settings.user_id, self._settings.app_id)
 
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         log_regex = r"(STARTUP|CMD|ERROR): (.*)"
         log_dict: Dict[str, Any] = {}
 
@@ -95,6 +93,9 @@ class PosthogHandler(logging.Handler):
 
     def send(self, record: logging.LogRecord):
         """Send log record to Posthog."""
+        # pylint: disable=import-outside-toplevel
+        import re
+
         level_name = logging.getLevelName(record.levelno)
         log_line = FormatterWithExceptions.filter_log_line(text=record.getMessage())
 
@@ -116,7 +117,7 @@ class PosthogHandler(logging.Handler):
             return
 
         self.identify()
-        capture(self.distinct_id(), event_name, properties=log_extra)
+        posthog.capture(self.distinct_id(), event_name, properties=log_extra)
 
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record."""
