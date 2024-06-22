@@ -203,7 +203,10 @@ def check_missing_params(
                         used_params = test_params[0].keys()
                     except KeyError:
                         used_params = test_params.keys()
-                    if expected_param not in used_params and expected_param != "return":
+                    if expected_param not in used_params and expected_param not in (
+                        "return",
+                        "chart",
+                    ):
                         missing_params.append(
                             f"Missing param {expected_param} in function {function}"
                         )
@@ -275,10 +278,6 @@ def check_integration_tests(
                     print("Hints:", hints)
                     print("Command params:", processing_command_params)
                     print("Function params:", function_params)
-
-                # if "chart" is in missing_items, remove it
-                if "chart" in missing_items:
-                    missing_items.remove("chart")
 
                 all_missing_items.extend(missing_items)
 
