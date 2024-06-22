@@ -14,6 +14,8 @@ SystemSettings = importlib.import_module(
     "openbb_core.app.model.system_settings", "SystemSettings"
 )
 
+UserSettings = UserSettings.UserSettings
+SystemSettings = SystemSettings.SystemSettings
 
 # pylint: disable=too-many-instance-attributes
 class ChartingSettings:

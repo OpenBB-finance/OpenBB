@@ -17,18 +17,20 @@ from typing import (
 )
 from warnings import warn
 
-from importlib_metadata import entry_points
-from numpy import ndarray
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
-from pandas import DataFrame, Series
 
 from openbb_charting.charts.helpers import (
     get_charting_functions,
     get_charting_functions_list,
 )
 
+if TYPE_CHECKING:
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame, Series  # noqa
+    from plotly.graph_objs import Figure  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
 class Charting:
     """Charting extension.
@@ -56,9 +58,8 @@ class Charting:
     """
 
     # pylint: disable=import-outside-toplevel
-    from plotly.graph_objs import Figure  # noqa
+    from importlib_metadata import entry_points  # noqa
     from openbb_charting.core.backend import Backend  # noqa
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
     if TYPE_CHECKING:
         from openbb_charting.query_params import ChartParams
@@ -74,11 +75,12 @@ class Charting:
         import importlib  # noqa
         from openbb_charting.core.backend import Backend  # noqa
 
-        ChartingSettings = (
+        charting_settings_module = (
             importlib.import_module(
-                "openbb_core.app.model.charts.charting_settings", "charting_settings"
+                "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
             )
-        ).ChartingSettings
+        )
+        ChartingSettings = charting_settings_module.ChartingSettings
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
@@ -94,9 +96,8 @@ class Charting:
 
         Without assigning to a variable, it will print the the information to the console.
         """
-        from openbb_charting.query_params import (
-            IndicatorsParams,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import IndicatorsParams
 
         return IndicatorsParams()
 
@@ -143,9 +144,8 @@ class Charting:
 
         Without assigning to a variable, it will print the docstring to the console.
         """
-        from openbb_charting.query_params import (
-            ChartParams,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import ChartParams
 
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
@@ -159,11 +159,12 @@ class Charting:
         )
 
     def _prepare_data_as_df(
-        self, data: Optional[Union[DataFrame, Series]]
-    ) -> Tuple[DataFrame, bool]:
+        self, data: Optional[Union["DataFrame", "Series"]]
+    ) -> Tuple["DataFrame", bool]:
         """Convert supplied data to a DataFrame."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
+        from pandas import DataFrame, Series
 
         has_data = (
             isinstance(data, (Data, DataFrame, Series)) and not data.empty  # type: ignore
@@ -190,11 +191,11 @@ class Charting:
         data: Union[
             list,
             dict,
-            DataFrame,
-            List[DataFrame],
-            Series,
-            List[Series],
-            ndarray,
+            "DataFrame",
+            List["DataFrame"],
+            "Series",
+            List["Series"],
+            "ndarray",
             Data,
         ],
         index: Optional[str] = None,
@@ -213,7 +214,7 @@ class Charting:
         same_axis: bool = False,
         render: bool = True,
         **kwargs,
-    ) -> Union[OpenBBFigure, Figure, None]:
+    ) -> Union["OpenBBFigure", "Figure", None]:
         """Create a line chart from external data and render a chart or return the OpenBBFigure.
 
         Parameters
@@ -256,9 +257,8 @@ class Charting:
         **kwargs: Dict[str, Any]
             Extra parameters to be passed to `figure.show()`
         """
-        from openbb_charting.charts.generic_charts import (
-            line_chart,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import line_chart
 
         fig = line_chart(
             data=data,
@@ -289,11 +289,11 @@ class Charting:
         data: Union[
             list,
             dict,
-            DataFrame,
-            List[DataFrame],
-            Series,
-            List[Series],
-            ndarray,
+            "DataFrame",
+            List["DataFrame"],
+            "Series",
+            List["Series"],
+            "ndarray",
             Data,
         ],
         x: str,
@@ -311,7 +311,7 @@ class Charting:
         bar_kwargs: Optional[Dict[str, Any]] = None,
         render: bool = True,
         **kwargs,
-    ) -> Union[OpenBBFigure, Figure, None]:
+    ) -> Union["OpenBBFigure", "Figure", None]:
         """Create a bar chart on a single x-axis with one or more values for the y-axis.
 
         Parameters
@@ -343,9 +343,8 @@ class Charting:
         OpenBBFigure
             The OpenBBFigure object.
         """
-        from openbb_charting.charts.generic_charts import (
-            bar_chart,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import bar_chart
 
         fig = bar_chart(
             data=data,
@@ -410,11 +409,11 @@ class Charting:
             Union[
                 list,
                 dict,
-                DataFrame,
-                List[DataFrame],
-                Series,
-                List[Series],
-                ndarray,
+                "DataFrame",
+                List["DataFrame"],
+                "Series",
+                List["Series"],
+                "ndarray",
                 Data,
             ]
         ] = None,
@@ -514,7 +513,7 @@ class Charting:
                     "Failed to automatically create a generic chart with the data provided."
                 ) from e
 
-    def _set_chart_style(self, figure: Figure):
+    def _set_chart_style(self, figure: "Figure"):
         """Set the user preference for light or dark mode."""
         style = self._charting_settings.chart_style
         font_color = "black" if style == "light" else "white"
@@ -544,7 +543,7 @@ class Charting:
 
     def table(
         self,
-        data: Optional[Union[DataFrame, Series]] = None,
+        data: Optional[Union["DataFrame", "Series"]] = None,
         title: str = "",
     ):
         """Display an interactive table.
