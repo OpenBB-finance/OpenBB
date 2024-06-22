@@ -15,8 +15,8 @@ CLI_LOCK = CLI_PATH / "poetry.lock"
 
 LOCAL_DEPS = """
 [tool.poetry.dependencies]
-python = ">=3.10,<3.12"
-openbb-devtools = { path = "./extensions/devtools", develop = true }
+python = ">=3.9,<3.12"
+openbb-devtools = { path = "./extensions/devtools", develop = true, markers = "python_version >= '3.10'" }
 openbb-core = { path = "./core", develop = true }
 
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
@@ -66,17 +66,23 @@ openbb-technical = { path = "./extensions/technical", optional = true, develop =
 """
 
 
-def extract_dev_dependencies(local_dep_path):
+def extract_dependencies(local_dep_path, dev: bool = False):
     """Extract development dependencies from a given package's pyproject.toml."""
     package_pyproject_path = PLATFORM_PATH / local_dep_path
     if package_pyproject_path.exists():
         with open(package_pyproject_path / "pyproject.toml") as f:
             package_pyproject_toml = load(f)
+        if dev:
+            return (
+                package_pyproject_toml.get("tool", {})
+                .get("poetry", {})
+                .get("group", {})
+                .get("dev", {})
+                .get("dependencies", {})
+            )
         return (
             package_pyproject_toml.get("tool", {})
             .get("poetry", {})
-            .get("group", {})
-            .get("dev", {})
             .get("dependencies", {})
         )
     return {}
@@ -88,7 +94,7 @@ def get_all_dev_dependencies():
     local_deps = loads(LOCAL_DEPS).get("tool", {}).get("poetry", {})["dependencies"]
     for _, package_info in local_deps.items():
         if "path" in package_info:
-            dev_deps = extract_dev_dependencies(Path(package_info["path"]))
+            dev_deps = extract_dependencies(Path(package_info["path"]), dev=True)
             all_dev_dependencies.update(dev_deps)
     return all_dev_dependencies
 
@@ -104,6 +110,14 @@ def install_platform_local(_extras: bool = False):
     pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
         local_deps
     )
+
+    # Extract and add devtools dependencies manually if Python version is 3.9
+    if sys.version_info[:2] == (3, 9):
+        devtools_deps = extract_dependencies(Path("./extensions/devtools"), dev=False)
+        devtools_deps.remove("python")
+        pyproject_toml.get("tool", {}).get("poetry", {}).get("dependencies", {}).update(
+            devtools_deps
+        )
 
     if _extras:
         dev_dependencies = get_all_dev_dependencies()
