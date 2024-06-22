@@ -166,7 +166,7 @@ class NasdaqCalendarEarningsFetcher(
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
-        from openbb_core.provider.utils.helpers import amake_request # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
 
         IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []
@@ -203,6 +203,5 @@ class NasdaqCalendarEarningsFetcher(
             raise EmptyDataError("The request was returned empty.")
         return [
             NasdaqCalendarEarningsData.model_validate(d)
-            for d in
-            sorted(data, key=lambda x: x["date"], reverse=True)
+            for d in sorted(data, key=lambda x: x["date"], reverse=True)
         ]

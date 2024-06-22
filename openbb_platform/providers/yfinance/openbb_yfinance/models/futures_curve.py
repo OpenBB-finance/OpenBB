@@ -52,7 +52,9 @@ class YFinanceFuturesCurveFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        from openbb_yfinance.utils.helpers import get_futures_curve  # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import (
+            get_futures_curve,
+        )  # pylint: disable=import-outside-toplevel
 
         data = get_futures_curve(query.symbol, query.date).to_dict(orient="records")
 

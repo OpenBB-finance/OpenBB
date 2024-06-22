@@ -54,7 +54,10 @@ class GovernmentUSTreasuryAuctionsFetcher(
         """Extract the raw data from Treasury Direct API."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
-        from openbb_core.provider.utils.helpers import get_querystring, make_request  # noqa
+        from openbb_core.provider.utils.helpers import (
+            get_querystring,
+            make_request,
+        )  # noqa
 
         base_url = "https://www.treasurydirect.gov/TA_WS/securities/search?"
 

@@ -7,8 +7,13 @@ from typing import Optional
 from openbb_core.app.logs.utils.utils import get_app_id
 from openbb_core.env import Env
 
-UserSettings = importlib.import_module("openbb_core.app.model.user_settings", "UserSettings")
-SystemSettings = importlib.import_module("openbb_core.app.model.system_settings", "SystemSettings")
+UserSettings = importlib.import_module(
+    "openbb_core.app.model.user_settings", "UserSettings"
+)
+SystemSettings = importlib.import_module(
+    "openbb_core.app.model.system_settings", "SystemSettings"
+)
+
 
 # pylint: disable=too-many-instance-attributes
 class ChartingSettings:

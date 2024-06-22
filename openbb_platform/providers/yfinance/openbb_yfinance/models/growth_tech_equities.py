@@ -14,6 +14,7 @@ from pydantic import Field
 if TYPE_CHECKING:
     from pandas import DataFrame
 
+
 class YFGrowthTechEquitiesQueryParams(EquityPerformanceQueryParams):
     """Yahoo Finance Asset Performance Growth Tech Equities Query.
 

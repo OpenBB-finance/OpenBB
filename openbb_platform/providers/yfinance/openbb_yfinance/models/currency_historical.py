@@ -61,7 +61,9 @@ class YFinanceCurrencyHistoricalFetcher(
         params: Dict[str, Any]
     ) -> YFinanceCurrencyHistoricalQueryParams:
         """Transform the query."""
-        from dateutil.relativedelta import relativedelta  # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import (
+            relativedelta,
+        )  # pylint: disable=import-outside-toplevel
 
         transformed_params = params
         symbols = params["symbol"].split(",")
@@ -87,7 +89,9 @@ class YFinanceCurrencyHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import (
+            yf_download,
+        )  # pylint: disable=import-outside-toplevel
 
         data = yf_download(
             query.symbol,

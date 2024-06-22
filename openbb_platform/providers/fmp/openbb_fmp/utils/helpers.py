@@ -31,7 +31,7 @@ async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
 
 async def get_data_urls(urls: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP for several urls."""
-        # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import amake_requests
 
     return await amake_requests(urls, response_callback=response_callback, **kwargs)

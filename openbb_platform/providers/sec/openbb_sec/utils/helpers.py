@@ -168,6 +168,7 @@ async def cik_map(cik: Union[str, int], use_cache: bool = True) -> str:
 def get_schema_filelist(query: str = "", url: str = "", use_cache: bool = True) -> List:
     """Get a list of schema files from the SEC website."""
     from pandas import read_html  # pylint: disable=import-outside-toplevel
+
     results: List = []
     url = url if url else f"https://xbrl.fasb.org/us-gaap/{query}"
     _url = url
@@ -251,6 +252,7 @@ async def download_zip_file(
 async def get_ftd_urls() -> Dict:
     """Get Fails-to-Deliver Data URLs."""
     from pandas import Series  # pylint: disable=import-outside-toplevel
+
     results = {}
     position = None
     key = "title"

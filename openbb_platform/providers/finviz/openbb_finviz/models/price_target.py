@@ -63,7 +63,9 @@ class FinvizPriceTargetFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Finviz endpoint."""
-        from finvizfinance.quote import finvizfinance  # pylint: disable=import-outside-toplevel
+        from finvizfinance.quote import (
+            finvizfinance,
+        )  # pylint: disable=import-outside-toplevel
 
         results: List[Dict] = []
 

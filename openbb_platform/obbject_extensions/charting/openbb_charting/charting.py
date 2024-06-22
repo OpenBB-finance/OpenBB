@@ -75,7 +75,9 @@ class Charting:
         from openbb_charting.core.backend import Backend  # noqa
 
         ChartingSettings = (
-            importlib.import_module("openbb_core.app.model.charts.charting_settings", "charting_settings")
+            importlib.import_module(
+                "openbb_core.app.model.charts.charting_settings", "charting_settings"
+            )
         ).ChartingSettings
 
         self._obbject: OBBject = obbject
@@ -92,7 +94,10 @@ class Charting:
 
         Without assigning to a variable, it will print the the information to the console.
         """
-        from openbb_charting.query_params import IndicatorsParams  # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import (
+            IndicatorsParams,
+        )  # pylint: disable=import-outside-toplevel
+
         return IndicatorsParams()
 
     @classmethod
@@ -138,7 +143,9 @@ class Charting:
 
         Without assigning to a variable, it will print the docstring to the console.
         """
-        from openbb_charting.query_params import ChartParams  # pylint: disable=import-outside-toplevel
+        from openbb_charting.query_params import (
+            ChartParams,
+        )  # pylint: disable=import-outside-toplevel
 
         if self._obbject._route is None:  # pylint: disable=protected-access
             raise ValueError("OBBject was initialized with no function route.")
@@ -249,7 +256,9 @@ class Charting:
         **kwargs: Dict[str, Any]
             Extra parameters to be passed to `figure.show()`
         """
-        from openbb_charting.charts.generic_charts import line_chart  # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import (
+            line_chart,
+        )  # pylint: disable=import-outside-toplevel
 
         fig = line_chart(
             data=data,
@@ -334,7 +343,9 @@ class Charting:
         OpenBBFigure
             The OpenBBFigure object.
         """
-        from openbb_charting.charts.generic_charts import bar_chart  # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.generic_charts import (
+            bar_chart,
+        )  # pylint: disable=import-outside-toplevel
 
         fig = bar_chart(
             data=data,

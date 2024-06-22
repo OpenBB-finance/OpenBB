@@ -91,7 +91,7 @@ class NasdaqCalendarDividendFetcher(
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
-        from openbb_core.provider.utils.helpers import amake_request # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
 
         IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []

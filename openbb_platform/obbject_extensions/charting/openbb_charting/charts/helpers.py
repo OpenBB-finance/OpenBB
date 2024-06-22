@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Callable, Dict, List, Type
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
+
 def get_charting_functions(view: Type) -> Dict[str, Callable]:
     """Discover charting functions."""
     # pylint: disable=import-outside-toplevel

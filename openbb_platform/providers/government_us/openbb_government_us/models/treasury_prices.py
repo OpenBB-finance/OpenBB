@@ -95,7 +95,6 @@ class GovernmentUSTreasuryPricesFetcher(
 
         return r.content.decode("utf-8")
 
-
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,

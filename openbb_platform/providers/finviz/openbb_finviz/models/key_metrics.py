@@ -115,7 +115,10 @@ class FinvizKeyMetricsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
-        from finvizfinance.quote import finvizfinance  # pylint: disable=import-outside-toplevel
+        from finvizfinance.quote import (
+            finvizfinance,
+        )  # pylint: disable=import-outside-toplevel
+
         results: List = []
 
         def get_one(symbol) -> Dict:

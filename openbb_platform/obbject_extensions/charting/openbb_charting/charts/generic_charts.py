@@ -60,9 +60,9 @@ def line_chart(  # noqa: PLR0912
         if isinstance(data, (DataFrame, Series))
         else index if index is not None else x if x is not None else "date"
     )
-    df: DataFrame = (
-        basemodel_to_df(convert_to_basemodel(data), index=index)
-    ).dropna(how="all", axis=1)
+    df: DataFrame = (basemodel_to_df(convert_to_basemodel(data), index=index)).dropna(
+        how="all", axis=1
+    )
 
     if df.index.name is None:
         if "date" in df.columns:

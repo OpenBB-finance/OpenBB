@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from plotly.graph_objs import Figure  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
+
 def price_performance(
     **kwargs,
 ) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:  # noqa: PLR0912

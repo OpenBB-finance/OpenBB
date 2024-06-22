@@ -141,4 +141,3 @@ class EquityInfoData(Data):
     last_stock_price_date: Optional[dateType] = Field(
         default=None, description="Date of the company's last stock price."
     )
-

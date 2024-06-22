@@ -121,7 +121,9 @@ class YFinanceFuturesHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        from openbb_yfinance.utils.helpers import yf_download  # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import (
+            yf_download,
+        )  # pylint: disable=import-outside-toplevel
 
         data = yf_download(
             query.symbol,

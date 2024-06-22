@@ -34,6 +34,7 @@ class PosthogHandler(logging.Handler):
         """Initialize Posthog Handler."""
         # pylint: disable=import-outside-toplevel
         from posthog import api_key, host
+
         super().__init__()
         self._settings = settings
         self.logged_in = False

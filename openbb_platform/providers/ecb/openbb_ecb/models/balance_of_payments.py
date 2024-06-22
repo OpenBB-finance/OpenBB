@@ -91,7 +91,9 @@ class ECBBalanceOfPaymentsFetcher(
             result.update({name: {d["PERIOD"]: d["OBS_VALUE_AS_IS"] for d in temp}})
             data.update(result)
 
-        await asyncio.gather(*[get_one(series_id, name) for series_id, name in zip(series_ids, names)])
+        await asyncio.gather(
+            *[get_one(series_id, name) for series_id, name in zip(series_ids, names)]
+        )
 
         try:
             results = (

@@ -30,9 +30,10 @@ except ImportError as e:
     class PyWry(DummyBackend):  # type: ignore
         """Dummy backend for charts."""
 
-ChartingSettings = (
-    importlib.import_module("openbb_core.app.model.charts.charting_settings", "charting_settings").ChartingSettings
-)
+
+ChartingSettings = importlib.import_module(
+    "openbb_core.app.model.charts.charting_settings", "charting_settings"
+).ChartingSettings
 
 
 class Backend(PyWry):
@@ -403,6 +404,7 @@ async def download_plotly_js():
     """Download or updates plotly.js to the assets folder."""
     # pylint: disable=import-outside-toplevel
     import aiohttp
+
     js_filename = PLOTLYJS_PATH.name
     try:
         # we use aiohttp to download plotly.js

@@ -170,7 +170,9 @@ class PlotlyTA(PltTA):
     def __plot__(
         self,
         df_stock: Union["DataFrame", "Series"],
-        indicators: Optional[Union["ChartIndicators", Dict[str, Dict[str, Any]]]] = None,
+        indicators: Optional[
+            Union["ChartIndicators", Dict[str, Dict[str, Any]]]
+        ] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
@@ -218,7 +220,9 @@ class PlotlyTA(PltTA):
     @staticmethod
     def plot(
         df_stock: Union["DataFrame", "Series"],
-        indicators: Optional[Union["ChartIndicators", Dict[str, Dict[str, Any]]]] = None,
+        indicators: Optional[
+            Union["ChartIndicators", Dict[str, Dict[str, Any]]]
+        ] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
@@ -269,11 +273,7 @@ class PlotlyTA(PltTA):
         import inspect
         import sys
 
-        path = (
-            Path(sys.executable).parent
-            if hasattr(sys, "frozen")
-            else PLUGINS_PATH
-        )
+        path = Path(sys.executable).parent if hasattr(sys, "frozen") else PLUGINS_PATH
         if debug:
             warnings.warn(f"[bold green]Loading plugins from {path}[/]")
             warnings.warn("[bold green]Plugins found:[/]")
@@ -624,7 +624,9 @@ class PlotlyTA(PltTA):
         figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
 
-    def process_fig(self, fig: "OpenBBFigure", volume_ticks_x: int = 7) -> "OpenBBFigure":
+    def process_fig(
+        self, fig: "OpenBBFigure", volume_ticks_x: int = 7
+    ) -> "OpenBBFigure":
         """Process plotly figure before plotting indicators.
 
         Parameters

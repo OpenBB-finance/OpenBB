@@ -49,9 +49,7 @@ def basemodel_to_df(
     return df
 
 
-def df_to_basemodel(
-    df: Union[DataFrame, Series], index: bool = False
-) -> List[Data]:
+def df_to_basemodel(df: Union[DataFrame, Series], index: bool = False) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
     is_multiindex = isinstance(df.index, MultiIndex)
 
