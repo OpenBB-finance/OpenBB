@@ -125,8 +125,8 @@ class FMPEconomicCalendarFetcher(
             try:
                 result = await amake_request(url, **kwargs)
                 if result:
-                        if "Error Message" in result:
-                            raise OpenBBError(result["Error Message"])
+                    if "Error Message" in result:
+                        raise OpenBBError(result["Error Message"])
                     results.extend(result)
             except Exception as e:
                 if len(urls) == 1 or (len(urls) > 1 and n_urls == len(urls)):
