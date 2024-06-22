@@ -11,10 +11,15 @@ import sys
 import warnings
 from multiprocessing import current_process
 from pathlib import Path
-from typing import Any, Dict, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 from openbb_core.env import Env
 from packaging import version
+
+if TYPE_CHECKING:
+    from openbb_core.app.model.charts.charting_settings import ChartingSettings
+    from pandas import DataFrame
+    from plotly.graph_objs import Figure
 
 PLOTS_CORE_PATH = Path(__file__).parent.resolve()
 PLOTLYJS_PATH = PLOTS_CORE_PATH / "assets" / "plotly-2.32.0.min.js"
@@ -31,17 +36,8 @@ except ImportError as e:
         """Dummy backend for charts."""
 
 
-ChartingSettings = importlib.import_module(
-    "openbb_core.app.model.charts.charting_settings", "charting_settings"
-).ChartingSettings
-
-
 class Backend(PyWry):
     """Custom backend for Plotly."""
-
-    # pylint: disable=import-outside-toplevel
-    from pandas import DataFrame  # noqa
-    from plotly.graph_objs import Figure  # noqa
 
     def __new__(cls, *args, **kwargs):  # pylint: disable=W0613
         """Create a singleton instance of the backend."""
@@ -51,7 +47,7 @@ class Backend(PyWry):
 
     def __init__(
         self,
-        charting_settings: ChartingSettings,
+        charting_settings: "ChartingSettings",
         daemon: bool = True,
         max_retries: int = 30,
         proc_name: str = "OpenBB Terminal",
@@ -175,7 +171,7 @@ class Backend(PyWry):
 
     def send_figure(
         self,
-        fig: Figure,
+        fig: "Figure",
         export_image: Optional[Union[Path, str]] = "",
         command_location: Optional[str] = "",
     ):
@@ -250,7 +246,7 @@ class Backend(PyWry):
 
     def send_table(
         self,
-        df_table: DataFrame,
+        df_table: "DataFrame",
         title: str = "",
         source: str = "",
         theme: str = "dark",
@@ -428,8 +424,15 @@ async def download_plotly_js():
         warnings.warn(f"Error downloading plotly.js: {err}")
 
 
-def create_backend(charting_settings: Optional[ChartingSettings] = None):
+def create_backend(charting_settings: Optional["ChartingSettings"] = None):
     """Create the backend."""
+    # pylint: disable=import-outside-toplevel
+    ChartingSettings = importlib.import_module(
+        "openbb_core.app.model.charts.charting_settings", "charting_settings"
+    )
+
+    ChartingSettings = ChartingSettings.ChartingSettings
+
     charting_settings = charting_settings or ChartingSettings()
     global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
