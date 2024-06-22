@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
     from plotly.graph_objs import Figure
 
+
 class EtfViews:
     """Etf Views."""
 
@@ -33,7 +34,9 @@ class EtfViews:
         return price_performance(**kwargs)
 
     @staticmethod
-    def etf_holdings(**kwargs) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:
+    def etf_holdings(
+        **kwargs,
+    ) -> Tuple[Union["OpenBBFigure", "Figure"], Dict[str, Any]]:
         """Equity Compare Groups Chart."""
         # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
