@@ -67,12 +67,15 @@ class NasdaqTopRetailFetcher(
         """Transform the data."""
         transformed_data: List[NasdaqTopRetailData] = []
         for row in data:
-            transformed_data.append(NasdaqTopRetailData.model_validate({
-                    "date": row[0],
-                    "symbol": row[1],
-                    "activity": row[2],
-                    "sentiment": row[3],
-                })
+            transformed_data.append(
+                NasdaqTopRetailData.model_validate(
+                    {
+                        "date": row[0],
+                        "symbol": row[1],
+                        "activity": row[2],
+                        "sentiment": row[3],
+                    }
+                )
             )
 
         return transformed_data
