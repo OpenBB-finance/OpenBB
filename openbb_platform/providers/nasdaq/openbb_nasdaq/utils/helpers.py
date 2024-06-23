@@ -3,7 +3,8 @@
 
 def remove_html_tags(text: str):
     """Remove HTML tags from a string."""
-    import re  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    import re
 
     clean = re.compile("<.*?>")
     return re.sub(clean, " ", text)
@@ -11,9 +12,8 @@ def remove_html_tags(text: str):
 
 def get_random_agent() -> str:
     """Generate a random user agent for a request."""
-    from random_user_agent.user_agent import (
-        UserAgent,
-    )  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from random_user_agent.user_agent import UserAgent
 
     user_agent_rotator = UserAgent(limit=100)
     user_agent = user_agent_rotator.get_random_user_agent()
@@ -22,7 +22,6 @@ def get_random_agent() -> str:
 
 def get_headers(accept_type: str = "json") -> dict:
     """Get the headers for the request."""
-
     if accept_type not in ["json", "text"]:
         raise ValueError("Invalid accept_type. Must be either 'json' or 'text'.")
 
@@ -51,5 +50,8 @@ def get_headers(accept_type: str = "json") -> dict:
 
 def date_range(start_date, end_date):
     """Yield dates between start_date and end_date."""
+    # pylint: disable=import-outside-toplevel
+    from datetime import timedelta
+
     for n in range(int((end_date - start_date).days) + 1):
         yield start_date + timedelta(n)
