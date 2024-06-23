@@ -139,8 +139,8 @@ class NasdaqCalendarIpoFetcher(
         return NasdaqCalendarIpoQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
-        query: NasdaqCalendarIpoQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: NasdaqCalendarIpoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -162,7 +162,7 @@ class NasdaqCalendarIpoFetcher(
             )
         )
 
-        async def get_calendar_data(date: str) -> None:
+        async def get_calendar_data(date: str):
             """Get the calendar data for the given date."""
             response: List = []
             url = (
@@ -181,7 +181,7 @@ class NasdaqCalendarIpoFetcher(
             if response:
                 data.extend(response)
 
-        asyncio.run(asyncio.gather(*[get_calendar_data(date) for date in dates]))
+        await asyncio.run(asyncio.gather(*[get_calendar_data(date) for date in dates]))
 
         return data
 

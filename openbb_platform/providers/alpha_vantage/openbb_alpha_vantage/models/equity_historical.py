@@ -301,6 +301,9 @@ class AVEquityHistoricalFetcher(
         query: AVEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[AVEquityHistoricalData]:
         """Transform the data to the standard format."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         if data == []:
             return []
         if "{" in data[0]:

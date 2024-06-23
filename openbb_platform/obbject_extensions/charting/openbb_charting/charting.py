@@ -17,6 +17,7 @@ from typing import (
 )
 from warnings import warn
 
+from importlib_metadata import entry_points
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
@@ -31,6 +32,8 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
     from plotly.graph_objs import Figure  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from openbb_charting.query_params import ChartParams  # noqa
+    from openbb_charting.core.backend import Backend  # noqa
 
 
 class Charting:
@@ -58,13 +61,6 @@ class Charting:
         Toggle the chart style, of an existing chart, between light and dark mode.
     """
 
-    # pylint: disable=import-outside-toplevel
-    from importlib_metadata import entry_points  # noqa
-    from openbb_charting.core.backend import Backend  # noqa
-
-    if TYPE_CHECKING:
-        from openbb_charting.query_params import ChartParams
-
     _extension_views: ClassVar[List[Type]] = [
         entry_point.load()
         for entry_point in entry_points(group="openbb_charting_extension")
@@ -74,7 +70,6 @@ class Charting:
         """Initialize Charting extension."""
         # pylint: disable=import-outside-toplevel
         import importlib  # noqa
-        from openbb_charting.core.backend import Backend  # noqa
 
         charting_settings_module = importlib.import_module(
             "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
@@ -86,7 +81,7 @@ class Charting:
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._backend: Backend = self._handle_backend()
+        self._backend: "Backend" = self._handle_backend()
         self._functions: Dict[str, Callable] = self._get_functions()
 
     @classmethod
@@ -117,7 +112,7 @@ class Charting:
 
         return functions
 
-    def _handle_backend(self) -> Backend:
+    def _handle_backend(self) -> "Backend":
         """Create and start the backend."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.backend import create_backend, get_backend

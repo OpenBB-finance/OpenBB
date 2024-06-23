@@ -117,7 +117,7 @@ class NasdaqEquitySearchFetcher(
                 )
             return await response.text()
 
-        return await amake_request(url=url, resonse_callback=response_callback)
+        return await amake_request(url=url, resonse_callback=response_callback)  # type: ignore
 
     @staticmethod
     def transform_data(

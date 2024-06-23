@@ -185,11 +185,11 @@ class CboeIndexConstituentsFetcher(
 
         if not data:
             raise EmptyDataError()
-        data = DataFrame(data)
-        data["price_change_percent"] = data["price_change_percent"] / 100
-        data = data.replace(0, None).dropna(how="all", axis=1)
-        data = data.drop(columns=["exchange_id"])
+        df = DataFrame(data)
+        df["price_change_percent"] = df["price_change_percent"] / 100
+        df = df.replace(0, None).dropna(how="all", axis=1)
+        df = df.drop(columns=["exchange_id"])
         return [
             CboeIndexConstituentsData.model_validate(d)
-            for d in data.to_dict(orient="records")
+            for d in df.to_dict(orient="records")
         ]

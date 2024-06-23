@@ -1,20 +1,9 @@
 """Backend for Plotly."""
 
-import asyncio
-import atexit
-import importlib
-import json
-import os
-import re
-import subprocess
-import sys
-import warnings
-from multiprocessing import current_process
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, Optional, Union
 
 from openbb_core.env import Env
-from packaging import version
 
 if TYPE_CHECKING:
     from openbb_core.app.model.charts.charting_settings import ChartingSettings
@@ -50,9 +39,15 @@ class Backend(PyWry):
         charting_settings: "ChartingSettings",
         daemon: bool = True,
         max_retries: int = 30,
-        proc_name: str = "OpenBB Terminal",
+        proc_name: str = "OpenBB Platform",
     ):
         """Create a new instance of the backend."""
+        # pylint: disable=import-outside-toplevel
+        import atexit  # noqa
+        import sys  # noqa
+        from multiprocessing import current_process  # noqa
+        from packaging import version  # noqa
+
         self.charting_settings = charting_settings
         has_version = hasattr(PyWry, "__version__")
         init_kwargs: Dict[str, Any] = dict(daemon=daemon, max_retries=max_retries)
@@ -109,6 +104,9 @@ class Backend(PyWry):
 
     def get_plotly_html(self) -> Path:
         """Get the plotly html file."""
+        # pylint: disable=import-outside-toplevel
+        import warnings
+
         self.set_window_dimensions()
         if self.plotly_html.exists():
             return self.plotly_html
@@ -122,6 +120,9 @@ class Backend(PyWry):
 
     def get_table_html(self) -> Path:
         """Get the table html file."""
+        # pylint: disable=import-outside-toplevel
+        import warnings
+
         self.set_window_dimensions()
         if self.table_html.exists():
             return self.table_html
@@ -187,6 +188,11 @@ class Backend(PyWry):
             Location of the command, by default "".
             We can use the route here to display it on the chart title.
         """
+        # pylint: disable=import-outside-toplevel
+        import asyncio
+        import json
+        import re
+
         self.check_backend()
         # pylint: disable=C0415
 
@@ -225,6 +231,12 @@ class Backend(PyWry):
 
     async def process_image(self, export_image: Path):
         """Check if the image has been exported to the path."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio
+        import os
+        import subprocess
+        import sys
+
         img_path = export_image.resolve()
 
         checks = 0
@@ -265,6 +277,10 @@ class Backend(PyWry):
         theme : light or dark, optional
             Theme of the table, by default "light"
         """
+        # pylint: disable=import-outside-toplevel
+        import json
+        import re
+
         self.check_backend()
 
         if title:
@@ -358,6 +374,10 @@ class Backend(PyWry):
 
     def check_backend(self):
         """Override to check if isatty."""
+        # pylint: disable=import-outside-toplevel
+        import warnings  # noqa
+        from packaging import version  # noqa
+
         if not self.isatty:
             return None
 
@@ -427,12 +447,13 @@ async def download_plotly_js():
 def create_backend(charting_settings: Optional["ChartingSettings"] = None):
     """Create the backend."""
     # pylint: disable=import-outside-toplevel
-    ChartingSettings = importlib.import_module(
+    import importlib
+
+    charting_module = importlib.import_module(
         "openbb_core.app.model.charts.charting_settings", "charting_settings"
     )
 
-    ChartingSettings = ChartingSettings.ChartingSettings
-
+    ChartingSettings = charting_module.ChartingSettings
     charting_settings = charting_settings or ChartingSettings()
     global BACKEND  # pylint: disable=W0603 # noqa
     if BACKEND is None:
@@ -442,5 +463,5 @@ def create_backend(charting_settings: Optional["ChartingSettings"] = None):
 def get_backend() -> Backend:
     """Get the backend instance."""
     if BACKEND is None:
-        raise ValueError("Backend not created")
+        create_backend()
     return BACKEND

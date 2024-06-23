@@ -67,7 +67,7 @@ class NasdaqTopRetailFetcher(
         """Transform the data."""
         transformed_data: List[NasdaqTopRetailData] = []
         for row in data:
-            transformed_data.append(
+            transformed_data.append(  # type: ignore
                 {
                     "date": row[0],
                     "symbol": row[1],

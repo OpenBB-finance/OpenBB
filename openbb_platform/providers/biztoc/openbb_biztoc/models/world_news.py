@@ -48,6 +48,9 @@ class BiztocWorldNewsData(WorldNewsData):
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import to_datetime
+
         return to_datetime(v).strftime("%Y-%m-%d %H:%M:%S")
 
     @field_validator("title")

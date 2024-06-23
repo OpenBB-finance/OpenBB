@@ -1,6 +1,7 @@
 """US Government Treasury Auctions Model."""
 
 # pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -73,7 +74,7 @@ class GovernmentUSTreasuryAuctionsFetcher(
         url = base_url + query_string + "&format=json"
         r = make_request(url)
         if r.status_code != 200:
-            raise OpenBBError(r.status_code)
+            raise OpenBBError(f"{r.status_code}")
         data = DataFrame(r.json())
         results = (
             data.fillna("N/A").replace("", None).replace("N/A", None).to_dict("records")

@@ -5,6 +5,7 @@
 from typing import Any, Dict, List, Literal, Optional, Union
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_screener import (
     EquityScreenerData,
@@ -472,9 +473,9 @@ class NasdaqEquityScreenerFetcher(
         url = f"{base_url}{querystring}"
         try:
             response = make_request(url, headers=HEADERS)
-        except response.status_code != 200:
-            raise response.raise_for_status()
-        return response.json()
+            return response.json()
+        except Exception as error:
+            raise OpenBBError(f"Failed to get data from Nasdaq -> {error}")
 
     @staticmethod
     def transform_data(
