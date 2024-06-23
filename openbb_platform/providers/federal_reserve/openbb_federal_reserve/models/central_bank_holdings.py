@@ -323,12 +323,12 @@ class FederalReserveCentralBankHoldingsFetcher(
             query.holding_type == "all_agency"
             or query.holding_type in AGENCY_HOLDING_TYPES
         ):
-            security_type = "agency"
+            security_type = "agency"  # type: ignore
         if (
             query.holding_type == "all_treasury"
             or query.holding_type in TREASURY_HOLDING_TYPES
         ):
-            security_type = "treasury"
+            security_type = "treasury"  # type: ignore
         if query.cusip is not None:
             cusips = (
                 query.cusip if isinstance(query.cusip, str) else ",".join(query.cusip)

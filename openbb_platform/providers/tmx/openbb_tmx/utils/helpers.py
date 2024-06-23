@@ -2,55 +2,20 @@
 
 # pylint: disable=too-many-lines,unused-argument,simplifiable-if-expression
 
-import asyncio
-import json
 from datetime import (
     date as dateType,
     datetime,
     time,
     timedelta,
 )
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
-import pytz
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
-from dateutil import rrule
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
-from openbb_core.provider.utils.helpers import amake_request, to_snake_case
 from openbb_tmx.utils import gql
-from pandas import DataFrame
-from random_user_agent.user_agent import UserAgent
 
-cache_dir = get_user_cache_directory()
-
-
-def get_random_agent() -> str:
-    """Get a random user agent."""
-    user_agent_rotator = UserAgent(limit=100)
-    user_agent = user_agent_rotator.get_random_user_agent()
-    return user_agent
-
-
-# Only used for obtaining the directory of all valid company tickers.
-tmx_companies_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_companies", expire_after=timedelta(days=2)
-)
-
-# Only used for obtaining the directory of all valid indices.
-tmx_indices_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_indices", expire_after=timedelta(days=1)
-)
-
-# Only used for obtaining the all ETFs JSON file.
-tmx_etfs_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_etfs", expire_after=timedelta(hours=4)
-)
-
-tmx_bonds_backend = SQLiteBackend(
-    f"{cache_dir}/http/tmx_bonds", expire_after=timedelta(days=1)
-)
+if TYPE_CHECKING:
+    from aiohttp_client_cache import SQLiteBackend
+    from pandas import DataFrame
 
 # Column map for ETFs.
 COLUMNS_DICT = {
@@ -260,6 +225,40 @@ NASDAQ_GIDS = {
     "^XND": "Nasdaq-100 Micro Index",
 }
 
+def get_random_agent() -> str:
+    """Get a random user agent."""
+    # pylint: disable=import-outside-toplevel
+    from random_user_agent.user_agent import UserAgent
+
+    user_agent_rotator = UserAgent(limit=100)
+    user_agent = user_agent_rotator.get_random_user_agent()
+    return user_agent
+
+def get_companies_backend():
+    """Get the SQLiteBackend for the TMX companies."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+
+    # Only used for obtaining the directory of all valid company tickers.
+    tmx_companies_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_companies", expire_after=timedelta(days=2)
+    )
+
+    return tmx_companies_backend
+
+def get_indices_backend():
+    """Get the SQLiteBackend for the TMX indices."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+
+    # Only used for obtaining the directory of all valid indices.
+    tmx_indices_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_indices", expire_after=timedelta(days=1)
+    )
+
+    return tmx_indices_backend
 
 async def response_callback(response, _: Any):
     """Use callback for HTTP Client Response."""
@@ -274,10 +273,14 @@ async def response_callback(response, _: Any):
 async def get_data_from_url(
     url: str,
     use_cache: bool = True,
-    backend: Optional[SQLiteBackend] = None,
+    backend: Optional["SQLiteBackend"] = None,
     **kwargs: Any,
 ) -> Any:
     """Make an asynchronous HTTP request to a static file."""
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache.session import CachedSession
+    from openbb_core.provider.utils.helpers import amake_request
+
     data: Any = None
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
@@ -294,6 +297,9 @@ async def get_data_from_url(
 
 async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
     """Make an asynchronous GraphQL request."""
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.provider.utils.helpers import amake_request
+
     response = await amake_request(
         url=url,
         method="POST",
@@ -355,6 +361,16 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
     Dict
         Dictionary with all TMX-listed ETFs.
     """
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+    from pandas import DataFrame  # noqa
+
+    # Only used for obtaining the all ETFs JSON file.
+    tmx_etfs_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_etfs", expire_after=timedelta(hours=4)
+    )
+
     url = "https://dgr53wu9i7rmp.cloudfront.net/etfs/etfs.json"
 
     response = await get_data_from_url(
@@ -400,10 +416,13 @@ async def get_tmx_tickers(
     exchange: Literal["tsx", "tsxv"] = "tsx", use_cache: bool = True
 ) -> Dict:
     """Get a dictionary of either TSX or TSX-V symbols and names."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     tsx_json_url = "https://www.tsx.com/json/company-directory/search"
     url = f"{tsx_json_url}/{exchange}/*"
     response = await get_data_from_url(
-        url, use_cache=use_cache, backend=tmx_companies_backend
+        url, use_cache=use_cache, backend=get_companies_backend()
     )
     data = (
         DataFrame.from_records(response["results"])[["symbol", "name"]]
@@ -424,15 +443,16 @@ async def get_all_tmx_companies(use_cache: bool = True) -> Dict:
     return all_tmx
 
 
-async def get_all_options_tickers(use_cache: bool = True) -> DataFrame:
+async def get_all_options_tickers(use_cache: bool = True) -> "DataFrame":
     """Return a DataFrame with all valid ticker symbols."""
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
     from pandas import concat, read_html  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
 
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
-    r = await get_data_from_url(url, use_cache=use_cache, backend=tmx_companies_backend)
+    r = await get_data_from_url(url, use_cache=use_cache, backend=get_companies_backend())
 
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
@@ -453,11 +473,12 @@ async def get_all_options_tickers(use_cache: bool = True) -> DataFrame:
     return symbols.set_index("option_symbol")
 
 
-async def get_current_options(symbol: str, use_cache: bool = True) -> DataFrame:
+async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame":
     """Get the current quotes for the complete options chain."""
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
-    from pandas import DatetimeIndex, concat, read_html  # noqa
+    from pandas import DataFrame, DatetimeIndex, concat, read_html, to_datetime  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
 
     SYMBOLS = await get_all_options_tickers(use_cache=use_cache)
     data = DataFrame()
@@ -558,12 +579,13 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> DataFrame:
 
 async def download_eod_chains(
     symbol: str, date: Optional[dateType] = None, use_cache: bool = False
-) -> DataFrame:
+) -> "DataFrame":
     """Download EOD chains data for a given symbol and date."""
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
     import exchange_calendars as xcals  # noqa
     from pandas import DatetimeIndex, Timedelta, concat, read_csv, to_datetime  # noqa
+    from openbb_core.provider.utils.helpers import to_snake_case  # noqa
 
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
@@ -680,6 +702,8 @@ async def get_company_filings(
     limit: int = 50,
 ) -> List[Dict]:
     """Get company filings."""
+    # pylint: disable=import-outside-toplevel
+    import json
 
     user_agent = get_random_agent()
     results: List[Dict] = []
@@ -730,6 +754,11 @@ async def get_daily_price_history(
     ] = "splits_only",
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json  # noqa
+    import asyncio  # noqa
+    from dateutil import rrule  # noqa
+
     start_date = (
         datetime.strptime(start_date, "%Y-%m-%d")
         if isinstance(start_date, str)
@@ -845,6 +874,9 @@ async def get_weekly_or_monthly_price_history(
     interval: Literal["month", "week"] = "month",
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json
+
     if start_date:
         start_date = (
             datetime.strptime(start_date, "%Y-%m-%d")
@@ -933,6 +965,12 @@ async def get_intraday_price_history(
     interval: Optional[int] = 1,
 ):
     """Get historical price data."""
+    # pylint: disable=import-outside-toplevel
+    import json  # noqa
+    import asyncio  # noqa
+    import pytz  # noqa
+    from dateutil import rrule  # noqa
+
     if start_date:
         start_date = (
             datetime.strptime(start_date, "%Y-%m-%d")
@@ -1054,11 +1092,20 @@ async def get_intraday_price_history(
     return results
 
 
-async def get_all_bonds(use_cache: bool = True) -> DataFrame:
+async def get_all_bonds(use_cache: bool = True) -> "DataFrame":
     """Get all bonds reference data published by CIRO.
 
     The complete list is approximately 70-100K securities.
     """
+    # pylint: disable=import-outside-toplevel
+    from aiohttp_client_cache import SQLiteBackend  # noqa
+    from openbb_core.app.utils import get_user_cache_directory  # noqa
+    from pandas import DataFrame  # noqa
+
+    tmx_bonds_backend = SQLiteBackend(
+        f"{get_user_cache_directory()}/http/tmx_bonds", expire_after=timedelta(days=1)
+    )
+
     url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
     response = await get_data_from_url(
         url, use_cache=use_cache, timeout=30, backend=tmx_bonds_backend

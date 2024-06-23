@@ -1,6 +1,5 @@
 """ ECB helpers"""
 
-
 async def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
     """Get ECB data
 
@@ -24,9 +23,9 @@ async def get_series_data(series_id: str, start_date: str = "", end_date: str = 
     start_date = start_date.replace("-", "")
     end_date = end_date.replace("-", "")
     url = f"https://data.ecb.europa.eu/data-detail-api/{series_id}"
-    data: List = []
+    data: List = []  # noqa
     try:
-        data = await amake_request(
+        data = await amake_request(  # noqa
             url=url,
             params={"startPeriod": start_date, "endPeriod": end_date},
         )

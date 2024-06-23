@@ -1,7 +1,7 @@
 """Available Indices fetcher for TMX"""
 
 # pylint: disable=unused-argument
-import re
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -51,14 +51,14 @@ class TmxAvailableIndicesFetcher(
     ) -> Dict:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_data_from_url, tmx_indices_backend
+        from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
 
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
 
         data = await get_data_from_url(
             url,
             use_cache=query.use_cache,
-            backend=tmx_indices_backend,
+            backend=get_indices_backend(),
         )
 
         return data
@@ -70,6 +70,8 @@ class TmxAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> List[TmxAvailableIndicesData]:
         """Transform the data to the standard format."""
+        # pylint: disable=import-outside-toplevel
+        import re
 
         data = data.copy()
         if data == {}:

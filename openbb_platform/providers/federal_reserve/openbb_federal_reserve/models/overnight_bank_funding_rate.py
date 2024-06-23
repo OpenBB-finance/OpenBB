@@ -99,8 +99,8 @@ class FederalReserveOvernightBankFundingRateFetcher(
         )
         results: List[Dict] = []
         response = await amake_request(url, **kwargs)
-        if response.get("refRates"):
-            results = response["refRates"]
+        if response.get("refRates", []):  # type: ignore
+            results = response["refRates"]  # type: ignore
         if not results:
             raise EmptyDataError()
         return results
