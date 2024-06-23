@@ -1,11 +1,8 @@
 """Metadata model."""
 
 from datetime import datetime
-from inspect import isclass
 from typing import Any, Dict, Optional, Sequence, Union
 
-from numpy import ndarray
-from pandas import DataFrame, Series
 from pydantic import BaseModel, Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
@@ -41,6 +38,11 @@ class Metadata(BaseModel):
         containing the type and the columns. If the type is not one of the previous, the
         value is kept or trimmed to 80 characters.
         """
+        # pylint: disable=import-outside-toplevel
+        from inspect import isclass  # noqa
+        from numpy import ndarray  # noqa
+        from pandas import DataFrame, Series  # noqa
+
         arguments: Dict[str, Any] = {}
         for item in ["provider_choices", "standard_params", "extra_params"]:
             arguments[item] = {}

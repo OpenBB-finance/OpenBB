@@ -55,7 +55,9 @@ def basemodel_to_df(
     return df
 
 
-def df_to_basemodel(df: Union["DataFrame", "Series"], index: bool = False) -> List[Data]:
+def df_to_basemodel(
+    df: Union["DataFrame", "Series"], index: bool = False
+) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
     # pylint: disable=import-outside-toplevel
     from pandas import MultiIndex, to_datetime

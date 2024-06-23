@@ -1,6 +1,16 @@
 """Base class for charting plugins."""
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterator, List, Optional, Type, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    Iterator,
+    List,
+    Optional,
+    Type,
+    Union,
+)
 
 from openbb_charting.core.plotly_ta.data_classes import ChartIndicators, TAIndicator
 

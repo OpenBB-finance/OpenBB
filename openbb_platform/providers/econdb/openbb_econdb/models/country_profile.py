@@ -36,7 +36,11 @@ class EconDbCountryProfileQueryParams(CountryProfileQueryParams):
     def validate_country(cls, v):
         """Validate the country."""
         # pylint: disable=import-outside-toplevel
-        from openbb_econdb.utils.helpers import COUNTRY_GROUPS, COUNTRY_MAP, THREE_LETTER_ISO_MAP
+        from openbb_econdb.utils.helpers import (
+            COUNTRY_GROUPS,
+            COUNTRY_MAP,
+            THREE_LETTER_ISO_MAP,
+        )
 
         country = v if isinstance(v, list) else v.split(",")
         for c in country.copy():
@@ -127,7 +131,6 @@ class EconDbCountryProfileFetcher(
         import asyncio  # noqa
         from openbb_econdb.utils.helpers import get_context, parse_context  # noqa
         from pandas import DataFrame, concat  # noqa
-
 
         country = query.country.split(",")
         latest = query.latest

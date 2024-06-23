@@ -72,7 +72,10 @@ class ECBYieldCurveFetcher(
         from aiohttp_client_cache.session import CachedSession  # noqa
         from openbb_core.app.utils import get_user_cache_directory  # noqa
         from openbb_core.provider.utils.helpers import amake_request  # noqa
-        from openbb_ecb.utils.yield_curve_series import MATURITIES, get_yield_curve_ids  # noqa
+        from openbb_ecb.utils.yield_curve_series import (
+            MATURITIES,
+            get_yield_curve_ids,
+        )  # noqa
 
         results: List = []
 

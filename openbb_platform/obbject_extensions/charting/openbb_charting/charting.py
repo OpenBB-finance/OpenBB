@@ -32,6 +32,7 @@ if TYPE_CHECKING:
     from plotly.graph_objs import Figure  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
+
 class Charting:
     """Charting extension.
 
@@ -75,10 +76,8 @@ class Charting:
         import importlib  # noqa
         from openbb_charting.core.backend import Backend  # noqa
 
-        charting_settings_module = (
-            importlib.import_module(
-                "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
-            )
+        charting_settings_module = importlib.import_module(
+            "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
         )
         ChartingSettings = charting_settings_module.ChartingSettings
 

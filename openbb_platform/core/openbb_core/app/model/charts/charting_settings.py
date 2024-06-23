@@ -17,6 +17,7 @@ SystemSettings = importlib.import_module(
 UserSettings = UserSettings.UserSettings
 SystemSettings = SystemSettings.SystemSettings
 
+
 # pylint: disable=too-many-instance-attributes
 class ChartingSettings:
     """Charting settings."""
