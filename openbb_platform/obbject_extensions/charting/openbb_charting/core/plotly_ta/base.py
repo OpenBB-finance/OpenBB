@@ -14,7 +14,11 @@ from typing import (
 
 if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
-    from openbb_charting.core.plotly_ta.data_classes import ChartIndicators, TAIndicator  # noqa
+    from openbb_charting.core.plotly_ta.data_classes import (
+        ChartIndicators,
+        TAIndicator,
+    )  # noqa
+
 
 def columns_regex(df_ta: "DataFrame", name: str) -> List[str]:
     """Return columns that match regex name."""
