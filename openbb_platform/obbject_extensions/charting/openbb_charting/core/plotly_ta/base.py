@@ -1,26 +1,13 @@
 """Base class for charting plugins."""
 
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Callable,
-    Dict,
-    Iterator,
-    List,
-    Optional,
-    Type,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, Callable, Dict, Iterator, List, Optional, Type, Union
+
+from .data_classes import ChartIndicators, TAIndicator
 
 if TYPE_CHECKING:
-    from pandas import DataFrame, Series  # noqa
-    from openbb_charting.core.plotly_ta.data_classes import (
-        ChartIndicators,
-        TAIndicator,
-    )  # noqa
+    import pandas as pd
 
-
-def columns_regex(df_ta: "DataFrame", name: str) -> List[str]:
+def columns_regex(df_ta: "pd.DataFrame", name: str) -> List[str]:
     """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
@@ -106,13 +93,13 @@ class PluginMeta(type):
 class PltTA(metaclass=PluginMeta):
     """The base class that all Plotly plugins must inherit from."""
 
-    indicators: "ChartIndicators"
+    indicators: ChartIndicators
     intraday: bool = False
-    df_stock: Union["DataFrame", "Series"]
-    df_ta: Optional["DataFrame"] = None
-    df_fib: "DataFrame"
+    df_stock: Union["pd.DataFrame", "pd.Series"]
+    df_ta: Optional["pd.DataFrame"] = None
+    df_fib: "pd.DataFrame"
     close_column: Optional[str] = "close"
-    params: Optional[Dict[str, "TAIndicator"]] = {}
+    params: Optional[Dict[str, TAIndicator]] = {}
     inchart_colors: List[str] = []
     show_volume: bool = True
 

@@ -2,22 +2,27 @@
 
 # pylint: disable=R0902,R0916,R0912  # type: ignore[index, assignment]
 
+import importlib
+import inspect
+import sys
 import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, Union
 
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.core.plotly_ta.base import PltTA
+from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
 from openbb_charting.core.plotly_ta.ta_helpers import check_columns
 
+charting_EXTENSION_PATH = Path(__file__).parent.parent.parent
+CHARTING_INSTALL_PATH = charting_EXTENSION_PATH.parent
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
 
 if TYPE_CHECKING:
-    from openbb_charting.core.chart_style import ChartStyle  # noqa
-    from openbb_core.app.model.charts.charting_settings import ChartingSettings  # noqa
-    from openbb_charting.core.plotly_ta.data_classes import ChartIndicators  # noqa
-    from pandas import DataFrame, Series  # noqa
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    import pandas as pd
+    from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 
 class PlotlyTA(PltTA):
@@ -44,7 +49,7 @@ class PlotlyTA(PltTA):
     StaticMethods
     -------------
     plot(
-        df: DataFrame,
+        df: pd.DataFrame,
         indicators: ChartIndicators,
         fig: Optional[OpenBBFigure] = None,
         symbol: Optional[str] = "",
@@ -82,13 +87,13 @@ class PlotlyTA(PltTA):
 
     inchart_colors: List[str] = []
     plugins: List[Type[PltTA]] = []
-    df_ta: Optional["DataFrame"] = None
+    df_ta: Optional["pd.DataFrame"] = None
     close_column: Optional[str] = "close"
     has_volume: bool = True
     show_volume: bool = True
     prepost: bool = False
     charting_settings: Optional["ChartingSettings"] = None
-    theme: Optional["ChartStyle"] = None
+    theme: Optional[ChartStyle] = None
 
     def __new__(cls, *args, **kwargs):
         """Create a new instance of the class.
@@ -129,11 +134,8 @@ class PlotlyTA(PltTA):
             super().__init__(*args, **kwargs)
 
     @staticmethod
-    def setup_theme(chart_style, user_styles_directory) -> "ChartStyle":
+    def setup_theme(chart_style, user_styles_directory) -> ChartStyle:
         """Set up theme for charting."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.chart_style import ChartStyle
-
         return ChartStyle(chart_style, user_styles_directory)
 
     @property
@@ -169,26 +171,23 @@ class PlotlyTA(PltTA):
     # pylint: disable=R0913
     def __plot__(
         self,
-        df_stock: Union["DataFrame", "Series"],
-        indicators: Optional[
-            Union["ChartIndicators", Dict[str, Dict[str, Any]]]
-        ] = None,
+        df_stock: Union["pd.DataFrame", "pd.Series"],
+        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: Optional["OpenBBFigure"] = None,
+        fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
-    ) -> "OpenBBFigure":
+    ) -> OpenBBFigure:
         """Do not call this directly.
 
         Use the PlotlyTA.plot() static method instead.
         """
         # pylint: disable=import-outside-toplevel
-        from pandas import Series, to_datetime  # noqa
-        from openbb_charting.core.plotly_ta.data_classes import ChartIndicators  # noqa
+        import pandas as pd
 
-        if isinstance(df_stock, Series):
+        if isinstance(df_stock, pd.Series):
             df_stock = df_stock.to_frame()
 
         if not isinstance(indicators, ChartIndicators):
@@ -196,7 +195,7 @@ class PlotlyTA(PltTA):
 
         # Apply to_datetime to the index in a way that handles daylight savings.
         df_stock.loc[:, "date"] = df_stock.index  # type: ignore
-        df_stock["date"] = df_stock["date"].apply(to_datetime)
+        df_stock["date"] = df_stock["date"].apply(pd.to_datetime)
         df_stock.index = df_stock["date"]  # type: ignore
         df_stock.drop(columns=["date"], inplace=True)
 
@@ -219,22 +218,20 @@ class PlotlyTA(PltTA):
 
     @staticmethod
     def plot(
-        df_stock: Union["DataFrame", "Series"],
-        indicators: Optional[
-            Union["ChartIndicators", Dict[str, Dict[str, Any]]]
-        ] = None,
+        df_stock: Union["pd.DataFrame", "pd.Series"],
+        indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
         volume: bool = True,
         prepost: bool = False,
-        fig: Optional["OpenBBFigure"] = None,
+        fig: Optional[OpenBBFigure] = None,
         volume_ticks_x: int = 7,
-    ) -> "OpenBBFigure":
+    ) -> OpenBBFigure:
         """Plot a chart with the given indicators.
 
         Parameters
         ----------
-        df_stock : DataFrame
+        df_stock : pd.DataFrame
             Dataframe with stock data
         indicators : Union[ChartIndicators, Dict[str, Dict[str, Any]]]
             ChartIndicators object or dictionary with indicators and parameters to plot
@@ -268,12 +265,11 @@ class PlotlyTA(PltTA):
     @staticmethod
     def _locate_plugins(debug: Optional[bool] = False) -> None:
         """Locate all the plugins in the plugins folder."""
-        # pylint: disable=import-outside-toplevel
-        import importlib
-        import inspect
-        import sys
-
-        path = Path(sys.executable).parent if hasattr(sys, "frozen") else PLUGINS_PATH
+        path = (
+            Path(sys.executable).parent
+            if hasattr(sys, "frozen")
+            else CHARTING_INSTALL_PATH
+        )
         if debug:
             warnings.warn(f"[bold green]Loading plugins from {path}[/]")
             warnings.warn("[bold green]Plugins found:[/]")
@@ -303,9 +299,6 @@ class PlotlyTA(PltTA):
 
     def _clear_data(self):
         """Clear and reset all data to default values."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
-
         self.df_stock = None  # type: ignore
         self.indicators = ChartIndicators.from_dict({})
         self.params = None
@@ -387,7 +380,7 @@ class PlotlyTA(PltTA):
 
         return output
 
-    def init_plot(self, symbol: str = "", candles: bool = True) -> "OpenBBFigure":
+    def init_plot(self, symbol: str = "", candles: bool = True) -> OpenBBFigure:
         """Create plotly figure with subplots.
 
         Parameters
@@ -402,9 +395,6 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Plotly figure with candlestick/line chart and volume bar chart (if enabled)
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-
         fig = OpenBBFigure(charting_settings=self.charting_settings)
         fig = fig.create_subplots(
             1,
@@ -453,11 +443,11 @@ class PlotlyTA(PltTA):
 
     def plot_fig(  # noqa: PLR0912
         self,
-        fig: Optional["OpenBBFigure"] = None,
+        fig: Optional[OpenBBFigure] = None,
         symbol: str = "",
         candles: bool = True,
         volume_ticks_x: int = 7,
-    ) -> "OpenBBFigure":
+    ) -> OpenBBFigure:
         """Plot indicators on plotly figure.
 
         Parameters
@@ -624,9 +614,7 @@ class PlotlyTA(PltTA):
         figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
 
-    def process_fig(
-        self, fig: "OpenBBFigure", volume_ticks_x: int = 7
-    ) -> "OpenBBFigure":
+    def process_fig(self, fig: OpenBBFigure, volume_ticks_x: int = 7) -> OpenBBFigure:
         """Process plotly figure before plotting indicators.
 
         Parameters
@@ -641,9 +629,6 @@ class PlotlyTA(PltTA):
         fig : OpenBBFigure
             Processed plotly figure
         """
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-
         new_subplot = OpenBBFigure(charting_settings=self.charting_settings)
         new_subplot = fig.create_subplots(
             shared_xaxes=True, **self.get_fig_settings_dict()
