@@ -105,12 +105,12 @@ class NasdaqCalendarDividendFetcher(
             response: List = []
             url = f"https://api.nasdaq.com/api/calendar/dividends?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
-            if (
+            if (  # type: ignore
                 "data" in r_json
                 and "calendar" in r_json["data"]
                 and "rows" in r_json["data"]["calendar"]
             ):
-                response = r_json["data"]["calendar"]["rows"]
+                response = r_json["data"]["calendar"]["rows"]  # type: ignore
             if len(response) > 0:
                 data.extend(response)
 

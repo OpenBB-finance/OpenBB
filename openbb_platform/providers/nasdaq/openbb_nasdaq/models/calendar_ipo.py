@@ -84,7 +84,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_date(cls, v: str):
+    def validate_date(cls, v):
         """Validate the date if available is a date object."""
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
@@ -95,7 +95,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_offer_amount(cls, v: str):
+    def validate_offer_amount(cls, v):
         """Validate the offer amount if available is a float."""
         return float(str(v).replace("$", "").replace(",", "")) if v else None
 
@@ -105,7 +105,7 @@ class NasdaqCalendarIpoData(CalendarIpoData):
         check_fields=False,
     )
     @classmethod
-    def validate_share_count(cls, v: str):
+    def validate_share_count(cls, v):
         """Validate the share count if available is an int."""
         return int(str(v).replace(",", "")) if v else None
 
@@ -171,12 +171,12 @@ class NasdaqCalendarIpoFetcher(
                 else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
             )
             r_json = await amake_request(url, headers=IPO_HEADERS)
-            r_json = r_json.get("data", {})
+            r_json = r_json.get("data", {})  # type: ignore
             if query.status in r_json:
                 response = (
-                    r_json["upcoming"]["upcomingTable"]["rows"]
+                    r_json["upcoming"]["upcomingTable"]["rows"]  # type: ignore
                     if query.status == "upcoming"
-                    else r_json[query.status]["rows"]
+                    else r_json[query.status]["rows"]  # type: ignore
                 )
             if response:
                 data.extend(response)

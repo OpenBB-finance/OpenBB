@@ -4,6 +4,7 @@
 
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.openbb_error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
@@ -52,8 +53,9 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
     @classmethod
     def clean_html(cls, v: str):
         """Format HTML entities to normal."""
-        import html  # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import remove_html_tags
+        # pylint: disable=import-outside-toplevel
+        import html  # noqa
+        from openbb_core.provider.utils.helpers import remove_html_tags  # noqa
 
         if v:
             v = (
@@ -101,10 +103,10 @@ class NasdaqEconomicCalendarFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
-        from concurrent.futures import ThreadPoolExecutor
-        from itertools import repeat
-        from openbb_core.provider.utils.helpers import make_request
-        from openbb_nasdaq.utils.helpers import get_headers, date_range
+        import asyncio  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
 
         IPO_HEADERS = get_headers(accept_type="json")
         data: List[Dict] = []
@@ -113,12 +115,11 @@ class NasdaqEconomicCalendarFetcher(
             for date in date_range(query.start_date, query.end_date)
         ]
 
-        def get_calendar_data(date: str, data: List[Dict]) -> None:
+        async def get_calendar_data(date: str) -> None:
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
-            r = make_request(url=url, headers=IPO_HEADERS)
-            r_json = r.json()
-            if "data" in r_json and "rows" in r_json["data"]:
-                response = r_json["data"]["rows"]
+            r_json = await amake_request(url=url, headers=IPO_HEADERS)
+            if "data" in r_json and "rows" in r_json.get("data", {}):  # type: ignore
+                response = r_json["data"]["rows"]  # type: ignore
             response = [
                 {
                     **{k: v for k, v in item.items() if k != "gmt"},
@@ -134,8 +135,12 @@ class NasdaqEconomicCalendarFetcher(
             ]
             data.extend(response)
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_calendar_data, dates, repeat(data))
+        asyncio.run(asyncio.gather(*[get_calendar_data(date) for date in dates]))
+
+        if not data:
+            raise OpenBBError(
+                "There was an error with the request and it was returned empty."
+            )
 
         if query.country:
             country = (

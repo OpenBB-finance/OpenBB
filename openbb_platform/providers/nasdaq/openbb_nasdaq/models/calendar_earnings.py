@@ -180,10 +180,10 @@ class NasdaqCalendarEarningsFetcher(
             response: List = []
             url = f"https://api.nasdaq.com/api/calendar/earnings?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
-            if "data" in r_json and "rows" in r_json["data"]:
-                response = r_json["data"]["rows"]
+            if "data" in r_json and "rows" in r_json["data"]:  # type: ignore
+                response = r_json["data"]["rows"]  # type: ignore
                 _as_of_date = datetime.strptime(
-                    r_json["data"]["asOf"], "%a, %b %d, %Y"
+                    r_json["data"]["asOf"], "%a, %b %d, %Y"  # type: ignore
                 ).date()
                 if len(response) > 0:
                     data.extend([{**d, "date": _as_of_date} for d in response])
