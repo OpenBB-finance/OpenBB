@@ -181,7 +181,7 @@ class NasdaqCalendarIpoFetcher(
             if response:
                 data.extend(response)
 
-        await asyncio.run(asyncio.gather(*[get_calendar_data(date) for date in dates]))
+        await asyncio.gather(*[get_calendar_data(date) for date in dates])
 
         return data
 

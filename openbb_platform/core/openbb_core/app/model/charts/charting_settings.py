@@ -22,15 +22,15 @@ class ChartingSettings:
         system_settings: Optional["SystemSettings"] = None,
     ):
         """Initialize charting settings."""
-        UserSettings = importlib.import_module(
+        user_settings_module = importlib.import_module(
             "openbb_core.app.model.user_settings", "UserSettings"
         )
-        SystemSettings = importlib.import_module(
+        system_settings_module = importlib.import_module(
             "openbb_core.app.model.system_settings", "SystemSettings"
         )
 
-        UserSettings = UserSettings.UserSettings
-        SystemSettings = SystemSettings.SystemSettings
+        UserSettings = user_settings_module.UserSettings
+        SystemSettings = system_settings_module.SystemSettings
         user_settings = user_settings or UserSettings()
         system_settings = system_settings or SystemSettings()
 

@@ -55,7 +55,7 @@ class NasdaqEconomicCalendarData(EconomicCalendarData):
         """Format HTML entities to normal."""
         # pylint: disable=import-outside-toplevel
         import html  # noqa
-        from openbb_core.provider.utils.helpers import remove_html_tags  # noqa
+        from openbb_nasdaq.utils.helpers import remove_html_tags  # noqa
 
         if v:
             v = (
@@ -96,7 +96,7 @@ class NasdaqEconomicCalendarFetcher(
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: NasdaqEconomicCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -115,7 +115,7 @@ class NasdaqEconomicCalendarFetcher(
             for date in date_range(query.start_date, query.end_date)
         ]
 
-        async def get_calendar_data(date: str) -> None:
+        async def get_calendar_data(date: str):
             url = f"https://api.nasdaq.com/api/calendar/economicevents?date={date}"
             r_json = await amake_request(url=url, headers=IPO_HEADERS)
             if "data" in r_json and "rows" in r_json.get("data", {}):  # type: ignore
@@ -135,7 +135,7 @@ class NasdaqEconomicCalendarFetcher(
             ]
             data.extend(response)
 
-        asyncio.run(asyncio.gather(*[get_calendar_data(date) for date in dates]))
+        await asyncio.gather(*[get_calendar_data(date) for date in dates])
 
         if not data:
             raise OpenBBError(

@@ -419,7 +419,8 @@ class Backend(PyWry):
 async def download_plotly_js():
     """Download or updates plotly.js to the assets folder."""
     # pylint: disable=import-outside-toplevel
-    import aiohttp
+    import aiohttp  # noqa
+    import warnings  # noqa
 
     js_filename = PLOTLYJS_PATH.name
     try:
@@ -460,7 +461,7 @@ def create_backend(charting_settings: Optional["ChartingSettings"] = None):
         BACKEND = Backend(charting_settings)
 
 
-def get_backend() -> Backend:
+def get_backend():
     """Get the backend instance."""
     if BACKEND is None:
         create_backend()

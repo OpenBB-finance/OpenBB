@@ -36,7 +36,7 @@ class BiztocWorldNewsData(WorldNewsData):
         "images": "img",
     }
 
-    images: Optional[Dict[str, str]] = Field(
+    images: Optional[List[Dict[str, str]]] = Field(
         description="Images for the article.", alias="images", default=None
     )
     tags: Optional[List[str]] = Field(description="Tags for the article.", default=None)
@@ -84,7 +84,6 @@ class BiztocWorldNewsFetcher(
         """Extract the data from the Biztoc endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import make_request
-        from pandas import to_datetime
 
         api_key = credentials.get("biztoc_api_key") if credentials else ""
         headers = {

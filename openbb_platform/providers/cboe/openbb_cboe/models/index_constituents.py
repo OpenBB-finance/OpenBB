@@ -173,7 +173,7 @@ class CboeIndexConstituentsFetcher(
             f"/constituent_quotes/{query.symbol}.json"
         )
         data = await amake_request(url)
-        return data.get("data")
+        return data.get("data")  # type: ignore
 
     @staticmethod
     def transform_data(

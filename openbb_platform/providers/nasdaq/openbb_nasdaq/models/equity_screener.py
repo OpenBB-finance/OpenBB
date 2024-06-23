@@ -489,7 +489,7 @@ class NasdaqEquityScreenerFetcher(
         rows = data.get("data", {}).get("table", {}).get("rows")
         if not rows:
             raise EmptyDataError("No results were found.")
-        results: NasdaqEquityScreenerData = []
+        results: List[NasdaqEquityScreenerData] = []
         for row in sorted(rows, key=lambda x: x["pctchange"], reverse=True):
             row.pop("url", None)
             results.append(NasdaqEquityScreenerData.model_validate(row))
