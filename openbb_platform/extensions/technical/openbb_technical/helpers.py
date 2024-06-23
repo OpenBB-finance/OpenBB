@@ -474,7 +474,7 @@ def calculate_cones(
     return cones_df.transpose().reset_index().rename(columns={"index": "window"})
 
 
-def clenow_momentum(values: Series, window: int = 90) -> Tuple[float, float, Series]:
+def clenow_momentum(values: "Series", window: int = 90) -> Tuple[float, float, "Series"]:
     """Clenow Volatility Adjusted Momentum.
 
     This is defined as the regression coefficient on log prices multiplied by the R^2
@@ -498,6 +498,7 @@ def clenow_momentum(values: Series, window: int = 90) -> Tuple[float, float, Ser
     """
     # pylint: disable=import-outside-toplevel
     from numpy import arange, exp, log
+    from pandas import Series
     from sklearn.linear_model import LinearRegression
 
     if len(values) < window:
