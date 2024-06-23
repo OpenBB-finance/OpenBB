@@ -1,9 +1,9 @@
 """Views for the index Extension."""
 
-from typing import Any, Dict, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Tuple
 
-from openbb_charting.charts.price_historical import price_historical
-from openbb_charting.core.openbb_figure import OpenBBFigure
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # pylint: disable=import-outside-toplevel
 
 
 class IndexViews:
@@ -12,6 +12,9 @@ class IndexViews:
     @staticmethod
     def index_price_historical(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Index Price Historical Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.price_historical import price_historical
+
         return price_historical(**kwargs)

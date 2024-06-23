@@ -1,16 +1,11 @@
 """Views for the Fixed Income Extension."""
 
-from typing import Any, Dict, Optional, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 
-import pandas as pd
-from openbb_charting.charts.helpers import (
-    duration_sorter,
-)
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
-from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
+
+if TYPE_CHECKING:
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # pylint: disable=import-outside-toplevel
 
 
 class FixedIncomeViews:
@@ -19,19 +14,29 @@ class FixedIncomeViews:
     @staticmethod
     def fixedincome_government_yield_curve(  # noqa: PLR0912
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Government Yield Curve Chart."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_charting.charts.helpers import (
+            duration_sorter,
+        )
+        from openbb_charting.core.chart_style import ChartStyle
+        from openbb_charting.core.openbb_figure import OpenBBFigure
+        from openbb_charting.styles.colors import LARGE_CYCLER
+        from openbb_core.app.utils import basemodel_to_df
+        from pandas import DataFrame
+
         data = kwargs.get("data", None)
-        df: pd.DataFrame = pd.DataFrame()
+        df: DataFrame = DataFrame()
         if data:
-            if isinstance(data, pd.DataFrame) and not data.empty:  # noqa: SIM108
+            if isinstance(data, DataFrame) and not data.empty:  # noqa: SIM108
                 df = data
             elif isinstance(data, (list, Data)):
                 df = basemodel_to_df(data, index=None)  # type: ignore
             else:
                 pass
         else:
-            df = pd.DataFrame([d.model_dump() for d in kwargs["obbject_item"]])  # type: ignore
+            df = DataFrame([d.model_dump() for d in kwargs["obbject_item"]])  # type: ignore
 
         if df.empty:
             raise ValueError("Error: No data to plot.")

@@ -2,13 +2,10 @@
 
 # pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 
-from numpy import ndarray
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
-from pandas import DataFrame, Series
-from plotly.graph_objs import Figure
 
 from openbb_charting.charts.helpers import (
     calculate_returns,
@@ -16,19 +13,24 @@ from openbb_charting.charts.helpers import (
     z_score_standardization,
 )
 from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_charting.styles.colors import LARGE_CYCLER
+
+if TYPE_CHECKING:
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame, Series  # noqa
+    from plotly.graph_objs import Figure  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
 
 def line_chart(  # noqa: PLR0912
     data: Union[
         list,
         dict,
-        DataFrame,
-        List[DataFrame],
-        Series,
-        List[Series],
-        ndarray,
+        "DataFrame",
+        List["DataFrame"],
+        "Series",
+        List["Series"],
+        "ndarray",
         Data,
     ],
     index: Optional[str] = None,
@@ -46,10 +48,11 @@ def line_chart(  # noqa: PLR0912
     returns: bool = False,
     same_axis: bool = False,
     **kwargs,
-) -> Union[OpenBBFigure, Figure]:
+) -> Union["OpenBBFigure", "Figure"]:
     """Create a line chart."""
     # pylint: disable=import-outside-toplevel
-    from pandas import to_datetime
+    from pandas import to_datetime  # noqa
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
     if data is None:
         raise ValueError("Error: Data is a required field.")
@@ -57,7 +60,7 @@ def line_chart(  # noqa: PLR0912
     auto_layout = False
     index = (
         data.index.name
-        if isinstance(data, (DataFrame, Series))
+        if isinstance(data, ("DataFrame", Series))
         else index if index is not None else x if x is not None else "date"
     )
     df: DataFrame = (basemodel_to_df(convert_to_basemodel(data), index=index)).dropna(
@@ -329,11 +332,11 @@ def bar_chart(  # noqa: PLR0912
     data: Union[
         list,
         dict,
-        DataFrame,
-        List[DataFrame],
-        Series,
-        List[Series],
-        ndarray,
+        "DataFrame",
+        List["DataFrame"],
+        "Series",
+        List["Series"],
+        "ndarray",
         Data,
     ],
     x: str,
@@ -348,13 +351,13 @@ def bar_chart(  # noqa: PLR0912
     bar_kwargs: Optional[Dict[str, Any]] = None,
     layout_kwargs: Optional[Dict[str, Any]] = None,
     **kwargs,
-) -> Union[OpenBBFigure, Figure]:
+) -> Union["OpenBBFigure", "Figure"]:
     """Create a vertical bar chart on a single x-axis with one or more values for the y-axis.
 
     Parameters
     ----------
     data : Union[
-        list, dict, DataFrame, List[DataFrame], Series, List[Series], ndarray, Data
+        list, dict, "DataFrame", List["DataFrame"], "Series", List["Series"], "ndarray", Data
     ]
         Data to plot.
     x : str
@@ -383,6 +386,9 @@ def bar_chart(  # noqa: PLR0912
     OpenBBFigure
         The OpenBBFigure object.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+
     try:
         figure = OpenBBFigure()
     except Exception as _:
@@ -495,7 +501,7 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     orientation: Literal["h", "v"] = "h",
     barmode: Literal["group", "stack", "relative", "overlay"] = "relative",
     layout_kwargs: Optional[Dict[str, Any]] = None,
-) -> Union[OpenBBFigure, Figure]:
+) -> Union["OpenBBFigure", "Figure"]:
     """Create a bar chart with increasing and decreasing values represented by two colors.
 
     Parameters
@@ -524,6 +530,9 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     OpenBBFigure
         The OpenBBFigure object.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.openbb_figure import OpenBBFigure
+
     try:
         figure = OpenBBFigure()
     except Exception as _:
