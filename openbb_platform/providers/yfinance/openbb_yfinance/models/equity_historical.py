@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional
 from warnings import warn
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -14,8 +14,10 @@ from openbb_core.provider.standard_models.equity_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS_DICT, PERIODS
-from pandas import DataFrame, Timestamp
 from pydantic import Field, PrivateAttr, field_validator, model_validator
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -117,6 +119,9 @@ class YFinanceEquityHistoricalData(EquityHistoricalData):
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return formatted datetime."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Timestamp
+
         if isinstance(v, Timestamp):
             return v.to_pydatetime()
         return v
@@ -152,7 +157,7 @@ class YFinanceEquityHistoricalFetcher(
         query: YFinanceEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the Yahoo Finance endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_yfinance.utils.helpers import yf_download
@@ -186,7 +191,7 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def transform_data(
         query: YFinanceEquityHistoricalQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[YFinanceEquityHistoricalData]:
         """Transform the data to the standard format."""

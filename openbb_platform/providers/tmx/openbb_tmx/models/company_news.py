@@ -1,8 +1,7 @@
 """TMX Stock News model."""
 
 # pylint: disable=unused-argument
-import asyncio
-import json
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -71,6 +70,12 @@ class TmxCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import json  # noqa
+        from openbb_tmx.utils import gql  # noqa
+        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+
         user_agent = get_random_agent()
         symbols = query.symbol.split(",")  # type: ignore
         results: List[Dict] = []

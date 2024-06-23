@@ -10,8 +10,6 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
 
@@ -102,13 +100,13 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "non_interest_income": "noninterest_income",
         "non_interest_expense": "noninterest_expense",
         "income_after_tax": "income_loss_from_continuing_operations_after_tax",
-        "income_from_discontinued_operations_net_of_tax_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",  # type: ignore # noqa: E501
+        "income_from_discontinued_operations_net_of_tax_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",  # noqa  # pylint: disable=line-too-long
         "income_from_discontinued_operations_net_of_tax": "income_loss_from_discontinued_operations_net_of_tax",
         "net_income_attributable_to_noncontrolling_interest": "net_income_loss_attributable_to_noncontrolling_interest",
         "net_income_attributable_to_parent": "net_income_loss_attributable_to_parent",
         "net_income_attributable_to_common_shareholders": "net_income_loss_available_to_common_stockholders_basic",
         "participating_securities_earnings": "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-        "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # type: ignore # noqa: E501
+        "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # noqa  # pylint: disable=line-too-long
         "weighted_average_diluted_shares_outstanding": "diluted_average_shares",
         "weighted_average_basic_shares_outstanding": "basic_average_shares",
         "basic_earnings_per_share": "eps",
@@ -250,7 +248,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
 
     @model_validator(mode="before")
     @classmethod
-    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+    def replace_zero(cls, values):
         """Check for zero values and replace with None."""
         return (
             {k: None if v == 0 else v for k, v in values.items()}
@@ -279,6 +277,10 @@ class PolygonIncomeStatementFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_polygon.utils.helpers import get_data_many
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/vX/reference/financials"

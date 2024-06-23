@@ -2,14 +2,10 @@
 
 # pylint: disable=unused-argument
 
-import asyncio
-import gzip
 from datetime import (
     date as dateType,
     datetime,
-    timezone as datetime_timezone,
 )
-from io import BytesIO
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -18,10 +14,7 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp
-from pandas import DataFrame, notna, read_csv, to_datetime
 from pydantic import Field
-from pytz import timezone
 
 
 class IntrinioMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -100,6 +93,9 @@ class IntrinioMarketSnapshotsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioMarketSnapshotsQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from pytz import timezone
+
         transformed_params = params
 
         if "date" in transformed_params:
@@ -145,6 +141,14 @@ class IntrinioMarketSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        import gzip  # noqa
+        from datetime import timezone as datetime_timezone  # noqa
+        from io import BytesIO  # noqa
+        from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp  # noqa
+        from pandas import DataFrame, notna, read_csv, to_datetime  # noqa
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         # This gets the URL to the actual file.

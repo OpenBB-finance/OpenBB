@@ -44,6 +44,7 @@ BPS_COUNTRIES_DICT = {
     "total": "W1",
 }
 
+
 # pylint: disable=inconsistent-return-statements
 def generate_bps_series_ids(
     frequency: BPS_FREQUENCIES = "monthly",

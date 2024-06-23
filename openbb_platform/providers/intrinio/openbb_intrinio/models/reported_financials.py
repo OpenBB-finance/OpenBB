@@ -1,7 +1,9 @@
 """Intrinio Reported Financials Model."""
 
-import warnings
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
+from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,16 +11,7 @@ from openbb_core.provider.standard_models.reported_financials import (
     ReportedFinancialsData,
     ReportedFinancialsQueryParams,
 )
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    amake_requests,
-    to_snake_case,
-)
-from openbb_intrinio.utils.helpers import get_data_one
-from pandas import DataFrame
 from pydantic import Field
-
-_warn = warnings.warn
 
 STATEMENT_DICT = {
     "balance": "balance_sheet_statement",
@@ -75,6 +68,14 @@ class IntrinioReportedFinancialsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            ClientResponse,
+            amake_requests,
+        )
+        from openbb_intrinio.utils.helpers import get_data_one
+        from pandas import DataFrame
+
         period_type = ""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = STATEMENT_DICT[query.statement_type]
@@ -83,7 +84,7 @@ class IntrinioReportedFinancialsFetcher(
         ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}"
         if query.fiscal_year is not None:
             if query.fiscal_year < 2008:
-                _warn("Financials data is only available from 2008 and later.")
+                warn("Financials data is only available from 2008 and later.")
                 query.fiscal_year = 2008
             ids_url = ids_url + f"&fiscal_year={query.fiscal_year}"
         ids_url = ids_url + f"&page_size=10000&api_key={api_key}"
@@ -124,6 +125,9 @@ class IntrinioReportedFinancialsFetcher(
         query: IntrinioReportedFinancialsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioReportedFinancialsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import to_snake_case
+
         transformed_data: List[IntrinioReportedFinancialsData] = []
         data_tag = "xbrl_tag"
         for item in data:

@@ -2,25 +2,22 @@
 
 # pylint: disable=unused-argument
 
-import gzip
 from datetime import (
     date as dateType,
     datetime,
 )
-from io import BytesIO
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
-import numpy as np
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_snapshots import (
     OptionsSnapshotsData,
     OptionsSnapshotsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import DataFrame, NaT, Series, read_csv, to_datetime
 from pydantic import Field
-from pytz import timezone
+
+if TYPE_CHECKING:
+    from pandas import DataFrame
 
 
 class IntrinioOptionsSnapshotsQueryParams(OptionsSnapshotsQueryParams):
@@ -112,6 +109,9 @@ class IntrinioOptionsSnapshotsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsSnapshotsQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from pytz import timezone
+
         transformed_params = params.copy()
         if "date" in transformed_params:
             if isinstance(transformed_params["date"], datetime):
@@ -154,8 +154,14 @@ class IntrinioOptionsSnapshotsFetcher(
         query: IntrinioOptionsSnapshotsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> DataFrame:
+    ) -> "DataFrame":
         """Return the raw data from the Intrinio endpoint."""
+        # pylint: disable=import-outside-toplevel
+        import gzip  # noqa
+        from io import BytesIO  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from pandas import DataFrame, read_csv  # noqa
+
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         # This gets the URL to the actual file.
@@ -213,10 +219,15 @@ class IntrinioOptionsSnapshotsFetcher(
     @staticmethod
     def transform_data(
         query: IntrinioOptionsSnapshotsQueryParams,
-        data: DataFrame,
+        data: "DataFrame",
         **kwargs: Any,
     ) -> List[IntrinioOptionsSnapshotsData]:
         """Return the transformed data."""
+        # pylint: disable=import-outside-toplevel
+        import numpy as np
+        from pandas import NaT, Series, to_datetime
+        from pytz import timezone
+
         df = data
         if df.empty:
             raise OpenBBError("Empty CSV file")

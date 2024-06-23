@@ -5,15 +5,12 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.market_indices import (
     MarketIndicesData,
     MarketIndicesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import safe_fromtimestamp
-from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, PositiveInt
 
 
@@ -64,11 +61,14 @@ class PolygonMarketIndicesFetcher(
         List[PolygonMarketIndicesData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Polygon endpoints."""
+    """Polygon Market Indices Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonMarketIndicesQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -86,6 +86,10 @@ class PolygonMarketIndicesFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract raw data from the Polygon endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import get_data_many
+        from openbb_core.utils.helpers import safe_fromtimestamp
+
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (

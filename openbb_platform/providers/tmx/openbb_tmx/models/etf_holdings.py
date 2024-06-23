@@ -1,15 +1,14 @@
 """TMX ETF Holdings fetcher."""
 
 # pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional, Union
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
-from openbb_tmx.utils.helpers import get_all_etfs
 from pydantic import Field, field_validator
 
 
@@ -81,7 +80,7 @@ class TmxEtfHoldingsFetcher(
         List[TmxEtfHoldingsData],
     ]
 ):
-    """Transform the query, extract and transform the data from the TMX endpoints."""
+    """TMX ETF Holdings Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> TmxEtfHoldingsQueryParams:
@@ -98,10 +97,14 @@ class TmxEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_tmx.utils.helpers import get_all_etfs
+        from pandas import DataFrame
+
         query.symbol = query.symbol.upper()
         results = []
-        etf = pd.DataFrame()
-        etfs = pd.DataFrame(await get_all_etfs(use_cache=query.use_cache))
+        etf = DataFrame()
+        etfs = DataFrame(await get_all_etfs(use_cache=query.use_cache))
         etf = etfs[etfs["symbol"] == query.symbol]
 
         if len(etf) == 1:

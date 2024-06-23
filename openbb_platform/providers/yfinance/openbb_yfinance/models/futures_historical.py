@@ -13,7 +13,6 @@ from openbb_core.provider.standard_models.futures_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import INTERVALS_DICT, MONTHS
-from pandas import Timestamp
 from pydantic import Field, field_validator
 
 
@@ -52,6 +51,9 @@ class YFinanceFuturesHistoricalData(FuturesHistoricalData):
     @classmethod
     def date_validate(cls, v):
         """Return datetime object from string."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Timestamp
+
         if isinstance(v, Timestamp):
             return v.to_pydatetime()
         return v

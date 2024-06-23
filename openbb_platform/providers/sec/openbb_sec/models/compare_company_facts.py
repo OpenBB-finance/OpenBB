@@ -13,12 +13,10 @@ from openbb_core.provider.standard_models.compare_company_facts import (
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_sec.utils.frames import (
+from openbb_sec.utils.definitions import (
     FACT_CHOICES,
     FACTS,
     FISCAL_PERIODS,
-    get_concept,
-    get_frame,
 )
 from pydantic import Field, field_validator
 
@@ -139,6 +137,9 @@ class SecCompareCompanyFactsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_sec.utils.frames import get_concept, get_frame
+
         results: Dict = {}
         if not query.symbol:
             results = await get_frame(
