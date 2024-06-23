@@ -1,5 +1,6 @@
 """ ECB helpers"""
 
+
 async def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
     """Get ECB data
 

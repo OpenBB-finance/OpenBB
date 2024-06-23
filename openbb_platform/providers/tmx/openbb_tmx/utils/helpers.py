@@ -225,6 +225,7 @@ NASDAQ_GIDS = {
     "^XND": "Nasdaq-100 Micro Index",
 }
 
+
 def get_random_agent() -> str:
     """Get a random user agent."""
     # pylint: disable=import-outside-toplevel
@@ -234,6 +235,7 @@ def get_random_agent() -> str:
     user_agent = user_agent_rotator.get_random_user_agent()
     return user_agent
 
+
 def get_companies_backend():
     """Get the SQLiteBackend for the TMX companies."""
     # pylint: disable=import-outside-toplevel
@@ -242,10 +244,12 @@ def get_companies_backend():
 
     # Only used for obtaining the directory of all valid company tickers.
     tmx_companies_backend = SQLiteBackend(
-        f"{get_user_cache_directory()}/http/tmx_companies", expire_after=timedelta(days=2)
+        f"{get_user_cache_directory()}/http/tmx_companies",
+        expire_after=timedelta(days=2),
     )
 
     return tmx_companies_backend
+
 
 def get_indices_backend():
     """Get the SQLiteBackend for the TMX indices."""
@@ -259,6 +263,7 @@ def get_indices_backend():
     )
 
     return tmx_indices_backend
+
 
 async def response_callback(response, _: Any):
     """Use callback for HTTP Client Response."""
@@ -452,7 +457,9 @@ async def get_all_options_tickers(use_cache: bool = True) -> "DataFrame":
 
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
-    r = await get_data_from_url(url, use_cache=use_cache, backend=get_companies_backend())
+    r = await get_data_from_url(
+        url, use_cache=use_cache, backend=get_companies_backend()
+    )
 
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
