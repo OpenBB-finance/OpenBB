@@ -1,5 +1,7 @@
 """ ECB helpers"""
 
+from typing import List
+
 
 async def get_series_data(series_id: str, start_date: str = "", end_date: str = ""):
     """Get ECB data
@@ -15,9 +17,6 @@ async def get_series_data(series_id: str, start_date: str = "", end_date: str = 
     """
     # pylint: disable=import-outside-toplevel
     import json  # noqa
-    import time  # noqa
-    from typing import List  # noqa
-    from urllib.error import HTTPError  # noqa
     from openbb_core.app.model.abstract.error import OpenBBError  # noqa
     from openbb_core.provider.utils.helpers import amake_request  # noqa
 
@@ -32,8 +31,8 @@ async def get_series_data(series_id: str, start_date: str = "", end_date: str = 
         )
     except KeyboardInterrupt as interrupt:
         raise interrupt
-    except (json.JSONDecodeError, Exception):
-        raise ValueError("Invalid JSON response from ECB")
+    except json.JSONDecodeError as exc:
+        raise OpenBBError("Invalid JSON response from ECB") from exc
 
     if start_date:
         data = [item for item in data if item["PERIOD"][0] >= start_date]

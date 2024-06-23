@@ -133,9 +133,8 @@ class YFinanceEquityHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityHistoricalQueryParams:
         """Transform the query."""
-        from dateutil.relativedelta import (
-            relativedelta,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
 
         transformed_params = params
         now = datetime.now().date()
@@ -155,9 +154,8 @@ class YFinanceEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> DataFrame:
         """Return the raw data from the Yahoo Finance endpoint."""
-        from openbb_yfinance.utils.helpers import (
-            yf_download,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import yf_download
 
         adjusted = query.adjustment == "splits_and_dividends"
         kwargs = {"auto_adjust": True, "back_adjust": True} if adjusted is True else {}

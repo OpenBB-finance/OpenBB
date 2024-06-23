@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.price_target import (
     PriceTargetData,
     PriceTargetQueryParams,
 )
-
 from pydantic import Field
 
 

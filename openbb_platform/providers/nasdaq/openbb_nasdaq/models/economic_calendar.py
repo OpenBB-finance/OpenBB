@@ -104,7 +104,6 @@ class NasdaqEconomicCalendarFetcher(
         """Return the raw data from the Nasdaq endpoint."""
         # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
         from openbb_core.provider.utils.helpers import amake_request  # noqa
         from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
 

@@ -60,7 +60,7 @@ def df_to_basemodel(
 ) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
     # pylint: disable=import-outside-toplevel
-    from pandas import MultiIndex, to_datetime
+    from pandas import MultiIndex, Series, to_datetime
 
     is_multiindex = isinstance(df.index, MultiIndex)
 
@@ -155,6 +155,9 @@ def get_target_column(df: "DataFrame", target: str) -> "Series":
 
 def get_target_columns(df: "DataFrame", target_columns: List[str]) -> "DataFrame":
     """Get target columns from time series data."""
+    # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
+
     df_result = DataFrame()
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()

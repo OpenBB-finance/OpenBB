@@ -81,7 +81,7 @@ class Charting:
             user_settings=self._obbject._user_settings,  # type: ignore
             system_settings=self._obbject._system_settings,  # type: ignore
         )
-        self._backend: "Backend" = self._handle_backend()
+        self._backend = self._handle_backend()
         self._functions: Dict[str, Callable] = self._get_functions()
 
     @classmethod

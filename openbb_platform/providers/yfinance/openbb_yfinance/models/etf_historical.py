@@ -33,7 +33,8 @@ class YFinanceEtfHistoricalData(EtfHistoricalData):
     )
 
     @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
         if isinstance(v, Timestamp):
             return v.to_pydatetime()
@@ -51,9 +52,8 @@ class YFinanceEtfHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEtfHistoricalQueryParams:
         """Transform the query."""
-        from dateutil.relativedelta import (
-            relativedelta,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
 
         transformed_params = params
         now = datetime.now().date()
@@ -74,9 +74,8 @@ class YFinanceEtfHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        from openbb_yfinance.utils.helpers import (
-            yf_download,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from openbb_yfinance.utils.helpers import yf_download
 
         data = yf_download(
             symbol=query.symbol,

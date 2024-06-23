@@ -591,7 +591,7 @@ async def download_eod_chains(
     # pylint: disable=import-outside-toplevel
     from io import StringIO  # noqa
     import exchange_calendars as xcals  # noqa
-    from pandas import DatetimeIndex, Timedelta, concat, read_csv, to_datetime  # noqa
+    from pandas import DatetimeIndex, Timedelta, read_csv, to_datetime  # noqa
     from openbb_core.provider.utils.helpers import to_snake_case  # noqa
 
     symbol = symbol.upper()

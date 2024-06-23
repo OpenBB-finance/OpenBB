@@ -97,9 +97,8 @@ class FinvizPricePerformanceFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
-        from finvizfinance.screener import (
-            performance,
-        )  # pylint: disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
+        from finvizfinance.screener import performance
 
         screen = performance.Performance()
         screen.set_filter(ticker=query.symbol)

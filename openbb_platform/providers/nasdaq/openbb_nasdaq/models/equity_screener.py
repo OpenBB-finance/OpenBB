@@ -475,7 +475,7 @@ class NasdaqEquityScreenerFetcher(
             response = make_request(url, headers=HEADERS)
             return response.json()
         except Exception as error:
-            raise OpenBBError(f"Failed to get data from Nasdaq -> {error}")
+            raise OpenBBError(f"Failed to get data from Nasdaq -> {error}") from error
 
     @staticmethod
     def transform_data(

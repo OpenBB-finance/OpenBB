@@ -642,6 +642,7 @@ class PlotlyTA(PltTA):
             Processed plotly figure
         """
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.openbb_figure import OpenBBFigure
 
         new_subplot = OpenBBFigure(charting_settings=self.charting_settings)
         new_subplot = fig.create_subplots(

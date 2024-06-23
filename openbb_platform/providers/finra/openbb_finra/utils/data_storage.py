@@ -12,7 +12,8 @@ from openbb_finra.utils.helpers import get_short_interest_dates
 
 def get_db_path():
     """Return the path to the database."""
-    from pathlib import Path  # noqa
+    # pylint: disable=import-outside-toplevel
+    from pathlib import Path
 
     DB_PATH = Path(get_user_cache_directory()) / "caches/finra_short_volume.db"
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -49,7 +50,6 @@ def get_data_from_date_and_store(date):
     import random  # noqa
     import sqlite3  # noqa
     from io import StringIO  # noqa
-    from pathlib import Path  # noqa
     from openbb_core.provider.utils.helpers import make_request  # noqa
     from pandas import read_csv  # noqa
 

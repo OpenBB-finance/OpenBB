@@ -83,6 +83,7 @@ class FMPCurrencySnapshotsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the data from the FMP endpoint."""
+        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
