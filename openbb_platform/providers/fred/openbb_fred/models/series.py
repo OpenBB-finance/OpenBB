@@ -1,8 +1,10 @@
 """FRED Series Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
@@ -10,12 +12,6 @@ from openbb_core.provider.standard_models.fred_series import (
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import (
-    ClientResponse,
-    ClientSession,
-    amake_requests,
-    get_querystring,
-)
 from pydantic import Field
 
 
@@ -49,50 +45,47 @@ class FredSeriesQueryParams(SeriesQueryParams):
         ]
     ] = Field(
         default=None,
-        description="""
-        Frequency aggregation to convert high frequency data to lower frequency.
-            None = No change
-            a = Annual
-            q = Quarterly
-            m = Monthly
-            w = Weekly
-            d = Daily
-            wef = Weekly, Ending Friday
-            weth = Weekly, Ending Thursday
-            wew = Weekly, Ending Wednesday
-            wetu = Weekly, Ending Tuesday
-            wem = Weekly, Ending Monday
-            wesu = Weekly, Ending Sunday
-            wesa = Weekly, Ending Saturday
-            bwew = Biweekly, Ending Wednesday
-            bwem = Biweekly, Ending Monday
+        description="""Frequency aggregation to convert high frequency data to lower frequency.
+        \n    None = No change
+        \n    a = Annual
+        \n    q = Quarterly
+        \n    m = Monthly
+        \n    w = Weekly
+        \n    d = Daily
+        \n    wef = Weekly, Ending Friday
+        \n    weth = Weekly, Ending Thursday
+        \n    wew = Weekly, Ending Wednesday
+        \n    wetu = Weekly, Ending Tuesday
+        \n    wem = Weekly, Ending Monday
+        \n    wesu = Weekly, Ending Sunday
+        \n    wesa = Weekly, Ending Saturday
+        \n    bwew = Biweekly, Ending Wednesday
+        \n    bwem = Biweekly, Ending Monday
         """,
     )
     aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
         default="eop",
-        description="""
-        A key that indicates the aggregation method used for frequency aggregation.
+        description="""A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
-            avg = Average
-            sum = Sum
-            eop = End of Period
+        \n    avg = Average
+        \n    sum = Sum
+        \n    eop = End of Period
         """,
     )
     transform: Optional[
         Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
     ] = Field(
         default=None,
-        description="""
-        Transformation type
-            None = No transformation
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
+        description="""Transformation type
+        \n    None = No transformation
+        \n    chg = Change
+        \n    ch1 = Change from Year Ago
+        \n    pch = Percent Change
+        \n    pc1 = Percent Change from Year Ago
+        \n    pca = Compounded Annual Rate of Change
+        \n    cch = Continuously Compounded Rate of Change
+        \n    cca = Continuously Compounded Annual Rate of Change
+        \n    log = Natural Log
         """,
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
@@ -120,8 +113,17 @@ class FredSeriesFetcher(
         query: FredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            ClientResponse,
+            ClientSession,
+            amake_requests,
+            get_querystring,
+        )
+        from pandas import DataFrame
+
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         base_url = "https://api.stlouisfed.org/fred/series/observations"
@@ -161,7 +163,7 @@ class FredSeriesFetcher(
                     d.pop("realtime_end")
 
                 data = (
-                    pd.DataFrame(observations)
+                    DataFrame(observations)
                     .replace(".", None)
                     .set_index("date")["value"]
                     .astype(float)
@@ -182,20 +184,24 @@ class FredSeriesFetcher(
                 }
             }
 
-        results = await amake_requests(urls, callback, timeout=5, **kwargs)
+        try:
+            results = await amake_requests(urls, callback, timeout=5, **kwargs)
+            return results
+        except Exception as e:
+            raise OpenBBError(e) from e
 
-        return results
-
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: FredSeriesQueryParams, data: List[Dict[str, Any]], **kwargs: Any
+        query: FredSeriesQueryParams, data: List[Dict], **kwargs: Any
     ) -> AnnotatedResult[List[FredSeriesData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         series = {_id: s.pop("data", {}) for d in data for _id, s in d.items()}
         metadata = {_id: m for d in data for _id, m in d.items()}
         records = (
-            pd.DataFrame(series)
+            DataFrame(series)
             .filter(items=query.symbol.split(","), axis=1)
             .reset_index()
             .rename(columns={"index": "date"})

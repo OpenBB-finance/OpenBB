@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.senior_loan_officer_survey import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import DataFrame
 from pydantic import Field
 
 SLOOS_CATEGORIES = {
@@ -121,6 +120,9 @@ class FredSeniorLoanOfficerSurveyFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredSeniorLoanOfficerSurveyData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         metadata = data.get("metadata", {})
         df = DataFrame(data.get("data", [])).dropna()
         if df.empty:

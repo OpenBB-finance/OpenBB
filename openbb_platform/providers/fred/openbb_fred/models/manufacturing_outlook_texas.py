@@ -13,7 +13,6 @@ from openbb_core.provider.standard_models.manufacturing_outlook_texas import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import Categorical, DataFrame
 from pydantic import Field, field_validator
 
 TEXAS_MANUFACTURING_OUTLOOK = {
@@ -381,6 +380,9 @@ class FredManufacturingOutlookTexasFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredManufacturingOutlookTexasData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         df = DataFrame(data.get("data", []))
         if df.empty:
             raise EmptyDataError(

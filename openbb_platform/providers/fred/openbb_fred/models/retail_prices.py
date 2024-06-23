@@ -2,8 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import json
-from importlib.resources import path
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -15,7 +13,6 @@ from openbb_core.provider.standard_models.retail_prices import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_fred.models.series import FredSeriesFetcher
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 PRICES_MEATS = [
@@ -281,6 +278,10 @@ class FredRetailPricesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import json
+        from importlib.resources import path
+
         frequency = frequency_dict.get(query.frequency)
         transform = query.transform
         region = regions_dict[query.region]
@@ -333,6 +334,11 @@ class FredRetailPricesFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FredRetailPricesData]]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        import json  # noqa
+        from importlib.resources import path  # noqa
+        from pandas import DataFrame  # noqa
+
         region = regions_dict[query.region]
 
         with path("openbb_fred.utils", f"{region}.json") as p:

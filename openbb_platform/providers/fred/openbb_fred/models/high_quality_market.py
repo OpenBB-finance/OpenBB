@@ -1,17 +1,15 @@
 """FRED High Quality Market Corporate Bond Model."""
 
-import asyncio
+# pylint: disable=unused-argument
+
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional
 
-from dateutil import parser
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.high_quality_market import (
     HighQualityMarketCorporateBondData,
     HighQualityMarketCorporateBondQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_request
-from pandas import Categorical, DataFrame
 from pydantic import Field, field_validator
 
 
@@ -75,6 +73,11 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
+        # pylint: disable=import-outside-toplevel
+        import asyncio  # noqa
+        from dateutil import parser  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         element_id = "219299" if query.yield_curve == "spot" else "219294"
@@ -129,6 +132,9 @@ class FredHighQualityMarketCorporateBondFetcher(
         **kwargs: Any,
     ) -> List[FredHighQualityMarketCorporateBondData]:
         """Transform data."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import Categorical, DataFrame
+
         df = DataFrame(data)
         df["maturity_int"] = df["maturity"].str.replace("year_", "").astype(float)
         maturity_categories = sorted(df.maturity_int.unique().tolist())

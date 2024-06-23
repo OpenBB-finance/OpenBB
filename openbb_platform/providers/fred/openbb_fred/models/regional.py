@@ -1,25 +1,19 @@
 """FRED Regional Data Model."""
 
 # pylint: disable=unused-argument
-import json
-import warnings
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import (
-    amake_request,
-    get_querystring,
-)
 from pydantic import Field, model_validator
-
-_warn = warnings.warn
 
 
 class FredRegionalQueryParams(SeriesQueryParams):
@@ -210,6 +204,12 @@ class FredRegionalDataFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract the raw data."""
+        # pylint: disable=import-outside-toplevel
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            get_querystring,
+        )
+
         api_key = credentials.get("fred_api_key") if credentials else ""
         if query.is_series_group:
             base_url = "https://api.stlouisfed.org/geofred/regional/data?"
@@ -245,14 +245,12 @@ class FredRegionalDataFetcher(
         query: FredRegionalQueryParams,
         data: Dict,
         **kwargs,
-    ) -> List[FredRegionalData]:
+    ) -> AnnotatedResult[List[FredRegionalData]]:
         """Flatten the response object and validate the model."""
         results: List[FredRegionalData] = []
         if data.get("meta") is None:
             raise EmptyDataError()
         meta = {k: v for k, v in data.get("meta").items() if k not in ["data"]}  # type: ignore
-        if meta:
-            _warn(json.dumps(meta))
         _data = data["meta"]["data"]
         keys = list(_data.keys())
         units = data["meta"].get("units")
@@ -266,4 +264,5 @@ class FredRegionalDataFetcher(
                     or datetime.strptime(key, "%Y-%m-%d").date() <= query.end_date
                 ):
                     results.append(FredRegionalData.model_validate(item))
-        return results
+
+        return AnnotatedResult(result=results, metadata=meta)

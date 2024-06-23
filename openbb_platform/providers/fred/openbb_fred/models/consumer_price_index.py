@@ -1,5 +1,7 @@
 """FRED Consumer Price Index Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -13,7 +15,6 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import check_item
 from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.utils.fred_helpers import CPI_COUNTRIES, all_cpi_options
-from pandas import DataFrame
 from pydantic import Field, field_validator
 
 
@@ -102,6 +103,9 @@ class FREDConsumerPriceIndexFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[List[FREDConsumerPriceIndexData]]:
         """Transform data and validate the model."""
+        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         df = DataFrame.from_records(data["data"])
         if df.empty:
             raise EmptyDataError(
