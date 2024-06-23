@@ -88,7 +88,7 @@ class NasdaqEquitySearchData(EquitySearchData):
 class NasdaqEquitySearchFetcher(
     Fetcher[NasdaqEquitySearchQueryParams, List[NasdaqEquitySearchData]]
 ):
-    """Transform the query, extract and transform the data from the Nasdaq endpoints."""
+    """Nasdaq Equity Search Fetcher."""
 
     require_credentials = False
 
@@ -110,7 +110,7 @@ class NasdaqEquitySearchFetcher(
         url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
 
         async def response_callback(response, _) -> str:
-            """Callback function to handle the response."""
+            """Response callback function."""
             if response.status != 200:
                 raise OpenBBError(
                     f"Failed to fetch data from Nasdaq: {response.status}"
