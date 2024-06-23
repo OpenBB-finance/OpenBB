@@ -51,7 +51,7 @@ def line_chart(  # noqa: PLR0912
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a line chart."""
     # pylint: disable=import-outside-toplevel
-    from pandas import to_datetime  # noqa
+    from pandas import DataFrame, Series, to_datetime  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
 
     if data is None:
@@ -60,7 +60,7 @@ def line_chart(  # noqa: PLR0912
     auto_layout = False
     index = (
         data.index.name
-        if isinstance(data, ("DataFrame", Series))
+        if isinstance(data, (DataFrame, Series))
         else index if index is not None else x if x is not None else "date"
     )
     df: DataFrame = (basemodel_to_df(convert_to_basemodel(data), index=index)).dropna(
