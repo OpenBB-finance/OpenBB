@@ -1,16 +1,10 @@
 """Quantitative Analysis Router."""
 
-from typing import List, Literal
+from typing import TYPE_CHECKING, List, Literal
 
-import pandas as pd
 from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
-from openbb_core.app.utils import (
-    basemodel_to_df,
-    get_target_column,
-    get_target_columns,
-)
 from openbb_core.provider.abstract.data import Data
 
 from openbb_quantitative.performance.performance_router import (
@@ -19,16 +13,13 @@ from openbb_quantitative.performance.performance_router import (
 from openbb_quantitative.rolling.rolling_router import router as rolling_router
 from openbb_quantitative.stats.stats_router import router as stats_router
 
-from .helpers import get_fama_raw
-from .models import (
-    ADFTestModel,
-    CAPMModel,
-    KPSSTestModel,
-    NormalityModel,
-    SummaryModel,
-    TestModel,
-    UnitRootModel,
-)
+if TYPE_CHECKING:
+    from openbb_quantitative.models import (
+        CAPMModel,
+        NormalityModel,
+        SummaryModel,
+        UnitRootModel,
+    )
 
 router = Router(prefix="", description="Quantitative analysis tools.")
 router.include_router(rolling_router)
@@ -49,7 +40,7 @@ router.include_router(performance_router)
         APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 8)}),
     ],
 )
-def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
+def normality(data: List[Data], target: str) -> OBBject["NormalityModel"]:
     """Get Normality Statistics.
 
     - **Kurtosis**: whether the kurtosis of a sample differs from the normal distribution.
@@ -70,7 +61,13 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
     """
-    from scipy import stats  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from scipy import stats  # noqa
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
+    from openbb_quantitative.models import TestModel  # noqa
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -107,7 +104,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
         ),
     ],
 )
-def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
+def capm(data: List[Data], target: str) -> OBBject["CAPMModel"]:
     """Get Capital Asset Pricing Model (CAPM).
 
     CAPM offers a streamlined way to assess the expected return on an investment while accounting for its risk relative
@@ -126,7 +123,14 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     OBBject[CAPMModel]
         CAPM model summary.
     """
-    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
+    # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm  # noqa
+    from openbb_core.app.utils import (  # noqa``
+        basemodel_to_df,
+        get_target_columns,
+    )
+    from pandas import to_datetime  # noqa
+    from openbb_quantitative.helpers import get_fama_raw  # noqa
 
     df = basemodel_to_df(data)
 
@@ -134,7 +138,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     df_target = df_target.set_index("date")
     df_target.loc[:, "return"] = df_target.pct_change()
     df_target = df_target.dropna()
-    df_target.index = pd.to_datetime(df_target.index)
+    df_target.index = to_datetime(df_target.index)
     start_date = df_target.index.min().strftime("%Y-%m-%d")
     end_date = df_target.index.max().strftime("%Y-%m-%d")
     df_fama = get_fama_raw(start_date, end_date)
@@ -175,7 +179,7 @@ def unitroot_test(
     target: str,
     fuller_reg: Literal["c", "ct", "ctt", "nc", "c"] = "c",
     kpss_reg: Literal["c", "ct"] = "c",
-) -> OBBject[UnitRootModel]:
+) -> OBBject["UnitRootModel"]:
     """Get Unit Root Test.
 
     This function applies two renowned tests to assess whether your data series is stationary or if it contains a unit
@@ -203,7 +207,12 @@ def unitroot_test(
         Unit root tests summary.
     """
     # pylint: disable=import-outside-toplevel
-    from statsmodels.tsa import stattools  # type: ignore
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
+    from statsmodels.tsa import stattools  # noqa
+    from openbb_quantitative.models import ADFTestModel, KPSSTestModel, UnitRootModel  # noqa
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -241,7 +250,7 @@ def unitroot_test(
         APIEx(parameters={"target": "close", "data": APIEx.mock_data("timeseries", 5)}),
     ],
 )
-def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
+def summary(data: List[Data], target: str) -> OBBject["SummaryModel"]:
     """Get Summary Statistics.
 
     The summary that offers a snapshot of its central tendencies, variability, and distribution.
@@ -263,6 +272,12 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     OBBject[SummaryModel]
         Summary table.
     """
+    # pylint: disable=import-outside-toplevel
+    from openbb_core.app.utils import (  # noqa
+        basemodel_to_df,
+        get_target_column,
+    )
+
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
 

@@ -22,16 +22,13 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
-    from numpy import ndarray
-    from pandas import DataFrame
-
-    from openbb_core.app.query import Query
-
+    from numpy import ndarray  # noqa
+    from pandas import DataFrame  # noqa
+    from openbb_core.app.query import Query  # noqa
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
@@ -125,6 +122,7 @@ class OBBject(Tagged, Generic[T]):
             Pandas dataframe.
         """
         # pylint: disable=import-outside-toplevel
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame, concat
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
