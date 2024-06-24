@@ -31,7 +31,7 @@ jobs:
         id: check-develop-branch
         if: ${{ steps.branch-names.outputs.base_ref_branch == 'develop' }}
         run: |
-          if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(feature/.*|bugfix/.*|hotfix/.*|release/([a-zA-Z-]+-)?[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
+          if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(feature/.*|docs/.*|bugfix/.*|hotfix/.*|release/([a-zA-Z-]+-)?[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
             echo "reason=Invalid branch name for a Pull Request to be merged to `${{ steps.branch-names.outputs.base_ref_branch }}` branch. Branches must follow the GitFlow naming convention." >> $GITHUB_OUTPUT
           fi
 
@@ -39,7 +39,7 @@ jobs:
         id: check-main-branch
         if: ${{ steps.branch-names.outputs.base_ref_branch == 'main' }}
         run: |
-          if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(hotfix/.*|release/([a-zA-Z-]+-)?[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
+          if ! [[ "${{ steps.branch-names.outputs.head_ref_branch }}" =~ ^(hotfix/.*|docs/.*|release/([a-zA-Z-]+-)?[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
             echo "reason=Invalid branch name for a Pull Request to be merged to `${{ steps.branch-names.outputs.base_ref_branch }}` branch. Pull requests must be from a hotfix or release branch." >> $GITHUB_OUTPUT
           fi
 
