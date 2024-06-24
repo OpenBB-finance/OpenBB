@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
+from typing import List, Union
 
 from pydantic import Field
 
@@ -20,56 +20,60 @@ class OptionsSnapshotsQueryParams(QueryParams):
 class OptionsSnapshotsData(Data):
     """Options Snapshots Data."""
 
-    underlying_symbol: str = Field(description="Ticker symbol of the underlying asset.")
-    contract_symbol: str = Field(description="Symbol of the options contract.")
-    expiration: dateType = Field(description="Expiration date of the options contract.")
-    dte: Optional[int] = Field(
-        default=None,
+    underlying_symbol: List[str] = Field(
+        description="Ticker symbol of the underlying asset."
+    )
+    contract_symbol: List[str] = Field(description="Symbol of the options contract.")
+    expiration: List[dateType] = Field(
+        description="Expiration date of the options contract."
+    )
+    dte: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Number of days to expiration of the options contract.",
     )
-    strike: float = Field(
+    strike: List[float] = Field(
         description="Strike price of the options contract.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    option_type: str = Field(description="The type of option.")
-    volume: Optional[int] = Field(
-        default=None,
+    option_type: List[str] = Field(description="The type of option.")
+    volume: List[Union[int, None]] = Field(
+        default_factory=list,
         description=DATA_DESCRIPTIONS.get("volume", ""),
     )
-    open_interest: Optional[int] = Field(
-        default=None,
+    open_interest: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Open interest at the time.",
     )
-    last_price: Optional[float] = Field(
-        default=None,
+    last_price: List[Union[float, None]] = Field(
+        default_factory=list,
         description="Last trade price at the time.",
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    last_size: Optional[int] = Field(
-        default=None,
+    last_size: List[Union[int, None]] = Field(
+        default_factory=list,
         description="Lot size of the last trade.",
     )
-    last_timestamp: Optional[datetime] = Field(
-        default=None,
+    last_timestamp: List[Union[datetime, None]] = Field(
+        default_factory=list,
         description="Timestamp of the last price.",
     )
-    open: Optional[float] = Field(
-        default=None,
+    open: List[Union[float, None]] = Field(
+        default_factory=list,
         description=DATA_DESCRIPTIONS.get("open", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    high: Optional[float] = Field(
-        default=None,
+    high: List[Union[float, None]] = Field(
+        default_factory=list,
         description=DATA_DESCRIPTIONS.get("high", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    low: Optional[float] = Field(
-        default=None,
+    low: List[Union[float, None]] = Field(
+        default_factory=list,
         description=DATA_DESCRIPTIONS.get("low", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
-    close: Optional[float] = Field(
-        default=None,
+    close: List[Union[float, None]] = Field(
+        default_factory=list,
         description=DATA_DESCRIPTIONS.get("close", ""),
         json_schema_extra={"x-unit_measurement": "currency"},
     )
