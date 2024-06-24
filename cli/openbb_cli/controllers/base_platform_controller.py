@@ -381,9 +381,7 @@ class PlatformController(BaseController):
 
         session.console.print(text=mt.menu_text, menu=self.PATH)
 
-        settings = session.settings
-        dev_mode = settings.DEBUG_MODE or settings.TEST_MODE
-        if mt.warnings and dev_mode:
+        if mt.warnings:
             session.console.print("")
             for w in mt.warnings:
                 w_str = str(w).replace("{", "").replace("}", "").replace("'", "")
