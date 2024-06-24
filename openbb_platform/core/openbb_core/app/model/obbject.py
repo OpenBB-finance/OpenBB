@@ -122,8 +122,8 @@ class OBBject(Tagged, Generic[T]):
             Pandas dataframe.
         """
         # pylint: disable=import-outside-toplevel
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame, concat
+        from pandas import DataFrame, concat  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
 
         def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
             return isinstance(items, list) and all(
