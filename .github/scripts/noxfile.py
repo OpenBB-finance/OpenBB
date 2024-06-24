@@ -29,3 +29,19 @@ def unit_test_platform(session):
     session.run(
         "pytest", *PLATFORM_TESTS, f"--cov={PLATFORM_DIR}", "-m", "not integration"
     )
+
+
+@nox.session(python=["3.9", "3.10", "3.11"])
+def unit_test_cli(session):
+    """Run the test suite."""
+    session.install("poetry", "toml")
+    session.run(
+        "python",
+        str(PLATFORM_DIR / "dev_install.py"),
+        "-e",
+        "all",
+        external=True,
+    )
+    session.install("pytest")
+    session.install("pytest-cov")
+    session.run("pytest", CLI_TESTS, f"--cov={CLI_DIR}")
