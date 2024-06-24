@@ -32,8 +32,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
         default=False,
         description="When True, the symbol provided is for a series_group, else it is for a series ID.",
     )
-    region_type: Union[
-        None,
+    region_type: Optional[
         Literal[
             "bea",
             "msa",
@@ -43,23 +42,29 @@ class FredRegionalQueryParams(SeriesQueryParams):
             "country",
             "county",
             "censusregion",
-        ],
+        ]
     ] = Field(
         default=None,
         description="The type of regional data."
         + " Parameter is only valid when `is_series_group` is True.",
+        json_schema_extra={
+            "choices": [
+                "bea",
+                "msa",
+                "frb",
+                "necta",
+                "state",
+                "country",
+                "county",
+                "censusregion",
+            ]
+        },
     )
-    season: Union[
-        None,
-        Literal[
-            "SA",
-            "NSA",
-            "SSA",
-        ],
-    ] = Field(
-        default="NSA",
+    season: Literal["sa", "nsa", "ssa"] = Field(
+        default="nsa",
         description="The seasonal adjustments to the data."
         + " Parameter is only valid when `is_series_group` is True.",
+        json_schema_extra={"choices": ["sa", "nsa", "ssa"]},
     )
     units: Optional[str] = Field(
         default=None,
@@ -68,16 +73,13 @@ class FredRegionalQueryParams(SeriesQueryParams):
         + " An incorrect field will not necessarily return an error."
         + " Parameter is only valid when `is_series_group` is True.",
     )
-    frequency: Union[
-        None,
+    frequency: Optional[
         Literal[
-            "d",
-            "w",
-            "bw",
-            "m",
-            "q",
-            "sa",
             "a",
+            "q",
+            "m",
+            "w",
+            "d",
             "wef",
             "weth",
             "wew",
@@ -87,56 +89,73 @@ class FredRegionalQueryParams(SeriesQueryParams):
             "wesa",
             "bwew",
             "bwem",
-        ],
+        ]
     ] = Field(
         default=None,
-        description="""
-        Frequency aggregation to convert high frequency data to lower frequency.
-        Parameter is only valid when `is_series_group` is True.
-            a = Annual
-            sa= Semiannual
-            q = Quarterly
-            m = Monthly
-            w = Weekly
-            d = Daily
-            wef = Weekly, Ending Friday
-            weth = Weekly, Ending Thursday
-            wew = Weekly, Ending Wednesday
-            wetu = Weekly, Ending Tuesday
-            wem = Weekly, Ending Monday
-            wesu = Weekly, Ending Sunday
-            wesa = Weekly, Ending Saturday
-            bwew = Biweekly, Ending Wednesday
-            bwem = Biweekly, Ending Monday
+        description="""Frequency aggregation to convert high frequency data to lower frequency.
+        \n    None = No change
+        \n    a = Annual
+        \n    q = Quarterly
+        \n    m = Monthly
+        \n    w = Weekly
+        \n    d = Daily
+        \n    wef = Weekly, Ending Friday
+        \n    weth = Weekly, Ending Thursday
+        \n    wew = Weekly, Ending Wednesday
+        \n    wetu = Weekly, Ending Tuesday
+        \n    wem = Weekly, Ending Monday
+        \n    wesu = Weekly, Ending Sunday
+        \n    wesa = Weekly, Ending Saturday
+        \n    bwew = Biweekly, Ending Wednesday
+        \n    bwem = Biweekly, Ending Monday
         """,
+        json_schema_extra={
+            "choices": [
+                "a",
+                "q",
+                "m",
+                "w",
+                "d",
+                "wef",
+                "weth",
+                "wew",
+                "wetu",
+                "wem",
+                "wesu",
+                "wesa",
+                "bwew",
+                "bwem",
+            ]
+        },
     )
-    aggregation_method: Literal["avg", "sum", "eop"] = Field(
-        default="avg",
-        description="""
-        A key that indicates the aggregation method used for frequency aggregation.
+    aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
+        default="eop",
+        description="""A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
-        Only valid when `is_series_group` is True.
-            avg = Average
-            sum = Sum
-            eop = End of Period
+        \n    avg = Average
+        \n    sum = Sum
+        \n    eop = End of Period
         """,
+        json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
-    transform: Literal[
-        "lin", "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"
+    transform: Optional[
+        Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
     ] = Field(
-        default="lin",
-        description="""
-        Transformation type. Only valid when `is_series_group` is True.
-            lin = Levels (No transformation)
-            chg = Change
-            ch1 = Change from Year Ago
-            pch = Percent Change
-            pc1 = Percent Change from Year Ago
-            pca = Compounded Annual Rate of Change
-            cch = Continuously Compounded Rate of Change
-            cca = Continuously Compounded Annual Rate of Change
-            log = Natural Log
+        default=None,
+        description="""Transformation type
+        \n    None = No transformation
+        \n    chg = Change
+        \n    ch1 = Change from Year Ago
+        \n    pch = Percent Change
+        \n    pc1 = Percent Change from Year Ago
+        \n    pca = Compounded Annual Rate of Change
+        \n    cch = Continuously Compounded Rate of Change
+        \n    cca = Continuously Compounded Annual Rate of Change
+        \n    log = Natural Log
         """,
+        json_schema_extra={
+            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+        },
     )
 
     @model_validator(mode="before")
@@ -211,6 +230,7 @@ class FredRegionalDataFetcher(
         )
 
         api_key = credentials.get("fred_api_key") if credentials else ""
+        query.season = query.season.upper()
         if query.is_series_group:
             base_url = "https://api.stlouisfed.org/geofred/regional/data?"
             url = (

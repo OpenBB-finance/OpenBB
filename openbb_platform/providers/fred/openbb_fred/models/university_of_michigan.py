@@ -53,6 +53,9 @@ class FredUofMichiganQueryParams(UofMichiganQueryParams):
         \n    cca = Continuously Compounded Annual Rate of Change
         \n    log = Natural Log
         """,
+        json_schema_extra={
+            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+        },
     )
 
 

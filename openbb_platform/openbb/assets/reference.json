@@ -5017,7 +5017,22 @@
                         "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
                     },
                     {
                         "name": "aggregation_method",
@@ -5025,7 +5040,11 @@
                         "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
                         "default": "eop",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
                     },
                     {
                         "name": "transform",
@@ -5033,7 +5052,16 @@
                         "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ],
                 "intrinio": [
@@ -5857,15 +5885,28 @@
                         "description": "The type of regional data. Parameter is only valid when `is_series_group` is True.",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "bea",
+                            "msa",
+                            "frb",
+                            "necta",
+                            "state",
+                            "country",
+                            "county",
+                            "censusregion"
+                        ]
                     },
                     {
                         "name": "season",
-                        "type": "Literal['SA', 'NSA', 'SSA']",
+                        "type": "Literal['sa', 'nsa', 'ssa']",
                         "description": "The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True.",
-                        "default": "NSA",
+                        "default": "nsa",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "sa",
+                            "nsa",
+                            "ssa"
+                        ]
                     },
                     {
                         "name": "units",
@@ -5877,27 +5918,55 @@
                     },
                     {
                         "name": "frequency",
-                        "type": "Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert high frequency data to lower frequency.     Parameter is only valid when `is_series_group` is True.       a = Annual       sa= Semiannual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "type": "Literal['a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
+                        "description": "Frequency aggregation to convert high frequency data to lower frequency.       None = No change       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "a",
+                            "q",
+                            "m",
+                            "w",
+                            "d",
+                            "wef",
+                            "weth",
+                            "wew",
+                            "wetu",
+                            "wem",
+                            "wesu",
+                            "wesa",
+                            "bwew",
+                            "bwem"
+                        ]
                     },
                     {
                         "name": "aggregation_method",
                         "type": "Literal['avg', 'sum', 'eop']",
-                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.     Only valid when `is_series_group` is True.       avg = Average       sum = Sum       eop = End of Period",
-                        "default": "avg",
+                        "description": "A key that indicates the aggregation method used for frequency aggregation.     This parameter has no affect if the frequency parameter is not set.       avg = Average       sum = Sum       eop = End of Period",
+                        "default": "eop",
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "avg",
+                            "sum",
+                            "eop"
+                        ]
                     },
                     {
                         "name": "transform",
-                        "type": "Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
-                        "description": "Transformation type. Only valid when `is_series_group` is True.       lin = Levels (No transformation)       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
-                        "default": "lin",
+                        "type": "Literal['chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']",
+                        "description": "Transformation type       None = No transformation       chg = Change       ch1 = Change from Year Ago       pch = Percent Change       pc1 = Percent Change from Year Ago       pca = Compounded Annual Rate of Change       cch = Continuously Compounded Rate of Change       cca = Continuously Compounded Annual Rate of Change       log = Natural Log",
+                        "default": null,
                         "optional": true,
-                        "choices": null
+                        "choices": [
+                            "chg",
+                            "ch1",
+                            "pch",
+                            "pc1",
+                            "pca",
+                            "cch",
+                            "cca",
+                            "log"
+                        ]
                     }
                 ]
             },
@@ -31933,7 +32002,7 @@
                     {
                         "name": "frequency",
                         "type": "Literal['a', 'q', 'm', 'w', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']",
-                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
+                        "description": "Frequency aggregation to convert daily data to lower frequency.       a = Annual       q = Quarterly       m = Monthly       w = Weekly       d = Daily       wef = Weekly, Ending Friday       weth = Weekly, Ending Thursday       wew = Weekly, Ending Wednesday       wetu = Weekly, Ending Tuesday       wem = Weekly, Ending Monday       wesu = Weekly, Ending Sunday       wesa = Weekly, Ending Saturday       bwew = Biweekly, Ending Wednesday       bwem = Biweekly, Ending Monday",
                         "default": null,
                         "optional": true,
                         "choices": [

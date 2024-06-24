@@ -62,6 +62,24 @@ class FredSeriesQueryParams(SeriesQueryParams):
         \n    bwew = Biweekly, Ending Wednesday
         \n    bwem = Biweekly, Ending Monday
         """,
+        json_schema_extra={
+            "choices": [
+                "a",
+                "q",
+                "m",
+                "w",
+                "d",
+                "wef",
+                "weth",
+                "wew",
+                "wetu",
+                "wem",
+                "wesu",
+                "wesa",
+                "bwew",
+                "bwem",
+            ]
+        },
     )
     aggregation_method: Optional[Literal["avg", "sum", "eop"]] = Field(
         default="eop",
@@ -71,6 +89,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
         \n    sum = Sum
         \n    eop = End of Period
         """,
+        json_schema_extra={"choices": ["avg", "sum", "eop"]},
     )
     transform: Optional[
         Literal["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
@@ -87,6 +106,9 @@ class FredSeriesQueryParams(SeriesQueryParams):
         \n    cca = Continuously Compounded Annual Rate of Change
         \n    log = Natural Log
         """,
+        json_schema_extra={
+            "choices": ["chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"]
+        },
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 
