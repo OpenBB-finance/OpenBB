@@ -130,7 +130,9 @@ class OECDHousePriceIndexFetcher(
                 url.replace(".M.RHPI.", ".Q.RHPI."), headers=headers
             )
         if response.status_code != 200:
-            raise Exception(f"Error with the OECD request: {response.status_code}")
+            raise OpenBBError(
+                f"Error with the OECD request (HTTP {response.status_code}): `{response.text}`"
+            )
         df = read_csv(StringIO(response.text)).get(
             ["REF_AREA", "TIME_PERIOD", "OBS_VALUE"]
         )
