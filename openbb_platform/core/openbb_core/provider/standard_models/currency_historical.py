@@ -6,7 +6,6 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
-from dateutil import parser
 from pydantic import Field, PositiveFloat, field_validator
 
 from openbb_core.provider.abstract.data import Data

@@ -98,26 +98,22 @@ class NasdaqEquitySearchFetcher(
         return NasdaqEquitySearchQueryParams(**params)
 
     @staticmethod
-    async def aextract_data(
+    def extract_data(
         query: NasdaqEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_core.provider.utils.helpers import make_request
 
         url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
-
-        async def response_callback(response, _) -> str:
-            """Response callback function."""
-            if response.status != 200:
-                raise OpenBBError(
-                    f"Failed to fetch data from Nasdaq: {response.status}"
-                )
-            return await response.text()
-
-        return await amake_request(url=url, resonse_callback=response_callback)  # type: ignore
+        response = make_request(url)
+        if response.status_code != 200:
+            raise OpenBBError(
+                f"Failed to fetch data from Nasdaq: {response.status_code}"
+            )
+        return response.text
 
     @staticmethod
     def transform_data(
