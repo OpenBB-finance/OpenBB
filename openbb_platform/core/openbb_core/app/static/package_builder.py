@@ -1416,7 +1416,7 @@ class ReferenceGenerator:
         field_type = DocstringGenerator.get_field_type(
             provider_params_field.type, False, "website"
         )
-        default_priority = provider_params_field.type.__args__[0]
+        default_priority = provider_params_field.type.__args__
         description = (
             "The provider to use, by default None. "
             "If None, the priority list configured in the settings is used. "
