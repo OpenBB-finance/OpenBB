@@ -221,7 +221,7 @@ class FinvizCompareGroupsFetcher(
     ) -> List[Dict]:
         """Extract the raw data from Finviz."""
         # pylint: disable=import-outside-toplevel
-        from finvizfinance.group.performance import Overview, Performance, Valuation
+        from finvizfinance.group import Overview, Performance, Valuation
         from pandas import DataFrame
 
         results: List = []
