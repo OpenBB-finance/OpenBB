@@ -143,16 +143,18 @@ class PolygonCurrencyHistoricalFetcher(
             )
             for symbol in query.symbol.split(",")
         ]
+        results: List = []
 
         async def callback(
-            response: ClientResponse, session: ClientSession
+            response: ClientResponse,
+            session: ClientSession,
         ) -> List[Dict]:
+            """Return the data from the response."""
             data = await response.json()
 
             symbol = response.url.parts[4]
             next_url = data.get("next_url", None)  # type: ignore[union-attr]
-            results: list = data.get("results", [])  # type: ignore[union-attr]
-
+            results.extend(data.get("results", []))  # type: ignore[union-attr]
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
@@ -160,7 +162,7 @@ class PolygonCurrencyHistoricalFetcher(
                 next_url = data.get("next_url", None)  # type: ignore[union-attr]
 
             for r in results:
-                v = r["t"] / 1000  # milliseconds to seconds
+                v = r.get("t") / 1000  # milliseconds to seconds
                 r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
@@ -172,9 +174,9 @@ class PolygonCurrencyHistoricalFetcher(
             if results == []:
                 warn(f"Symbol Error: No data found for {symbol.replace('C:', '')}")
 
-            return results
+        await amake_requests(urls=urls, response_callback=callback, **kwargs)
 
-        return await amake_requests(urls, callback, **kwargs)
+        return results
 
     @staticmethod
     def transform_data(
@@ -185,5 +187,5 @@ class PolygonCurrencyHistoricalFetcher(
             raise EmptyDataError()
         return [
             PolygonCurrencyHistoricalData.model_validate(d)
-            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+            for d in data
         ]

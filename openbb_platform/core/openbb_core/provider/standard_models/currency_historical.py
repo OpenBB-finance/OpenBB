@@ -60,9 +60,3 @@ class CurrencyHistoricalData(Data):
         description=DATA_DESCRIPTIONS.get("vwap", ""), default=None
     )
 
-    @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return formatted datetime."""
-        if ":" in str(v):
-            return parser.isoparse(str(v))
-        return parser.parse(str(v)).date()
