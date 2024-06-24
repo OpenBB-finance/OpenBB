@@ -142,5 +142,8 @@ class BiztocWorldNewsFetcher(
             item.pop("body_preview", None)
             item.pop("site", None)
             item.pop("domain", None)
+            images = item.pop("img", [])
+            if images:
+                item["images"] = images if isinstance(images, list) else [images]
             results.append(BiztocWorldNewsData.model_validate(item))
         return results
