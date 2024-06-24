@@ -67,7 +67,7 @@
     > Also, sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes before publishing the next package.
 
 2. Merge the `release/<package>-<version>` branch to the `main` branch.
-3. Run the `Deploy to GitHub Pages` action in [openbb-docs](https://github.com/OpenBB-finance/openbb-docs). Go to the [docs](https://docs.openbb.co) website to see the changes.
+3. Run the `Deploy to GitHub Pages` action in [openbb-docs](https://github.com/OpenBB-finance/openbb-docs/actions). Go to the [docs](https://docs.openbb.co) website to see the changes.
 
 ## Post-release procedure
 
