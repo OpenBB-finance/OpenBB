@@ -258,6 +258,7 @@ class RelativeRotation:
         """Initialize the class."""
         # pylint: disable=import-outside-toplevel
         import contextlib
+
         from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel, df_to_basemodel
         from pandas import DataFrame
 
