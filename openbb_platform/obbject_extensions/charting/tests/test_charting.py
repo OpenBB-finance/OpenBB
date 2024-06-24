@@ -3,7 +3,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_charting import Charting
+from openbb_charting.charting import Charting
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
 from pydantic import BaseModel
@@ -96,7 +96,7 @@ def test_indicators(obbject):
     ]
 
 
-@patch("openbb_charting.get_charting_functions")
+@patch("openbb_charting.charting.get_charting_functions")
 def test_functions(mock_get_charting_functions):
     """Test functions method."""
     # Arrange
@@ -110,8 +110,8 @@ def test_functions(mock_get_charting_functions):
     mock_get_charting_functions.assert_called_once()
 
 
-@patch("openbb_charting.get_backend")
-@patch("openbb_charting.create_backend")
+@patch("openbb_charting.charting.get_backend")
+@patch("openbb_charting.charting.create_backend")
 def test_handle_backend(mock_create_backend, mock_get_backend, obbject):
     """Test _handle_backend method."""
     # Act -> _handle backend is called in the constructor
@@ -137,8 +137,8 @@ def test_get_chart_function(obbject):
     assert result == mock_function
 
 
-@patch("openbb_charting.Charting._get_chart_function")
-@patch("openbb_charting.Chart")
+@patch("openbb_charting.charting.Charting._get_chart_function")
+@patch("openbb_charting.charting.Chart")
 def test_show(_, mock_get_chart_function, obbject):
     """Test show method."""
     # Arrange
@@ -156,9 +156,9 @@ def test_show(_, mock_get_chart_function, obbject):
     mock_function.assert_called_once()
 
 
-@patch("openbb_charting.Charting._prepare_data_as_df")
-@patch("openbb_charting.Charting._get_chart_function")
-@patch("openbb_charting.Chart")
+@patch("openbb_charting.charting.Charting._prepare_data_as_df")
+@patch("openbb_charting.charting.Charting._get_chart_function")
+@patch("openbb_charting.charting.Chart")
 def test_to_chart(_, mock_get_chart_function, mock_prepare_data_as_df, obbject):
     """Test to_chart method."""
     # Arrange
