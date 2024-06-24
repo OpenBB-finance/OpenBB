@@ -13,7 +13,10 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 def vcr_config():
     """VCR configuration."""
     return {
-        "filter_headers": [("X-RapidAPI-Key", "MOCK_API_KEY")],
+        "filter_headers": [
+            ("X-RapidAPI-Key", "MOCK_API_KEY"),
+            ("User-Agent", None),
+        ],
         "filter_query_parameters": [
             ("apikey", "MOCK_API_KEY"),
         ],
