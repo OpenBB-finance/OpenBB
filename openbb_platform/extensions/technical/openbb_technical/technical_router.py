@@ -1,6 +1,6 @@
 """Technical Analysis Router."""
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,unused-import
 
 from typing import Any, Dict, List, Literal, Optional
 
@@ -216,6 +216,7 @@ def atr(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -346,6 +347,7 @@ def obv(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "volume"])
@@ -402,6 +404,7 @@ def fisher(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, [length, signal])
     df = basemodel_to_df(data, index=index)
@@ -463,6 +466,7 @@ def adosc(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, [fast, slow])
     df = basemodel_to_df(data, index=index)
@@ -536,6 +540,7 @@ def bbands(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -606,6 +611,7 @@ def zlma(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -676,6 +682,7 @@ def aroon(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -738,6 +745,7 @@ def sma(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -807,7 +815,7 @@ def demark(
         The calculated data.
     """
     # pylint: disable=import-outside-toplevel
-    import pandas_ta as ta
+    import pandas_ta as ta  # noqa
 
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -866,6 +874,7 @@ def vwap(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     df = basemodel_to_df(data, index=index)
     if index == "date":
@@ -941,6 +950,7 @@ def macd(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, [fast, slow, signal])
     df = basemodel_to_df(data, index=index)
@@ -1006,6 +1016,7 @@ def hma(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1079,6 +1090,7 @@ def donchian(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, [lower_length, upper_length])
     df = basemodel_to_df(data, index=index)
@@ -1208,6 +1220,7 @@ def clenow(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, period)
     df = basemodel_to_df(data, index=index)
@@ -1275,6 +1288,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
@@ -1332,6 +1346,7 @@ def adx(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1393,6 +1408,7 @@ def wma(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1457,6 +1473,7 @@ def cci(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1520,6 +1537,7 @@ def rsi(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1588,6 +1606,7 @@ def stoch(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, [fast_k_period, slow_d_period, slow_k_period])
     df = basemodel_to_df(data, index=index)
@@ -1657,6 +1676,7 @@ def kc(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1715,6 +1735,7 @@ def cg(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
@@ -1879,6 +1900,7 @@ def ema(
     """
     # pylint: disable=import-outside-toplevel
     import pandas as pd
+    import pandas_ta as ta  # noqa
 
     validate_data(data, length)
     df = basemodel_to_df(data, index=index)
