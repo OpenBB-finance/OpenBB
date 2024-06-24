@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 from warnings import warn
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
@@ -124,6 +125,8 @@ class FMPEconomicCalendarFetcher(
             try:
                 result = await amake_request(url, **kwargs)
                 if result:
+                    if "Error Message" in result:
+                        raise OpenBBError(result["Error Message"])
                     results.extend(result)
             except Exception as e:
                 if len(urls) == 1 or (len(urls) > 1 and n_urls == len(urls)):
