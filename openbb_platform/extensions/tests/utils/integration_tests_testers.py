@@ -259,8 +259,6 @@ def check_integration_tests(
     for route, _ in cm.map.items():
         for function in processing_functions:
             if route.replace("/", "_")[1:] == function.replace("test_", ""):
-                # if "technical" in route:
-                #     print("")
                 hints = get_type_hints(cm.map[route])
                 processing_command_params = [
                     {k: "" for k in get_test_params_data_processing(hints)}
@@ -274,10 +272,6 @@ def check_integration_tests(
                 missing_items = check_function(
                     processing_command_params, function_params, function, True  # type: ignore
                 )
-                if missing_items:
-                    print("Hints:", hints)
-                    print("Command params:", processing_command_params)
-                    print("Function params:", function_params)
 
                 all_missing_items.extend(missing_items)
 
