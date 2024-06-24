@@ -32,6 +32,7 @@ class FMPCurrencySnapshotsData(CurrencySnapshotsData):
     """FMP Currency Snapshots Data."""
 
     __alias_dict__ = {
+        "counter_currency": "index",
         "last_rate": "price",
         "high": "dayHigh",
         "low": "dayLow",
