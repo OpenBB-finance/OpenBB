@@ -169,8 +169,9 @@ class TradierOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Tradier endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_tradier.models.equity_quote import TradierEquityQuoteFetcher
+        import asyncio  # noqa
+        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        from openbb_tradier.models.equity_quote import TradierEquityQuoteFetcher  # noqa
 
         api_key = credentials.get("tradier_api_key") if credentials else ""
         sandbox = True
@@ -261,9 +262,7 @@ class TradierOptionsChainsFetcher(
             for expiration in expirations  # type: ignore
         ]
 
-        tasks = [get_one(url, underlying_price) for url in urls]
-
-        await asyncio.gather(*tasks)
+        await asyncio.gather(*[get_one(url, underlying_price) for url in urls])
 
         if not results:
             raise EmptyDataError(f"No options chains data found for {query.symbol}.")

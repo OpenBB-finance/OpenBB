@@ -92,7 +92,7 @@ class FMPYieldCurveFetcher(
     ) -> List[FMPYieldCurveData]:
         """Return the transformed data."""
         # pylint: disable=import-outside-toplevel
-        from pandas import DataFrame, DatetimeIndex, Categorical
+        from pandas import Categorical, DataFrame, DatetimeIndex
 
         if not data:
             raise EmptyDataError("The request was returned empty.")

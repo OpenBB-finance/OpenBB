@@ -16,7 +16,9 @@ from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.utils.definitions import (
     FISCAL_PERIODS,
     HEADERS,
+    SHARES_FACTS,
     TAXONOMIES,
+    USD_PER_SHARE_FACTS,
 )
 from openbb_sec.utils.helpers import get_all_companies, symbol_map
 from pandas import DataFrame

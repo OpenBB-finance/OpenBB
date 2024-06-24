@@ -439,7 +439,7 @@ class NasdaqEquityScreenerFetcher(
         from openbb_core.provider.utils.helpers import get_querystring, make_request
         from openbb_nasdaq.utils.helpers import get_headers
 
-        HEADERS = get_headers(type="text")
+        HEADERS = get_headers(accept_type="text")
         base_url = (
             "https://api.nasdaq.com/api/screener/stocks?tableonly=true&limit="
             + f"{query.limit if query.limit else 10000}&"

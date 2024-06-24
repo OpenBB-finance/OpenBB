@@ -87,8 +87,8 @@ class PolygonMarketIndicesFetcher(
     ) -> dict:
         """Extract raw data from the Polygon endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import get_data_many
         from openbb_core.utils.helpers import safe_fromtimestamp
+        from openbb_polygon.utils.helpers import get_data_many
 
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
