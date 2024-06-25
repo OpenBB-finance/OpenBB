@@ -63,7 +63,7 @@ class FREDSelectedTreasuryBillFetcher(
         fred = Fred(key)
 
         data = fred.get_series(
-            series_id=TBFFR_PARAMETER_TO_FRED_ID[query.maturity],
+            series_id=TBFFR_PARAMETER_TO_FRED_ID[query.maturity],  # type: ignore
             start_date=query.start_date,
             end_date=query.end_date,
             **kwargs,

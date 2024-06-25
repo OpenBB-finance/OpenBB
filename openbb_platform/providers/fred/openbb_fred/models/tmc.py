@@ -65,7 +65,7 @@ class FREDTreasuryConstantMaturityFetcher(
         fred = Fred(key)
 
         data = fred.get_series(
-            series_id=TMC_PARAMETER_TO_FRED_ID[query.maturity],
+            series_id=TMC_PARAMETER_TO_FRED_ID[query.maturity],  # type: ignore
             start_date=query.start_date,
             end_date=query.end_date,
             **kwargs,

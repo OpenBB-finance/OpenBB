@@ -118,9 +118,9 @@ class FederalReserveFederalFundsRateFetcher(
             + f"startDate={query.start_date}&endDate={query.end_date}"
         )
         results: List[Dict] = []
-        response = await amake_request(url, **kwargs)
-        if response.get("refRates"):
-            results = response["refRates"]
+        response = await amake_request(url, **kwargs)  # type: ignore
+        if response.get("refRates"):  # type: ignore
+            results = response["refRates"]  # type: ignore
         if not results:
             raise EmptyDataError()
         return results

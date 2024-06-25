@@ -85,11 +85,11 @@ class FredHighQualityMarketCorporateBondFetcher(
         if query.date:
             if query.date and isinstance(query.date, dateType):
                 query.date = query.date.strftime("%Y-%m-%d")
-            dates = query.date.split(",")
+            dates = query.date.split(",")  # type: ignore
             dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
             dates = list(set(dates))
             dates = (
-                [f"&observation_date={date}" for date in dates if date] if dates else ""
+                [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
             )
         URLS = [
             f"https://api.stlouisfed.org/fred/release/tables?release_id=402&element_id={element_id}"
@@ -103,7 +103,7 @@ class FredHighQualityMarketCorporateBondFetcher(
             """Get the observations for a single date."""
             data = await amake_request(URL)
             if data:
-                elements = {k: v for k, v in data["elements"].items()}
+                elements = {k: v for k, v in data.get("elements", {}).items()}  # type: ignore
                 for k, v in elements.items():
                     value = v.get("observation_value")
                     if not value:

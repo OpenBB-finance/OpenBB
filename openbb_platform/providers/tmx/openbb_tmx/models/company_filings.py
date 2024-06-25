@@ -153,7 +153,7 @@ class TmxCompanyFilingsFetcher(
             if isinstance(data, str):
                 data = await try_again()
 
-            if data != [] and data["data"].get("filings") is not None:
+            if data and data.get("data", {}).get("filings"):
                 results.extend(data["data"]["filings"])
 
             return results

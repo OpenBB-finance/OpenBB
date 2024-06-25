@@ -15,6 +15,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from openbb_sec.utils.definitions import (
     FISCAL_PERIODS,
+    FISCAL_PERIODS_DICT,
     HEADERS,
     SHARES_FACTS,
     TAXONOMIES,

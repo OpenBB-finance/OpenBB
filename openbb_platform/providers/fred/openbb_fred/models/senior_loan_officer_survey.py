@@ -92,7 +92,7 @@ class FredSeniorLoanOfficerSurveyFetcher(
         query: FredSeniorLoanOfficerSurveyQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> Dict:
         """Extract data."""
         ids = SLOOS_CATEGORIES[query.category]
         try:

@@ -107,10 +107,10 @@ class IntrinioReportedFinancialsFetcher(
             """Return the response."""
             statement_data = await response.json()
             return {
-                "period_ending": statement_data["fundamental"]["end_date"],
-                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                "financials": statement_data["reported_financials"],
+                "period_ending": statement_data["fundamental"]["end_date"],  # type: ignore
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],  # type: ignore
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],  # type: ignore
+                "financials": statement_data["reported_financials"],  # type: ignore
             }
 
         urls = [

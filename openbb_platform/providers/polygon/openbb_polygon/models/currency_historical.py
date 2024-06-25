@@ -125,8 +125,6 @@ class PolygonCurrencyHistoricalFetcher(
         """Return the raw data from the polygon endpoint."""
         # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import (
-            ClientResponse,
-            ClientSession,
             amake_requests,
             safe_fromtimestamp,
         )
@@ -145,25 +143,22 @@ class PolygonCurrencyHistoricalFetcher(
         ]
         results: List = []
 
-        async def callback(
-            response: ClientResponse,
-            session: ClientSession,
-        ) -> List[Dict]:
+        async def callback(response, session):
             """Return the data from the response."""
             data = await response.json()
 
             symbol = response.url.parts[4]
-            next_url = data.get("next_url", None)  # type: ignore[union-attr]
-            results.extend(data.get("results", []))  # type: ignore[union-attr]
+            next_url = data.get("next_url", None)  # type: ignore
+            results.extend(data.get("results", []))  # type: ignore
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
                 data = await session.get_json(url)
-                results.extend(data.get("results", []))  # type: ignore[union-attr]
-                next_url = data.get("next_url", None)  # type: ignore[union-attr]
+                results.extend(data.get("results", []))  # type: ignore
+                next_url = data.get("next_url", None)  # type: ignore
 
             for r in results:
                 v = r.get("t") / 1000  # milliseconds to seconds
-                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
+                r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:

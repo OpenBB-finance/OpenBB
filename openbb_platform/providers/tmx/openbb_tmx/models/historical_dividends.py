@@ -92,9 +92,9 @@ class TmxHistoricalDividendsFetcher(
             timeout=5,
         )
         try:
-            if "data" in response and "dividends" in response["data"]:
-                data = response["data"].get("dividends")
-                data = sorted(data["dividends"], key=lambda d: d["exDate"])
+            if response.get("data", {}).get("dividends"):  # type: ignore
+                data = response["data"]["dividends"]  # type: ignore
+                data = sorted(data["dividends"], key=lambda d: d["exDate"])  # type: ignore
 
         except Exception as e:
             raise RuntimeError(e) from e

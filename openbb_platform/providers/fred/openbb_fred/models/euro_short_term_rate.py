@@ -179,7 +179,7 @@ class FredEuroShortTermRateFetcher(
         query: FredEuroShortTermRateQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[List[FredEuroShortTermRateData]]:
+    ) -> AnnotatedResult[List[FredEuroShortTermRateData]]:
         """Transform data"""
         if not data:
             raise EmptyDataError("The request was returned empty.")
