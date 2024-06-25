@@ -97,7 +97,7 @@ def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True):
         method="POST",
         headers=req_hdr,
         json=req_data,
-        timeout=2,
+        timeout=20,
     )
     return response
 
