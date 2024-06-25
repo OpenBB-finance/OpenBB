@@ -579,9 +579,7 @@ class FredBondIndicesFetcher(
 
         titles_dict = {  # type: ignore
             symbol: data["metadata"][symbol].get("title")
-            for symbol in query._symbols.split(  # pylint: disable=protected-access
-                ","
-            )
+            for symbol in query._symbols.split(",")  # pylint: disable=protected-access
         }
         df["title"] = df.symbol.map(titles_dict)
 
