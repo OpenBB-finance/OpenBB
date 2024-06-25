@@ -44,11 +44,11 @@ class GovernmentUSTreasuryPricesFetcher(
         # pylint: disable=import-outside-toplevel
         from datetime import date, timedelta
 
-        yesterday = date.today() - timedelta(days=1)
+        today = date.today()
         last_bd = (
-            yesterday - timedelta(yesterday.weekday() - 4)
-            if yesterday.weekday() > 4
-            else yesterday
+            today - timedelta(today.weekday() - 4)
+            if today.weekday() > 4
+            else today
         )
         if params.get("date") is None:
             params["date"] = last_bd
@@ -85,7 +85,7 @@ class GovernmentUSTreasuryPricesFetcher(
             "&csv=CSV+FORMAT"
         )
 
-        r = make_request(url=url, headers=HEADERS, data=payload)
+        r = make_request(url=url, method="POST", headers=HEADERS, data=payload)
 
         if r.status_code != 200:
             raise OpenBBError("Error with the request: " + str(r.status_code))
