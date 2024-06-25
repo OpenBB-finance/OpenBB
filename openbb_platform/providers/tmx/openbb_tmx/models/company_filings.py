@@ -153,8 +153,8 @@ class TmxCompanyFilingsFetcher(
             if isinstance(data, str):
                 data = await try_again()
 
-            if data and data.get("data", {}).get("filings"):
-                results.extend(data["data"]["filings"])
+            if data and data.get("data", {}).get("filings"):  # type: ignore
+                results.extend(data["data"]["filings"])  # type: ignore
 
             return results
 
