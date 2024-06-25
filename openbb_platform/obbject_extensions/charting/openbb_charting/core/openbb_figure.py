@@ -281,7 +281,7 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             raise ValueError(f"Error adding trend line: {e}") from e
 
-    def add_histplot(  # pylint: disable=too-many-arguments
+    def add_histplot(  # pylint: disable=too-many-arguments,too-many-locals
         self,
         dataset: Union["ndarray", "Series", TimeSeriesT],
         name: Optional[Union[str, List[str]]] = None,

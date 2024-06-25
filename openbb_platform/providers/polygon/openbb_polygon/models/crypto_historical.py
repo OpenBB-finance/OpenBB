@@ -166,7 +166,11 @@ class PolygonCryptoHistoricalFetcher(
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
                 r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore[arg-type]
-                if query._timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in [  # pylint: disable=protected-access
+                    "second",
+                    "minute",
+                    "hour",
+                ]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")

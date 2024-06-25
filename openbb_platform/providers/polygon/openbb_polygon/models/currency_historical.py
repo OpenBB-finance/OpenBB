@@ -170,7 +170,7 @@ class PolygonCurrencyHistoricalFetcher(
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
-            if results == []:
+            if not results:
                 warn(f"Symbol Error: No data found for {symbol.replace('C:', '')}")
 
         await amake_requests(urls=urls, response_callback=callback, **kwargs)

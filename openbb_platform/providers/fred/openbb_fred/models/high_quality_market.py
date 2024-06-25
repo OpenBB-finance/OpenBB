@@ -104,7 +104,7 @@ class FredHighQualityMarketCorporateBondFetcher(
             data = await amake_request(URL)
             if data:
                 elements = dict(data.get("elements", {}).items())  # type: ignore
-                for k, v in elements.items():
+                for k, v in elements.items():  # pylint: disable=W0612
                     value = v.get("observation_value")
                     if not value:
                         continue
