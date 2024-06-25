@@ -69,9 +69,10 @@ class YFAggressiveSmallCapsFetcher(
     ) -> "DataFrame":
         """Get data from YF."""
         # pylint: disable=import-outside-toplevel
+        import io  # noqa
         import re  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
         from pandas import read_html  # noqa
-        from openbb_core.provider.utils.helpers import make_request
 
         headers = {"user_agent": "Mozilla/5.0"}
         html = make_request(
@@ -79,7 +80,9 @@ class YFAggressiveSmallCapsFetcher(
             headers=headers,
         ).text
         html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
+        df = read_html(io.StringIO(html_clean), header=None)[0].dropna(
+            how="all", axis=1
+        )
         return df
 
     @staticmethod
@@ -96,6 +99,8 @@ class YFAggressiveSmallCapsFetcher(
 
         data = df_transform_numbers(data=data, columns=columns)
         data = data.fillna("N/A").replace("N/A", None)
+        data["Name"] = data["Name"].fillna(data["Symbol"])
+
         return [
             YFAggressiveSmallCapsData.model_validate(d) for d in data.to_dict("records")
         ]

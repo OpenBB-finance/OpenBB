@@ -5,57 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
-      Connection:
-      - keep-alive
-      Cookie:
-      - MOCK_COOKIE
-    method: GET
-    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
-  response:
-    body:
-      string: tuS.2KHdl7o
-    headers:
-      Age:
-      - '0'
-      Connection:
-      - keep-alive
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Referrer-Policy:
-      - no-referrer-when-downgrade
-      Strict-Transport-Security:
-      - max-age=31536000
-      Transfer-Encoding:
-      - chunked
-      X-Content-Type-Options:
-      - nosniff
-      X-XSS-Protection:
-      - 1; mode=block
-      cache-control:
-      - private
-      content-type:
-      - text/plain;charset=utf-8
-      date:
-      - Sat, 20 Jan 2024 19:38:28 GMT
-      server:
-      - ATS
-      x-envoy-decorator-operation:
-      - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
-      x-envoy-upstream-service-time:
-      - '1'
-      x-frame-options:
-      - SAMEORIGIN
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       Cookie:
@@ -64,64 +14,44 @@ interactions:
     uri: https://query2.finance.yahoo.com/v10/finance/quoteSummary/AAPL?corsDomain=finance.yahoo.com&crumb=MOCK_CRUMB&formatted=false&modules=financialData%2CquoteType%2CdefaultKeyStatistics%2CassetProfile%2CsummaryDetail&symbol=AAPL
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAM1Z33PbNhL+VzB8uHuorPK3SOfJsewmTRy7lptM7uamA5GQhDFJqABoRc3kf79v
-        QVK/nHR693CXPqQmdrFcfNj9dpf67P3eKitmbV1zvfXOP3tamLay3vk/P3vcGGHvtFrISpCIlyWk
-        JvDOvdtGsIv1uhLsjutH9oFvvZFXSAsT3mW7FtrKRmHJWG4FrV3g4Q+5xp954gcxaau2sfRO79dG
-        WlGyGekaSNYr1dCm2M9Ynqcs8AMfyxsxN9JZW1m7Nuc//rjZbMacvBgXqoaGbMrWdDYvVWPaWmh2
-        VYnCatXIwhxovBGkVPRKZ+KrSlNp1t82ZfCgNOQPolg1qlLL7W61M2+fC3qTR1sq1SxftkY2wHZ3
-        EV6H7uumGLNSGLlszIjVvGkXvLAtrmHEeFNiRT8Ka5jBH9bhBgHgN6rhFQMq69biacQsn1dQHLGN
-        4Jr+7g3wosBrlZbCsI3SVbmRpRizh5Vwu3mzZWqxgAkm78g8drEKrmL18KUv2A0vDmXPfXgBC7w8
-        1KkRaPJs3eq1MmLw8IVz68DLlarFc1/JrJYAbckupL5TJTQ7yB7eD3994LZYjdhLwYHQWquyLWx/
-        7Fcwik1j9toyXhlF4iec3HRbL7kWzLTrtdLW6ReVaktmhH6Sheh9VDgjRSx74lqqFq+ouF0oXeMd
-        simqtiTv7MplCqJbwaZdcXphpTasQIzBCyBrFSulKdQTYowMl2rTVIrjwPBFFtxKRGAnkUtpHaiN
-        FY0dwcdixbhhc6UeKUAQRrgGOokasSWvh2teq7LgxhocuGHIY0k2R865k2seDjOcdf+ODtQLXfDS
-        hQGZh3BuCi3XZG/Y86JXvZaWYvoHUh7iQf6BTF90glP9m877zUrihb07raF/OdAirEvEjsHJCVjx
-        CTalaArBNtJiQ3NWipoOq3kpFSPqIeAG6+/EpnPlyOUGq30mLfkfFJgnTj28/+HEJfEJd2vkE2JY
-        4z6a/X0MexA+LtALdTbXMA6/Cy0AOisg6aJnYM+tU+RmVREia76tYWhwYkS4b0RV0f8RCqIxiDeJ
-        cJZ4YUV81OL1CF6i3O1x3pINlykdffWRgKQlc3RiWZ4Zdx/znn2GyKawEMgW3kUJHBKasq3PwyVF
-        auP87PnH5RFi2Go5bykl7Erq8mwNftgeRzHyw/k/pCM0tWqXq+M8OT6IS1CD45qvb6VFLSyX3blU
-        4wjGkKH+0KXUgIoZDpDJBbre7qB7Nwu8oK24RkhYMOEj3RXii3DbrBQ2YjM9dG/a4Yl30EVoYHBA
-        2RtO72nd1cuGBfkkddrSsJXg5e8tXil0J9zVyxECp5Jwr5F8jMKwaKvqQdbiql5XaitQG8+DNPB9
-        n4qng+Z2sUBQaOPKdc0/XSxRHoOR1yA1UUNuNICUtbKrLZuO2SVIAmY5KaXhyLPSVq44X92yv7Gp
-        wwgVbeRtwb4v4QZs5SnMLcBOvPqIVe889MMIWxVoCMHrOga+IcfCKE/I6qJG9+AF6TiMb/rqdt0v
-        jaAzgpL3ZeSJT0IXCKnyPa9asbPj9wYanP1ws0972uY/3/Vl9C1k3iLAGeqWoLDd4eIf4HJNuMxA
-        Nwja93enwER/CZg4DcIw3uESj9PgGJZ4BI0RVL4PVH4Wi4UWW3Y1Zh9kVUlemwGbJD/AZiXFgt26
-        Ekhs3EfiKUbxX8QomiRZcoBR/AyjaDKCyneAERL9DQdbaSKZt8j68hsQ7QJnxH4SDYCqkIEtGLxy
-        UVUQkejtf4tYkPlOd0AsfB5V2Qgq3wdiUwGiRf/Dbv/+kor2Dq/0OV6II3YHWkUTgwqDPvHeMe4p
-        UJO/ClQUpfmfp180gsp3ABTS73KFOsvYG9WUND+dYDNwNKFyqdA3U1PELgo3SyENva9h8v8/1M/U
-        iDLiE/SA3imJ7IehAxb53o4xa1ccTZJkuCEUcs1r1Vby4CyHV/O6QeNFf9+Lqut7vsMT0cX8pMWS
-        sZ+V2Uj++Dzcnqfih2FERN2kzu/7jbmLUkveMHYHoi74wDfxAT+/QiN2nEhT8SQqtabO9oRtJl+l
-        5f/ZKf8F9zFO2ntpHnGIkTdXGCS6p6DrBjEauFDrFkGrZoUh9pWqSqHv5XJlzU6d2ncMAbvnrp/n
-        mKSu1qpYTd0nm2Dix346CYduc7B/YW4Xx2pRnvkZqQ0XkaWx7+OopvuYMe3o+/zopjBOFOIVphhg
-        SU/iiabOy0oZkmfZmNorTDWEfpaPIzyVfPtWbTppFrrnVzgYXU8wztE9IJipge8i8+7rJo90bo/s
-        H4mmJy87FR6/uZQ0cjflvcPEH+fpfu2jFFVJi76fUMhM+/UevzTPk0kcE34Y/lRr7wlm0g+SyLWY
-        T4Ji7uJpOT21mCEQAC6sjEMKbA2ckZF3V955hKU4T3JqPJXeIFpoNUzHkyDNJnDkSVUtJUuaTNIg
-        R3d1fMT3z8ScomYpBkESR9kk8uMTQeDjWgwVdj8Kw8zfiafwbTvoTKlC71XmsuywpD6Zu6jEQzhx
-        khlGVO88J4Ag6p76cCNHL/ka58KYkmXAMg79jDBb2O3DRn0Q4rG7xWgyzo/XhwvMx2nYh+ODmtGA
-        +NDDGIQ3GOtXOMxkPAknaRj2FuD9RXeoLngyn4apjXqFeQ8z3bE4oHukGBlu56JpMLNPTyMm/pbG
-        QfzEeRZFvo+oKFqtRVO4r6ezKVGwVvXlbrHjEKtOVypubHe/w0qhZHMzAPlWNo+DgFdLpaVd1Ttr
-        mpeCvsl55wtM5AIJXooFbyv7Rmzp2y3Gf/oy+md5vv+S0HMfAihIU5Bpnk2+Gapr+gRNfi8lKimQ
-        CJPIT/KcbrpS3M6I6Wg4TpIIORPm6Hw7+jO3rTUW9ZrqFOToBhFIYbaTz1ZKw7XAz8LQD5LJ0fqd
-        RhF0MQCNwE+TKEareKzRkYxT2hFiEPmhS+gSK07vNZ0bLUHHl44u/cEQClQBXGaDv91VgxboPzi6
-        wvX3Oq8bqsTaRWTo5JOrs/hUBfWt7ZoOWEJeEDUY8qJnlnDsp/1Kv+l2cU04nr75kFtkva6kKGdf
-        QzVJwglcieFJgRMjbnYBR98lh6seQ2eXaS/pW8R5jLQMkzym0Q/Jc81rkMQuWMWSVw/btTiM3utd
-        Eb5qSkefxCIOThTWZ2LK26Rj11oZey/ouL90X1+Od2MLfVY0vbDa/qTVhm4eREyc0ghgi0II3y9V
-        XaOPPc+Ju7EZFvbJe7UG7umYAqWPZrcyGQd0eLHsLwGDSNqdaAZg7TXvf0yIzwPvYL2PqSTPssHP
-        XQo9qHv0Kw1hCxij9Fh2NZe2xPWFMd4MfJOQWI+a16UjnCiZJGEIwQwXeXcqDamqu66HXBmoqL9J
-        iE8Ep7UM3OB+V+pu7zOqXtGb9t7dzLwjqXf1y6+vHz7STyTbeq4q+u3j4u6tR61SSRcBUGcnEhe8
-        77pmb//VrZ/rvra+kNrYB2IwctX1L7/aAkEZJ/Ekd/FhZS3+oRpxjVgbTNSuefzxndj89lHprkPu
-        tGYHHlzNHsjblqqYl80DX8RcnOVCzM+iNIvP8jDgZzmfhxMRl9mEUzeKgcigQrykPu417VvIpp7/
-        hpodTSBe1kjKxUzYG/oGY0SBeRBRdBYQc/iHzVbwhU5H3ZtEzeCUsZ+PO7GhWhCfFaKrrW7uBqEK
-        S3WwF4QJ8n9YR90c9JN8v3wjeDOo+/7heilPJRiIkCkID9c40k4in+BU0P1YNm/pU0jT1nOhbxcX
-        Da+2Bg0aRi7HZFHeD/eX3CApU7BODJYKqdParYPOHEE5skmQtKJPgiBMMkqf0DUsTn8q5kTHqDyo
-        qH4QU47/3sricdd/ZfGu0O6bspxqhzOwS74IqZmBB0KQPtXEuUX2wRT9GEr9RUzlSHfaew+RlxEx
-        pha21c0t+mojbFfd/BCtkR/sZTtrKInUSiy0EHReVD80N1kYTKgUpISFGr7I7eUoXWjWQFNpnO15
-        7oDeomTn37B6RpUAhLXUypiDyhujAgY+9TsdtAcigEAd286BQxFKYvzndXyI4MvjxsaNPkJr4kYq
-        Al++/BuKRBv1sh4AAA==
+      string: '{"quoteSummary":{"result":[{"assetProfile":{"address1":"One Apple Park
+        Way","city":"Cupertino","state":"CA","zip":"95014","country":"United States","phone":"408
+        996 1010","website":"https://www.apple.com","industry":"Consumer Electronics","industryKey":"consumer-electronics","industryDisp":"Consumer
+        Electronics","sector":"Technology","sectorKey":"technology","sectorDisp":"Technology","longBusinessSummary":"Apple
+        Inc. designs, manufactures, and markets smartphones, personal computers, tablets,
+        wearables, and accessories worldwide. The company offers iPhone, a line of
+        smartphones; Mac, a line of personal computers; iPad, a line of multi-purpose
+        tablets; and wearables, home, and accessories comprising AirPods, Apple TV,
+        Apple Watch, Beats products, and HomePod. It also provides AppleCare support
+        and cloud services; and operates various platforms, including the App Store
+        that allow customers to discover and download applications and digital content,
+        such as books, music, video, games, and podcasts. In addition, the company
+        offers various services, such as Apple Arcade, a game subscription service;
+        Apple Fitness+, a personalized fitness service; Apple Music, which offers
+        users a curated listening experience with on-demand radio stations; Apple
+        News+, a subscription news and magazine service; Apple TV+, which offers exclusive
+        original content; Apple Card, a co-branded credit card; and Apple Pay, a cashless
+        payment service, as well as licenses its intellectual property. The company
+        serves consumers, and small and mid-sized businesses; and the education, enterprise,
+        and government markets. It distributes third-party applications for its products
+        through the App Store. The company also sells its products through its retail
+        and online stores, and direct sales force; and third-party cellular network
+        carriers, wholesalers, retailers, and resellers. Apple Inc. was founded in
+        1976 and is headquartered in Cupertino, California.","fullTimeEmployees":150000,"companyOfficers":[{"maxAge":1,"name":"Mr.
+        Timothy D. Cook","age":62,"title":"CEO & Director","yearBorn":1961,"fiscalYear":2023,"totalPay":{"raw":16239562,"fmt":"16.24M","longFmt":"16,239,562"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Luca  Maestri","age":60,"title":"CFO & Senior VP","yearBorn":1963,"fiscalYear":2023,"totalPay":{"raw":4612242,"fmt":"4.61M","longFmt":"4,612,242"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Jeffrey E. Williams","age":59,"title":"Chief Operating Officer","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4637585,"fmt":"4.64M","longFmt":"4,637,585"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Katherine L. Adams","age":59,"title":"Senior VP, General Counsel & Secretary","yearBorn":1964,"fiscalYear":2023,"totalPay":{"raw":4618064,"fmt":"4.62M","longFmt":"4,618,064"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Ms.
+        Deirdre  O''Brien","age":56,"title":"Senior Vice President of Retail","yearBorn":1967,"fiscalYear":2023,"totalPay":{"raw":4613369,"fmt":"4.61M","longFmt":"4,613,369"},"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Chris  Kondo","title":"Senior Director of Corporate Accounting","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        James  Wilson","title":"Chief Technology Officer","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Suhasini  Chandramouli","title":"Director
+        of Investor Relations","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Greg  Joswiak","title":"Senior Vice President of Worldwide Marketing","fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}},{"maxAge":1,"name":"Mr.
+        Adrian  Perica","age":49,"title":"Head of Corporate Development","yearBorn":1974,"fiscalYear":2023,"exercisedValue":{"raw":0,"fmt":null,"longFmt":"0"},"unexercisedValue":{"raw":0,"fmt":null,"longFmt":"0"}}],"auditRisk":6,"boardRisk":1,"compensationRisk":2,"shareHolderRightsRisk":1,"overallRisk":1,"governanceEpochDate":1717200000,"compensationAsOfEpochDate":1703980800,"irWebsite":"http://investor.apple.com/","maxAge":86400},"summaryDetail":{"maxAge":1,"priceHint":2,"previousClose":207.49,"open":207.72,"dayLow":206.59,"dayHigh":212.7,"regularMarketPreviousClose":207.49,"regularMarketOpen":207.72,"regularMarketDayLow":206.59,"regularMarketDayHigh":212.7,"dividendRate":1.0,"dividendYield":0.0047999998,"exDividendDate":1715299200,"payoutRatio":0.14930001,"fiveYearAvgDividendYield":0.71,"beta":1.25,"trailingPE":32.319874,"forwardPE":30.608822,"volume":78306092,"regularMarketVolume":78306092,"averageVolume":68294093,"averageVolume10days":122265030,"averageDailyVolume10Day":122265030,"bid":208.25,"ask":208.34,"bidSize":100,"askSize":100,"marketCap":3191639638016,"fiftyTwoWeekLow":164.08,"fiftyTwoWeekHigh":220.2,"priceToSalesTrailing12Months":8.363331,"fiftyDayAverage":187.4738,"twoHundredDayAverage":183.01765,"trailingAnnualDividendRate":0.96,"trailingAnnualDividendYield":0.0046267286,"currency":"USD","fromCurrency":null,"toCurrency":null,"lastMarket":null,"coinMarketCapLink":null,"algorithm":null,"tradeable":false},"defaultKeyStatistics":{"maxAge":1,"priceHint":2,"enterpriseValue":3229075898368,"forwardPE":30.608822,"profitMargins":0.26306,"floatShares":15308474083,"sharesOutstanding":15334099968,"sharesShort":99287450,"sharesShortPriorMonth":101912593,"sharesShortPreviousMonthDate":1713139200,"dateShortInterest":1715731200,"sharesPercentSharesOut":0.0064999997,"heldPercentInsiders":0.052199997,"heldPercentInstitutions":0.57606,"shortRatio":1.53,"shortPercentOfFloat":0.0064999997,"beta":1.25,"impliedSharesOutstanding":15680199680,"category":null,"bookValue":4.837,"priceToBook":43.030804,"fundFamily":null,"legalType":null,"lastFiscalYearEnd":1696032000,"nextFiscalYearEnd":1727654400,"mostRecentQuarter":1711756800,"earningsQuarterlyGrowth":-0.022,"netIncomeToCommon":100389003264,"trailingEps":6.44,"forwardEps":6.8,"pegRatio":3.43,"lastSplitFactor":"4:1","lastSplitDate":1598832000,"enterpriseToRevenue":8.461,"enterpriseToEbitda":24.91,"52WeekChange":0.10677445,"SandP52WeekChange":0.24425757},"quoteType":{"exchange":"NMS","quoteType":"EQUITY","symbol":"AAPL","underlyingSymbol":"AAPL","shortName":"Apple
+        Inc.","longName":"Apple Inc.","firstTradeDateEpochUtc":345479400,"timeZoneFullName":"America/New_York","timeZoneShortName":"EDT","uuid":"8b10e4ae-9eeb-3684-921a-9ab27e4d87aa","messageBoardId":"finmb_24937","gmtOffSetMilliseconds":-14400000,"maxAge":1},"financialData":{"maxAge":86400,"currentPrice":208.14,"targetHighPrice":256.88,"targetLowPrice":153.19,"targetMeanPrice":195.04,"targetMedianPrice":196.16,"recommendationMean":2.0,"recommendationKey":"buy","numberOfAnalystOpinions":37,"totalCash":67150000128,"totalCashPerShare":4.379,"ebitda":129629003776,"totalDebt":104590000128,"quickRatio":0.875,"currentRatio":1.037,"totalRevenue":381623009280,"debtToEquity":140.968,"revenuePerShare":24.537,"returnOnAssets":0.22073999,"returnOnEquity":1.4725,"freeCashflow":84726874112,"operatingCashflow":110563000320,"earningsGrowth":0.007,"revenueGrowth":-0.043,"grossMargins":0.45586,"ebitdaMargins":0.33968,"operatingMargins":0.30743,"profitMargins":0.26306,"financialCurrency":"USD"}}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -139,11 +69,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '3034'
+      - '3052'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 20 Jan 2024 19:38:28 GMT
+      - Tue, 25 Jun 2024 02:13:49 GMT
       server:
       - ATS
       vary:
@@ -151,7 +81,9 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '4'
+      - '6'
+      y-rid:
+      - 7ttk5flj7k9uu
     status:
       code: 200
       message: OK
@@ -161,7 +93,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       Cookie:
@@ -170,10 +102,10 @@ interactions:
     uri: https://query1.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=trailingPegRatio
   response:
     body:
-      string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1705622400],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-01-19","periodType":"TTM","reportedValue":{"raw":2.3085,"fmt":"2.31"}}]}],"error":null}}'
+      string: '{"timeseries":{"result":[{"meta":{"symbol":["AAPL"],"type":["trailingPegRatio"]},"timestamp":[1717977600,1718928000],"trailingPegRatio":[{"dataId":14021,"asOfDate":"2024-06-10","periodType":"TTM","reportedValue":{"raw":2.0439,"fmt":"2.04"}},{"dataId":14021,"asOfDate":"2024-06-21","periodType":"TTM","reportedValue":{"raw":2.1985,"fmt":"2.20"}}]}],"error":null}}'
     headers:
       Age:
-      - '0'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -189,11 +121,11 @@ interactions:
       cache-control:
       - public, max-age=60, stale-while-revalidate=30
       content-length:
-      - '247'
+      - '362'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sat, 20 Jan 2024 19:38:28 GMT
+      - Tue, 25 Jun 2024 02:13:49 GMT
       server:
       - ATS
       vary:
@@ -202,6 +134,8 @@ interactions:
       - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '2'
+      y-rid:
+      - 2t911bdj7k9uu
     status:
       code: 200
       message: OK

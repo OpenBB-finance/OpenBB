@@ -8,535 +8,1383 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Cookie:
+      - MOCK_COOKIE
     method: GET
-    uri: https://finviz.com/screener.ashx?ft=4&t=AAPL&v=141
+    uri: https://finviz.com/screener.ashx?o=ticker&t=AAPL&v=141
   response:
     body:
-      string: !!binary |
-        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
-        +HcUjN3e/wMAAP//4wIAZA/SU4Q8AwA=
+      string: "<!DOCTYPE html>\n<html lang=\"en\" class=\" dark\">\n<head>\n<title>Stock
+        Screener - Performance AAPL ticker</title>\n<meta charset=\"UTF-8\"><meta
+        name=\"viewport\" content=\"width=1024\"><meta name=\"description\" content=\"Stock
+        screener for investors and traders, financial visualizations.\">\n<meta name=\"robots\"
+        content=\"noindex\">\n\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-regular.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-700.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/lato-v17-latin-ext_latin-900.woff2\"
+        as=\"font\" crossorigin>\r\n            <link rel=\"preload\" href=\"/fonts/inter-latin.woff2\"
+        as=\"font\" crossorigin>\r\n        \r\n            <script>\r\n                window.notificationsArray
+        = [];\r\n                window.renderScriptNotLoaded = function () {};\r\n
+        \               window.handleScriptNotLoaded = function (element) {\r\n                    window.notificationsArray.push(element);\r\n
+        \                   window.sentryDisabled = true;\r\n                    window.handleScriptNotLoaded
+        = function () {};\r\n                };\r\n            </script>\r\n        <link
+        rel=\"stylesheet\" href=\"/assets/dist-legacy/redesign.434ddfac.css\" type=\"text/css\"
+        onerror=\"window.handleScriptNotLoaded(this)\">\n<link rel=\"stylesheet\"
+        href=\"/assets/dist-legacy/main.a7b34d07.css\" type=\"text/css\" onerror=\"window.handleScriptNotLoaded(this)\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon_2x.png\" sizes=\"32x32\">\n<link
+        rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"16x16\">\n  <script
+        type=\"text/javascript\" async=true>\r\n  (function() {\r\n    var host =
+        'finviz.com';\r\n    var element = document.createElement('script');\r\n    var
+        firstScript = document.getElementsByTagName('script')[0];\r\n    var url =
+        'https://cmp.inmobi.com'\r\n      .concat('/choice/', 'c2W8esUZ6Q8oA', '/',
+        host, '/choice.js?tag_version=V3');\r\n    var uspTries = 0;\r\n    var uspTriesLimit
+        = 3;\r\n    element.async = true;\r\n    element.type = 'text/javascript';\r\n
+        \   element.src = url;\r\n\r\n    firstScript.parentNode.insertBefore(element,
+        firstScript);\r\n\r\n    function makeStub() {\r\n      var TCF_LOCATOR_NAME
+        = '__tcfapiLocator';\r\n      var queue = [];\r\n      var win = window;\r\n
+        \     var cmpFrame;\r\n\r\n      function addFrame() {\r\n        var doc
+        = win.document;\r\n        var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);\r\n\r\n
+        \       if (!otherCMP) {\r\n          if (doc.body) {\r\n            var iframe
+        = doc.createElement('iframe');\r\n\r\n            iframe.style.cssText = 'display:none';\r\n
+        \           iframe.name = TCF_LOCATOR_NAME;\r\n            doc.body.appendChild(iframe);\r\n
+        \         } else {\r\n            setTimeout(addFrame, 5);\r\n          }\r\n
+        \       }\r\n        return !otherCMP;\r\n      }\r\n\r\n      function tcfAPIHandler()
+        {\r\n        var gdprApplies;\r\n        var args = arguments;\r\n\r\n        if
+        (!args.length) {\r\n          return queue;\r\n        } else if (args[0]
+        === 'setGdprApplies') {\r\n          if (\r\n            args.length > 3 &&\r\n
+        \           args[2] === 2 &&\r\n            typeof args[3] === 'boolean'\r\n
+        \         ) {\r\n            gdprApplies = args[3];\r\n            if (typeof
+        args[2] === 'function') {\r\n              args[2]('set', true);\r\n            }\r\n
+        \         }\r\n        } else if (args[0] === 'ping') {\r\n          var retr
+        = {\r\n            gdprApplies: gdprApplies,\r\n            cmpLoaded: false,\r\n
+        \           cmpStatus: 'stub'\r\n          };\r\n\r\n          if (typeof
+        args[2] === 'function') {\r\n            args[2](retr);\r\n          }\r\n
+        \       } else {\r\n          if(args[0] === 'init' && typeof args[3] ===
+        'object') {\r\n            args[3] = Object.assign(args[3], { tag_version:
+        'V3' });\r\n          }\r\n          queue.push(args);\r\n        }\r\n      }\r\n\r\n
+        \     function postMessageEventHandler(event) {\r\n        var msgIsString
+        = typeof event.data === 'string';\r\n        var json = {};\r\n\r\n        try
+        {\r\n          if (msgIsString) {\r\n            json = JSON.parse(event.data);\r\n
+        \         } else {\r\n            json = event.data;\r\n          }\r\n        }
+        catch (ignore) {}\r\n\r\n        var payload = json.__tcfapiCall;\r\n\r\n
+        \       if (payload) {\r\n          window.__tcfapi(\r\n            payload.command,\r\n
+        \           payload.version,\r\n            function(retValue, success) {\r\n
+        \             var returnMsg = {\r\n                __tcfapiReturn: {\r\n                  returnValue:
+        retValue,\r\n                  success: success,\r\n                  callId:
+        payload.callId\r\n                }\r\n              };\r\n              if
+        (msgIsString) {\r\n                returnMsg = JSON.stringify(returnMsg);\r\n
+        \             }\r\n              if (event && event.source && event.source.postMessage)
+        {\r\n                event.source.postMessage(returnMsg, '*');\r\n              }\r\n
+        \           },\r\n            payload.parameter\r\n          );\r\n        }\r\n
+        \     }\r\n\r\n      while (win) {\r\n        try {\r\n          if (win.frames[TCF_LOCATOR_NAME])
+        {\r\n            cmpFrame = win;\r\n            break;\r\n          }\r\n
+        \       } catch (ignore) {}\r\n\r\n        if (win === window.top) {\r\n          break;\r\n
+        \       }\r\n        win = win.parent;\r\n      }\r\n      if (!cmpFrame)
+        {\r\n        addFrame();\r\n        win.__tcfapi = tcfAPIHandler;\r\n        win.addEventListener('message',
+        postMessageEventHandler, false);\r\n      }\r\n    };\r\n\r\n    makeStub();\r\n\r\n
+        \   var uspStubFunction = function() {\r\n      var arg = arguments;\r\n      if
+        (typeof window.__uspapi !== uspStubFunction) {\r\n        setTimeout(function()
+        {\r\n          if (typeof window.__uspapi !== 'undefined') {\r\n            window.__uspapi.apply(window.__uspapi,
+        arg);\r\n          }\r\n        }, 500);\r\n      }\r\n    };\r\n\r\n    var
+        checkIfUspIsReady = function() {\r\n      uspTries++;\r\n      if (window.__uspapi
+        === uspStubFunction && uspTries < uspTriesLimit) {\r\n        console.warn('USP
+        is not accessible');\r\n      } else {\r\n        clearInterval(uspInterval);\r\n
+        \     }\r\n    };\r\n\r\n    if (typeof window.__uspapi === 'undefined') {\r\n
+        \     window.__uspapi = uspStubFunction;\r\n      var uspInterval = setInterval(checkIfUspIsReady,
+        6000);\r\n    }\r\n  })();\r\n  </script><script>\r\n            FinvizSettings
+        = {\r\n                versionImages: 12,\r\n                hasUserPremium:
+        false,\r\n                name: \"\",\r\n                email: \"\",\r\n
+        \               nodeChartsDomain: \"https://charts2-node.finviz.com\",\r\n
+        \               hasUserStickyHeader: true,\r\n                adsProvider:
+        1,\r\n                hasRedesignEnabled: true,\r\n                hasDarkTheme:
+        true,\r\n                quoteSearchExt: '',\r\n                isJoinBannerVisible:
+        false,\r\n            };\r\n        </script><script src=\"/assets/dist-legacy/script/browser_check.0d635eab.js\"></script><script
+        src=\"/assets/dist-legacy/script/vendor/boxover.94c8d909.js\"></script>\n<script
+        src=\"/assets/dist-legacy/runtime.c6d22a12.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/libs_init.6c24f8e6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4448.4d6ce3b6.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7808.bfd72543.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1556.75067b82.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/3988.202a9cce.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7603.96a170ed.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/1756.6bddc02b.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/header.8fcd949e.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        type=\"text/javascript\">\r\n            var portfolioRowsLimit=50;\r\n            function
+        ScreenerSelectOnChange() {}\r\n            FinvizSettings.screenerCurrentTimeframe
+        = {timeframe: \"d\", dateRange: null}\r\n\r\n            function trackPagination(source)
+        {\r\n                window.gtag && window.gtag('event', 'click', {\r\n                    event_category:
+        'pagination',\r\n                    event_label: source });\r\n            }\r\n\r\n
+        \           function handleETFCheckboxClick(input) {\r\n                fetch('/api/set_cookie.ashx?cookie=disabledETFFiltersAll&value='
+        + !input.checked )\r\n                    .catch(function(){})\r\n                    .then(function(){
+        location.reload() })\r\n            }\r\n        </script><script src=\"/assets/dist-legacy/script/screener.f0145935.js\"
+        type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script>\n<script>FinvizSettings.defaultPeriod
+        = 'd'</script>\n<script src=\"/assets/dist-legacy/script/screener_free.df6cee49.js\"
+        type=\"text/javascript\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/8460.5e045e55.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/4064.55437d8e.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/5061.779fe29d.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/2112.f66fba07.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/7704.28c17449.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script><script
+        src=\"/assets/dist-legacy/screener.fa52bdcf.js\" onerror=\"window.handleScriptNotLoaded(this)\"></script></head>\n\r\n
+        \         <script>\r\n            const channelIdToLabel = {\r\n                '1':
+        'MarketWatch',\r\n                '2': 'WSJ',\r\n                '3': 'Reuters',\r\n
+        \               '4': 'Yahoo Finance',\r\n                '5': 'CNN',\r\n                '6':
+        'The New York Times',\r\n                '7': 'Bloomberg',\r\n                '9':
+        'BBC',\r\n                '10': 'CNBC',\r\n                '11': 'Fox Business',\r\n
+        \               '102': 'Mish\\'s Global Economic Trend Analysis',\r\n                '105':
+        'Trader Feed',\r\n                '113': 'Howard Lindzon',\r\n                '114':
+        'Seeking Alpha',\r\n                '123': 'Fallond Stock Picks',\r\n                '132':
+        'Zero Hedge',\r\n                '133': 'market folly',\r\n                '136':
+        'Daily Reckoning',\r\n                '141': 'Abnormal Returns',\r\n                '142':
+        'Calculated Risk',\r\n            }\r\n            function trackAndOpenNews(event,
+        channel, url) {\r\n              event.preventDefault()\r\n              window.open(url,
+        '_blank')\r\n\r\n              let channelLabel\r\n              if (typeof
+        channel === 'string') {\r\n                channelLabel = channel\r\n              }
+        else {\r\n                const label = channelIdToLabel[channel]\r\n                channelLabel
+        = label !== undefined ? label : channel\r\n              }\r\n              window.gtag
+        && window.gtag('event', 'click', {\r\n                send_to: 'G-ZT9VQEWD4N',\r\n
+        \               non_interaction: true,\r\n                event_category:
+        'news',\r\n                event_label: channelLabel,\r\n                value:
+        1 });\r\n            }\r\n          </script>\r\n          <body class=\"m-0
+        yellow-tooltip is-screener chart-tooltip\">\r\n            <script>\r\n                var
+        cookieName = 'fv_block';\r\n                var selector = '[data-google-query-id]';\r\n
+        \               var selectorFrame = selector + ' iframe, ' + selector + '
+        [id*=aax]';\r\n                var cookieExpiry = 5 * 60 * 1000; // 5min\r\n
+        \               var checkTimeout = 20 * 1000; // 20sec\r\n\r\n                function
+        getCookie(value) {\r\n                    var expiration = +new Date() + cookieExpiry;\r\n
+        \                   return cookieName + '=' + value + '; expires=' + (new
+        Date(expiration)).toUTCString() + '; path=/';\r\n                }\r\n\r\n
+        \               var finvizBannersLoaded = false;\r\n                function
+        loadFinvizBanners(setCookie) {\r\n                    \r\n                    if
+        (setCookie) document.cookie = getCookie('block');\r\n                    finvizBannersLoaded
+        = true;\r\n                    var s = document.createElement('script');\r\n
+        \                   s.type = 'text/javascript';\r\n                    s.async
+        = true;\r\n                    s.src = '/assets/dist-legacy/script/finviz_b.cff16f1f.js';\r\n
+        \                   document.head.appendChild(s);\r\n                }\r\n\r\n
+        \               function checkBannersLoaded() {\r\n                    var
+        checkEnd = +new Date() + checkTimeout;\r\n                    function asyncCheckIfExists(selector,
+        resolve) {\r\n                        var now = +new Date();\r\n                        var
+        container = document.querySelector(selector);\r\n                        if
+        (!container && checkEnd > now) return setTimeout(function () { asyncCheckIfExists(selector,
+        resolve) }, 1000)\r\n                        resolve(!!container);\r\n                    }\r\n
+        \                   \r\n                    asyncCheckIfExists(selector, function
+        (exists) {\r\n                        if (!exists) return loadFinvizBanners(true);\r\n\r\n
+        \                       asyncCheckIfExists(selectorFrame, function (hasIframe)
+        {\r\n                            if (!hasIframe) return loadFinvizBanners(true);\r\n
+        \                       })\r\n                    })\r\n                }\r\n\r\n
+        \               if (document.cookie.indexOf(cookieName) >= 0) {\r\n                    loadFinvizBanners(false);\r\n
+        \               } else {\r\n                    var s = document.createElement('script');\r\n
+        \                   s.type = 'text/javascript';\r\n                    s.async
+        = true;\r\n                    s.onerror = loadFinvizBanners;\r\n                    s.onload
+        = checkBannersLoaded;\r\n                    s.src = 'https://u5.investingchannel.com/static/uat.js';\r\n
+        \                   document.head.appendChild(s);\r\n\r\n                    InvestingChannelQueue
+        = window.InvestingChannelQueue || [];\r\n                    var ic_page;\r\n\r\n
+        \                   function refreshAd(container, refreshes) { \r\n                        var
+        placementTag, adslot;\r\n                        window.InvestingChannelQueue.push(function
+        () {\r\n                            var pubTags = ic_page.getPubTag.call(ic_page,
+        container.id);\r\n                            if (!pubTags) return;\r\n                            var
+        pubTag = pubTags[0];\r\n                            placementTag = pubTag.mPlacements[0].mTagToRender;\r\n
+        \                           adslot = pubTag.mPlacements[0].mPublisherKval.adslot[0];\r\n
+        \                           // Update div ID\r\n                            var
+        id = container.id.split('_');\r\n                            var numberOfDivs
+        = document.querySelectorAll('[id*=' + id.slice(0, id.length - 1).join('_')
+        + ']').length;\r\n                            var newDivNumber = Number(id.pop())
+        + numberOfDivs * refreshes;\r\n                            container.setAttribute('id',
+        id.join('_') + '_' + newDivNumber);\r\n                            // Destroy
+        previous pubtag & reset container html (loading span)\r\n                            pubTag.destroy();\r\n
+        \                           container.innerHTML = '';\r\n                        });
+        \r\n                        window.InvestingChannelQueue.push(function ()
+        {\r\n                            if (!placementTag || !adslot) return\r\n
+        \                           // Create new pub tag\r\n                            var
+        newTag;\r\n                            var layoutId = placementTag.mNativeLayout
+        ? placementTag.mNativeLayout.nativelayoutid : null;\r\n                            if
+        (layoutId) {\r\n                                newTag = ic_page.defineNativeTag('finviz/'
+        + placementTag.mTarget.dfpkeyname, placementTag.mAdSize, container.id, layoutId);\r\n
+        \                               var nativeLayout, layoutData\r\n\r\n                                try
+        {\r\n                                  nativeLayout = newTag.mPlacements[0].mTags[0].mNativeLayout;\r\n
+        \                               } catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n\r\n                                try
+        {\r\n                                  layoutData = newTag.mTemplate.mNativeLayout[layoutId].Data\r\n
+        \                                 if (layoutData && nativeLayout && !nativeLayout.layout)
+        {\r\n                                    newTag.mPlacements[0].mTags[0].mNativeLayout
+        = layoutData\r\n                                  }\r\n                                }
+        catch (e) {\r\n                                    console.log(e.message)\r\n
+        \                               }\r\n                            } else {\r\n
+        \                               newTag = ic_page.defineTag('finviz/' + placementTag.mTarget.dfpkeyname,
+        placementTag.mAdSize, container.id);\r\n                            }\r\n
+        \                           // Set adslot param\r\n                            newTag.setKval({
+        adslot: adslot });\r\n                            newTag.setKval({ kw: 'ajax'
+        });\r\n                            newTag.render();\r\n                        });\r\n
+        \                   }\r\n\r\n                    var refreshCount = 1;\r\n
+        \                   function refreshAds(selectors) { \r\n                        if
+        (window.ic_page) {\r\n                            document.querySelectorAll(selectors).forEach(function
+        (element) {\r\n                                try {\r\n                                    refreshAd(element,
+        refreshCount);\r\n                                } catch (e) {\r\n                                    console.log('Ad
+        refresh error for:', element, e);\r\n                                }\r\n
+        \                           });\r\n                            window.ic_page.loadMore();\r\n
+        \                           refreshCount++;\r\n                        } \r\n
+        \                   }\r\n\r\n\r\n                    InvestingChannelQueue.push(function()
+        {\r\n                        var icConfig = window['FINVIZ_IC_UAT_CONFIG']
+        = {};\r\n                        icConfig['page_category'] = 'etf_screener';\r\n
+        \                       ic_page = InvestingChannel.UAT.Run('df0d0d52-cc7f-11e8-82a5-0abbb61c4a6a',
+        icConfig);\r\n                    });\r\n\r\n                    var hash
+        = null;\r\n                    if (typeof hash === 'string') {\r\n                      InvestingChannelQueue.push(function()
+        {\r\n                          if (ic_page) {\r\n                              ic_page.setUserId('email',
+        hash, true);\r\n                          }\r\n                      });\r\n
+        \                   }\r\n                }\r\n            </script>    <script>\r\n
+        \       function FinvizNewsletterHide() {\r\n            fetch('/api/set_cookie.ashx?cookie=notice-newsletter').catch(function(){}).then(function(){\r\n
+        \               window.gtag && window.gtag('event', 'close', { event_category:
+        'notice-newsletter', non_interaction: true })\r\n            })\r\n            document.getElementById('js-notice-newsletter').style.display
+        = 'none';\r\n        }\r\n\r\n        const emailRegex = /^((([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+(\\.([a-z]|\\d|[!#\\$%&'\\*\\+\\-\\/=\\?\\^_`{\\|}~]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])+)*)|((\\x22)((((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(([\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]|\\x21|[\\x23-\\x5b]|[\\x5d-\\x7e]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(\\\\([\\x01-\\x09\\x0b\\x0c\\x0d-\\x7f]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF]))))*(((\\x20|\\x09)*(\\x0d\\x0a))?(\\x20|\\x09)+)?(\\x22)))@((([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|\\d|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.)+(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])*([a-z]|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])))\\.?$/\r\n\r\n
+        \       function FinvizNewsletterSubmit(event) {\r\n            const emailValue
+        = event.target.elements[\"email\"].value\r\n            if (!emailRegex.test(emailValue))
+        {\r\n                event.preventDefault()\r\n                alert(\"Invalid
+        email address\")\r\n                return\r\n            }\r\n            window.gtag
+        && window.gtag('event', 'subscription', { event_category: 'notice-newsletter',
+        non_interaction: true })\r\n        }\r\n        window.gtag && window.gtag('event',
+        'impression', { event_category: 'notice-newsletter', non_interaction: true
+        })\r\n    </script>\r\n    <div id=\"js-notice-newsletter\" class=\"font-sans
+        relative isolate flex items-center justify-center gap-x-2 gap-y-2 overflow-hidden
+        bg-gray-50 px-6 py-2.5\">\r\n        <div class=\"absolute left-[max(-7rem,calc(50%-52rem))]
+        top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n
+        \           <div class=\"aspect-[577/310] w-[36.0625rem] bg-gradient-to-r
+        from-purple-500 to-blue-500 opacity-30\" style=\"clip-path: polygon(74.8%
+        41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%,
+        50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9%
+        54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n        <div
+        class=\"absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2
+        transform-gpu blur-2xl\" aria-hidden=\"true\">\r\n            <div class=\"aspect-[577/310]
+        w-[36.0625rem] bg-gradient-to-r from-blue-500 to-purple-500 opacity-30\" style=\"clip-path:
+        polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%,
+        58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9%
+        74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)\"></div>\r\n        </div>\r\n\r\n
+        \       <p class=\"text-sm leading-6 text-gray-900\">\r\n            Subscribe
+        to our newsletter to receive the latest product updates and special offers\r\n
+        \       </p>\r\n        <form action=\"/api/newsletter/widget\" method=\"post\"
+        onsubmit=\"FinvizNewsletterSubmit(event)\" class=\"relative w-[280px]\">\r\n
+        \           <div class=\"w-full\">\r\n                <label class=\"flex
+        grow flex-col\">\r\n                    <div class=\"group relative flex\">\r\n
+        \                       <input name=\"email\" value=\"\" placeholder=\"Your
+        email\" type=\"email\" maxlength=\"50\" required class=\"text-gray-900 border
+        bg-white disabled:bg-gray-50 disabled:text-gray-500 border-gray-300 focus:border-blue-400
+        disabled:hover:border-gray-100 h-8 text-sm rounded-md !pr-24 w-full grow select-text
+        appearance-none outline-none pl-2\">\r\n                    </div>\r\n                </label>\r\n
+        \           </div>\r\n            <button class=\"flex items-center font-medium
+        whitespace-nowrap focus:outline-none text-sm text-white hover:text-white active:bg-blue-600
+        disabled:bg-blue-200 disabled:hover:bg-blue-200 bg-blue-400 hover:bg-blue-500
+        h-7 px-2 rounded focus-visible:ring-2 ring-gray-200 absolute right-0.5 top-0.5
+        rounded-l-none\">\r\n                <div class=\"grow text-left\">Subscribe</div>\r\n
+        \           </button>\r\n        </form>\r\n\r\n        <button type=\"button\"
+        onclick=\"FinvizNewsletterHide()\" class=\"-m-3 p-3 focus-visible:outline-offset-[-4px]\">\r\n
+        \           <span class=\"sr-only\">Dismiss</span>\r\n            <svg class=\"h-5
+        w-5 text-gray-900\" viewBox=\"0 0 20 20\" fill=\"currentColor\" aria-hidden=\"true\">\r\n
+        \               <path d=\"M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75
+        0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75
+        0 00-1.06-1.06L10 8.94 6.28 5.22z\" />\r\n            </svg>\r\n        </button>\r\n
+        \   </div>\r\n          <script>\r\n            function checkMediaQuery(matches)
+        {\r\n              if (matches) {\r\n                FinvizSettings.hasUserStickyHeader
+        = true;\r\n                document.body.classList.add('is-header-sticky');\r\n
+        \             } else {\r\n                FinvizSettings.hasUserStickyHeader
+        = false;\r\n                document.body.classList.remove('is-header-sticky');\r\n
+        \             }\r\n            }\r\n            var mediaMatch = window.matchMedia('(min-width:
+        1025px) and (min-height: 650px)');\r\n            checkMediaQuery(mediaMatch.matches);\r\n
+        \           mediaMatch.addListener(function (ev) { checkMediaQuery(ev.matches)
+        });\r\n          </script>\r\n          <div id=\"notifications-container\"></div><table
+        class=\"header\">\r\n    <tr class=\"align-top\">\r\n        <td>\r\n            <table
+        class=\"header-container\">\r\n                <tr>\r\n                    <td
+        class=\"w-[30%]\">\r\n                        <table class=\"w-full\">\r\n
+        \                           <tr>\r\n                                <td class=\"h-[50px]
+        align-middle\">\r\n                                    <a href=\"/\" class=\"logo\"><svg
+        width=\"225\" height=\"32\" class=\"block\">\r\n  <use href=\"/img/logo.svg#free\"
+        class=\"dark:hidden\" />\r\n  <use href=\"/img/logo.svg#free-dark\" class=\"hidden
+        dark:block\" />\r\n</svg></a>\r\n                                </td>\r\n
+        \                           </tr>\r\n                            <tr>\r\n
+        \                               <td id=\"search\" style=\"padding-top: 7px\">\r\n
+        \                                   <div class=\"navbar-search-placeholder\">\r\n
+        \   <span class=\"icon-wrapper\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\"
+        class=\"icon\" fill=\"none\" viewBox=\"0 0 24 24\">\r\n            <path d=\"M16.9
+        15.5l4 4c.2.2.1.5 0 .7l-.7.7a.5.5 0 01-.8 0l-4-4c0-.2-.2-.3-.3-.4l-.7-1a7
+        7 0 01-11.2-4 7 7 0 1112.2 3l1 .6.5.4zM5 10a5 5 0 1010 0 5 5 0 00-10 0z\"
+        />\r\n        </svg>\r\n    </span>\r\n    <input placeholder=\"Search ticker,
+        company or profile\" class=\"search-input is-free\"/>\r\n</div>\r\n                                </td>\r\n
+        \                           </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                    <td class=\"align-bottom
+        pb-1\">\r\n                        <div id=\"microbar_position\" class=\"hidden
+        xl:flex items-center h-[37px] pl-2\"><div>\r\n                        <div
+        id=\"IC_D_88x31_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:88px;height:31px;max-height:31px\"></div>\r\n
+        \                       </div></div>\r\n                    </td>\r\n                    <td
+        class=\"relative w-[730px] text-right\">\r\n                        <div id=\"banner_position\"
+        class=\"overflow-hidden absolute top-0 right-0 w-full h-24\">\r\n                        <div
+        id=\"IC_D_728x90_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:728px;height:90px;max-height:90px\"></div>\r\n
+        \                       </div>\r\n                    </td>\r\n                </tr>\r\n
+        \           </table>\r\n        </td>\r\n    </tr>\r\n    <tr>\r\n        <td
+        class=\"w-[994px] leading-none\" style=\"font-size:0\">\r\n            <img
+        src=\"/gfx/nic2x2.gif\" class=\"w-[994px] h-px\" alt=\"\">\r\n        </td>\r\n
+        \   </tr>\r\n</table>\r\n            <table class=\"navbar\">\r\n                <tr>\r\n
+        \                   <td class=\"h-[30px]\">\r\n                        <table
+        class=\"header-container\">\r\n                            <tr><td><a class=\"nav-link
+        \ is-first\" href=\"/\">Home</a></td><td><a class=\"nav-link \" href=\"/news.ashx\">News</a></td><td><a
+        class=\"nav-link is-active\" href=\"/screener.ashx\">Screener</a></td><td><a
+        class=\"nav-link \" href=\"/map.ashx\">Maps</a></td><td><a class=\"nav-link
+        \" href=\"/groups.ashx\">Groups</a></td><td><a class=\"nav-link \" href=\"/portfolio.ashx\">Portfolio</a></td><td><a
+        class=\"nav-link \" href=\"/insidertrading.ashx\">Insider</a></td><td><a class=\"nav-link
+        \" href=\"/futures.ashx\">Futures</a></td><td><a class=\"nav-link \" href=\"/forex.ashx\">Forex</a></td><td><a
+        class=\"nav-link \" href=\"/crypto.ashx\">Crypto</a></td><td><a class=\"nav-link
+        \" href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=main-navbar-backtests\">Backtests</a></td><td><a
+        class=\"nav-link  is-elite\" href=\"/elite.ashx\">Elite</a></td><td class=\"w-full
+        relative\"><div class=\"absolute bottom-0 left-0 right-0 top-0\"><div id=\"time\"
+        class=\"pr-1\"></div></div></td>\r\n                    <td class=\"nav relative\">\r\n
+        \       <a data-testid=\"chart-layout-theme\" href=\"#\" class=\"!flex !bg-transparent
+        !border-b-0 mt-1 !py-0 !px-1\" style='border-left: 1px solid #444a57' title=\"Toggle
+        Light/Dark mode\" onclick=\"setChartThemeCookie('light', true)\">\r\n            <div
+        class='relative box-content flex rounded-full w-10 h-5 border border-gray-750
+        bg-gray-800 text-white justify-end'>\r\n                <div class='box-border
+        w-1/2 rounded-full p-px border border-gray-800 bg-[#4c5261] flex justify-center
+        items-center'>\r\n                    <svg width=\"16\" height=\"16\" class=\"fill-current
+        text-white inline-block -ml-px\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#moonOutlined\"/>\r\n</svg>\r\n
+        \               </div>\r\n            </div>\r\n            <span class='ml-1
+        select-none font-medium text-xs text-white'>Theme</span>\r\n        </a>\r\n
+        \   </td>\r\n    \r\n                <td>\r\n                    <a href=\"/help/screener.ashx\"
+        class=\"nav-link is-help\" style=\"border-left: 1px solid #444a57\"><span
+        class=\"fa fa-question-circle\"></span>Help</a>\r\n                </td>\r\n
+        \               <td><a href=\"/login.ashx\" class=\"nav-link sign-in\">Login</a></td>\r\n
+        \               <td><a href=\"/register.ashx\" class=\"nav-link sign-up\">Register</a></td>\r\n
+        \           \r\n                            </tr>\r\n                        </table>\r\n
+        \                   </td>\r\n                </tr>\r\n            </table>\r\n
+        \       \r\n          <script>\r\n            function reloadPage () { location.reload()
+        }\r\n            function setChartThemeCookie(chartsTheme) {\r\n              fetch('/api/set_cookie.ashx?cookie=chartsTheme&value='
+        + chartsTheme ).catch(function(){}).then(function(){\r\n                window.gtag
+        && window.gtag('event', 'click', { event_category: 'theme', event_label: 'toggle',
+        value: chartsTheme, event_callback: reloadPage });\r\n                setTimeout(reloadPage,1000);\r\n
+        \             })\r\n            }\r\n          </script><div class=\"content
+        \"><table cellpadding=\"0\" class=\"fv-container is-tight\"><tr>\n<td>\n<div
+        id=\"screener-react\"></div>\n<table id=\"filter-table-top\" class=\"screener-groups_table-filter
+        filter-table-filters\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"
+        border=\"0\">\n<tr>\n<td><img class=\"w-1.5 h-1.5\" src=\"gfx/nic2x2.gif\"
+        alt=\"\" border=\"0\"></td>\n<td align=\"center\" width=\"15%\">\n<select
+        id=\"screenerPresetsSelect\" style=\"width:100%;\" class=\"fv-select body-combo-text\"
+        onchange='ScreenerPresetsChange(value,\"v=141&t=AAPL&o=ticker\")'>\n<option>My
+        Presets</option>\n<option value=\"__save_screen\">-Save Screen</option>\n<option
+        value=\"__edit_screens\">-Edit Screens</option>\n</select>\n</td>\n<td class=\"screener-groups_filter-label
+        text-right\" width=\"6%\">\n<span class=\"body-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Order
+        by] body=[<table width=300><tr><td class='tooltip_tab'>Select the criteria
+        by which the output information will be sorted. The order settings apply to
+        all views. Use the <b>ascending</b> and <b>descending</b> option to invert
+        the current order.<br><br> TIP: In table views you can click on top of a column
+        to sort the table by the underlying values.</td></tr></table>] delay=[500]\">Order
+        by</span></td>\n<td align=\"left\" width=\"20%\" class=\"pl-1\">\n<select
+        id=\"orderSelect\" style=\"width:100%;\" class=\"body-combo-text fv-select\"
+        onchange='window.location=document.getElementById(\"orderSelect\").value'>\n<option
+        selected=\"selected\" value=\"screener.ashx?v=141&t=AAPL&o=ticker\">Ticker</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=tickersfilter\">Tickers Input Filter</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=company\">Company</option><option value=\"screener.ashx?v=141&t=AAPL&o=sector\">Sector</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=industry\">Industry</option><option value=\"screener.ashx?v=141&t=AAPL&o=country\">Country</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=index\">Index</option><option value=\"screener.ashx?v=141&t=AAPL&o=marketcap\">Market
+        Cap.</option><option value=\"screener.ashx?v=141&t=AAPL&o=pe\">Price/Earnings</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=forwardpe\">Forward Price/Earnings</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=peg\">PEG (Price/Earnings/Growth)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=ps\">Price/Sales</option><option value=\"screener.ashx?v=141&t=AAPL&o=pb\">Price/Book</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=pc\">Price/Cash</option><option value=\"screener.ashx?v=141&t=AAPL&o=pfcf\">Price/Free
+        Cash Flow</option><option value=\"screener.ashx?v=141&t=AAPL&o=dividendyield\">Dividend
+        Yield</option><option value=\"screener.ashx?v=141&t=AAPL&o=payoutratio\">Payout
+        Ratio</option><option value=\"screener.ashx?v=141&t=AAPL&o=eps\">EPS (ttm)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=epsyoy\">EPS growth this year</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=epsyoy1\">EPS growth next year</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=eps5years\">EPS growth past 5 years</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=estltgrowth\">EPS growth next 5 years</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=sales5years\">Sales growth past 5 years</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=epsqoq\">EPS growth qtr over qtr</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=salesqoq\">Sales growth qtr over qtr</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=epssurprise\">EPS Surprise</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=revenuesurprise\">Revenue Surprise</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=sharesoutstanding2\">Shares Outstanding</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=sharesfloat\">Shares Float</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=floatoutstandingpct\">Float/Outstanding</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=insiderown\">Insider Ownership</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=insidertrans\">Insider Transactions</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=instown\">Institutional Ownership</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=insttrans\">Institutional Transactions</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=shortinterestshare\">Short Interest Share</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=shortinterestratio\">Short Interest Ratio</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=shortInterest\">Short Interest</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=earningsdate\">Earnings Date</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=roa\">Return on Assets</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=roe\">Return on Equity</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=roi\">Return on Investment</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=curratio\">Current Ratio</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=quickratio\">Quick Ratio</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=ltdebteq\">LT Debt/Equity</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=debteq\">Total Debt/Equity</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=grossmargin\">Gross Margin</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=opermargin\">Operating Margin</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=netmargin\">Net Profit Margin</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=recom\">Analyst Recommendation</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perf1w\">Performance (Week)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perf4w\">Performance (Month)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perf13w\">Performance (Quarter)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perf26w\">Performance (Half Year)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perf52w\">Performance (Year)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=perfytd\">Performance (Year To Date)</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=beta\">Beta</option><option value=\"screener.ashx?v=141&t=AAPL&o=averagetruerange\">Average
+        True Range</option><option value=\"screener.ashx?v=141&t=AAPL&o=volatility1w\">Volatility
+        (Week)</option><option value=\"screener.ashx?v=141&t=AAPL&o=volatility4w\">Volatility
+        (Month)</option><option value=\"screener.ashx?v=141&t=AAPL&o=sma20\">20-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=sma50\">50-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=sma200\">200-Day
+        SMA (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=high50d\">50-Day
+        High (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=low50d\">50-Day
+        Low (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=high52w\">52-Week
+        High (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=low52w\">52-Week
+        Low (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=highat\">All-Time
+        High (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=lowat\">All-Time
+        Low (Relative)</option><option value=\"screener.ashx?v=141&t=AAPL&o=rsi\">Relative
+        Strength Index (14)</option><option value=\"screener.ashx?v=141&t=AAPL&o=averagevolume\">Average
+        Volume (3 Month)</option><option value=\"screener.ashx?v=141&t=AAPL&o=relativevolume\">Relative
+        Volume</option><option value=\"screener.ashx?v=141&t=AAPL&o=change\">Change</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=changeopen\">Change from Open</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=gap\">Gap</option><option value=\"screener.ashx?v=141&t=AAPL&o=volume\">Volume</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=open\">Open</option><option value=\"screener.ashx?v=141&t=AAPL&o=high\">High</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=low\">Low</option><option value=\"screener.ashx?v=141&t=AAPL&o=price\">Price</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=targetprice\">Target Price</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=ipodate\">IPO Date</option><option value=\"screener.ashx?v=141&t=AAPL&o=book\">Book
+        value per share</option><option value=\"screener.ashx?v=141&t=AAPL&o=cashPerShare\">Cash
+        per share</option><option value=\"screener.ashx?v=141&t=AAPL&o=dividend\">Dividend</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=employees\">Employees</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=estQ1\">EPS estimate next quarter</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=income\">Income</option><option value=\"screener.ashx?v=141&t=AAPL&o=prevclose\">Previous
+        Close</option><option value=\"screener.ashx?v=141&t=AAPL&o=sales\">Sales</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=optionable\">Optionable</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=shortable\">Shortable</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=e.category\">ETF - Single Category</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=e.tags\">ETF - Tags</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.totalholdings\">ETF
+        - Total Holdings</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.assetsundermanagement\">ETF
+        - Assets Under Management</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.netflows1monthpct\">ETF
+        - Net Fund Flows% (1 Month)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.netflows3monthpct\">ETF
+        - Net Fund Flows% (3 Month)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.netflowsytdpct\">ETF
+        - Net Fund Flows% (YTD)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.return1year\">ETF
+        - Annualized Return (1 Year)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.return3year\">ETF
+        - Annualized Return (3 Year)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.return5year\">ETF
+        - Annualized Return (5 Year)</option><option value=\"screener.ashx?v=141&t=AAPL&o=e.netexpenseratio\">ETF
+        - Net Expense Ratio</option></select>\n</td>\n<td align=\"left\" width=\"6%\"
+        class=\"pl-1\">\n<select id=\"orderDirSelect\" style=\"width: 100%;\" class=\"body-combo-text
+        fv-select\" onchange='window.location=document.getElementById(\"orderDirSelect\").value'>\n<option
+        selected=\"selected\" value=\"screener.ashx?v=141&t=AAPL&o=ticker\">Asc</option><option
+        value=\"screener.ashx?v=141&t=AAPL&o=-ticker\">Desc</option></select>\n</td>\n<td
+        class=\"screener-groups_filter-label text-right\" width=\"6%\">\n<span class=\"body-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Signal] body=[<table width=300><tr><td class='tooltip_tab'>You can
+        screen the stocks by signal - an event, by which traders usually enter or
+        exit positions.</td></tr></table>] delay=[500]\">Signal</span></td>\n<td align=\"left\"
+        width=\"15%\" class=\"pl-1\">\n<select id=\"signalSelect\" style=\"width:
+        100%;\"  class=\"fv-select body-combo-text\" onchange='window.location=document.getElementById(\"signalSelect\").value'>\n<option
+        selected=\"selected\" value=\"screener.ashx?v=141&t=AAPL&o=ticker\">None (all
+        stocks)</option><option value=\"screener.ashx?v=141&s=ta_topgainers&t=AAPL&o=ticker\">Top
+        Gainers</option><option value=\"screener.ashx?v=141&s=ta_toplosers&t=AAPL&o=ticker\">Top
+        Losers</option><option value=\"screener.ashx?v=141&s=ta_newhigh&t=AAPL&o=ticker\">New
+        High</option><option value=\"screener.ashx?v=141&s=ta_newlow&t=AAPL&o=ticker\">New
+        Low</option><option value=\"screener.ashx?v=141&s=ta_mostvolatile&t=AAPL&o=ticker\">Most
+        Volatile</option><option value=\"screener.ashx?v=141&s=ta_mostactive&t=AAPL&o=ticker\">Most
+        Active</option><option value=\"screener.ashx?v=141&s=ta_unusualvolume&t=AAPL&o=ticker\">Unusual
+        Volume</option><option value=\"screener.ashx?v=141&s=ta_overbought&t=AAPL&o=ticker\">Overbought</option><option
+        value=\"screener.ashx?v=141&s=ta_oversold&t=AAPL&o=ticker\">Oversold</option><option
+        value=\"screener.ashx?v=141&s=n_downgrades&t=AAPL&o=ticker\">Downgrades</option><option
+        value=\"screener.ashx?v=141&s=n_upgrades&t=AAPL&o=ticker\">Upgrades</option><option
+        value=\"screener.ashx?v=141&s=n_earningsbefore&t=AAPL&o=ticker\">Earnings
+        Before</option><option value=\"screener.ashx?v=141&s=n_earningsafter&t=AAPL&o=ticker\">Earnings
+        After</option><option value=\"screener.ashx?v=141&s=it_latestbuys&t=AAPL&o=ticker\">Recent
+        Insider Buying</option><option value=\"screener.ashx?v=141&s=it_latestsales&t=AAPL&o=ticker\">Recent
+        Insider Selling</option><option value=\"screener.ashx?v=141&s=n_majornews&t=AAPL&o=ticker\">Major
+        News</option><option value=\"screener.ashx?v=141&s=ta_p_horizontal&t=AAPL&o=ticker\">Horizontal
+        S/R</option><option value=\"screener.ashx?v=141&s=ta_p_tlresistance&t=AAPL&o=ticker\">TL
+        Resistance</option><option value=\"screener.ashx?v=141&s=ta_p_tlsupport&t=AAPL&o=ticker\">TL
+        Support</option><option value=\"screener.ashx?v=141&s=ta_p_wedgeup&t=AAPL&o=ticker\">Wedge
+        Up</option><option value=\"screener.ashx?v=141&s=ta_p_wedgedown&t=AAPL&o=ticker\">Wedge
+        Down</option><option value=\"screener.ashx?v=141&s=ta_p_wedgeresistance&t=AAPL&o=ticker\">Triangle
+        Ascending</option><option value=\"screener.ashx?v=141&s=ta_p_wedgesupport&t=AAPL&o=ticker\">Triangle
+        Descending</option><option value=\"screener.ashx?v=141&s=ta_p_wedge&t=AAPL&o=ticker\">Wedge</option><option
+        value=\"screener.ashx?v=141&s=ta_p_channelup&t=AAPL&o=ticker\">Channel Up</option><option
+        value=\"screener.ashx?v=141&s=ta_p_channeldown&t=AAPL&o=ticker\">Channel Down</option><option
+        value=\"screener.ashx?v=141&s=ta_p_channel&t=AAPL&o=ticker\">Channel</option><option
+        value=\"screener.ashx?v=141&s=ta_p_doubletop&t=AAPL&o=ticker\">Double Top</option><option
+        value=\"screener.ashx?v=141&s=ta_p_doublebottom&t=AAPL&o=ticker\">Double Bottom</option><option
+        value=\"screener.ashx?v=141&s=ta_p_multipletop&t=AAPL&o=ticker\">Multiple
+        Top</option><option value=\"screener.ashx?v=141&s=ta_p_multiplebottom&t=AAPL&o=ticker\">Multiple
+        Bottom</option><option value=\"screener.ashx?v=141&s=ta_p_headandshoulders&t=AAPL&o=ticker\">Head
+        & Shoulders</option><option value=\"screener.ashx?v=141&s=ta_p_headandshouldersinv&t=AAPL&o=ticker\">Head
+        & Shoulders Inverse</option></select>\n</td>\n<td class=\"screener-groups_filter-label
+        text-right\" width=\"6%\">\n<span class=\"body-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Tickers]
+        body=[<table width=300><tr><td class='tooltip_tab'>To screen through a selected
+        set of stocks, you can enter one or more tickers directly, such as 'MSFT,GOOG,AAPL'.
+        The screening process will run only on the specified stocks. No input ticker(s)
+        equals all stocks. The <b>open in screener</b> option in the <b>Search</b>,
+        will copy the listed tickers to the screener's ticker box automatically.</td></tr></table>]
+        offsetx=[-100] delay=[500]\">Tickers</span></td>\n<td align=\"left\" width=\"24%\"
+        \ class=\"pl-1\">\n<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\"
+        style=\"table-layout:fixed;\">\n<tr>\n<td align=\"left\" width=\"100%\">\n<input
+        id=\"tickersInput\" class=\"fv-input body-combo-text-h is-highlight\" style=\"width:100%\"
+        value=\"AAPL\" type=\"text\" onkeypress=\"if(event.keyCode==13){window.location='screener.ashx?v=141&o=ticker&t='
+        + window.FLibs.getSanitizedTicker(document.getElementById('tickersInput').value,
+        true)}\">\n</td>\n</tr>\n</table>\n</td>\n<td class=\"pl-1\">\n<button data-boxover=\"Submit
+        tickers\" class=\"screener-combo-button fv-button screener_button is-arrow\"
+        style=\"cursor:pointer\" onclick=\"window.location='screener.ashx?v=141&o=ticker&t='
+        +tickersInput.value\"/>\r\n    <svg width=\"16\" height=\"16\" class=\"-mx-1\">\r\n
+        \   <use href=\"/assets/dist-icons/icons.svg?rev=12#chevronRight\"/>\r\n</svg>\r\n</button></td>\n<td
+        align=\"left\" valign=\"center\" class=\"pl-2\"><a href=\"screener.ashx?v=140&t=AAPL&o=ticker\"
+        class=\"screener-combo-button fv-button is-small is-border screener_button
+        is-open\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Filters]
+        body=[<table width=300><tr><td class='tooltip_tab'>To optimize the screening
+        by various stock-related criteria, you can use one or more <b>Filters</b>.</td></tr></table>]
+        offsetx=[-305] delay=[500]\">Filters <svg width=\"16\" height=\"16\" class=\"ml-1
+        -mr-px\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#caretDown\"/>\r\n</svg></a></td>\n<td
+        width=\"1%\"></td></tr>\n</table>\n</td>\n</tr>\n<tr><td colspan=\"30\">\n<div
+        class=\"screener_filter-tabs-section\">\r\n    <div class=\"flex w-full items-center\">\r\n
+        \       \r\n        \r\n        <div class=\"flex-1 screener_filter-tabs-filler\"></div>\r\n
+        \   </div>\r\n    <div class=\"screener_filter-tabs-wrapper\"><div class=\"screener-tabs
+        screener_filter-tab has-badge is-selected\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=ticker'\">Descriptive</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=2&t=AAPL&o=ticker'\">Fundamental</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=3&t=AAPL&o=ticker'\">Technical</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=5&t=AAPL&o=ticker'\">ETF</div>\n<div
+        class=\"screener-tabs screener_filter-tab has-badge is-gray\" onclick=\"window.location='screener.ashx?v=141&ft=4&t=AAPL&o=ticker'\">All</div>\n
+        \   </div>\r\n    <div class=\"w-full screener_filter-tabs-filler\"></div>\r\n</div></td>\n</tr>\n<tr>\n<td
+        colspan=\"30\" valign=\"middle\" align=\"center\" class=\"filters-border filter-table-filters\">\n<div
+        class=\"screener-groups_settings-table-wrapper\">\n<form autocomplete=\"off\">\n<table
+        id=\"filter-table-filters\" class=\"screener-groups_settings-table is-dimmer-text\"
+        width=\"100%\" cellpadding=\"1\" cellspacing=\"1\" style=\"table-layout:fixed;\">\n<tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Exchange] body=[<table width=300><tr><td class='tooltip_tab'>Stock
+        Exchange at which a stock is listed.</td></tr></table>] delay=[500]\">Exchange</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_exch\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_exch\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"exch\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"exch\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"exch\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_exch\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"exch\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=exch_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"amex\">AMEX</option><option
+        value=\"nasd\">NASDAQ</option><option value=\"nyse\">NYSE</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Index] body=[<table width=300><tr><td class='tooltip_tab'>A major
+        index membership of a stock.</td></tr></table>] delay=[500]\">Index</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_idx\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_idx\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"idx\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"idx\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"idx\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_idx\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"idx\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=idx_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"sp500\">S&amp;P
+        500</option><option value=\"ndx\">NASDAQ 100</option><option value=\"dji\">DJIA</option><option
+        value=\"rut\">RUSSELL 2000</option><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Sector] body=[<table width=300><tr><td class='tooltip_tab'>The sector
+        which a stock belongs to.</td></tr></table>] delay=[500]\">Sector</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sec\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_sec\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"sec\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"sec\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"sec\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_sec\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sec\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=sec_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"basicmaterials\">Basic
+        Materials</option><option value=\"communicationservices\">Communication Services</option><option
+        value=\"consumercyclical\">Consumer Cyclical</option><option value=\"consumerdefensive\">Consumer
+        Defensive</option><option value=\"energy\">Energy</option><option value=\"financial\">Financial</option><option
+        value=\"healthcare\">Healthcare</option><option value=\"industrials\">Industrials</option><option
+        value=\"realestate\">Real Estate</option><option value=\"technology\">Technology</option><option
+        value=\"utilities\">Utilities</option><option value=\"modal\">Custom (Elite
+        only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Industry]
+        body=[<table width=300><tr><td class='tooltip_tab'>The industry which a stock
+        belongs to.</td></tr></table>] delay=[500]\">Industry</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n\r\n                <div id=\"fsm_ind\"
+        class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_ind\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"ind\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"ind\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"ind\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_ind\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"ind\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=ind_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"stocksonly\">Stocks
+        only (ex-Funds)</option><option value=\"exchangetradedfund\">Exchange Traded
+        Fund</option><option value=\"advertisingagencies\">Advertising Agencies</option><option
+        value=\"aerospacedefense\">Aerospace &amp; Defense</option><option value=\"agriculturalinputs\">Agricultural
+        Inputs</option><option value=\"airlines\">Airlines</option><option value=\"airportsairservices\">Airports
+        &amp; Air Services</option><option value=\"aluminum\">Aluminum</option><option
+        value=\"apparelmanufacturing\">Apparel Manufacturing</option><option value=\"apparelretail\">Apparel
+        Retail</option><option value=\"assetmanagement\">Asset Management</option><option
+        value=\"automanufacturers\">Auto Manufacturers</option><option value=\"autoparts\">Auto
+        Parts</option><option value=\"autotruckdealerships\">Auto &amp; Truck Dealerships</option><option
+        value=\"banksdiversified\">Banks - Diversified</option><option value=\"banksregional\">Banks
+        - Regional</option><option value=\"beveragesbrewers\">Beverages - Brewers</option><option
+        value=\"beveragesnonalcoholic\">Beverages - Non-Alcoholic</option><option
+        value=\"beverageswineriesdistilleries\">Beverages - Wineries &amp; Distilleries</option><option
+        value=\"biotechnology\">Biotechnology</option><option value=\"broadcasting\">Broadcasting</option><option
+        value=\"buildingmaterials\">Building Materials</option><option value=\"buildingproductsequipment\">Building
+        Products &amp; Equipment</option><option value=\"businessequipmentsupplies\">Business
+        Equipment &amp; Supplies</option><option value=\"capitalmarkets\">Capital
+        Markets</option><option value=\"chemicals\">Chemicals</option><option value=\"closedendfunddebt\">Closed-End
+        Fund - Debt</option><option value=\"closedendfundequity\">Closed-End Fund
+        - Equity</option><option value=\"closedendfundforeign\">Closed-End Fund -
+        Foreign</option><option value=\"cokingcoal\">Coking Coal</option><option value=\"communicationequipment\">Communication
+        Equipment</option><option value=\"computerhardware\">Computer Hardware</option><option
+        value=\"confectioners\">Confectioners</option><option value=\"conglomerates\">Conglomerates</option><option
+        value=\"consultingservices\">Consulting Services</option><option value=\"consumerelectronics\">Consumer
+        Electronics</option><option value=\"copper\">Copper</option><option value=\"creditservices\">Credit
+        Services</option><option value=\"departmentstores\">Department Stores</option><option
+        value=\"diagnosticsresearch\">Diagnostics &amp; Research</option><option value=\"discountstores\">Discount
+        Stores</option><option value=\"drugmanufacturersgeneral\">Drug Manufacturers
+        - General</option><option value=\"drugmanufacturersspecialtygeneric\">Drug
+        Manufacturers - Specialty &amp; Generic</option><option value=\"educationtrainingservices\">Education
+        &amp; Training Services</option><option value=\"electricalequipmentparts\">Electrical
+        Equipment &amp; Parts</option><option value=\"electroniccomponents\">Electronic
+        Components</option><option value=\"electronicgamingmultimedia\">Electronic
+        Gaming &amp; Multimedia</option><option value=\"electronicscomputerdistribution\">Electronics
+        &amp; Computer Distribution</option><option value=\"engineeringconstruction\">Engineering
+        &amp; Construction</option><option value=\"entertainment\">Entertainment</option><option
+        value=\"exchangetradedfund\">Exchange Traded Fund</option><option value=\"farmheavyconstructionmachinery\">Farm
+        &amp; Heavy Construction Machinery</option><option value=\"farmproducts\">Farm
+        Products</option><option value=\"financialconglomerates\">Financial Conglomerates</option><option
+        value=\"financialdatastockexchanges\">Financial Data &amp; Stock Exchanges</option><option
+        value=\"fooddistribution\">Food Distribution</option><option value=\"footwearaccessories\">Footwear
+        &amp; Accessories</option><option value=\"furnishingsfixturesappliances\">Furnishings,
+        Fixtures &amp; Appliances</option><option value=\"gambling\">Gambling</option><option
+        value=\"gold\">Gold</option><option value=\"grocerystores\">Grocery Stores</option><option
+        value=\"healthcareplans\">Healthcare Plans</option><option value=\"healthinformationservices\">Health
+        Information Services</option><option value=\"homeimprovementretail\">Home
+        Improvement Retail</option><option value=\"householdpersonalproducts\">Household
+        &amp; Personal Products</option><option value=\"industrialdistribution\">Industrial
+        Distribution</option><option value=\"informationtechnologyservices\">Information
+        Technology Services</option><option value=\"infrastructureoperations\">Infrastructure
+        Operations</option><option value=\"insurancebrokers\">Insurance Brokers</option><option
+        value=\"insurancediversified\">Insurance - Diversified</option><option value=\"insurancelife\">Insurance
+        - Life</option><option value=\"insurancepropertycasualty\">Insurance - Property
+        &amp; Casualty</option><option value=\"insurancereinsurance\">Insurance -
+        Reinsurance</option><option value=\"insurancespecialty\">Insurance - Specialty</option><option
+        value=\"integratedfreightlogistics\">Integrated Freight &amp; Logistics</option><option
+        value=\"internetcontentinformation\">Internet Content &amp; Information</option><option
+        value=\"internetretail\">Internet Retail</option><option value=\"leisure\">Leisure</option><option
+        value=\"lodging\">Lodging</option><option value=\"lumberwoodproduction\">Lumber
+        &amp; Wood Production</option><option value=\"luxurygoods\">Luxury Goods</option><option
+        value=\"marineshipping\">Marine Shipping</option><option value=\"medicalcarefacilities\">Medical
+        Care Facilities</option><option value=\"medicaldevices\">Medical Devices</option><option
+        value=\"medicaldistribution\">Medical Distribution</option><option value=\"medicalinstrumentssupplies\">Medical
+        Instruments &amp; Supplies</option><option value=\"metalfabrication\">Metal
+        Fabrication</option><option value=\"mortgagefinance\">Mortgage Finance</option><option
+        value=\"oilgasdrilling\">Oil &amp; Gas Drilling</option><option value=\"oilgasep\">Oil
+        &amp; Gas E&amp;P</option><option value=\"oilgasequipmentservices\">Oil &amp;
+        Gas Equipment &amp; Services</option><option value=\"oilgasintegrated\">Oil
+        &amp; Gas Integrated</option><option value=\"oilgasmidstream\">Oil &amp; Gas
+        Midstream</option><option value=\"oilgasrefiningmarketing\">Oil &amp; Gas
+        Refining &amp; Marketing</option><option value=\"otherindustrialmetalsmining\">Other
+        Industrial Metals &amp; Mining</option><option value=\"otherpreciousmetalsmining\">Other
+        Precious Metals &amp; Mining</option><option value=\"packagedfoods\">Packaged
+        Foods</option><option value=\"packagingcontainers\">Packaging &amp; Containers</option><option
+        value=\"paperpaperproducts\">Paper &amp; Paper Products</option><option value=\"personalservices\">Personal
+        Services</option><option value=\"pharmaceuticalretailers\">Pharmaceutical
+        Retailers</option><option value=\"pollutiontreatmentcontrols\">Pollution &amp;
+        Treatment Controls</option><option value=\"publishing\">Publishing</option><option
+        value=\"railroads\">Railroads</option><option value=\"realestatedevelopment\">Real
+        Estate - Development</option><option value=\"realestatediversified\">Real
+        Estate - Diversified</option><option value=\"realestateservices\">Real Estate
+        Services</option><option value=\"recreationalvehicles\">Recreational Vehicles</option><option
+        value=\"reitdiversified\">REIT - Diversified</option><option value=\"reithealthcarefacilities\">REIT
+        - Healthcare Facilities</option><option value=\"reithotelmotel\">REIT - Hotel
+        &amp; Motel</option><option value=\"reitindustrial\">REIT - Industrial</option><option
+        value=\"reitmortgage\">REIT - Mortgage</option><option value=\"reitoffice\">REIT
+        - Office</option><option value=\"reitresidential\">REIT - Residential</option><option
+        value=\"reitretail\">REIT - Retail</option><option value=\"reitspecialty\">REIT
+        - Specialty</option><option value=\"rentalleasingservices\">Rental &amp; Leasing
+        Services</option><option value=\"residentialconstruction\">Residential Construction</option><option
+        value=\"resortscasinos\">Resorts &amp; Casinos</option><option value=\"restaurants\">Restaurants</option><option
+        value=\"scientifictechnicalinstruments\">Scientific &amp; Technical Instruments</option><option
+        value=\"securityprotectionservices\">Security &amp; Protection Services</option><option
+        value=\"semiconductorequipmentmaterials\">Semiconductor Equipment &amp; Materials</option><option
+        value=\"semiconductors\">Semiconductors</option><option value=\"shellcompanies\">Shell
+        Companies</option><option value=\"silver\">Silver</option><option value=\"softwareapplication\">Software
+        - Application</option><option value=\"softwareinfrastructure\">Software -
+        Infrastructure</option><option value=\"solar\">Solar</option><option value=\"specialtybusinessservices\">Specialty
+        Business Services</option><option value=\"specialtychemicals\">Specialty Chemicals</option><option
+        value=\"specialtyindustrialmachinery\">Specialty Industrial Machinery</option><option
+        value=\"specialtyretail\">Specialty Retail</option><option value=\"staffingemploymentservices\">Staffing
+        &amp; Employment Services</option><option value=\"steel\">Steel</option><option
+        value=\"telecomservices\">Telecom Services</option><option value=\"textilemanufacturing\">Textile
+        Manufacturing</option><option value=\"thermalcoal\">Thermal Coal</option><option
+        value=\"tobacco\">Tobacco</option><option value=\"toolsaccessories\">Tools
+        &amp; Accessories</option><option value=\"travelservices\">Travel Services</option><option
+        value=\"trucking\">Trucking</option><option value=\"uranium\">Uranium</option><option
+        value=\"utilitiesdiversified\">Utilities - Diversified</option><option value=\"utilitiesindependentpowerproducers\">Utilities
+        - Independent Power Producers</option><option value=\"utilitiesregulatedelectric\">Utilities
+        - Regulated Electric</option><option value=\"utilitiesregulatedgas\">Utilities
+        - Regulated Gas</option><option value=\"utilitiesregulatedwater\">Utilities
+        - Regulated Water</option><option value=\"utilitiesrenewable\">Utilities -
+        Renewable</option><option value=\"wastemanagement\">Waste Management</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Country] body=[<table width=300><tr><td class='tooltip_tab'>The country
+        where company of selected stock is based.</td></tr></table>] offsetx=[-305]
+        delay=[500]\">Country</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n\r\n                <div id=\"fsm_geo\" class=\"js-custom-modal\"
+        style=\"display: none\">\r\n                    <table class=\"screener_custom-input-table
+        is-modal\" style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_geo\" class=\"js-custom-modal-edit
+        screener-input-text h fv-input is-highlight w-full cursor-pointer pr-5 font-medium\"
+        data-filter=\"geo\" type=\"text\" value=\"\" readonly>\r\n                                <a
+        href=\"#\" class=\"edit-custom-modal-button fv-button js-custom-modal-edit
+        screener_custom-add-button\" data-filter=\"geo\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"geo\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_geo\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"geo\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=geo_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"usa\">USA</option><option
+        value=\"notusa\">Foreign (ex-USA)</option><option value=\"asia\">Asia</option><option
+        value=\"europe\">Europe</option><option value=\"latinamerica\">Latin America</option><option
+        value=\"bric\">BRIC</option><option value=\"argentina\">Argentina</option><option
+        value=\"australia\">Australia</option><option value=\"bahamas\">Bahamas</option><option
+        value=\"belgium\">Belgium</option><option value=\"benelux\">BeNeLux</option><option
+        value=\"bermuda\">Bermuda</option><option value=\"brazil\">Brazil</option><option
+        value=\"canada\">Canada</option><option value=\"caymanislands\">Cayman Islands</option><option
+        value=\"chile\">Chile</option><option value=\"china\">China</option><option
+        value=\"chinahongkong\">China &amp; Hong Kong</option><option value=\"colombia\">Colombia</option><option
+        value=\"cyprus\">Cyprus</option><option value=\"denmark\">Denmark</option><option
+        value=\"finland\">Finland</option><option value=\"france\">France</option><option
+        value=\"germany\">Germany</option><option value=\"greece\">Greece</option><option
+        value=\"hongkong\">Hong Kong</option><option value=\"hungary\">Hungary</option><option
+        value=\"iceland\">Iceland</option><option value=\"india\">India</option><option
+        value=\"indonesia\">Indonesia</option><option value=\"ireland\">Ireland</option><option
+        value=\"israel\">Israel</option><option value=\"italy\">Italy</option><option
+        value=\"japan\">Japan</option><option value=\"kazakhstan\">Kazakhstan</option><option
+        value=\"luxembourg\">Luxembourg</option><option value=\"malaysia\">Malaysia</option><option
+        value=\"malta\">Malta</option><option value=\"mexico\">Mexico</option><option
+        value=\"monaco\">Monaco</option><option value=\"netherlands\">Netherlands</option><option
+        value=\"newzealand\">New Zealand</option><option value=\"norway\">Norway</option><option
+        value=\"panama\">Panama</option><option value=\"peru\">Peru</option><option
+        value=\"philippines\">Philippines</option><option value=\"portugal\">Portugal</option><option
+        value=\"russia\">Russia</option><option value=\"singapore\">Singapore</option><option
+        value=\"southafrica\">South Africa</option><option value=\"southkorea\">South
+        Korea</option><option value=\"spain\">Spain</option><option value=\"sweden\">Sweden</option><option
+        value=\"switzerland\">Switzerland</option><option value=\"taiwan\">Taiwan</option><option
+        value=\"turkey\">Turkey</option><option value=\"unitedarabemirates\">United
+        Arab Emirates</option><option value=\"unitedkingdom\">United Kingdom</option><option
+        value=\"uruguay\">Uruguay</option><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n</tr><tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Market Capitalization] body=[<table width=300><tr><td class='tooltip_tab'>Equals
+        The total dollar market value of all of a company's outstanding shares.</td></tr></table>]
+        delay=[500]\">Market Cap.</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n<select id=\"fs_cap\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"cap\"
+        data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=cap_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"mega\">Mega ($200bln and more)</option><option value=\"large\">Large
+        ($10bln to $200bln)</option><option value=\"mid\">Mid ($2bln to $10bln)</option><option
+        value=\"small\">Small ($300mln to $2bln)</option><option value=\"micro\">Micro
+        ($50mln to $300mln)</option><option value=\"nano\">Nano (under $50mln)</option><option
+        value=\"largeover\">+Large (over $10bln)</option><option value=\"midover\">+Mid
+        (over $2bln)</option><option value=\"smallover\">+Small (over $300mln)</option><option
+        value=\"microover\">+Micro (over $50mln)</option><option value=\"largeunder\">-Large
+        (under $200bln)</option><option value=\"midunder\">-Mid (under $10bln)</option><option
+        value=\"smallunder\">-Small (under $2bln)</option><option value=\"microunder\">-Micro
+        (under $300mln)</option><option value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Dividend Yield (Fiscal Year Estimate)] body=[<table width=300><tr><td
+        class='tooltip_tab'>The dividend yield equals the annual dividend per share
+        divided by the stock\u2019s price. This measurement tells what percentage
+        return a company pays out to shareholders in the form of dividends.<br><br>If
+        there is no forward dividend estimate available, trailing twelve month (TTM)
+        value is used.<br></td></tr></table>] delay=[500]\">Dividend Yield</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_fa_div\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"fa_div\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=fa_div_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"none\">None (0%)</option><option value=\"pos\">Positive (>0%)</option><option
+        value=\"high\">High (>5%)</option><option value=\"veryhigh\">Very High (>10%)</option><option
+        value=\"o1\">Over 1%</option><option value=\"o2\">Over 2%</option><option
+        value=\"o3\">Over 3%</option><option value=\"o4\">Over 4%</option><option
+        value=\"o5\">Over 5%</option><option value=\"o6\">Over 6%</option><option
+        value=\"o7\">Over 7%</option><option value=\"o8\">Over 8%</option><option
+        value=\"o9\">Over 9%</option><option value=\"o10\">Over 10%</option><option
+        value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Short Selling] body=[<table width=300><tr><td class='tooltip_tab'>The
+        amount of short-selling transactions of given stock.</td></tr></table>] delay=[500]\">Float
+        Short</span></td>\n<td width=\"10%\" class=\"filters-cells relative\">\n<select
+        id=\"fs_sh_short\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_short\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=sh_short_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"low\">Low (<5%)</option><option
+        value=\"high\">High (>20%)</option><option value=\"u5\">Under 5%</option><option
+        value=\"u10\">Under 10%</option><option value=\"u15\">Under 15%</option><option
+        value=\"u20\">Under 20%</option><option value=\"u25\">Under 25%</option><option
+        value=\"u30\">Under 30%</option><option value=\"o5\">Over 5%</option><option
+        value=\"o10\">Over 10%</option><option value=\"o15\">Over 15%</option><option
+        value=\"o20\">Over 20%</option><option value=\"o25\">Over 25%</option><option
+        value=\"o30\">Over 30%</option><option value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Analyst Recommendation] body=[<table width=300><tr><td class='tooltip_tab'>An
+        outlook of a stock-market analyst on a stock.</td></tr></table>] delay=[500]\">Analyst
+        Recom.</span></td>\n<td width=\"10%\" class=\"filters-cells relative\">\n\r\n
+        \               <div id=\"fsm_an_recom\" class=\"js-custom-modal\" style=\"display:
+        none\">\r\n                    <table class=\"screener_custom-input-table
+        is-modal\" style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_an_recom\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"an_recom\" type=\"text\" value=\"\"
+        readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"an_recom\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"an_recom\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_an_recom\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"an_recom\"
+        data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=an_recom_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"strongbuy\">Strong Buy (1)</option><option value=\"buybetter\">Buy
+        or better</option><option value=\"buy\">Buy</option><option value=\"holdbetter\">Hold
+        or better</option><option value=\"hold\">Hold</option><option value=\"holdworse\">Hold
+        or worse</option><option value=\"sell\">Sell</option><option value=\"sellworse\">Sell
+        or worse</option><option value=\"strongsell\">Strong Sell (5)</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Optionable/Shortable] body=[<table width=300><tr><td class='tooltip_tab'>Stocks
+        with options and/or available to sell short.</td></tr></table>] delay=[500]\">Option/Short</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sh_opt\" class=\"js-custom-modal\" style=\"display: none\">\r\n                    <table
+        class=\"screener_custom-input-table is-modal\" style=\"border-collapse: collapse;
+        table-layout: fixed;\" cellpadding=\"0\">\r\n                        <tr>\r\n
+        \                           <td style=\"position: relative\">\r\n                                <input
+        id=\"fsmi_sh_opt\" class=\"js-custom-modal-edit screener-input-text h fv-input
+        is-highlight w-full cursor-pointer pr-5 font-medium\" data-filter=\"sh_opt\"
+        type=\"text\" value=\"\" readonly>\r\n                                <a href=\"#\"
+        class=\"edit-custom-modal-button fv-button js-custom-modal-edit screener_custom-add-button\"
+        data-filter=\"sh_opt\">\r\n                                    <svg width=\"16\"
+        height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                           <td width=\"13\">\r\n                                <a
+        href=\"#\" class=\"js-custom-modal-hide screener-input-hide screener_custom-clear-button
+        fv-button\" data-filter=\"sh_opt\">\r\n                                    <svg
+        width=\"16\" height=\"16\">\r\n    <use href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n
+        \                               </a>\r\n                            </td>\r\n
+        \                       </tr>\r\n                    </table>\r\n                </div><select
+        id=\"fs_sh_opt\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_opt\" data-url=\"v=141&t=AAPL&o=ticker\"
+        data-url-selected=\"v=141&f=sh_opt_selected_filter&t=AAPL&o=ticker\" data-selected=\"\">\n<option
+        selected=\"selected\" value=\"\">Any</option><option value=\"option\">Optionable</option><option
+        value=\"short\">Shortable</option><option value=\"notoption\">Not optionable</option><option
+        value=\"notshort\">Not shortable</option><option value=\"optionshort\">Optionable
+        and shortable</option><option value=\"optionnotshort\">Optionable and not
+        shortable</option><option value=\"notoptionshort\">Not optionable and shortable</option><option
+        value=\"notoptionnotshort\">Not optionable and not shortable</option><option
+        value=\"restricted\">Short Sale Restricted (Elite only)</option><option value=\"restricted\">Halted
+        (Elite only)</option><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n</tr><tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Earnings Date] body=[<table width=300><tr><td class='tooltip_tab'>Date
+        when company reports earnings</td></tr></table>] delay=[500]\">Earnings Date</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_earningsdate\" class=\"js-custom-modal\" style=\"display: none\">\r\n
+        \                   <table class=\"screener_custom-input-table is-modal\"
+        style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_earningsdate\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"earningsdate\" type=\"text\"
+        value=\"\" readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"earningsdate\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"earningsdate\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_earningsdate\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"earningsdate\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=earningsdate_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"today\">Today</option><option value=\"todaybefore\">Today Before Market
+        Open</option><option value=\"todayafter\">Today After Market Close</option><option
+        value=\"tomorrow\">Tomorrow</option><option value=\"tomorrowbefore\">Tomorrow
+        Before Market Open</option><option value=\"tomorrowafter\">Tomorrow After
+        Market Close</option><option value=\"yesterday\">Yesterday</option><option
+        value=\"yesterdaybefore\">Yesterday Before Market Open</option><option value=\"yesterdayafter\">Yesterday
+        After Market Close</option><option value=\"nextdays5\">Next 5 Days</option><option
+        value=\"prevdays5\">Previous 5 Days</option><option value=\"thisweek\">This
+        Week</option><option value=\"nextweek\">Next Week</option><option value=\"prevweek\">Previous
+        Week</option><option value=\"thismonth\">This Month</option><option value=\"modal\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Average
+        Volume] body=[<table width=300><tr><td class='tooltip_tab'>The average number
+        of shares traded in a security per day.</td></tr></table>] offsetx=[-305]
+        delay=[500]\">Average Volume</span></td>\n<td width=\"10%\" class=\"filters-cells
+        relative\">\n<select id=\"fs_sh_avgvol\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_avgvol\"
+        data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_avgvol_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u50\">Under 50K</option><option value=\"u100\">Under 100K</option><option
+        value=\"u500\">Under 500K</option><option value=\"u750\">Under 750K</option><option
+        value=\"u1000\">Under 1M</option><option value=\"o50\">Over 50K</option><option
+        value=\"o100\">Over 100K</option><option value=\"o200\">Over 200K</option><option
+        value=\"o300\">Over 300K</option><option value=\"o400\">Over 400K</option><option
+        value=\"o500\">Over 500K</option><option value=\"o750\">Over 750K</option><option
+        value=\"o1000\">Over 1M</option><option value=\"o2000\">Over 2M</option><option
+        value=\"100to500\">100K to 500K</option><option value=\"100to1000\">100K to
+        1M</option><option value=\"500to1000\">500K to 1M</option><option value=\"500to10000\">500K
+        to 10M</option><option value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Relative Volume] body=[<table width=300><tr><td class='tooltip_tab'>Ratio
+        between current volume and 3-month average, intraday adjusted.</td></tr></table>]
+        offsetx=[-305] delay=[500]\">Relative Volume</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_sh_relvol\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_relvol\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_relvol_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"o10\">Over 10</option><option value=\"o5\">Over 5</option><option
+        value=\"o3\">Over 3</option><option value=\"o2\">Over 2</option><option value=\"o1.5\">Over
+        1.5</option><option value=\"o1\">Over 1</option><option value=\"o0.75\">Over
+        0.75</option><option value=\"o0.5\">Over 0.5</option><option value=\"o0.25\">Over
+        0.25</option><option value=\"u2\">Under 2</option><option value=\"u1.5\">Under
+        1.5</option><option value=\"u1\">Under 1</option><option value=\"u0.75\">Under
+        0.75</option><option value=\"u0.5\">Under 0.5</option><option value=\"u0.25\">Under
+        0.25</option><option value=\"u0.1\">Under 0.1</option><option value=\"frange\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Current
+        Volume] body=[<table width=300><tr><td class='tooltip_tab'>Number of shares
+        traded today.</td></tr></table>] offsetx=[-305] delay=[500]\">Current Volume</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n\r\n                <div
+        id=\"fsm_sh_curvol\" class=\"js-custom-modal\" style=\"display: none\">\r\n
+        \                   <table class=\"screener_custom-input-table is-modal\"
+        style=\"border-collapse: collapse; table-layout: fixed;\" cellpadding=\"0\">\r\n
+        \                       <tr>\r\n                            <td style=\"position:
+        relative\">\r\n                                <input id=\"fsmi_sh_curvol\"
+        class=\"js-custom-modal-edit screener-input-text h fv-input is-highlight w-full
+        cursor-pointer pr-5 font-medium\" data-filter=\"sh_curvol\" type=\"text\"
+        value=\"\" readonly>\r\n                                <a href=\"#\" class=\"edit-custom-modal-button
+        fv-button js-custom-modal-edit screener_custom-add-button\" data-filter=\"sh_curvol\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#add\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                            <td width=\"13\">\r\n
+        \                               <a href=\"#\" class=\"js-custom-modal-hide
+        screener-input-hide screener_custom-clear-button fv-button\" data-filter=\"sh_curvol\">\r\n
+        \                                   <svg width=\"16\" height=\"16\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#clear\"/>\r\n</svg>\r\n                                </a>\r\n
+        \                           </td>\r\n                        </tr>\r\n                    </table>\r\n
+        \               </div><select id=\"fs_sh_curvol\" style=\"width:100%\" class=\"screener-combo-text
+        fv-select\" onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_curvol\"
+        data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_curvol_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><optgroup
+        label=\"Shares\"><option value=\"u50\">Under 50K</option><option value=\"u100\">Under
+        100K</option><option value=\"u500\">Under 500K</option><option value=\"u750\">Under
+        750K</option><option value=\"u1000\">Under 1M</option><option value=\"o0\">Over
+        0</option><option value=\"o50\">Over 50K</option><option value=\"o100\">Over
+        100K</option><option value=\"o200\">Over 200K</option><option value=\"o300\">Over
+        300K</option><option value=\"o400\">Over 400K</option><option value=\"o500\">Over
+        500K</option><option value=\"o750\">Over 750K</option><option value=\"o1000\">Over
+        1M</option><option value=\"o2000\">Over 2M</option><option value=\"o5000\">Over
+        5M</option><option value=\"o10000\">Over 10M</option><option value=\"o20000\">Over
+        20M</option><option value=\"o50sf\">Over 50% shares float</option><option
+        value=\"o100sf\">Over 100% shares float</option></optgroup><optgroup label=\"USD\"><option
+        value=\"uusd1000\">Under $1M</option><option value=\"uusd10000\">Under $10M</option><option
+        value=\"uusd100000\">Under $100M</option><option value=\"uusd1000000\">Under
+        $1B</option><option value=\"ousd1000\">Over $1M</option><option value=\"ousd10000\">Over
+        $10M</option><option value=\"ousd100000\">Over $100M</option><option value=\"ousd1000000\">Over
+        $1B</option></optgroup><option value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Trades] body=[<table width=300><tr><td class='tooltip_tab'>Number
+        of trades today.</td></tr></table>] delay=[500]\">Trades</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<div class=\"absolute inset-0
+        z-10\" onclick=\"window.location='elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-filter';\"></div><select
+        id=\"fs_sh_trades\" style=\"width:100%\" class=\"screener-combo-text fv-select\"
+        disabled onchange=\"ScreenerSelectOnChange(this)\" data-filter=\"sh_trades\"
+        data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_trades_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Elite only</option></select>\n</td>\n</tr><tr>\n<td
+        width=\"10%\" class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Price] body=[<table width=300><tr><td class='tooltip_tab'>The current
+        stock price.</td></tr></table>] delay=[500]\">Price</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_sh_price\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_price\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_price_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under $1</option><option value=\"u2\">Under $2</option><option
+        value=\"u3\">Under $3</option><option value=\"u4\">Under $4</option><option
+        value=\"u5\">Under $5</option><option value=\"u7\">Under $7</option><option
+        value=\"u10\">Under $10</option><option value=\"u15\">Under $15</option><option
+        value=\"u20\">Under $20</option><option value=\"u30\">Under $30</option><option
+        value=\"u40\">Under $40</option><option value=\"u50\">Under $50</option><option
+        value=\"o1\">Over $1</option><option value=\"o2\">Over $2</option><option
+        value=\"o3\">Over $3</option><option value=\"o4\">Over $4</option><option
+        value=\"o5\">Over $5</option><option value=\"o7\">Over $7</option><option
+        value=\"o10\">Over $10</option><option value=\"o15\">Over $15</option><option
+        value=\"o20\">Over $20</option><option value=\"o30\">Over $30</option><option
+        value=\"o40\">Over $40</option><option value=\"o50\">Over $50</option><option
+        value=\"o60\">Over $60</option><option value=\"o70\">Over $70</option><option
+        value=\"o80\">Over $80</option><option value=\"o90\">Over $90</option><option
+        value=\"o100\">Over $100</option><option value=\"1to5\">$1 to $5</option><option
+        value=\"1to10\">$1 to $10</option><option value=\"1to20\">$1 to $20</option><option
+        value=\"5to10\">$5 to $10</option><option value=\"5to20\">$5 to $20</option><option
+        value=\"5to50\">$5 to $50</option><option value=\"10to20\">$10 to $20</option><option
+        value=\"10to50\">$10 to $50</option><option value=\"20to50\">$20 to $50</option><option
+        value=\"50to100\">$50 to $100</option><option value=\"frange\">Custom (Elite
+        only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Target
+        Price] body=[<table width=300><tr><td class='tooltip_tab'>Analysts' mean target
+        price.</td></tr></table>] delay=[500]\">Target Price</span></td>\n<td width=\"10%\"
+        class=\"filters-cells relative\">\n<select id=\"fs_targetprice\" style=\"width:100%\"
+        class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"targetprice\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=targetprice_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"a50\">50% Above Price</option><option value=\"a40\">40% Above Price</option><option
+        value=\"a30\">30% Above Price</option><option value=\"a20\">20% Above Price</option><option
+        value=\"a10\">10% Above Price</option><option value=\"a5\">5% Above Price</option><option
+        value=\"above\">Above Price</option><option value=\"below\">Below Price</option><option
+        value=\"b5\">5% Below Price</option><option value=\"b10\">10% Below Price</option><option
+        value=\"b20\">20% Below Price</option><option value=\"b30\">30% Below Price</option><option
+        value=\"b40\">40% Below Price</option><option value=\"b50\">50% Below Price</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[IPO Date] body=[<table width=300><tr><td class='tooltip_tab'>Date
+        when company had an IPO.</td></tr></table>] delay=[500]\">IPO Date</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_ipodate\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"ipodate\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=ipodate_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"today\">Today</option><option value=\"yesterday\">Yesterday</option><option
+        value=\"prevweek\">In the last week</option><option value=\"prevmonth\">In
+        the last month</option><option value=\"prevquarter\">In the last quarter</option><option
+        value=\"prevyear\">In the last year</option><option value=\"prev2yrs\">In
+        the last 2 years</option><option value=\"prev3yrs\">In the last 3 years</option><option
+        value=\"prev5yrs\">In the last 5 years</option><option value=\"more1\">More
+        than a year ago</option><option value=\"more5\">More than 5 years ago</option><option
+        value=\"more10\">More than 10 years ago</option><option value=\"more15\">More
+        than 15 years ago</option><option value=\"more20\">More than 20 years ago</option><option
+        value=\"more25\">More than 25 years ago</option><option value=\"modal\">Custom
+        (Elite only)</option></select>\n</td>\n<td width=\"10%\" class=\"filters-cells\"
+        align=\"center\">\n<span class=\"screener-combo-title\" style=\"cursor:pointer;\"
+        data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr] header=[Shares
+        Outstanding] body=[<table width=300><tr><td class='tooltip_tab'>Shares outstanding
+        represent the total number of shares issued by a corporation and held by its
+        shareholders.</td></tr></table>] delay=[500]\">Shares Outstanding</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_sh_outstanding\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_outstanding\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_outstanding_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under 1M</option><option value=\"u5\">Under 5M</option><option
+        value=\"u10\">Under 10M</option><option value=\"u20\">Under 20M</option><option
+        value=\"u50\">Under 50M</option><option value=\"u100\">Under 100M</option><option
+        value=\"o1\">Over 1M</option><option value=\"o2\">Over 2M</option><option
+        value=\"o5\">Over 5M</option><option value=\"o10\">Over 10M</option><option
+        value=\"o20\">Over 20M</option><option value=\"o50\">Over 50M</option><option
+        value=\"o100\">Over 100M</option><option value=\"o200\">Over 200M</option><option
+        value=\"o500\">Over 500M</option><option value=\"o1000\">Over 1000M</option><option
+        value=\"frange\">Custom (Elite only)</option></select>\n</td>\n<td width=\"10%\"
+        class=\"filters-cells\" align=\"center\">\n<span class=\"screener-combo-title\"
+        style=\"cursor:pointer;\" data-boxover=\"cssbody=[tooltip_bdy] cssheader=[tooltip_hdr]
+        header=[Float] body=[<table width=300><tr><td class='tooltip_tab'>Float is
+        the number of stock shares that are available for trading to the public. This
+        doesn't include shares held by insiders.</td></tr></table>] delay=[500]\">Float</span></td>\n<td
+        width=\"10%\" class=\"filters-cells relative\">\n<select id=\"fs_sh_float\"
+        style=\"width:100%\" class=\"screener-combo-text fv-select\" onchange=\"ScreenerSelectOnChange(this)\"
+        data-filter=\"sh_float\" data-url=\"v=141&t=AAPL&o=ticker\" data-url-selected=\"v=141&f=sh_float_selected_filter&t=AAPL&o=ticker\"
+        data-selected=\"\">\n<option selected=\"selected\" value=\"\">Any</option><option
+        value=\"u1\">Under 1M</option><option value=\"u5\">Under 5M</option><option
+        value=\"u10\">Under 10M</option><option value=\"u20\">Under 20M</option><option
+        value=\"u50\">Under 50M</option><option value=\"u100\">Under 100M</option><option
+        value=\"o1\">Over 1M</option><option value=\"o2\">Over 2M</option><option
+        value=\"o5\">Over 5M</option><option value=\"o10\">Over 10M</option><option
+        value=\"o20\">Over 20M</option><option value=\"o50\">Over 50M</option><option
+        value=\"o100\">Over 100M</option><option value=\"o200\">Over 200M</option><option
+        value=\"o500\">Over 500M</option><option value=\"o1000\">Over 1000M</option><option
+        value=\"u10p\">Under 10%</option><option value=\"u20p\">Under 20%</option><option
+        value=\"u30p\">Under 30%</option><option value=\"u40p\">Under 40%</option><option
+        value=\"u50p\">Under 50%</option><option value=\"u60p\">Under 60%</option><option
+        value=\"u70p\">Under 70%</option><option value=\"u80p\">Under 80%</option><option
+        value=\"u90p\">Under 90%</option><option value=\"o10p\">Over 10%</option><option
+        value=\"o20p\">Over 20%</option><option value=\"o30p\">Over 30%</option><option
+        value=\"o40p\">Over 40%</option><option value=\"o50p\">Over 50%</option><option
+        value=\"o60p\">Over 60%</option><option value=\"o70p\">Over 70%</option><option
+        value=\"o80p\">Over 80%</option><option value=\"o90p\">Over 90%</option><option
+        value=\"modal\">Custom (Elite only)</option></select>\n</td>\n</tr>\n</table>\n</form>\n</div>\n</td>\n</tr>\n<tr><td>\n<div
+        id=\"screener-content\">\n<table id=\"screener-views-table\" width=\"100%\"
+        cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr><td width=\"100%\">\n<table
+        width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" class=\"screener-view-table
+        screener-view-switch\">\n<tr>\n<td class=\"screener-view-button is-screener
+        \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=111&t=AAPL&o=ticker\">Overview</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=121&t=AAPL&o=ticker\">Valuation</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=161&t=AAPL&o=ticker\">Financial</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=131&t=AAPL&o=ticker\">Ownership</a></td>\n<td
+        class=\"screener-view-button is-screener is-active\" style=\"cursor:pointer;\"><a
+        href=\"screener.ashx?v=141&t=AAPL&o=ticker\">Performance</a></td>\n<td class=\"screener-view-button
+        is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=171&t=AAPL&o=ticker\">Technical</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=181&t=AAPL&o=ticker\">ETF</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=191&t=AAPL&o=ticker\">ETF
+        Perf</a></td>\n<td class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a
+        href=\"screener.ashx?v=151&t=AAPL&o=ticker\">Custom</a></td>\n<td class=\"screener-view-button
+        is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=211&t=AAPL&o=ticker\">Charts</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=411&t=AAPL&o=ticker\">Tickers</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=311&t=AAPL&o=ticker\">Basic</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=351&t=AAPL&o=ticker\">TA</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=321&t=AAPL&o=ticker\">News</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=341&t=AAPL&o=ticker\">Snapshot</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"screener.ashx?v=711&t=AAPL&o=ticker&show_etf=true\">Maps</a></td>\n<td
+        class=\"screener-view-button is-screener \" style=\"cursor:pointer;\"><a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-menu-stats\">Stats</a></td>\n</tr>\n</table>\n</td>\n</tr>\n<tr><td
+        width=\"100%\"><img src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\"
+        alt=\"\" border=\"0\"></td></tr>\n<tr>\n<td width=\"100%\">\n<div class=\"relative
+        w-full min-h-6\"><div class=\"absolute bottom-0 left-0 right-0 top-0 flex
+        justify-between items-center space-x-2\">\n<div id=\"screener-total\" class=\"count-text
+        whitespace-nowrap\">#1 / 1 Total</div>\n<div id=\"screener-fullview-links\"
+        class=\"fullview-links flex space-x-3 lg:space-x-5 justify-center items-center
+        overflow-hidden text-link\"\">\n<span class=\"tab-link whitespace-nowrap\">\n<a
+        href=\"javascript:SavePortfolio(1,'v=141&t=AAPL&o=ticker')\" class=\"tab-link\">save
+        as portfolio</a> | \n<a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-create-alert\"
+        class=\"tab-link\">create alert</a></span>\n<span class=\"whitespace-nowrap\">\r\n
+        \   <span class=\"count-text\"><b>Timeframe:</b></span>\r\n    <a href=\"elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-perf-intraday\"
+        class=\"tab-link\">Intraday</a>\r\n     |\r\n    <a href=\"/screener.ashx?v=141&t=AAPL&o=ticker\"
+        class=\"tab-link font-bold\">Daily</a>\r\n</span><span style=\"white-space:
+        nowrap\"><span class=\"count-text\"><b>Refresh:</b></span> <a href=\"/screener.ashx?v=141&t=AAPL&o=ticker&ar=180\"
+        class=\"tab-link \">3min</a> | <a href=\"/screener.ashx?v=141&t=AAPL&o=ticker\"
+        class=\"tab-link font-bold\">off</a></div><div id=\"screener-page-select\"
+        class=\"flex justify-center items-center space-x-1\"><span class=\"screener-combo-button
+        screener_button fv-button is-arrow is-disabled\"><svg width=\"16\" height=\"16\">\r\n
+        \   <use href=\"/assets/dist-icons/icons.svg?rev=12#arrowBackward\"/>\r\n</svg></span><select
+        id=\"pageSelect\"  class=\"pages-combo fv-select\" onchange='trackPagination(\"top\");url=\"screener.ashx?v=141&t=AAPL&o=ticker&r=123456\";row=\"r=\"
+        + document.getElementById(\"pageSelect\").value;url=url.replace(/r=123456/,row);window.location=url;'>\n<option
+        selected=\"selected\" value=1>Page 1 / 1</option></select>\n<span class=\"screener-combo-button
+        screener_button fv-button is-arrow is-disabled\"><svg width=\"16\" height=\"16\">\r\n
+        \   <use href=\"/assets/dist-icons/icons.svg?rev=12#arrowForward\"/>\r\n</svg></span></div>\n</div></div>\n</td>\n</tr>\n<tr><td
+        width=\"100%\" colspan=\"30\"><img src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\"
+        alt=\"\" border=\"0\"></td></tr>\n<tr id=\"screener-table\"><td><table width=\"100%\"
+        cellpadding=\"0\" cellspacing=\"0\" border=\"0\"><tr>\n<td>\n<table class=\"styled-table-new
+        is-rounded is-tabular-nums w-full screener_table\">\n<thead>\n<tr align=\"center\"
+        valign=\"middle\">\n<th class=\"table-header cursor-pointer\" align=\"right\"
+        onclick=\"window.location='screener.ashx?v=141&t=AAPL'\">No.</th>\n<th class=\"table-header
+        cursor-pointer is-selected is-ascending\" align=\"left\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=-ticker'\">Ticker<svg
+        width=\"16\" height=\"16\" class=\"inline-block -mt-[3px] -mb-0.5\">\r\n    <use
+        href=\"/assets/dist-icons/icons.svg?rev=12#chevronUp\"/>\r\n</svg></th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perf1w'\">Perf
+        Week</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perf4w'\">Perf
+        Month</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perf13w'\">Perf
+        Quart</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perf26w'\">Perf
+        Half</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perf52w'\">Perf
+        Year</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=perfytd'\">Perf
+        YTD</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=volatility1w'\">Volatility
+        W</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=volatility4w'\">Volatility
+        M</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=recom'\">Recom</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=averagevolume'\">Avg
+        Volume</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=relativevolume'\">Rel
+        Volume</th>\n<th class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=price'\">Price</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=change'\">Change</th>\n<th
+        class=\"table-header cursor-pointer\" align=\"right\" onclick=\"window.location='screener.ashx?v=141&t=AAPL&o=volume'\">Volume</th>\n</thead>\n<tr
+        class=\"styled-row is-hoverable is-bordered is-rounded is-striped has-color-text\"
+        valign=\"top\">\n<td height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\"
+        \">1</a></td><td height=\"10\" align=\"left\" data-boxover=\"cssbody=[hoverchart]
+        cssheader=[tabchrthdr] body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Apple Inc</b>Consumer Electronics <span>\u2022</span>
+        USA <span>\u2022</span> 3191.64B</div>] offsetx=[100] offsety=[0] delay=[0]\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" class=\"tab-link\">AAPL</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-negative\">-2.05%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">9.03%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">20.81%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">6.83%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">11.30%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">8.11%</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.68%</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.35%</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">2.02</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">67.93M</a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">1.18</a></td><td
+        height=\"10\" align=\"right\" data-boxover=\"cssbody=[hoverchart] cssheader=[tabchrthdr]
+        body=[<img src='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d'
+        srcset='https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d
+        1x, https://charts2-node.finviz.com/chart.ashx?cs=m&t=AAPL&tf=d&s=linear&ct=candle_stick&tm=d&sf=2
+        2x' width='324' height='180' alt='' referrerPolicy='no-referrer-when-downgrade'
+        loading='lazy'><div><b>Apple Inc</b>Consumer Electronics <span>\u2022</span>
+        USA <span>\u2022</span> 3191.64B</div>] offsetx=[-324] offsety=[20] delay=[0]\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span class=\"color-text is-positive\">208.14</span></a></td><td
+        height=\"10\" align=\"right\"><a href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \"><span
+        class=\"color-text is-positive\">0.31%</span></a></td><td height=\"10\" align=\"right\"><a
+        href=\"quote.ashx?t=AAPL&ty=c&p=d&b=1\" \">79,919,369</a></td></tr></table></td></tr></table>\n</td>\n</tr>\n<tr>\n<td>\n<table
+        width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n<tr>\n<td
+        align=\"left\" class=\"count-text\"><b>Tickers:</b> AAPL</td><td align=\"right\"
+        style=\"color:#1E6DC0\"><a href=\"elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=screener-export\"
+        class=\"tab-link\">export</a></td></tr>\n</table>\n</td>\n</tr>\n<tr><td><img
+        src=\"gfx/nic2x2.gif\" style=\"display:block;width:2px;height:6px\" alt=\"\"
+        border=\"0\"></td></tr>\n<tr>\n<td width=\"100%\" align=\"center\" valign=\"top\"
+        id=\"screener_pagination\" class=\"body-table screener_pagination\">\n<a href=\"screener.ashx?v=141&t=AAPL&o=ticker\"
+        class=\"screener-pages is-selected\" onclick=\"trackPagination('bottom')\"><b>1</b></a>\n</td>\n</tr>\n<tr><td><img
+        src=\"gfx/nic2x2.gif\" style=\"width:2px;height:10px\" alt=\"\" border=\"0\"></td></tr>\n</table>\n<div
+        id=\"IC_D_3x3_1\"class=\"relative overflow-hidden flex items-center justify-center
+        w-full mx-auto\" style=\"width:970px;height:250px;max-height:250px\"></div></div>\n</td></tr><!--
+        TS\nAAPL|208.14|79919369\nTE -->\n\r\n            <script type=\"text/javascript\">\r\n
+        \               ScreenerRefreshInit(0);\r\n            </script>\r\n        </table></div></div>\r\n
+        \           <div class=\"footer\" style=\"margin-top: 20px;padding-bottom:
+        115px\">\r\n                <div class=\"footer_links\">\r\n                    <a
+        class=\"tab-link\" href=\"/affiliate.ashx\">affiliate</a>\r\n                    <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                    <a class=\"tab-link\"
+        href=\"/advertise.ashx\">advertise</a>\r\n                    \r\n                    <span
+        class=\"footer_dot\"> \u2022 </span><a class=\"tab-link\" href=\"#\" onclick=\"setChartThemeCookie('light')\">toggle
+        light mode</a>\r\n                    <span class=\"footer_dot\"> \u2022 </span>\r\n
+        \                   <a class=\"tab-link\" href=\"/contact.ashx\">contact</a>\r\n
+        \                   <span class=\"footer_dot\"> \u2022 </span>\r\n                    <a
+        class=\"tab-link\" href=\"/privacy.ashx\">privacy</a>\r\n                    <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                    <a class=\"tab-link\"
+        href=\"/help/screener.ashx\">help</a>\r\n                <br>\r\n                <a
+        class=\"tab-link\" href=\"javascript:void(0)\" onclick=\"window.__uspapi &&
+        window.__uspapi('displayUspUi');\">do not sell my data</a>\r\n                <span
+        class=\"footer_dot\"> \u2022 </span>\r\n                <a class=\"tab-link\"
+        href=\"javascript:void(0)\" onClick=\"window.__tcfapi && window.__tcfapi('displayConsentUi',
+        2, function() {})\">privacy settings</a>\r\n                </div>\r\n    Quotes
+        delayed 15 minutes for NASDAQ, NYSE and AMEX.\r\n    <br>\r\n    Copyright
+        \xA9 2007-2024 FINVIZ.com. All Rights Reserved.\r\n    \r\n</div>\r\n            <script
+        async src=\"https://www.googletagmanager.com/gtag/js?id=UA-3261808-1\"></script>\r\n
+        \           <script>\r\n              function getSystemTheme() {\r\n                if
+        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        {\r\n                  return 'Dark';\r\n                }\r\n                else
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)
+        {\r\n                  return 'Light';\r\n                }\r\n                return
+        'No Preference';\r\n              }\r\n\r\n              var systemTheme =
+        getSystemTheme()\r\n\r\n              window.dataLayer = window.dataLayer
+        || [];\r\n              function gtag(){dataLayer.push(arguments);}\r\n              gtag('js',
+        new Date());\r\n\r\n              var fGaM = {\r\n                'dimension1':
+        'NotLoggedIn',\r\n                'dimension3': window.devicePixelRatio,\r\n
+        \               'layoutTheme': 'dark',\r\n                'systemTheme': systemTheme,\r\n
+        \               'bundle': 'legacy',\r\n                innerWidth: window.innerWidth,\r\n
+        \               innerHeight: window.innerHeight\r\n              };\r\n\r\n
+        \             gtag('config', 'G-ZT9VQEWD4N', fGaM);\r\n              \r\n
+        \           </script>\r\n            <script type=\"text/javascript\">\r\n
+        \       window._qevents = window._qevents || [];\r\n\r\n        (function()
+        {\r\n            var elem = document.createElement('script');\r\n            elem.src
+        = (document.location.protocol == \"https:\" ? \"https://secure\" : \"http://edge\")
+        + \".quantserve.com/quant.js\";\r\n            elem.async = true;\r\n            elem.type
+        = \"text/javascript\";\r\n            var scpt = document.getElementsByTagName('script')[0];\r\n
+        \           scpt.parentNode.insertBefore(elem, scpt);\r\n        })();\r\n\r\n
+        \       window._qevents.push({\r\n            qacct:\"p-c2W8esUZ6Q8oA\"\r\n
+        \       });\r\n    </script>\r\n    <noscript>\r\n        <div style=\"display:none;\">\r\n
+        \           <img src=\"//pixel.quantserve.com/pixel/p-c2W8esUZ6Q8oA.gif\"
+        border=\"0\" height=\"1\" width=\"1\" alt=\"Quantcast\"/>\r\n        </div>\r\n
+        \   </noscript><div id=\"IC_D_1x1_1\"class=\"relative overflow-hidden flex
+        items-center justify-center w-full mx-auto\"></div><div id=\"modal-elite-ad\"
+        class=\"modal-elite-ad\">\r\n                            <div id=\"modal-elite-ad_content\"
+        class=\"modal-elite-ad_content\">\r\n\t\t\t                    <button id=\"modal-elite-ad-close\"
+        type=\"button\" class=\"modal-elite-ad_close\">\xD7</button>\r\n\r\n                                <!--<div
+        id=\"modal-elite-ad-content-0\" style=\"display: none\">\r\n\t\t\t                        <h2>Ever
+        heard of Finviz*Elite?</h2>\r\n                                    <p>\r\n
+        \                                       Our premium service offers you real-time
+        quotes, advanced visualizations, technical studies, and much more.<br>\r\n
+        \                                       Become Elite and make informed financial
+        decisions.\r\n                                    </p>\r\n                                    <a
+        href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-0\"
+        id=\"modal-elite-ad-btn-0\" class=\"\" target=\"_blank\">Find out more</a>\r\n
+        \                               </div>-->\r\n\r\n                                <div
+        id=\"modal-elite-ad-content-1\" style=\"display: block\">\r\n\t\t\t                        <h2>Upgrade
+        your FINVIZ experience</h2>\r\n                                    <p>\r\n
+        \                                       Join thousands of traders who make
+        more informed decisions with&nbsp;our&nbsp;premium features.\r\n                                        Real-time
+        quotes, advanced&nbsp;visualizations, backtesting, and much more.\r\n                                    </p>\r\n
+        \                                   <a href=\"/elite.ashx?utm_source=finviz&utm_medium=banner&utm_campaign=modal-1\"
+        id=\"modal-elite-ad-btn-1\" class=\"modal-elite_button\" target=\"_blank\">Learn
+        more about FINVIZ*Elite</a>\r\n                                </div>\r\n
+        \                           </div>\r\n                         </div><script
+        src=\"/assets/dist-legacy/script/pv.776eb1d9.js\" async></script><script defer>window.renderScriptNotLoaded();</script>\n</body>\n</html>\n"
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 84992a8788d06938-LIS
+      - 8991337dbf222da1-YVR
       Cache-Control:
       - no-cache
       Connection:
@@ -546,18 +1394,14 @@ interactions:
       Content-Type:
       - text/html; charset=utf-8
       Date:
-      - Mon, 22 Jan 2024 16:27:45 GMT
+      - Tue, 25 Jun 2024 01:31:59 GMT
       Request-Context:
       - appId=cid-v1:bdd405ef-7a83-4f9a-9228-0107d7f4bc90
       Server:
       - cloudflare
       Set-Cookie:
-      - chartsTheme=dark; expires=Wed, 22 Jan 2025 16:27:45 GMT; domain=.finviz.com;
-        path=/
-      - notice-newsletter=show; expires=Tue, 23 Jan 2024 16:27:45 GMT; domain=.finviz.com;
-        path=/
-      - screenerUrl=screener.ashx%3Fv%3D141%26ft%3D4%26t%3DAAPL; expires=Wed, 22 Jan
-        2025 16:27:45 GMT; domain=.finviz.com; path=/
+      - screenerUrl=v%3D141%26t%3DAAPL%26o%3Dticker; expires=Wed, 25 Jun 2025 01:31:59
+        GMT; domain=.finviz.com; path=/; samesite=lax
       Transfer-Encoding:
       - chunked
       Vary:
