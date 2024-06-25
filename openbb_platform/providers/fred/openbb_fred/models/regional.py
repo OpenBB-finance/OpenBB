@@ -230,15 +230,15 @@ class FredRegionalDataFetcher(
         )
 
         api_key = credentials.get("fred_api_key") if credentials else ""
-        query.season = query.season.upper()
+        season = query.season.upper()
         if query.is_series_group:
             base_url = "https://api.stlouisfed.org/geofred/regional/data?"
             url = (
                 base_url
                 + get_querystring(
-                    query.model_dump(), ["limit", "end_date", "is_series_group"]
+                    query.model_dump(), ["limit", "season", "end_date", "is_series_group"]
                 )
-                + f"&file_type=json&api_key={api_key}"
+                + f"&season={season}&file_type=json&api_key={api_key}"
             )
         else:
             base_url = "https://api.stlouisfed.org/geofred/series/data?"
