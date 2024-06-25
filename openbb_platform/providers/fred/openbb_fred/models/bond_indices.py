@@ -553,7 +553,7 @@ class FredBondIndicesFetcher(
         query: FredBondIndicesQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> List[FredBondIndicesData]:
+    ) -> AnnotatedResult[List[FredBondIndicesData]]:
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame
@@ -579,9 +579,9 @@ class FredBondIndicesFetcher(
 
         titles_dict = {
             symbol: data["metadata"][symbol].get("title")
-            for symbol in query._symbols.split(  # pylint: disable=protected-access
+            for symbol in query._symbols.split(  # type: ignore  # pylint: disable=protected-access
                 ","
-            )  # type: ignore
+            )
         }
         df["title"] = df.symbol.map(titles_dict)
 
