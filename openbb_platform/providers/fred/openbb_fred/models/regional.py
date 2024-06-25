@@ -236,7 +236,8 @@ class FredRegionalDataFetcher(
             url = (
                 base_url
                 + get_querystring(
-                    query.model_dump(), ["limit", "season", "end_date", "is_series_group"]
+                    query.model_dump(),
+                    ["limit", "season", "end_date", "is_series_group"],
                 )
                 + f"&season={season}&file_type=json&api_key={api_key}"
             )
