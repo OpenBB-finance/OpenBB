@@ -65,7 +65,7 @@ class FMPCryptoSearchFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.fetch import create_url, get_data_many
+        from openbb_fmp.utils.helpers import create_url, get_data_many
 
         api_key = credentials.get("fmp_api_key") if credentials else ""
 

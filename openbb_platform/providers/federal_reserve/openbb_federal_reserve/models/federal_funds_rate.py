@@ -111,7 +111,7 @@ class FederalReserveFederalFundsRateFetcher(
     ) -> List[Dict]:
         """Extract the raw data."""
         # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.requests import amake_request
+        from openbb_core.provider.utils.helpers import amake_request
 
         url = (
             "https://markets.newyorkfed.org/api/rates/unsecured/effr/search.json?"

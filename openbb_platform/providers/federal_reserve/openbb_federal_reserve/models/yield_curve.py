@@ -61,7 +61,7 @@ class FederalReserveYieldCurveFetcher(
         # pylint: disable=import-outside-toplevel
         from io import BytesIO  # noqa
         from numpy import nan  # noqa
-        from openbb_core.provider.utils.requests import make_request  # noqa
+        from openbb_core.provider.utils.helpers import make_request  # noqa
         from pandas import read_csv  # noqa
 
         url = (

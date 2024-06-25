@@ -142,7 +142,7 @@ class FMPCurrencySnapshotsFetcher(
                     # Sets the counter currencies in the order they were requested.
                     .filter(items=counter_currencies, axis=0)
                     .reset_index()
-                )
+                ).rename(columns={"index": "counter_currency"})
             # If there are no records, don't concatenate.
             if len(temp) > 0:
                 # Convert the Unix timestamp to a datetime.
