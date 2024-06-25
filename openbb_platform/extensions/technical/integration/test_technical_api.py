@@ -1,6 +1,6 @@
 """Test technical api."""
 
-# pylint: disable=use-dict-literal
+# pylint: disable=use-dict-literal,too-many-lines
 
 import base64
 import json

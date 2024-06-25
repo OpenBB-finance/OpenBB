@@ -1,5 +1,7 @@
 """Technical Analysis Helpers."""
 
+# pylint: disable=too-many-arguments, too-many-locals
+
 from typing import TYPE_CHECKING, Any, List, Literal, Optional, Tuple, Union
 from warnings import warn
 
@@ -510,7 +512,7 @@ def clenow_momentum(
     values = values[-window:]
 
     y = log(values)
-    X = arange(len(y)).reshape(-1, 1)
+    X = arange(len(y)).reshape(-1, 1)  # pylint: disable=invalid-name
 
     lr = LinearRegression()
     lr.fit(X, y)
