@@ -16,42 +16,42 @@ interactions:
     uri: https://api.nasdaq.com/api/screener/stocks?limit=10000&marketcap=large&sector=consumer_staples&tableonly=true
   response:
     body:
-      string: !!binary |
-        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
+      string: '{"data":{"filters":null,"table":{"asOf":null,"headers":{"symbol":"Symbol","name":"Name","lastsale":"Last
+        Sale","netchange":"Net Change","pctchange":"% Change","marketCap":"Market
+        Cap"},"rows":[{"symbol":"FMX","name":"Fomento Economico Mexicano S.A.B. de
+        C.V. Common Stock","lastsale":"$108.63","netchange":"1.88","pctchange":"1.761%","marketCap":"177,406,710,609","url":"/market-activity/stocks/fmx"},{"symbol":"BUD","name":"Anheuser-Busch
+        Inbev SA Sponsored ADR (Belgium)","lastsale":"$60.77","netchange":"1.71","pctchange":"2.895%","marketCap":"105,569,477,673","url":"/market-activity/stocks/bud"},{"symbol":"SONY","name":"Sony
+        Group Corporation American Depositary Shares ","lastsale":"$81.12","netchange":"0.59","pctchange":"0.733%","marketCap":"99,817,973,586","url":"/market-activity/stocks/sony"},{"symbol":"MDLZ","name":"Mondelez
+        International, Inc. Class A Common Stock","lastsale":"$68.42","netchange":"1.91","pctchange":"2.872%","marketCap":"91,775,784,012","url":"/market-activity/stocks/mdlz"},{"symbol":"CVS","name":"CVS
+        Health Corporation Common Stock","lastsale":"$61.73","netchange":"0.36","pctchange":"0.587%","marketCap":"77,494,173,562","url":"/market-activity/stocks/cvs"},{"symbol":"DEO","name":"Diageo
+        plc Common Stock","lastsale":"$131.43","netchange":"1.11","pctchange":"0.852%","marketCap":"73,400,524,075","url":"/market-activity/stocks/deo"},{"symbol":"MNST","name":"Monster
+        Beverage Corporation","lastsale":"$49.49","netchange":"0.40","pctchange":"0.815%","marketCap":"51,555,130,004","url":"/market-activity/stocks/mnst"},{"symbol":"STZ","name":"Constellation
+        Brands, Inc. Common Stock","lastsale":"$265.13","netchange":"1.63","pctchange":"0.619%","marketCap":"48,512,517,289","url":"/market-activity/stocks/stz"},{"symbol":"KDP","name":"Keurig
+        Dr Pepper Inc. Common Stock","lastsale":"$34.67","netchange":"0.29","pctchange":"0.844%","marketCap":"46,997,760,114","url":"/market-activity/stocks/kdp"},{"symbol":"KHC","name":"The
+        Kraft Heinz Company Common Stock","lastsale":"$33.21","netchange":"0.26","pctchange":"0.789%","marketCap":"40,326,842,624","url":"/market-activity/stocks/khc"},{"symbol":"GIS","name":"General
+        Mills, Inc. Common Stock","lastsale":"$68.07","netchange":"0.99","pctchange":"1.476%","marketCap":"38,428,834,297","url":"/market-activity/stocks/gis"},{"symbol":"HSY","name":"The
+        Hershey Company Common Stock","lastsale":"$187.30","netchange":"5.21","pctchange":"2.861%","marketCap":"37,877,529,160","url":"/market-activity/stocks/hsy"},{"symbol":"CTVA","name":"Corteva,
+        Inc. Common Stock ","lastsale":"$52.91","netchange":"-0.01","pctchange":"-0.019%","marketCap":"36,877,000,160","url":"/market-activity/stocks/ctva"},{"symbol":"KR","name":"Kroger
+        Company (The) Common Stock","lastsale":"$50.02","netchange":"-0.19","pctchange":"-0.378%","marketCap":"36,098,825,957","url":"/market-activity/stocks/kr"},{"symbol":"CCEP","name":"Coca-Cola
+        Europacific Partners plc Ordinary Shares","lastsale":"$75.97","netchange":"1.11","pctchange":"1.483%","marketCap":"34,901,875,835","url":"/market-activity/stocks/ccep"},{"symbol":"ABEV","name":"Ambev
+        S.A. American Depositary Shares (Each representing 1 Common Share)","lastsale":"$2.10","netchange":"0.02","pctchange":"0.962%","marketCap":"33,083,049,896","url":"/market-activity/stocks/abev"},{"symbol":"ADM","name":"Archer-Daniels-Midland
+        Company Common Stock","lastsale":"$62.13","netchange":"0.78","pctchange":"1.271%","marketCap":"30,719,419,831","url":"/market-activity/stocks/adm"},{"symbol":"TSN","name":"Tyson
+        Foods, Inc. Common Stock","lastsale":"$57.68","netchange":"1.38","pctchange":"2.451%","marketCap":"20,535,515,424","url":"/market-activity/stocks/tsn"},{"symbol":"K","name":"Kellanova
+        Common Stock","lastsale":"$58.26","netchange":"0.78","pctchange":"1.357%","marketCap":"19,918,141,158","url":"/market-activity/stocks/k"},{"symbol":"MKC","name":"McCormick
+        & Company, Incorporated Common Stock","lastsale":"$69.20","netchange":"0.52","pctchange":"0.757%","marketCap":"18,574,159,186","url":"/market-activity/stocks/mkc"},{"symbol":"KOF","name":"Coca
+        Cola Femsa S.A.B. de C.V.  American Depositary Shares, each representing 10
+        Units (each Unit consists of 3 Series B Shares and 5 Series L Shares)","lastsale":"$84.52","netchange":"1.12","pctchange":"1.343%","marketCap":"17,756,234,262","url":"/market-activity/stocks/kof"},{"symbol":"HRL","name":"Hormel
+        Foods Corporation Common Stock","lastsale":"$30.96","netchange":"0.32","pctchange":"1.044%","marketCap":"16,975,534,689","url":"/market-activity/stocks/hrl"},{"symbol":"BG","name":"Bunge
+        Limited Common Shares","lastsale":"$108.17","netchange":"2.30","pctchange":"2.172%","marketCap":"15,316,342,724","url":"/market-activity/stocks/bg"},{"symbol":"CAG","name":"ConAgra
+        Brands, Inc. Common Stock","lastsale":"$29.34","netchange":"0.52","pctchange":"1.804%","marketCap":"14,026,361,056","url":"/market-activity/stocks/cag"},{"symbol":"CELH","name":"Celsius
+        Holdings, Inc. Common Stock","lastsale":"$59.77","netchange":"-2.71","pctchange":"-4.337%","marketCap":"13,931,269,480","url":"/market-activity/stocks/celh"},{"symbol":"WBA","name":"Walgreens
+        Boots Alliance, Inc. Common Stock","lastsale":"$15.91","netchange":"-0.06","pctchange":"-0.376%","marketCap":"13,725,769,653","url":"/market-activity/stocks/wba"},{"symbol":"CPB","name":"Campbell
+        Soup Company Common Stock","lastsale":"$45.27","netchange":"0.76","pctchange":"1.707%","marketCap":"13,515,534,374","url":"/market-activity/stocks/cpb"},{"symbol":"LW","name":"Lamb
+        Weston Holdings, Inc. Common Stock ","lastsale":"$84.95","netchange":"0.10","pctchange":"0.118%","marketCap":"12,266,017,234","url":"/market-activity/stocks/lw"},{"symbol":"SJM","name":"The
+        J.M. Smucker Company Common Stock","lastsale":"$111.86","netchange":"3.16","pctchange":"2.907%","marketCap":"11,879,011,851","url":"/market-activity/stocks/sjm"},{"symbol":"ACI","name":"Albertsons
+        Companies, Inc. Class A Common Stock","lastsale":"$19.79","netchange":"0.23","pctchange":"1.176%","marketCap":"11,426,897,651","url":"/market-activity/stocks/aci"},{"symbol":"TAP","name":"Molson
+        Coors Beverage Company Class B Common Stock","lastsale":"$51.40","netchange":"0.45","pctchange":"0.883%","marketCap":"10,271,281,943","url":"/market-activity/stocks/tap"}]},"totalrecords":31,"asof":"Last
+        price as of Jun 24, 2024"},"message":null,"status":{"rCode":200,"bCodeMessage":null,"developerMessage":null}}'
     headers:
       Cache-Control:
       - max-age=0, no-cache, no-store
@@ -60,39 +60,37 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '1969'
+      - '1892'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 19 Jun 2024 21:55:28 GMT
+      - Tue, 25 Jun 2024 05:24:33 GMT
       Expires:
-      - Wed, 19 Jun 2024 21:55:28 GMT
+      - Tue, 25 Jun 2024 05:24:33 GMT
       Pragma:
       - no-cache
       Server:
       - Kestrel
       Set-Cookie:
-      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=98~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=203108838c99ea4e479f8c21471f25fe;
+      - akaalb_ALB_Default=~op=ao_api__east1:ao_api_east1|~rv=34~m=ao_api_east1:0|~os=ff51b6e767de05e2054c5c99e232919a~id=a6a87be6083abadbf68a65760892cbd0;
         path=/; HttpOnly; Secure; SameSite=None
-      - ak_bmsc=E6D38917F0ADD7E1FEC6DEB849E81462~000000000000000000000000000000~YAAQ2pUeuIHX0fGPAQAAWmZ/Mhgd4GwWL1iu1lcNC+ekK/2jK4SfejWlzn1pCiQrEx5PJBdlAGLH7NlNZy1GhbZeM8xXf2pzkRP0G8sxmeUHhvg8/38JieSuk/NMj4jUXV2LbthNx6fgo/vE4PLaqaZXDW+6kwELDdJSMfmx8A8njFSEJlNd+mtJEcmX+BmyA/RU+V4nfRXRRMUfGUOg2ydok/CurJkTqD7QejqHu5uCYmf+3Mho5oSoN9s4qsvQfCWx7lUhVw5Q+XwLBpm2m4HQvMzImK4ypPfA6rQnZWEUaqyQuxF4PMKk9rHxIthxOqbF2J3gofseH3amzYCYFQ8143QskbuHlbASaQ5shF6W372ZmUvVB9wrdsU2XxZf67bceEmboBGGV5L/h8UCQ5aiL5U4mYQ=;
-        Domain=.nasdaq.com; Path=/; Expires=Wed, 19 Jun 2024 23:55:28 GMT; Max-Age=7200;
+      - ak_bmsc=B60A34D76B43F3BB37594877AC3D700D~000000000000000000000000000000~YAAQ2pUeuGmYLkqQAQAAJFnaTRgCwItwh95NTHkybeuaVa3zNDyILeLlaZjT9xVZ5hBvxrJagAdTv/qjEqrHkeTwCnKwnL36lhkaBVtrywtFT5DyPFD70YBsoXiUQGCVpw7G/qTdvM1KI7QIHxrXYQfi7WvamgyK5gSfxwSy0ecpxwr78vRY3kh+SWLNuUa4fqQARs6HAotyV7D9D8yccda92Ba+UBJ/7sYkClJY7e/dLavSKp/fVUKDSGSjMC66j6IUZNO8pb5W51jc40P6cy4cjVp0YbaOFWyGfXNsH2VTfO7Ao02oGYtrgFNVUVBFmtXyXJJxWiFtAGmz2Aut25NrCJRFLjKYoHnNK747DTnVs6fdjDL92I63qeSj2C91zadovqybp1ZzXWTLOQk4d7qCuapEjg==;
+        Domain=.nasdaq.com; Path=/; Expires=Tue, 25 Jun 2024 07:24:33 GMT; Max-Age=7200;
         HttpOnly
       Strict-Transport-Security:
       - max-age=86400
       Vary:
       - Accept-Encoding
       X-EdgeConnect-MidMile-RTT:
-      - '5'
-      - '56'
+      - '53'
       X-EdgeConnect-Origin-MEX-Latency:
-      - '50'
-      - '50'
+      - '75'
       gid:
-      - '203'
+      - '204'
       lang:
       - en
       rid:
-      - 8b115157-6b55-4aa1-b3da-3aaaecba8876
+      - 7c53afca-e363-4fc7-9ab9-aefc56e54125
       srctype:
       - default
     status:

@@ -78,9 +78,8 @@ def test_nasdaq_calendar_dividend_fetcher(credentials=test_credentials):
 def test_nasdaq_calendar_ipo_fetcher(credentials=test_credentials):
     """Test the Nasdaq Calendar IPO fetcher."""
     params = {
-        "start_date": datetime.date(2023, 11, 1),
-        "end_date": datetime.date(2023, 11, 30),
-        "status": "upcoming",
+        "start_date": datetime.date(2024, 6, 15),
+        "end_date": datetime.date(2024, 6, 30),
     }
 
     fetcher = NasdaqCalendarIpoFetcher()
