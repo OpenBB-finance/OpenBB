@@ -259,7 +259,11 @@ class RelativeRotation:
         # pylint: disable=import-outside-toplevel
         import contextlib
 
-        from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel, df_to_basemodel
+        from openbb_core.app.utils import (
+            basemodel_to_df,
+            convert_to_basemodel,
+            df_to_basemodel,
+        )
         from pandas import DataFrame
 
         benchmark = benchmark.upper()
@@ -322,6 +326,9 @@ class RelativeRotation:
 
     def _process_data(self):
         """Process the data."""
+        from openbb_core.app.utils import df_to_basemodel
+        from pandas import to_datetime
+
         if self.study == "volatility":
             self.symbols_data = standard_deviation(
                 self.symbols_data,  # type: ignore

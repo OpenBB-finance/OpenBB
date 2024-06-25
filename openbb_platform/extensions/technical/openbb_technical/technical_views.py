@@ -220,11 +220,7 @@ class TechnicalViews:
 
         data = kwargs.get("data")
 
-        if (
-            isinstance(data, DataFrame)
-            and not data.empty
-            and "window" in data.columns
-        ):
+        if isinstance(data, DataFrame) and not data.empty and "window" in data.columns:
             df_ta = data.set_index("window")
         else:
             df_ta = basemodel_to_df(kwargs["obbject_item"], index="window")  # type: ignore

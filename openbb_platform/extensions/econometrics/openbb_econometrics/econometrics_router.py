@@ -111,7 +111,11 @@ def ols_regression(
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -165,7 +169,11 @@ def ols_regression_summary(
     # pylint: disable=import-outside-toplevel
     import re  # noqa
     import statsmodels.api as sm  # noqa
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -260,9 +268,12 @@ def autocorrelation(
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
     from statsmodels.stats.stattools import durbin_watson
-
 
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -325,7 +336,11 @@ def residual_autocorrelation(
     """
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
     from statsmodels.stats.diagnostic import (
         acorr_breusch_godfrey,
     )
@@ -599,7 +614,11 @@ def panel_random_effects(
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
     from linearmodels.panel import RandomEffects
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     if len(X) < 3:
@@ -651,7 +670,11 @@ def panel_between(
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
     from linearmodels.panel import BetweenOLS
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -702,7 +725,11 @@ def panel_pooled(
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
     from linearmodels.panel import PooledOLS
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -752,7 +779,11 @@ def panel_fixed(
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
     from linearmodels.panel import PanelOLS
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -801,7 +832,11 @@ def panel_first_difference(
     """
     # pylint: disable=import-outside-toplevel
     from linearmodels.panel import FirstDifferenceOLS
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -852,7 +887,11 @@ def panel_fmac(
     # pylint: disable=import-outside-toplevel
     import statsmodels.api as sm
     from linearmodels.panel import FamaMacBeth
-    from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
+    from openbb_core.app.utils import (
+        basemodel_to_df,
+        get_target_column,
+        get_target_columns,
+    )
 
     X = get_target_columns(basemodel_to_df(data), x_columns)
     y = get_target_column(basemodel_to_df(data), y_column)

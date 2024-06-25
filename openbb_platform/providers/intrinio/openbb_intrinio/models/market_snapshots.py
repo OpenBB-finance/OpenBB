@@ -146,7 +146,10 @@ class IntrinioMarketSnapshotsFetcher(
         import gzip  # noqa
         from datetime import timezone as datetime_timezone  # noqa
         from io import BytesIO  # noqa
-        from openbb_core.provider.utils.helpers import amake_request, safe_fromtimestamp  # noqa
+        from openbb_core.provider.utils.helpers import (
+            amake_request,
+            safe_fromtimestamp,
+        )  # noqa
         from pandas import DataFrame, notna, read_csv, to_datetime  # noqa
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""

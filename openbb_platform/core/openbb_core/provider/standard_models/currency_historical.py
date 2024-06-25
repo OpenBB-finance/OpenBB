@@ -58,4 +58,3 @@ class CurrencyHistoricalData(Data):
     vwap: Optional[PositiveFloat] = Field(
         description=DATA_DESCRIPTIONS.get("vwap", ""), default=None
     )
-

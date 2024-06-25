@@ -29,6 +29,7 @@ if TYPE_CHECKING:
     from numpy import ndarray  # noqa
     from pandas import DataFrame  # noqa
     from openbb_core.app.query import Query  # noqa
+
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
@@ -166,7 +167,7 @@ class OBBject(Tagged, Generic[T]):
                     for prop in r.schema()["properties"].values()
                 ):
                     sort_columns = False
-                    df = pd.DataFrame(r.model_dump(exclude_unset=True))
+                    df = DataFrame(r.model_dump(exclude_unset=True))
                 else:
                     df = basemodel_to_df(dt, index)
                     sort_columns = False

@@ -4,7 +4,9 @@ from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple
 from warnings import warn
 
 if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )  # pylint: disable=import-outside-toplevel
 
 
 class EconomyViews:

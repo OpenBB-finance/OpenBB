@@ -88,6 +88,7 @@ class OpenBBFigure(go.Figure):
         """Initialize the OpenBBFigure."""
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.chart_style import ChartStyle
+
         super().__init__()
         if fig:
             self.__dict__ = fig.__dict__

@@ -5,7 +5,9 @@
 from typing import TYPE_CHECKING, Any, Dict, Tuple, Union
 
 if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import OpenBBFigure  # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )  # pylint: disable=import-outside-toplevel
     from plotly.graph_objs import Figure  # pylint: disable=import-outside-toplevel
 
 

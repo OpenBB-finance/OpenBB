@@ -49,7 +49,9 @@ def filter_by_dates(
     )
 
 
-def calculate_adjusted_prices(df: "DataFrame", column: str, dividends: bool = False) -> "DataFrame":
+def calculate_adjusted_prices(
+    df: "DataFrame", column: str, dividends: bool = False
+) -> "DataFrame":
     """Calculate the split-adjusted prices, or split and dividend adjusted prices.
 
     Parameters

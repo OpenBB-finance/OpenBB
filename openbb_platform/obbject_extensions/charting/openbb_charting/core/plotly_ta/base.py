@@ -1,11 +1,22 @@
 """Base class for charting plugins."""
 
-from typing import TYPE_CHECKING, Any, Callable, Dict, Iterator, List, Optional, Type, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Callable,
+    Dict,
+    Iterator,
+    List,
+    Optional,
+    Type,
+    Union,
+)
 
 from .data_classes import ChartIndicators, TAIndicator
 
 if TYPE_CHECKING:
     import pandas as pd
+
 
 def columns_regex(df_ta: "pd.DataFrame", name: str) -> List[str]:
     """Return columns that match regex name."""

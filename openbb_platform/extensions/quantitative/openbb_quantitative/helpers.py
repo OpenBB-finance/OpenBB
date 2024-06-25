@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Union
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
+
 # ruff: ignore=S310
 def get_fama_raw(start_date: str, end_date: str) -> "DataFrame":
     """Get base Fama French data to calculate risk.

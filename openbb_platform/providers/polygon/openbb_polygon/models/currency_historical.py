@@ -185,7 +185,4 @@ class PolygonCurrencyHistoricalFetcher(
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()
-        return [
-            PolygonCurrencyHistoricalData.model_validate(d)
-            for d in data
-        ]
+        return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]

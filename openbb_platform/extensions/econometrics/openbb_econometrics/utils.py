@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Tuple
 if TYPE_CHECKING:
     from pandas import Series
 
+
 def get_engle_granger_two_step_cointegration_test(
     dependent_series: "Series", independent_series: "Series"
 ) -> Tuple[float, float, float, "Series", float, float]:

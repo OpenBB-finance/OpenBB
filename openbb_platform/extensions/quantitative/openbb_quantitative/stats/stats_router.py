@@ -366,8 +366,6 @@ def mean(
     from openbb_quantitative.statistics import mean_
     from pandas import DataFrame
 
-
-
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
     results = DataFrame([mean_(series_target)], columns=["mean"])

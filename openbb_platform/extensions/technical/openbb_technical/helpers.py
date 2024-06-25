@@ -6,6 +6,7 @@ from warnings import warn
 if TYPE_CHECKING:
     from pandas import DataFrame, Series, Timestamp
 
+
 def validate_data(data: list, length: Union[int, List[int]]) -> None:
     """Validate data."""
     if isinstance(length, int):
@@ -474,7 +475,9 @@ def calculate_cones(
     return cones_df.transpose().reset_index().rename(columns={"index": "window"})
 
 
-def clenow_momentum(values: "Series", window: int = 90) -> Tuple[float, float, "Series"]:
+def clenow_momentum(
+    values: "Series", window: int = 90
+) -> Tuple[float, float, "Series"]:
     """Clenow Volatility Adjusted Momentum.
 
     This is defined as the regression coefficient on log prices multiplied by the R^2
