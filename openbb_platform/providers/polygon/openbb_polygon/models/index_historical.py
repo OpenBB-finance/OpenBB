@@ -6,7 +6,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
@@ -63,12 +62,12 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 
@@ -104,6 +103,9 @@ class PolygonIndexHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonIndexHistoricalQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -160,7 +162,7 @@ class PolygonIndexHistoricalFetcher(
             for r in results:
                 v = r["t"] / 1000  # milliseconds to seconds
                 r["t"] = safe_fromtimestamp(v, tz=timezone("America/New_York"))  # type: ignore[arg-type]
-                if query._timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in ["second", "minute", "hour"]:  # pylint: disable=protected-access
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")

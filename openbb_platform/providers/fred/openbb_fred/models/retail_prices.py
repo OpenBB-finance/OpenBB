@@ -280,14 +280,16 @@ class FredRetailPricesFetcher(
         """Extract data."""
         # pylint: disable=import-outside-toplevel
         import json
-        from importlib.resources import path
+        from importlib.resources import files
 
         frequency = frequency_dict.get(query.frequency)
         transform = query.transform
         region = regions_dict[query.region]
 
-        with path("openbb_fred.utils", f"{region}.json") as p:
-            all_symbols = json.load(p.open())
+        resource_path = files("openbb_fred.utils").joinpath(f"{region}.json")
+
+        with resource_path.open() as p:
+            all_symbols = json.load(p)
 
         items_dict = {
             "beverages": PRICES_BEVERAGES,
@@ -336,13 +338,15 @@ class FredRetailPricesFetcher(
         """Transform data."""
         # pylint: disable=import-outside-toplevel
         import json  # noqa
-        from importlib.resources import path  # noqa
+        from importlib.resources import files  # noqa
         from pandas import DataFrame  # noqa
 
         region = regions_dict[query.region]
 
-        with path("openbb_fred.utils", f"{region}.json") as p:
-            all_symbols = json.load(p.open())
+        resource_path = files("openbb_fred.utils").joinpath(f"{region}.json")
+
+        with resource_path.open() as p:
+            all_symbols = json.load(p)
 
         df = DataFrame(data["data"])
         metadata = data["metadata"]

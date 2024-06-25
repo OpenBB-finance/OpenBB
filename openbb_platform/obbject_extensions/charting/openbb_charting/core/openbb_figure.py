@@ -323,7 +323,7 @@ class OpenBBFigure(go.Figure):
             Column of the subplot, by default 1
         """
         # pylint: disable=import-outside-toplevel
-        from numpy import linspace, mean, std
+        from numpy import linspace, mean, ndarray, std
         from pandas import Series
         from scipy import stats
 
@@ -667,7 +667,7 @@ class OpenBBFigure(go.Figure):
         Dict[str, list]
             {"range": volume_range, "ticks": tickvals}
         """
-        # pylint disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from pandas import Series, to_numeric
 
         df_volume = df_volume.apply(lambda x: f"{x:.1f}")
@@ -721,7 +721,7 @@ class OpenBBFigure(go.Figure):
         volume_ticks_x : int, optional
             Number to multiply volume, by default 7
         """
-        # pylint disable=import-outside-toplevel
+        # pylint: disable=import-outside-toplevel
         from numpy import where
 
         colors = where(

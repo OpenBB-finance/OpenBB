@@ -103,7 +103,7 @@ class FredHighQualityMarketCorporateBondFetcher(
             """Get the observations for a single date."""
             data = await amake_request(URL)
             if data:
-                elements = {k: v for k, v in data.get("elements", {}).items()}  # type: ignore
+                elements = dict(data.get("elements", {}).items())  # type: ignore
                 for k, v in elements.items():
                     value = v.get("observation_value")
                     if not value:

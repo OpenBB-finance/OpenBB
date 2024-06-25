@@ -322,6 +322,7 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
+        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         import xmltodict  # noqa
         from aiohttp_client_cache import SQLiteBackend  # noqa
@@ -331,7 +332,7 @@ class SecEtfHoldingsFetcher(
         from openbb_sec.utils.helpers import HEADERS, get_nport_candidates  # noqa
         from pandas import DataFrame, Series, to_datetime  # noqa
 
-        # Implement a retry mechanism in case of RemoteDiconnected Error.
+        # Implement a retry mechanism in case of RemoteDisconnected Error.
         retries = 3
         for i in range(retries):
             filings = []

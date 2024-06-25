@@ -62,12 +62,12 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 
@@ -159,7 +159,7 @@ class PolygonCurrencyHistoricalFetcher(
             for r in results:
                 v = r.get("t") / 1000  # milliseconds to seconds
                 r["t"] = safe_fromtimestamp(v, tz=timezone.utc)  # type: ignore
-                if query._timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in ["second", "minute", "hour"]:  # pylint: disable=protected-access
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")

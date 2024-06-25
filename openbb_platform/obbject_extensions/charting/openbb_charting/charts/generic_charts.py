@@ -531,7 +531,8 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
         The OpenBBFigure object.
     """
     # pylint: disable=import-outside-toplevel
-    from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+    from pandas import Series  # noqa
 
     try:
         figure = OpenBBFigure()

@@ -6,7 +6,6 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 from warnings import warn
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
@@ -64,12 +63,12 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
             "Y": "year",
         }
 
-        values._multiplier = int(
+        values._multiplier = int(  # pylint: disable=protected-access
             values.interval[:-1]
-        )  # pylint: disable=protected-access
-        values._timespan = intervals[
+        )
+        values._timespan = intervals[  # pylint: disable=protected-access
             values.interval[-1]
-        ]  # pylint: disable=protected-access
+        ]
 
         return values
 
@@ -105,6 +104,9 @@ class PolygonCryptoHistoricalFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> PolygonCryptoHistoricalQueryParams:
         """Transform the query params."""
+        # pylint: disable=import-outside-toplevel
+        from dateutil.relativedelta import relativedelta
+
         now = datetime.now().date()
         transformed_params = params
         if params.get("start_date") is None:
@@ -137,7 +139,7 @@ class PolygonCryptoHistoricalFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         urls = [
-            (
+            (  # pylint: disable=protected-access
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"X:{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?"
