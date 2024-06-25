@@ -1,13 +1,11 @@
 """Views for the technical Extension."""
 
+# pylint: disable=too-many-locals,use-dict-literal
+
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 
-from openbb_charting.charts import relative_rotation
-from openbb_charting.core.chart_style import ChartStyle
-from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 from openbb_charting.core.to_chart import to_chart
 from openbb_charting.styles.colors import LARGE_CYCLER
-from openbb_core.app.utils import basemodel_to_df
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import OpenBBFigure
@@ -55,6 +53,8 @@ class TechnicalViews:
     def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Technical Aroon Chart."""
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
         if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
@@ -98,6 +98,8 @@ class TechnicalViews:
     def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Plot moving average convergence divergence chart."""
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
         if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
@@ -139,6 +141,8 @@ class TechnicalViews:
     def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Average directional movement index chart."""
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
         if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
@@ -177,6 +181,8 @@ class TechnicalViews:
     def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Relative strength index chart."""
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
         if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
@@ -215,7 +221,9 @@ class TechnicalViews:
     def technical_cones(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Volatility Cones Chart."""
         # pylint: disable=import-outside-toplevel
+        from openbb_charting.core.chart_style import ChartStyle
         from openbb_charting.core.openbb_figure import OpenBBFigure
+        from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
         data = kwargs.get("data")
@@ -325,6 +333,12 @@ class TechnicalViews:
         **kwargs: Any,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """Relative Rotation Chart."""
+        # pylint: disable=import-outside-toplevel
+        from opencc_charting.charts import relative_rotation  # noqa
+        from openbb_charting.core.chart_style import ChartStyle  # noqa
+        from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
+        from openbb_core.app.utils import basemodel_to_df  # noqa
+
         ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
         momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
         benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
@@ -393,7 +407,9 @@ class TechnicalViews:
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
     # pylint: disable=import-outside-toplevel
+    from openbb_charting.core.chart_style import ChartStyle
     from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_core.app.utils import basemodel_to_df
     from pandas import DataFrame
 
     index = (

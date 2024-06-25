@@ -6,14 +6,14 @@ from warnings import warn
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
         OpenBBFigure,
-    )  # pylint: disable=import-outside-toplevel
+    )
 
 
 class EconomyViews:
     """economy Views."""
 
     @staticmethod
-    def economy_fred_series(  # noqa: PLR0912
+    def economy_fred_series(  # noqa: PLR0912  # pylint: disable=too-many-branches
         **kwargs,
     ) -> Tuple["OpenBBFigure", Dict[str, Any]]:
         """FRED Series Chart."""

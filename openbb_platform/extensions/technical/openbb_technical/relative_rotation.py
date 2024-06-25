@@ -5,7 +5,6 @@
 
 from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Tuple, Union
 
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -257,14 +256,14 @@ class RelativeRotation:
     ):
         """Initialize the class."""
         # pylint: disable=import-outside-toplevel
-        import contextlib
-
-        from openbb_core.app.utils import (
+        import contextlib  # noqa
+        from openbb_core.app.model.obbject import OBBject  # noqa
+        from openbb_core.app.utils import (  # noqa
             basemodel_to_df,
             convert_to_basemodel,
             df_to_basemodel,
         )
-        from pandas import DataFrame
+        from pandas import DataFrame  # noqa
 
         benchmark = benchmark.upper()
         df = DataFrame()
@@ -326,6 +325,7 @@ class RelativeRotation:
 
     def _process_data(self):
         """Process the data."""
+        # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import df_to_basemodel
         from pandas import to_datetime
 
@@ -444,7 +444,9 @@ class RelativeRotationQueryParams(QueryParams):
     def convert_data(cls, v):
         """Validate the data format."""
         # pylint: disable=import-outside-toplevel
+        from openbb_core.app.model.obbject import OBBject
         from openbb_core.app.utils import convert_to_basemodel, df_to_basemodel
+        from pandas import DataFrame
 
         if isinstance(v, OBBject):
             return v.results
