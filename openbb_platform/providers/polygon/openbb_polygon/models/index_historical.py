@@ -165,7 +165,7 @@ class PolygonIndexHistoricalFetcher(
                 if query._timespan not in [  # pylint: disable=protected-access
                     "second",
                     "minute",
-                    "hour"
+                    "hour",
                 ]:
                     r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
